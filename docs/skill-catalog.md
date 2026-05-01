@@ -1099,6 +1099,33 @@ Skills for creating skills, integrating external systems, and development workfl
 
 ---
 
+### `software-development/git-surgery/SKILL.md` · [protocol]
+**What it is:** 10 deterministic recovery protocols for common git disasters: detached HEAD, botched rebase (abort/continue), accidental commit to main, force-push overwrite, `reset --hard` recovery, merge conflicts, cherry-pick, dirty tree switch, and public revert. Pure stdlib companion script with `diagnose` and `reflog` commands.
+
+**Use it when:** You hit a git disaster and need a recovery protocol, not a tutorial.
+
+**Best for:** Detached HEAD resolution, rebase recovery, main branch accidents, force-push damage, hard reset undo, merge conflict navigation, cherry-pick cleanup.
+
+---
+
+### `software-development/code-knowledge-graph-mcp/SKILL.md` · [tool]
+**What it is:** MCP server skill for structured code navigation. Tools: `index_repo`, `find_symbol`, `search_semantic`, `get_call_graph`, `get_dead_code`. Regex-based extraction for Python, JS/TS, Go, Rust. Zero external dependencies — add to Hermes `config.yaml`.
+
+**Use it when:** Grep returns too many results, you need call-graph context, or you want structured symbol search in large repos.
+
+**Best for:** Codebase exploration, symbol resolution, dead code detection, call-graph analysis, cross-reference finding.
+
+---
+
+### `software-development/dev-diagnostics-mcp/SKILL.md` · [tool]
+**What it is:** MCP server skill for structured developer diagnostics. Tools: `run_diagnostics`, `parse_output`, `get_summary`, `contamination_check`. Parsers for ESLint JSON, Biome JSON, Ruff JSON, tsc stdout, Vitest JSON, pytest JSON/plain. Zero external dependencies.
+
+**Use it when:** You want structured lint/test/typecheck output instead of parsing human-readable terminal output.
+
+**Best for:** Unified diagnostics across tools, CI pipeline integration, contamination detection, project health dashboards.
+
+---
+
 ### `mlops/local-llm-tooling/SKILL.md` · [framework]
 **What it is:** A workflow for running, prompting, and extracting structured output from local LLMs (e.g., Ollama, llama.cpp).
 

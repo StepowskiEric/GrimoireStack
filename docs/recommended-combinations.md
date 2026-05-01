@@ -172,6 +172,30 @@ Why this stack works: spec-first eliminates rework, bounded self-revision catche
 
 Why this stack works: threat modeling finds the holes, the hardening checklist covers the vulnerabilities AI tools reliably miss, hazard analysis guards dangerous operations, and external verification prevents false confidence in security posture.
 
+### Git disaster recovery (detached HEAD, rebase botch, force-push overwrite)
+
+1. `software-development/git-surgery/SKILL.md` — select the exact protocol for the disaster type
+2. `execution/checklist-manifesto.md` — if the recovery has known steps, enforce them
+3. `output-quality/tool-interactive-critic.md` — verify the recovered state before continuing work
+
+Why this works: most git "disasters" are actually deterministic state machines. Git-surgery maps each failure mode to a pre-verified protocol, the checklist prevents skip-ahead errors during execution, and external verification confirms the repo is sane before the agent resumes coding.
+
+### Large codebase navigation with structured queries
+
+1. `software-development/code-knowledge-graph-mcp/SKILL.md` — index the repo and query symbols/call-graphs structurally
+2. `software-development/explore-codebase.md` — graph-powered navigation for token-efficient exploration
+3. `execution/keyword-agnostic-logic-locator.md` — when semantic search is ambiguous, find code by structure
+
+Why this works: the MCP server eliminates grep noise by returning structured symbol data (definitions, imports, call sites), explore-codebase provides a traversal strategy with token budgets, and the logic locator handles cases where the right code doesn't match the query keywords.
+
+### Unified developer diagnostics (lint/test/typecheck)
+
+1. `software-development/dev-diagnostics-mcp/SKILL.md` — run diagnostics and get structured JSON output
+2. `software-development/lint-battalion/SKILL.md` — for bulk mechanical errors, run the auto-fix battalion
+3. `software-development/pre-deployment-gate.md` — final contamination check before committing
+
+Why this works: the MCP server normalizes output from 6+ tools (ESLint, Biome, Ruff, tsc, Vitest, pytest) into a single schema, lint-battalion handles mass remediation, and the pre-deployment gate catches contamination from sloppy fixes.
+
 ### Long-horizon tasks (migrations, multi-file changes, complex bugs)
 
 1. `execution/context-budget-operator/SKILL.md` — track token budget before it silently overflows

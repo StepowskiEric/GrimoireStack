@@ -199,6 +199,9 @@
 | Running LLMs locally (Ollama, llama.cpp) | [`local-llm-tooling`](../mlops/local-llm-tooling/SKILL.md) | Local model setup, prompting, structured output extraction |
 | Need to refactor code safely | [`refactor-safely`](../software-development/refactor-safely.md) | Characterization testing + bounded changes |
 | Need to review code changes | [`review-changes`](../software-development/review-changes.md) | Structured review checklist |
+| Git disasters (detached HEAD, botched rebase, force-push overwrite) | [`git-surgery`](../software-development/git-surgery/SKILL.md) | 10 deterministic recovery protocols + companion `diagnose`/`reflog` script |
+| Code navigation / symbol search in large repos | [`code-knowledge-graph-mcp`](../software-development/code-knowledge-graph-mcp/SKILL.md) | MCP server with structured symbol/call-graph queries |
+| Structured lint/test/typecheck output parsing | [`dev-diagnostics-mcp`](../software-development/dev-diagnostics-mcp/SKILL.md) | MCP server with unified parsers for ESLint, Biome, Ruff, tsc, Vitest, pytest |
 | 500+ linter errors to fix | [`lint-battalion`](../software-development/lint-battalion/SKILL.md) | Auto-fix sprint + parallel subagent battalions with contamination checks |
 
 ---

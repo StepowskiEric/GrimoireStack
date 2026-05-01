@@ -121,11 +121,29 @@
 | add-new-skill-to-repository | development/ | Contributing new skills |
 | local-llm-tooling | mlops/ | Running local LLMs |
 
+## MCP Servers & Tools
+
+These are **not skills** in the traditional sense — they are MCP servers or companion scripts included in the repo.
+
+| Tool | Type | Location | What it does |
+|------|------|----------|--------------|
+| code-knowledge-graph | [mcp] | `mcp-servers/code-graph/server.py` | Structured code navigation (index, find symbol, call graph, dead code) |
+| dev-diagnostics | [mcp] | `mcp-servers/dev-diagnostics/server.py` | Unified lint/test/typecheck output parser (6+ tools) |
+| lint-battalion | [script] | `software-development/lint-battalion/scripts/lint_battalion.py` | Batch-plan 500+ linter errors into auto-fixable categories |
+| git-surgery | [script] | `software-development/git-surgery/scripts/git_surgery.py` | `diagnose` / `reflog` commands for git disaster recovery |
+| verify-assumptions | [script] | `execution/assumption-grounding/scripts/verify_assumptions.py` | Assumption verification helper |
+| context-budget | [script] | `execution/context-budget-operator/scripts/context_budget.py` | Token budget computation |
+| purify-test-output | [script] | `debugging/purify-test-output/scripts/purify_test_output.py` | Slice failing test output to relevant lines |
+
 ## Recently Added
 
 | Skill | Date | Key Technique |
 |-------|------|---------------|
-| root-cause-analysis | 2026-04 | 5 Whys + Ishikawa diagnostic protocol |
+| lint-battalion | 2026-05 | Mass lint remediation via auto-fix sprint + parallel subagent battalions |
+| git-surgery | 2026-05 | 10 deterministic recovery protocols for common git disasters |
+| code-knowledge-graph-mcp | 2026-05 | MCP server for structured code navigation (zero deps) |
+| dev-diagnostics-mcp | 2026-05 | MCP server for unified lint/test/typecheck diagnostics |
+|| root-cause-analysis | 2026-04 | 5 Whys + Ishikawa diagnostic protocol |
 | security-threat-modeling | 2026-04 | STRIDE-based threat analysis |
 | api-design-backward-compatibility | 2026-04 | Consumer discovery before contract changes |
 | stakeholder-communication | 2026-04 | Calibrated confidence for human audiences |

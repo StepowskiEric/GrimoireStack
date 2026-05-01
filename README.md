@@ -27,13 +27,41 @@ See [docs/installation.md](docs/installation.md) for full details including all 
 |-------|-----------------|--------|
 | **OpenAI Codex** | `~/.agents/skills/` | `topic/name/SKILL.md` with YAML frontmatter |
 | **VS Code Copilot** | `~/.copilot/skills/` | `name/SKILL.md` (flat), name must be lowercase-hyphen matching directory |
+| **Pi Agent** | `~/.pi/agent/skills/` | `name/SKILL.md` (flat), same as Copilot |
 | **Hermes** | `~/.hermes/skills/` | `topic/name/SKILL.md` with YAML frontmatter |
 | **Claude Code** | `~/.claude/skills/` | `topic/name/SKILL.md` with YAML frontmatter |
 | **Antigravity** | `~/.antigravity/skills/` | `topic/name/SKILL.md` with YAML frontmatter |
 
 The installer automatically adapts the format for each agent:
-- Copilot uses a flat structure (no topic subdirectories) and slug-normalizes the `name` field to match the directory
+- Copilot and Pi use a flat structure (no topic subdirectories) and slug-normalize the `name` field to match the directory
 - All other agents use topic-based subdirectories preserving the original `name` field
+
+## Companion Scripts & MCP Servers
+
+This repository ships with two kinds of tooling alongside skills:
+
+| Type | What | How to get it |
+|------|------|---------------|
+| **Companion Python scripts** | `*.py` files shipped with specific skills (e.g. `lint_battalion.py`, `git_surgery.py`). Each is pure stdlib — no `pip install`. | `npx jerry-skills install --with-scripts` |
+| **MCP Servers** | Raw stdio MCP servers in `mcp-servers/` — zero external deps, JSON-RPC over stdio with `Content-Length` framing. | Copy `mcp-servers/` into your project; add to Hermes `config.yaml` |
+
+### MCP Servers included
+
+| Server | Tools | Best for |
+|--------|-------|----------|
+| `mcp-servers/code-graph/server.py` | `index_repo`, `find_symbol`, `search_semantic`, `get_call_graph`, `get_dead_code` | Structured code navigation, symbol search, call-graph analysis |
+| `mcp-servers/dev-diagnostics/server.py` | `run_diagnostics`, `parse_output`, `get_summary`, `contamination_check` | Unified lint/test/typecheck output parsing across 6+ tools |
+
+Hermes config example:
+```yaml
+mcp_servers:
+  code-graph:
+    command: python3
+    args: ["/full/path/to/jerrys-agent-skills/mcp-servers/code-graph/server.py"]
+  dev-diagnostics:
+    command: python3
+    args: ["/full/path/to/jerrys-agent-skills/mcp-servers/dev-diagnostics/server.py"]
+```
 
 ## Documentation
 
