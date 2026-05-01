@@ -199,6 +199,7 @@
 | Running LLMs locally (Ollama, llama.cpp) | [`local-llm-tooling`](../mlops/local-llm-tooling/SKILL.md) | Local model setup, prompting, structured output extraction |
 | Need to refactor code safely | [`refactor-safely`](../software-development/refactor-safely.md) | Characterization testing + bounded changes |
 | Need to review code changes | [`review-changes`](../software-development/review-changes.md) | Structured review checklist |
+| 500+ linter errors to fix | [`lint-battalion`](../software-development/lint-battalion/SKILL.md) | Auto-fix sprint + parallel subagent battalions with contamination checks |
 
 ---
 

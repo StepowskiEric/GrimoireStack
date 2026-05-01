@@ -1090,6 +1090,15 @@ Skills for creating skills, integrating external systems, and development workfl
 
 ---
 
+### `software-development/lint-battalion/SKILL.md` · [protocol]
+**What it is:** Mass linter error remediation via auto-fix sprint + parallel subagent battalions. Handles 500+ trivial errors mechanically, escalates semantic errors to specialists, and enforces contamination checks.
+
+**Use it when:** You have 50+ linter errors after auto-fix, especially mechanical errors (missing imports, unused variables, formatting) spread across many files.
+
+**Best for:** Bulk lint remediation, post-migration cleanup, pre-commit debt reduction, onboarding to stricter lint configs.
+
+---
+
 ### `mlops/local-llm-tooling/SKILL.md` · [framework]
 **What it is:** A workflow for running, prompting, and extracting structured output from local LLMs (e.g., Ollama, llama.cpp).
 

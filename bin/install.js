@@ -15,7 +15,8 @@ const AGENT_DIRS = {
   hermes: path.join(os.homedir(), '.hermes', 'skills'),
   claude: path.join(os.homedir(), '.claude', 'skills'),
   antigravity: path.join(os.homedir(), '.antigravity', 'skills'),
-  copilot: path.join(os.homedir(), '.copilot', 'skills'),
+  copilot: path.join(os.homedir(), '.agents', 'skills'),
+  pi: path.join(os.homedir(), '.pi', 'agent', 'skills'),
 };
 
 const SUPPORTED_AGENTS = Object.keys(AGENT_DIRS);
@@ -298,8 +299,8 @@ function installTo(agent, skills, destOverride, withScripts) {
     console.error(`Unknown agent "${agent}". Supported agents: ${SUPPORTED_AGENTS.join(', ')}`);
     process.exit(1);
   }
-  // Copilot requires flat structure (no topic subdirectories)
-  const flat = agent === 'copilot';
+  // Copilot and Pi require flat structure (no topic subdirectories)
+  const flat = agent === 'copilot' || agent === 'pi';
   return installSkills(skills, dest, flat, agent, withScripts);
 }
 

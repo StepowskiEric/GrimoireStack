@@ -102,6 +102,16 @@ Why this stack works: it separates problem classification from design, forces bo
 
 Why this stack works: stabilize first, refactor in bounded slices, keep the blast radius explicit, and verify before closure.
 
+### Mass lint remediation or post-migration cleanup
+
+1. `software-development/lint-battalion/SKILL.md` — auto-fix sprint, categorize, parallel subagent battalions, contamination checks
+2. `software-development/refactor-safely.md` — for architectural survivors that need structural change
+3. `debugging/debug-subagent/SKILL.md` — for semantic errors requiring logic understanding
+4. `execution/checklist-manifesto.md` — phase gates and contamination checks
+5. `software-development/pre-deployment-gate.md` — final lint check before commit
+
+Why this stack works: lint-battalion eliminates 80%+ of errors mechanically, the debug subagent handles semantic survivors without context bloat, refactor-safely manages the architectural edge cases, and the checklist gates prevent contamination from sloppy fixes.
+
 ### Large codebase search or bug localization
 
 1. `software-development/codebase-divide-conquer-search.md` — hierarchical summarization, semantic ranking, and parallel sub-agent deep dives

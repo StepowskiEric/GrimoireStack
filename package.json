@@ -1,6 +1,6 @@
 {
   "name": "jerry-skills",
-  "version": "1.11.0",
+  "version": "1.11.1",
   "description": "Install Jerry's agent skills into Codex, Hermes, Claude, Antigravity, or any agent that loads markdown skill files.",
   "bin": {
     "jerry-skills": "bin/install.js"
