@@ -3,3 +3,9 @@ node_modules/
 # Added by code-review-graph
 .code-review-graph/
 benchmarks/
+# Junk
+.DS_Store
+*.pyc
+__pycache__/
+.pi-lens/
+coppermind_memory_triage_research.json
