@@ -40,22 +40,25 @@ Research on multi-agent code search (AgentGroupChat-V2, RepoAudit) shows paralle
 
 ## Installation Notes
 
-**This skill requires a companion Python script that is NOT automatically installed by `npx jerry-skills install`.**
+**This skill requires a companion Python script that is bundled with the skill.**
 
-After installing the skill:
+When installing with `--with-scripts`, the script is copied alongside `SKILL.md` automatically.
 
 ```bash
-# Copy companion scripts manually (when using --with-scripts flag, this is done automatically)
-mkdir -p ~/.copilot/skills/scripts
-mkdir -p ~/.pi/agent/skills/scripts
-cp repo-root/software-development/lint-battalion/scripts/lint_battalion.py ~/.copilot/skills/scripts/
-cp repo-root/software-development/lint-battalion/scripts/lint_battalion.py ~/.pi/agent/skills/scripts/
-
-# Or create symlinks for development
-ln -s $(pwd)/software-development/lint-battalion/scripts ~/.copilot/skills/scripts
+npx jerry-skills install --agent pi --skill lint-battalion --with-scripts
 ```
 
-For Pi Agent, ensure the script is at `~/.pi/agent/skills/scripts/lint_battalion.py`.
+**Pi Agent (flat layout):**
+```bash
+python ~/.pi/agent/skills/lint-battalion/lint_battalion.py --help
+```
+
+**Hermes (grouped layout):**
+```bash
+python ~/.hermes/skills/software-development/lint-battalion/lint_battalion.py --help
+```
+
+For manual copy or development symlinks, see the [skill-development-with-supporting-files](development/skill-development-with-supporting-files.md) skill.
 
 ---
 
@@ -92,13 +95,13 @@ Run the linter again and capture structured output.
 **Recommended (zero agent tokens):**
 ```bash
 # ESLint JSON output -> auto-categorized batches
-npx eslint . --format json | python ~/.copilot/skills/scripts/lint_battalion.py --markdown --json -o batches.json
+npx eslint . --format json | python ~/.pi/agent/skills/lint-battalion/lint_battalion.py --markdown --json -o batches.json
 
 # Biome
-npx biome check --json | python ~/.copilot/skills/scripts/lint_battalion.py --markdown --json -o batches.json
+npx biome check --json | python ~/.pi/agent/skills/lint-battalion/lint_battalion.py --markdown --json -o batches.json
 
 # Ruff
-ruff check --output-format json | python ~/.copilot/skills/scripts/lint_battalion.py --markdown --json -o batches.json
+ruff check --output-format json | python ~/.pi/agent/skills/lint-battalion/lint_battalion.py --markdown --json -o batches.json
 ```
 
 **Alternative (agent tools):**
