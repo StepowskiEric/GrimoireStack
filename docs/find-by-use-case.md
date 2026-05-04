@@ -147,6 +147,7 @@
 | Theory of constraints | [`the-goal-theory-of-constraints-ai`](../systems-and-architecture/the-goal-theory-of-constraints-ai.md) | Bottleneck identification |
 | Explore vs exploit (framework) | [`explore-vs-exploit`](../judgment-and-routing/explore-vs-exploit.md) | Decision framework |
 | Pre-mortem (framework) | [`pre-mortem`](../judgment-and-routing/pre-mortem.md) | Prospective hindsight analysis |
+| Need a structured, reviewable plan before coding | [`plan-with-judge`](../execution/plan-with-judge/SKILL.md) | Create plan.jsonl, then iterate with a stronger judge model until approved |
 
 ---
 

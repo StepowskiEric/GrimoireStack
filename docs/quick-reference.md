@@ -68,6 +68,7 @@
 | **system-architecture-audit** | systems-and-architecture/ | Comprehensive architecture audit | DDIA + DDD + Thinking in Systems + Release It |
 | **speculative-exploration-protocol** | execution/ | Explore with process rewards | Speculative Drafting + ToT + PRM |
 | **iterative-improvement-cycle** | execution/ | Iterative improvement cycle | Toyota Kata + PDCA + Philosophy of Software Design |
+| **plan-with-judge** | execution/ | Create plan.jsonl refined by stronger model | Max 5 judge iterations |
 
 ## All Framework Skills (Conceptual)
 

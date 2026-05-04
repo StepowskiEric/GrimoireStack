@@ -185,6 +185,15 @@ Skills for executing technical work in a bounded, disciplined way.
 
 ---
 
+### `execution/plan-with-judge/SKILL.md` · [protocol]
+**What it is:** Creates an implementation plan in JSONL format with atomic steps and dependencies, then iteratively improves it using a stronger user-specified model as a judge until the plan is approved. Runs up to 5 judge-review cycles.
+
+**Use it when:** The task is complex enough to need a structured plan before coding, and you want a stronger model to validate feasibility, completeness, and logical ordering before executing.
+
+**Best for:** Implementation planning, pre-coding quality assurance, plan refinement, ensuring plan feasibility through stronger-model validation.
+
+---
+
 ### `debugging/log-trace-correlation/SKILL.md` · [protocol]
 **What it is:** A protocol for correlating error logs and stack traces to source code to identify root cause and suggest fixes.
 
