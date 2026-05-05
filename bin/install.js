@@ -9,6 +9,7 @@ const os = require('os');
 // Skills directory: when installed via npx, __dirname is inside the package.
 // When run locally from the repo root, __dirname is the bin/ folder.
 const SKILLS_DIR = path.resolve(__dirname, '..');
+const MCP_DIR = path.join(SKILLS_DIR, 'mcp-servers');
 
 const AGENT_DIRS = {
   codex: path.join(os.homedir(), '.agents', 'skills'),
@@ -249,7 +250,56 @@ function cleanStaleSkills(dest) {
   return cleaned;
 }
 
-function installSkills(skills, dest, flat, agent, withScripts) {
+function installMCPServers(dest) {
+  if (!fs.existsSync(MCP_DIR)) {
+    console.log('  No MCP servers found in repository.');
+    return 0;
+  }
+  
+  const mcpDest = path.join(dest, 'mcp-servers');
+  fs.mkdirSync(mcpDest, { recursive: true });
+  
+  let copied = 0;
+  const mcpServers = fs.readdirSync(MCP_DIR, { withFileTypes: true });
+  
+  for (const entry of mcpServers) {
+    if (entry.isDirectory()) {
+      const srcDir = path.join(MCP_DIR, entry.name);
+      const dstDir = path.join(mcpDest, entry.name);
+      
+      // Clean existing destination first
+      if (fs.existsSync(dstDir)) {
+        fs.rmSync(dstDir, { recursive: true, force: true });
+      }
+      
+      // Copy the entire directory recursively
+      copyDirectory(srcDir, dstDir);
+      console.log(`  ✓ mcp-servers/${entry.name}/`);
+      copied++;
+    }
+  }
+  
+  console.log(`  Installed ${copied} MCP server(s) to ${mcpDest}`);
+  return copied;
+}
+
+function copyDirectory(src, dst) {
+  fs.mkdirSync(dst, { recursive: true });
+  const entries = fs.readdirSync(src, { withFileTypes: true });
+  
+  for (const entry of entries) {
+    const srcPath = path.join(src, entry.name);
+    const dstPath = path.join(dst, entry.name);
+    
+    if (entry.isDirectory()) {
+      copyDirectory(srcPath, dstPath);
+    } else {
+      fs.copyFileSync(srcPath, dstPath);
+    }
+  }
+}
+
+function installSkills(skills, dest, flat, agent, withScripts, withMCP) {
   fs.mkdirSync(dest, { recursive: true });
   skills = deduplicateSkills(skills);
   const staleRemoved = cleanStaleSkills(dest);
@@ -289,28 +339,33 @@ function installSkills(skills, dest, flat, agent, withScripts) {
     }
   }
 
-  console.log(`\nInstalled ${installed} skill(s)${withScripts ? ` + ${scriptsInstalled} companion script(s)` : ''} to ${dest}`);
+  let mcpInstalled = 0;
+  if (withMCP) {
+    mcpInstalled = installMCPServers(dest);
+  }
+
+  console.log(`\\nInstalled ${installed} skill(s)${withScripts ? ` + ${scriptsInstalled} companion script(s)` : ''}${withMCP ? ` + ${mcpInstalled} MCP server(s)` : ''} to ${dest}`);
   return installed;
 }
 
-function installTo(agent, skills, destOverride, withScripts) {
+function installTo(agent, skills, destOverride, withScripts, withMCP) {
   const dest = destOverride || AGENT_DIRS[agent];
   if (!dest) {
-    console.error(`Unknown agent "${agent}". Supported agents: ${SUPPORTED_AGENTS.join(', ')}`);
+    console.error(`Unknown agent \"${agent}\". Supported agents: ${SUPPORTED_AGENTS.join(', ')}`);
     process.exit(1);
   }
   // Copilot and Pi require flat structure (no topic subdirectories)
   const flat = agent === 'copilot' || agent === 'pi';
-  return installSkills(skills, dest, flat, agent, withScripts);
+  return installSkills(skills, dest, flat, agent, withScripts, withMCP);
 }
 
 /**
  * Match a user-supplied skill name against available skill files.
  * Accepts:
- *   - Full path:  "execution/how-to-solve-it-state-machine"
- *   - Just name:  "how-to-solve-it-state-machine"
- *   - With .md:   "execution/how-to-solve-it-state-machine.md"
- *   - Partial:    "how-to-solve-it" (matches if unique)
+ *   - Full path:  \"execution/how-to-solve-it-state-machine\"
+ *   - Just name:  \"how-to-solve-it-state-machine\"
+ *   - With .md:   \"execution/how-to-solve-it-state-machine.md\"
+ *   - Partial:    \"how-to-solve-it\" (matches if unique)
  */
 function matchSkill(query, allSkills) {
   const normalized = query.replace(/\.md$/, '');
@@ -323,7 +378,7 @@ function matchSkill(query, allSkills) {
   const byName = allSkills.filter((f) => extractSkillName(f) === normalized);
   if (byName.length === 1) return byName[0];
   if (byName.length > 1) {
-    console.error(`Ambiguous skill "${query}". Matches:\n${byName.map((f) => `  ${f}`).join('\n')}`);
+    console.error(`Ambiguous skill \"${query}\". Matches:\n${byName.map((f) => `  ${f}`).join('\n')}`);
     process.exit(1);
   }
 
@@ -331,12 +386,12 @@ function matchSkill(query, allSkills) {
   const byPartial = allSkills.filter((f) => extractSkillName(f).includes(normalized));
   if (byPartial.length === 1) return byPartial[0];
   if (byPartial.length > 1) {
-    console.error(`Ambiguous skill "${query}". Matches:\n${byPartial.map((f) => `  ${f}`).join('\n')}`);
+    console.error(`Ambiguous skill \"${query}\". Matches:\n${byPartial.map((f) => `  ${f}`).join('\n')}`);
     process.exit(1);
   }
 
-  console.error(`No skill found matching "${query}".`);
-  console.error(`Run "npx jerry-skills list" to see available skills.`);
+  console.error(`No skill found matching \"${query}\".`);
+  console.error(`Run \"npx jerry-skills list\" to see available skills.`);
   process.exit(1);
 }
 
@@ -383,8 +438,9 @@ function listSkills() {
   console.log(`\nJerry's Agent Skills (${all.length} total)\n`);
 
   for (const topic of TOPIC_DIRS) {
-    const files = all.filter((f) => f.startsWith(topic + path.sep) || f.startsWith(topic + '/'));
+    const files = all.filter((f) => f.startsWith(topic + '/') || f.startsWith(topic + path.sep));
     if (files.length === 0) continue;
+
     console.log(`${TOPIC_LABELS[topic] || topic}:`);
     for (const f of files) {
       const name = extractSkillName(f);
@@ -397,7 +453,7 @@ function listSkills() {
 
   // Catch any files not in a known topic dir
   const categorized = TOPIC_DIRS.flatMap((t) =>
-    all.filter((f) => f.startsWith(t + path.sep) || f.startsWith(t + '/'))
+    all.filter((f) => f.startsWith(t + '/') || f.startsWith(t + path.sep))
   );
   const uncategorized = all.filter((f) => !categorized.includes(f));
   if (uncategorized.length > 0) {
@@ -408,8 +464,7 @@ function listSkills() {
 }
 
 function printHelp() {
-  console.log(`
-jerry-skills — install Jerry's agent skill files into your AI agent
+  console.log(`\njerry-skills — install Jerry's agent skill files into your AI agent
 
 Usage:
   npx jerry-skills install [options]
@@ -429,6 +484,7 @@ Options:
   --skill         Install a specific skill (repeatable). Accepts full path or name.
   --dest          Override the destination directory
   --with-scripts  Also copy companion scripts bundled with skills (e.g. .py files)
+  --with-mcp      Also copy MCP servers to the destination (mcp-servers/ directory)
 
 Default install paths:
 ${SUPPORTED_AGENTS.map((a) => `  ${a.padEnd(12)} ${AGENT_DIRS[a]}`).join('\n')}
@@ -444,6 +500,7 @@ Examples:
   npx jerry-skills install --agent codex --skill how-to-solve-it-state-machine
   npx jerry-skills install --agent claude --skill purify-test-output --with-scripts
   npx jerry-skills install --all                      # install all to all agents
+  npx jerry-skills install --agent hermes --with-mcp  # install all skills + MCP servers to hermes
   npx jerry-skills list
 `);
 }
@@ -549,15 +606,28 @@ async function interactivePicker(allSkills) {
     withScripts = scriptResponse.withScripts || false;
   }
 
+  // NEW: Ask about MCP servers
+  let withMCP = false;
+  const mcpDirExists = fs.existsSync(MCP_DIR) && fs.readdirSync(MCP_DIR).length > 0;
+  if (mcpDirExists) {
+    const mcpResponse = await prompts({
+      type: 'confirm',
+      name: 'withMCP',
+      message: 'Also install MCP servers (mcp-servers/ directory)?',
+      initial: false,
+    });
+    withMCP = mcpResponse.withMCP || false;
+  }
+
   // Step 4: Install
   console.log('');
   if (destAgent) {
-    console.log(`Installing ${skillResponse.skills.length} skill(s) for ${destAgent}...\n`);
-    installTo(destAgent, skillResponse.skills, destOverride, withScripts);
+    console.log(`Installing ${skillResponse.skills.length} skill(s) for ${destAgent}...`);
+    installTo(destAgent, skillResponse.skills, destOverride, withScripts, withMCP);
   } else {
-    console.log(`Installing ${skillResponse.skills.length} skill(s)...\n`);
+    console.log(`Installing ${skillResponse.skills.length} skill(s)...`);
     // Custom path: use flat structure (works for all agents)
-    installSkills(skillResponse.skills, destOverride, true, null, withScripts);
+    installSkills(skillResponse.skills, destOverride, true, null, withScripts, withMCP);
   }
 }
 
@@ -576,7 +646,7 @@ function main() {
   }
 
   if (command !== 'install') {
-    console.error(`Unknown command "${command}".\n`);
+    console.error(`Unknown command \"${command}\".\n`);
     printHelp();
     process.exit(1);
   }
@@ -584,6 +654,7 @@ function main() {
   // Parse flags
   const allFlag = args.includes('--all');
   const withScripts = args.includes('--with-scripts');
+  const withMCP = args.includes('--with-mcp');
   const agentIdx = args.indexOf('--agent');
   const destIdx = args.indexOf('--dest');
   const destOverride = destIdx !== -1 ? args[destIdx + 1] : null;
@@ -605,7 +676,7 @@ function main() {
     console.log("Installing all skills to all supported agents...\n");
     for (const agent of SUPPORTED_AGENTS) {
       console.log(`[${agent}]`);
-      installTo(agent, all, destOverride ? path.join(destOverride, agent) : null, withScripts);
+      installTo(agent, all, destOverride ? path.join(destOverride, agent) : null, withScripts, withMCP);
       console.log('');
     }
     return;
@@ -615,7 +686,7 @@ function main() {
   if (hasAgent) {
     const agent = args[agentIdx + 1];
     if (!SUPPORTED_AGENTS.includes(agent)) {
-      console.error(`Unknown agent "${agent}". Supported: ${SUPPORTED_AGENTS.join(', ')}`);
+      console.error(`Unknown agent \"${agent}\". Supported: ${SUPPORTED_AGENTS.join(', ')}`);
       process.exit(1);
     }
 
@@ -625,11 +696,11 @@ function main() {
       // Install only specified skills
       const matched = skillNames.map((name) => matchSkill(name, all));
       console.log(`Installing ${matched.length} skill(s) for ${agent}...\n`);
-      installTo(agent, matched, destOverride, withScripts);
+      installTo(agent, matched, destOverride, withScripts, withMCP);
     } else {
       // Install all skills to this agent
       console.log(`Installing all skills for ${agent}...\n`);
-      installTo(agent, all, destOverride, withScripts);
+      installTo(agent, all, destOverride, withScripts, withMCP);
     }
     return;
   }
@@ -641,7 +712,7 @@ function main() {
 
     if (destOverride) {
       console.log(`Installing ${matched.length} skill(s)...\n`);
-      installSkills(matched, destOverride, false, null, withScripts);
+      installSkills(matched, destOverride, false, null, withScripts, withMCP);
     } else {
       console.error('Error: --skill requires --agent or --dest.\n');
       printHelp();

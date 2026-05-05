@@ -11,7 +11,7 @@ npx jerry-skills install
 # Install all skills to a specific agent
 npx jerry-skills install --agent copilot
 npx jerry-skills install --agent codex
-npx jerry-skills install --agent hermes
+npx jerry-skills install --agent hermes --with-mcp # includes MCP servers
 npx jerry-skills install --agent claude
 npx jerry-skills install --agent antigravity
 
@@ -42,7 +42,7 @@ This repository ships with two kinds of tooling alongside skills:
 
 | Type | What | How to get it |
 |------|------|---------------|
-| **Companion Python scripts** | `*.py` files shipped with specific skills (e.g. `lint_battalion.py`, `git_surgery.py`). Each is pure stdlib — no `pip install`. | `npx jerry-skills install --with-scripts` |
+| **Companion Python scripts** | `*.py` files shipped with specific skills (e.g. `lint_battalion.py`, `git_surgery.py`). Each is pure stdlib — no `pip install`. | `npx jerry-skills install --with-scripts --with-mcp` |
 | **MCP Servers** | Raw stdio MCP servers in `mcp-servers/` — zero external deps, JSON-RPC over stdio with `Content-Length` framing. | Copy `mcp-servers/` into your project; add to Hermes `config.yaml` |
 
 ### MCP Servers included
