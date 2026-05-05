@@ -180,6 +180,19 @@ Skills for executing technical work in a bounded, disciplined way.
 **Includes:** `scripts/context_lifecycle.py` — pure stdlib; commands: init, add, update, prune, optimize, report, simulate
 
 ---
+### `execution/structured-feature-planning/SKILL.md` · [protocol]
+
+**What it is:** Structured 7-phase planning workflow for implementing new features: explore (read files) → search (3-5 targeted queries) → stuck detection → plan (JSONL) → self-review (diff vs request) → self-review (pre-mortem failure modes) → summary + execute. Designed for correctness-critical features where quality matters more than speed.
+
+**Use it when:** Starting a new feature of any complexity, ambiguous requests that need clarification, features touching architecture you haven't read yet, or when you catch yourself about to "just start coding."
+
+**Best for:** Pre-implementation planning, preventing guessed assumptions from becoming bugs, forcing verification before fabrication, ensuring all uncertain parts are explicitly flagged before execution begins.
+
+**Governing rule:** Never hallucinate when confused. If you don't understand something, stop, search, or ask. A partial plan with honest questions beats a confident plan built on guessed answers.
+
+**Includes:** `scripts/structured_planner.py` — pure stdlib; modes: explore, plan, execute, full, resume, status, reset. Enforces phase ordering, validates JSONL output, halts on unresolved clarifications.
+
+---
 ### `execution/speculative-exploration-protocol.md` · [protocol]
 **What it is:** Fuses speculative drafting + tree of thoughts + process reward model into a disciplined exploration protocol. Generates multiple candidate branches, evaluates each with process rewards, prunes weak paths, and selects the best-verified solution.
 

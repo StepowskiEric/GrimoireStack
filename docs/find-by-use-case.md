@@ -154,6 +154,7 @@
 | Explore vs exploit (framework) | [`explore-vs-exploit`](../judgment-and-routing/explore-vs-exploit.md) | Decision framework |
 | Pre-mortem (framework) | [`pre-mortem`](../judgment-and-routing/pre-mortem.md) | Prospective hindsight analysis |
 | Need a structured, reviewable plan before coding | [`plan-with-judge`](../execution/plan-with-judge/SKILL.md) | Create plan.jsonl, then iterate with a stronger judge model until approved |
+| New feature, need disciplined exploration before planning | [`structured-feature-planning`](../execution/structured-feature-planning/SKILL.md) | 7-phase: explore → search → stuck detection → plan (JSONL) → self-review×2 → summary + execute. No hallucination allowed. |
 
 ---
 

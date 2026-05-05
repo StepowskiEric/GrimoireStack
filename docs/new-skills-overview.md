@@ -238,3 +238,76 @@ State machine protocol forcing crystallization of intent into executable specs b
 - [ ] Executable spec parses without errors
 - [ ] Schema types match implementation language
 - [ ] Edge cases have explicit handling in spec
+
+## 2. structured-feature-planning (execution)
+
+### Purpose
+Structured 7-phase planning workflow for implementing new features — read files, search for patterns, self-review twice, then execute. Designed for correctness-critical features where quality matters more than speed.
+
+### When to Use
+- Starting a new feature of any complexity
+- Ambiguous requests that need clarification before coding
+- Features touching architecture you haven't read yet
+- When you catch yourself about to "just start coding" without a plan
+
+### Governing Rule
+**Never hallucinate when confused.** If you don't understand something, stop. Search for it. Get more context. Ask. A partial plan with honest questions is infinitely better than a confident plan built on guessed assumptions.
+
+### Detailed Workflow
+
+#### Phase 1: Explore
+Read files relevant to the feature. For each file, emit a structured finding:
+```jsonl
+{"phase": "file_read", "path": "...", "relevant_to": "...", "key_findings": ["..."], "gaps_or_questions": ["..."]}
+```
+
+#### Phase 2: Search
+3-5 targeted searches. Each MUST have a PURPOSE line before the query:
+```jsonl
+{"phase": "search", "purpose": "Why am I searching this?", "query": "...", "findings": "...", "useful": true|false}
+```
+
+#### Phase 3: Stuck Detection
+If uncertain and search could resolve it → search. If search cannot resolve it → emit NEEDS_CLARIFICATION and STOP.
+
+#### Phase 4: Write Plan
+```jsonl
+{"phase": "plan", "steps": [{"n": 1, "action": "...", "files_affected": [], "confidence": "HIGH|MEDIUM|LOW", "assumptions": [], "verification": "..."}], "out_of_scope": [], "what_i_dont_know": [], "risks": []}
+```
+
+#### Phase 5: Self-Review Pass 1
+Diff plan against original request. Did scope creep? Correct if needed.
+
+#### Phase 6: Self-Review Pass 2 (Pre-Mortem)
+For each step: "if this ships and fails, why?" Map failure modes to plan gaps.
+
+#### Phase 7: Summary + Execute
+```jsonl
+{"phase": "summary", "plain_english": "...", "top_risks": [], "confidence": "...", "steps_total": N}
+```
+
+### Outputs
+- `feature_plan.jsonl` — structured JSONL artifact of all phases
+- Plain-English summary of what the plan does and why
+- Explicitly flagged unknown items and risks
+
+### Pitfalls
+- Fabricating an answer instead of emitting NEEDS_CLARIFICATION
+- Skipping Phase 1-2 exploration when you "already know the codebase"
+- Writing HIGH confidence when you actually have MEDIUM or LOW
+- Treating the plan as locked instead of updating when new information emerges
+
+### Verification Checklist
+- [ ] All files relevant to the feature have been read
+- [ ] All gaps or questions are either resolved or flagged as NEEDS_CLARIFICATION
+- [ ] Each plan step has explicit confidence level (not just HIGH)
+- [ ] All MEDIUM/LOW steps have documented assumptions
+- [ ] Review Pass 1 confirms plan matches original request scope
+- [ ] Review Pass 2 has mitigations for all non-trivial failure modes
+- [ ] Summary is plain-English readable by a human
+
+### Includes
+- `scripts/structured_planner.py` — pure stdlib companion script
+  - Modes: explore, plan, execute, full, resume, status, reset
+  - Enforces phase ordering, validates JSONL output
+  - Halts on unresolved clarifications

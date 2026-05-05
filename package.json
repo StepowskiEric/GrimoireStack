@@ -1,6 +1,6 @@
 {
   "name": "jerry-skills",
-  "version": "1.13.1",
+  "version": "1.14.0",
   "description": "A catalog of agent skills for making AI systems more reliable, disciplined, and useful in real work. Includes protocol and framework skills, companion Python scripts, and MCP servers.",
   "bin": {
     "jerry-skills": "bin/install.js"

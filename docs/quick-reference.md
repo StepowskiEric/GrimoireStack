@@ -74,6 +74,7 @@
 | **speculative-exploration-protocol** | execution/ | Explore with process rewards | Speculative Drafting + ToT + PRM |
 | **iterative-improvement-cycle** | execution/ | Iterative improvement cycle | Toyota Kata + PDCA + Philosophy of Software Design |
 | **plan-with-judge** | execution/ | Create plan.jsonl refined by stronger model | Max 5 judge iterations |
+| **structured-feature-planning** | execution/ | 7-phase structured planning with self-review×2 | Explore → search → stuck detection → plan → review×2 → execute. JSONL output. Never hallucinate rule. Includes structured_planner.py |
 | **api-surface-anchoring** | software-development/ | Verify API surface from authoritative docs before writing code | Includes scripts/api_surface.py |
 | **verified-api-workflow** | software-development/ | Hybrid: api-surface + anchor-chain | Includes verified_api.py |
 
