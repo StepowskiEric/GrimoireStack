@@ -88,6 +88,7 @@
 | steelmanning | judgment-and-routing/ | Challenge testing |
 | kahneman-thinking-fast-slow-software-agent | judgment-and-routing/ | Cognitive mode switching |
 | cognitive-bias-checklist | judgment-and-routing/ | Bias correction |
+| cognitive-bias-auditor | judgment-and-routing/ | Detect 9 biases, includes script |
 | bayesian-updating | judgment-and-routing/ | Belief revision |
 | reference-class-forecasting | judgment-and-routing/ | Estimation |
 | pre-mortem | judgment-and-routing/ | Failure prediction |

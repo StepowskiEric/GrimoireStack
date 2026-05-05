@@ -98,6 +98,7 @@
 | Generate and verify multiple solutions | [`speculative-drafting-verification`](../execution/speculative-drafting-verification.md) | Parallel candidate evaluation |
 | Explore multiple solutions with process rewards | [`speculative-exploration-protocol`](../execution/speculative-exploration-protocol.md) | Speculative drafting + tree of thoughts + PRM fused |
 | Check for cognitive biases | [`cognitive-bias-checklist`](../judgment-and-routing/cognitive-bias-checklist.md) | Bias detection and mitigation |
+| Automated bias detection in decisions | [`cognitive-bias-auditor`](../judgment-and-routing/cognitive-bias-auditor/SKILL.md) | Detect 9 biases from arXiv:2410.02820 |
 | Verify self-consistency | [`self-consistency`](../output-quality/self-consistency.md) | Cross-check reasoning |
 | Interactive criticism of work | [`tool-interactive-critic`](../output-quality/tool-interactive-critic.md) | Structured critique process |
 | Need to call an external library — not sure of its exact API | [`api-surface-anchoring`](../software-development/api-surface-anchoring/SKILL.md) | Verify current API surface from authoritative docs before writing code |

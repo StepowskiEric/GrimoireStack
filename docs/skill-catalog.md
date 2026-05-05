@@ -474,6 +474,18 @@ Skills for routing tasks, calibrating rigor, and reasoning about risks and trade
 ---
 
 ### `judgment-and-routing/cognitive-bias-checklist.md` · [framework]
+---
+
+### `judgment-and-routing/cognitive-bias-auditor/SKILL.md` · [tool]
+**What it is:** Automated bias detection in agent decisions based on arXiv:2410.02820 (tested GPT-4o, Gemma 2, Llama 3.1 on 9 biases). **Includes companion script.**
+
+**Use it when:** Agent makes major decisions (tool selection, architecture choice), results seem irrational, or you suspect sunk cost/anchoring.
+
+**Best for:** Automated bias auditing, post-decision review, mitigating overconfidence and availability heuristic.
+
+**Includes:** `scripts/cognitive_bias_auditor.py` — pure stdlib; commands: check, batch, report, persona
+
+---
 **What it is:** A post-analysis checklist of the eight biases most dangerous to agents in slow-mode reasoning: anchoring, availability heuristic, confirmation bias, planning fallacy, scope insensitivity, overconfidence, substitution, and narrative fallacy. Requires explicit correction before finalizing any slow-mode output.
 
 **Use it when:** The agent has completed a slow-mode analysis, recommendation, or estimate and needs to verify that these biases have not contaminated the output.
