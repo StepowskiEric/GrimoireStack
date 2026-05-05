@@ -28,7 +28,7 @@ import argparse
 import json
 import os
 import sys
-from datetime import datetime
+from datetime import datetime, timezone
 from pathlib import Path
 from typing import Optional
 
@@ -110,13 +110,21 @@ def get_current_phase_name() -> str:
 
 
 def check_clarification_resolved() -> tuple[bool, Optional[dict]]:
-    """Check if there's an unresolved NEEDS_CLARIFICATION block."""
+    """Check if there's an unresolved NEEDS_CLARIFICATION block.
+
+    A clarification is resolved if either:
+    - It has an explicit "resolution" field (human provided the answer), OR
+    - Its "recommendation" is "Proceed to planning" (agent resolved it by
+      determining no actual clarification was needed — a no-op checkpoint)
+    """
     completed = get_completed_phases()
     if "needs_clarification" in completed:
         entry = completed["needs_clarification"]
-        # If it was emitted but no resolution field, it's unresolved
-        if "resolution" not in entry:
-            return False, entry
+        if "resolution" in entry:
+            return True, None  # explicit resolution provided
+        if entry.get("recommendation") == "Proceed to planning":
+            return True, None  # agent resolved it themselves (no-op checkpoint)
+        return False, entry   # genuinely unresolved — needs human input
     return True, None
 
 
@@ -213,7 +221,7 @@ def validate_summary(entry: dict) -> list[str]:
 def append_entry(entry: dict, phase: str) -> None:
     """Append a validated entry to the plan file."""
     # Add timestamp
-    entry["_timestamp"] = datetime.utcnow().isoformat() + "Z"
+    entry["_timestamp"] = datetime.now(timezone.utc).isoformat().replace("+00:00", "Z")
 
     # Phase-specific validation
     validators = {
@@ -387,19 +395,20 @@ def main() -> None:
     parser = argparse.ArgumentParser(
         description="Structured Feature Planner — enforces phase-ordered planning workflow"
     )
-    parser.add_argument("--mode", type=str, required=True,
+    parser.add_argument("--mode", type=str, required=False,
                         choices=["explore", "plan", "execute", "full", "resume", "status", "reset"],
-                        help="Workflow mode")
+                        help="Workflow mode (required unless --phase + --entry are provided)")
     parser.add_argument("--task", type=str, help="Feature description (required for full mode)")
     parser.add_argument("--clarification-resolution", type=str,
                         help="Resolution for the current NEEDS_CLARIFICATION block")
     parser.add_argument("--phase", type=str,
-                        help="Phase to add entry for (use with resume)")
+                        help="Phase to add entry for (use with --entry)")
     parser.add_argument("--entry", type=str,
-                        help="JSON string of the entry to add (use with resume)")
+                        help="JSON string of the entry to add (use with --phase)")
     args = parser.parse_args()
 
     # Handle --phase + --entry as alternative to separate subcommands
+    # Works with ANY mode, so check before mode routing
     if args.phase and args.entry:
         try:
             entry = json.loads(args.entry)
@@ -413,6 +422,12 @@ def main() -> None:
             print(f"[structured_planner] ERROR: {e}")
             sys.exit(1)
         return
+
+    # --mode is required when --phase/--entry are not both provided
+    if not args.mode:
+        print("[structured_planner] ERROR: --mode is required (or provide --phase + --entry together)")
+        parser.print_help()
+        sys.exit(1)
 
     # Handle clarification resolution
     if args.clarification_resolution:
@@ -449,11 +464,13 @@ def main() -> None:
     elif args.mode == "status":
         handle_status_mode()
     elif args.mode == "resume":
-        # Resume is interactive — show current state and what to do next
+        # Resume is interactive — show current state, then instructions
         handle_status_mode()
         print()
         print("[structured_planner] To add an entry, run:")
         print('[structured_planner]   python structured_planner.py --phase <phase> --entry \'{"..."}\'')
+        print()
+        print("[structured_planner] Or pipe JSONL directly: echo '{\"phase\":\"file_read\",...}' >> feature_plan.jsonl")
     elif args.mode == "reset":
         handle_reset_mode()
 
