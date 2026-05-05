@@ -45,6 +45,7 @@
 | purify-test-output | debugging/ | Reduce test noise (~18.6% tokens) | Based on DebugRepair |
 | simulate-instrumentation | debugging/ | Capture runtime state | Based on DebugRepair |
 | iterative-patch-repair | debugging/ | Iterative patch generation | Based on DebugRepair |
+| **time-traveling-debugger** | debugging/ | Forward trace + backward rewind | Includes time_travel.py + MCP server |
 | **context-density-operator** | reasoning/ | Maximize info per token | GenericAgent (arXiv:2604.17091) |
 | **cot-pruning-reasoning** | reasoning/ | Compress CoT reasoning | CoT-Influx (arXiv:2312.08901) |
 | **selective-halt-reasoning** | reasoning/ | Halt when converged | DASH (arXiv:2604.18103) |

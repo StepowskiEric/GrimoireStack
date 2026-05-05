@@ -264,6 +264,18 @@ Skills for executing technical work in a bounded, disciplined way.
 
 **Best for:** Recurring bugs, complex failures with multiple symptoms, preventing regression, any situation where the visible error is not the actual defect.
 
+---
+
+### `debugging/time-traveling-debugger/SKILL.md` · [protocol]
+**What it is:** When a bug occurs, records a deterministic execution trace via `sys.settrace` (forward), then walks the trace backward from the crash point to find the exact line where state first diverged. Implements the "past self" + "future self" pattern: one agent traces forward, the other rewinds from the crash, they meet at the divergence. Includes companion Python scripts (`time_travel.py`) and an MCP server (`time_travel_server.py` with `trace_and_compare` tool).
+
+**Use it when:** The error message doesn't immediately reveal the root cause, a value is clearly wrong but you don't know where it got set, or you need to find the first state anomaly rather than the last crash site.
+
+**Best for:** Non-trivial bugs with value propagation chains, Heisenbugs that resist print-statement debugging, understanding how a wrong value propagated from source to crash.
+
+**Includes:** `scripts/time_travel.py` -- pure Python stdlib; `scripts/time_travel_server.py` -- MCP server
+
+---
 ## 🧭 Judgment & Routing — deciding what to do and how rigorously
 
 Skills for routing tasks, calibrating rigor, and reasoning about risks and tradeoffs.

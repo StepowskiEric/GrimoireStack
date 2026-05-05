@@ -26,6 +26,7 @@
 | Need to understand unfamiliar code before fixing | [`explore-codebase`](../software-development/explore-codebase.md) | Graph-powered navigation with token efficiency | Framework |
 | Large codebase, bug location unknown | [`codebase-divide-conquer-search`](../software-development/codebase-divide-conquer-search.md) | Hierarchical summarization + parallel agent deep dives | Based on Meta-RAG / GenLoc |
 | Debugging session getting long, agent stuck | [`long-task-survival-kit`](../execution/long-task-survival-kit.md) | Checkpoint every 5 calls: context, trajectory, assumptions | |
+| Bug crashes but root cause is not at the crash site | [`time-traveling-debugger`](../debugging/time-traveling-debugger/SKILL.md) | Forward trace + backward rewind to find state divergence | Includes MCP server |
 
 **Not recommended for typical code bugs** (empirically ineffective in our tests):
 - `abductive-first-debugging` — Designed for novel failures with multiple competing hypotheses. Tested on a real repo bug: **-0.4% vs baseline**.
