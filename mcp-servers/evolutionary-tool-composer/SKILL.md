@@ -65,7 +65,7 @@ Returns a `float` — higher is better. The fitness function is executed in a sa
 "lambda genes, task: (genes.count('SELECT') + genes.count('JOIN')) * 0.3 - abs(len(genes) - 200) * 0.01"
 ```
 
-**Note:** Fitness functions are code executed in a subprocess. Use simple expressions. Complex logic should be defined inside `evolve_init` initial_genes as a seed that the evolutionary loop refines.
+**Note:** The server calls your fitness function with **positional args**: `fitness_fn(genes_val, task_val)`. Your parameter names don't matter — only the positional order does. Named functions using `def fitness_fn(genes, task):` work correctly.
 
 ---
 

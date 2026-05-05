@@ -206,21 +206,38 @@ class EvolutionaryEngine:
         Fitness fn receives 'genes' (str) and 'task' (str), returns float.
         Execution is sandboxed with a 10s timeout via subprocess.
         """
-        import subprocess, tempfile, os
+        import subprocess, tempfile, os, base64
 
-        # Pre-escape to avoid f-string backslash restrictions
-        ff_escaped = self.fitness_fn.replace("'''", "'''+'\\'\\'\\''+'''")
-        genes_escaped = individual.genes.replace("'''", "'''+'\\'\\'\\''+'''")
-        task_escaped = self.task.replace("'''", "'''+'\\'\\'\\''+'''")
-        fn_wrapper = """
-import json, sys, traceback
+        fn_b64 = base64.b64encode(self.fitness_fn.encode("utf-8")).decode("ascii")
+        genes_b64 = base64.b64encode(individual.genes.encode("utf-8")).decode("ascii")
+        task_b64 = base64.b64encode(self.task.encode("utf-8")).decode("ascii")
+
+        # Wrap bare lambdas (no assignment) so exec can capture the result.
+        # Also skip wrapping for def statements (function definitions).
+        user_code = base64.b64decode(fn_b64).decode("utf-8")
+        first_content = user_code.split("#")[0].split("\n")[0].strip()
+        is_bare = ("=" not in first_content) and not first_content.startswith("def ")
+        if is_bare:
+            wrapped_code = f"fitness_fn = {user_code}"
+        else:
+            wrapped_code = user_code
+
+        wrapped_b64 = base64.b64encode(wrapped_code.encode("utf-8")).decode("ascii")
+        fn_wrapper = f"""
+import json, base64, traceback
+_globals = {{}}
+_locals = {{}}
 try:
-    fitness_fn = None
-    exec('""" + ff_escaped + """')
-    result = fitness_fn(genes='""" + genes_escaped + """', task='""" + task_escaped + """')
-    print(json.dumps({"status": "ok", "fitness": float(result)}))
+    exec(base64.b64decode("{wrapped_b64}").decode("utf-8"), _globals, _locals)
+    fitness_fn = _locals.get('fitness_fn') or _globals.get('fitness_fn')
+    if fitness_fn is None:
+        raise RuntimeError("fitness_fn not defined after exec")
+    genes_val = base64.b64decode("{genes_b64}").decode("utf-8")
+    task_val = base64.b64decode("{task_b64}").decode("utf-8")
+    result = fitness_fn(genes_val, task_val)
+    print(json.dumps({{"status": "ok", "fitness": float(result)}}))
 except Exception as e:
-    print(json.dumps({"status": "error", "error": str(e), "trace": traceback.format_exc()}))
+    print(json.dumps({{"status": "error", "error": str(e), "trace": traceback.format_exc()}}))
 """
         try:
             with tempfile.NamedTemporaryFile(mode="w", suffix=".py", delete=False) as f:
