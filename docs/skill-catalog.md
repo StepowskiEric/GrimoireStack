@@ -599,6 +599,41 @@ Skills that refine, critique, and simplify the agent's own outputs.
 
 ---
 
+
+---
+
+### `reasoning/hallucination-anchor-chain/SKILL.md` · [protocol]
+**What it is:** Force every factual claim to be anchored to a verified source in `anchors.jsonl`. Unanchored claims are marked unverified; anchors form a verifiable chain of evidence that eliminates hallucination.
+
+**Use it when:** Research tasks where accuracy matters more than speed, code generation using external APIs, or any task where the agent might "fill in" unknown facts.
+
+**Best for:** Eliminating hallucinated claims, building auditable research artifacts, ensuring API usage is verified against docs.
+
+**Includes:** `scripts/anchor_chain.py` -- pure stdlib; commands: init, add, verify, check, audit, export
+
+---
+
+### `reasoning/context-rot-pruner/SKILL.md` · [protocol]
+**What it is:** Apply exponential decay to context messages so old, unreferenced content loses weight and gets pruned before the context window overflows. Maintains `context_weights.jsonl` and prunes messages below a budget threshold.
+
+**Use it when:** Long sessions (20+ turns), multi-step tasks with stale intermediate results, or approaching context limits but still have critical work to do.
+
+**Best for:** Extending useful context life by 2-3x, preventing context rot in long Coppermind sessions, intelligent pruning that preserves referenced content.
+
+**Includes:** `scripts/context_rot.py` -- pure stdlib; commands: init, update, add, prune, simulate, audit
+
+---
+
+### `reasoning/self-contradiction-trap/SKILL.md` · [protocol]
+**What it is:** Maintain a `belief_store.jsonl` of all claims made during a session. Detect when new claims contradict existing ones, force resolution immediately, and track a contradiction score that triggers session review when too high.
+
+**Use it when:** Long sessions (15+ turns) where consistency matters, multi-step reasoning tasks, or Coppermind memory sessions where the agent makes claims about memory state.
+
+**Best for:** Preventing self-contradiction in long sessions, enforcing internal consistency, catching reasoning errors before they compound.
+
+**Includes:** `scripts/belief_store.py` -- pure stdlib; commands: init, add, check, resolve, audit, reset
+
+---
 ### `reasoning/context-density-operator.md` · [protocol]
 **What it is:** A context-management protocol that maximizes decision-relevant information per token. Uses hierarchical memory (always-visible / summarized / reference-table tiers), redundancy elimination, and on-demand expansion to keep the context window dense. Based on GenericAgent (arXiv:2604.17091) and information bottleneck principles.
 

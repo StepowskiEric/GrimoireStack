@@ -47,6 +47,9 @@
 | iterative-patch-repair | debugging/ | Iterative patch generation | Based on DebugRepair |
 | **time-traveling-debugger** | debugging/ | Forward trace + backward rewind | Includes time_travel.py + MCP server |
 | **context-density-operator** | reasoning/ | Maximize info per token | GenericAgent (arXiv:2604.17091) |
+| **hallucination-anchor-chain** | reasoning/ | Anchor claims to verified sources | Includes anchor_chain.py |
+| **context-rot-pruner** | reasoning/ | Exponential decay + prune low-weight msgs | Includes context_rot.py |
+| **self-contradiction-trap** | reasoning/ | Detect + resolve self-contradictions | Includes belief_store.py |
 | **cot-pruning-reasoning** | reasoning/ | Compress CoT reasoning | CoT-Influx (arXiv:2312.08901) |
 | **selective-halt-reasoning** | reasoning/ | Halt when converged | DASH (arXiv:2604.18103) |
 | **sop-evolution-memory** | orchestration/ | Reusable SOPs from trajectories | GenericAgent (arXiv:2604.17091) |

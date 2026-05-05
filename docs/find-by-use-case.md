@@ -54,6 +54,7 @@
 | Agent keeps retrying the same failed approach | [`trajectory-guard`](../execution/trajectory-guard/SKILL.md) | Detects repetition loops, specification drift, and stuck trajectories — forces strategy change |
 | Agent drifted from what was actually asked | [`trajectory-guard`](../execution/trajectory-guard/SKILL.md) | Catches specification drift by re-checking alignment with user's original request |
 | Running out of context on a long task | [`context-budget-operator`](../execution/context-budget-operator/SKILL.md) + [`trajectory-guard`](../execution/trajectory-guard/SKILL.md) | Budget tracking + failure-spiral detection prevents wasted tokens |
+| Context rot in long sessions (20+ turns) | [`context-rot-pruner`](../reasoning/context-rot-pruner/SKILL.md) | Exponential decay + prune low-weight messages | Includes context_rot.py |
 
 ---
 
@@ -185,6 +186,8 @@
 | Reasoning is converging but keeps elaborating | [`selective-halt-reasoning`](../reasoning/selective-halt-reasoning.md) | Halt when consecutive steps stabilize |
 | Token burn is the bottleneck | [`token-budget-operator`](../reasoning/token-budget-operator.md) | Orchestrates compression, pruning, halting, and SOP capture |
 | Reasoning integrity across faithfulness + convergence | [`reasoning-integrity-chain`](../reasoning/reasoning-integrity-chain.md) | Faithfulness + claims + verification + selective halt fused |
+| Need to eliminate hallucinated claims | [`hallucination-anchor-chain`](../reasoning/hallucination-anchor-chain/SKILL.md) | Every claim anchored to verified source | Includes anchor_chain.py |
+| Agent keeps contradicting itself | [`self-contradiction-trap`](../reasoning/self-contradiction-trap/SKILL.md) | Detect contradictions, force resolution | Includes belief_store.py |
 
 ---
 
