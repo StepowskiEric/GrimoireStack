@@ -29,30 +29,58 @@ from typing import Any, Dict, List, Optional, Set
 # ────────────────────────────────────────────────────────────────────────────────
 
 def _read_message() -> Optional[Dict[str, Any]]:
-    """Read a single JSON-RPC message from stdin with Content-Length framing."""
-    headers = b""
-    while True:
-        chunk = sys.stdin.buffer.read(1)
-        if not chunk:
-            return None
-        headers += chunk
-        if headers.endswith(b"\r\n\r\n"):
-            break
-    length = 0
-    for line in headers.decode("ascii", errors="ignore").splitlines():
-        if line.lower().startswith("content-length:"):
-            length = int(line.split(":", 1)[1].strip())
-    if not length:
+    """Read a single JSON-RPC message from stdin.
+
+    Supports two protocols:
+    - MCP SDK: raw JSON lines (each message is one line ending in \\n)
+    - Content-Length: legacy framing (Content-Length: N\\r\\n\\r\\n{body})
+    """
+    first = sys.stdin.buffer.read(1)
+    if not first:
         return None
-    body = sys.stdin.buffer.read(length)
-    return json.loads(body.decode("utf-8"))
+
+    if first == b"{":
+        # SDK mode: read until newline
+        line = first + sys.stdin.buffer.readline()
+        if not line or line[-1] != 10:  # no trailing \n
+            return None
+        return json.loads(line.decode("utf-8"))
+    elif first == b"C":
+        # Legacy Content-Length mode: put back and read header
+        headers = first
+        while True:
+            chunk = sys.stdin.buffer.read(1)
+            if not chunk:
+                return None
+            headers += chunk
+            if headers.endswith(b"\r\n\r\n"):
+                break
+        length = 0
+        for hline in headers.decode("ascii", errors="ignore").splitlines():
+            if hline.lower().startswith("content-length:"):
+                length = int(hline.split(":", 1)[1].strip())
+                break
+        if not length:
+            return None
+        body = sys.stdin.buffer.read(length)
+        # Consume trailing newline if present
+        sys.stdin.buffer.read(1)
+        return json.loads(body.decode("utf-8"))
+    else:
+        # Unknown: try reading a line
+        rest = sys.stdin.buffer.readline()
+        line = first + rest
+        if line and line[-1] == 10:
+            try:
+                return json.loads(line.decode("utf-8"))
+            except Exception:
+                pass
+        return None
 
 
 def _send_message(msg: Dict[str, Any]) -> None:
-    """Send a JSON-RPC message to stdout."""
-    body = json.dumps(msg, separators=(",", ":")).encode("utf-8")
-    header = f"Content-Length: {len(body)}\r\n\r\n".encode("ascii")
-    sys.stdout.buffer.write(header + body)
+    """Send a JSON-RPC message to stdout as a raw JSON line."""
+    sys.stdout.buffer.write(json.dumps(msg, separators=(",", ":")).encode("utf-8") + b"\n")
     sys.stdout.buffer.flush()
 
 

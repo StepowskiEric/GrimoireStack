@@ -29,30 +29,37 @@ from typing import Any, Dict, List, Optional, Tuple
 # ────────────────────────────────────────────────────────────────────────────────
 
 def _read_message() -> Optional[Dict[str, Any]]:
-    """Read a single JSON-RPC message from stdin with Content-Length framing."""
-    headers = b""
-    while True:
-        chunk = sys.stdin.buffer.read(1)
-        if not chunk:
-            return None
-        headers += chunk
-        if headers.endswith(b"\r\n\r\n"):
-            break
-    length = 0
-    for line in headers.decode("ascii", errors="ignore").splitlines():
-        if line.lower().startswith("content-length:"):
-            length = int(line.split(":", 1)[1].strip())
-    if not length:
+    first = sys.stdin.buffer.read(1)
+    if not first:
         return None
-    body = sys.stdin.buffer.read(length)
-    return json.loads(body.decode("utf-8"))
+    # SDK mode: raw JSON line (no Content-Length header)
+    if first == b"{":
+        line = first + sys.stdin.buffer.readline()
+        return json.loads(line.decode("utf-8"))
+    # Legacy Content-Length mode
+    if first == b"C":
+        headers = first + sys.stdin.buffer.readline()
+        while not headers.endswith(b"\r\n\r\n"):
+            headers += sys.stdin.buffer.readline()
+        length = 0
+        for hline in headers.decode("ascii", errors="ignore").splitlines():
+            if hline.lower().startswith("content-length:"):
+                length = int(hline.split(":", 1)[1].strip())
+        if not length:
+            return None
+        body = sys.stdin.buffer.read(length)
+        return json.loads(body.decode("utf-8"))
+    # Fallback: try raw JSON parse
+    try:
+        return json.loads(first.decode("utf-8"))
+    except Exception:
+        return None
 
 
 def _send_message(msg: Dict[str, Any]) -> None:
-    """Send a JSON-RPC message to stdout."""
-    body = json.dumps(msg, separators=(",", ":")).encode("utf-8")
-    header = f"Content-Length: {len(body)}\r\n\r\n".encode("ascii")
-    sys.stdout.buffer.write(header + body)
+    """Send a JSON-RPC message to stdout as a raw JSON line."""
+    body = json.dumps(msg, separators=(",", ":")).encode("utf-8") + b"\n"
+    sys.stdout.buffer.write(body)
     sys.stdout.buffer.flush()
 
 
