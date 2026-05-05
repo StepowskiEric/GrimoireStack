@@ -935,11 +935,23 @@ Skills for structuring how agents plan, route, delegate, and control complex wor
 
 **Key techniques:** From "Rashomon Memory" (arXiv:2604.03588) and "Structured Abductive-Deductive-Inductive Reasoning" (arXiv:2604.15727) — supports three output modes: selection (pick winner), composition (merge non-conflicting), conflict surfacing (return attack graph as explanation).
 
+### `orchestration/scout.md` · [protocol]
+**What it is:** A fast context scout — a lightweight sub-agent pre-reads files and returns only distilled, relevant context for the main model. Three modes: Lite (deterministic grep, no LLM cost), Full (LLM distillation), Hybrid (Lite narrows + Full deepens).
+
+**Use it when:** You need file context but don't want the main model wasting tokens reading entire codebases. For finding specific functions (Lite), understanding subsystems (Full), or pre-refactoring analysis (Hybrid).
+
+**Best for:** Large codebases, unfamiliar codebases, debugging with broad error traces, pre-refactoring scope analysis. Saves 50-80% of main model context by returning only relevant findings.
+
+**Key techniques:** `delegate_task` with a fast model (claude-haiku, gpt-4o-mini, or local llama via Ollama) as the Scout agent. Lite uses `search_files` + `read_file`. Hybrid chains them: narrow with Lite, deepen with Full.
+
 ---
 
 ### Power Combinations
 
 - **Tree of Thoughts + Monte Carlo Tree Search** → generate diverse branches first, then allocate deeper effort to the branches that earn it through evidence rather than equal exploration or first-branch lock-in
+
+- **Scout + Thought-Retriever** → Scout reads files, distills context; Thought-Retriever stores the distilled reasoning for future retrieval
+- **Scout + Time-Traveling Debugger** → Scout narrows the bug scope; Time-Travel traces the specific error location
 
 - **Thought-Retriever + Coppermind** → store reasoning traces, not just outputs; retrieve "how we solved this" for future similar problems
 

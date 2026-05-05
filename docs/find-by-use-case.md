@@ -238,6 +238,7 @@
 | Debating which branch to pursue | [`monte-carlo-tree-search`](../orchestration/monte-carlo-tree-search.md) | Branch allocation |
 | Identify weak agent reasoning | [`weak-link-detection-multi-agent`](../orchestration/weak-link-detection-multi-agent.md) | Prevents error amplification |
 | Distill successful trajectories into reusable SOPs | [`sop-evolution-memory`](../orchestration/sop-evolution-memory.md) | Turn past task patterns into compact reusable procedures |
+| Scout files before reading them | [`scout`](../orchestration/scout.md) | Fast sub-agent pre-reads and distills file context for the main model |
 
 ---
 

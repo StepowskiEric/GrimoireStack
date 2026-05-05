@@ -34,6 +34,7 @@
 | socratic-clarification | orchestration/ | Pre-execution clarity | |
 | thought-retriever-coppermind | orchestration/ | Memory-augmented reasoning | |
 | weak-link-detection-multi-agent | orchestration/ | Multi-agent quality control | |
+| **scout** | orchestration/ | Fast file context distillation (Lite/Full/Hybrid) | New |
 | cognitive-load-operator-state-machine | output-quality/ | Reducing complexity | |
 | bounded-self-revision | output-quality/ | Self-improvement | |
 | documentation-craft | output-quality/ | Technical writing | |
