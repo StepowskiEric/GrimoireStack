@@ -59,6 +59,17 @@
 
 ---
 
+### Algorithm / Tool Discovery
+
+*Skills that let the agent automatically discover solutions that outperform human intuition.*
+
+| Situation | Best Skill | Why |
+|-----------|------------|-----|
+| Discover optimal tool chains or prompts through search | [`evolutionary-tool-composer`](../mcp-servers/evolutionary-tool-composer/SKILL.md) | Evolutionary algorithm: mutate, cross, select by fitness — AlphaEvolve/OpenEvolve principles |
+| Decision-making with uncertain outcomes, information value matters | [`active-inference-agent`](../mcp-servers/active-inference-agent/SKILL.md) | Friston's Free Energy Principle: minimize Expected Free Energy — formal Bayesian decision theory |
+
+---
+
 ### Process Improvement
 
 *Skills for improving systems, workflows, or outputs over time.*

@@ -1,6 +1,6 @@
 # New Skills Overview
 
-This document provides detailed information about the two new skills recently added to Jerry's Agent Skills repository:
+This document provides detailed information about the four skills recently added to Jerry's Agent Skills repository:
 
 ## 1. log-trace-correlation (debugging)
 
@@ -311,3 +311,172 @@ For each step: "if this ships and fails, why?" Map failure modes to plan gaps.
   - Modes: explore, plan, execute, full, resume, status, reset
   - Enforces phase ordering, validates JSONL output
   - Halts on unresolved clarifications
+
+---
+
+## 3. evolutionary-tool-composer (mcp-servers)
+
+### Purpose
+Run an evolutionary algorithm to discover and optimize agent tool chains, prompt strategies, and code solutions. Based on AlphaEvolve (Google DeepMind) and OpenEvolve principles — LLM-driven evolutionary search with automated fitness evaluation.
+
+### When to Use
+- You want the agent to discover tool combinations or prompt strategies that outperform human intuition
+- You have a well-defined fitness function for evaluating solutions
+- You want automated exploration of a solution space beyond single-pass generation
+
+### Detailed Workflow
+
+#### Step 1: Define the Problem and Fitness
+```
+evolve_init(
+  task="Find the fastest SQL query to join orders to customers",
+  initial_genes="SELECT * FROM orders JOIN customers ON orders.customer_id = customers.id",
+  fitness_fn="lambda genes, task: (genes.count('JOIN') + genes.count('SELECT')) * 0.2 + (1.0 if 'WHERE' in genes else 0.0)",
+  population_size=20,
+)
+```
+
+#### Step 2: Run Generations
+```
+evolve_step(mutate_rate=0.3, tournament_k=3)
+→ {"generation": 1, "best_fitness": 0.8, "avg_fitness": 0.5, "improvement_vs_init": 0.2}
+```
+Repeat 5-15 times until fitness plateaus.
+
+#### Step 3: Retrieve Best Solution
+```
+evolve_get_best()
+→ {"id": "ind_0007", "genes": "SELECT orders.id, customers.name FROM orders JOIN ...", "fitness": 0.8, ...}
+```
+
+### Key Concepts
+- **Population:** Set of candidate solutions, evolved each generation
+- **Fitness function:** Python lambda that scores a solution (higher = better)
+- **Mutation:** Insert, delete, replace, scramble, invert lines
+- **Crossover:** Uniform crossover — randomly merge lines from two parents
+- **Selection:** Tournament selection — pick k random, keep fittest
+- **Elitism:** Top 2 individuals survive unchanged each generation
+
+### Fitness Function Design
+```python
+# Simple: prefer shorter queries with JOINs
+"lambda genes, task: (genes.count('JOIN')) * 0.3 - len(genes) * 0.001"
+
+# Composite: correctness signal + quality signal
+"lambda genes, task: ('SELECT' in genes) * 0.5 + ('WHERE' in genes) * 0.3 + ('JOIN' in genes) * 0.2"
+
+# Prompt strategy
+"lambda genes, task: min(1.0, len(genes.split()) / 50.0) * 0.5 + ('Step' in genes or '1.' in genes) * 0.5"
+```
+
+### Outputs
+- Best individual (genes + fitness + origin)
+- Full population ranked by fitness
+- Generation history (best/avg fitness per generation)
+
+### Pitfalls
+- Fitness function returns -1000: the fitness subprocess errored — check the expression syntax
+- All individuals get same fitness: population is not differentiating — make the fitness function more granular
+- Population stuck at local optimum: increase `mutate_rate` to 0.5 and re-initialize
+
+### Verification Checklist
+- [ ] Fitness function returns a float on valid input
+- [ ] Population initializes with non-identical individuals
+- [ ] Best fitness improves over generations (check evolve_step output)
+- [ ] Best genes are syntactically valid for the target domain
+
+### Includes
+- `server.py` — pure stdlib MCP server (zero external dependencies)
+  - Tools: evolve_init, evolve_step, evolve_get_best, evolve_crossover, evolve_get_population, evolve_migrate, evolve_reset
+
+---
+
+## 4. active-inference-agent (mcp-servers)
+
+### Purpose
+Implement a practical Active Inference agent based on Karl Friston's Free Energy Principle. The agent maintains hierarchical beliefs about system states, computes Expected Free Energy (EFE) for each action, selects policies that minimize predicted surprise, and updates beliefs on observation.
+
+### When to Use
+- The agent needs to make decisions under uncertainty with incomplete information
+- Actions have uncertain outcomes and some actions are more informative than others
+- You want a principled,Bayesian theory of decision-making rather than ad-hoc heuristics
+- Exploration vs. exploitation tradeoff is critical (information-gathering actions)
+
+### The Core Math
+```
+Variational Free Energy:  F = KL(q(θ|o,m) || p(θ|o,m))
+  — How surprised are we by observations given our model?
+
+Expected Free Energy:    G(a) = E_q[KL(q(s|a,m) || p(s|m))] - H[p(o|s,a)]
+  — Predicted cost of not knowing + expected informativeness of action
+
+Action selection:         π* = argmin_π G(π)
+  — Do the thing that will surprise you least while getting good outcomes
+```
+
+### Detailed Workflow
+
+#### Step 1: Initialize the Belief Model
+```
+init_beliefs(
+  state_labels=["healthy", "memory_leak", "network_issue", "down"],
+  action_labels=["check_logs", "run_diag", "restart_pod", "scale_replicas"],
+  outcome_labels=["ok", "warning", "error", "timeout"],
+  outcome_preferences=[3.0, 0.5, -5.0, -3.0],  # reward signal
+)
+```
+`outcome_preferences` is the only domain knowledge — it encodes what outcomes are good/bad.
+
+#### Step 2: Ask for Next Action
+```
+select_policy()
+→ {"chosen_action": "run_diag", "efe": -2.1, "risk": 0.8, "info_gain": 0.5, ...}
+```
+The agent recommends the action with minimum Expected Free Energy.
+
+#### Step 3: Observe Result and Update
+```
+add_outcome(outcome="error")  # or outcome=2
+→ {"generation": 1, "state_belief": {"healthy": 0.05, "memory_leak": 0.35, "network_issue": 0.10, "down": 0.50}, ...}
+```
+Beliefs update based on the observation. "down" and "memory_leak" become more likely after seeing "error".
+
+#### Step 4: Repeat
+```
+select_policy()
+→ now biased toward actions that fix memory issues or restart
+```
+
+### Hyperparameters
+| Parameter | Default | Effect |
+|-----------|---------|--------|
+| `learning_rate` | 0.5 | Belief update speed (0=slow, 1=fast) |
+| `temperature` | 1.0 | Softmax randomness (>1=explore, <1=exploit) |
+| `efe_weight` | 0.7 | Weight on information gain in EFE |
+| `prior_weight` | 0.3 | Weight on outcome preference in EFE |
+
+**Tuning guide:**
+- High `efe_weight` (0.9): Agent prefers diagnostic actions that reduce uncertainty
+- High `prior_weight` (0.9): Agent prefers actions that immediately get good outcomes
+- High `temperature` (2.0): More random exploration of different action types
+
+### Outputs
+- Current state beliefs (probability distribution over hidden states)
+- Action recommendation with EFE breakdown (risk, information gain, uncertainty)
+- Full observation/action history
+
+### Pitfalls
+- `outcome_preferences` is zero everywhere: all actions become equally informative — set clear rewards
+- Single-step greedy policy: for multi-step goals, provide explicit multi-step `policies` to init_beliefs
+- Beliefs never converge: try lowering `learning_rate` to 0.2 for more stable updates
+
+### Verification Checklist
+- [ ] init_beliefs called with non-empty labels
+- [ ] select_policy returns an action from action_labels
+- [ ] add_outcome updates beliefs (entropy should generally decrease over time)
+- [ ] After multiple rounds, preferred actions align with outcome_preferences
+
+### Includes
+- `server.py` — pure stdlib MCP server (zero external dependencies)
+  - Tools: init_beliefs, add_outcome, compute_efe, select_policy, get_beliefs, get_history, set_hyperparams, reset
+

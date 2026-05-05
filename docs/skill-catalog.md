@@ -1243,6 +1243,26 @@ Skills for creating skills, integrating external systems, and development workfl
 
 ---
 
+### `mcp-servers/evolutionary-tool-composer/SKILL.md` · [tool]
+**What it is:** MCP server that runs an evolutionary algorithm to discover and optimize agent tool chains, prompt strategies, and code solutions. Based on AlphaEvolve/OpenEvolve principles — LLM-driven evolutionary search with automated fitness evaluation. Tools: `evolve_init`, `evolve_step`, `evolve_get_best`, `evolve_crossover`, `evolve_get_population`, `evolve_migrate`, `evolve_reset`. Pure stdlib.
+
+**Use it when:** You want the agent to discover tool combinations, prompt strategies, or code solutions that outperform human intuition through evolutionary selection pressure.
+
+**Best for:** Algorithm discovery, prompt optimization, tool-chain exploration, automated code improvement. Works by initializing a population, then iteratively mutating/crossing/selecting based on a fitness function.
+
+**Note:** Fitness function is a Python lambda/expression: `(genes: str, task: str) -> float`. Executed in a sandboxed subprocess.
+
+---
+
+### `mcp-servers/active-inference-agent/SKILL.md` · [tool]
+**What it is:** MCP server implementing a practical Active Inference agent based on Friston's Free Energy Principle. The agent maintains hierarchical beliefs about system states, computes Expected Free Energy (EFE) for each action, selects policies that minimize predicted surprise, and updates beliefs on observation. Tools: `init_beliefs`, `add_outcome`, `compute_efe`, `select_policy`, `get_beliefs`, `get_history`, `set_hyperparams`, `reset`. Pure stdlib.
+
+**Use it when:** The agent needs a principled,Bayesian decision theory — not just heuristics, but a formal account of why one action is better than another based on predicted surprise and information value.
+
+**Best for:** Incident triage, diagnostic decision-making, exploration-exploitation tradeoffs, any task where actions have uncertain outcomes and information value matters. The agent learns which actions reduce uncertainty fastest.
+
+---
+
 ### `mlops/local-llm-tooling/SKILL.md` · [framework]
 **What it is:** A workflow for running, prompting, and extracting structured output from local LLMs (e.g., Ollama, llama.cpp).
 

@@ -139,6 +139,8 @@ These are **not skills** in the traditional sense — they are MCP servers or co
 |------|------|----------|--------------|
 | code-knowledge-graph | [mcp] | `mcp-servers/code-graph/server.py` | Structured code navigation (index, find symbol, call graph, dead code) |
 | dev-diagnostics | [mcp] | `mcp-servers/dev-diagnostics/server.py` | Unified lint/test/typecheck output parser (6+ tools) |
+| evolutionary-tool-composer | [mcp] | `mcp-servers/evolutionary-tool-composer/server.py` | Evolutionary algorithm for tool/prompt/code discovery (AlphaEvolve principles) |
+| active-inference-agent | [mcp] | `mcp-servers/active-inference-agent/server.py` | Active Inference agent (Friston's Free Energy Principle) for principled decision-making |
 | lint-battalion | [script] | `software-development/lint-battalion/scripts/lint_battalion.py` | Batch-plan 500+ linter errors into auto-fixable categories |
 | git-surgery | [script] | `software-development/git-surgery/scripts/git_surgery.py` | `diagnose` / `reflog` commands for git disaster recovery |
 | verify-assumptions | [script] | `execution/assumption-grounding/scripts/verify_assumptions.py` | Assumption verification helper |
@@ -147,8 +149,10 @@ These are **not skills** in the traditional sense — they are MCP servers or co
 
 ## Recently Added
 
-| Skill | Date | Key Technique |
-|-------|------|---------------|
+|| Skill | Date | Key Technique |
+||-------|------|---------------|
+| evolutionary-tool-composer | 2026-05 | AlphaEvolve-style evolutionary algorithm for tool/prompt/code discovery |
+| active-inference-agent | 2026-05 | Friston Free Energy Principle for principled Bayesian decision-making |
 | lint-battalion | 2026-05 | Mass lint remediation via auto-fix sprint + parallel subagent battalions |
 | git-surgery | 2026-05 | 10 deterministic recovery protocols for common git disasters |
 | code-knowledge-graph-mcp | 2026-05 | MCP server for structured code navigation (zero deps) |
