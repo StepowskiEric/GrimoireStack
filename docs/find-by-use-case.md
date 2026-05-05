@@ -55,6 +55,7 @@
 | Agent drifted from what was actually asked | [`trajectory-guard`](../execution/trajectory-guard/SKILL.md) | Catches specification drift by re-checking alignment with user's original request |
 | Running out of context on a long task | [`context-budget-operator`](../execution/context-budget-operator/SKILL.md) + [`trajectory-guard`](../execution/trajectory-guard/SKILL.md) | Budget tracking + failure-spiral detection prevents wasted tokens |
 | Context rot in long sessions (20+ turns) | [`context-rot-pruner`](../reasoning/context-rot-pruner/SKILL.md) | Exponential decay + prune low-weight messages | Includes context_rot.py |
+| Want insane full lifecycle (birth→track→decay→prune→optimize) | [`context-lifecycle-manager`](../execution/context-lifecycle-manager/SKILL.md) | Hybrid: budget-operator + rot-pruner + token-budget-operator | Includes context_lifecycle.py |
 
 ---
 

@@ -167,6 +167,18 @@ Skills for executing technical work in a bounded, disciplined way.
 
 ---
 
+---
+
+### `execution/context-lifecycle-manager/SKILL.md` · [hybrid]
+**What it is:** Insane hybrid of `context-rot-pruner` + `context-budget-operator` + `token-budget-operator`. Full lifecycle: messages are born → tracked by budget operator → decayed/pruned by rot-pruner → optimized by token-budget-operator. Shares one `context_state.jsonl` artifact.
+
+**Use it when:** Long sessions (30+ turns), Coppermind daemon sessions running for hours, or when you want maximum context utilization (2-3x life extension).
+
+**Best for:** Full context lifecycle management, extending session life dramatically, coordinating three context skills via one artifact.
+
+**Includes:** `scripts/context_lifecycle.py` — pure stdlib; commands: init, add, update, prune, optimize, report, simulate
+
+---
 ### `execution/speculative-exploration-protocol.md` · [protocol]
 **What it is:** Fuses speculative drafting + tree of thoughts + process reward model into a disciplined exploration protocol. Generates multiple candidate branches, evaluates each with process rewards, prunes weak paths, and selects the best-verified solution.
 
