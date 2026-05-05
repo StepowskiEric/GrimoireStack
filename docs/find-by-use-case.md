@@ -100,6 +100,7 @@
 | Verify self-consistency | [`self-consistency`](../output-quality/self-consistency.md) | Cross-check reasoning |
 | Interactive criticism of work | [`tool-interactive-critic`](../output-quality/tool-interactive-critic.md) | Structured critique process |
 | Need to call an external library — not sure of its exact API | [`api-surface-anchoring`](../software-development/api-surface-anchoring/SKILL.md) | Verify current API surface from authoritative docs before writing code |
+| Want 100% API call verification with citations | [`verified-api-workflow`](../software-development/verified-api-workflow/SKILL.md) | Hybrid: api-surface + anchor-chain for full traceability | Includes verified_api.py |
 
 ---
 

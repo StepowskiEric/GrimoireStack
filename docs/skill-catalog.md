@@ -1175,6 +1175,18 @@ Skills for creating skills, integrating external systems, and development workfl
 
 ---
 
+---
+
+### `software-development/verified-api-workflow/SKILL.md` · [hybrid]
+**What it is:** Combines `api-surface-anchoring` + `hallucination-anchor-chain` into a single workflow. Every verified API surface entry becomes an anchor. Code using external APIs is 100% traceable to docs you checked.
+
+**Use it when:** Writing code that calls external libraries/APIs, building against frequently-changing APIs, or doing code review of API usage.
+
+**Best for:** Eliminating API hallucination completely, building auditable code artifacts, ensuring every external call has a verified source.
+
+**Includes:** `scripts/verified_api.py` — pure stdlib; commands: init, scan, verify-all, audit, export
+
+---
 ### `software-development/code-knowledge-graph-mcp/SKILL.md` · [tool]
 **What it is:** MCP server skill for structured code navigation. Tools: `index_repo`, `find_symbol`, `search_semantic`, `get_call_graph`, `get_dead_code`. Regex-based extraction for Python, JS/TS, Go, Rust. Zero external dependencies — add to Hermes `config.yaml`.
 
