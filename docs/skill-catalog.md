@@ -1117,6 +1117,17 @@ Skills for creating skills, integrating external systems, and development workfl
 
 ---
 
+### `software-development/api-surface-anchoring/SKILL.md` · [protocol]
+**What it is:** Before writing any code that calls an external library or API, verify its current authoritative signature. Prevents runtime failures from hallucinated API surfaces by anchoring every external call to a verified reference. Includes a companion Python script (`api_surface.py`) for automated signature lookup from PyPI, GitHub, and MDN docs.
+
+**Use it when:** Using any external library, SDK, or API where you are not 100% certain of the exact parameter names, import paths, or return types — especially libraries released or updated after your LLM's training cutoff.
+
+**Best for:** Preventing hallucinated API calls, verifying SDK signatures, reducing guess-and-check debugging on external integrations, ensuring code compiles with real library surfaces.
+
+**Includes:** `scripts/api_surface.py` — pure Python stdlib
+
+---
+
 ### `software-development/code-knowledge-graph-mcp/SKILL.md` · [tool]
 **What it is:** MCP server skill for structured code navigation. Tools: `index_repo`, `find_symbol`, `search_semantic`, `get_call_graph`, `get_dead_code`. Regex-based extraction for Python, JS/TS, Go, Rust. Zero external dependencies — add to Hermes `config.yaml`.
 

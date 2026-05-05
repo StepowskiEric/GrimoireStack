@@ -69,6 +69,7 @@
 | **speculative-exploration-protocol** | execution/ | Explore with process rewards | Speculative Drafting + ToT + PRM |
 | **iterative-improvement-cycle** | execution/ | Iterative improvement cycle | Toyota Kata + PDCA + Philosophy of Software Design |
 | **plan-with-judge** | execution/ | Create plan.jsonl refined by stronger model | Max 5 judge iterations |
+| **api-surface-anchoring** | software-development/ | Verify API surface from authoritative docs before writing code | Includes scripts/api_surface.py |
 
 ## All Framework Skills (Conceptual)
 
