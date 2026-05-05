@@ -54,6 +54,7 @@
 | **self-contradiction-trap** | reasoning/ | Detect + resolve self-contradictions | Includes belief_store.py |
 | **cot-pruning-reasoning** | reasoning/ | Compress CoT reasoning | CoT-Influx (arXiv:2312.08901) |
 | **selective-halt-reasoning** | reasoning/ | Halt when converged | DASH (arXiv:2604.18103) |
+| **chaos-detector** | reasoning/ | Detect reasoning collapse via Lyapunov exponents | arXiv:2603.09127, includes lyapunov.py |
 | **sop-evolution-memory** | orchestration/ | Reusable SOPs from trajectories | GenericAgent (arXiv:2604.17091) |
 | **token-budget-operator** | reasoning/ | Master token-efficiency orchestrator | Hybrid (all 4 above) |
 | **claim-verification-reasoning** | reasoning/ | Atomic claim verification | CURE + DCF + PRISM |
@@ -78,6 +79,7 @@
 | **structured-feature-planning** | execution/ | 7-phase structured planning with self-review×2 | Explore → search → stuck detection → plan → review×2 → execute. JSONL output. Never hallucinate rule. Includes structured_planner.py |
 | **api-surface-anchoring** | software-development/ | Verify API surface from authoritative docs before writing code | Includes scripts/api_surface.py |
 | **verified-api-workflow** | software-development/ | Hybrid: api-surface + anchor-chain | Includes verified_api.py |
+| **verified-synthesize** | software-development/ | Provably correct code via Dafny formal verification | arXiv:2604.22601, includes dafny_verify.py |
 
 ## All Framework Skills (Conceptual)
 

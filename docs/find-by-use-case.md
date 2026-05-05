@@ -203,6 +203,7 @@
 | Reasoning integrity across faithfulness + convergence | [`reasoning-integrity-chain`](../reasoning/reasoning-integrity-chain.md) | Faithfulness + claims + verification + selective halt fused |
 | Need to eliminate hallucinated claims | [`hallucination-anchor-chain`](../reasoning/hallucination-anchor-chain/SKILL.md) | Every claim anchored to verified source | Includes anchor_chain.py |
 | Agent keeps contradicting itself | [`self-contradiction-trap`](../reasoning/self-contradiction-trap/SKILL.md) | Detect contradictions, force resolution | Includes belief_store.py |
+| Reasoning trajectory might be diverging or collapsing | [`chaos-detector`](../reasoning/chaos-detector/SKILL.md) | Lyapunov exponent over token trajectories flags collapse before it happens | Includes lyapunov.py |
 
 ---
 
@@ -224,6 +225,7 @@
 | Code navigation / symbol search in large repos | [`code-knowledge-graph-mcp`](../software-development/code-knowledge-graph-mcp/SKILL.md) | MCP server with structured symbol/call-graph queries |
 | Structured lint/test/typecheck output parsing | [`dev-diagnostics-mcp`](../software-development/dev-diagnostics-mcp/SKILL.md) | MCP server with unified parsers for ESLint, Biome, Ruff, tsc, Vitest, pytest |
 | 500+ linter errors to fix | [`lint-battalion`](../software-development/lint-battalion/SKILL.md) | Auto-fix sprint + parallel subagent battalions with contamination checks |
+| Critical code that must be provably correct | [`verified-synthesize`](../software-development/verified-synthesize/SKILL.md) | Generate code + Dafny spec, machine-checked via Z3 SMT solver | Includes dafny_verify.py |
 
 ---
 

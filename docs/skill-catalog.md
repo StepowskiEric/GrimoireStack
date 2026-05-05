@@ -525,6 +525,22 @@ Skills for routing tasks, calibrating rigor, and reasoning about risks and trade
 
 ---
 
+## 🧠 Reasoning — formal and dynamical reasoning tools
+
+Skills for formal reasoning about agent reasoning itself, detecting collapse, and verifying correctness.
+
+### `reasoning/chaos-detector/SKILL.md` · [protocol]
+
+**What it is:** Detects when LLM agent reasoning is collapsing into chaos using Lyapunov exponent analysis over token trajectories. Models agent reasoning as a random dynamical system; computes empirical Lyapunov exponents to flag divergence before it causes collapse. Based on "Chaotic Dynamics in Multi-LLM Deliberation" (arXiv:2603.09127).
+
+**Use it when:** Multi-round agent conversations where reasoning might be looping or contradicting itself. Pre-commitment before high-stakes decisions. Debugging why the same prompt produces different outputs across runs.
+
+**Best for:** Divergence detection, reasoning stability monitoring, collapse pre-emption. Three modes: Lite (perplexity, no API calls), Standard (embeddings, OpenAI), Agentic (multi-agent, full dynamical analysis).
+
+**Includes:** `scripts/lyapunov.py` — pure stdlib, Benettin's algorithm implementation. No external dependencies in Lite mode.
+
+---
+
 ## ✨ Output Quality — improving what the agent produces
 
 Skills that refine, critique, and simplify the agent's own outputs.
@@ -1252,6 +1268,18 @@ Skills for creating skills, integrating external systems, and development workfl
 **Use it when:** You want structured lint/test/typecheck output instead of parsing human-readable terminal output.
 
 **Best for:** Unified diagnostics across tools, CI pipeline integration, contamination detection, project health dashboards.
+
+---
+
+### `software-development/verified-synthesize/SKILL.md` · [protocol]
+
+**What it is:** Generates provably correct code from natural language specs using Dafny formal verification. LLM produces code + Dafny preconditions/postconditions; the companion script runs `dafny verify` to machine-check correctness. Based on "From Natural Language to Verified Code" (arXiv:2604.22601).
+
+**Use it when:** Critical bugs, security-sensitive code, financial calculations, or any code where "probably correct" isn't good enough. Also useful before refactoring to lock down existing behavior formally.
+
+**Best for:** Provably correct code, bug pre-commitment, formal specification from natural language. Supports Python, Go, C#, Java, JavaScript targets via Dafny transpilation.
+
+**Includes:** `scripts/dafny_verify.py` — pure stdlib. Requires `dafny` CLI installed (brew install dafny on macOS).
 
 ---
 
