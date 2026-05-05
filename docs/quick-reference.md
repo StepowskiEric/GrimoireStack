@@ -25,7 +25,7 @@
 | recognition-primed-triage-state-machine | judgment-and-routing/ | Fast triage | |
 | problem-mode-router-cynefin-state-machine | judgment-and-routing/ | Problem classification | |
 | inversion-mental-model-state-machine | judgment-and-routing/ | Backward reasoning | |
-| intent-specification-protocol | execution/ | Crystallize vague requests into testable specs | Prevents Intent-Behavior Mirroring Effect |
+| intent-specification-protocol | execution/ | Crystallize vague requests into testable specs | MCP server + script available |
 | explore-vs-exploit-state-machine | judgment-and-routing/ | Resource allocation | |
 | metacognitive-monitoring | judgment-and-routing/ | Confidence calibration | |
 | counterfactual-policy-testing | judgment-and-routing/ | Decision validation | |

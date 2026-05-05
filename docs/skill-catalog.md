@@ -133,6 +133,7 @@ Skills for executing technical work in a bounded, disciplined way.
 
 ### `execution/intent-specification-protocol.md` · [protocol]
 **What it is:** Crystallize vague coding requests into precise, testable specs before writing code. Prevents over-engineering via the Intent-Behavior Mirroring Effect.
+**Includes:** `scripts/intent_mcp_server.py` (MCP server with 3 tools) + `scripts/intent-specification-protocol.py` (stdlib; commands: crystallize, spec, check)
 
 **Use it when:** The request is vague, ambiguous, or likely to lead to over-engineering.
 

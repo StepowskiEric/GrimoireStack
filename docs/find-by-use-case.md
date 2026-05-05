@@ -109,7 +109,7 @@
 
 | Situation | Best Skill | Why |
 |-----------|------------|-----|
-| Prevent over-engineering, clarify scope before coding | [`intent-specification-protocol`](../execution/intent-specification-protocol.md) | Scope control via explicit intent specification |
+| Prevent over-engineering, clarify scope before coding | [`intent-specification-protocol`](../execution/intent-specification-protocol.md) | Scope control via explicit intent specification | | Includes intent_mcp_server.py (MCP) + intent-specification-protocol.py |
 | Big decision, multiple options | [`counterfactual-policy-testing`](../judgment-and-routing/counterfactual-policy-testing.md) | Test against null/opposite/partial alternatives |
 | Trade-offs between teams/systems | [`team-topologies-ai`](../systems-and-architecture/team-topologies-ai.md) | Organizational architecture patterns |
 | Data system design | [`designing-data-intensive-applications-ai`](../systems-and-architecture/designing-data-intensive-applications-ai.md) | Data system principles |
