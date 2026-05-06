@@ -145,7 +145,7 @@ AUTO_FIXABLE = frozenset({
 # ── Input parsers ──────────────────────────────────────────────────────────
 
 def parse_eslint_json(data: list[dict]) -> list[dict]:
-    """Parse ESLint JSON format (array of file results)."""
+    """Parse ESLint JSON format (array of file results with filePath + messages)."""
     errors = []
     for file_result in data:
         file_path = file_result.get("filePath", "")
@@ -159,6 +159,22 @@ def parse_eslint_json(data: list[dict]) -> list[dict]:
                 "severity": msg.get("severity", 1),
                 "fixable": msg.get("fix") is not None,
             })
+    return errors
+
+
+def parse_eslint_flat_json(data: list[dict]) -> list[dict]:
+    """Parse ESLint flat message array (one object per error, each with filePath + ruleId)."""
+    errors = []
+    for msg in data:
+        errors.append({
+            "file": msg.get("filePath", ""),
+            "line": msg.get("line", 0),
+            "column": msg.get("column", 0),
+            "rule": msg.get("ruleId", "unknown"),
+            "message": msg.get("message", ""),
+            "severity": msg.get("severity", 1),
+            "fixable": msg.get("fix") is not None,
+        })
     return errors
 
 
@@ -200,9 +216,12 @@ def parse_ruff_json(data: list[dict]) -> list[dict]:
 def detect_and_parse(raw: str) -> tuple[list[dict], str]:
     """Auto-detect format and parse."""
     data = json.loads(raw)
-    # ESLint: array of files
-    if isinstance(data, list) and data and "filePath" in data[0]:
+    # ESLint: file-wrapper format (array of file results with filePath + messages array)
+    if isinstance(data, list) and data and "filePath" in data[0] and "messages" in data[0]:
         return parse_eslint_json(data), "eslint"
+    # ESLint: flat message array (one object per error, each has ruleId + filePath at top level, no messages)
+    if isinstance(data, list) and data and "ruleId" in data[0] and "filePath" in data[0]:
+        return parse_eslint_flat_json(data), "eslint"
     # Ruff: array of messages
     if isinstance(data, list) and data and "code" in data[0]:
         return parse_ruff_json(data), "ruff"
