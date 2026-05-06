@@ -69,6 +69,7 @@
 | **self-verify-pipeline** | output-quality/ | Escalating output verification | BSR + TIC + Claim Verification |
 | **failure-analysis-protocol** | judgment-and-routing/ | Pre-commitment failure analysis | Pre-Mortem + Inversion + 2nd-Order |
 | **long-task-survival-kit** | execution/ | Prevent agent decay on long tasks | Assumption + Trajectory + Context Budget |
+| **summarize** | execution/ | Emergency handoff report for agent-to-agent session transfer | STOP + structured report template |
 | **security-review-protocol** | systems-and-architecture/ | Comprehensive security review | STRIDE + UCA + Vibe Coding Security |
 | **debug-to-fix-pipeline** | debugging/ | End-to-end debugging pipeline | Abductive + Subagent + Instrumentation + Purify + Patch Repair |
 | **reasoning-integrity-chain** | reasoning/ | Reasoning integrity chain | Faithfulness + Claims + Verification + Halt |
@@ -152,9 +153,10 @@ These are **not skills** in the traditional sense — they are MCP servers or co
 
 ## Recently Added
 
-|| Skill | Date | Key Technique |
-||-------|------|---------------|
-| evolutionary-tool-composer | 2026-05 | AlphaEvolve-style evolutionary algorithm for tool/prompt/code discovery |
+||| Skill | Date | Key Technique |
+|||-------|------|---------------|
+||| **summarize** | 2026-05 | Emergency STOP + structured handoff report for agent session transfer |
+||| evolutionary-tool-composer | 2026-05 | AlphaEvolve-style evolutionary algorithm for tool/prompt/code discovery |
 | active-inference-agent | 2026-05 | Friston Free Energy Principle for principled Bayesian decision-making |
 | lint-battalion | 2026-05 | Mass lint remediation via auto-fix sprint + parallel subagent battalions |
 | git-surgery | 2026-05 | 10 deterministic recovery protocols for common git disasters |

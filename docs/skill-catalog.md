@@ -211,6 +211,17 @@ Skills for executing technical work in a bounded, disciplined way.
 
 ---
 
+### `execution/summarize.md` · [protocol]
+**What it is:** Emergency STOP + structured handoff report for agent-to-agent session transfer. Forces immediate abandonment of current work with zero data loss — the next agent opens the session with complete context. Governs: STOP signal, 8-section handoff template, strict no-continuation rule.
+
+**Use it when:** Session quality is degraded (2+ compressions), anti-thrashing warning fires, you need to `/new` or `/branch`, session was interrupted mid-work, or user asks "summarize what we did".
+
+**Best for:** Preserving context across restarts, preventing work loss on session reset, agent-to-agent handoff with zero memory of each other.
+
+**Note:** The STOP line is agent-to-agent signaling only. When delivering directly to the user (`deliver: 'origin'`), omit it.
+
+---
+
 ### `execution/plan-with-judge/SKILL.md` · [protocol]
 **What it is:** Creates an implementation plan in JSONL format with atomic steps and dependencies, then iteratively improves it using a stronger user-specified model as a judge until the plan is approved. Runs up to 5 judge-review cycles.
 
