@@ -193,6 +193,15 @@ Skills for executing technical work in a bounded, disciplined way.
 **Includes:** `scripts/structured_planner.py` — pure stdlib; modes: explore, plan, execute, full, resume, status, reset. Enforces phase ordering, validates JSONL output, halts on unresolved clarifications.
 
 ---
+### `execution/zero-defect-protocol/SKILL.md` · [protocol]
+**What it is:** Mission-Critical Zero-Defect planning and implementation workflow. 14-phase protocol (Context Bounding → Clarification → Ideation → Data Contracting → Master Plan → Quick Sync → Alternatives → Red Team → Pre-Mortem → 3x Critique Loop → Speculative Spike → Implementation → Refactor Gate → Final Validation) that forces mathematical soundness via data contracting, invariant mapping, red-team critique, and pre-mortem before any code is written.
+
+**Use it when:** Deploying to production with zero tolerance for failure, security-critical or financially-critical features, any feature where a bug could cause irreversible harm, or the request is ambiguous or high-stakes.
+
+**Best for:** Preventing catastrophic failures, forcing verification before fabrication, ensuring all uncertain parts are explicitly flagged before execution — when "good enough" is not acceptable.
+
+---
+
 ### `execution/speculative-exploration-protocol.md` · [protocol]
 **What it is:** Fuses speculative drafting + tree of thoughts + process reward model into a disciplined exploration protocol. Generates multiple candidate branches, evaluates each with process rewards, prunes weak paths, and selects the best-verified solution.
 
@@ -228,6 +237,17 @@ Skills for executing technical work in a bounded, disciplined way.
 **Use it when:** The task is complex enough to need a structured plan before coding, and you want a stronger model to validate feasibility, completeness, and logical ordering before executing.
 
 **Best for:** Implementation planning, pre-coding quality assurance, plan refinement, ensuring plan feasibility through stronger-model validation.
+
+---
+
+### `execution/iterative-spec-authoring/SKILL.md` · [protocol]
+**What it is:** Authors a full technical specification in markdown, then runs it through up to 3 judge-LLM review cycles to surface blind spots, strengthen acceptance criteria, and improve implementation clarity before the user reviews it. Includes a companion OpenRouter judge script and spec template.
+
+**Use it when:** You need a detailed, reviewable spec before starting implementation and want a stronger model to stress-test your plan.
+
+**Best for:** Feature specs, architectural changes, multi-concern features (backend + frontend + email + security).
+
+**Includes:** `references/spec-template.md` (spec template), `references/openrouter-judge.sh` (OpenRouter judge helper)
 
 ---
 
@@ -1160,24 +1180,6 @@ Skills for creating skills, integrating external systems, and development workfl
 
 ---
 
-### `software-development/debug-issue.md` · [protocol]
-**What it is:** A structured debugging workflow that forces reproduce, isolate, fix, verify steps.
-
-**Use it when:** You need to track down a bug methodically instead of guessing.
-
-**Best for:** Reproducing issues, isolating root cause, verified fixes.
-
----
-
-### `software-development/explore-codebase.md` · [framework]
-**What it is:** A structured exploration skill for understanding unfamiliar codebases through progressive deepening.
-
-**Use it when:** You need to understand a new repo, module, or system before making changes.
-
-**Best for:** Onboarding to new codebases, understanding architecture, mapping dependencies.
-
----
-
 ### `software-development/codebase-divide-conquer-search.md` · [protocol]
 **What it is:** A hierarchical multi-agent search protocol for large codebases. Compresses the codebase via summarization (~80%), partitions into candidate zones via semantic similarity, spawns parallel sub-agents for deep investigation, and synthesizes ranked results with confidence scores. Based on Meta-RAG, GenLoc, AgentGroupChat-V2, RepoAudit, and Code-Craft research.
 
@@ -1187,21 +1189,7 @@ Skills for creating skills, integrating external systems, and development workfl
 
 ---
 
-### `software-development/refactor-safely.md` · [protocol]
-**What it is:** A safe refactoring skill built around characterization testing and bounded changes.
-
-**Use it when:** You need to improve code structure without breaking existing behavior.
-
-**Best for:** Incremental refactoring, legacy code improvement, structural cleanup.
-
 ---
-
-### `software-development/review-changes.md` · [framework]
-**What it is:** A structured code review checklist for reviewing changes systematically.
-
-**Use it when:** You need to review a PR, diff, or set of changes with consistent coverage.
-
-**Best for:** Pull request reviews, change verification, catching missed issues.
 
 ---
 
