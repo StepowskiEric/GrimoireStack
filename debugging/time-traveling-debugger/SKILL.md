@@ -6,6 +6,10 @@ description: When a bug occurs, record a deterministic execution trace forward, 
 version: 1.0.0
 priority: high
 tags: [debugging, time-travel, reverse-execution, trace, state-divergence, bytecode]
+...
+
+
+
 ---
 
 # ⚡ The Time-Traveling Debugger

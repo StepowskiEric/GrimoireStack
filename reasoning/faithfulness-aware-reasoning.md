@@ -6,6 +6,10 @@ tags: [faithfulness, hallucination-detection, logical-entailment, verification, 
 author: Research synthesis
 date: 2026-04-20
 version: 1.0.0
+...
+
+
+
 ---
 
 # Faithfulness-Aware Reasoning
@@ -103,7 +107,8 @@ This is different from factual hallucinations (wrong facts) — the facts may be
 
 **Exit Conditions:** Always → EXTRACT
 
----
+___
+
 
 ### EXTRACT
 **Purpose:** Identify all premises explicitly available
@@ -132,7 +137,8 @@ These are your ONLY sources of truth. Everything else must be derived from these
 
 **Exit Conditions:** Always → DRAFT
 
----
+___
+
 
 ### DRAFT
 **Purpose:** Generate reasoning step
@@ -158,7 +164,8 @@ Implicit assumptions: [List any unstated assumptions made]
 
 **Exit Conditions:** Always → ENTAIL
 
----
+___
+
 
 ### ENTAIL
 **Purpose:** Check if step is entailed by premises
@@ -201,7 +208,8 @@ Confidence: [0-1]
 - Verdict = NOT ENTAILED → REPAIR
 - Verdict = CONTRADICTED → REPAIR (with flag)
 
----
+___
+
 
 ### COMMIT
 **Purpose:** Accept faithful reasoning
@@ -213,7 +221,8 @@ Confidence: [0-1]
 
 **Exit Conditions:** Always → CHECK DEPTH
 
----
+___
+
 
 ### REPAIR
 **Purpose:** Fix unfaithful reasoning
@@ -248,7 +257,8 @@ Decision: REVISE / FLAG
 - Decision = REVISE → REVISE state
 - Decision = FLAG → FLAG state
 
----
+___
+
 
 ### REVISE
 **Purpose:** Rewrite step to be faithful
@@ -275,7 +285,8 @@ Revised step:
 
 **Exit Conditions:** Return to ENTAIL with revised step
 
----
+___
+
 
 ### FLAG
 **Purpose:** Mark speculative reasoning
@@ -302,7 +313,8 @@ Confidence reduced to: 0.3
 
 **Exit Conditions:** Always → CHECK DEPTH
 
----
+___
+
 
 ### CHECK DEPTH
 **Purpose:** Decide whether to continue or finalize
@@ -317,7 +329,8 @@ Confidence reduced to: 0.3
 - Too many speculative steps → FINAL (with warning)
 - More reasoning needed → CONTINUE → DRAFT
 
----
+___
+
 
 ### FINAL
 **Purpose:** Assemble final reasoning
@@ -352,7 +365,8 @@ Confidence reduced to: 0.3
 
 **Exit Conditions:** Always → DONE
 
----
+___
+
 
 ### DONE
 **Purpose:** Return faithful reasoning

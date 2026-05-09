@@ -7,6 +7,10 @@ description: >
   The agent maintains hierarchical beliefs about system states, computes Expected Free Energy (EFE) for each
   action, selects policies that minimize predicted surprise, and updates beliefs on observation. Pure stdlib —
   zero external dependencies.
+...
+
+
+
 ---
 
 # Active Inference Agent
@@ -23,7 +27,8 @@ This MCP server implements a practical Active Inference agent for software engin
 
 **Skill type:** MCP server (pure stdlib Python).
 
----
+___
+
 
 ## The Core Math
 
@@ -42,7 +47,8 @@ The agent has two goals:
 - **Exploiting:** Take actions that lead to preferred outcomes (minimize risk)
 - **Exploring:** Take actions that reduce uncertainty about the world (maximize information gain)
 
----
+___
+
 
 ## Tools
 
@@ -57,7 +63,8 @@ The agent has two goals:
 | `set_hyperparams` | Tune learning rate, temperature,EFE weighting |
 | `reset` | Clear all state |
 
----
+___
+
 
 ## Setup: init_beliefs
 
@@ -74,7 +81,8 @@ init_beliefs(
 
 **outcome_preferences:** This is the reward signal — the agent will prefer actions that lead to outcomes with higher preference scores. It's the only domain knowledge you provide.
 
----
+___
+
 
 ## Example: Incident Triage
 
@@ -115,7 +123,8 @@ init_beliefs(
    → shows which state is most likely and which actions are most informative
 ```
 
----
+___
+
 
 ## Hyperparameters
 
@@ -131,7 +140,8 @@ init_beliefs(
 - High `prior_weight` (0.9): Agent prefers actions that get good outcomes — good for exploitation
 - High `temperature`: More exploration; useful when beliefs are uncertain
 
----
+___
+
 
 ## Limitations
 
@@ -139,7 +149,8 @@ init_beliefs(
 - The likelihood matrix `p(o | s, a)` is initialized as uniform and updated through a simplified variational rule. For real scientific use, implement proper variational message passing.
 - For complex decision trees, provide explicit multi-step policies via `policies` parameter rather than relying on single-step greedy selection.
 
----
+___
+
 
 ## References
 

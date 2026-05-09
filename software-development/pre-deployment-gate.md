@@ -1,6 +1,10 @@
 ---
 name: Pre-Deployment Gate
-description: Complete pre-push/pre-deploy checklist combining LLM Pre-Push Review with Vibe Coding Security Hardening. 7-pass protocol: execution grounding, security surface, contextual correctness, structural quality, integration points, production hardening, secrets audit.
+description: "Complete pre-push/pre-deploy checklist combining LLM Pre-Push Review with Vibe Coding Security Hardening. 7-pass protocol: execution grounding, security surface, contextual correctness, structural quality, integration points, production hardening, secrets audit."
+...
+
+
+
 ---
 
 ## Pre-Deployment Gate

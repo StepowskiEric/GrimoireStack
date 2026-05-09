@@ -3,6 +3,10 @@ name: scout
 category: orchestration
 description: Fast context scout — a lightweight sub-agent reads files and returns only distilled, relevant context for the main model. Saves tokens, reduces distraction, and prevents the main model from getting lost in large codebases.
 version: 1.0
+...
+
+
+
 ---
 
 # Scout
@@ -19,7 +23,8 @@ A fast auxiliary agent that pre-reads files and distills only the context the ma
 | **Full** | ~10-30s | ~$0.01-0.10 | You need comprehension, summarization, or cross-file synthesis. |
 | **Hybrid** | Medium | ~$0.01 | Narrow down with Lite, deepen with Full. |
 
----
+___
+
 
 ## Scout-Lite (Deterministic — No LLM)
 
@@ -58,7 +63,8 @@ for f in top_files[:5]:
 - You just need to confirm a file exists or extract a few lines
 - You want zero latency and zero cost
 
----
+___
+
 
 ## Scout-Full (LLM Scout Agent)
 
@@ -103,7 +109,8 @@ result = delegate_task(
 | `deepseek-chat` | Fast | 128K | ~$0.001/K | Cheap, good for code |
 | Local: `llama3.2-3b` | Instant | 128K | $0 | Via Ollama, no API needed |
 
----
+___
+
 
 ## Scout-Hybrid (Recommended Default)
 
@@ -120,7 +127,8 @@ Combine speed with comprehension.
 - When Lite finds too many or too few matches
 - When you're about to do refactoring, debugging, or feature work
 
----
+___
+
 
 ## Workflow: When to Invoke Scout
 
@@ -143,7 +151,8 @@ Main Model Task
                  └─ "Debug this crash" ──→ Scout-Hybrid (narrow scope first)
 ```
 
----
+___
+
 
 ## Anti-Patterns
 
@@ -155,7 +164,8 @@ Main Model Task
 | Return entire file contents | Return only distilled snippets |
 | Let Scout take >60s | Set a timeout; if it overruns, use Lite instead |
 
----
+___
+
 
 ## Token Savings
 
@@ -169,7 +179,8 @@ Scout reduces main model context waste:
 
 **Rule of thumb:** If Scout returns >8 files or >3K tokens, you're scouting too broadly. Narrow the scope first with `rg --files-with-matches`.
 
----
+___
+
 
 ## Companion Scripts
 
@@ -178,7 +189,8 @@ The `references/` directory contains:
 - `model-comparison.md` — benchmark data for Scout-Full model selection
 - `scouting-patterns.md` — common scouting scenarios with mode selection
 
----
+___
+
 
 ## Verification
 

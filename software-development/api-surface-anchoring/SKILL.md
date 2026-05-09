@@ -6,6 +6,10 @@ description: Before writing code that calls any external library or API, verify 
 version: 1.0.0
 priority: high
 tags: [api, verification, hallucination-prevention, code-quality, documentation, sdk]
+...
+
+
+
 ---
 
 # API Surface Anchoring

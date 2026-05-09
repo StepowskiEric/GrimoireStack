@@ -1,0 +1,22 @@
+{
+  "trace_file": "trace_20260506_133706.jsonl",
+  "total_steps": 10000,
+  "crash_site": {
+    "step": 266,
+    "line": 0,
+    "function": "<module>",
+    "error": "unknown",
+    "locals": {
+      "__builtins__": "{'__name__': 'builtins', '__doc__': \"Built-in functions, types, exceptions, and other objects.\\n\\nThis module provides direct access to all 'built-in'\\nidentifiers of Python; for example, builtins.len is\\nthe full name for the built-in function len().\\n\\nThis module is not normally accessed explicitly by most\\napplications, but can be useful in modules that provide\\nobjects with the same name as a built-in value, but in\\nwhich the built-in of that name is also needed.\", '__package__': '', '__loader__': <class '_frozen_importlib.BuiltinImporter'>, '__spec__': ModuleSpec(name='builtins', loader=<class '_frozen_importlib.BuiltinImporter'>, origin='built-in'), '__build_class__': <built-in function __build_class__>, '__import__': <built-in function __import__>, 'abs': <built-in function abs>, 'all': <built-in function all>, 'any': <built-in function any>, 'ascii': <built-in function ascii>, 'bin': <built-in function bin>, 'breakpoint': <built-in function breakpoint>, 'callable': <built-in function callable>, 'chr'...",
+      "__doc__": "None",
+      "__file__": "'/opt/homebrew/Cellar/python@3.14/3.14.4_1/Frameworks/Python.framework/Versions/3.14/lib/python3.14/runpy.py'",
+      "__loader__": "<class '_frozen_importlib.FrozenImporter'>",
+      "__name__": "'runpy'",
+      "__package__": "''",
+      "__spec__": "ModuleSpec(name='runpy', loader=<class '_frozen_importlib.FrozenImporter'>, origin='frozen')"
+    }
+  },
+  "divergence_point": null,
+  "propagation_chain": [],
+  "suspected_cause": "No divergence detected"
+}

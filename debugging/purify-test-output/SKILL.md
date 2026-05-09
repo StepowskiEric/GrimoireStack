@@ -4,6 +4,10 @@ description: Slice failing test output to only failure-relevant lines before sho
 category: debugging
 priority: high
 tags: [testing, token-efficiency, debugging, test-output]
+...
+
+
+
 ---
 
 ## Overview
@@ -151,7 +155,8 @@ The script detects the framework, strips framework frames (`site-packages`, `nod
 
 **If you always want the scripted workflow**, install the `purify-test-output-scripted` variant instead. It replaces the manual protocol with script-driven instructions.
 
----
+___
+
 
 ## Pitfalls
 

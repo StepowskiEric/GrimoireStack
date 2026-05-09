@@ -1,6 +1,10 @@
 ---
 name: Self-Verify Pipeline
-description: Fuse of Bounded Self-Revision + Tool Interactive Critic + Claim Verification Reasoning. An escalating verification chain: internal critique, claim decomposition, external tool verification.
+description: "Fuse of Bounded Self-Revision + Tool Interactive Critic + Claim Verification Reasoning. An escalating verification chain: internal critique, claim decomposition, external tool verification."
+...
+
+
+
 ---
 
 ## Self-Verify Pipeline

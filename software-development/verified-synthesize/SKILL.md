@@ -4,6 +4,10 @@ category: software-development
 description: Generate provably correct code from natural language specs using Dafny formal verification. LLM produces code + Dafny preconditions/postconditions; the script verifies correctness automatically. Based on "From Natural Language to Verified Code" (arXiv:2604.22601).
 version: 1.0
 tags: [formal-verification, Dafny, code-synthesis, correctness, provable]
+...
+
+
+
 ---
 
 # Verified Code Synthesizer

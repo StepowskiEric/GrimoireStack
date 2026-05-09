@@ -7,6 +7,10 @@ description: >
   search for patterns, self-review twice, then execute. Designed for correctness-critical
   features where quality matters more than speed. The governing rule: never hallucinate
   when confused.
+...
+
+
+
 ---
 
 # Structured Feature Planning
@@ -15,7 +19,8 @@ A real engineer doesn't guess when they're unsure. Neither does this skill.
 
 **Governing rule:** If you are confused, uncertain, or don't know something — STOP. Search for it. Get more context. Ask. Do NOT fabricate an answer. A partially-complete plan is infinitely better than a wrong plan built on guessed assumptions.
 
----
+___
+
 
 ## When to Use
 
@@ -30,7 +35,8 @@ Do NOT use when:
 - You already have an approved spec and just need to execute
 - The task is purely exploratory with no implementation delivery
 
----
+___
+
 
 ## Core Workflow
 
@@ -88,7 +94,8 @@ Do NOT use when:
 └─────────────────────────────────────────┘
 ```
 
----
+___
+
 
 ## Phase 1: Explore
 
@@ -107,7 +114,8 @@ Read files relevant to the feature. For each file, emit a structured finding.
 
 **Rule:** If the file references something you haven't read and don't understand — read that file too before continuing. Do not skip context.
 
----
+___
+
 
 ## Phase 2: Search
 
@@ -131,7 +139,8 @@ Read files relevant to the feature. For each file, emit a structured finding.
 
 **Rule:** If 3-5 searches don't resolve your uncertainty, emit a NEEDS_CLARIFICATION block and stop searching. Do not spiral.
 
----
+___
+
 
 ## Phase 3: Stuck Detection
 
@@ -152,7 +161,8 @@ Then STOP PHASE 3 and do not proceed to Phase 4 until resolved.
 
 **The cardinal rule:** Do NOT put a fake answer in the plan. Do NOT assume the implementation detail you don't understand. Do NOT proceed past confusion. An incomplete plan with a honest question is always better than a confident plan built on a guessed answer.
 
----
+___
+
 
 ## Phase 4: Write the Plan
 
@@ -178,7 +188,8 @@ Write the full plan as JSONL. Each step is one atomic action.
 
 **For MEDIUM/LOW steps:** The assumptions field must be explicit. If an assumption turns out wrong during execution, return to this plan and update it.
 
----
+___
+
 
 ## Phase 5: Self-Review Pass 1
 
@@ -196,7 +207,8 @@ Compare the plan against the original user request.
 
 **If scope changed without user approval:** Either correct the plan back to the original scope, or emit a scope_change block and note it for the user.
 
----
+___
+
 
 ## Phase 6: Self-Review Pass 2 (Pre-Mortem)
 
@@ -212,7 +224,8 @@ For each plan step, ask: "if this ships and causes a problem, what went wrong?"
 
 **If a failure mode is severe and the plan has no mitigation:** Stop. Do not proceed. Revert to Phase 3 (stuck detection) and emit a critical NEEDS_CLARIFICATION block.
 
----
+___
+
 
 ## Phase 7: Summary + Execute
 
@@ -222,7 +235,8 @@ For each plan step, ask: "if this ships and causes a problem, what went wrong?"
 
 After emitting summary: begin execution. Use the plan as a reference. If you discover new information during execution that changes any step: update the plan and note what changed and why.
 
----
+___
+
 
 ## The Confusion Rule (Governing)
 
@@ -242,7 +256,8 @@ After emitting summary: begin execution. Use the plan as a reference. If you dis
 
 **Quality over speed is the explicit value here.** A plan that takes an extra 20 minutes to get right is worth more than a fast plan built on 3 guessed assumptions.
 
----
+___
+
 
 ## Output File
 
@@ -250,7 +265,8 @@ All JSONL goes to `feature_plan.jsonl` in the working directory. The file is the
 
 **Script companion:** `scripts/structured_planner.py` — enforces phase ordering, validates JSONL output, manages resume from last incomplete phase.
 
----
+___
+
 
 ## Example Full Run (condensed)
 

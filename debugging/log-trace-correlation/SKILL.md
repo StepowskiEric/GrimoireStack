@@ -3,6 +3,10 @@ name: log-trace-correlation
 category: debugging
 description: Correlate error logs and stack traces to source code to identify root cause and suggest fixes.
 version: 1.0
+...
+
+
+
 ---
 
 # Log-Trace Correlation Skill
@@ -77,4 +81,5 @@ Error: TypeError: Cannot read property 'length' of undefined
 4. Patch: Add if (!items) return []; at start of function.
 5. Verify: Run the request handler with a test that passes undefined; should now return empty array.
 
----
+___
+

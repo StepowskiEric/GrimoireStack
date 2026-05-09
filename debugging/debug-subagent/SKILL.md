@@ -4,6 +4,10 @@ description: A dedicated debugging subagent that must be consulted before making
 category: debugging
 priority: high
 tags: [debugging, subagent, interactive-debugging, program-repair]
+...
+
+
+
 ---
 
 ## Overview

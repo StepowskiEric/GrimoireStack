@@ -1211,6 +1211,15 @@ Skills for creating skills, integrating external systems, and development workfl
 
 ---
 
+### `software-development/review-ladder-plus/SKILL.md` · [protocol]
+**What it is:** Rigorous multi-layer code review process with dual specialized reviewers (Alpha: Correctness/Security/Maintainability; Beta: Performance/Concurrency/Edge Cases), forced test generation for all reported issues, and "Explain Why It's Safe" justification gate for Critical/High findings. Ends with a fresh-context reviewer on the post-fix diff.
+
+**Use it when:** After completing any non-trivial coding task, before merging security/auth/data/concurrency code, or whenever you want production-grade QA instead of casual self-review.
+
+**Best for:** Pre-merge quality gate, multi-perspective review, bug/edge-case catch rate improvement, preventing cosmetic self-review.
+
+---
+
 ### `software-development/lint-battalion/SKILL.md` · [protocol]
 **What it is:** Mass linter error remediation via auto-fix sprint + parallel subagent battalions. Handles 500+ trivial errors mechanically, escalates semantic errors to specialists, and enforces contamination checks.
 

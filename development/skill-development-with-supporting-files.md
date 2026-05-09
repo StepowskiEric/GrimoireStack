@@ -205,7 +205,7 @@ chmod +x ~/.copilot/skills/scripts/helper.py
 
 This skill demonstrates the full pattern:
 
-**Skill file:** `execution/keyword-agnostic-logic-locator.md`
+**Skill file:** `execution/keyword-agnostic-logic-locator`
 - References `scripts/extract_code_facts.py`
 - References `scripts/query_code_facts.py`
 

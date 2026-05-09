@@ -105,12 +105,12 @@ Why this stack works: stabilize first, refactor in bounded slices, keep the blas
 ### Mass lint remediation or post-migration cleanup
 
 1. `software-development/lint-battalion/SKILL.md` — auto-fix sprint, categorize, parallel subagent battalions, contamination checks
-2. `software-development/refactor-safely.md` — for architectural survivors that need structural change
+
 3. `debugging/debug-subagent/SKILL.md` — for semantic errors requiring logic understanding
 4. `execution/checklist-manifesto.md` — phase gates and contamination checks
 5. `software-development/pre-deployment-gate.md` — final lint check before commit
 
-Why this stack works: lint-battalion eliminates 80%+ of errors mechanically, the debug subagent handles semantic survivors without context bloat, refactor-safely manages the architectural edge cases, and the checklist gates prevent contamination from sloppy fixes.
+Why this stack works: lint-battalion eliminates 80%+ of errors mechanically, the debug subagent handles semantic survivors without context bloat, and the checklist gates prevent contamination from sloppy fixes.
 
 ### Large codebase search or bug localization
 
@@ -183,10 +183,10 @@ Why this works: most git "disasters" are actually deterministic state machines. 
 ### Large codebase navigation with structured queries
 
 1. `software-development/code-knowledge-graph-mcp/SKILL.md` — index the repo and query symbols/call-graphs structurally
-2. `software-development/explore-codebase.md` — graph-powered navigation for token-efficient exploration
+
 3. `execution/keyword-agnostic-logic-locator.md` — when semantic search is ambiguous, find code by structure
 
-Why this works: the MCP server eliminates grep noise by returning structured symbol data (definitions, imports, call sites), explore-codebase provides a traversal strategy with token budgets, and the logic locator handles cases where the right code doesn't match the query keywords.
+Why this works: the MCP server eliminates grep noise by returning structured symbol data (definitions, imports, call sites), and the logic locator handles cases where the right code doesn't match the query keywords.
 
 ### Unified developer diagnostics (lint/test/typecheck)
 

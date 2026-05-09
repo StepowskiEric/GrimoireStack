@@ -5,6 +5,10 @@ description: MCP server aggregating lint, test, build, and type-check diagnostic
 version: 1.0.0
 priority: high
 tags: [mcp, diagnostics, lint, tests, tsc, eslint, vitest, pytest, ruff, biome]
+...
+
+
+
 ---
 
 ## Overview
@@ -36,7 +40,8 @@ This skill registers the `dev-diagnostics` MCP server with Hermes Agent, turning
 **How it works:**
 Pure Python stdlib server implementing raw MCP JSON-RPC over stdio. No `pip install` needed.
 
----
+___
+
 
 ## Installation
 
@@ -59,7 +64,8 @@ Tools appear as:
 - `mcp_devdiag_get_summary`
 - `mcp_devdiag_contamination_check`
 
----
+___
+
 
 ## Usage Workflow
 
@@ -111,7 +117,8 @@ Returns:
 }
 ```
 
----
+___
+
 
 ## Pairing with Skills
 
@@ -119,7 +126,8 @@ Returns:
 - **`test-driven-development`** — use `run_diagnostics` with `"scanners": ["vitest"]` for automated test feedback.
 - **`pre-deployment-gate`** — run `eslint + tsc + vitest` via one tool call for the gate check.
 
----
+___
+
 
 ## Limitations
 
@@ -128,7 +136,8 @@ Returns:
 - **Large projects** may hit the 120s default timeout. Increase `timeout` in config for monorepos.
 - **pytest** plain output fallback uses simple regex and may miss some structured failure data.
 
----
+___
+
 
 ## Related Skills
 

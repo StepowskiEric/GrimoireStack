@@ -57,7 +57,7 @@ npx jerry-skills install --agent codex --dest /path/to/custom/dir
 
 Each command copies every skill into a folder bundle with a `SKILL.md` file. Each bundle includes `name`, `description`, and `source: "jerry-skills"` frontmatter so skills are discoverable and identifiable in the skills picker.
 
-For example, `execution/how-to-solve-it-state-machine.md` installs to `execution/how-to-solve-it-state-machine/SKILL.md` under the target directory.
+For example, `execution/how-to-solve-it-state-machine` installs to `execution/how-to-solve-it-state-machine/SKILL.md` under the target directory.
 
 ## VS Code Copilot
 

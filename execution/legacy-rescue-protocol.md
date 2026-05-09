@@ -1,6 +1,10 @@
 ---
 name: Legacy Rescue Protocol
 description: Fuse of Working Effectively with Legacy Code + Refactoring State Machine. Characterize legacy behavior, create seams, then transform in bounded slices with anti-loop protection.
+...
+
+
+
 ---
 
 ## Legacy Rescue Protocol

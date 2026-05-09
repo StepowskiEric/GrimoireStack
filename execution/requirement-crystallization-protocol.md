@@ -1,6 +1,10 @@
 ---
 name: Requirement Crystallization Protocol
 description: Fuse of Socratic Clarification + Intent Specification Protocol. Surfaces the critical assumption, then crystallizes vague requests into locked, testable specs before coding begins.
+...
+
+
+
 ---
 
 ## Requirement Crystallization Protocol

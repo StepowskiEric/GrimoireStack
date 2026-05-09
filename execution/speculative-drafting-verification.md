@@ -6,6 +6,10 @@ tags: [speculative, parallel-exploration, verification, candidate-generation, op
 author: Research synthesis
 date: 2026-04-20
 version: 1.0.0
+...
+
+
+
 ---
 
 # Speculative Drafting with Verification
@@ -109,7 +113,8 @@ speculative_config:
   min_acceptable_score: 0.7
 ```
 
----
+___
+
 
 ### BRANCH
 **Purpose:** Identify distinct solution approaches
@@ -139,7 +144,8 @@ For each, note:
 
 **Exit Conditions:** Always → DRAFT_N
 
----
+___
+
 
 ### DRAFT_N
 **Purpose:** Generate N candidate solutions in parallel
@@ -161,7 +167,8 @@ Solution draft:
 
 **Exit Conditions:** All N drafts complete → VERIFY_PARALLEL
 
----
+___
+
 
 ### VERIFY_PARALLEL
 **Purpose:** Verify all candidates simultaneously
@@ -187,7 +194,8 @@ Issues found: [list]
 
 **Exit Conditions:** All candidates verified → SCORE
 
----
+___
+
 
 ### SCORE
 **Purpose:** Score each verified candidate
@@ -228,7 +236,8 @@ Ranking:
 
 **Exit Conditions:** All scored → SELECT
 
----
+___
+
 
 ### SELECT
 **Purpose:** Choose best candidate or decide to refine
@@ -248,7 +257,8 @@ Ranking:
 - Decision = REFINE → REFINE
 - Decision = REJECT → BRANCH (with new approaches)
 
----
+___
+
 
 ### REFINE
 **Purpose:** Improve selected candidate
@@ -278,7 +288,8 @@ Re-verification:
 
 **Exit Conditions:** After refinement → COMMIT
 
----
+___
+
 
 ### COMMIT
 **Purpose:** Finalize selected solution
@@ -308,7 +319,8 @@ Re-verification:
 
 **Exit Conditions:** Always → DONE
 
----
+___
+
 
 ### DONE
 **Purpose:** Return final solution

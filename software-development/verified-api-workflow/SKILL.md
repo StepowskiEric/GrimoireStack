@@ -3,6 +3,10 @@ source: "jerry-skills"
 name: verified-api-workflow
 category: software-development
 description: Hybrid of api-surface-anchoring + hallucination-anchor-chain. Every verified API surface entry becomes an anchor. Code using external APIs is fully traceable to docs you actually checked.
+...
+
+
+
 ---
 
 # Verified API Workflow

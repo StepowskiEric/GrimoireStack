@@ -6,6 +6,10 @@ description: >
   Detect and mitigate cognitive biases in agent decision-making. Based on arXiv:2410.02820
   which tested GPT-4o, Gemma 2, and Llama 3.1 on 9 established cognitive biases.
   Includes companion script for automated bias auditing.
+...
+
+
+
 ---
 
 # Cognitive Bias Auditor

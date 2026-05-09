@@ -6,6 +6,10 @@ tags: [process-reward, prm, step-reward, backtracking, reasoning-quality]
 author: Research synthesis
 date: 2026-04-20
 version: 1.0.0
+...
+
+
+
 ---
 
 # Process Reward Model Protocol
@@ -126,7 +130,8 @@ prm_config:
   max_backtracks: 3
 ```
 
----
+___
+
 
 ### REWARD_CONFIG
 **Purpose:** Document reward criteria
@@ -172,7 +177,8 @@ Each step updates: new_reward = decay * old_reward + step_reward
 
 **Exit Conditions:** Always → DRAFT
 
----
+___
+
 
 ### DRAFT
 **Purpose:** Generate next reasoning step
@@ -200,7 +206,8 @@ Next step:
 
 **Exit Conditions:** Always → SCORE
 
----
+___
+
 
 ### SCORE
 **Purpose:** Assign process reward to current step
@@ -235,7 +242,8 @@ Weighted Step Reward:
 
 **Exit Conditions:** Always → UPDATE_RUNNING
 
----
+___
+
 
 ### UPDATE_RUNNING
 **Purpose:** Update cumulative reward
@@ -254,7 +262,8 @@ Also track:
 
 **Exit Conditions:** Always → CHECK_REWARD
 
----
+___
+
 
 ### CHECK_REWARD
 **Purpose:** Decide if current path is viable
@@ -269,7 +278,8 @@ Check against thresholds:
 - Path viable → COMMIT
 - Path concerning → BACKTRACK
 
----
+___
+
 
 ### COMMIT
 **Purpose:** Accept step and continue
@@ -281,7 +291,8 @@ Check against thresholds:
 
 **Exit Conditions:** Always → COMPLETE?
 
----
+___
+
 
 ### BACKTRACK
 **Purpose:** Handle low reward situation
@@ -314,7 +325,8 @@ Reason: {{why}}
 - Decision = REVISE → REVISE state
 - Decision = RESTART → RESTART state
 
----
+___
+
 
 ### REVISE
 **Purpose:** Improve the low-reward step
@@ -344,7 +356,8 @@ Revised scores:
 
 **Exit Conditions:** Return to SCORE with revised step
 
----
+___
+
 
 ### RESTART
 **Purpose:** Abandon current path and start fresh
@@ -357,7 +370,8 @@ Revised scores:
 
 **Exit Conditions:** Return to DRAFT with fresh start
 
----
+___
+
 
 ### COMPLETE?
 **Purpose:** Check if solution is complete
@@ -371,7 +385,8 @@ Revised scores:
 - Complete → FINAL
 - More steps needed → DRAFT
 
----
+___
+
 
 ### FINAL
 **Purpose:** Assemble final solution with reward history
@@ -410,7 +425,8 @@ Revised scores:
 
 **Exit Conditions:** Always → DONE
 
----
+___
+
 
 ### DONE
 **Purpose:** Return solution with process quality metrics

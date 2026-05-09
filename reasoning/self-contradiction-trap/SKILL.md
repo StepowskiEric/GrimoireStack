@@ -3,6 +3,10 @@ source: "jerry-skills"
 name: self-contradiction-trap
 category: reasoning
 description: Maintain a belief store of claims made during a session. Detect when new claims contradict existing ones, and force resolution before continuing. Prevents agents from contradicting themselves.
+...
+
+
+
 ---
 
 # Self-Contradiction Trap

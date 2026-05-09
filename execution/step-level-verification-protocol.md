@@ -6,6 +6,10 @@ tags: [verification, reasoning, step-by-step, error-prevention, state-machine]
 author: Research synthesis
 date: 2026-04-20
 version: 1.0.0
+...
+
+
+
 ---
 
 # Step-Level Verification Protocol
@@ -94,7 +98,8 @@ verification_plan:
   step_budget: 10
 ```
 
----
+___
+
 
 ### DRAFT
 **Purpose:** Generate the next reasoning step
@@ -121,7 +126,8 @@ Next step:
 
 **Exit Conditions:** Always → VERIFY
 
----
+___
+
 
 ### VERIFY
 **Purpose:** Check if the drafted step is correct
@@ -157,7 +163,8 @@ Confidence: 0-1
 - Confidence ≥ 0.8 and no critical issues → PASS
 - Confidence < 0.8 or critical issues found → FAIL
 
----
+___
+
 
 ### PASS
 **Purpose:** Commit the verified step
@@ -170,7 +177,8 @@ Confidence: 0-1
 
 **Exit Conditions:** Always → COMPLETE?
 
----
+___
+
 
 ### FAIL
 **Purpose:** Handle verification failure
@@ -196,7 +204,8 @@ Explanation: {{why}}
 
 **Exit Conditions:** Always → BACKTRACK
 
----
+___
+
 
 ### BACKTRACK
 **Purpose:** Return to a valid state and retry
@@ -209,7 +218,8 @@ Explanation: {{why}}
 
 **Exit Conditions:** Always → DRAFT (or INIT if restarting)
 
----
+___
+
 
 ### COMMIT
 **Purpose:** Finalize the verified step chain
@@ -221,7 +231,8 @@ Explanation: {{why}}
 
 **Exit Conditions:** Always → DONE
 
----
+___
+
 
 ### COMPLETE?
 **Purpose:** Check if problem is solved
@@ -235,7 +246,8 @@ Explanation: {{why}}
 - Solution complete → COMMIT
 - More steps needed → DRAFT
 
----
+___
+
 
 ### DONE
 **Purpose:** Terminate with verified solution

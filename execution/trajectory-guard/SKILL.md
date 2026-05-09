@@ -6,6 +6,10 @@ category: execution
 priority: high
 tags: [meta-monitoring, failure-recovery, trajectory, agent-safety, self-correction]
 version: 1.0
+...
+
+
+
 ---
 
 # Trajectory Guard — Detect and Recover from Failure Spirals
@@ -35,7 +39,8 @@ Research basis:
 - Tasks where the approach is clearly working and making forward progress
 - When token budget is critically low (the meta-monitoring itself costs tokens)
 
----
+___
+
 
 ## The Three Failure Modes
 
@@ -53,7 +58,8 @@ The agent has diverged from what was actually requested — adding features, ove
 The agent is making forward progress on the wrong thing, or has stalled on a sub-problem that isn't the core task.
 **Signals:** More than 3 steps spent on a tangential issue, the agent is "cleaning up" or "improving" code instead of solving the stated problem, or the agent has started investigating a different bug than the one reported.
 
----
+___
+
 
 ## Protocol
 
@@ -116,7 +122,8 @@ If after 2 interventions the trajectory is still unproductive:
    - What you'd try next with more context (1-2 sentences)
 3. **Ask the user** for guidance before continuing
 
----
+___
+
 
 ## Integration with Other Skills
 

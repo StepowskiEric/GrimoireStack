@@ -1,12 +1,16 @@
 ---
 name: cot-pruning-reasoning
-description: Compress chain-of-thought reasoning to retain only steps that change the conclusion. Two-pass prune: coarse step-level then fine token-level. Based on CoT-Influx (arXiv:2312.08901) and information bottleneck principles.
+description: "Compress chain-of-thought reasoning to retain only steps that change the conclusion. Two-pass prune: coarse step-level then fine token-level. Based on CoT-Influx (arXiv:2312.08901) and information bottleneck principles."
 category: reasoning
 tags: [chain-of-thought, reasoning, token-efficiency, compression, CoT]
 author: Research synthesis
 source: arXiv:2312.08901, arXiv:2602.14002
 date: 2026-04-22
 version: 1.0.0
+...
+
+
+
 ---
 
 # CoT Pruning Reasoning

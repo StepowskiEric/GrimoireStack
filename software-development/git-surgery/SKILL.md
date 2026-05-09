@@ -5,6 +5,10 @@ description: Recover from common local git disasters fast. Diagnose repo state, 
 version: 1.0.0
 priority: high
 tags: [git, recovery, disaster-recovery, version-control, cli]
+...
+
+
+
 ---
 
 ## Overview
@@ -21,7 +25,8 @@ When to use: any time the repo is in a state you don't fully understand, or when
 
 When NOT to use: remote team coordination issues (use `github-operations`), or when you need to learn git concepts (read a book instead).
 
----
+___
+
 
 ## Installation Notes
 
@@ -35,7 +40,8 @@ npx jerry-skills install --agent pi --skill git-surgery --with-scripts
 
 If installing manually, copy `git_surgery.py` to the same directory as `SKILL.md`.
 
----
+___
+
 
 ## Companion Script
 
@@ -47,7 +53,8 @@ python3 git_surgery.py reflog      # shows recent HEAD history with tips
 python3 git_surgery.py --dry-run   # simulate but don't execute recovery
 ```
 
----
+___
+
 
 ## Diagnostic Quick-Check
 
@@ -61,7 +68,8 @@ git reflog --oneline | head -20
 
 Match the `git status` pattern to a protocol below.
 
----
+___
+
 
 ## Protocol 1: Detached HEAD
 
@@ -105,7 +113,8 @@ git branch -d temp-recovery
 
 **NEVER do:** `git reset --hard` while detached. You will lose commits.
 
----
+___
+
 
 ## Protocol 2: Botched Rebase (Abort)
 
@@ -140,7 +149,8 @@ git rebase --continue
 
 **NEVER do:** `git reset --hard` during a rebase. You will lose the commits being rebased.
 
----
+___
+
 
 ## Protocol 3: Botched Rebase (Continue Despite Conflicts)
 
@@ -166,7 +176,8 @@ git commit --amend
 - Skip = the commit's changes are already present in the target branch (common when cherry-picking or rebasing across branches that partially overlap).
 - Continue = conflicts were resolved and the commit still has meaningful changes.
 
----
+___
+
 
 ## Protocol 4: Accidental Commit to Main (Wrong Branch)
 
@@ -206,7 +217,8 @@ git checkout feature-branch
 git rebase main  # or just keep it as-is and PR normally
 ```
 
----
+___
+
 
 ## Protocol 5: Force-Push Overwrite (Lost Remote Commits)
 
@@ -245,7 +257,8 @@ git branch -r --contains <lost-hash>
 
 **NEVER do:** Force-push again hoping to "undo" the first force-push. That just overwrites more history.
 
----
+___
+
 
 ## Protocol 6: Hard Reset Gone Wrong (Lost Local Commits)
 
@@ -278,7 +291,8 @@ Git cannot recover uncommitted changes after `reset --hard`. If you ran `git sta
 
 **NEVER do:** `git reset --hard` is permanent for uncommitted changes. There is no undo.
 
----
+___
+
 
 ## Protocol 7: Merge Conflict Hell
 
@@ -322,7 +336,8 @@ git commit  # git pre-fills the merge commit message
 git checkout --conflict=diff3 <file>  # shows base/ours/theirs markers with base context
 ```
 
----
+___
+
 
 ## Protocol 8: Cherry-Pick Gone Wrong
 
@@ -351,7 +366,8 @@ git status  # review changes manually
 git commit -m "cherry-picked <hash> with manual resolution"
 ```
 
----
+___
+
 
 ## Protocol 9: Dirty Working Tree, Need to Switch Branches
 
@@ -383,7 +399,8 @@ git reset --hard  # discard working tree if it's a mess
 git stash pop  # try again on clean tree
 ```
 
----
+___
+
 
 ## Protocol 10: Reverting a Public Commit (Shared Branch)
 
@@ -408,7 +425,8 @@ git push origin main
 git revert -m 1 <merge-commit-hash>  # -m 1 = keep the mainline parent
 ```
 
----
+___
+
 
 ## Quick Reference: Dangerous vs Safe Commands
 
@@ -423,7 +441,8 @@ git revert -m 1 <merge-commit-hash>  # -m 1 = keep the mainline parent
 
 **Golden rule:** If a command discards or rewrites history, run `git branch backup-$(date +%s)` first. Branches are cheap. Lost commits are expensive.
 
----
+___
+
 
 ## Related Skills
 

@@ -6,6 +6,10 @@ tags: [multi-agent, weak-link, error-detection, aggregation, quality-control]
 author: Research synthesis
 date: 2026-04-20
 version: 1.0.0
+...
+
+
+
 ---
 
 # Weak-Link Detection for Multi-Agent Systems
@@ -109,7 +113,8 @@ multi_agent_config:
   exclusion_allowed: true
 ```
 
----
+___
+
 
 ### COLLECT
 **Purpose:** Gather outputs from all agents
@@ -121,7 +126,8 @@ multi_agent_config:
 
 **Exit Conditions:** All outputs collected → ASSESS
 
----
+___
+
 
 ### ASSESS
 **Purpose:** Evaluate each agent output individually
@@ -151,7 +157,8 @@ Preliminary quality score: [0-1]
 
 **Exit Conditions:** All assessed → SCORE
 
----
+___
+
 
 ### SCORE
 **Purpose:** Calculate weakness score for each agent
@@ -175,7 +182,8 @@ Higher = weaker link
 
 **Exit Conditions:** All scored → IDENTIFY
 
----
+___
+
 
 ### IDENTIFY
 **Purpose:** Find the weakest link(s)
@@ -194,7 +202,8 @@ Higher = weaker link
 - Decision = STRONG → AGGREGATE
 - Decision = WEAK → ISOLATE
 
----
+___
+
 
 ### ISOLATE
 **Purpose:** Quarantine weak agent output
@@ -228,7 +237,8 @@ Repairable? YES / NO
 - Repairable = YES → REPAIR
 - Repairable = NO → EXCLUDE
 
----
+___
+
 
 ### REPAIR
 **Purpose:** Attempt to fix weak agent output
@@ -259,7 +269,8 @@ Attempt {{N}} of {{max_attempts}}
 - Repair failed → EXCLUDE
 - Max attempts reached → EXCLUDE
 
----
+___
+
 
 ### EXCLUDE
 **Purpose:** Remove weak agent from aggregation
@@ -273,7 +284,8 @@ Attempt {{N}} of {{max_attempts}}
 - Minimum agents remain → AGGREGATE
 - Too few agents → Escalate to human
 
----
+___
+
 
 ### AGGREGATE
 **Purpose:** Combine strong agent outputs
@@ -316,7 +328,8 @@ Dissent areas: [if any]
 
 **Exit Conditions:** Always → FINAL OUTPUT
 
----
+___
+
 
 ### FINAL OUTPUT
 **Purpose:** Present aggregated result
@@ -350,7 +363,8 @@ Dissent areas: [if any]
 
 **Exit Conditions:** Always → DONE
 
----
+___
+
 
 ### DONE
 **Purpose:** Return final result

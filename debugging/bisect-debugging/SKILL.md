@@ -5,6 +5,10 @@ category: debugging
 tags: [debugging, git, bisect, regression, testing]
 author: empirical-testing
 version: 1.0.0
+...
+
+
+
 ---
 
 # Bisect Debugging
@@ -21,7 +25,8 @@ version: 1.0.0
 - The bug is environmental (not code-related)
 - You don't have a reproducible test or symptom
 
----
+___
+
 
 ## Core Method
 
@@ -37,7 +42,8 @@ Step 2: If bad, search left half. If good, search right half.
 Step 3: Repeat until adjacent commits (good, bad) found
 ```
 
----
+___
+
 
 ## State Machine
 
@@ -57,7 +63,8 @@ Step 3: Repeat until adjacent commits (good, bad) found
 
 **Exit Condition:** Have one `good` and one `bad` commit hash.
 
----
+___
+
 
 ### State 2: Bisect (Manual or Automated)
 
@@ -104,7 +111,8 @@ git checkout <middle-commit-hash>
 
 **Exit Condition:** First bad commit identified.
 
----
+___
+
 
 ### State 3: Analyze the Culprit Commit
 
@@ -140,7 +148,8 @@ git checkout <middle-commit-hash>
 
 **Exit Condition:** Understand the root cause of the regression.
 
----
+___
+
 
 ### State 4: Fix or Escalate
 
@@ -156,7 +165,8 @@ git checkout <middle-commit-hash>
 
 **Exit Condition:** Bug is fixed and tests pass.
 
----
+___
+
 
 ## Speed Tips
 
@@ -176,7 +186,8 @@ git bisect run npm test
 # Fully automated — walks away and comes back to the answer
 ```
 
----
+___
+
 
 ## Common Pitfalls
 
@@ -186,7 +197,8 @@ git bisect run npm test
 4. **Build steps required** → Some commits need `npm install` or rebuild between checkouts. Account for this.
 5. **Submodules or generated files** → Ensure clean state between checkouts: `git clean -fd` (use with caution).
 
----
+___
+
 
 ## Definition of Done
 
@@ -195,7 +207,8 @@ git bisect run npm test
 - Root cause documented
 - Fix applied and verified with tests
 
----
+___
+
 
 ## Example
 

@@ -3,6 +3,10 @@ name: add-new-skill-to-repository
 category: development
 description: Process for adding a new skill to Jerry's agent skills repository with proper documentation, installation support, and cross-platform verification.
 version: 1.0
+...
+
+
+
 ---
 
 # Add New Skill to Jerry's Agent Skills Repository
@@ -33,12 +37,14 @@ Standardized process for contributing a new skill to the Jerry's agent skills re
 - Structure: `topic/skill-name/SKILL.md`
 - Ensure the skill follows the standard format with YAML frontmatter:
   ```yaml
-  ---
+  ___
+
   name: skill-name
   category: topic
   description: Clear description of what the skill does
   version: 1.0
-  ---
+  ___
+
   ```
 
 ### 2. Update Package.json for Inclusion

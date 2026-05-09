@@ -140,7 +140,7 @@ Traditional organization for users who prefer categorical browsing.
 
 Skills for executing technical work in a bounded, disciplined way.
 
-### `execution/how-to-solve-it-state-machine.md` · [protocol]
+### `execution/how-to-solve-it-state-machine` · [protocol]
 **What it is:** A disciplined problem-solving protocol...
 
 **Use it when:** The task is hard, uncertain...
@@ -149,7 +149,7 @@ Skills for executing technical work in a bounded, disciplined way.
 
 ---
 
-### `execution/ooda-loop-state-machine.md` · [protocol]
+### `execution/ooda-loop-state-machine` · [protocol]
 **What it is:** Observe-Orient-Decide-Act cycle...
 ```
 

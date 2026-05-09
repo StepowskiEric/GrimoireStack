@@ -9,6 +9,10 @@ description: >
   full context preservation so the next agent doesn't lose anything.
 version: 1.0.0
 author: Eric
+...
+
+
+
 ---
 
 # Summarize — Emergency Stop + Handoff Report
@@ -22,7 +26,8 @@ Your only job right now: produce the handoff report below, completely, then stop
 > **Note:** When `deliver: 'origin'` (direct to user), omit the STOP line above.
 > It is agent-to-agent signaling only — it is noise when the audience is the user.
 
----
+___
+
 
 ## What This Is
 
@@ -35,7 +40,8 @@ A handoff report for the next agent. The next agent opens this session with **ze
 
 Your job: make them feel like they were here the whole time.
 
----
+___
+
 
 ## Handoff Report Template
 
@@ -88,7 +94,8 @@ END HANDOFF REPORT — SESSION COMPLETE
 ═══════════════════════════════════════════════
 ```
 
----
+___
+
 
 ## Rules for Writing the Report
 
@@ -100,7 +107,8 @@ END HANDOFF REPORT — SESSION COMPLETE
 6. **Do not apologize.** No "sorry for the confusion" or "I wasn't able to finish". Just facts.
 7. **Preserve context about the user.** Any preferences, quirks, or communication style you observed.
 
----
+___
+
 
 ## When to Use This Skill
 
@@ -114,7 +122,8 @@ END HANDOFF REPORT — SESSION COMPLETE
 | Session was interrupted / tools not responding | Yes — emergency stop |
 | User explicitly asks for a handoff | Yes |
 
----
+___
+
 
 ## After Writing the Report
 

@@ -3,6 +3,10 @@ source: "jerry-skills"
 name: context-rot-pruner
 category: reasoning
 description: Apply exponential decay to context messages so old, unreferenced content loses weight and gets pruned before the context window overflows. Extends useful context life by 2-3x.
+...
+
+
+
 ---
 
 # Context Rot Pruner

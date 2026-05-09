@@ -4,6 +4,10 @@ category: reasoning
 description: Detect when LLM agent reasoning is collapsing into chaos using Lyapunov exponent analysis over token trajectories. Based on "Chaotic Dynamics in Multi-LLM Deliberation" (arXiv:2603.09127).
 version: 1.0
 tags: [reasoning, chaos-theory, dynamical-systems, divergence-detection, Lyapunov]
+...
+
+
+
 ---
 
 # Chaos Detector
@@ -148,7 +152,8 @@ python ~/Documents/Jerrys-agent-skills/reasoning/chaos-detector/scripts/lyapunov
 
 Should return `lyapunov_exponent > 0` (diverging).
 
----
+___
+
 
 ## Limitations
 

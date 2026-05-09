@@ -1,6 +1,10 @@
 ---
 name: Long-Task Survival Kit
-description: Fuse of Assumption Grounding + Trajectory Guard + Context Budget Operator. Recurring checkpoint protocol that prevents agent decay on complex tasks: context overflow, failure spirals, and hallucinated facts.
+description: "Fuse of Assumption Grounding + Trajectory Guard + Context Budget Operator. Recurring checkpoint protocol that prevents agent decay on complex tasks: context overflow, failure spirals, and hallucinated facts."
+...
+
+
+
 ---
 
 ## Long-Task Survival Kit

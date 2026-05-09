@@ -4,6 +4,10 @@ description: Loop of generate patch → run test → capture runtime state → r
 category: debugging
 priority: high
 tags: [debugging, iterative-repair, patch-augmentation, program-repair]
+...
+
+
+
 ---
 
 ## Overview

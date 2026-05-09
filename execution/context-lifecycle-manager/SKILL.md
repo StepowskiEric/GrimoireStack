@@ -6,6 +6,10 @@ description: >
   Insane hybrid of context-rot-pruner + context-budget-operator + token-budget-operator.
   Full lifecycle management: messages are born → tracked by budget operator → decayed/pruned by rot-pruner →
   optimized by token-budget-operator. Shares one context_state.jsonl artifact.
+...
+
+
+
 ---
 
 # Context Lifecycle Manager

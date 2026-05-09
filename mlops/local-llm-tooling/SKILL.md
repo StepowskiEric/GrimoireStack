@@ -3,6 +3,10 @@ name: local-llm-tooling
 category: mlops
 description: Skills for running, prompting, and extracting structured output from local LLMs (e.g., Ollama, llama.cpp).
 version: 1.0
+...
+
+
+
 ---
 
 # Local LLM Tooling Skill
@@ -104,4 +108,5 @@ echo "$response" | jq '{
   year: .year|tonumber
 }'
 ```
----
+___
+

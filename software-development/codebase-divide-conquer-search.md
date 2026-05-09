@@ -1,6 +1,10 @@
 ---
 name: codebase-divide-conquer-search
 description: Hierarchical multi-agent search protocol for large codebases. Compresses codebase via summarization, partitions into candidate zones via semantic similarity, spawns parallel sub-agents for deep investigation, and synthesizes ranked results with confidence scores.
+...
+
+
+
 ---
 
 # Skill: Codebase Divide-and-Conquer Search
@@ -30,7 +34,8 @@ pip install tree-sitter tree-sitter-python tree-sitter-javascript tree-sitter-ty
 
 Use this mode when you cannot run local Python or the codebase is small enough that the agent's built-in tools (search_files, code-review-graph MCP, delegate_task) are sufficient. The protocol below works identically — you manually perform the Comprehend and Divide phases using agent tools instead of the script.
 
----
+___
+
 
 ## Purpose
 
@@ -48,7 +53,8 @@ This protocol implements the convergent algorithm found across five recent resea
 
 All five papers agree on the same 4-phase structure. This skill operationalizes it for agent execution.
 
----
+___
+
 
 ## When to Use
 
@@ -63,7 +69,8 @@ All five papers agree on the same 4-phase structure. This skill operationalizes 
 - The codebase is small (<20 files) and easily searchable
 - You are doing a simple text replacement across known files
 
----
+___
+
 
 ## The Convergent Algorithm
 
@@ -88,7 +95,8 @@ Why this works:
 - **RepoAudit** proved demand-driven traversal avoids path explosion
 - **Code-Craft** proved hierarchical graph summarization enables multi-resolution zoom
 
----
+___
+
 
 ## Phase 0: Setup / Comprehend
 
@@ -144,7 +152,8 @@ Use agent tools to build the summary tree manually:
 
 **Research constraint:** Meta-RAG achieves 79.8% compression by summarizing at file/class/function granularity. Do not skip the function level for files >200 lines.
 
----
+___
+
 
 ## Phase 1: Query Embedding & Divide
 
@@ -195,7 +204,8 @@ Output:
 - Max zones (sub-agents): 3-5 (AgentGroupChat-V2: diminishing returns after 5)
 - Context budget per zone: ~13K-50K tokens (Meta-RAG sweet spot)
 
----
+___
+
 
 ## Phase 2: Conquer (Parallel Sub-Agent Deep Dives)
 
@@ -230,7 +240,8 @@ Return format:
 - Always include file paths + line numbers in evidence
 - Sub-agents should use ReAct-style interleaving: reason → act (search/read) → observe → repeat
 
----
+___
+
 
 ## Phase 3: Synthesize
 
@@ -270,7 +281,8 @@ codebase_search_results:
       reason: "Only defines Session interface, no validation logic"
 ```
 
----
+___
+
 
 ## Phase 4: Deepen (Optional)
 
@@ -289,7 +301,8 @@ Action:
 
 This implements the **GenLoc ReAct iterative deepening** and **Meta-RAG hierarchical drill-down**.
 
----
+___
+
 
 ## State Machine
 
@@ -319,7 +332,8 @@ This implements the **GenLoc ReAct iterative deepening** and **Meta-RAG hierarch
 **Action:** Re-run States 1-3 on most promising zone at finer granularity.
 **Exit condition:** Confidence >= 0.75 or max 2 deepening iterations reached.
 
----
+___
+
 
 ## Tool Gating
 
@@ -349,7 +363,8 @@ Allowed:
 - read_file (for adjudication)
 - File edits only if the original task included fixing
 
----
+___
+
 
 ## Circuit Breakers
 
@@ -359,7 +374,8 @@ Stop and reassess if:
 - Sub-agents keep exploring outside their zones (zone boundaries were wrong)
 - After 2 deepening iterations, confidence is still < 0.75 (escalate to human)
 
----
+___
+
 
 ## Integration with Other Skills
 
@@ -371,7 +387,8 @@ Stop and reassess if:
 | `tree-of-thoughts` | Use for branching hypotheses about where the target lives in Phase 1 |
 | `debug-subagent` | Use as the Phase 2 conquer agent template when the query is bug-specific |
 
----
+___
+
 
 ## Example: Bug Localization Walkthrough
 
@@ -406,7 +423,8 @@ Sub-agent for Zone 3 returns: `[]`
 ### Step 3 — Synthesize
 Top finding: `src/auth/config.ts:8` with confidence 0.98. Single source, no contradiction. No deepen needed.
 
----
+___
+
 
 ## Anti-Patterns
 
@@ -424,7 +442,8 @@ Top finding: `src/auth/config.ts:8` with confidence 0.98. Single source, no cont
 - Cross-validate findings across zones
 - Deepen when confidence is borderline
 
----
+___
+
 
 ## Script Reference
 

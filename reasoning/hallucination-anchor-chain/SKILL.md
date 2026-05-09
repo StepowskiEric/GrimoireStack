@@ -3,6 +3,10 @@ source: "jerry-skills"
 name: hallucination-anchor-chain
 category: reasoning
 description: Force every factual claim to be anchored to a verified source. Unanchored claims are marked unverified and hidden from outputs. Builds a verifiable chain of evidence to eliminate hallucination.
+...
+
+
+
 ---
 
 # Hallucination Anchor Chain

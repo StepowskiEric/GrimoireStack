@@ -1,6 +1,10 @@
 ---
 name: Pre-Push LLM Code Review
 description: Pre-push code review checklist and protocol for catching systematic LLM coding failures — overcorrection, hallucinated logic, silent vulnerabilities, missing edge cases, and context-ignorant reviews. Grounded in arXiv research on LLM code review failure modes.
+...
+
+
+
 ---
 
 ## Pre-Push LLM Code Review
@@ -23,7 +27,8 @@ LLMs have systematic blind spots that differ from human mistakes:
 
 Run this as a **structured pass** over your diff before pushing. Each section is independent — complete all.
 
----
+___
+
 
 ### PASS 1: Execution Grounding
 
@@ -37,7 +42,8 @@ Run this as a **structured pass** over your diff before pushing. Each section is
 
 **Red flag:** If you're reading code and "it looks right" without running it — that's the Mental-Reality Gap. Execute it.
 
----
+___
+
 
 ### PASS 2: Security Surface
 
@@ -52,7 +58,8 @@ Run this as a **structured pass** over your diff before pushing. Each section is
 
 **Red flag:** "Functionally correct but vulnerable" is the LLM default state (2604.17014). If you only tested the happy path, you haven't tested security.
 
----
+___
+
 
 ### PASS 3: Contextual Correctness
 
@@ -66,7 +73,8 @@ Run this as a **structured pass** over your diff before pushing. Each section is
 
 **Red flag:** If the diff is bigger than expected, the LLM probably went beyond scope. Shrink it.
 
----
+___
+
 
 ### PASS 4: Structural Quality
 
@@ -81,7 +89,8 @@ Run this as a **structured pass** over your diff before pushing. Each section is
 
 **Red flag:** "Clean" code that took 200 lines to do what should take 50 is a sign of LLM over-engineering.
 
----
+___
+
 
 ### PASS 5: Integration Points
 
@@ -95,7 +104,8 @@ Run this as a **structured pass** over your diff before pushing. Each section is
 
 **Red flag:** "It works on my machine" = untested integration. If you didn't verify the full flow, it's unverified.
 
----
+___
+
 
 ### Quick Mode (for small changes)
 
@@ -109,7 +119,8 @@ For diffs under ~50 lines, use this abbreviated checklist:
 
 If any answer is unclear, escalate to full protocol.
 
----
+___
+
 
 ### Anti-Patterns to Watch For
 
@@ -128,7 +139,8 @@ These are specific LLM-generated patterns that look correct but are wrong:
 | `useEffect` for derived state | Re-renders on every change, race conditions. | Use `useMemo` or compute inline. |
 | Hardcoded wait/sleep for async | Timing-dependent, flaky, slow. | Use proper async primitives (polling, events, etc.) |
 
----
+___
+
 
 ### Execution
 
@@ -153,7 +165,8 @@ git diff main | grep -iE '(api_key|secret|token|password|credential)' || echo "c
 
 If any checklist item fails, fix before pushing. No exceptions.
 
----
+___
+
 
 ### Research Sources
 

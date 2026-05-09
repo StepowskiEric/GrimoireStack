@@ -5,6 +5,10 @@ description: Mass linter error remediation via auto-fix sprint + parallel subage
 version: 1.0
 priority: high
 tags: [linting, bulk-fix, parallel-agents, code-quality, mass-remediation]
+...
+
+
+
 ---
 
 ## Overview
@@ -20,7 +24,8 @@ This skill turns mass lint remediation into a pipeline:
 
 Research on multi-agent code search (AgentGroupChat-V2, RepoAudit) shows parallel agents on partitioned tasks scale sub-linearly. Linting is ideal for this: errors are independent, fixes are local, and verification is objective.
 
----
+___
+
 
 ## When to Use
 
@@ -36,7 +41,8 @@ Research on multi-agent code search (AgentGroupChat-V2, RepoAudit) shows paralle
 - Security or logic bugs flagged by linter (route to `debug-subagent`)
 - Token budget severely constrained (subagents multiply cost)
 
----
+___
+
 
 ## Installation Notes
 
@@ -60,7 +66,8 @@ python ~/.hermes/skills/software-development/lint-battalion/lint_battalion.py --
 
 For manual copy or development symlinks, see the [skill-development-with-supporting-files](development/skill-development-with-supporting-files.md) skill.
 
----
+___
+
 
 ## Core Protocol
 
@@ -86,7 +93,8 @@ npx tsc --noEmit
 
 **Log:** Record how many errors auto-fix eliminated and how many remain.
 
----
+___
+
 
 ### Phase 1 — Inventory & Categorize
 
@@ -121,7 +129,8 @@ npx eslint . --format json | jq -r '.[] | .ruleId' | sort | uniq -c | sort -rn
 
 **Tooling:** If the linter does not support JSON output, grep/sed the text output into a structured list per file and rule.
 
----
+___
+
 
 ### Phase 2 — Batch Assignment
 
@@ -146,7 +155,8 @@ Group errors into battalion-sized batches.
 - Errors in generated files (auto-generated, node_modules, lockfiles — skip)
 - Errors in test files vs source files (different standards may apply)
 
----
+___
+
 
 ### Phase 3 — Parallel Execution
 
@@ -183,7 +193,8 @@ Errors:
 - Each subagent gets read access to assigned files + adjacent imports/types
 - Each subagent gets NO write access outside its assigned files
 
----
+___
+
 
 ### Phase 4 — Verification & Contamination Check
 
@@ -208,7 +219,8 @@ After all subagents report:
 - Never assign the same file to multiple subagents
 - Run linter per-subagent during Phase 3 (catches most contamination early)
 
----
+___
+
 
 ### Phase 5 — Triage Survivors
 
@@ -223,7 +235,8 @@ Errors surviving 3 cycles fall into these buckets:
 
 **Escalation rule:** If >10% of original errors are survivors, re-examine categorization. You likely misclassified architectural errors as semantic or mechanical.
 
----
+___
+
 
 ## State Tracking
 
@@ -261,7 +274,8 @@ Maintain a running log:
 - 4 semantic → `debug-subagent`
 ```
 
----
+___
+
 
 ## Iteration Budget
 
@@ -274,7 +288,8 @@ Maintain a running log:
 
 **Token budget heuristic:** Mechanical fixes cost ~100 tokens/error. Semantic fixes cost ~500 tokens/error. Plan accordingly.
 
----
+___
+
 
 ## Anti-Patterns
 
@@ -285,7 +300,8 @@ Maintain a running log:
 - **Infinite retry:** If a batch fails 3 times, escalate — do not loop forever.
 - **Ignoring new errors:** Always run full linter after. Contamination is real.
 
----
+___
+
 
 ## Integration
 
@@ -298,7 +314,8 @@ Maintain a running log:
 | `iterative-patch-repair` | If a subagent's first fix is close but wrong |
 | `pre-deployment-gate` | Final lint check before commit |
 
----
+___
+
 
 ## Research Basis
 
@@ -306,7 +323,8 @@ Maintain a running log:
 - **RepoAudit** (arXiv:2501.18160): Demand-driven partitioning keeps agent context focused.
 - **Meta-RAG on Large Codebases** (arXiv:2508.02611): Hierarchical summarization + partitioning beats monolithic approaches on large codebases.
 
----
+___
+
 
 ## Example
 

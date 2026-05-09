@@ -1,6 +1,10 @@
 ---
 name: Task Intake Protocol
 description: Universal preflight gate combining Cynefin problem classification, ETTO rigor calibration, and Recognition-Primed Triage into a single 3-phase decision. Classify the problem, set the evidence bar, take the first action.
+...
+
+
+
 ---
 
 ## Task Intake Protocol

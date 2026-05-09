@@ -6,6 +6,10 @@ tags: [specification, intent, requirements, code-generation, state-machine, BDD,
 author: Research synthesis
 date: 2026-04-22
 version: 1.0.0
+...
+
+
+
 ---
 
 # Intent Specification Protocol
@@ -123,7 +127,8 @@ init:
   reason: "Why spec is/isn't needed"
 ```
 
----
+___
+
 
 ### PARSE
 **Purpose:** Extract the core intent — the smallest change that satisfies the request.
@@ -160,7 +165,8 @@ parse:
       likelihood: "high|medium|low"
 ```
 
----
+___
+
 
 ### CONSTRAIN
 **Purpose:** Identify invariants — what must NOT change. This is the guardrail that prevents over-engineering.
@@ -201,7 +207,8 @@ constraints:
     may_modify: ["Internal implementation of bar()"]
 ```
 
----
+___
+
 
 ### FORMALIZE
 **Purpose:** Write executable scenarios that define "done." Not full BDD — just enough to be unambiguous.
@@ -256,7 +263,8 @@ scenarios:
     then: "Response identical to pre-change behavior"
 ```
 
----
+___
+
 
 ### GATE
 **Purpose:** Check for ambiguity. If the spec has gaps, ask before coding.
@@ -282,7 +290,8 @@ scenarios:
 [ ] The minimal surface area is still minimal (no scope creep)
 ```
 
----
+___
+
 
 ### AMBIGUOUS
 **Purpose:** Surface the specific ambiguity to the user with options.
@@ -314,7 +323,8 @@ Which interpretation matches your intent? Or describe what you actually want.
 
 **Exit Conditions:** User response received → CLARIFY
 
----
+___
+
 
 ### CLARIFY
 **Purpose:** Integrate user's clarification into the spec and re-formalize.
@@ -326,7 +336,8 @@ Which interpretation matches your intent? Or describe what you actually want.
 
 **Exit Conditions:** Always → FORMALIZE
 
----
+___
+
 
 ### EXECUTE
 **Purpose:** Generate code constrained by the spec. Minimal change that satisfies all scenarios.
@@ -346,7 +357,8 @@ Which interpretation matches your intent? Or describe what you actually want.
 
 **Exit Conditions:** Code generated → VERIFY
 
----
+___
+
 
 ### VERIFY
 **Purpose:** Run each scenario against the generated code.
@@ -369,7 +381,8 @@ For each scenario:
 - All scenarios pass → DONE
 - Any scenario fails → REPAIR
 
----
+___
+
 
 ### REPAIR
 **Purpose:** Fix the code to satisfy the failing scenario. Key: repair against the spec, not the original request.
@@ -400,7 +413,8 @@ Do NOT add error handling, logging, or "improvements" not in the spec.
 - Fix applied → VERIFY (re-run all scenarios)
 - 3 attempts exceeded → re-enter FORMALIZE with the failing scenario as new input
 
----
+___
+
 
 ### DONE
 **Purpose:** The spec is satisfied. Report what was done.

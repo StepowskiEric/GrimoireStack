@@ -7,6 +7,10 @@ author: Research synthesis
 source: arXiv:2604.12046, arXiv:2604.20098, arXiv:2604.16909
 date: 2026-04-22
 version: 1.0.0
+...
+
+
+
 ---
 
 # Claim Verification Reasoning

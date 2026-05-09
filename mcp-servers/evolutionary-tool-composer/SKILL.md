@@ -6,6 +6,10 @@ description: >
   MCP server that runs an evolutionary algorithm to discover and optimize agent tool chains,
   prompt strategies, and code solutions. Based on AlphaEvolve/OpenEvolve principles — LLM-driven
   evolutionary search with automated fitness evaluation.
+...
+
+
+
 ---
 
 # Evolutionary Tool Composer
@@ -16,7 +20,8 @@ An MCP server that runs an evolutionary algorithm to discover and optimize agent
 
 **Skill type:** MCP server (pure stdlib Python; zero external dependencies beyond the Python standard library).
 
----
+___
+
 
 ## Tools
 
@@ -30,7 +35,8 @@ An MCP server that runs an evolutionary algorithm to discover and optimize agent
 | `evolve_migrate` | Inject an external solution into the population |
 | `evolve_reset` | Clear the engine |
 
----
+___
+
 
 ## Quick Start
 
@@ -42,7 +48,8 @@ evolve_init(task="Write a SQL query that joins orders to customers and filters b
 ```
 Then call `evolve_step()` repeatedly, checking `evolve_get_best()` each time.
 
----
+___
+
 
 ## Fitness Function
 
@@ -67,7 +74,8 @@ Returns a `float` — higher is better. The fitness function is executed in a sa
 
 **Note:** The server calls your fitness function with **positional args**: `fitness_fn(genes_val, task_val)`. Your parameter names don't matter — only the positional order does. Named functions using `def fitness_fn(genes, task):` work correctly.
 
----
+___
+
 
 ## Example Workflow
 
@@ -115,7 +123,8 @@ Returns a `float` — higher is better. The fitness function is executed in a sa
 3. evolve_get_best() → refined pipeline
 ```
 
----
+___
+
 
 ## Algorithm Details
 
@@ -126,7 +135,8 @@ Returns a `float` — higher is better. The fitness function is executed in a sa
 - **Fitness evaluation:** Subprocess sandbox, 10s timeout, -1000 on error/-timeout
 - **Population:** Fixed size, initialized from mutated seed
 
----
+___
+
 
 ## Configuration
 
@@ -136,7 +146,8 @@ Returns a `float` — higher is better. The fitness function is executed in a sa
 | `mutate_rate` | 0.3 | Per-line mutation probability per generation |
 | `tournament_k` | 3 | Tournament size for selection |
 
----
+___
+
 
 ## Limitations
 
@@ -144,7 +155,8 @@ Returns a `float` — higher is better. The fitness function is executed in a sa
 - The agent should call `evolve_step` 5-15 times before calling `evolve_get_best` — evolutionary algorithms need generations to work.
 - If all individuals get fitness -1000 (fitness function errors), the population is stuck. Fix the fitness expression.
 
----
+___
+
 
 ## References
 

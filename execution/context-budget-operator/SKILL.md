@@ -5,6 +5,10 @@ description: Manage finite context windows explicitly. Track token budget, class
 category: execution
 priority: high
 tags: [context-management, token-efficiency, scaling, agent-safety, long-horizon]
+...
+
+
+
 ---
 
 ## Overview
@@ -155,7 +159,8 @@ Context budget log:
 [Turn 3] read_file main.py (full): ~1800 tokens
 [Turn 4] grep search results: ~300 tokens
 [Turn 5] reasoning: ~500 tokens
----
+___
+
 Total: ~3200 tokens | Remaining: ~12800 tokens | Status: GREEN
 ```
 
