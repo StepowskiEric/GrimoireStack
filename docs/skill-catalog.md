@@ -993,6 +993,19 @@ Skills for structuring how agents plan, route, delegate, and control complex wor
 
 ---
 
+### `orchestration/octopus.md` · [protocol]
+**What it is:** A distributed multi-agent orchestration pattern inspired by octopus biology — central brain issues contracts, arms operate with local autonomy, shared workspace enables inter-arm coordination, autotomy/retraction on failure.
+
+**Use it when:** The task has 3+ independently executable workstreams sharing a common interface/schema, parallel execution would save significant wall-clock time, and work benefits from local decision-making.
+
+**Best for:** Multi-agent coordination, parallel delegation, contract-driven decomposition, robust error handling with quarantine and recovery. Not for linear/sequential tasks with no parallelism.
+
+**Key techniques:** Contract-first decomposition (define shared interfaces before launching arms), bounded concurrency (max 5 active arms), compression mandate (sub-agents return structured JSON <50 words, never raw logs), inter-arm coordination via shared workspace (arms read each other's outputs without escalating to main agent), retraction protocol (quarantine partial artifacts, halt downstream dependents on failure).
+
+**Includes:** `references/concrete-example.md` (Feature Flag Dashboard walkthrough), `references/limitations-gotchas.md` (sub-agent fs isolation, contract immutability risks, structured-file collision rules)
+
+---
+
 ### Power Combinations
 
 - **Tree of Thoughts + Monte Carlo Tree Search** → generate diverse branches first, then allocate deeper effort to the branches that earn it through evidence rather than equal exploration or first-branch lock-in
