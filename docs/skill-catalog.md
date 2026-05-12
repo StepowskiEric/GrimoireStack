@@ -1200,6 +1200,18 @@ Skills for creating skills, integrating external systems, and development workfl
 
 **Best for:** Pre-push review, LLM-generated code QA, catching silent vulnerabilities, preventing scope creep, anti-pattern detection.
 
+
+---
+
+### `software-development/super-review-typescript.md` · [protocol]
+**What it is:** A five-pass code reviewer specifically targeting AI‑generated TypeScript failure modes: security vulnerabilities (CWE scan), hallucinated APIs/imports, logic bugs (N+1, off‑by‑one, silent swallowing), TypeScript type‑safety violations (`any` abuse, `!` over‑use), and architectural/concurrency decay. Based on arXiv research showing 57–62% of LLM‑generated code contains security vulnerabilities and 32% hallucinate API existence.
+
+
+**Use it when:** After a vibe‑coded session, before committing AI‑authored TypeScript, as a PR gate for TypeScript projects, or when the volume of AI‑generated code is high (Volume‑Quality Inverse Law).
+
+**Best for:** TypeScript/JavaScript codebases with AI‑authored files, pre‑deployment review, security auditing of LLM output, catching hallucinated methods (`str.isNullOrEmpty()`, `.first()`, etc.), N+1 queries, and concurrency bugs that static analyzers miss.
+
+
 ---
 
 ### `software-development/pre-deployment-gate.md` · [protocol]
