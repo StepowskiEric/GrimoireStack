@@ -25,7 +25,9 @@
 | End-to-end debugging pipeline needed | [`debug-to-fix-pipeline`](../debugging/debug-to-fix-pipeline.md) | Fuses 5 debugging skills: abductive + subagent + instrumentation + purify + patch repair | Hybrid |
 | Need to understand unfamiliar code before fixing | [`explore-codebase`](../software-development/explore-codebase.md) | Graph-powered navigation with token efficiency | Framework |
 | Large codebase, bug location unknown | [`codebase-divide-conquer-search`](../software-development/codebase-divide-conquer-search.md) | Hierarchical summarization + parallel agent deep dives | Based on Meta-RAG / GenLoc |
-| Debugging session getting long, agent stuck | [`long-task-survival-kit`](../execution/long-task-survival-kit.md) | Checkpoint every 5 calls: context, trajectory, assumptions | |
+| Large codebase, want to preserve investigation trail | [`navigator`](../orchestration/navigator/SKILL.md) | Scout + Thought-Retriever; builds retrievable reasoning traces |
+| Bug with multiple plausible causes, root cause unclear | [`specter`](../debugging/specter/SKILL.md) | Abductive hypotheses + structural code location — reason backwards from symptom |
+| Debugging session getting long, agent stuck | [`long-task-survival-kit`](../execution/long-task-survival-kit.md) | Checkpoint every 5 calls: context, trajectory, assumptions |
 | Bug crashes but root cause is not at the crash site | [`time-traveling-debugger`](../debugging/time-traveling-debugger/SKILL.md) | Forward trace + backward rewind to find state divergence | Includes MCP server |
 
 **Not recommended for typical code bugs** (empirically ineffective in our tests):
@@ -44,6 +46,9 @@
 | Hard problem, don't know where to start | [`how-to-solve-it-state-machine`](../execution/how-to-solve-it-state-machine.md) | Forces problem framing before action |
 | Multiple possible causes, novel failure | [`abductive-first-debugging`](../execution/abductive-first-debugging.md) | Generates competing hypotheses, picks best explanation |
 | Need to locate relevant code by structure | [`keyword-agnostic-logic-locator`](../execution/keyword-agnostic-logic-locator.md) | Finds code by structure, not by grepping |
+| Multiple strategy branches, need to allocate effort wisely | [`tree-of-thoughts-plus-monte-carlo-tree-search`](../orchestration/tree-of-thoughts-plus-monte-carlo-tree-search.md) | ToT generates branches; MCTS allocates effort — prevents first-branch lock-in |
+| Decision with multiple plausible options, need to stress-test | [`jury`](../orchestration/jury/SKILL.md) | Parallel perspectives argue; the conflict graph reveals what matters |
+| Complex problem, want to verify understanding before acting | [`prism`](../reasoning/prism/SKILL.md) | Confidence calibration + compression test; if you can't compress it, you don't get it |
 | Stuck in a rut, same failed attempts | [`cross-domain-analogy-generator`](../systems-and-architecture/cross-domain-analogy-generator.md) | Forces foreign-domain analogies to break fixation |
 | Prematurely jumping to solutions | [`ooda-loop-state-machine`](../execution/ooda-loop-state-machine.md) | Observe → Orient → Decide → Act cycle |
 | Over-thinking trivial problems | [`cognitive-friction-governor`](../execution/cognitive-friction-governor.md) | Budgets deliberation, forces decision |
@@ -82,6 +87,7 @@
 | Vague request, need to crystallize before coding | [`requirement-crystallization-protocol`](../execution/requirement-crystallization-protocol.md) | Socratic + Intent Spec: surface → capture → lock |
 | Improve system with measurement + design quality | [`iterative-improvement-cycle`](../execution/iterative-improvement-cycle.md) | Toyota Kata + PDCA + Philosophy of Software Design |
 | High-stakes feature, zero tolerance for failure | [`zero-defect-protocol`](../execution/zero-defect-protocol/SKILL.md) | 14-phase: data contracting, invariants, red team, pre-mortem, 3x critique |
+| Vague problem discussed in circles, no clear structure | [`blueprint`](../execution/blueprint/SKILL.md) | Codify to types/schema; contradictions and gaps become impossible to ignore |
 
 ---
 

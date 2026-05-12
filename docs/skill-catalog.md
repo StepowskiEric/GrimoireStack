@@ -148,6 +148,14 @@ Skills for executing technical work in a bounded, disciplined way.
 
 **Best for:** Requirement clarification, preventing wrong-thing-built-correctly, spec-first development.
 
+### `execution/blueprint/SKILL.md` · [protocol]
+
+**What it is:** Codify messy human problems to reveal hidden assumptions and structure. Turn vague problems into concrete data types/schema — contradictions and gaps become impossible to ignore.
+
+**Use it when:** Problem discussed in circles without resolution, people use same words for different things, scope keeps expanding.
+
+**Best for:** Requirement formalization, gap detection, assumption exposure, turning informal specs into typed structures.
+
 ---
 
 ### `execution/legacy-rescue-protocol.md` · [protocol]
@@ -302,6 +310,14 @@ Skills for executing technical work in a bounded, disciplined way.
 **Use it when:** The first patch attempt failed, or multiple plausible fixes exist and you need to find the correct one.
 
 **Best for:** Non-obvious bugs, avoiding symptom-only fixes, patch search and verification. Based on DebugRepair research (+19.9% from patch augmentation alone).
+
+### `debugging/specter/SKILL.md` · [protocol]
+
+**What it is:** Debug by generating competing hypotheses (abductive reasoning), then locate code structurally — no keyword grepping, no root-cause guessing. Feels like a ghost hunting the real bug.
+
+**Use it when:** Bug has multiple plausible causes, crash site is not root cause, classic "reason backwards from symptom."
+
+**Best for:** Non-obvious bugs, hypothesis-driven debugging, structural code location by control/data/temporal relationships.
 
 ---
 
@@ -569,6 +585,28 @@ Skills for formal reasoning about agent reasoning itself, detecting collapse, an
 **Best for:** Divergence detection, reasoning stability monitoring, collapse pre-emption. Three modes: Lite (perplexity, no API calls), Standard (embeddings, OpenAI), Agentic (multi-agent, full dynamical analysis).
 
 **Includes:** `scripts/lyapunov.py` — pure stdlib, Benettin's algorithm implementation. No external dependencies in Lite mode.
+
+### `reasoning/prism/SKILL.md` · [framework]
+
+**What it is:** A confidence-calibration and verification protocol. Force explicit confidence on each claim, then verify understanding by compressing it to its essence. If you can't compress it, you don't understand it.
+
+**Use it when:** Complex problem before acting, agent confidently says something that feels wrong, need to distill a complex situation to its core.
+
+**Best for:** Understanding verification, confidence calibration, reducing overconfidence, compressing complex situations.
+
+---
+
+## 🛠 Orchestration — multi-agent coordination and delegation
+
+Skills for coordinating multiple agents, delegating work, and maintaining shared workspaces.
+
+### `orchestration/octopus/SKILL.md` · [protocol]
+
+**What it is:** A multi-agent coordination protocol that models the agent as a central brain issuing high-level contracts while sub-agents (arms) operate with local intelligence, adapt in real time, share a workspace, and report compressed summaries. Each arm operates independently with max retries, default fallbacks, and self-termination rules.
+
+**Use it when:** Complex tasks that need decomposition into atomic subtasks with shared contracts, bounded parallel delegation, inter-arm coordination, and robust failure handling.
+
+**Best for:** Multi-agent workflows, complex orchestration, delegation with context preservation.
 
 ---
 
@@ -1006,30 +1044,32 @@ Skills for structuring how agents plan, route, delegate, and control complex wor
 
 ---
 
+### `orchestration/tree-of-thoughts-plus-monte-carlo-tree-search.md` · [protocol]
+**What it is:** Power combo — Tree of Thoughts generates diverse reasoning branches, Monte Carlo Tree Search allocates deeper effort to the branches that earn it through evidence.
+
+**Use it when:** Hard debugging with multiple plausible hypotheses, architecture decisions with multiple viable routes, or any task where generating alternatives and allocating effort among them both matter.
+
+**Best for:** Complex problems where straight-line planning fails, correctness-critical decisions, multi-path exploration with bounded probes before full commitment.
+
+**Key technique:** Phase 1 (ToT): generate 3-5 distinct branches, develop to intermediate checkpoint, prune weak ones. Phase 2 (MCTS): select next branch by evidence strength + exploration value, run bounded probe, score, backpropagate, repeat until winner emerges. Prevents first-branch lock-in, equal-effort waste, and premature full commitment.
+
+---
+
 ### Power Combinations
 
-- **Tree of Thoughts + Monte Carlo Tree Search** → generate diverse branches first, then allocate deeper effort to the branches that earn it through evidence rather than equal exploration or first-branch lock-in
+**Note:** These combinations now have standalone skills — see sections above:
+- **Navigator** (Scout + Thought-Retriever)
+- **Jury** (Rashomon-Triad Hybrid)
+- **Prism** (Metacognitive Monitoring + Compression)
+- **Specter** (Abductive Debugging + Logic Locator)
+- **Blueprint** (Everything-as-Code)
 
-- **Scout + Thought-Retriever** → Scout reads files, distills context; Thought-Retriever stores the distilled reasoning for future retrieval
+Still as references:
 - **Scout + Time-Traveling Debugger** → Scout narrows the bug scope; Time-Travel traces the specific error location
-
 - **Thought-Retriever + Coppermind** → store reasoning traces, not just outputs; retrieve "how we solved this" for future similar problems
-
-- **Rashomon-Triad Hybrid** → spawn parallel perspectives with conflicting goals; let them argue; surface the conflict graph as explanation
-
-- **Metacognitive Monitoring + Compression** → force explicit confidence calibration, then verify understanding by compressing to essence
-
-- **Abductive Debugging + Logic Locator** → debug by generating competing hypotheses, then locate code structurally without keyword matching
-
-- **Everything-as-Code** → codify messy human problems to reveal hidden assumptions and structure
-
 - **Counterfactual Policy Testing** → validate decisions by testing against explicit alternatives (null, opposite, partial) before committing
-
 - **Cognitive Friction Governor** → impose deliberation budgets with friction costs per operation, forcing bounded purposeful thinking
-
 - **Cross-Domain Analogy Generator** → break fixation by forcing structural analogies from unrelated domains (biology, music, traffic)
-
-- **Skill Development with Supporting Files** → workflow for creating skills that need external scripts, templates, or data files
 
 ---
 
