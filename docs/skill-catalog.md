@@ -1273,15 +1273,6 @@ Skills for creating skills, integrating external systems, and development workfl
 **Includes:** `scripts/verified_api.py` — pure stdlib; commands: init, scan, verify-all, audit, export
 
 ---
-### `software-development/code-knowledge-graph-mcp/SKILL.md` · [tool]
-**What it is:** MCP server skill for structured code navigation. Tools: `index_repo`, `find_symbol`, `search_semantic`, `get_call_graph`, `get_dead_code`. Regex-based extraction for Python, JS/TS, Go, Rust. Zero external dependencies — add to Hermes `config.yaml`.
-
-**Use it when:** Grep returns too many results, you need call-graph context, or you want structured symbol search in large repos.
-
-**Best for:** Codebase exploration, symbol resolution, dead code detection, call-graph analysis, cross-reference finding.
-
----
-
 ### `software-development/dev-diagnostics-mcp/SKILL.md` · [tool]
 **What it is:** MCP server skill for structured developer diagnostics. Tools: `run_diagnostics`, `parse_output`, `get_summary`, `contamination_check`. Parsers for ESLint JSON, Biome JSON, Ruff JSON, tsc stdout, Vitest JSON, pytest JSON/plain. Zero external dependencies.
 
