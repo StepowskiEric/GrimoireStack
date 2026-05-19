@@ -316,7 +316,7 @@ When stuck, ask:
 ## Integration
 
 - Use **when** `metacognitive-monitoring` shows declining confidence
-- Use **before** `abductive-first-debugging` to generate novel hypotheses
+- Use **before** `specter` to generate novel hypotheses
 - Use **with** `cognitive-friction-governor` — analogies have friction cost
 
 ---

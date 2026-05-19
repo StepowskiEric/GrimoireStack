@@ -257,7 +257,7 @@ metacognitive_log:
 ## Integration with Other Skills
 
 - Use **before** `thought-retriever` to decide whether a thought is worth storing
-- Use **with** `abductive-first-debugging` to rank competing hypotheses
+- Use **with** `specter` to rank competing hypotheses
 - Use **after** `rashomon-triad-hybrid` to assess which perspective won fairly
 
 ---

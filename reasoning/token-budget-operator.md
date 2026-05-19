@@ -15,6 +15,16 @@ version: 1.0.0
 
 # Token Budget Operator
 
+## ⚠️ Absorbed by context-lifecycle-manager
+
+This skill's protocol is now part of **`context-lifecycle-manager`** (Phase 3: Optimization). Use the lifecycle manager for unified context management across birth, decay, and optimization.
+
+- **`context-budget-operator`** → lifecycle-manager Phase 1 (Birth & Tracking)
+- **`context-rot-pruner`** → lifecycle-manager Phase 2 (Decay & Pruning)
+- **`token-budget-operator`** → lifecycle-manager Phase 3 (Optimization)
+
+Detailed estimation heuristics and decay formulas are preserved in `context-lifecycle-manager/references/budget-and-rot-details.md`.
+
 ## When to Use
 
 Use this skill when:

@@ -147,7 +147,7 @@ After the fix, add a specific preventive measure tied to the root cause category
 
 ## Related Skills
 
-- `abductive-first-debugging` — generate competing hypotheses when causes are unclear
+- `specter` — generate competing hypotheses with structural code location and disconfirmation when causes are unclear
 - `log-trace-correlation` — map stack traces to source code
 - `verify-before-integrate` — ensure fixes do not break existing behavior
 - `thinking-in-systems` — understand feedback loops that cause recurring failures

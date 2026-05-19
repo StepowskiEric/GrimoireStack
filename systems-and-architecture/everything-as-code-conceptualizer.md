@@ -307,7 +307,7 @@ if (condition) {
 ## Integration
 
 - Use **before** writing real specs to surface requirements gaps
-- Use **after** `abductive-first-debugging` to codify the winning hypothesis
+- Use **after** `specter` to codify the winning hypothesis
 - Use **with** `metacognitive-monitoring` to assess confidence in the model
 
 ---

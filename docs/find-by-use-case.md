@@ -24,14 +24,19 @@
 | Tests fail, need reproducibility | [`debug-issue`](../software-development/debug-issue.md) | Reproduce → Isolate → Fix → Verify cycle | Framework |
 | End-to-end debugging pipeline needed | [`debug-to-fix-pipeline`](../debugging/debug-to-fix-pipeline.md) | Fuses 5 debugging skills: abductive + subagent + instrumentation + purify + patch repair | Hybrid |
 | Need to understand unfamiliar code before fixing | [`explore-codebase`](../software-development/explore-codebase.md) | Graph-powered navigation with token efficiency | Framework |
-| Large codebase, bug location unknown | [`codebase-divide-conquer-search`](../software-development/codebase-divide-conquer-search.md) | Hierarchical summarization + parallel agent deep dives | Based on Meta-RAG / GenLoc |
+| Large codebase, bug location unknown | [`codebase-divide-conquer-search`](../software-development/codebase-divide-conquer-search/SKILL.md) | Hierarchical summarization + parallel agent deep dives | Based on Meta-RAG / GenLoc |
 | Large codebase, want to preserve investigation trail | [`navigator`](../orchestration/navigator/SKILL.md) | Scout + Thought-Retriever; builds retrievable reasoning traces |
 | Bug with multiple plausible causes, root cause unclear | [`specter`](../debugging/specter/SKILL.md) | Abductive hypotheses + structural code location — reason backwards from symptom |
-| Debugging session getting long, agent stuck | [`long-task-survival-kit`](../execution/long-task-survival-kit.md) | Checkpoint every 5 calls: context, trajectory, assumptions |
-| Bug crashes but root cause is not at the crash site | [`time-traveling-debugger`](../debugging/time-traveling-debugger/SKILL.md) | Forward trace + backward rewind to find state divergence | Includes MCP server |
+| Debugging session getting long, agent stuck | [`long-task-survival-kit`](../execution/long-task-survival-kit/SKILL.md) | Checkpoint every 5 calls: context, trajectory, assumptions |
+|| Bug crashes but root cause is not at the crash site | [`time-traveling-debugger`](../debugging/time-traveling-debugger/SKILL.md) | Forward trace + backward rewind to find state divergence | Includes MCP server |
+|| Environment broken — commands failing before reaching code | [`environment-recovery`](../debugging/environment-recovery/SKILL.md) | Structured vitals check + targeted repair for disk, versions, caches, ports, permissions | New |
+|| Network / API failures — CORS, auth, rate limiting, redirects | [`network-api-debugging`](../debugging/network-api-debugging/SKILL.md) | Captures actual traffic, diagnoses by status code, fixes by failure type | New |
+|| Bug visible at runtime but no test covers it | [`minimal-reproduction`](../debugging/minimal-reproduction/SKILL.md) | Write the smallest possible test that demonstrates the bug, then debug with ammunition | New |
+|| Agent completely stuck — tried multiple approaches without progress | [`escalation-ladder`](../debugging/escalation-ladder/SKILL.md) | 5-level protocol: self-correct → strategy change → rubber duck → scope reduction → full retreat | New |
+|| Fix requires changes across multiple files | [`coordinated-change`](../software-development/coordinated-change/SKILL.md) | Map change set, order dependencies, edit atomically, verify consistency | New |
 
 **Not recommended for typical code bugs** (empirically ineffective in our tests):
-- `abductive-first-debugging` — Designed for novel failures with multiple competing hypotheses. Tested on a real repo bug: **-0.4% vs baseline**.
+- `abductive-first-debugging` — Merged into `specter`. Use specter for hypothesis-based debugging. For simple bugs, use `debug-subagent` instead.
 - `pdca-deming` — Designed for process/system improvement with measurable baselines. Tested on a real repo bug: **-1.6% vs baseline**.
 - `step-level-verification-protocol` — Designed for multi-step reasoning verification (math, logic). Tested on a real repo bug: **+9.9% time efficiency** but **0% correctness improvement**.
 
@@ -44,22 +49,22 @@
 | Situation | Best Skill | Why |
 |-----------|------------|-----|
 | Hard problem, don't know where to start | [`how-to-solve-it-state-machine`](../execution/how-to-solve-it-state-machine.md) | Forces problem framing before action |
-| Multiple possible causes, novel failure | [`abductive-first-debugging`](../execution/abductive-first-debugging.md) | Generates competing hypotheses, picks best explanation |
-| Need to locate relevant code by structure | [`keyword-agnostic-logic-locator`](../execution/keyword-agnostic-logic-locator.md) | Finds code by structure, not by grepping |
+| Multiple possible causes, novel failure | [`specter`](../debugging/specter/SKILL.md) | Abductive hypotheses + structural code location + disconfirmation protocol |
+|| Need to locate relevant code by structure | [`keyword-agnostic-logic-locator`](../execution/keyword-agnostic-logic-locator/SKILL.md) | Finds code by structure, not by grepping |
 | Multiple strategy branches, need to allocate effort wisely | [`tree-of-thoughts-plus-monte-carlo-tree-search`](../orchestration/tree-of-thoughts-plus-monte-carlo-tree-search.md) | ToT generates branches; MCTS allocates effort — prevents first-branch lock-in |
 | Decision with multiple plausible options, need to stress-test | [`jury`](../orchestration/jury/SKILL.md) | Parallel perspectives argue; the conflict graph reveals what matters |
 | Complex problem, want to verify understanding before acting | [`prism`](../reasoning/prism/SKILL.md) | Confidence calibration + compression test; if you can't compress it, you don't get it |
 | Stuck in a rut, same failed attempts | [`cross-domain-analogy-generator`](../systems-and-architecture/cross-domain-analogy-generator.md) | Forces foreign-domain analogies to break fixation |
 | Prematurely jumping to solutions | [`ooda-loop-state-machine`](../execution/ooda-loop-state-machine.md) | Observe → Orient → Decide → Act cycle |
 | Over-thinking trivial problems | [`cognitive-friction-governor`](../execution/cognitive-friction-governor.md) | Budgets deliberation, forces decision |
-| Backtrack when reasoning goes wrong | [`process-reward-model-protocol`](../execution/process-reward-model-protocol.md) | Self-correcting reasoning path |
+| Backtrack when reasoning goes wrong | [`process-reward-model-protocol`](../execution/process-reward-model-protocol/SKILL.md) | Self-correcting reasoning path |
 | Use analogy to solve problems | [`how-to-solve-it-analogy`](../execution/how-to-solve-it-analogy.md) | Structured analogy-based problem solving |
-| Verify each step before proceeding | [`step-level-verification-protocol`](../execution/step-level-verification-protocol.md) | Prevents error propagation in multi-step reasoning |
+| Verify each step before proceeding | [`step-level-verification-protocol`](../execution/step-level-verification-protocol/SKILL.md) | Prevents error propagation in multi-step reasoning |
 | Prevent hallucinated facts from compounding | [`assumption-grounding`](../execution/assumption-grounding/SKILL.md) | State, verify, and log assumptions before acting |
 | Agent keeps retrying the same failed approach | [`trajectory-guard`](../execution/trajectory-guard/SKILL.md) | Detects repetition loops, specification drift, and stuck trajectories — forces strategy change |
 | Agent drifted from what was actually asked | [`trajectory-guard`](../execution/trajectory-guard/SKILL.md) | Catches specification drift by re-checking alignment with user's original request |
-| Running out of context on a long task | [`context-budget-operator`](../execution/context-budget-operator/SKILL.md) + [`trajectory-guard`](../execution/trajectory-guard/SKILL.md) | Budget tracking + failure-spiral detection prevents wasted tokens |
-| Context rot in long sessions (20+ turns) | [`context-rot-pruner`](../reasoning/context-rot-pruner/SKILL.md) | Exponential decay + prune low-weight messages | Includes context_rot.py |
+|| Running out of context on a long task | [`context-lifecycle-manager`](../execution/context-lifecycle-manager/SKILL.md) + [`trajectory-guard`](../execution/trajectory-guard/SKILL.md) | Budget tracking + failure-spiral detection prevents wasted tokens (absorbs context-budget-operator) |
+|| Context rot in long sessions (20+ turns) | [`context-lifecycle-manager`](../execution/context-lifecycle-manager/SKILL.md) | Exponential decay + prune low-weight messages + budget tracking (absorbs context-rot-pruner) | Includes context_lifecycle.py |
 | Want insane full lifecycle (birth→track→decay→prune→optimize) | [`context-lifecycle-manager`](../execution/context-lifecycle-manager/SKILL.md) | Hybrid: budget-operator + rot-pruner + token-budget-operator | Includes context_lifecycle.py |
 
 ---
@@ -84,7 +89,7 @@
 | Continuous improvement cycle | [`pdca-deming`](../execution/pdca-deming.md) | Plan-Do-Check-Act iterative improvement |
 | Toyota-style continuous improvement | [`toyota-kata-state-machine`](../execution/toyota-kata-state-machine.md) | Scientific thinking pattern |
 | Complex multi-step procedure | [`checklist-manifesto`](../execution/checklist-manifesto.md) | Checklist discipline |
-| Vague request, need to crystallize before coding | [`requirement-crystallization-protocol`](../execution/requirement-crystallization-protocol.md) | Socratic + Intent Spec: surface → capture → lock |
+| Vague request, need to crystallize before coding | [`requirement-crystallization-protocol`](../execution/requirement-crystallization-protocol/SKILL.md) | Socratic + Intent Spec: surface → capture → lock |
 | Improve system with measurement + design quality | [`iterative-improvement-cycle`](../execution/iterative-improvement-cycle.md) | Toyota Kata + PDCA + Philosophy of Software Design |
 | High-stakes feature, zero tolerance for failure | [`zero-defect-protocol`](../execution/zero-defect-protocol/SKILL.md) | 14-phase: data contracting, invariants, red team, pre-mortem, 3x critique |
 | Vague problem discussed in circles, no clear structure | [`blueprint`](../execution/blueprint/SKILL.md) | Codify to types/schema; contradictions and gaps become impossible to ignore |
@@ -95,25 +100,25 @@
 
 | Situation | Best Skill | Why |
 |-----------|------------|-----|
-| Security + performance + maintainability conflict | [`rashomon-triad-hybrid`](../orchestration/rashomon-triad-hybrid.md) | Parallel perspectives argue, surface conflicts |
+| Security + performance + maintainability conflict | [`rashomon-triad-hybrid`](../orchestration/rashomon-triad-hybrid/SKILL.md) | Parallel perspectives argue, surface conflicts |
 | Not sure if I understand the code | [`compression-as-understanding`](../output-quality/compression-as-understanding.md) | Compress to essence, test reconstruction |
 | Need to verify my understanding | [`metacognitive-monitoring`](../judgment-and-routing/metacognitive-monitoring.md) | Explicit confidence calibration |
 | Refactoring legacy code | [`working-effectively-with-legacy-code-state-machine`](../execution/working-effectively-with-legacy-code-state-machine.md) | Safe change protocol |
 | Code smells but not sure what | [`philosophy-of-software-design-state-machine`](../execution/philosophy-of-software-design-state-machine.md) | Complexity management |
 | Before committing changes | [`verify-before-integrate`](../software-development/verify-before-integrate.md) | Pre-commit verification |
-| Reviewing LLM-generated code before push | [`llm-pre-push-review`](../software-development/llm-pre-push-review.md) | 5-pass protocol catching LLM-specific failures (hallucinated logic, silent vulns, overcorrection, scope creep) |
-| Pre-deployment security + quality gate | [`pre-deployment-gate`](../software-development/pre-deployment-gate.md) | 7-pass pre-push + production hardening checklist |
-| Verify output before presenting | [`self-verify-pipeline`](../output-quality/self-verify-pipeline.md) | 5-phase escalating verification: self-critique → claims → tools |
-| Universal task preflight | [`task-intake-protocol`](../judgment-and-routing/task-intake-protocol.md) | Cynefin + ETTO + RPT fused into one gate |
-| Pre-commitment failure analysis | [`failure-analysis-protocol`](../judgment-and-routing/failure-analysis-protocol.md) | Pre-Mortem + Inversion + Second-Order Thinking |
-| Security review | [`security-review-protocol`](../systems-and-architecture/security-review-protocol.md) | STRIDE + UCA + Vibe Coding Security fused |
+| Reviewing LLM-generated code before push | [`llm-pre-push-review`](../software-development/llm-pre-push-review/SKILL.md) | 5-pass protocol catching LLM-specific failures (hallucinated logic, silent vulns, overcorrection, scope creep) |
+| Pre-deployment security + quality gate | [`pre-deployment-gate`](../software-development/pre-deployment-gate/SKILL.md) | 7-pass pre-push + production hardening checklist |
+| Verify output before presenting | [`self-verify-pipeline`](../output-quality/self-verify-pipeline/SKILL.md) | 5-phase escalating verification: self-critique → claims → tools |
+| Universal task preflight | [`task-intake-protocol`](../judgment-and-routing/task-intake-protocol/SKILL.md) | Cynefin + ETTO + RPT fused into one gate |
+| Pre-commitment failure analysis | [`failure-analysis-protocol`](../judgment-and-routing/failure-analysis-protocol/SKILL.md) | Pre-Mortem + Inversion + Second-Order Thinking |
+| Security review | [`security-review-protocol`](../systems-and-architecture/security-review-protocol/SKILL.md) | STRIDE + UCA + Vibe Coding Security fused |
 | Refactoring safely | [`refactoring-state-machine`](../execution/refactoring-state-machine.md) | Structured refactoring protocol |
 | Follow pragmatic programmer principles | [`pragmatic-programmer-state-machine`](../execution/pragmatic-programmer-state-machine.md) | Core programming wisdom |
 | Self-check for thoroughness | [`thoroughness-check-etto`](../judgment-and-routing/thoroughness-check-etto.md) | Systematic completeness check |
 | Strict thoroughness protocol | [`thoroughness-check-etto-state-machine`](../judgment-and-routing/thoroughness-check-etto-state-machine.md) | Enforced thoroughness state machine |
 | Validate decisions with counterfactuals | [`counterfactual-policy-testing`](../judgment-and-routing/counterfactual-policy-testing.md) | Test against alternatives |
 | Improve my own output | [`bounded-self-revision`](../output-quality/bounded-self-revision.md) | Structured self-improvement |
-| Generate and verify multiple solutions | [`speculative-drafting-verification`](../execution/speculative-drafting-verification.md) | Parallel candidate evaluation |
+| Generate and verify multiple solutions | [`speculative-drafting-verification`](../execution/speculative-drafting-verification/SKILL.md) | Parallel candidate evaluation |
 | Explore multiple solutions with process rewards | [`speculative-exploration-protocol`](../execution/speculative-exploration-protocol.md) | Speculative drafting + tree of thoughts + PRM fused |
 | Check for cognitive biases | [`cognitive-bias-checklist`](../judgment-and-routing/cognitive-bias-checklist.md) | Bias detection and mitigation |
 | Automated bias detection in decisions | [`cognitive-bias-auditor`](../judgment-and-routing/cognitive-bias-auditor/SKILL.md) | Detect 9 biases from arXiv:2410.02820 |
@@ -128,7 +133,7 @@
 
 | Situation | Best Skill | Why |
 |-----------|------------|-----|
-| Prevent over-engineering, clarify scope before coding | [`intent-specification-protocol`](../execution/intent-specification-protocol.md) | Scope control via explicit intent specification | | Includes intent_mcp_server.py (MCP) + intent-specification-protocol.py |
+| Prevent over-engineering, clarify scope before coding | [`intent-specification-protocol`](../execution/intent-specification-protocol/SKILL.md) | Scope control via explicit intent specification | | Includes intent_mcp_server.py (MCP) + intent-specification-protocol.py |
 | Big decision, multiple options | [`counterfactual-policy-testing`](../judgment-and-routing/counterfactual-policy-testing.md) | Test against null/opposite/partial alternatives |
 | Trade-offs between teams/systems | [`team-topologies-ai`](../systems-and-architecture/team-topologies-ai.md) | Organizational architecture patterns |
 | Data system design | [`designing-data-intensive-applications-ai`](../systems-and-architecture/designing-data-intensive-applications-ai.md) | Data system principles |
@@ -149,7 +154,7 @@
 
 | Situation | Best Skill | Why |
 |-----------|------------|-----|
-| Ambiguous requirements, need to clarify before coding | [`intent-specification-protocol`](../execution/intent-specification-protocol.md) | Specify and validate intent before writing code |
+| Ambiguous requirements, need to clarify before coding | [`intent-specification-protocol`](../execution/intent-specification-protocol/SKILL.md) | Specify and validate intent before writing code |
 | Writing README / API docs | [`documentation-craft`](../output-quality/documentation-craft.md) | 5-phase structured writing |
 | Explaining complex system simply | [`feynman-technique`](../output-quality/feynman-technique.md) | Explain to a child |
 | Team/process problems | [`everything-as-code-conceptualizer`](../systems-and-architecture/everything-as-code-conceptualizer.md) | Codify non-code systems |
@@ -192,7 +197,7 @@
 | Recognition-primed decisions | [`recognition-primed-triage`](../judgment-and-routing/recognition-primed-triage.md) | Expert pattern matching |
 | RPD state machine | [`recognition-primed-triage-state-machine`](../judgment-and-routing/recognition-primed-triage-state-machine.md) | Structured expert decision |
 | Kahneman fast/slow thinking | [`kahneman-thinking-fast-slow-software-agent`](../judgment-and-routing/kahneman-thinking-fast-slow-software-agent.md) | Dual-process thinking |
-| Detect reasoning hallucinations | [`faithfulness-aware-reasoning`](../reasoning/faithfulness-aware-reasoning.md) | Ensures reasoning is logically entailed |
+| Detect reasoning hallucinations | [`faithfulness-aware-reasoning`](../reasoning/faithfulness-aware-reasoning/SKILL.md) | Ensures reasoning is logically entailed |
 
 ---
 
@@ -202,12 +207,12 @@
 
 | Situation | Best Skill | Why |
 |-----------|------------|-----|
-| Multi-step reasoning where errors compound | [`claim-verification-reasoning`](../reasoning/claim-verification-reasoning.md) | Break into atomic claims, assign confidence, verify with tools |
-| Context window filling during long tasks | [`context-density-operator`](../reasoning/context-density-operator.md) | Maximize decision-relevant info per token |
-| Chain-of-thought reasoning exceeds 10 steps | [`cot-pruning-reasoning`](../reasoning/cot-pruning-reasoning.md) | Compress CoT to retain only conclusion-changing steps |
-| Need master anti-hallucination protocol | [`reasoning-verification-hybrid`](../reasoning/reasoning-verification-hybrid.md) | Claim verification + contradiction checks + confidence calibration |
-| Reasoning is converging but keeps elaborating | [`selective-halt-reasoning`](../reasoning/selective-halt-reasoning.md) | Halt when consecutive steps stabilize |
-| Token burn is the bottleneck | [`token-budget-operator`](../reasoning/token-budget-operator.md) | Orchestrates compression, pruning, halting, and SOP capture |
+| Multi-step reasoning where errors compound | [`claim-verification-reasoning`](../reasoning/claim-verification-reasoning/SKILL.md) | Break into atomic claims, assign confidence, verify with tools |
+| Context window filling during long tasks | [`context-density-operator`](../reasoning/context-density-operator/SKILL.md) | Maximize decision-relevant info per token |
+| Chain-of-thought reasoning exceeds 10 steps | [`cot-pruning-reasoning`](../reasoning/cot-pruning-reasoning/SKILL.md) | Compress CoT to retain only conclusion-changing steps |
+| Need master anti-hallucination protocol | [`reasoning-verification-hybrid`](../reasoning/reasoning-verification-hybrid/SKILL.md) | Claim verification + contradiction checks + confidence calibration |
+| Reasoning is converging but keeps elaborating | [`selective-halt-reasoning`](../reasoning/selective-halt-reasoning/SKILL.md) | Halt when consecutive steps stabilize |
+|| Token burn is the bottleneck | [`context-lifecycle-manager`](../execution/context-lifecycle-manager/SKILL.md) | Orchestrates compression, pruning, halting, and SOP capture (absorbs token-budget-operator) |
 | Reasoning integrity across faithfulness + convergence | [`reasoning-integrity-chain`](../reasoning/reasoning-integrity-chain.md) | Faithfulness + claims + verification + selective halt fused |
 | Need to eliminate hallucinated claims | [`hallucination-anchor-chain`](../reasoning/hallucination-anchor-chain/SKILL.md) | Every claim anchored to verified source | Includes anchor_chain.py |
 | Agent keeps contradicting itself | [`self-contradiction-trap`](../reasoning/self-contradiction-trap/SKILL.md) | Detect contradictions, force resolution | Includes belief_store.py |
@@ -219,10 +224,10 @@
 
 | Situation | Best Skill | Why |
 |-----------|------------|-----|
-| Writing features or fixing bugs, requirements unclear | [`intent-specification-protocol`](../execution/intent-specification-protocol.md) | Clarify intent before coding, prevent over-engineering |
+| Writing features or fixing bugs, requirements unclear | [`intent-specification-protocol`](../execution/intent-specification-protocol/SKILL.md) | Clarify intent before coding, prevent over-engineering |
 | Need a structured debugging workflow | [`debug-issue`](../software-development/debug-issue.md) | Forces reproduce-isolate-fix-verify cycle |
 | Need to understand an unfamiliar codebase | [`explore-codebase`](../software-development/explore-codebase.md) | Structured exploration with progressive deepening |
-| Search large codebase for bug/feature/API usage | [`codebase-divide-conquer-search`](../software-development/codebase-divide-conquer-search.md) | Hierarchical summarization + semantic ranking + parallel sub-agents |
+| Search large codebase for bug/feature/API usage | [`codebase-divide-conquer-search`](../software-development/codebase-divide-conquer-search/SKILL.md) | Hierarchical summarization + semantic ranking + parallel sub-agents |
 | Adding a new skill to this repository | [`add-new-skill-to-repository`](../development/add-new-skill-to-repository/SKILL.md) | Standardized contribution process with documentation and verification |
 | Renaming files that have cross-references | [`bulk-rename-and-update-references`](../development/bulk-rename-and-update-references.md) | Discover, rename, and update all references safely |
 | Skill has supporting scripts/templates | [`skill-development-with-supporting-files`](../development/skill-development-with-supporting-files.md) | Workflow for skills with external files beyond `.md` |
@@ -246,8 +251,8 @@
 | Storing reasoning for later | [`thought-retriever-coppermind`](../orchestration/thought-retriever-coppermind.md) | Memory-augmented reasoning |
 | Managing agent memory | [`agent-memory-hygiene`](../orchestration/agent-memory-hygiene.md) | Memory categorization |
 | Debating which branch to pursue | [`monte-carlo-tree-search`](../orchestration/monte-carlo-tree-search.md) | Branch allocation |
-| Identify weak agent reasoning | [`weak-link-detection-multi-agent`](../orchestration/weak-link-detection-multi-agent.md) | Prevents error amplification |
-| Distill successful trajectories into reusable SOPs | [`sop-evolution-memory`](../orchestration/sop-evolution-memory.md) | Turn past task patterns into compact reusable procedures |
+| Identify weak agent reasoning | [`weak-link-detection-multi-agent`](../orchestration/weak-link-detection-multi-agent/SKILL.md) | Prevents error amplification |
+| Distill successful trajectories into reusable SOPs | [`sop-evolution-memory`](../orchestration/sop-evolution-memory/SKILL.md) | Turn past task patterns into compact reusable procedures |
 | Scout files before reading them | [`scout`](../orchestration/scout.md) | Fast sub-agent pre-reads and distills file context for the main model |
 | 3+ independent workstreams needing coordination | [`octopus`](../orchestration/octopus.md) | Contract-first decomposition, bounded parallel arms, shared workspace, retraction on failure |
 
@@ -272,7 +277,7 @@
 | Situation | Best Skill | Why |
 |-----------|------------|-----|
 | Reduce cognitive load | [`cognitive-load-operator-state-machine`](../output-quality/cognitive-load-operator-state-machine.md) | Load management protocol |
-| Manage finite context windows explicitly | [`context-budget-operator`](../execution/context-budget-operator/SKILL.md) | Track token budget, compress, decide breadth vs depth |
+|| Manage finite context windows explicitly | [`context-lifecycle-manager`](../execution/context-lifecycle-manager/SKILL.md) | Full lifecycle: token budget + decay + pruning + optimization (absorbs context-budget-operator, context-rot-pruner, token-budget-operator) |
 
 ---
 

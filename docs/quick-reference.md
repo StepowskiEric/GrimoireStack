@@ -14,7 +14,7 @@
 | philosophy-of-software-design-state-machine | execution/ | Complexity management | |
 | pragmatic-programmer-state-machine | execution/ | Grounded execution | |
 | cognitive-friction-governor | execution/ | Deliberation budgeting | |
-| abductive-first-debugging | execution/ | Novel failure diagnosis | |
+| specter (absorbed abductive-first-debugging) | debugging/ | Novel failure diagnosis, competing hypotheses | Includes abductive reasoning + structural code location + disconfirmation |
 | **keyword-agnostic-logic-locator** | execution/ | Code navigation | Requires manual script setup |
 | step-level-verification-protocol | execution/ | Preventing error propagation | |
 | speculative-drafting-verification | execution/ | Parallel candidate evaluation | |
@@ -184,7 +184,7 @@ These are **not skills** in the traditional sense — they are MCP servers or co
 | cognitive-friction-governor | 2025-04 | Deliberation budgeting (arXiv:2603.30031) |
 | cross-domain-analogy-generator | 2025-04 | Foreign-domain analogies (arXiv:2603.19087) |
 | metacognitive-monitoring | 2025-04 | Confidence calibration (arXiv:2604.15702) |
-| abductive-first-debugging | 2025-04 | Inference to best explanation (arXiv:2604.08016) |
+| specter (absorbed abductive-first-debugging) | 2025-04 | Abductive reasoning + structural code location (arXiv:2604.08016) | Absorbed abductive-first-debugging into specter |
 | keyword-agnostic-logic-locator | 2025-04 | Datalog code queries (arXiv:2604.16021) |
 | compression-as-understanding | 2025-04 | Kolmogorov complexity verification |
 | everything-as-code-conceptualizer | 2025-04 | System codification (arXiv:2507.05100) |

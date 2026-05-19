@@ -11,6 +11,18 @@ description: Apply exponential decay to context messages so old, unreferenced co
 
 # Context Rot Pruner
 
+## ⚠️ Absorbed by context-lifecycle-manager
+
+This skill's protocol is now part of **`context-lifecycle-manager`** (Phase 2: Decay & Pruning). Use the lifecycle manager for unified context management across birth, decay, and optimization.
+
+- **`context-budget-operator`** → lifecycle-manager Phase 1 (Birth & Tracking)
+- **`context-rot-pruner`** → lifecycle-manager Phase 2 (Decay & Pruning)
+- **`token-budget-operator`** → lifecycle-manager Phase 3 (Optimization)
+
+Detailed estimation heuristics and decay formulas are preserved in `context-lifecycle-manager/references/budget-and-rot-details.md`.
+
+---
+
 ## Objective
 
 LLMs lose performance as context accumulates "rot" — old messages, irrelevant digressions, and stale data that dilute attention. This skill applies exponential decay to context messages and prunes low-weight items before the context window overflows.

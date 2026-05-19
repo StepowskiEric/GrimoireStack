@@ -210,5 +210,5 @@ The combo was applied correctly when:
 
 - `monte-carlo-tree-search` — the MCTS component skill (branch allocation)
 - `tree-of-thoughts` — the ToT component skill (branch generation)
-- `abductive-first-debugging` — generates hypotheses via abduction; ToT+MCTS can be used within the hypothesis evaluation phase
+- `specter` — generates hypotheses via abduction with structural code location; ToT+MCTS can be used within the hypothesis evaluation phase
 - `pre-mortem` — run before committing the winning branch to full execution

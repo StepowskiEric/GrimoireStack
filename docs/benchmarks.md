@@ -158,6 +158,6 @@ Skills needing evaluation:
 - [ ] `context-density-operator` — needs long-horizon task with context pressure
 - [ ] `selective-halt-reasoning` — needs iterative task with clear convergence
 - [ ] `sop-evolution-memory` — needs 2+ similar tasks to measure compounding
-- [ ] `token-budget-operator` (hybrid) — needs task benefiting from all 4 phases
+- [ ] `context-lifecycle-manager` (absorbs token-budget-operator) — needs task benefiting from all 4 phases
 - [ ] `bisect-debugging` — needs regression introduced across multiple commits
 - [ ] `simulate-instrumentation` — needs runtime state-dependent bug

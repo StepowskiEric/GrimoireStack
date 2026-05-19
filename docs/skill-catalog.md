@@ -95,7 +95,7 @@ Skills for executing technical work in a bounded, disciplined way.
 
 ---
 
-### `execution/step-level-verification-protocol.md` · [protocol]
+### `execution/step-level-verification-protocol/SKILL.md` · [protocol]
 **What it is:** A verification protocol that validates each reasoning step before proceeding to the next. Prevents error propagation by catching mistakes early in multi-step chains.
 
 **Use it when:** Working on multi-step tasks where early errors compound into larger failures downstream.
@@ -104,7 +104,7 @@ Skills for executing technical work in a bounded, disciplined way.
 
 ---
 
-### `execution/speculative-drafting-verification.md` · [protocol]
+### `execution/speculative-drafting-verification/SKILL.md` · [protocol]
 **What it is:** A parallel solution generation protocol that creates multiple candidate branches, verifies each against constraints, and selects the best. Prevents local minima traps.
 
 **Use it when:** The problem has multiple plausible approaches and committing to one too early risks suboptimal outcomes.
@@ -113,7 +113,7 @@ Skills for executing technical work in a bounded, disciplined way.
 
 ---
 
-### `execution/process-reward-model-protocol.md` · [protocol]
+### `execution/process-reward-model-protocol/SKILL.md` · [protocol]
 **What it is:** A self-correcting reasoning protocol that assigns process rewards to each step and backtracks when cumulative reward drops below threshold.
 
 **Use it when:** Reasoning may go down wrong paths and needs mechanism to detect and recover from poor reasoning chains.
@@ -131,7 +131,7 @@ Skills for executing technical work in a bounded, disciplined way.
 
 ---
 
-### `execution/intent-specification-protocol.md` · [protocol]
+### `execution/intent-specification-protocol/SKILL.md` · [protocol]
 **What it is:** Crystallize vague coding requests into precise, testable specs before writing code. Prevents over-engineering via the Intent-Behavior Mirroring Effect.
 **Includes:** `scripts/intent_mcp_server.py` (MCP server with 3 tools) + `scripts/intent-specification-protocol.py` (stdlib; commands: crystallize, spec, check)
 
@@ -141,7 +141,7 @@ Skills for executing technical work in a bounded, disciplined way.
 
 ---
 
-### `execution/requirement-crystallization-protocol.md` · [protocol]
+### `execution/requirement-crystallization-protocol/SKILL.md` · [protocol]
 **What it is:** Fuses Socratic Clarification with Intent Specification. Three-phase pipeline: SURFACE assumptions and find the critical one, CAPTURE intent as a structured spec with states/transitions/constraints, LOCK the spec as the coding contract.
 
 **Use it when:** Before any non-trivial feature implementation, when the request is ambiguous, or as a pre-coding step.
@@ -158,7 +158,7 @@ Skills for executing technical work in a bounded, disciplined way.
 
 ---
 
-### `execution/legacy-rescue-protocol.md` · [protocol]
+### `execution/legacy-rescue-protocol/SKILL.md` · [protocol]
 **What it is:** Fuses Working Effectively with Legacy Code with Refactoring State Machine. Four-phase pipeline: CHARACTERIZE current behavior with tests, SEAM find or create safe change points, TRANSFORM in bounded slices with anti-loop breaker, CLEANUP scaffolding.
 
 **Use it when:** Any change to code without adequate test coverage, refactoring unfamiliar code, or fixing bugs in legacy systems.
@@ -167,7 +167,7 @@ Skills for executing technical work in a bounded, disciplined way.
 
 ---
 
-### `execution/long-task-survival-kit.md` · [protocol]
+### `execution/long-task-survival-kit/SKILL.md` · [protocol]
 **What it is:** Fuses Assumption Grounding + Trajectory Guard + Context Budget Operator into a recurring checkpoint protocol. Every 5 tool calls: check context health, trajectory health, and assumption health. Includes emergency protocols for each failure mode.
 
 **Use it when:** Any task that will take 10+ tool calls, multi-file refactors, migration work, complex debugging.
@@ -228,7 +228,7 @@ Skills for executing technical work in a bounded, disciplined way.
 
 ---
 
-### `execution/summarize.md` · [protocol]
+### `execution/summarize/SKILL.md` · [protocol]
 **What it is:** Emergency STOP + structured handoff report for agent-to-agent session transfer. Forces immediate abandonment of current work with zero data loss — the next agent opens the session with complete context. Governs: STOP signal, 8-section handoff template, strict no-continuation rule.
 
 **Use it when:** Session quality is degraded (2+ compressions), anti-thrashing warning fires, you need to `/new` or `/branch`, session was interrupted mid-work, or user asks "summarize what we did".
@@ -554,7 +554,7 @@ Skills for routing tasks, calibrating rigor, and reasoning about risks and trade
 
 ---
 
-### `judgment-and-routing/task-intake-protocol.md` · [protocol]
+### `judgment-and-routing/task-intake-protocol/SKILL.md` · [protocol]
 **What it is:** Universal preflight gate fusing Cynefin problem classification, ETTO rigor calibration, and Recognition-Primed Triage into a single 3-phase pipeline: Classify → Calibrate → Commit.
 
 **Use it when:** Before any non-trivial task — coding, debugging, architecture decisions, ambiguous requests.
@@ -563,7 +563,7 @@ Skills for routing tasks, calibrating rigor, and reasoning about risks and trade
 
 ---
 
-### `judgment-and-routing/failure-analysis-protocol.md` · [protocol]
+### `judgment-and-routing/failure-analysis-protocol/SKILL.md` · [protocol]
 **What it is:** Three failure-analysis lenses merged into a tightening funnel: Inversion (define failure), Pre-Mortem (narrate failure stories), Second-Order Thinking (trace cascading consequences). Produces a guardrail table with prevention, detection, and recovery for each risk.
 
 **Use it when:** Before committing to plans, architecture decisions, data migrations, or any high-cost-of-being-wrong situation.
@@ -686,7 +686,7 @@ Skills that refine, critique, and simplify the agent's own outputs.
 
 ---
 
-### `reasoning/faithfulness-aware-reasoning.md` · [framework]
+### `reasoning/faithfulness-aware-reasoning/SKILL.md` · [framework]
 **What it is:** A reasoning-verification skill that detects faithfulness hallucinations — reasoning that sounds plausible but isn't logically entailed by the premises. Based on arXiv:2602.05897 research on measuring faithfulness in chain-of-thought reasoning.
 
 **Use it when:** The agent produces confident-sounding reasoning that may not actually follow from the stated facts or premises.
@@ -695,7 +695,7 @@ Skills that refine, critique, and simplify the agent's own outputs.
 
 ---
 
-### `reasoning/claim-verification-reasoning.md` · [protocol]
+### `reasoning/claim-verification-reasoning/SKILL.md` · [protocol]
 **What it is:** A claim-level verification protocol that breaks reasoning into atomic claims, assigns confidence labels (CERTAIN/LIKELY/UNCERTAIN/SPECULATIVE), verifies uncertain claims with tools, and builds dependency graphs. Based on CURE (arXiv:2604.12046), DCF (arXiv:2604.20098), and PRISM (arXiv:2604.16909).
 
 **Use it when:** Multi-step reasoning where errors compound, high-stakes conclusions requiring traceable evidence, or previous outputs contained confabulated justifications.
@@ -704,7 +704,7 @@ Skills that refine, critique, and simplify the agent's own outputs.
 
 ---
 
-### `reasoning/reasoning-verification-hybrid.md` · [protocol]
+### `reasoning/reasoning-verification-hybrid/SKILL.md` · [protocol]
 **What it is:** A master anti-hallucination protocol combining 4 techniques: claim decomposition + verification (Phase 1), backward contradiction checks (Phase 2), confidence calibration with abstention (Phase 3), and logical entailment validation (Phase 4). Catches all 4 hallucination types from PRISM.
 
 **Use it when:** Hallucinations have caused bad outputs before, high-confidence conclusions are required, or you need to explain *why* you're confident.
@@ -736,8 +736,8 @@ Skills that refine, critique, and simplify the agent's own outputs.
 
 ---
 
-### `reasoning/context-rot-pruner/SKILL.md` · [protocol]
-**What it is:** Apply exponential decay to context messages so old, unreferenced content loses weight and gets pruned before the context window overflows. Maintains `context_weights.jsonl` and prunes messages below a budget threshold.
+### `reasoning/context-rot-pruner/SKILL.md` · [protocol] *(absorbed by context-lifecycle-manager)*
+**What it is:** Apply exponential decay to context messages so old, unreferenced content loses weight and gets pruned before the context window overflows. **Now part of `context-lifecycle-manager` Phase 2 (Decay & Pruning).** Detailed decay formulas preserved in `context-lifecycle-manager/references/budget-and-rot-details.md`.
 
 **Use it when:** Long sessions (20+ turns), multi-step tasks with stale intermediate results, or approaching context limits but still have critical work to do.
 
@@ -757,7 +757,7 @@ Skills that refine, critique, and simplify the agent's own outputs.
 **Includes:** `scripts/belief_store.py` -- pure stdlib; commands: init, add, check, resolve, audit, reset
 
 ---
-### `reasoning/context-density-operator.md` · [protocol]
+### `reasoning/context-density-operator/SKILL.md` · [protocol]
 **What it is:** A context-management protocol that maximizes decision-relevant information per token. Uses hierarchical memory (always-visible / summarized / reference-table tiers), redundancy elimination, and on-demand expansion to keep the context window dense. Based on GenericAgent (arXiv:2604.17091) and information bottleneck principles.
 
 **Use it when:** The context window is filling during long-horizon tasks, retrieved memories or tool outputs are drowning out decision-relevant info, or you need to preserve reasoning quality while reducing token burn.
@@ -766,7 +766,7 @@ Skills that refine, critique, and simplify the agent's own outputs.
 
 ---
 
-### `reasoning/cot-pruning-reasoning.md` · [protocol]
+### `reasoning/cot-pruning-reasoning/SKILL.md` · [protocol]
 **What it is:** A chain-of-thought compression protocol that applies two-pass pruning: coarse step-level (does removing this step change the conclusion?) and fine token-level (keep only assertions, key evidence, and logical connectors). Based on CoT-Influx (arXiv:2312.08901) and sufficiency-conciseness trade-off research.
 
 **Use it when:** Chain-of-thought reasoning exceeds 10 steps, contains redundant justifications, or you need to fit more reasoning within a context budget.
@@ -775,7 +775,7 @@ Skills that refine, critique, and simplify the agent's own outputs.
 
 ---
 
-### `reasoning/selective-halt-reasoning.md` · [protocol]
+### `reasoning/selective-halt-reasoning/SKILL.md` · [protocol]
 **What it is:** An early-stopping protocol that monitors reasoning output for semantic stabilization. Halts after 3 consecutive no-change steps or when halting criteria are met. Based on DASH delta-attention selective halting (arXiv:2604.18103) adapted for agent reasoning.
 
 **Use it when:** Reasoning is converging but continuing to elaborate, token budget is constrained, or you need to know when to stop iterating.
@@ -784,8 +784,8 @@ Skills that refine, critique, and simplify the agent's own outputs.
 
 ---
 
-### `reasoning/token-budget-operator.md` · [protocol]
-**What it is:** A master token-efficiency protocol that orchestrates four techniques in sequence: context density maximization (Phase 1), CoT pruning (Phase 2), selective halting (Phase 3), and SOP capture (Phase 4). Designed for long-horizon tasks where token burn is the bottleneck.
+### `reasoning/token-budget-operator.md` · [protocol] *(absorbed by context-lifecycle-manager)*
+**What it is:** A master token-efficiency protocol that orchestrates four techniques in sequence: context density maximization (Phase 1), CoT pruning (Phase 2), selective halting (Phase 3), and SOP capture (Phase 4). **Now part of `context-lifecycle-manager` Phase 3 (Optimization).**
 
 **Use it when:** Context window is filling during multi-step tasks, you expect >10 reasoning steps, or you want experience to compound via reusable SOPs.
 
@@ -811,7 +811,7 @@ Skills that refine, critique, and simplify the agent's own outputs.
 
 ---
 
-### `output-quality/self-verify-pipeline.md` · [protocol]
+### `output-quality/self-verify-pipeline/SKILL.md` · [protocol]
 **What it is:** Fuses Bounded Self-Revision + Tool Interactive Critic + Claim Verification Reasoning into an escalating 5-phase verification pipeline: Draft → Self-Critique (2 passes max) → Claim Decompose (flag uncertain/high-impact) → Tool-Verify (cheapest tool first) → Final Revision (only where evidence demands).
 
 **Use it when:** Before committing code, presenting analysis to humans, or any high-stakes output.
@@ -905,7 +905,7 @@ Skills for reasoning about systems, boundaries, constraints, and structural desi
 
 ---
 
-### `systems-and-architecture/security-review-protocol.md` · [protocol]
+### `systems-and-architecture/security-review-protocol/SKILL.md` · [protocol]
 **What it is:** Fuses STRIDE threat modeling + Unsafe Control Actions + Vibe Coding Security Hardening into a 4-phase security review: MODEL attack surface, AUDIT hazardous operations, HARDCODE LLM-specific vulnerabilities, VERIFY with tool-grounded evidence.
 
 **Use it when:** Before deploying new endpoints, changing auth/permission logic, or security-focused code reviews.
@@ -973,7 +973,7 @@ Skills for structuring how agents plan, route, delegate, and control complex wor
 
 ---
 
-### `orchestration/sop-evolution-memory.md` · [protocol]
+### `orchestration/sop-evolution-memory/SKILL.md` · [protocol]
 **What it is:** A trajectory-distillation protocol that turns successful task executions into reusable Standard Operating Procedures (SOPs). Future similar tasks load the compact SOP (500 tokens) instead of the full trajectory (3000+ tokens). Includes indexing, retrieval, and quality gates. Based on GenericAgent self-evolution (arXiv:2604.17091).
 
 **Use it when:** You repeatedly solve similar tasks, previous trajectories contain reusable patterns, or context budget is too tight to load full historical traces.
@@ -1002,7 +1002,7 @@ Skills for structuring how agents plan, route, delegate, and control complex wor
 
 ---
 
-### `orchestration/weak-link-detection-multi-agent.md` · [protocol]
+### `orchestration/weak-link-detection-multi-agent/SKILL.md` · [protocol]
 **What it is:** A multi-agent quality control protocol that identifies and isolates the weakest reasoning chain before aggregation. Prevents error amplification when one agent produces poor output.
 
 **Use it when:** Coordinating multiple agents where one bad output could contaminate the final result.
@@ -1011,7 +1011,7 @@ Skills for structuring how agents plan, route, delegate, and control complex wor
 
 ---
 
-### `orchestration/rashomon-triad-hybrid.md` · [protocol]
+### `orchestration/rashomon-triad-hybrid/SKILL.md` · [protocol]
 **What it is:** A multi-perspective structured reasoning system combining Rashomon Memory (parallel goal-conditioned perspectives that maintain conflicting interpretations) with Triad Reasoning (abductive hypothesis generation → deductive verification → inductive pattern extraction). Perspectives argue via structured argumentation; Dung's semantics determines winners.
 
 **Use it when:** Multiple stakeholders have genuinely conflicting goals, the decision has no single "correct" answer, or you need to surface and document why alternatives were rejected rather than hiding conflict behind false consensus.
@@ -1136,7 +1136,7 @@ Still as references:
 
 ---
 
-### `execution/keyword-agnostic-logic-locator.md` · [protocol]
+### `execution/keyword-agnostic-logic-locator/SKILL.md` · [protocol]
 **What it is:** A neurosymbolic code navigation system that extracts program facts (call graphs, data flows, type hierarchies) into a queryable knowledge graph, then uses Datalog-style logic queries to locate code by structural relationships — not by grepping for names.
 
 **Use it when:** Function names are unclear or misleading, you need to find code by "what it does" not "what it's called," or keyword search returns too much noise.
@@ -1147,12 +1147,12 @@ Still as references:
 
 ---
 
-### `execution/abductive-first-debugging.md` · [protocol]
-**What it is:** A debugging protocol that generates multiple competing hypotheses and selects the one providing the *best explanation* for all observed symptoms — inference to best explanation rather than first-plausible-cause or pattern-matching.
+### `debugging/specter/SKILL.md` · [protocol] *(absorbed `abductive-first-debugging`)*
+**What it is:** A debugging skill that generates competing hypotheses (abductive reasoning), locates code structurally (Logic Locator), and disconfirms hypotheses with targeted probes. Absorbs the former `abductive-first-debugging` skill's 6-state protocol and coherence scoring into its references.
 
-**Use it when:** Novel failures with no established pattern, symptoms that could have multiple causes, deductive tracing hits dead ends, or complex multi-system failures.
+**Use it when:** Bug has multiple plausible causes, crash site isn't the root cause, first instinct was wrong, or browser/runtime debugging with no visible errors.
 
-**Key technique:** From "Wiring the 'Why': A Unified Taxonomy of Abductive Reasoning in LLMs" (arXiv:2604.08016) — separates abduction (hypothesis generation), explanatory coherence evaluation, and inference to best explanation.
+**Key technique:** Abductive hypothesis generation (3-5 competing hypotheses with falsifiable predictions) + structural code location (control flow, data flow, call graph, state machine, temporal) + probe & disconfirm loop. Extended abductive reasoning reference preserved in `references/abductive-reasoning-extended.md`.
 
 ---
 
@@ -1165,8 +1165,8 @@ Still as references:
 
 ---
 
-### `execution/context-budget-operator/SKILL.md` · [protocol]
-**What it is:** A token-budget management protocol that tracks context usage before every LLM call, classifies information needs, compresses aggressively when crossing thresholds, and decides breadth vs depth based on remaining runway.
+### `execution/context-budget-operator/SKILL.md` · [protocol] *(absorbed by context-lifecycle-manager)*
+**What it is:** A token-budget management protocol that tracks context usage before every LLM call, classifies information needs, compresses aggressively when crossing thresholds, and decides breadth vs depth based on remaining runway. **Now part of `context-lifecycle-manager` Phase 1 (Birth & Tracking).** Detailed estimation heuristics preserved in `context-lifecycle-manager/references/budget-and-rot-details.md`.
 
 **Use it when:** Working on codebases with >20 files, sessions exceeding 15 turns, or when the agent repeats questions or forgets constraints.
 
@@ -1233,7 +1233,7 @@ Skills for creating skills, integrating external systems, and development workfl
 
 ---
 
-### `software-development/codebase-divide-conquer-search.md` · [protocol]
+### `software-development/codebase-divide-conquer-search/SKILL.md` · [protocol]
 **What it is:** A hierarchical multi-agent search protocol for large codebases. Compresses the codebase via summarization (~80%), partitions into candidate zones via semantic similarity, spawns parallel sub-agents for deep investigation, and synthesizes ranked results with confidence scores. Based on Meta-RAG, GenLoc, AgentGroupChat-V2, RepoAudit, and Code-Craft research.
 
 **Use it when:** The codebase is too large to fit in context, grep returns too many candidates, or you need to find code by behavior rather than name.
@@ -1246,7 +1246,7 @@ Skills for creating skills, integrating external systems, and development workfl
 
 ---
 
-### `software-development/llm-pre-push-review.md` · [protocol]
+### `software-development/llm-pre-push-review/SKILL.md` · [protocol]
 **What it is:** A pre-push code review checklist grounded in arXiv research on systematic LLM coding failures. Five structured passes: Execution Grounding, Security Surface, Contextual Correctness, Structural Quality, and Integration Points. Based on 11 papers identifying failure modes unique to LLM-generated code — hallucinated execution traces, the Format-Reliability Gap (models know vulnerabilities but still generate them), systematic overcorrection of correct code, and functionally-correct-but-silently-vulnerable output.
 
 **Use it when:** Reviewing code before a push/PR, especially when LLMs wrote or modified the code. Also useful as a self-review protocol for agents before committing changes.
@@ -1256,7 +1256,7 @@ Skills for creating skills, integrating external systems, and development workfl
 
 ---
 
-### `software-development/super-review-typescript.md` · [protocol]
+### `software-development/super-review-typescript/SKILL.md` · [protocol]
 **What it is:** A five-pass code reviewer specifically targeting AI‑generated TypeScript failure modes: security vulnerabilities (CWE scan), hallucinated APIs/imports, logic bugs (N+1, off‑by‑one, silent swallowing), TypeScript type‑safety violations (`any` abuse, `!` over‑use), and architectural/concurrency decay. Based on arXiv research showing 57–62% of LLM‑generated code contains security vulnerabilities and 32% hallucinate API existence.
 
 
@@ -1267,7 +1267,7 @@ Skills for creating skills, integrating external systems, and development workfl
 
 ---
 
-### `software-development/pre-deployment-gate.md` · [protocol]
+### `software-development/pre-deployment-gate/SKILL.md` · [protocol]
 **What it is:** Fuses LLM Pre-Push Review with Vibe Coding Security Hardening into a complete 7-pass pre-deployment checklist. Covers execution grounding, security surface, contextual correctness, structural quality, integration points, production hardening (RLS, rate limiting, CORS, CSP), and secrets/config audit.
 
 **Use it when:** Reviewing code before a push/PR/deployment, especially LLM-generated code.

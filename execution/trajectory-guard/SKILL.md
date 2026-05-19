@@ -128,10 +128,12 @@ ___
 ## Integration with Other Skills
 
 Trajectory Guard pairs well with:
-- **context-budget-operator** — use budget awareness to decide if a trajectory checkpoint is affordable
+- **context-lifecycle-manager** (absorbs context-budget-operator) — use budget awareness to decide if a trajectory checkpoint is affordable
 - **assumption-grounding** — before strategy-changing interventions, verify assumptions first
 - **explore-vs-exploit** — the "exploit" signal from explore-vs-exploit can trigger a trajectory checkpoint
 - **debug-subagent** — for Repetition Loops during debugging, hand off to the debug subagent instead of retrying
+- **escalation-ladder** — when trajectory-guard detects a stuck spiral (3+ failed approaches or >5 hypothesis cycles), escalation-ladder provides the structured response protocol (Level 0: self-correct → Level 1: strategy change → Level 2: rubber duck → Level 3: scope reduction → Level 4: retreat)
+- **specter** — for Approach Stagnation during debugging, switch to specter's abductive hypothesis generation instead of continuing the same approach
 
 ## Anti-Patterns to Avoid
 

@@ -24,7 +24,7 @@ Run paired A/B trials to measure whether loading a specific jerrysagentskill act
 - The skill is purely preventative (e.g., security audit) — failures are rare and catastrophic, requiring adversarial test cases instead of random tasks
 - You cannot define a clear "done" criteria for the task
 - Token budget is severely constrained (10 subagent runs = 10× cost of single run)
-- The skill is a planning/risk-analysis framework (e.g., `abductive-first-debugging`, `inversion-mental-model-state-machine`, `pdca-deming`) being tested on deterministic code bugs. These skills burn tool-call budgets on analysis theater and empirically fail on typical code bugs.
+- The skill is a planning/risk-analysis framework (e.g., `specter` for simple bugs where the cause is obvious, `inversion-mental-model-state-machine`, `pdca-deming`) being tested on deterministic code bugs. These skills burn tool-call budgets on analysis theater and empirically fail on typical code bugs.
 
 ## Prerequisites
 1. **Target skill** — which skill to evaluate

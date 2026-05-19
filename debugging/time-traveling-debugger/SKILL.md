@@ -271,4 +271,4 @@ Agent (running this skill):
 - `simulate-instrumentation` — auto-inserts print/logging statements (lighter weight for known-code bugs)
 - `log-trace-correlation` — maps error logs and stack traces to source (runtime log-based, not trace-based)
 - `iterative-patch-repair` — loop of patch → test → refine (complementary after divergence is found)
-- `abductive-first-debugging` — generates multiple competing hypotheses before tracing (good for narrowing where to trace)
+- `specter` — generates competing hypotheses with structural code location before tracing (good for narrowing where to trace)

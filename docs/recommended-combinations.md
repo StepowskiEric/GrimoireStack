@@ -108,13 +108,13 @@ Why this stack works: stabilize first, refactor in bounded slices, keep the blas
 
 3. `debugging/debug-subagent/SKILL.md` — for semantic errors requiring logic understanding
 4. `execution/checklist-manifesto.md` — phase gates and contamination checks
-5. `software-development/pre-deployment-gate.md` — final lint check before commit
+5. `software-development/pre-deployment-gate/SKILL.md` — final lint check before commit
 
 Why this stack works: lint-battalion eliminates 80%+ of errors mechanically, the debug subagent handles semantic survivors without context bloat, and the checklist gates prevent contamination from sloppy fixes.
 
 ### Large codebase search or bug localization
 
-1. `software-development/codebase-divide-conquer-search.md` — hierarchical summarization, semantic ranking, and parallel sub-agent deep dives
+1. `software-development/codebase-divide-conquer-search/SKILL.md` — hierarchical summarization, semantic ranking, and parallel sub-agent deep dives
 2. `execution/how-to-solve-it-state-machine.md` — frame the query precisely before searching
 3. `keyword-agnostic-logic-locator.md` — structural queries when semantic similarity is ambiguous
 4. `debugging/debug-subagent/SKILL.md` — if the search is for a bug, use as the Phase 2 conquer agent
@@ -184,7 +184,7 @@ Why this works: most git "disasters" are actually deterministic state machines. 
 
 1. `software-development/code-knowledge-graph-mcp/SKILL.md` — index the repo and query symbols/call-graphs structurally
 
-3. `execution/keyword-agnostic-logic-locator.md` — when semantic search is ambiguous, find code by structure
+3. `execution/keyword-agnostic-logic-locator/SKILL.md` — when semantic search is ambiguous, find code by structure
 
 Why this works: the MCP server eliminates grep noise by returning structured symbol data (definitions, imports, call sites), and the logic locator handles cases where the right code doesn't match the query keywords.
 
@@ -192,13 +192,13 @@ Why this works: the MCP server eliminates grep noise by returning structured sym
 
 1. `software-development/dev-diagnostics-mcp/SKILL.md` — run diagnostics and get structured JSON output
 2. `software-development/lint-battalion/SKILL.md` — for bulk mechanical errors, run the auto-fix battalion
-3. `software-development/pre-deployment-gate.md` — final contamination check before committing
+3. `software-development/pre-deployment-gate/SKILL.md` — final contamination check before committing
 
 Why this works: the MCP server normalizes output from 6+ tools (ESLint, Biome, Ruff, tsc, Vitest, pytest) into a single schema, lint-battalion handles mass remediation, and the pre-deployment gate catches contamination from sloppy fixes.
 
 ### Long-horizon tasks (migrations, multi-file changes, complex bugs)
 
-1. `execution/context-budget-operator/SKILL.md` — track token budget before it silently overflows
+1. `execution/context-lifecycle-manager/SKILL.md` — track token budget + decay + pruning before it silently overflows (absorbs context-budget-operator)
 2. `execution/trajectory-guard/SKILL.md` — detect failure spirals and force strategy changes
 3. `execution/assumption-grounding/SKILL.md` — verify assumptions before each major decision
 4. `execution/pragmatic-programmer-state-machine.md` — keep changes bounded and reversible
@@ -211,14 +211,14 @@ These skills fuse 2-3 existing skills into single protocols, eliminating loading
 
 | Hybrid | Fuses | When to Use |
 |--------|-------|-------------|
-| [`task-intake-protocol`](../judgment-and-routing/task-intake-protocol.md) | Cynefin + ETTO + RPT | Before ANY non-trivial task |
-| [`pre-deployment-gate`](../software-development/pre-deployment-gate.md) | Pre-Push Review + Vibe Coding Security | Before pushing/deploying code |
-| [`requirement-crystallization-protocol`](../execution/requirement-crystallization-protocol.md) | Socratic + Intent Spec | Before coding when requirements are vague |
-| [`legacy-rescue-protocol`](../execution/legacy-rescue-protocol.md) | WELC + Refactoring State Machine | Changing untested/legacy code |
-| [`self-verify-pipeline`](../output-quality/self-verify-pipeline.md) | BSR + TIC + Claim Verification | Verifying output before committing |
-| [`failure-analysis-protocol`](../judgment-and-routing/failure-analysis-protocol.md) | Pre-Mortem + Inversion + 2nd-Order | Before high-stakes decisions |
-| [`long-task-survival-kit`](../execution/long-task-survival-kit.md) | Assumption + Trajectory + Context Budget | Tasks with 10+ tool calls |
-| [`security-review-protocol`](../systems-and-architecture/security-review-protocol.md) | STRIDE + UCA + Vibe Coding Security | Security review before deployment |
+| [`task-intake-protocol`](../judgment-and-routing/task-intake-protocol/SKILL.md) | Cynefin + ETTO + RPT | Before ANY non-trivial task |
+| [`pre-deployment-gate`](../software-development/pre-deployment-gate/SKILL.md) | Pre-Push Review + Vibe Coding Security | Before pushing/deploying code |
+| [`requirement-crystallization-protocol`](../execution/requirement-crystallization-protocol/SKILL.md) | Socratic + Intent Spec | Before coding when requirements are vague |
+| [`legacy-rescue-protocol`](../execution/legacy-rescue-protocol/SKILL.md) | WELC + Refactoring State Machine | Changing untested/legacy code |
+| [`self-verify-pipeline`](../output-quality/self-verify-pipeline/SKILL.md) | BSR + TIC + Claim Verification | Verifying output before committing |
+| [`failure-analysis-protocol`](../judgment-and-routing/failure-analysis-protocol/SKILL.md) | Pre-Mortem + Inversion + 2nd-Order | Before high-stakes decisions |
+| [`long-task-survival-kit`](../execution/long-task-survival-kit/SKILL.md) | Assumption + Trajectory + Context Budget | Tasks with 10+ tool calls |
+| [`security-review-protocol`](../systems-and-architecture/security-review-protocol/SKILL.md) | STRIDE + UCA + Vibe Coding Security | Security review before deployment |
 | [`debug-to-fix-pipeline`](../debugging/debug-to-fix-pipeline.md) | Abductive Debug + Debug Subagent + Instrumentation + Purify + Patch Repair | End-to-end non-trivial debugging |
 | [`reasoning-integrity-chain`](../reasoning/reasoning-integrity-chain.md) | Faithfulness + Claims + Verification + Selective Halt | High-stakes reasoning integrity |
 | [`system-architecture-audit`](../systems-and-architecture/system-architecture-audit.md) | DDIA + DDD + Thinking in Systems + Release It | Comprehensive architecture review |

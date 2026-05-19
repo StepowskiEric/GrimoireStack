@@ -11,6 +11,18 @@ tags: [context-management, token-efficiency, scaling, agent-safety, long-horizon
 
 ---
 
+## ⚠️ Absorbed by context-lifecycle-manager
+
+This skill's protocol is now part of **`context-lifecycle-manager`** (Phase 1: Birth & Tracking). Use the lifecycle manager for unified context management across birth, decay, and optimization.
+
+- **`context-budget-operator`** → lifecycle-manager Phase 1 (Birth & Tracking)
+- **`context-rot-pruner`** → lifecycle-manager Phase 2 (Decay & Pruning)  
+- **`token-budget-operator`** → lifecycle-manager Phase 3 (Optimization)
+
+Detailed estimation heuristics and decay formulas are preserved in `context-lifecycle-manager/references/budget-and-rot-details.md`.
+
+---
+
 ## Overview
 
 Context windows are finite. In long sessions or large codebases, agents silently exceed their budget, causing earlier instructions to drop out, reasoning to fragment, and coherence to collapse. The failure mode is invisible until the agent contradicts itself or forgets constraints set 10 turns ago.

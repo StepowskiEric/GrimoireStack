@@ -23,6 +23,16 @@ Fuses Abductive-First Debugging (competing hypotheses), Debug Subagent (debug-be
 
 ---
 
+## Phase 0: REPRODUCE (if no failing test)
+
+If you don't have a failing test to start with, use `minimal-reproduction` to create one before entering the pipeline. Every subsequent phase assumes you have a test that demonstrates the bug.
+
+- If a failing test already exists → skip to Phase 1
+- If bug is visible at runtime but no test covers it → use `minimal-reproduction` Skill first
+- If bug is environmental (build fails, command not found) → use `environment-recovery` Skill first
+
+---
+
 ## Phase 1: HYPOTHESIZE
 
 Generate competing hypotheses and select the best explanation via abductive reasoning.
