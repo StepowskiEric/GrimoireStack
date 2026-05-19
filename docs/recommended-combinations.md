@@ -220,10 +220,24 @@ These skills fuse 2-3 existing skills into single protocols, eliminating loading
 | [`long-task-survival-kit`](../execution/long-task-survival-kit/SKILL.md) | Assumption + Trajectory + Context Budget | Tasks with 10+ tool calls |
 | [`security-review-protocol`](../systems-and-architecture/security-review-protocol/SKILL.md) | STRIDE + UCA + Vibe Coding Security | Security review before deployment |
 | [`debug-to-fix-pipeline`](../debugging/debug-to-fix-pipeline.md) | Abductive Debug + Debug Subagent + Instrumentation + Purify + Patch Repair | End-to-end non-trivial debugging |
+| [`occam-mcts`](../orchestration/occam-mcts/SKILL.md) | Occam's Razor + Monte Carlo Tree Search | Complexity-ranked branch exploration; stop when simplest viable branch is confirmed |
+| [`occam-abduction`](../judgment-and-routing/occam-abduction/SKILL.md) | Occam's Razor + Abductive Reasoning | Select simplest surviving hypothesis from competing explanations |
 | [`reasoning-integrity-chain`](../reasoning/reasoning-integrity-chain.md) | Faithfulness + Claims + Verification + Selective Halt | High-stakes reasoning integrity |
 | [`system-architecture-audit`](../systems-and-architecture/system-architecture-audit.md) | DDIA + DDD + Thinking in Systems + Release It | Comprehensive architecture review |
 | [`speculative-exploration-protocol`](../execution/speculative-exploration-protocol.md) | Speculative Drafting + Tree of Thoughts + PRM | Explore alternatives with process rewards |
 | [`iterative-improvement-cycle`](../execution/iterative-improvement-cycle.md) | Toyota Kata + PDCA + Philosophy of Software Design | Iterative improvement with measurement + design quality |
+
+### Occam-first debugging or design
+
+1. [`judgment-and-routing/occams-razor/SKILL.md`](../..) — rank alternatives simplest → most complex before any analysis
+2. [`judgment-and-routing/occam-abduction/SKILL.md`](../..) — generate hypotheses, audit evidence, select simplest surviving explanation
+3. [`debugging/occam-root-cause/SKILL.md`](../..) — verify the simplest root cause with falsification before fixing
+4. [`debugging/occam-minimal-repro/SKILL.md`](../..) — rank triggers by complexity, stop at first tier that reproduces
+5. [`orchestration/occam-mcts/SKILL.md`](../..) — if multiple fix branches exist, explore simplest first and stop when simplest viable branch is confirmed
+
+Why this stack works: simplicity is the selection criterion at every stage — hypothesis generation, root cause selection, trigger testing, and fix branch exploration. Complexity is not free; it has to earn its way in.
+
+---
 
 ## If you are unsure where to begin
 

@@ -26,12 +26,14 @@
 | Need to understand unfamiliar code before fixing | [`explore-codebase`](../software-development/explore-codebase.md) | Graph-powered navigation with token efficiency | Framework |
 | Large codebase, bug location unknown | [`codebase-divide-conquer-search`](../software-development/codebase-divide-conquer-search/SKILL.md) | Hierarchical summarization + parallel agent deep dives | Based on Meta-RAG / GenLoc |
 | Large codebase, want to preserve investigation trail | [`navigator`](../orchestration/navigator/SKILL.md) | Scout + Thought-Retriever; builds retrievable reasoning traces |
+|| Root cause unclear with multiple competing candidates | [`occam-root-cause`](../debugging/occam-root-cause/SKILL.md) | Select simplest causal chain from RCA candidates; verify with falsification before fixing | New |
 | Bug with multiple plausible causes, root cause unclear | [`specter`](../debugging/specter/SKILL.md) | Abductive hypotheses + structural code location — reason backwards from symptom |
 | Debugging session getting long, agent stuck | [`long-task-survival-kit`](../execution/long-task-survival-kit/SKILL.md) | Checkpoint every 5 calls: context, trajectory, assumptions |
 || Bug crashes but root cause is not at the crash site | [`time-traveling-debugger`](../debugging/time-traveling-debugger/SKILL.md) | Forward trace + backward rewind to find state divergence | Includes MCP server |
 || Environment broken — commands failing before reaching code | [`environment-recovery`](../debugging/environment-recovery/SKILL.md) | Structured vitals check + targeted repair for disk, versions, caches, ports, permissions | New |
 || Network / API failures — CORS, auth, rate limiting, redirects | [`network-api-debugging`](../debugging/network-api-debugging/SKILL.md) | Captures actual traffic, diagnoses by status code, fixes by failure type | New |
 || Bug visible at runtime but no test covers it | [`minimal-reproduction`](../debugging/minimal-reproduction/SKILL.md) | Write the smallest possible test that demonstrates the bug, then debug with ammunition | New |
+|| Bug reproduction needs systematic trigger ranking | [`occam-minimal-repro`](../debugging/occam-minimal-repro/SKILL.md) | Rank possible triggers by complexity, test simplest first, stop at first tier that reproduces | New |
 || Agent completely stuck — tried multiple approaches without progress | [`escalation-ladder`](../debugging/escalation-ladder/SKILL.md) | 5-level protocol: self-correct → strategy change → rubber duck → scope reduction → full retreat | New |
 || Fix requires changes across multiple files | [`coordinated-change`](../software-development/coordinated-change/SKILL.md) | Map change set, order dependencies, edit atomically, verify consistency | New |
 
@@ -49,8 +51,11 @@
 | Situation | Best Skill | Why |
 |-----------|------------|-----|
 | Hard problem, don't know where to start | [`how-to-solve-it-state-machine`](../execution/how-to-solve-it-state-machine.md) | Forces problem framing before action |
+| Multiple possible causes, competing explanations | [`occams-razor`](../judgment-and-routing/occams-razor/SKILL.md) | List alternatives ranked simplest → most complex; test simplest first; every added assumption must earn its keep | New |
 | Multiple possible causes, novel failure | [`specter`](../debugging/specter/SKILL.md) | Abductive hypotheses + structural code location + disconfirmation protocol |
+| Multiple competing explanations that all fit the evidence | [`occam-abduction`](../judgment-and-routing/occam-abduction/SKILL.md) | Generate hypotheses → audit evidence → rank by assumption count → falsify or confirm the simplest | New |
 || Need to locate relevant code by structure | [`keyword-agnostic-logic-locator`](../execution/keyword-agnostic-logic-locator/SKILL.md) | Finds code by structure, not by grepping |
+| Multiple strategy branches, need to allocate effort wisely | [`occam-mcts`](../orchestration/occam-mcts/SKILL.md) | Occam's Razor ranks branches by complexity first; MCTS explores simplest viable branches before complex ones | New |
 | Multiple strategy branches, need to allocate effort wisely | [`tree-of-thoughts-plus-monte-carlo-tree-search`](../orchestration/tree-of-thoughts-plus-monte-carlo-tree-search.md) | ToT generates branches; MCTS allocates effort — prevents first-branch lock-in |
 | Decision with multiple plausible options, need to stress-test | [`jury`](../orchestration/jury/SKILL.md) | Parallel perspectives argue; the conflict graph reveals what matters |
 | Complex problem, want to verify understanding before acting | [`prism`](../reasoning/prism/SKILL.md) | Confidence calibration + compression test; if you can't compress it, you don't get it |

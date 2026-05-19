@@ -321,6 +321,15 @@ Skills for executing technical work in a bounded, disciplined way.
 
 ---
 
+### `debugging/occam-minimal-repro/SKILL.md` · [protocol]
+**What it is:** Fuses Occam's Razor with minimal reproduction. When isolating a bug, systematically rank possible reproduction triggers by complexity (Tier 0 = direct function call → Tier 4 = specific physical environment), test the simplest first, and only escalate when simpler triggers are falsified. Prevents building elaborate reproduction setups when a one-liner would suffice.
+
+**Use it when:** Writing a minimal reproduction test and there are several plausible triggers with different complexity levels, or you catch yourself setting up a complex test environment before trying a simple one.
+
+**Best for:** Bug reproduction, test writing, avoiding environment-hunting before code-hunting.
+
+---
+
 ### `debugging/debug-to-fix-pipeline.md` · [protocol]
 **What it is:** Fuses abductive debugging + debug subagent + simulate instrumentation + purify test output + iterative patch repair into a single end-to-end debugging pipeline. Classifies the failure, generates hypotheses, instruments runtime state, iterates on patches, and verifies the fix.
 
@@ -336,6 +345,15 @@ Skills for executing technical work in a bounded, disciplined way.
 **Use it when:** A bug returns after being "fixed," a fix in one area breaks something else, or the agent is tempted to add guards without understanding why bad input arrived.
 
 **Best for:** Recurring bugs, complex failures with multiple symptoms, preventing regression, any situation where the visible error is not the actual defect.
+
+---
+
+### `debugging/occam-root-cause/SKILL.md` · [protocol]
+**What it is:** Fuses Root Cause Analysis with Occam's Razor. After RCA produces multiple candidate root causes, this combo ranks them by causal step count and independent new entities, then verifies the simplest surviving candidate with a falsification experiment. Includes a decisive test: "If I fix only Factor A, does the symptom recur?" If no → A is the root cause; the others are contributing factors.
+
+**Use it when:** RCA has produced multiple candidate root causes, the 5 Whys branched into different causal chains, or you are tempted to accept a "multiple contributing factors" explanation without testing whether a single root cause suffices.
+
+**Best for:** Complex failures with multiple plausible causes, recurring bugs, any situation where the simplest causal chain needs to be verified before committing to a fix.
 
 ---
 
@@ -476,6 +494,24 @@ Skills for routing tasks, calibrating rigor, and reasoning about risks and trade
 **Use it when:** A recommendation has a clear first-order benefit but the downstream effects on the system, stakeholders, or incentives have not been traced.
 
 **Best for:** Architecture recommendations, policy changes, process improvements, any decision where the obvious short-term benefit might produce unintended long-term consequences.
+
+---
+
+### `judgment-and-routing/occams-razor/SKILL.md` · [framework]
+**What it is:** A simplicity-first reasoning discipline. Forces the agent to list alternatives ranked simplest → most complex, test the simplest viable explanation first, and only escalate when it is falsified. Applies a "complexity tax" — every added assumption, dependency, or abstraction must earn its keep with explicit evidence.
+
+**Use it when:** Diagnosing bugs, designing solutions, answering questions with multiple plausible interpretations, or reviewing plans for over-engineering.
+
+**Best for:** Preventing over-engineering, scope creep, and premature abstraction in any reasoning or implementation task.
+
+---
+
+### `judgment-and-routing/occam-abduction/SKILL.md` · [framework]
+**What it is:** Fuses abductive reasoning (generate competing hypotheses) with Occam's Razor (select simplest surviving hypothesis). After generating 3–5 hypotheses and auditing each against confirmed evidence, discards falsified ones, ranks survivors by assumption count, and verifies the leader with a targeted probe. Simplicity is the primary selection criterion — not narrative appeal.
+
+**Use it when:** Multiple competing explanations fit the evidence, hypotheses differ substantially in assumption count, or you need a principled tiebreaker between explanations that all "seem right."
+
+**Best for:** Bug diagnosis with unclear root cause, ambiguous symptoms, any situation where several explanations are consistent with the available evidence.
 
 ---
 
@@ -988,6 +1024,15 @@ Skills for structuring how agents plan, route, delegate, and control complex wor
 **Use it when:** Multiple plausible strategies exist and the agent needs a disciplined way to decide which branch deserves more reasoning, testing, or tool budget.
 
 **Best for:** Hard debugging, refactor-path selection, architecture tradeoffs, repo-scale investigations, and tool-using agents with measurable feedback.
+
+---
+
+### `orchestration/occam-mcts/SKILL.md` · [protocol]
+**What it is:** Fuses Occam's Razor with Monte Carlo Tree Search. Branches are ranked by complexity tier (0–4) before any probing begins. The MCTS loop uses simplicity as the primary scoring dimension and has a stop-early gate: if the simplest viable branch passes its probe, the search terminates. Prevents exploring expensive distributed-tracing solutions when a log file would suffice.
+
+**Use it when:** Multiple approaches differ substantially in complexity, you want to enforce "try the simple thing first" as a systematic discipline, or the cost of exploring a wrong complex branch is high.
+
+**Best for:** Debugging with competing hypotheses at different architectural tiers, architecture decisions, any situation where simple and complex solutions are both plausible.
 
 ---
 
