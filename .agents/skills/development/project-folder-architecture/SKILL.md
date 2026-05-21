@@ -1,10 +1,11 @@
 ---
 name: project-folder-architecture
 description: >
-  Universal folder architecture skill for TypeScript + Expo (React Native) + Convex/Supabase/SurrealDB
-  full-stack projects and daemon/service backends. Updated for 2026 conventions: Expo SDK 55+/Router
-  file-based routing, Convex best-practices (model/ split, internal.*), Supabase Edge Functions layout,
-  SurrealDB schema file organisation, SurrealKit migrations, and daemon lifecycle structure.
+  Universal folder architecture skill for TypeScript + Expo (React Native) + Convex/Supabase
+  full-stack projects, updated to 2026 conventions. Covers Expo SDK 55+/Router file-based routing,
+  Convex best-practices (model/ split, internal.*), Supabase Edge Functions layout, Supabase migrations,
+  Supabase Cron (pg_cron), and Supabase Queues (pgmq). SurrealDB and daemon/service backend references
+  are included for non-Expo backends.
   Use when scaffolding a new project, restructuring an existing one, auditing folder health, or
   answering "where should this file live?".
 ---
@@ -63,8 +64,6 @@ your-project/
 │   ├── (welcome)/               # Route group — first-run / onboarding (no auth yet)
 │   │   ├── _layout.tsx
 │   │   └── index.tsx
-│   ├── onboarding/              # Standalone flow (not a tab, not protected same way)
-│   │   └── index.tsx
 │   └── +not-found.tsx
 │
 ├── features/                     # Feature-first domain modules (primary organizing axis)
@@ -84,11 +83,11 @@ your-project/
 │   ├── rivalry/
 │   ├── pack/
 │   ├── geo/
-│   └── rankings/
+│   └── ranking/
 │
 ├── components/                   # Shared/reusable UI primitives (used across 2+ features)
 │   ├── ui/                       # Atomic: Button, Avatar, Badge, Skeleton, Toast
-│   ├── footygoat/               # Branded: GoatyCharacter, haptic-tab, NavigationTracker
+│   ├── brand/                    # Branded: GoatyCharacter, haptic-tab, NavigationTracker
 │   ├── external-link.tsx
 │   └── SwipeBackWrapper.tsx
 │
@@ -120,6 +119,10 @@ your-project/
 │   ├── streakStore.ts
 │   └── __tests__/
 │
+├── .env                          # Local secrets (never commit)
+├── .env.local                    # Overrides, gitignored
+├── .env.example                  # Template for new devs
+│
 ├── providers/                    # App-level provider wiring
 │   ├── ConvexProvider.tsx       # Convex client + React Query provider
 │   ├── ConvexAuthProvider.tsx
@@ -147,7 +150,7 @@ your-project/
 │   └── validation/
 │       └── slug.ts
 │
-├── lib/                          # Third-party client initialisation (configured wrappers)
+├── lib/                          # App-wide infrastructure: client bootstrap, logger, sound, storage
 │   ├── convex-client.ts         # Convex client bootstrap
 │   ├── logger.ts
 │   ├── sounds.ts
@@ -190,9 +193,9 @@ your-project/
 │   └── __tests__/
 │
 ├── supabase/                     # Only if using Supabase alongside/instead of Convex
-│   ├── migrations/               # SQL migrations (pg_dump / supabase migration new)
+│   ├── migrations/               # SQL migrations (supabase migration new)
 │   ├── functions/                # Edge Functions
-│   │   ├── _shared/              # Shared code across functions (underscore = not deployed)
+│   │   ├── _shared/              # Shared code — underscore prefix prevents deployment as a function
 │   │   │   ├── supabaseClient.ts # Supabase client with publishable key
 │   │   │   ├── supabaseAdmin.ts  # Supabase client with service_role key
 │   │   │   └── cors.ts
@@ -241,8 +244,14 @@ your-project/
 ├── tsconfig.node.json
 ├── package.json
 ├── app.config.ts                 # Expo config (expo-router, plugins, runtime config)
+├── eas.json                      # EAS Build / Submit / Update configuration
 └── README.md
 ```
+
+**Env vars:** Prefix secrets with `EXPO_PUBLIC_` to expose them to the bundle.
+`app.config.ts` reads `process.env` at build time — never hardcode credentials.
+Use `expo-secret` or Vault for production secrets. `.env`, `.env.local`, and `.env.example`
+are gitignored / templated per-project.
 
 ---
 
@@ -252,6 +261,12 @@ Tests live **colocated with the code they test** (unit/integration) or in dedica
 folders for cross-cutting test types (E2E, browser, mobile-automation). Full details — runner
 selection, Convex `convex-test`, Supabase Deno tests, Playwright, Maestro, test config files,
 and isolation principles — are in [`references/testing.md`](references/testing.md).
+
+**Runner selection:** Vitest for all non-native code (utils, hooks, components, Convex `model/` helpers,
+Convex queries/mutations via `convex-test`). Jest only for React Native component tests that touch
+native modules (Metro bundler dependency). `convex-test` reuses the same `vitest.config.ts` — no
+separate runner needed. Supabase Edge Function tests use the Deno test runner and live in
+`supabase/functions/tests/`.
 
 Quick summary:
 
@@ -393,6 +408,19 @@ supabase/
 - Shared code goes in `_shared/` (the underscore prefix prevents Supabase from deploying it as a function).
 - Name functions with hyphens: `my-function/`, not `my_function/` or `myFunction/`.
 - One `index.ts` per function — it is the entrypoint.
+
+### `providers/` — App-Level Wiring
+
+- Use `providers/` for framework and app-level client wiring (Convex, React Query, Theme, Auth,
+  SafeArea). This is the only place where top-level app providers are composed.
+- **`providers/` vs `context/`:** Use `providers/` for app-level concerns. Use `context/` only if
+  you are **not** using Zustand and need React Context for feature-scoped or domain state. Never use
+  both for the same concern — pick one mechanism per domain.
+
+### `context/` — Feature State (only if not using Zustand)
+
+- **`AuthContext.tsx`**, **`ThemeContext.tsx`** — React Context for feature-scoped state.
+- If using Zustand (`stores/`), skip this folder entirely for concerns already in `stores/`.
 
 ---
 
