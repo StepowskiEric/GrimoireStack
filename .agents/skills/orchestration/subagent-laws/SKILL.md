@@ -1,13 +1,13 @@
 ---
-name: agent-guidance
+name: subagent-laws
 description: "Persistent, opinionated rules every sub-agent must follow regardless of task type. Loaded automatically by subagent-composer alongside task-specific skills. Use when composing sub-agent briefs to enforce scope discipline, test hygiene, code structure, and communication standards."
 ---
 
-# Agent Guidance — Persistent Rules for All Sub-Agents
+# Sub-Agent Laws — Non-Negotiable Rules Every Sub-Agent Must Follow
 
 ## Purpose
 
-This skill encodes the non-negotiable operational rules every sub-agent must follow, regardless
+This skill defines the non-negotiable laws every sub-agent must follow, regardless
 of the task type. It is loaded automatically by `subagent-composer` alongside any task-specific
 skills. Treat these as standing orders — they apply to every sub-agent dispatch unless the brief
 explicitly overrides a specific rule with justification.

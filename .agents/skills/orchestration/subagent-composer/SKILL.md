@@ -55,19 +55,19 @@ critical reasoning framework is a full rewrite cycle.
 
 | Task Type | Always | Also Include |
 |-----------|--------|-------------|
-| **Fix a bug** | `tdd`, `agent-guidance` | `root-cause-analysis`, `diagnose`, `systematic-debugging` |
-| **Implement a feature** (new code) | `tdd`, `agent-guidance` | `api-design-backward-compatibility` (if API), `security-threat-modeling` (if auth/data/storage), `domain-driven-design` (if complex domain logic) |
-| **Refactor code** | `tdd`, `agent-guidance` | `refactoring-state-machine`, `working-effectively-with-legacy-code`, `philosophy-of-software-design` |
-| **Design architecture** | `agent-guidance` | `domain-driven-design`, `thinking-in-systems`, `designing-data-intensive-applications` |
-| **Code review** | `tdd`, `agent-guidance` | `code-review-excellence`, `super-review-typescript`, `security-threat-modeling`, `llm-pre-push-review` |
-| **Performance optimization** | `tdd`, `agent-guidance` | `the-goal-theory-of-constraints`, `python-performance-optimization` (if Python) |
-| **Security audit / hardening** | `tdd`, `agent-guidance` | `security-threat-modeling`, `vibe-coding-security-hardening`, `unsafe-control-actions-hazard-analysis` |
-| **Write documentation** | `agent-guidance` | `documentation-craft`, `feynman-technique`, `mece-pyramid-principle` |
-| **Plan / estimate** | `agent-guidance` | `pre-mortem`, `second-order-thinking`, `reference-class-forecasting`, `inversion-mental-model` |
-| **Research / explore** | `agent-guidance` | `research`, `verify-before-integrate`, `first-principles` |
-| **Data modeling / schema** | `tdd`, `agent-guidance` | `domain-driven-design`, `api-design-backward-compatibility`, `designing-data-intensive-applications` |
-| **Decision / proposal** | `agent-guidance` | `steelmanning`, `advocatus-diaboli`, `second-order-thinking`, `pre-mortem` |
-| **Debug a test failure** | `tdd`, `agent-guidance` | `purify-test-output`, `simulate-instrumentation`, `bisect-debugging` |
+| **Fix a bug** | `tdd`, `subagent-laws` | `root-cause-analysis`, `diagnose`, `systematic-debugging` |
+| **Implement a feature** (new code) | `tdd`, `subagent-laws` | `api-design-backward-compatibility` (if API), `security-threat-modeling` (if auth/data/storage), `domain-driven-design` (if complex domain logic) |
+| **Refactor code** | `tdd`, `subagent-laws` | `refactoring-state-machine`, `working-effectively-with-legacy-code`, `philosophy-of-software-design` |
+| **Design architecture** | `subagent-laws` | `domain-driven-design`, `thinking-in-systems`, `designing-data-intensive-applications` |
+| **Code review** | `tdd`, `subagent-laws` | `code-review-excellence`, `super-review-typescript`, `security-threat-modeling`, `llm-pre-push-review` |
+| **Performance optimization** | `tdd`, `subagent-laws` | `the-goal-theory-of-constraints`, `python-performance-optimization` (if Python) |
+| **Security audit / hardening** | `tdd`, `subagent-laws` | `security-threat-modeling`, `vibe-coding-security-hardening`, `unsafe-control-actions-hazard-analysis` |
+| **Write documentation** | `subagent-laws` | `documentation-craft`, `feynman-technique`, `mece-pyramid-principle` |
+| **Plan / estimate** | `subagent-laws` | `pre-mortem`, `second-order-thinking`, `reference-class-forecasting`, `inversion-mental-model` |
+| **Research / explore** | `subagent-laws` | `research`, `verify-before-integrate`, `first-principles` |
+| **Data modeling / schema** | `tdd`, `subagent-laws` | `domain-driven-design`, `api-design-backward-compatibility`, `designing-data-intensive-applications` |
+| **Decision / proposal** | `subagent-laws` | `steelmanning`, `advocatus-diaboli`, `second-order-thinking`, `pre-mortem` |
+| **Debug a test failure** | `tdd`, `subagent-laws` | `purify-test-output`, `simulate-instrumentation`, `bisect-debugging` |
 
 ---
 
@@ -570,7 +570,7 @@ Stop rules:
 
 Skills loaded:
 - tdd — write tests first, then implement
-- agent-guidance — persistent rules: don't fix pre-existing issues outside scope, don't break passing tests, don't commit unasked
+- subagent-laws — non-negotiable rules: don't fix pre-existing issues outside scope, don't break passing tests, don't commit unasked
 - root-cause-analysis — trace the actual cause, not the symptom
 - diagnose — structured reproduction → minimise → hypothesise loop
 ```
@@ -639,7 +639,7 @@ Stop rules:
 
 Skills loaded:
 - tdd — write tests first, then implement
-- agent-guidance — persistent rules: don't fix pre-existing issues outside scope, don't break passing tests, don't commit unasked
+- subagent-laws — non-negotiable rules: don't fix pre-existing issues outside scope, don't break passing tests, don't commit unasked
 - api-design-backward-compatibility — endpoint contract design
 - security-threat-modeling — authorization and input validation
 - domain-driven-design — the invitation domain has its own lifecycle worth modelling
@@ -655,7 +655,7 @@ Skills loaded:
 ```python
 subagent({
     agent: "<agent-name>",
-    skill: ["tdd", "agent-guidance", "<task-skill-1>", "<task-skill-2>"],
+    skill: ["tdd", "subagent-laws", "<task-skill-1>", "<task-skill-2>"],
     context: "fork",   # use "fresh" for independent reasoning
     reads: ["<path-to-relevant-file>"],  # pre-load files without inlining
     task: f"""## Goal
@@ -687,7 +687,7 @@ via `reads` rather than inlined.
 ```python
 subagent({
     agent: "<agent-name>",
-    skill: ["tdd", "agent-guidance", "<task-skill-1>", "<task-skill-2>"],
+    skill: ["tdd", "subagent-laws", "<task-skill-1>", "<task-skill-2>"],
     context: "fork",
     reads: ["<large-file-1>", "<large-file-2>"],  # pre-load instead of inlining
     task: f"""## Goal
@@ -793,9 +793,9 @@ Stop after success criteria are met. Do not touch agent A's files.""",
 ## Agent Rules
 
 ### Do
-- always include `agent-guidance` for every sub-agent dispatch (persistent scope/test/communication rules)
-- always include `tdd` for any code-producing task
-- match skills to the task's primary risk areas
+- always load `subagent-laws` and `tdd` for every sub-agent dispatch — these are non-negotiable
+- add any other task-relevant skills on top (debugging, security, API design, architecture, etc.)
+- match extra skills to the task's primary risk areas
 - tell the sub-agent *why* each skill was loaded ("use X for Y")
 - use `context: "fork"` for awareness of prior decisions, `context: "fresh"` for independent reasoning
 - include the full context the sub-agent needs — file paths, type definitions, existing patterns, constraints
@@ -823,7 +823,7 @@ Stop after success criteria are met. Do not touch agent A's files.""",
 
 ## Pairing Guide
 
-- **agent-guidance** — loaded automatically in every sub-agent dispatch; contains persistent rules for scope discipline, test hygiene, code structure, and communication standards that apply regardless of task type
+- **subagent-laws** — loaded automatically in every sub-agent dispatch; contains persistent rules for scope discipline, test hygiene, code structure, and communication standards that apply regardless of task type
 - **TDD** — the core `tdd` skill is always loaded for code tasks; this skill layers context and skill composition on top
 - **Octopus** — use octopus for contract-driven decomposition before dispatching; use subagent-composer to write each arm's brief
 - **pi-subagents** — this skill describes *what to write* in the brief; pi-subagents describes *which tool invocation shape* to use (SINGLE / CHAIN / PARALLEL), `async: true` for long-running work, `control` parameters for attention tracking, and `intercom` for cross-session coordination
@@ -838,7 +838,7 @@ Stop after success criteria are met. Do not touch agent A's files.""",
 A sub-agent brief is high-context when:
 
 - [ ] The task type was identified and the skill mapping was consulted
-- [ ] `agent-guidance` was included in every sub-agent dispatch
+- [ ] `subagent-laws` was included in every sub-agent dispatch
 - [ ] `tdd` was included for any code-producing task
 - [ ] All relevant skills were loaded with explanations
 - [ ] The brief includes Goal, Why, Context, Task, Success Criteria, Rules, Boundaries, Output Format, and Stop Rules
