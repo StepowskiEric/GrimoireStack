@@ -1,9 +1,9 @@
 ---
 name: project-folder-architecture
 description: >
-  Universal folder architecture skill for TypeScript + Expo (React Native) + Convex/Supabase
+  Universal folder architecture skill for TypeScript + Expo (React Native) + Supabase
   full-stack projects, updated to 2026 conventions. Covers Expo SDK 55+/Router file-based routing,
-  Convex best-practices (model/ split, internal.*), Supabase Edge Functions layout, Supabase migrations,
+  Supabase Edge Functions layout, Supabase migrations,
   Supabase Cron (pg_cron), and Supabase Queues (pgmq). SurrealDB and daemon/service backend references
   are included for non-Expo backends.
   Use when scaffolding a new project, restructuring an existing one, auditing folder health, or
@@ -12,7 +12,7 @@ description: >
 
 # Project Folder Architecture
 
-Universal folder organization for **TypeScript + Expo Router + React Native + Convex/Supabase**
+Universal folder organization for **TypeScript + Expo Router + React Native + Supabase**
 projects, updated to 2026 standards.
 
 ---
@@ -24,8 +24,7 @@ projects, updated to 2026 standards.
 2. **Feature-first over layer-first.** Group by what the user does (ladder, profile, social),
    not by file type (components, screens). Layer folders (`components/`, `hooks/`) hold
    *cross-cutting shared* code only.
-3. **Thin API, thick model.** In Convex, public `query`/`mutation`/`action` wrappers are short;
-   business logic lives in `convex/model/` helpers.
+
 4. **Promote on reuse, demote on specificity.** A util lives inside its feature until a second
    feature needs it, then it moves up to the shared layer.
 5. **Clear ownership boundaries.** If deleting a feature folder would break other features,
@@ -94,13 +93,13 @@ your-project/
 ├── hooks/                        # Shared cross-cutting hooks (used across 2+ features)
 │   ├── useAppLifecycle.ts
 │   ├── useRootNavigation.ts
-│   ├── useServerFunctions.ts     # Convex use-* wrapper aggregator
+│   ├── useServerFunctions.ts     # Supabase function wrapper aggregator
 │   ├── voteRefresh.ts
 │   └── __tests__/
 │
-├── services/                     # API client layer — thin wrappers around Convex/Supabase
-│   ├── convexApi/               # TanStack Query hooks for Convex functions
-│   │   ├── client.ts            # Convex React client setup
+├── services/                     # API client layer — thin clients wrapping Supabase
+│   ├── supabaseApi/               # TanStack Query hooks for Supabase
+│   │   ├── client.ts            # Supabase client setup
 │   │   ├── index.ts             # Barrel: re-export all hooks
 │   │   ├── queryKeys.ts         # TanStack Query key factory
 │   │   ├── ladder.ts
@@ -124,8 +123,8 @@ your-project/
 ├── .env.example                  # Template for new devs
 │
 ├── providers/                    # App-level provider wiring
-│   ├── ConvexProvider.tsx       # Convex client + React Query provider
-│   ├── ConvexAuthProvider.tsx
+│   ├── SupabaseProvider.tsx      # Supabase client + React Query provider
+│   └── AuthProvider.tsx
 │   ├── ThemeProvider.tsx
 │   └── SafeAreaProvider.tsx
 │
@@ -151,48 +150,12 @@ your-project/
 │       └── slug.ts
 │
 ├── lib/                          # App-wide infrastructure: client bootstrap, logger, sound, storage
-│   ├── convex-client.ts         # Convex client bootstrap
+
 │   ├── logger.ts
 │   ├── sounds.ts
 │   └── storage.ts
 │
-├── convex/                       # Convex backend (schema + functions)
-│   ├── schema.ts                 # Single source of truth: defineSchema + defineTable
-│   ├── crons.ts                  # Scheduled functions (ctx.scheduler)
-│   ├── auth.config.ts            # Auth provider config (email/password, OAuth, etc.)
-│   ├── auth/
-│   │   └── index.ts              # Auth helpers (createUser, signIn, signOut wrappers)
-│   ├── _generated/               # Auto-generated — DO NOT EDIT
-│   │   ├── api.ts
-│   │   ├── server.ts
-│   │   └── ...
-│   ├── model/                    # Business logic helpers — most code lives here
-│   │   ├── ladder.ts
-│   │   ├── profiles.ts
-│   │   ├── players.ts
-│   │   ├── packs.ts
-│   │   ├── notifications.ts
-│   │   └── ...
-│   ├── queries/                  # Thin public query wrappers → delegate to model/
-│   │   ├── ladder.ts
-│   │   ├── profiles.ts
-│   │   └── ...
-│   ├── mutations/                # Thin public mutation wrappers → delegate to model/
-│   │   ├── ladder.ts
-│   │   ├── profiles.ts
-│   │   ├── votes.ts
-│   │   └── ...
-│   ├── actions/                  # Side-effectful functions (external APIs, Node.js code)
-│   │   ├── scrape.ts
-│   │   └── ai.ts
-│   ├── http/                     # HTTP Actions (webhooks, custom routes)
-│   │   └── stripe-webhook.ts
-│   ├── migrations/               # Convex schema/data migrations
-│   │   ├── 001_initial_schema.ts
-│   │   └── 002_add_goat_rating.ts
-│   └── __tests__/
-│
-├── supabase/                     # Only if using Supabase alongside/instead of Convex
+├── supabase/                     # Supabase backend
 │   ├── migrations/               # SQL migrations (supabase migration new)
 │   ├── functions/                # Edge Functions
 │   │   ├── _shared/              # Shared code — underscore prefix prevents deployment as a function
@@ -230,16 +193,16 @@ your-project/
 │   └── es.json
 │
 ├── scripts/                      # One-off scripts, data imports, seed runners
-│   ├── seed-convex.ts
+│   ├── seed-data.ts
 │   └── import-players.ts
 │
 ├── data/                         # Raw / generated data files (JSON, CSV snapshots)
 │   └── players_backup.json
 │
 ├── vitest.config.ts            # Unit/integration test runner config
-├── vitest.setup.ts              # Global test setup (Convex mocks, Expo stubs)
+├── vitest.setup.ts              # Global test setup (Expo stubs, test environment)
 ├── jest.config.js               # Legacy / RN-specific test config
-├── __mocks__/                   # Hand-written module mocks (Convex, Expo)
+├── __mocks__/                   # Hand-written module mocks (Expo, routing)
 ├── tsconfig.json                 # Path aliases: @/* → root, @features/* → features/, etc.
 ├── tsconfig.node.json
 ├── package.json
@@ -259,12 +222,11 @@ are gitignored / templated per-project.
 
 Tests live **colocated with the code they test** (unit/integration) or in dedicated
 folders for cross-cutting test types (E2E, browser, mobile-automation). Full details — runner
-selection, Convex `convex-test`, Supabase Deno tests, Playwright, Maestro, test config files,
+selection, Supabase Deno tests, Playwright, Maestro, test config files,
 and isolation principles — are in [`references/testing.md`](references/testing.md).
 
-**Runner selection:** Vitest for all non-native code (utils, hooks, components, Convex `model/` helpers,
-Convex queries/mutations via `convex-test`). Jest only for React Native component tests that touch
-native modules (Metro bundler dependency). `convex-test` reuses the same `vitest.config.ts` — no
+**Runner selection:** Vitest for all non-native code (utils, hooks, components, Supabase queries/mutations via `@supabase/supabase-js`). Jest only for React Native component tests that touch
+native modules (Metro bundler dependency). Supabase test helpers reuse the same `vitest.config.ts` — no
 separate runner needed. Supabase Edge Function tests use the Deno test runner and live in
 `supabase/functions/tests/`.
 
@@ -272,8 +234,8 @@ Quick summary:
 
 | Test type | Location | Runner |
 |-----------|----------|--------|
-| Unit / integration (components, hooks, utils, `convex/model/` helpers) | `__tests__/` colocated in each folder | Vitest (preferred) or Jest |
-| Convex queries, mutations, schema | `convex/__tests__/` | `convex-test` (Vitest-based) |
+| Unit / integration (components, hooks, utils, shared model/ helpers) | `__tests__/` colocated in each folder | Vitest (preferred) or Jest |
+| Supabase queries, mutations, schema | `supabase/__tests__/` | Supabase test helpers |
 | Supabase Edge Functions | `supabase/functions/tests/` | Deno test runner |
 | Web E2E | `e2e/` | Playwright |
 | Mobile UI automation | `maestro/` | Maestro CLI |
@@ -329,10 +291,10 @@ features/ladder/
 
 ### `services/` — API Client Layer
 
-- **Thin wrappers around Convex/Supabase calls.** No business logic — just invocation and
+- **Thin clients wrapping Supabase calls.** No business logic — just invocation and
   response shaping.
-- **`services/convexApi/`** — TanStack Query hooks (useQuery/useMutation wrappers around
-  Convex `useQuery`/`useMutation`).
+- **`services/supabaseApi/`** — TanStack Query hooks (useQuery/useMutation wrappers around
+  Supabase `useQuery`/`useMutation`).
 - **`queryKeys.ts`** — Centralised TanStack Query key factory; prevents key mismatches.
 - **One file per domain area:** `ladder.ts`, `profiles.ts`, `friends.ts`, etc.
 - **No imports from `features/`.** Services are below features in the dependency graph.
@@ -348,42 +310,9 @@ features/ladder/
 - `appStore.ts` — global app state (theme, onboarding complete, etc.)
 - `streakStore.ts` — persisted user state (login streak, last visit)
 
-### `convex/` — Backend (Convex)
 
-Official Convex best-practice layout:
 
-```
-convex/
-├── schema.ts              # defineSchema + all defineTable calls (single source of truth)
-├── crons.ts               # ctx.scheduler.runAfter / runAt schedules
-├── auth.config.ts         # Auth provider configuration
-├── auth/                  # Auth helper functions
-├── _generated/            # Auto-generated — never edit manually
-├── model/                 # ← Most code lives here
-│   ├── ladder.ts          # Pure helper functions (no query/mutation/action wrapper)
-│   ├── profiles.ts
-│   └── ...
-├── queries/               # Public: thin wrappers → model/
-├── mutations/             # Public: thin wrappers → model/
-├── actions/               # Side-effects, external APIs, Node.js code
-├── http/                  # HTTP Actions (webhooks)
-└── migrations/            # Zero-downtime schema migrations
-```
-
-**Key rules (from official Convex best-practices):**
-
-| Rule | Why |
-|------|-----|
-| `model/` helpers do the real work | Easier to test, easier to refactor |
-| Public API wrappers are ~3 lines | `return await Ladder.resolveMatch(ctx, args)` |
-| Use `internal.*` not `api.*` for internal calls | `api.*` is public — anyone can call it; `internal.*` is Convex-only |
-| Always pass table name to `ctx.db` calls | `ctx.db.get("ladderMatches", id)` — safety + future-custom-ID compat |
-| Use argument validators (`v.*`) on every public function | Prevents spoofed/malformed inputs |
-| Check `ctx.auth.getUserIdentity()` in every public function | Access control — identity cannot be spoofed |
-| Prefer `withIndex` over `.filter` in queries | Index queries are far more efficient |
-| Avoid `.collect()` on unbounded queries | Use `.paginate()`, `.take()`, or denormalised counters |
-
-### `supabase/` — Supabase (when used alongside or instead of Convex)
+### `supabase/` — Supabase backend
 
 Only present if the project uses Supabase. Follow official Supabase layout:
 
@@ -411,7 +340,7 @@ supabase/
 
 ### `providers/` — App-Level Wiring
 
-- Use `providers/` for framework and app-level client wiring (Convex, React Query, Theme, Auth,
+- Use `providers/` for framework and app-level client wiring (React Query, Theme, Auth,
   SafeArea). This is the only place where top-level app providers are composed.
 - **`providers/` vs `context/`:** Use `providers/` for app-level concerns. Use `context/` only if
   you are **not** using Zustand and need React Context for feature-scoped or domain state. Never use
@@ -444,7 +373,7 @@ Shared `components/`, `hooks/`, `utils/`, `services/` are the **only** way featu
 Direct `features/a → features/b` imports = architectural violation.
 
 **Quick test:** Delete `features/ladder/`. If anything outside `app/(tabs)/ladder/` and
-`services/convexApi/ladder.ts` breaks, the boundaries leaked.
+`services/supabaseApi/ladder.ts` breaks, the boundaries leaked.
 
 ---
 
@@ -456,8 +385,7 @@ Direct `features/a → features/b` imports = architectural violation.
 | File: kebab-case | `ladder-logic.ts`, `post-vote-payoff.tsx` |
 | Component: PascalCase | `PostVotePayoff`, `GhostRaceBar` |
 | Hook: camelCase with `use` prefix | `useLadderGame`, `useRoundTimer` |
-| Convex function file | kebab-case: `weekly-war.ts`, `daily-battle.ts` |
-| Convex model helper file | kebab-case: `ladder.ts`, `notifications.ts` |
+
 | Edge Function folder | kebab-case with hyphens: `send-notification/` |
 | Barrel files | `index.ts` (use sparingly — hurts tree-shaking) |
 | Test files | `*.test.ts` or `*.test.tsx`, colocated in `__tests__/` |
@@ -479,15 +407,14 @@ Direct `features/a → features/b` imports = architectural violation.
       "@/lib/*": ["lib/*"],
       "@/features/*": ["features/*"],
       "@/types/*": ["types/*"],
-      "@/convex/*": ["convex/*"],
       "@/assets/*": ["assets/*"]
     }
   }
 }
 ```
 
-With aliases, `import { useQuery } from '@/services/convexApi/ladder'` instead of
-`../../../services/convexApi/ladder`.
+With aliases, `import { useQuery } from '@/services/supabaseApi/ladder'` instead of
+`../../../services/supabaseApi/ladder`.
 
 ---
 
@@ -553,16 +480,16 @@ features/ladder/
 
 | ❌ Don't | ✅ Do Instead |
 |----------|---------------|
-| Put business logic in screens | Move to `features/*/utils/` or `convex/model/` |
+| Put business logic in screens | Move to `features/*/utils/` or shared domain modules |
 | Import `features/a` from `features/b` | Promote shared code to `components/`, `hooks/`, or `services/` |
-| Use `.filter` on Convex DB queries | Use `.withIndex()` with a proper index |
+| Use `.filter` on DB queries | Use `.withIndex()` with a proper index |
 | `.collect()` on unbounded queries | Use `.paginate()`, `.take()`, or denormalised counts |
-| Use `api.*` from within Convex functions | Use `internal.*` — `api.*` is callable by anyone |
+
 | Forget table names in `ctx.db` calls | Always `ctx.db.get("tableName", id)` |
 | Put component tests in a top-level `__tests__/` folder | Colocate: `features/ladder/__tests__/` |
-| Mix Convex auth and Supabase auth in the same project | Pick one; if migrating, complete the cut before removing the other |
+
 | Deeply nested components (>2 levels) | That's a signal to create a new feature folder |
-| `Date.now()` in Convex queries | Pass time as an explicit argument, or use a scheduled function to set a boolean flag |
+| `Date.now()` in query functions | Pass time as an explicit argument |
 
 ---
 
@@ -577,7 +504,7 @@ If you're reorganizing a project that already has files:
    `features/ladder/`. Nothing outside `features/ladder/` should import from it.
 4. **Extract cross-feature code up.** Code two features share → `components/`, `hooks/`, or
    `services/`.
-5. **Restructure `convex/` last.** Add `convex/model/`, split existing mutation files into
+5. **Restructure backend modules last.** Split existing mutation files into
    thin wrappers + model helpers, convert `api.*` → `internal.*` for cron/internal calls.
 6. **Update path aliases** in `tsconfig.json` to match new layout.
 7. **Run tests at every step.** Don't batch — one folder per commit is safest.
@@ -590,8 +517,7 @@ If you're reorganizing a project that already has files:
   and the `app/(tabs)/ladder/` routes need to change.
 - New features are added by creating a new `features/<name>/` folder and a route group in `app/`.
 - You can delete `features/profile/` and nothing in `features/ladder/` or `features/social/` breaks.
-- Convex public functions are 2–5 lines each, delegating to `convex/model/`.
-- No `api.foo.bar()` calls from within `convex/` — only `internal.foo.bar()`.
+
 - Every route's purpose is obvious from the folder name alone. No one has to open a file
   to understand what part of the app it serves.
 
@@ -601,6 +527,6 @@ If you're reorganizing a project that already has files:
 
 | File | Covers |
 |------|--------|
-| [`references/testing.md`](references/testing.md) | Full testing layout: Vitest, Jest, Playwright, Maestro, Convex `convex-test`, Supabase Edge Functions, test isolation principles |
+| [`references/testing.md`](references/testing.md) | Full testing layout: Vitest, Jest, Playwright, Maestro, Supabase Edge Functions, test isolation principles |
 | [`references/daemon-service.md`](references/daemon-service.md) | Daemon / long-running service project structure (Coppermind pattern): monorepo layout, `src/` capability domains, lifecycle, config subsystem, test layout for services |
 | [`references/surrealdb.md`](references/surrealdb.md) | SurrealDB project structure: schema file organisation, SurrealKit conventions, schema design patterns, multi-tenancy, testing, client connection patterns, migration workflows |
