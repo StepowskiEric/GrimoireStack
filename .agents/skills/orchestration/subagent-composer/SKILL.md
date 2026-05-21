@@ -222,6 +222,15 @@ Non-negotiable constraints. These are the guardrails the sub-agent must not cros
 Explicit exclusions. State clearly what is *not* in scope. This prevents the sub-agent from
 drifting into adjacent work that isn't part of this task.
 
+**Pre-existing issues rule:** If the sub-agent discovers lint errors, failing tests, or code
+quality issues in files *outside* their assigned scope, they must:
+1. Note them in the output report
+2. Stop — do NOT fix them unless explicitly instructed
+
+A sub-agent assigned to fix one file should not "fix" lint errors in five other files, expand
+its scope to refactor a neighboring module, or rewrite tests that were already passing before
+it started. Pre-existing failures in unrelated code are someone else's problem.
+
 ```
 ✅ Good:
 ```
@@ -230,8 +239,10 @@ This task is scoped to SessionManager.ts only. Do NOT:
 - Change the token refresh interval (that's a separate config task)
 - Touch the backend API
 - Update CHANGELOG.md or package.json versions
+- Fix lint errors or failing tests in other files — note them in your report and stop
 ```
 ❌ Bad: "Just fix the session bug." (no guard against scope creep)
+❌ Bad: "Fix the auth bug." — sub-agent then rewrites 6 other files because their linter is noisy
 ```
 
 #### Output Format
@@ -446,6 +457,41 @@ were wrong. It wastes time re-exploring dead ends the parent already ruled out.
 Fix: Strip parent reasoning. Include only confirmed facts, accepted decisions, and the current
 state. "We tried approach X and ruled it out because [concrete reason]" is fine.
 "Then I thought maybe it could be Y or Z..." is noise.
+
+### The "Fix Everything" Brief (NEW)
+> "Fix the auth bug." — and the sub-agent proceeds to fix lint errors in 6 other files, rewrite
+> failing tests it didn't break, and refactor a neighboring module "while it's in there."
+
+Problem: The sub-agent treats every visible imperfection as part of its mandate. Pre-existing
+lint noise, unrelated failing tests, and code that was already fine all become "problems to fix."
+The scope explodes and the actual task gets lost in a pile of side quests.
+Fix: Name the exact file(s) and line range(s). State explicitly: "Do NOT fix lint errors,
+failing tests, or code quality issues in other files — note them and stop." Add a pre-existing
+issues handler instruction: "If you find failing tests that predate your change, confirm they
+were already failing before you started. If so, report them and move on."
+
+### The "Fixer" Anti-Pattern — Pre-existing Issues (NEW)
+Sub-agents will often encounter pre-existing failures in the codebase: lint errors in nearby
+files, tests that were already red before the change, or code smells in related modules. The
+natural instinct is to "fix" them. **Do not let them.**
+
+A sub-agent assigned to modify one file should:
+- **NOT** fix lint errors in other files
+- **NOT** rewrite tests that were already passing before the change
+- **NOT** refactor neighboring code "while it's in there"
+- **NOT** add error handling for failures that existed before the change
+
+Instead, the sub-agent should:
+1. Note any pre-existing issues found in the output report
+2. Confirm whether each issue existed before their change (git diff / git status check)
+3. Focus exclusively on the assigned task
+
+Include this guard in every brief:
+```
+Pre-existing issues: If you encounter lint errors, failing tests, or code quality issues in
+files outside your assigned scope, note them in your output and stop. Do not fix them unless
+explicitly instructed. Your scope is [file-or-module-name] only.
+```
 
 ---
 
@@ -768,6 +814,7 @@ Stop after success criteria are met. Do not touch agent A's files.""",
 - inline large files in the brief — use `reads` or scratchpad files instead
 - let a sub-agent run forever — always include stop rules
 - anchor a sub-agent to the parent's wrong assumptions — strip parent reasoning, keep only facts
+- omit scope discipline for pre-existing issues — sub-agents will fix everything they can see unless told not to
 
 ---
 
@@ -798,5 +845,6 @@ A sub-agent brief is high-context when:
 - [ ] Stop rules are present
 - [ ] `context: "fork"` vs `"fresh"` was chosen deliberately
 - [ ] Blocker escalation via `intercom` is documented in stop rules
+- [ ] **Pre-existing issues are explicitly addressed** — the brief states whether the sub-agent should fix, note, or ignore lint errors, failing tests, and code quality issues outside the assigned scope
 - [ ] For code tasks: the output is test-first and addresses the concerns each loaded skill covers
 - [ ] For non-code tasks: the output reflects the reasoning frameworks loaded
