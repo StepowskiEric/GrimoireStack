@@ -91,12 +91,14 @@
 | first-principles | judgment-and-routing/ | Deconstruction |
 | second-order-thinking | judgment-and-routing/ | Consequence analysis |
 | steelmanning | judgment-and-routing/ | Challenge testing |
+| advocatus-diaboli | judgment-and-routing/ | Adversarial review via separate sub-agent |
 | kahneman-thinking-fast-slow-software-agent | judgment-and-routing/ | Cognitive mode switching |
 | cognitive-bias-checklist | judgment-and-routing/ | Bias correction |
 | cognitive-bias-auditor | judgment-and-routing/ | Detect 9 biases, includes script |
 | bayesian-updating | judgment-and-routing/ | Belief revision |
 | reference-class-forecasting | judgment-and-routing/ | Estimation |
 | pre-mortem | judgment-and-routing/ | Failure prediction |
+| retrospective | execution/retrospective/ | After-action learning from real outcomes |
 | unsafe-control-actions-hazard-analysis | judgment-and-routing/ | Safety analysis |
 | problem-mode-router-cynefin | judgment-and-routing/ | Domain classification |
 | recognition-primed-triage | judgment-and-routing/ | Pattern matching |
@@ -106,6 +108,7 @@
 | agent-memory-hygiene | orchestration/ | Memory management |
 | agentic-design-patterns-orchestrator | orchestration/ | Agent patterns |
 | separation-of-concerns | orchestration/ | Work separation |
+| subagent-composer | orchestration/ | Skill-composed sub-agent delegation |
 | monte-carlo-tree-search | orchestration/ | Branch exploration |
 | tree-of-thoughts | output-quality/ | Branching exploration |
 | self-consistency | output-quality/ | Triangulation |

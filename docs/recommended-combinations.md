@@ -5,6 +5,8 @@
 Start with the protocol skills, especially:
 
 - `judgment-and-routing/thoroughness-check-etto-state-machine.md`
+  d05|
+  6ba|- `orchestration/pre-flight-intent-verification/SKILL.md` — unified pre-action gate (Clarify → Specify → Ground) before any significant task execution
 - `execution/how-to-solve-it-state-machine.md`
 - `execution/refactoring-state-machine.md`
 - `execution/working-effectively-with-legacy-code-state-machine.md`
@@ -50,9 +52,13 @@ Strong combinations include:
 - **Thinking in Systems + Theory of Constraints** → understand the system, then find the true bottleneck
 - **Toyota Kata + PDCA** → discover the obstacle, then verify the improvement with measurement discipline
 - **OODA Loop + Checklist Manifesto** → dynamic tempo in fast-moving situations, procedural discipline in high-stakes steps
+- **Pre-Mortem + Retrospective** → prevent failures before they happen, then learn from what actually did happen. Complete the learning loop: before + after.
 - **Pre-Mortem + Inversion** → vivid failure stories plus abstract failure-mode analysis, before committing to a plan
 - **Six Thinking Hats + Steelmanning** → multi-perspective analysis plus genuine challenge of the leading recommendation
+- **Steelmanning + Advocatus Diaboli** → self-critique first (steelmanning), then a separate adversarial sub-agent attacks the proposal (advocatus-diaboli). Escalating review depth.
+- **Sub-Agent Composer + TDD** → when delegating code work, always compose the sub-agent with TDD plus task-relevant skills via subagent-composer
 - **Kahneman Fast/Slow + Cognitive Bias Checklist** → switch to slow mode, then verify the slow-mode output is bias-corrected
+  6ba|- **Pre-Flight Intent Verification + Refactoring State Machine** → clarify assumptions and crystallize intent before bounded execution; prevents confidently doing the wrong thing, then limits the blast radius once execution starts
 - **DDD + Team Topologies** → align domain boundaries to team structures
 - **Release It! + SRE Error Budget** → implement stability patterns, then govern the reliability-velocity tradeoff
 - **Socratic Clarification + Pre-Mortem** → surface the key assumption before planning, then validate the plan against failure
@@ -106,9 +112,9 @@ Why this stack works: stabilize first, refactor in bounded slices, keep the blas
 
 1. `software-development/lint-battalion/SKILL.md` — auto-fix sprint, categorize, parallel subagent battalions, contamination checks
 
-3. `debugging/debug-subagent/SKILL.md` — for semantic errors requiring logic understanding
-4. `execution/checklist-manifesto.md` — phase gates and contamination checks
-5. `software-development/pre-deployment-gate/SKILL.md` — final lint check before commit
+2. `debugging/debug-subagent/SKILL.md` — for semantic errors requiring logic understanding
+3. `execution/checklist-manifesto.md` — phase gates and contamination checks
+4. `software-development/pre-deployment-gate/SKILL.md` — final lint check before commit
 
 Why this stack works: lint-battalion eliminates 80%+ of errors mechanically, the debug subagent handles semantic survivors without context bloat, and the checklist gates prevent contamination from sloppy fixes.
 
@@ -184,7 +190,7 @@ Why this works: most git "disasters" are actually deterministic state machines. 
 
 1. `software-development/code-knowledge-graph-mcp/SKILL.md` — index the repo and query symbols/call-graphs structurally
 
-3. `execution/keyword-agnostic-logic-locator/SKILL.md` — when semantic search is ambiguous, find code by structure
+2. `execution/keyword-agnostic-logic-locator/SKILL.md` — when semantic search is ambiguous, find code by structure
 
 Why this works: the MCP server eliminates grep noise by returning structured symbol data (definitions, imports, call sites), and the logic locator handles cases where the right code doesn't match the query keywords.
 
@@ -209,23 +215,23 @@ Why this stack works: long tasks are where agents fail most — context overflow
 
 These skills fuse 2-3 existing skills into single protocols, eliminating loading overhead and enforcing phase sequencing. Use them instead of loading the component skills separately.
 
-| Hybrid | Fuses | When to Use |
-|--------|-------|-------------|
-| [`task-intake-protocol`](../judgment-and-routing/task-intake-protocol/SKILL.md) | Cynefin + ETTO + RPT | Before ANY non-trivial task |
-| [`pre-deployment-gate`](../software-development/pre-deployment-gate/SKILL.md) | Pre-Push Review + Vibe Coding Security | Before pushing/deploying code |
-| [`requirement-crystallization-protocol`](../execution/requirement-crystallization-protocol/SKILL.md) | Socratic + Intent Spec | Before coding when requirements are vague |
-| [`legacy-rescue-protocol`](../execution/legacy-rescue-protocol/SKILL.md) | WELC + Refactoring State Machine | Changing untested/legacy code |
-| [`self-verify-pipeline`](../output-quality/self-verify-pipeline/SKILL.md) | BSR + TIC + Claim Verification | Verifying output before committing |
-| [`failure-analysis-protocol`](../judgment-and-routing/failure-analysis-protocol/SKILL.md) | Pre-Mortem + Inversion + 2nd-Order | Before high-stakes decisions |
-| [`long-task-survival-kit`](../execution/long-task-survival-kit/SKILL.md) | Assumption + Trajectory + Context Budget | Tasks with 10+ tool calls |
-| [`security-review-protocol`](../systems-and-architecture/security-review-protocol/SKILL.md) | STRIDE + UCA + Vibe Coding Security | Security review before deployment |
-| [`debug-to-fix-pipeline`](../debugging/debug-to-fix-pipeline.md) | Abductive Debug + Debug Subagent + Instrumentation + Purify + Patch Repair | End-to-end non-trivial debugging |
-| [`occam-mcts`](../orchestration/occam-mcts/SKILL.md) | Occam's Razor + Monte Carlo Tree Search | Complexity-ranked branch exploration; stop when simplest viable branch is confirmed |
-| [`occam-abduction`](../judgment-and-routing/occam-abduction/SKILL.md) | Occam's Razor + Abductive Reasoning | Select simplest surviving hypothesis from competing explanations |
-| [`reasoning-integrity-chain`](../reasoning/reasoning-integrity-chain.md) | Faithfulness + Claims + Verification + Selective Halt | High-stakes reasoning integrity |
-| [`system-architecture-audit`](../systems-and-architecture/system-architecture-audit.md) | DDIA + DDD + Thinking in Systems + Release It | Comprehensive architecture review |
-| [`speculative-exploration-protocol`](../execution/speculative-exploration-protocol.md) | Speculative Drafting + Tree of Thoughts + PRM | Explore alternatives with process rewards |
-| [`iterative-improvement-cycle`](../execution/iterative-improvement-cycle.md) | Toyota Kata + PDCA + Philosophy of Software Design | Iterative improvement with measurement + design quality |
+| Hybrid                                                                                               | Fuses                                                                      | When to Use                                                                         |
+| ---------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------- | ----------------------------------------------------------------------------------- |
+| [`task-intake-protocol`](../judgment-and-routing/task-intake-protocol/SKILL.md)                      | Cynefin + ETTO + RPT                                                       | Before ANY non-trivial task                                                         |
+| [`pre-deployment-gate`](../software-development/pre-deployment-gate/SKILL.md)                        | Pre-Push Review + Vibe Coding Security                                     | Before pushing/deploying code                                                       |
+| [`requirement-crystallization-protocol`](../execution/requirement-crystallization-protocol/SKILL.md) | Socratic + Intent Spec                                                     | Before coding when requirements are vague                                           |
+| [`legacy-rescue-protocol`](../execution/legacy-rescue-protocol/SKILL.md)                             | WELC + Refactoring State Machine                                           | Changing untested/legacy code                                                       |
+| [`self-verify-pipeline`](../output-quality/self-verify-pipeline/SKILL.md)                            | BSR + TIC + Claim Verification                                             | Verifying output before committing                                                  |
+| [`failure-analysis-protocol`](../judgment-and-routing/failure-analysis-protocol/SKILL.md)            | Pre-Mortem + Inversion + 2nd-Order                                         | Before high-stakes decisions                                                        |
+| [`long-task-survival-kit`](../execution/long-task-survival-kit/SKILL.md)                             | Assumption + Trajectory + Context Budget                                   | Tasks with 10+ tool calls                                                           |
+| [`security-review-protocol`](../systems-and-architecture/security-review-protocol/SKILL.md)          | STRIDE + UCA + Vibe Coding Security                                        | Security review before deployment                                                   |
+| [`debug-to-fix-pipeline`](../debugging/debug-to-fix-pipeline.md)                                     | Abductive Debug + Debug Subagent + Instrumentation + Purify + Patch Repair | End-to-end non-trivial debugging                                                    |
+| [`occam-mcts`](../orchestration/occam-mcts/SKILL.md)                                                 | Occam's Razor + Monte Carlo Tree Search                                    | Complexity-ranked branch exploration; stop when simplest viable branch is confirmed |
+| [`occam-abduction`](../judgment-and-routing/occam-abduction/SKILL.md)                                | Occam's Razor + Abductive Reasoning                                        | Select simplest surviving hypothesis from competing explanations                    |
+| [`reasoning-integrity-chain`](../reasoning/reasoning-integrity-chain.md)                             | Faithfulness + Claims + Verification + Selective Halt                      | High-stakes reasoning integrity                                                     |
+| [`system-architecture-audit`](../systems-and-architecture/system-architecture-audit.md)              | DDIA + DDD + Thinking in Systems + Release It                              | Comprehensive architecture review                                                   |
+| [`speculative-exploration-protocol`](../execution/speculative-exploration-protocol.md)               | Speculative Drafting + Tree of Thoughts + PRM                              | Explore alternatives with process rewards                                           |
+| [`iterative-improvement-cycle`](../execution/iterative-improvement-cycle.md)                         | Toyota Kata + PDCA + Philosophy of Software Design                         | Iterative improvement with measurement + design quality                             |
 
 ### Occam-first debugging or design
 
