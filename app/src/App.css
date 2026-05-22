@@ -283,12 +283,15 @@ header .flare span:nth-child(3){animation-delay:1s}
   background:rgba(18,12,28,.7);
 }
 .orb-input::placeholder{color:#4a3a2a;font-style:italic}
+.orb-input-wrap{
+  position:relative;display:inline-block;
+  width:100%;max-width:400px;
+}
 .orb-input-icon{
   position:absolute;
-  left:50%;transform:translateX(calc(-200px + 16px));
-  bottom:14px;
+  left:14px;top:50%;transform:translateY(-50%);
   color:#3a2a1a;font-size:.8rem;
-  pointer-events:none;
+  pointer-events:none;z-index:1;
 }
 /* Search example chips */
 .orb-examples{
@@ -323,6 +326,16 @@ header .flare span:nth-child(3){animation-delay:1s}
   .orb-vessel{width:130px;height:130px}
   .orb-vessel .orb-rune{font-size:1.8rem}
   .orb-examples .ex-chip{font-size:.75rem;padding:1px 7px}
+}
+
+/* ── Recipe Lab extras ────────────────────────── */
+.lab-school-tag{
+  font-family:'Cinzel',serif;font-size:.5rem;text-transform:uppercase;
+  letter-spacing:.06em;color:#4a3a2a;
+}
+.lab-action-hint{
+  font-family:'Cormorant Garamond',serif;font-style:italic;
+  font-size:.7rem;color:#3a2a2a;
 }
 
 /* ── Spell Glow Effects ───────────────────────── */
@@ -854,10 +867,40 @@ footer a:hover{color:#d4af37}
 .lab-output .rc-potency.archmage{color:#d47a4a;border-color:rgba(212,122,74,.15)}
 
 /* ── Responsive ─────────────────────────────────── */
-@media(max-width:600px){
-  .book-spread{padding:25px 16px;border-radius:4px}
-  .spell-card{padding:12px 14px}
-  .modal{padding:25px 20px}
-  .tab-btn{font-size:.6rem;padding:5px 8px}
-  header .wax-seal{width:60px;height:60px;font-size:1.3rem}
+@media(max-width:700px){
+  .book-spread{padding:20px 12px;border-radius:4px}
+  .spell-card{padding:10px 12px}
+  .spell-card .spell-name{font-size:.9rem}
+  .spell-card .spell-incantation{font-size:.65rem}
+  .spell-card .spell-effect{font-size:.82rem;-webkit-line-clamp:3}
+  .modal{padding:20px 16px;margin:10px}
+  .modal .modal-title{font-size:1.2rem}
+  .tab-btn{font-size:.55rem;padding:5px 6px}
+  header .wax-seal{width:50px;height:50px;font-size:1.1rem}
+  header h1{font-size:clamp(1.4rem,7vw,2rem)}
+  .hero-desc{font-size:.85rem;margin:-2px auto 16px}
+  .school-header h2{font-size:clamp(1rem,4vw,1.3rem)}
+  .school-meta{flex-direction:column;gap:4px}
+  .orb-vessel{width:120px;height:120px}
+  .orb-vessel .orb-rune{font-size:1.5rem}
+  .orb-input{font-size:.85rem;padding:8px 12px 8px 32px}
+  .orb-examples .ex-chip{font-size:.7rem;padding:3px 8px}
+  .cauldron-chip{font-size:.6rem;padding:3px 8px}
+  .lab-cauldron{padding:14px 16px}
+  .recipe-card{padding:16px 18px}
+  .rc-name{font-size:1rem}
+  .recipe-header h2,.lab-header h2{font-size:1rem}
+  .tabs{gap:3px;justify-content:flex-start;overflow-x:auto;padding-bottom:4px;flex-wrap:nowrap}
+  .tab-btn{flex-shrink:0}
+}
+@media(max-width:400px){
+  .book-spread{padding:14px 8px}
+  .spell-card{padding:8px 10px}
+  .spell-card .spell-effect{font-size:.78rem}
+  .orb-vessel{width:100px;height:100px}
+  .orb-vessel .orb-rune{font-size:1.2rem}
+  .orb-input{font-size:.8rem;padding:6px 10px 6px 28px}
+  .modal{padding:16px 12px}
+  .modal .modal-title{font-size:1rem}
+  header{padding:30px 12px 14px}
 }
