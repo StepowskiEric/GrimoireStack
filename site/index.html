@@ -654,6 +654,176 @@ footer .footer-ornament{color:#2a1a0a;letter-spacing:.3em;font-size:1.1rem;displ
 footer a{color:#5a4a3a;text-decoration:none;transition:color .3s}
 footer a:hover{color:#d4af37}
 
+/* ── Hero Description ──────────────────────────── */
+.hero-desc{
+  position:relative;z-index:2;
+  text-align:center;
+  max-width:600px;margin:-5px auto 20px;
+  padding:0 20px;
+  font-size:.95rem;color:#7a6a4a;line-height:1.5;
+}
+.hero-desc em{color:#8a7a5a;font-style:italic}
+.hero-desc .hero-tag{
+  display:inline-block;
+  font-family:'Cinzel',serif;
+  font-size:.5rem;text-transform:uppercase;
+  letter-spacing:.15em;
+  color:#5a4a2a;
+  border:1px solid rgba(212,175,55,.06);
+  padding:3px 10px;border-radius:8px;
+  margin:0 3px;
+}
+
+/* ── Recipe Lab ─────────────────────────────────── */
+.lab-section{display:none;animation:fadeIn .5s ease}
+.lab-section.active{display:block}
+.lab-header{
+  text-align:center;margin-bottom:20px;
+  padding-bottom:15px;
+  border-bottom:1px solid rgba(212,175,55,.08);
+  position:relative;
+}
+.lab-header::after{
+  content:'⚗';position:absolute;
+  bottom:-9px;left:50%;transform:translateX(-50%);
+  font-size:.7rem;color:rgba(212,175,55,.15);
+  background:#0e0a14;padding:0 10px;
+}
+.lab-header h2{
+  font-family:'Cinzel',serif;
+  font-weight:700;
+  font-size:clamp(1rem,2.2vw,1.5rem);
+  color:#d4af37;letter-spacing:.06em;
+}
+.lab-header .lab-sub{
+  font-style:italic;color:#8a7a5a;font-size:.85rem;margin-top:4px;
+}
+/* Cauldron / Selection area */
+.lab-cauldron{
+  background:radial-gradient(ellipse at 50% 50%, rgba(30,18,35,.5), rgba(15,8,20,.5));
+  border:1px solid rgba(212,175,55,.06);
+  border-radius:8px;
+  padding:20px 24px;
+  margin-bottom:20px;
+  min-height:80px;
+  text-align:center;
+  transition:all .4s ease;
+}
+.lab-cauldron.has-spells{
+  border-color:rgba(212,175,55,.15);
+  box-shadow:inset 0 0 30px rgba(212,175,55,.02);
+}
+.lab-cauldron .cauldron-label{
+  font-family:'Cinzel',serif;
+  font-size:.5rem;text-transform:uppercase;
+  letter-spacing:.12em;color:#5a4a3a;margin-bottom:8px;
+}
+.lab-cauldron .cauldron-empty{
+  font-style:italic;font-size:.9rem;
+  color:#4a3a2a;padding:10px 0;
+}
+.lab-cauldron .cauldron-chips{
+  display:flex;flex-wrap:wrap;gap:6px;justify-content:center;
+}
+.lab-cauldron .cauldron-chip{
+  font-family:'Cinzel',serif;
+  font-size:.7rem;color:#c8b99a;
+  padding:5px 12px;
+  border:1px solid rgba(212,175,55,.15);
+  border-radius:14px;
+  background:rgba(212,175,55,.04);
+  cursor:pointer;
+  transition:all .3s ease;
+}
+.lab-cauldron .cauldron-chip:hover{
+  border-color:rgba(180,60,30,.3);
+  color:#c97a6a;
+  background:rgba(180,60,30,.06);
+  text-decoration:line-through;
+}
+.lab-cauldron .cauldron-count{
+  font-family:'Cinzel',serif;
+  font-size:.5rem;text-transform:uppercase;
+  letter-spacing:.1em;color:#6a5a3a;margin-top:8px;
+}
+/* Brew button */
+.lab-brew-wrap{text-align:center;margin-bottom:20px}
+.lab-brew{
+  font-family:'Cinzel',serif;
+  font-size:.75rem;font-weight:700;
+  text-transform:uppercase;letter-spacing:.08em;
+  padding:10px 30px;
+  border:1px solid rgba(212,175,55,.15);
+  border-radius:4px;
+  background:linear-gradient(135deg, rgba(40,25,50,.9), rgba(25,15,35,.9));
+  color:#8a7a5a;
+  cursor:pointer;
+  transition:all .4s ease;
+}
+.lab-brew:hover:not(.disabled){
+  border-color:#d4af37;
+  color:#d4af37;
+  box-shadow:0 0 25px rgba(212,175,55,.08);
+}
+.lab-brew.disabled{
+  opacity:.3;cursor:not-allowed;
+}
+/* Recipe output */
+.lab-output{
+  display:none;
+  animation:fadeIn .6s ease;
+}
+.lab-output.show{display:block}
+.lab-output .recipe-card{
+  background:linear-gradient(145deg, rgba(30,20,40,.85), rgba(18,12,28,.85));
+  border:1px solid rgba(212,175,55,.12);
+  border-radius:6px;
+  padding:24px 28px;
+  position:relative;
+  overflow:hidden;
+}
+.lab-output .recipe-card::before{
+  content:'';position:absolute;
+  top:-50%;left:-50%;width:200%;height:200%;
+  background:radial-gradient(circle at 30% 20%, rgba(212,175,55,.03), transparent 60%);
+  pointer-events:none;
+}
+.lab-output .rc-label{
+  font-family:'Cinzel',serif;
+  font-size:.5rem;text-transform:uppercase;
+  letter-spacing:.12em;color:#5a4a3a;margin-bottom:4px;
+}
+.lab-output .rc-name{
+  font-family:'Cinzel Decorative',serif;
+  font-weight:700;
+  font-size:1.3rem;color:#d4af37;
+  line-height:1.3;margin-bottom:6px;
+}
+.lab-output .rc-effect{
+  font-size:.95rem;color:#a89878;line-height:1.5;
+  margin-bottom:12px;padding-bottom:10px;
+  border-bottom:1px solid rgba(212,175,55,.06);
+}
+.lab-output .rc-row{
+  display:flex;gap:8px;padding:4px 0;
+  font-size:.85rem;
+}
+.lab-output .rc-row .rc-l{font-family:'Cinzel',serif;font-size:.52rem;text-transform:uppercase;letter-spacing:.08em;color:#6a5a3a;min-width:70px}
+.lab-output .rc-row .rc-v{color:#8a7a5a}
+.lab-output .rc-row .rc-v em{color:#a89878}
+.lab-output .rc-potency{
+  display:inline-block;
+  font-family:'Cinzel',serif;
+  font-size:.5rem;text-transform:uppercase;
+  letter-spacing:.08em;padding:3px 10px;
+  border-radius:8px;border:1px solid;
+  margin-top:4px;
+}
+.lab-output .rc-potency.apprentice{color:#7a8a7a;border-color:rgba(122,138,122,.15)}
+.lab-output .rc-potency.adept{color:#8ab8c9;border-color:rgba(138,184,201,.15)}
+.lab-output .rc-potency.master{color:#c9a84c;border-color:rgba(201,168,76,.15)}
+.lab-output .rc-potency.archmage{color:#d47a4a;border-color:rgba(212,122,74,.15)}
+
 /* ── Responsive ─────────────────────────────────── */
 @media(max-width:600px){
   .book-spread{padding:25px 16px;border-radius:4px}
@@ -676,6 +846,13 @@ footer a:hover{color:#d4af37}
   <div class="subtitle">The Warlock's Tome of Agent Incantations</div>
   <div class="flare"><span>⚜</span><span>✦</span><span>⚜</span></div>
 </header>
+
+<!-- Hero Explanation -->
+<div class="hero-desc">
+  A living collection of <em>agentic incantations</em> — skills for debugging, reasoning, code review, architecture, and more.
+  Browse by school, <em>scry by affliction</em> in the orb below, or
+  <span class="hero-tag">⚗ brew your own</span> recipe combinations.
+</div>
 
 <!-- Scrying Orb -->
 <div class="scrying-orb">
@@ -1183,6 +1360,14 @@ schools.forEach((s, i) => {
   tabsEl.appendChild(btn);
 });
 
+// Build Recipe Lab tab
+const labTab = document.createElement('button');
+labTab.className = 'tab-btn';
+labTab.dataset.school = 'recipe-lab';
+labTab.innerHTML = `⚗ Recipe Lab <span class="real-name">brew your own</span>`;
+labTab.addEventListener('click', () => selectSchool('recipe-lab'));
+tabsEl.appendChild(labTab);
+
 // Build school sections
 schools.forEach((s, i) => {
   const section = document.createElement('div');
@@ -1235,6 +1420,88 @@ schools.forEach((s, i) => {
   bookEl.appendChild(section);
 });
 
+// Build Recipe Lab section
+const labSection = document.createElement('div');
+labSection.className = 'lab-section';
+labSection.id = 'school-recipe-lab';
+labSection.dataset.school = 'recipe-lab';
+
+const labHeader = document.createElement('div');
+labHeader.className = 'lab-header';
+labHeader.innerHTML = `
+  <h2>⚗ Recipe Lab</h2>
+  <p class="lab-sub">Select 2–5 incantations below and brew a custom ritual</p>
+`;
+labSection.appendChild(labHeader);
+
+// Cauldron (selection display)
+const cauldron = document.createElement('div');
+cauldron.className = 'lab-cauldron';
+cauldron.id = 'labCauldron';
+cauldron.innerHTML = `
+  <div class="cauldron-label">✦ Cauldron</div>
+  <div class="cauldron-empty" id="cauldronEmpty">Select incantations from the grid below…</div>
+  <div class="cauldron-chips" id="cauldronChips"></div>
+  <div class="cauldron-count" id="cauldronCount"></div>
+`;
+labSection.appendChild(cauldron);
+
+// Brew button
+const brewWrap = document.createElement('div');
+brewWrap.className = 'lab-brew-wrap';
+const brewBtn = document.createElement('button');
+brewBtn.className = 'lab-brew disabled';
+brewBtn.id = 'brewBtn';
+brewBtn.textContent = '⚗ Brew Ritual';
+brewBtn.disabled = true;
+brewWrap.appendChild(brewBtn);
+labSection.appendChild(brewWrap);
+
+// Output area
+const output = document.createElement('div');
+output.className = 'lab-output';
+output.id = 'labOutput';
+output.innerHTML = `
+  <div class="recipe-card">
+    <div class="rc-label">✦ Brewed Ritual</div>
+    <div class="rc-name" id="rcName">—</div>
+    <div class="rc-effect" id="rcEffect"></div>
+    <div class="rc-row"><span class="rc-l">Potency</span><span class="rc-v"><span class="rc-potency" id="rcPotency">—</span></span></div>
+    <div class="rc-row"><span class="rc-l">Best Scribed For</span><span class="rc-v" id="rcUseCase">—</span></div>
+    <div class="rc-row"><span class="rc-l">Incantations</span><span class="rc-v" id="rcSpells">—</span></div>
+  </div>
+`;
+labSection.appendChild(output);
+
+// Spell picker grid
+const pickerGrid = document.createElement('div');
+pickerGrid.className = 'spell-grid';
+pickerGrid.id = 'labPickerGrid';
+
+// Populate with all spells from all schools
+schools.forEach(s => {
+  s.spells.forEach(sp => {
+    const card = document.createElement('div');
+    card.className = 'spell-card';
+    card.dataset.spellName = sp.name;
+    card.dataset.schoolId = s.id;
+    card.style.cursor = 'pointer';
+    card.innerHTML = `
+      <div class="spell-name">${sp.name}</div>
+      <div class="spell-incantation">〈 ${sp.skill} 〉</div>
+      <div class="spell-effect">${sp.effect}</div>
+      <div class="spell-footer">
+        <span style="font-family:'Cinzel',serif;font-size:.5rem;text-transform:uppercase;letter-spacing:.06em;color:#4a3a2a">${s.symbol} ${s.name}</span>
+        <span style="font-family:'Cormorant Garamond',serif;font-style:italic;font-size:.7rem;color:#3a2a2a">click to select</span>
+      </div>
+    `;
+    card.addEventListener('click', () => toggleLabSpell(sp, s, card));
+    pickerGrid.appendChild(card);
+  });
+});
+labSection.appendChild(pickerGrid);
+bookEl.appendChild(labSection);
+
 // ══════════════════════════════════════════════════════════════
 //  INTERACTIONS
 // ══════════════════════════════════════════════════════════════
@@ -1244,6 +1511,7 @@ let currentSchool = schools[0].id;
 function selectSchool(id) {
   currentSchool = id;
   document.querySelectorAll('.school-section').forEach(el => el.classList.remove('active'));
+  document.querySelectorAll('.lab-section').forEach(el => el.classList.remove('active'));
   document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
   const section = document.getElementById(`school-${id}`);
   if (section) section.classList.add('active');
@@ -1252,6 +1520,9 @@ function selectSchool(id) {
   searchInput.value = '';
   document.querySelectorAll('.spell-card').forEach(el => el.style.display = '');
   document.querySelectorAll('.no-spells').forEach(el => el.remove());
+  // Reset scrying orb
+  const orb = document.getElementById('orbVessel');
+  if (orb) orb.classList.remove('scrying');
 }
 
 // ══════════════════════════════════════════════════════════════
@@ -1429,6 +1700,163 @@ searchInput.addEventListener('input', () => {
   }
   if (firstMatch) laughPlayed = false;
 });
+
+// ══════════════════════════════════════════════════════════════
+//  RECIPE LAB — Brew custom spell combinations
+// ══════════════════════════════════════════════════════════════
+
+const labSelected = [];
+const cauldronChips = document.getElementById('cauldronChips');
+const cauldronEmpty = document.getElementById('cauldronEmpty');
+const cauldronCount = document.getElementById('cauldronCount');
+const brewBtn = document.getElementById('brewBtn');
+const labOutput = document.getElementById('labOutput');
+
+const potionPrefixes = ['Elixir','Potion','Tincture','Salve','Draught','Brew','Compound','Essence','Infusion','Extract'];
+const potionAdjectives = ['Ancient','Crimson','Shadow','Arcane','Ethereal','Verdant','Ashen','Silver','Amber','Violet','Deep','Restorative','Binding','Surging','Quiet'];
+const potionNouns = ['Remediation','Clarity','Insight','Resolve','Cognition','Scrutiny','Warding','Foresight','Synthesis','Convergence','Understanding','Crafting','Measurement','Refinement'];
+
+function toggleLabSpell(spell, school, cardEl) {
+  const idx = labSelected.findIndex(s => s.name === spell.name);
+  if (idx >= 0) {
+    labSelected.splice(idx, 1);
+    cardEl.classList.remove('glow');
+    cardEl.style.borderColor = '';
+  } else if (labSelected.length < 5) {
+    labSelected.push({ spell, school });
+    cardEl.classList.add('glow');
+    cardEl.style.borderColor = 'rgba(212,175,55,.3)';
+  }
+  updateCauldron();
+}
+
+function updateCauldron() {
+  cauldronChips.innerHTML = '';
+  labSelected.forEach((item, i) => {
+    const chip = document.createElement('span');
+    chip.className = 'cauldron-chip';
+    chip.textContent = `${item.school.symbol} ${item.spell.name}`;
+    chip.addEventListener('click', () => {
+      // Find and click the corresponding card in the picker grid
+      const cards = document.getElementById('labPickerGrid').querySelectorAll('.spell-card');
+      for (const c of cards) {
+        if (c.dataset.spellName === item.spell.name) {
+          c.click();
+          break;
+        }
+      }
+    });
+    chip.title = 'Click to remove';
+    cauldronChips.appendChild(chip);
+  });
+
+  cauldronEmpty.style.display = labSelected.length > 0 ? 'none' : '';
+  cauldronCount.textContent = labSelected.length > 0 ? `${labSelected.length} of 5 incantations selected` : '';
+  document.getElementById('labCauldron').classList.toggle('has-spells', labSelected.length > 0);
+
+  const ready = labSelected.length >= 2;
+  brewBtn.classList.toggle('disabled', !ready);
+  brewBtn.disabled = !ready;
+}
+
+brewBtn.addEventListener('click', brewRitual);
+
+function brewRitual() {
+  if (labSelected.length < 2) return;
+
+  // Generate recipe name
+  const prefix = potionPrefixes[Math.floor(Math.random() * potionPrefixes.length)];
+  const adj = potionAdjectives[Math.floor(Math.random() * potionAdjectives.length)];
+
+  // Determine schools involved
+  const involvedSchools = [...new Set(labSelected.map(s => s.school.name))];
+  let suffix;
+  if (involvedSchools.length === 1) {
+    // Single school: use a noun from that school
+    const schoolKey = labSelected[0].school.id;
+    const nounMap = {
+      debugging:'Remediation',reasoning:'Cognition',process:'Refinement',
+      'code-review':'Scrutiny',architecture:'Architecture',discovery:'Discovery',
+      documentation:'Expression',planning:'Foresight',learning:'Knowledge',
+      'anti-hallucination':'Veracity','software-dev':'Crafting','multi-agent':'Confluence',
+      risk:'Warding','cognitive-load':'Clarity',testing:'Measurement'
+    };
+    suffix = nounMap[schoolKey] || 'Power';
+  } else if (involvedSchools.length === 2) {
+    suffix = `${adj} Union`;
+  } else {
+    suffix = `${adj} Convergence`;
+  }
+
+  document.getElementById('rcName').textContent = `${prefix} of ${suffix}`;
+
+  // Generate combined effect from keywords
+  const allEffects = labSelected.map(s => s.spell.effect.toLowerCase());
+  const keywords = ['trace','debug','test','code','reason','verify','review','design','plan','build','learn','coordinate','ward','refactor','analyze','diagnose','fix','search','navigate','structure','model'];
+  const foundKeywords = keywords.filter(k => allEffects.some(e => e.includes(k)));
+  const uniqueKw = [...new Set(foundKeywords)];
+
+  let effect = 'A custom ritual combining ';
+  const names = labSelected.map(s => s.spell.name);
+  if (names.length === 2) effect += `${names[0]} and ${names[1]}.`;
+  else {
+    effect += names.slice(0, -1).join(', ') + ', and ' + names.slice(-1) + '.';
+  }
+  effect += ' When cast together, these incantations provide ';
+  if (uniqueKw.length > 0) {
+    effect += uniqueKw.slice(0, 3).join(', ') + ' capabilities.';
+  } else {
+    effect += 'a broad spectrum of agentic power.';
+  }
+  document.getElementById('rcEffect').textContent = effect;
+
+  // Generate use case
+  const useCases = [
+    'Investigating and resolving complex system failures',
+    'Validating code quality before production deployment',
+    'Navigating unfamiliar codebases with precision',
+    'Preventing reasoning errors in multi-step analysis',
+    'Coordinating multiple agents toward a shared goal',
+    'Designing robust architecture under uncertainty',
+    'Accelerating delivery while maintaining quality gates',
+    'Eliminating hallucinated claims from agent output',
+    'Refactoring legacy systems with zero regression risk',
+    'Planning complex features with stakeholder confidence',
+  ];
+  // Pick a use case that shares keywords with the effects
+  let bestUseCase = useCases[0];
+  for (const uc of useCases) {
+    const ucLower = uc.toLowerCase();
+    const matches = uniqueKw.filter(k => ucLower.includes(k)).length;
+    if (matches > (useCases.indexOf(bestUseCase) >= 0 ? uniqueKw.filter(k => useCases[0].toLowerCase().includes(k)).length : 0)) {
+      bestUseCase = uc;
+    }
+  }
+  document.getElementById('rcUseCase').textContent = bestUseCase;
+
+  // Potency based on statuses
+  const statuses = labSelected.map(s => s.spell.status);
+  const hasProven = statuses.some(s => s === 'Proven');
+  const hasMCP = statuses.some(s => s && s.includes('MCP'));
+  const hasNew = statuses.some(s => s === 'New');
+  let potency, potencyClass;
+  if (hasProven && hasMCP) { potency = 'Archmage'; potencyClass = 'archmage'; }
+  else if (hasProven && labSelected.length >= 3) { potency = 'Master'; potencyClass = 'master'; }
+  else if (hasProven) { potency = 'Adept'; potencyClass = 'adept'; }
+  else { potency = 'Apprentice'; potencyClass = 'apprentice'; }
+
+  const potEl = document.getElementById('rcPotency');
+  potEl.textContent = `✦ ${potency}`;
+  potEl.className = 'rc-potency ' + potencyClass;
+
+  document.getElementById('rcSpells').innerHTML = labSelected.map(s => `<em>${s.spell.name}</em>`).join(', ');
+
+  labOutput.classList.add('show');
+  labOutput.scrollIntoView({ behavior: 'smooth', block: 'center' });
+
+  // Witch laugh!
+  witchLaugh();
+}
 
 // ══════════════════════════════════════════════════════════════
 //  SPELL DETAIL MODAL
