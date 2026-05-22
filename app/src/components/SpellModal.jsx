@@ -1,3 +1,4 @@
+import { useEffect, useRef } from 'react';
 import schools from '../data/schools.js';
 
 function findSpell(name) {
@@ -13,10 +14,29 @@ export default function SpellModal({ spell, school, onClose }) {
   if (!spell) return null;
   const statusStr = spell.status && spell.status !== '—' ? spell.status : 'Common';
   const statusClass = (spell.status || 'common').toLowerCase().replace(/[^a-z]/g, '') || 'common';
+  const modalRef = useRef(null);
+
+  // Focus trap
+  useEffect(() => {
+    const modal = modalRef.current;
+    if (!modal) return;
+    const focusable = modal.querySelectorAll('button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])');
+    const first = focusable[0];
+    const last = focusable[focusable.length - 1];
+    first?.focus();
+    const handler = (e) => {
+      if (e.key === 'Escape') { onClose(); return; }
+      if (e.key !== 'Tab' || !focusable.length) return;
+      if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last?.focus(); }
+      else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first?.focus(); }
+    };
+    modal.addEventListener('keydown', handler);
+    return () => modal.removeEventListener('keydown', handler);
+  }, [onClose]);
 
   return (
     <div className="modal-overlay open" onClick={(e) => { if (e.target === e.currentTarget) onClose(); }}>
-      <div className="modal">
+      <div className="modal" ref={modalRef} role="dialog" aria-modal="true" aria-label={`${spell.name} spell details`}>
         <button className="modal-close" onClick={onClose}>✕</button>
         <span className="modal-symbol">{school.symbol}</span>
         <div className="modal-school">

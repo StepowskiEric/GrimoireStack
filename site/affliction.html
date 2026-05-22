@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Consult the Grimoire — GrimoireStack</title>
+<link rel="icon" type="image/png" href="favicon.png">
+<link rel="stylesheet" href="theme.css">
+<style>
+/* ══════════════════════════════════════════════════════════════
+   Affliction Wizard — Consult the Grimoire
+   This page is intentionally ≤ 250 lines. All heavy data lives
+   in shared files loaded at the bottom of <body>.
+   ══════════════════════════════════════════════════════════════ */
+
+/* ── Local Overrides ─────────────────────────────── */
+body { font-size: 17px; }
+
+/* ── Layout ────────────────────────────────────── */
+.consult-page {
+  position: relative; z-index: 2;
+  max-width: 560px; margin: 0 auto;
+  padding: 30px 20px 60px;
+}
+
+.back-link {
+  font-family: 'Cinzel', serif;
+  font-size: .58rem; text-transform: uppercase;
+  letter-spacing: .08em; color: #5a4a3a;
+  text-decoration: none; display: inline-flex;
+  align-items: center; gap: 6px;
+  margin-bottom: 28px;
+  transition: color .3s;
+}
+.back-link:hover { color: #d4af37; }
+
+.wizard-card {
+  background: linear-gradient(160deg, rgba(28,18,38,.96), rgba(15,10,22,.97));
+  border: 1px solid rgba(212,175,55,.18);
+  border-radius: 6px;
+  padding: 32px 28px;
+  box-shadow: 0 0 60px rgba(0,0,0,.4), 0 0 30px rgba(212,175,55,.04);
+}
+
+.wizard-icon {
+  text-align: center; font-size: 2.8rem;
+  margin-bottom: 12px;
+  filter: drop-shadow(0 0 12px rgba(212,175,55,.2));
+}
+
+.wizard-card h2 {
+  font-family: 'Cinzel Decorative', serif;
+  font-size: 1.2rem; color: #d4af37;
+  text-align: center; margin-bottom: 6px;
+}
+
+.wizard-card > p {
+  text-align: center;
+  font-style: italic; color: #7a6a4a;
+  font-size: .95rem; margin-bottom: 28px;
+  line-height: 1.5;
+}
+
+/* ── Progress Pips ──────────────────────────────── */
+.wizard-progress {
+  display: flex; align-items: center; gap: 6px;
+  margin-bottom: 26px;
+}
+.wizard-step-pip {
+  height: 3px; flex: 1; border-radius: 2px;
+  background: rgba(212,175,55,.08);
+  transition: background .4s ease;
+}
+.wizard-step-pip.done  { background: rgba(212,175,55,.3); }
+.wizard-step-pip.active{ background: rgba(212,175,55,.65); }
+
+/* ── Step Content ──────────────────────────────── */
+.step-label {
+  font-family: 'Cinzel', serif;
+  font-size: .62rem; text-transform: uppercase;
+  letter-spacing: .12em; color: #6a5a3a;
+  text-align: center; margin-bottom: 6px;
+}
+.step-subtitle {
+  font-style: italic; font-size: .88rem;
+  color: #8a7a5a; text-align: center;
+  margin-bottom: 18px; min-height: 1.4em;
+}
+
+.options { display: flex; flex-direction: column; gap: 8px; margin-bottom: 24px; }
+
+.option {
+  background: linear-gradient(135deg, rgba(22,15,35,.85), rgba(15,10,22,.85));
+  border: 1px solid rgba(212,175,55,.08);
+  border-radius: 5px; padding: 13px 16px;
+  cursor: pointer; transition: all .3s ease; text-align: left;
+  display: block; width: 100%;
+}
+.option:hover {
+  border-color: rgba(212,175,55,.25);
+  background: linear-gradient(135deg, rgba(30,20,45,.9), rgba(20,14,30,.9));
+  transform: translateX(4px);
+}
+.option.selected {
+  border-color: rgba(212,175,55,.35);
+  background: rgba(212,175,55,.05);
+}
+.option .opt-label {
+  font-family: 'Cinzel', serif;
+  font-size: .73rem; color: #c8b99a;
+  display: block; margin-bottom: 3px;
+}
+.option .opt-desc {
+  font-size: .8rem; color: #6a5a3a; font-style: italic;
+  display: block;
+}
+
+/* ── Navigation ────────────────────────────────── */
+.nav-row {
+  display: flex; justify-content: space-between; align-items: center;
+  padding-top: 18px; border-top: 1px solid rgba(212,175,55,.07);
+}
+.btn-back {
+  font-family: 'Cinzel', serif; font-size: .58rem;
+  text-transform: uppercase; letter-spacing: .06em;
+  color: #5a4a3a; background: none; border: none;
+  cursor: pointer; transition: color .3s; padding: 4px 0;
+  visibility: hidden;
+}
+.btn-back.visible { visibility: visible; }
+.btn-back:hover { color: #d4af37; }
+
+.btn-next {
+  font-family: 'Cinzel', serif; font-size: .63rem; font-weight: 600;
+  text-transform: uppercase; letter-spacing: .06em;
+  padding: 7px 18px;
+  border: 1px solid rgba(212,175,55,.15);
+  border-radius: 4px;
+  background: linear-gradient(135deg, rgba(40,25,50,.9), rgba(25,15,35,.9));
+  color: #5a4a3a; cursor: not-allowed;
+  transition: all .4s ease;
+}
+.btn-next.ready {
+  border-color: rgba(212,175,55,.35);
+  color: #d4af37; cursor: pointer;
+}
+.btn-next.ready:hover {
+  box-shadow: 0 0 20px rgba(212,175,55,.1);
+}
+
+/* ── Result Panel ──────────────────────────────── */
+#resultPanel { display: none; animation: fadeIn .5s ease; }
+#resultPanel.visible { display: block; }
+
+.result-card {
+  text-align: center; padding: 16px 0 8px;
+  animation: fadeIn .5s ease;
+}
+
+.result-skill-name {
+  font-family: 'Cinzel Decorative', serif;
+  font-weight: 700; font-size: 1.25rem; color: #d4af37;
+  margin-bottom: 10px;
+  text-shadow: 0 0 20px rgba(212,175,55,.15);
+}
+.result-effect {
+  font-size: .9rem; color: #8a7a5a;
+  line-height: 1.55; margin-bottom: 14px;
+}
+.result-reason {
+  font-size: .84rem; color: #7a6a4a; font-style: italic;
+  margin-bottom: 18px;
+  padding: 11px 15px;
+  background: rgba(212,175,55,.03);
+  border-left: 2px solid rgba(212,175,55,.18);
+  border-radius: 0 4px 4px 0;
+  text-align: left; line-height: 1.5;
+}
+.result-cta {
+  font-family: 'Cinzel', serif;
+  font-size: .65rem; text-transform: uppercase; letter-spacing: .08em;
+  padding: 9px 24px;
+  border: 1px solid rgba(212,175,55,.22);
+  border-radius: 4px;
+  background: linear-gradient(135deg, rgba(35,25,55,.95), rgba(22,15,38,.95));
+  color: #d4af37; cursor: pointer;
+  transition: all .3s ease;
+  display: inline-block; text-decoration: none;
+}
+.result-cta:hover { box-shadow: 0 0 24px rgba(212,175,55,.14); }
+
+.result-alts-label {
+  font-family: 'Cinzel', serif; font-size: .55rem;
+  text-transform: uppercase; letter-spacing: .1em;
+  color: #5a4a3a; margin: 16px 0 8px;
+}
+.result-alts { display: flex; flex-wrap: wrap; gap: 6px; justify-content: center; }
+.alt-chip {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: .82rem; color: #7a6a4a;
+  padding: 4px 12px; border-radius: 12px;
+  border: 1px solid rgba(212,175,55,.07);
+  cursor: pointer; transition: all .3s ease;
+  background: rgba(212,175,55,.02);
+}
+.alt-chip:hover {
+  border-color: rgba(212,175,55,.2);
+  color: #d4af37;
+}
+
+/* ── Footer on this page ───────────────────────── */
+footer { margin-top: 40px; }
+</style>
+</head>
+<body>
+
+<div id="embers"></div>
+
+<div class="consult-page">
+  <a class="back-link" href="index.html">← Back to the Grimoire</a>
+
+  <div class="wizard-card">
+    <div class="wizard-icon">⛧</div>
+    <h2>Consult the Grimoire</h2>
+    <p>Answer three questions and the Grimoire shall reveal the skill most suited to your affliction.</p>
+
+    <div class="wizard-progress" id="progress"></div>
+    <div class="step-label" id="stepLabel">What's happening?</div>
+    <div class="step-subtitle" id="stepSubtitle">Select the category that best describes your situation</div>
+    <div class="options" id="options"></div>
+
+    <div id="resultPanel">
+      <div class="result-card">
+        <div class="result-skill-name" id="resName"></div>
+        <div class="result-effect"  id="resEffect"></div>
+        <div class="result-reason"  id="resReason"></div>
+        <a class="result-cta" id="resCta">⚔ Open in Grimoire →</a>
+        <div class="result-alts-label" id="resAltsLabel"></div>
+        <div class="result-alts" id="resAlts"></div>
+      </div>
+    </div>
+
+    <div class="nav-row">
+      <button class="btn-back" id="btnBack">← Back</button>
+      <button class="btn-next" id="btnNext">Continue →</button>
+    </div>
+  </div>
+
+  <footer>
+    <span class="footer-ornament">⚜ ❦ ⚜</span>
+    <p>GrimoireStack &copy; 2026</p>
+  </footer>
+</div>
+
+<script type="module">
+import { WIZARD_DATA, schools } from './data.js';
+
+let step = 0;
+let selectedCat = null;
+let selectedSit = null;
+
+const progress = document.getElementById('progress');
+const stepLabel = document.getElementById('stepLabel');
+const stepSub  = document.getElementById('stepSubtitle');
+const options  = document.getElementById('options');
+const resultPanel = document.getElementById('resultPanel');
+const btnBack = document.getElementById('btnBack');
+const btnNext = document.getElementById('btnNext');
+
+// Event delegation for option buttons (replaces onclick=)
+options.addEventListener('click', e => {
+  const btn = e.target.closest('.option');
+  if (!btn) return;
+  const id = btn.dataset.id;
+  if (!id) return;
+  if (step === 0) { selectedCat = id; selectedSit = null; }
+  else if (step === 1) { selectedSit = id; }
+  render();
+});
+
+// Event delegation for alt chips
+resultPanel.addEventListener('click', e => {
+  const chip = e.target.closest('.alt-chip');
+  if (chip) showAlt(chip.dataset.skill);
+});
+
+function render() {
+  renderPips();
+  resultPanel.classList.remove('visible');
+
+  if (step === 0) {
+    stepLabel.textContent = "What's happening?";
+    stepSub.textContent  = "Select the category that best describes your situation";
+    options.style.display = 'flex';
+    options.innerHTML = WIZARD_DATA.map(c =>
+      `<button class="option${selectedCat === c.id ? ' selected' : ''}" data-id="${c.id}">` +
+      `<span class="opt-label">${c.label}</span>` +
+      `<span class="opt-desc">${c.desc}</span></button>`
+    ).join('');
+    btnBack.classList.remove('visible');
+    btnNext.classList.toggle('ready', !!selectedCat);
+    btnNext.textContent = 'Continue →';
+
+  } else if (step === 1) {
+    const cat = WIZARD_DATA.find(c => c.id === selectedCat);
+    stepLabel.textContent = "What's your situation?";
+    stepSub.textContent   = cat.label;
+    options.style.display = 'flex';
+    options.innerHTML = cat.situations.map(s =>
+      `<button class="option${selectedSit === s.id ? ' selected' : ''}" data-id="${s.id}">` +
+      `<span class="opt-label">${s.label}</span>` +
+      `<span class="opt-desc">${s.desc}</span></button>`
+    ).join('');
+    btnBack.classList.add('visible');
+    btnNext.classList.toggle('ready', !!selectedSit);
+    btnNext.textContent = 'Reveal Skill →';
+
+  } else if (step === 2) {
+    options.style.display = 'none';
+    const cat = WIZARD_DATA.find(c => c.id === selectedCat);
+    const sit = cat.situations.find(s => s.id === selectedSit);
+    const spellName = getSpellName(sit.skill, schools);
+
+    document.getElementById('resName').textContent   = spellName || sit.skill;
+    document.getElementById('resEffect').textContent = sit.effect;
+    document.getElementById('resReason').textContent = sit.reason;
+    document.getElementById('resCta').href = `index.html?skill=${encodeURIComponent(sit.skill)}`;
+
+    if (sit.alt) {
+      document.getElementById('resAltsLabel').textContent = 'Or perhaps:';
+      document.getElementById('resAlts').innerHTML = `<span class="alt-chip" data-skill="${sit.alt}">${getSpellName(sit.alt, schools) || sit.alt}</span>`;
+    } else {
+      document.getElementById('resAltsLabel').textContent = '';
+      document.getElementById('resAlts').innerHTML = '';
+    }
+
+    resultPanel.classList.add('visible');
+    btnBack.classList.add('visible');
+    btnBack.textContent = '← Start over';
+    btnNext.style.display = 'none';
+  }
+}
+
+function renderPips() {
+  progress.innerHTML =
+    '<div class="wizard-step-pip ' + (step >= 0 ? 'done' : '') + '"></div>' +
+    '<div class="wizard-step-pip ' + (step >= 1 ? (step >= 2 ? 'done' : 'active') : '') + '"></div>' +
+    '<div class="wizard-step-pip ' + (step >= 2 ? 'done' : '') + '"></div>';
+}
+
+btnNext.addEventListener('click', () => {
+  if (step === 0 && selectedCat) { step++; render(); }
+  else if (step === 1 && selectedSit) { step++; render(); }
+});
+
+btnBack.addEventListener('click', () => {
+  if (step > 0) { step--; render(); }
+});
+
+function showAlt(skillId) {
+  for (const cat of WIZARD_DATA) {
+    const sit = cat.situations.find(s => s.skill === skillId);
+    if (sit) { selectedCat = cat.id; selectedSit = sit.id; step = 2; render(); return; }
+  }
+  location.href = `index.html?skill=${encodeURIComponent(skillId)}`;
+}
+
+function getSpellName(skillId, schoolsData) {
+  if (!schoolsData) return null;
+  for (const school of schoolsData) {
+    const s = school.spells.find(sp => sp.skill === skillId);
+    if (s) return s.name;
+  }
+  return null;
+}
+
+// ── Init ember particles ─────────────────────────
+(function initEmbers() {
+  const container = document.getElementById('embers');
+  if (!container) return;
+  const count = window.innerWidth < 600 ? 18 : 36;
+  const types = ['ember-amber','ember-gold','ember-rune'];
+  for (let i = 0; i < count; i++) {
+    const el = document.createElement('div');
+    el.className = 'ember ' + types[i % 3];
+    const dur = 6 + Math.random() * 10;
+    const delay = Math.random() * 12;
+    const x = Math.random() * 100;
+    const size = 1 + Math.random() * 3;
+    el.style.cssText =
+      `left:${x}%;width:${size}px;height:${size}px;` +
+      `animation-duration:${dur}s;animation-delay:-${delay}s;`;
+    container.appendChild(el);
+  }
+})();
+
+render();
+</script>
+
+</body>
+</html>

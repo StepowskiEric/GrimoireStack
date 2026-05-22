@@ -1,5 +1,6 @@
-import { useState, useEffect, useCallback, useRef } from 'react';
+import { useState, useEffect, useCallback, useRef, useMemo } from 'react';
 import schools from './data/schools.js';
+import { searchSpells } from './search.js';
 import { witchLaugh, pageCreak, startAmbience } from './audio/sounds.js';
 import Embers from './components/Embers.jsx';
 import ScryingOrb from './components/ScryingOrb.jsx';
@@ -7,6 +8,7 @@ import TabBar from './components/TabBar.jsx';
 import SchoolSection from './components/SchoolSection.jsx';
 import SpellModal from './components/SpellModal.jsx';
 import RecipeLab from './components/RecipeLab.jsx';
+import WizardModal from './components/WizardModal.jsx';
 import Footer from './components/Footer.jsx';
 import BookSplash from './components/BookSplash.tsx';
 import SpellCast from './components/SpellCast.tsx';
@@ -17,9 +19,13 @@ export default function App() {
   const [searchQuery, setSearchQuery] = useState('');
   const [modal, setModal] = useState(null);
   const [casting, setCasting] = useState(null);
+  const [wizardOpen, setWizardOpen] = useState(false);
   const [castEnabled, setCastEnabled] = useState(() => localStorage.getItem('grimoire-cast') !== 'off');
   const laughPlayedRef = useRef(false);
   const ambienceStartedRef = useRef(false);
+
+  const searchResults = useMemo(() => searchSpells(schools, searchQuery), [searchQuery]);
+  const isLab = currentSchool === 'recipe-lab';
 
   useEffect(() => {
     const handler = () => {
@@ -60,67 +66,24 @@ export default function App() {
     }
   }, []);
 
-  const resetSearch = useCallback(() => {
-    document.querySelectorAll('.spell-card').forEach(el => el.classList.remove('glow', 'dim'));
-    document.querySelectorAll('.no-spells').forEach(el => el.remove());
-    const orb = document.getElementById('orbVessel');
-    if (orb) orb.classList.remove('scrying');
-    const r = document.getElementById('orbResult');
-    if (r) { r.className = 'orb-result'; r.textContent = ''; }
-  }, []);
+  // Witch laugh on first search match
+  useEffect(() => {
+    if (searchResults.total > 0 && !laughPlayedRef.current) {
+      const t = setTimeout(() => { witchLaugh(); laughPlayedRef.current = true; }, 400);
+      return () => clearTimeout(t);
+    }
+    if (searchResults.total === 0) laughPlayedRef.current = false;
+  }, [searchResults.total]);
 
   const handleSchoolSelect = useCallback((id) => {
     setCurrentSchool(id);
     setSearchQuery('');
-    resetSearch();
     setTimeout(pageCreak, 50);
-  }, [resetSearch]);
+  }, []);
 
   const handleSearch = useCallback((q) => {
     setSearchQuery(q);
-    const vessel = document.getElementById('orbVessel');
-    const result = document.getElementById('orbResult');
-    if (vessel) vessel.classList.toggle('scrying', q.length > 0);
-
-    if (!q) { resetSearch(); return; }
-
-    let totalMatches = 0, firstMatch = true;
-    document.querySelectorAll('.school-section').forEach(section => {
-      const grid = section.querySelector('.spell-grid');
-      if (!grid) return;
-      let hasMatch = false;
-      section.querySelectorAll('.spell-card').forEach(card => {
-        const match = (card.dataset.search || '').includes(q);
-        card.classList.toggle('glow', match);
-        card.classList.toggle('dim', !match);
-        card.style.display = match ? '' : 'none';
-        if (match) {
-          hasMatch = true;
-          totalMatches++;
-          if (firstMatch) { firstMatch = false; card.scrollIntoView({ behavior: 'smooth', block: 'center' }); }
-        }
-      });
-      grid.querySelectorAll('.no-spells').forEach(el => el.remove());
-      if (!hasMatch) {
-        const empty = document.createElement('div');
-        empty.className = 'no-spells';
-        empty.textContent = 'The orb sees nothing matching your affliction…';
-        grid.appendChild(empty);
-      }
-      section.classList.toggle('active', hasMatch);
-    });
-    document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
-
-    if (result) {
-      result.textContent = totalMatches > 0 ? `${totalMatches} incantation${totalMatches !== 1 ? 's' : ''} found` : 'none found';
-      result.className = `orb-result show${totalMatches > 0 ? ' found' : ' none'}`;
-    }
-
-    if (totalMatches > 0 && !laughPlayedRef.current) {
-      setTimeout(() => { witchLaugh(); laughPlayedRef.current = true; }, 400);
-    }
-    if (totalMatches === 0) laughPlayedRef.current = false;
-  }, [resetSearch]);
+  }, []);
 
   const handleSpellClick = useCallback((spell, school) => {
     if (castEnabled) {
@@ -135,16 +98,13 @@ export default function App() {
     setCasting(null);
   }, []);
 
-  // When casting changes to non-null, reset modal
   const prevCastingRef = useRef(null);
   useEffect(() => {
     if (casting) {
       prevCastingRef.current = casting;
     } else if (prevCastingRef.current && !modal) {
-      // Cast just finished — open modal
       const prev = prevCastingRef.current;
       prevCastingRef.current = null;
-      // Use timeout to let React process the cast removal first
       setTimeout(() => {
         setModal({ spell: prev.spell, school: prev.school });
         document.body.style.overflow = 'hidden';
@@ -156,8 +116,6 @@ export default function App() {
     if (nextSpell && nextSchool) setModal({ spell: nextSpell, school: nextSchool });
     else { setModal(null); document.body.style.overflow = ''; }
   }, []);
-
-  const isLab = currentSchool === 'recipe-lab';
 
   return (
     <>
@@ -208,10 +166,10 @@ export default function App() {
         </label>
       </div>
 
-      <ScryingOrb searchQuery={searchQuery} onSearchChange={handleSearch} />
+      <ScryingOrb searchQuery={searchQuery} onSearchChange={handleSearch} totalMatches={searchResults.total} onWizardOpen={() => setWizardOpen(true)} />
       <TabBar schools={schools} currentSchool={currentSchool} onSelect={handleSchoolSelect} isLab={isLab} />
 
-      <main className="grimoire">
+      <main className="grimoire" id="main-content">
         <div className="book-spread">
           <div className="spine-line" />
           <div className="page-stack-left" />
@@ -233,12 +191,14 @@ export default function App() {
           {schools.map(s => (
             <SchoolSection key={s.id} school={s}
               isActive={currentSchool === s.id && !isLab && !searchQuery}
+              searchQuery={searchQuery}
               onSpellClick={handleSpellClick} />
           ))}
           {isLab ? <RecipeLab schools={schools} /> : null}
         </div>
       </main>
 
+      {wizardOpen && <WizardModal schools={schools} onSelectSkill={(spell, sch) => { setWizardOpen(false); handleSpellClick(spell, sch); }} onClose={() => setWizardOpen(false)} />}
       {modal && <SpellModal spell={modal.spell} school={modal.school} onClose={handleModalClose} />}
       {casting && <SpellCast spellName={casting.spell.name} schoolSymbol={casting.school.symbol} onComplete={handleCastComplete} />}
       <Footer />

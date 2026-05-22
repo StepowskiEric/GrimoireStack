@@ -1,0 +1,152 @@
+/* ══════════════════════════════════════════════════════════════
+   GrimoireStack — Shared Theme
+   Import this in every page. Contains all visual design tokens,
+   typography, animations, ember particles, and shared components.
+   ══════════════════════════════════════════════════════════════ */
+
+/* ── Google Fonts ──────────────────────────────── */
+@import url('https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700;900&family=Cinzel:wght@400;600;700;900&family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600&family=MedievalSharp&family=Special+Elite&display=swap');
+
+/* ── Design Tokens ────────────────────────────── */
+:root {
+  --bg:        #07060b;
+  --gold:      #d4af37;
+  --amber:     #ffaa33;
+  --rune:      #aa88ff;
+  --ink:       #c8b99a;
+  --ink-dim:   #8a7a5a;
+  --ink-faint: #5a4a3a;
+  --ink-ghost: #4a3a2a;
+  --surface:   rgba(28, 18, 38, .98);
+  --border:    rgba(212, 175, 55, .15);
+  --border-sm: rgba(212, 175, 55, .08);
+  --glow:      rgba(212, 175, 55, .08);
+}
+
+/* ── Reset & Base ─────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--bg);
+  color: var(--ink);
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 19px;
+  line-height: 1.65;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+::selection { background: rgba(212, 175, 55, .35); color: #f5e6c8; }
+
+/* ── Animated Ember Background ────────────────── */
+#embers {
+  position: fixed; inset: 0;
+  pointer-events: none; z-index: 0;
+  overflow: hidden;
+}
+
+.ember {
+  position: absolute; border-radius: 50%;
+  opacity: 0;
+  animation: drift linear infinite;
+}
+
+.ember-amber {
+  width: 4px; height: 4px;
+  background: radial-gradient(circle, #ffaa33, #cc7722);
+  box-shadow: 0 0 6px #cc772288, 0 0 12px #cc772244;
+}
+
+.ember-gold {
+  width: 3px; height: 3px;
+  background: radial-gradient(circle, #ffdd55, #d4af37);
+  box-shadow: 0 0 6px #d4af3788, 0 0 12px #d4af3744;
+}
+
+.ember-rune {
+  width: 5px; height: 5px;
+  background: radial-gradient(circle, #aa88ff, #6633cc);
+  box-shadow: 0 0 8px #6633cc88, 0 0 16px #6633cc44;
+}
+
+@keyframes drift {
+  0%   { transform: translateY(100vh) translateX(0) scale(0); opacity: 0; }
+  8%   { opacity: 1; }
+  85%  { opacity: .6; }
+  100% { transform: translateY(-10vh) translateX(40px) scale(1); opacity: 0; }
+}
+
+/* ── Background Overlays ───────────────────────── */
+body::before {
+  content: '';
+  position: fixed; inset: 0;
+  background:
+    radial-gradient(ellipse 90% 60% at 50% 0%,   rgba(180, 80, 20, .06) 0%, transparent 70%),
+    radial-gradient(ellipse 70% 50% at 50% 100%, rgba(80,  30,120, .05) 0%, transparent 60%),
+    repeating-linear-gradient(0deg, transparent, transparent 2px,
+      rgba(255,255,255,.005) 2px, rgba(255,255,255,.005) 3px);
+  pointer-events: none; z-index: 0;
+}
+
+body::after {
+  content: '';
+  position: fixed; inset: 0;
+  background: radial-gradient(ellipse 60% 50% at 50% 50%, transparent 30%, rgba(0,0,0,.4) 100%);
+  pointer-events: none; z-index: 0;
+}
+
+/* ── Typography ────────────────────────────────── */
+h1, h2, h3 { font-family: 'Cinzel Decorative', serif; font-weight: 900; color: var(--gold); }
+h2, h3      { font-family: 'Cinzel', serif; font-weight: 700; }
+
+a { color: var(--ink-dim); text-decoration: none; transition: color .3s; }
+a:hover      { color: var(--gold); }
+
+/* ── Modal Overlay ─────────────────────────────── */
+.modal-overlay {
+  display: none; position: fixed; inset: 0;
+  background: rgba(0,0,0,.7); z-index: 100;
+  align-items: center; justify-content: center;
+  padding: 20px;
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+}
+.modal-overlay.open { display: flex; }
+
+/* ── Shared Utility ─────────────────────────────── */
+.text-center { text-align: center; }
+.mt-20       { margin-top: 20px; }
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0);   }
+}
+
+@keyframes modalIn {
+  from { opacity: 0; transform: scale(.92) translateY(10px); }
+  to   { opacity: 1; transform: scale(1)    translateY(0);     }
+}
+
+/* ── Status Badges ──────────────────────────────── */
+.tag {
+  font-family: 'Cinzel', serif;
+  font-size: .5rem; text-transform: uppercase;
+  letter-spacing: .06em; padding: 2px 8px;
+  border-radius: 6px; border: 1px solid;
+}
+.tag.proven   { color: #6aaa6a; border-color: rgba(106,170,106,.15); background: rgba(106,170,106,.04); }
+.tag.new      { color: #c9a84c; border-color: rgba(201,168,76,.15); background: rgba(201,168,76,.04); }
+.tag.framework{ color: #8a7aaa; border-color: rgba(138,122,170,.15); background: rgba(138,122,170,.04); }
+.tag.hybrid   { color: #7ab8c9; border-color: rgba(122,184,201,.15); background: rgba(122,184,201,.04); }
+.tag.includes { color: #c97a7a; border-color: rgba(201,122,122,.15); background: rgba(201,122,122,.04); }
+
+/* ── Footer ─────────────────────────────────────── */
+footer {
+  position: relative; z-index: 2;
+  text-align: center; padding: 25px 20px 40px;
+  color: #3a2a1a; font-size: .8rem;
+}
+footer .footer-ornament { color: #2a1a0a; letter-spacing: .3em; font-size: 1.1rem; display: block; margin-bottom: 6px; }
+footer a { color: #5a4a3a; }
+footer a:hover { color: var(--gold); }

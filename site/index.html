@@ -682,6 +682,165 @@ header .flare span:nth-child(3){animation-delay:1s}
   background:rgba(212,175,55,.04);
 }
 
+/* ── Affliction Wizard ─────────────────────────── */
+#wizardOverlay{display:none;align-items:center;justify-content:center}
+#wizardOverlay.open{display:flex}
+#wizardModal{
+  max-width:520px;
+}
+#wizardModal .wizard-inner{
+  animation:none;
+}
+.wizard-progress{
+  display:flex;align-items:center;gap:6px;
+  margin-bottom:24px;
+}
+.wizard-step-pip{
+  height:3px;flex:1;border-radius:2px;
+  background:rgba(212,175,55,.08);
+  transition:background .4s ease;
+}
+.wizard-step-pip.done{background:rgba(212,175,55,.3)}
+.wizard-step-pip.active{background:rgba(212,175,55,.6)}
+.wizard-question{
+  font-family:'Cinzel',serif;
+  font-size:.65rem;text-transform:uppercase;
+  letter-spacing:.12em;color:#6a5a3a;
+  margin-bottom:16px;
+  text-align:center;
+}
+.wizard-subtitle{
+  font-style:italic;font-size:.9rem;color:#8a7a5a;
+  text-align:center;margin:-12px 0 20px;
+  min-height:1.4em;
+}
+.wizard-options{
+  display:flex;flex-direction:column;gap:8px;
+  margin-bottom:24px;
+}
+.wizard-option{
+  background:linear-gradient(135deg, rgba(22,15,35,.8), rgba(15,10,22,.8));
+  border:1px solid rgba(212,175,55,.08);
+  border-radius:5px;padding:13px 16px;
+  cursor:pointer;transition:all .3s ease;
+  text-align:left;
+}
+.wizard-option:hover{
+  border-color:rgba(212,175,55,.22);
+  background:linear-gradient(135deg, rgba(30,20,45,.9), rgba(20,14,30,.9));
+  transform:translateX(3px);
+}
+.wizard-option .opt-label{
+  font-family:'Cinzel',serif;
+  font-size:.75rem;color:#c8b99a;display:block;
+  margin-bottom:3px;
+}
+.wizard-option .opt-desc{
+  font-size:.82rem;color:#6a5a3a;
+  font-style:italic;display:block;
+}
+.wizard-nav{
+  display:flex;justify-content:space-between;align-items:center;
+  padding-top:16px;border-top:1px solid rgba(212,175,55,.06);
+}
+.wizard-back{
+  font-family:'Cinzel',serif;font-size:.6rem;text-transform:uppercase;
+  letter-spacing:.06em;color:#5a4a3a;
+  background:none;border:none;cursor:pointer;transition:color .3s;
+  padding:4px 0;
+}
+.wizard-back:hover{color:#d4af37}
+.wizard-back.hidden{visibility:hidden}
+.wizard-next{
+  font-family:'Cinzel',serif;font-size:.65rem;font-weight:600;
+  text-transform:uppercase;letter-spacing:.06em;
+  padding:7px 18px;
+  border:1px solid rgba(212,175,55,.15);
+  border-radius:4px;
+  background:linear-gradient(135deg, rgba(40,25,50,.9), rgba(25,15,35,.9));
+  color:#5a4a3a;cursor:not-allowed;
+  transition:all .4s ease;
+}
+.wizard-next.ready{
+  border-color:rgba(212,175,55,.35);
+  color:#d4af37;cursor:pointer;
+}
+.wizard-next.ready:hover{
+  box-shadow:0 0 20px rgba(212,175,55,.1);
+}
+/* Result panel inside wizard */
+.wizard-result{
+  text-align:center;padding:10px 0 4px;
+  animation:fadeIn .5s ease;
+}
+.wizard-result .wr-skill-name{
+  font-family:'Cinzel Decorative',serif;
+  font-weight:700;font-size:1.15rem;color:#d4af37;
+  margin-bottom:6px;
+}
+.wizard-result .wr-effect{
+  font-size:.88rem;color:#8a7a5a;line-height:1.5;
+  margin-bottom:12px;
+}
+.wizard-result .wr-reason{
+  font-size:.82rem;color:#7a6a4a;
+  font-style:italic;margin-bottom:14px;
+  padding:10px 14px;
+  background:rgba(212,175,55,.03);
+  border-left:2px solid rgba(212,175,55,.15);
+  border-radius:0 4px 4px 0;
+  text-align:left;
+}
+.wizard-result .wr-cta{
+  font-family:'Cinzel',serif;
+  font-size:.65rem;text-transform:uppercase;
+  letter-spacing:.08em;
+  padding:8px 22px;
+  border:1px solid rgba(212,175,55,.2);
+  border-radius:4px;
+  background:linear-gradient(135deg, rgba(35,25,55,.95), rgba(22,15,38,.95));
+  color:#d4af37;cursor:pointer;
+  transition:all .3s ease;
+  display:inline-block;text-decoration:none;
+}
+.wizard-result .wr-cta:hover{
+  box-shadow:0 0 20px rgba(212,175,55,.12);
+}
+.wizard-result .wr-alts{
+  margin-top:14px;
+  font-family:'Cinzel',serif;font-size:.55rem;
+  text-transform:uppercase;letter-spacing:.08em;
+  color:#5a4a3a;margin-bottom:8px;
+}
+.wizard-result .wr-alt-grid{
+  display:flex;flex-wrap:wrap;gap:6px;justify-content:center;
+}
+.wizard-result .wr-alt-chip{
+  font-family:'Cormorant Garamond',serif;
+  font-size:.82rem;color:#7a6a4a;
+  padding:4px 12px;border-radius:12px;
+  border:1px solid rgba(212,175,55,.07);
+  cursor:pointer;transition:all .3s ease;
+  background:rgba(212,175,55,.02);
+}
+.wizard-result .wr-alt-chip:hover{
+  border-color:rgba(212,175,55,.18);
+  color:#d4af37;
+}
+/* "Not sure?" link */
+.wizard-unsure{
+  text-align:center;margin-top:10px;
+}
+.wizard-unsure button{
+  font-family:'Cormorant Garamond',serif;
+  font-style:italic;font-size:.82rem;color:#4a3a2a;
+  background:none;border:none;cursor:pointer;
+  text-decoration:underline;text-underline-offset:3px;
+  transition:color .3s;
+}
+.wizard-unsure button:hover{color:#6a5a3a}
+@keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+
 /* ── Footer ─────────────────────────────────────── */
 footer{
   position:relative;z-index:2;
@@ -860,7 +1019,17 @@ footer a:hover{color:#d4af37}
 .lab-output .rc-potency.apprentice{color:#7a8a7a;border-color:rgba(122,138,122,.15)}
 .lab-output .rc-potency.adept{color:#8ab8c9;border-color:rgba(138,184,201,.15)}
 .lab-output .rc-potency.master{color:#c9a84c;border-color:rgba(201,168,76,.15)}
-.lab-output .rc-potency.archmage{color:#d47a4a;border-color:rgba(212,122,74,.15)}
+.lab-output .rc-potency.archmage{color:#c97a4a;border-color:rgba(212,122,74,.15)}
+
+/* ── Footer ─────────────────────────────────────── */
+footer{
+  position:relative;z-index:2;
+  text-align:center;padding:25px 20px 40px;
+  color:#3a2a1a;font-size:.8rem;
+}
+footer .footer-ornament{color:#2a1a0a;letter-spacing:.3em;font-size:1.1rem;display:block;margin-bottom:6px}
+footer a{color:#5a4a3a}
+footer a:hover{color:#d4af37}
 
 /* ── Responsive ─────────────────────────────────── */
 @media(max-width:600px){
@@ -873,6 +1042,7 @@ footer a:hover{color:#d4af37}
 </style>
 </head>
 <body>
+
 
 <!-- Embers -->
 <div id="embers"></div>
@@ -916,6 +1086,16 @@ footer a:hover{color:#d4af37}
     <span class="ex-chip" data-query="architecture">🏛 architecture</span>
     <span class="ex-chip" data-query="code review">📋 code review</span>
   </div>
+  <div style="text-align:center;margin-top:10px">
+    <a href="affliction.html" style="
+      font-family:'Cinzel',serif;font-size:.6rem;text-transform:uppercase;
+      letter-spacing:.08em;color:#4a3a2a;text-decoration:none;
+      border-bottom:1px dashed rgba(212,175,55,.1);
+      transition:color .3s;
+    " onmouseover="this.style.color='#d4af37'" onmouseout="this.style.color='#4a3a2a'">
+      ✦ Not sure what you need? Consult the Grimoire →
+    </a>
+  </div>
 </div>
 
 <!-- Tabs -->
@@ -957,1095 +1137,26 @@ footer a:hover{color:#d4af37}
   </div>
 </div>
 
+<!-- Affliction Wizard Modal -->
+<div class="modal-overlay" id="wizardOverlay">
+  <div class="modal" id="wizardModal">
+    <button class="modal-close" id="wizardClose">✕</button>
+    <div class="wizard-progress" id="wizardProgress"></div>
+    <div class="wizard-inner" id="wizardInner"></div>
+    <div class="wizard-nav" id="wizardNav">
+      <button class="wizard-back hidden" id="wizardBack">← Back</button>
+      <button class="wizard-next" id="wizardNext">Continue →</button>
+    </div>
+    <div class="wizard-unsure" id="wizardUnsure"></div>
+  </div>
+</div>
+
 <!-- Footer -->
 <footer>
   <span class="footer-ornament">⚜ ❦ ⚜</span>
   <p>GrimoireStack &copy; 2026 &middot; Forge your own incantations</p>
   <p><a href="https://github.com/StepowskiEric/GrimoireStack" target="_blank">⟐ Browse the source on GitHub ⟐</a></p>
 </footer>
-
-<script>
-// ══════════════════════════════════════════════════════════════
-//  SCHOOLS & SPELLS
-// ══════════════════════════════════════════════════════════════
-
-try {
-const schools = [
-  {
-    id:'debugging',real:'Debugging',
-    name:'School of Remediation',symbol:'⚔',
-    desc:'Incantations to banish bugs and restore order to broken code.',
-    spells:[
-      {name:'Trace Sight',skill:'log-trace-correlation',effect:'Maps stack traces to source code, inspects context around the failure, and suggests the most likely fix. Best when you already have an error log or crash report in hand.',status:'Proven',combos:['Bisect Divination','Root Cause Revelation','Spectral Analysis']},
-      {name:'Bisect Divination',skill:'bisect-debugging',effect:'Binary searches the commit history to isolate the exact change that introduced the bug. Fastest path to "what changed" when you know tests used to pass.',status:'Proven',note:'+9.9% speed',combos:['Trace Sight','Iterative Mend','Root Cause Revelation']},
-      {name:'Debug Familiar',skill:'debug-subagent',effect:'Conjures a dedicated debugging subagent that enforces a debug-before-edit workflow. Proven to increase fix rate by 13-22% over editing without diagnosis.',status:'Proven',combos:['Instrumentation Charm','Spectral Analysis','Scout Protocol']},
-      {name:'Purify Vision',skill:'purify-test-output',effect:'Slices noisy test output down to only the failure-relevant lines. Reduces token consumption by ~18.6% and focuses the LLM on the actual bug.',status:'Proven',combos:['Instrumentation Charm','Test Oracle','Iterative Mend']},
-      {name:'Instrumentation Charm',skill:'simulate-instrumentation',effect:'Auto-inserts temporary print/logging statements at key code points, runs the failing test, and captures runtime state. The captured values feed directly into debugging.',status:'Proven'},
-      {name:'Iterative Mend',skill:'iterative-patch-repair',effect:'Loops patch → test → capture runtime → refine → augment the patch. Max N iterations with patch augmentation to avoid overfitting. +19.9% from augmentation alone.',status:'Proven'},
-      {name:'Root Cause Revelation',skill:'root-cause-analysis',effect:'Applies 5 Whys and Ishikawa (fishbone) diagrams to trace from symptom to true underlying cause. Prevents treating symptoms while the real defect remains.',status:'Framework',combos:['Occam\'s Verdict','Trace Sight','Bisect Divination']},
-      {name:'Issue Graph Walk',skill:'debug-issue',effect:'Graph-powered code navigation that traces issues through the system along dataflow and call-graph edges rather than guessing.',status:'Framework'},
-      {name:'Pipeline of Restoration',skill:'debug-to-fix-pipeline',effect:'Fuses five research-backed debugging disciplines into one sequential 6-phase ritual. Each phase increases evidence quality while reducing token waste.',status:'Hybrid',combos:['Spectral Analysis','Debug Familiar','Instrumentation Charm','Purify Vision','Iterative Mend']},
-      {name:'Test Oracle',skill:'unit-test-debugging',effect:'Determines whether a failing test or the code under test is the source of truth. Prevents the agent from blindly "fixing" a correct implementation to match a wrong test.',status:'New'},
-      {name:'Jest Invocation',skill:'jest-testing',effect:'Complete reference for writing correct Jest tests: matchers, async patterns, mocking strategies, configuration, and React Native specifics.',status:'New'},
-      {name:'Remote Viewing',skill:'explore-codebase',effect:'Navigates unfamiliar code using graph-powered token-efficient exploration. Progressive deepening from module structure to line-level detail.',status:'Framework'},
-      {name:'Divide & Conquer',skill:'codebase-divide-conquer-search',effect:'Hierarchical codebase summarization → semantic partitioning → parallel sub-agent deep dives → ranked results with confidence scores. For finding code in massive repos.',status:'Proven',combos:['Remote Viewing','Scout\'s Trail','Knowledge Graph']},
-      {name:'Scout\'s Trail',skill:'navigator',effect:'A scout sub-agent reads and distills file context for the main model; a thought-retriever stores the distilled reasoning as retrievable traces. Builds a living investigation trail.',status:'—'},
-      {name:'Occam\'s Verdict',skill:'occam-root-cause',effect:'Generates competing causal chains from observed symptoms, selects the simplest that fits all evidence, and verifies through falsification before committing to a fix.',status:'New'},
-      {name:'Spectral Analysis',skill:'specter',effect:'Generates competing hypotheses (abductive reasoning) then locates code structurally — no keyword grepping, no root-cause guessing. Reason backwards from the symptom.',status:'—'},
-      {name:'Endurance Ward',skill:'long-task-survival-kit',effect:'Every 5 calls: checkpoint context, verify trajectory, re-ground assumptions. Prevents context overflow, failure spirals, and hallucinated facts on long debugging sessions.',status:'—',combos:['Trajectory Warden','Context Lifecycle','Grounding Ritual']},
-      {name:'Temporal Rewind',skill:'time-traveling-debugger',effect:'Records deterministic execution trace forward, then replays in reverse from the crash point to find the exact line where state first diverged. Time-travel debug for LLMs.',status:'MCP'},
-      {name:'Environment Exorcism',skill:'environment-recovery',effect:'Structured vitals check (disk, versions, caches, ports, permissions) followed by targeted repair. For when commands fail before reaching your code.',status:'New'},
-      {name:'Network Divination',skill:'network-api-debugging',effect:'Captures actual network traffic, diagnoses by status code pattern, and fixes by failure type. Covers CORS, auth tokens, rate limiting, redirect chains, WebSocket drops.',status:'New'},
-      {name:'Minimal Summoning',skill:'minimal-reproduction',effect:'Writes the smallest possible test that reliably demonstrates the bug. Having a minimal repro in hand dramatically accelerates all subsequent debugging steps.',status:'New'},
-      {name:'Occam\'s Ladder',skill:'occam-minimal-repro',effect:'Ranks possible reproduction triggers by complexity, tests the simplest first, and stops at the first tier that reproduces. Prevents elaborate setups when a one-liner suffices.',status:'New'},
-      {name:'Escalation Rite',skill:'escalation-ladder',effect:'5-level protocol: self-correct → strategy change → rubber duck → scope reduction → full retreat. Fills the gap between "stuck" and "abandon ship."',status:'New'},
-      {name:'Coordinated Strike',skill:'coordinated-change',effect:'Maps the full change set, orders dependencies, edits atomically across files, and verifies consistency. For fixes that touch multiple files.',status:'New'},
-    ]
-  },
-  {
-    id:'reasoning',real:'Reasoning & Problem Solving',
-    name:'School of Cognition',symbol:'◇',
-    desc:'Mental models and structured thought for when the problem itself is unclear.',
-    spells:[
-      {name:'First Step Oracle',skill:'how-to-solve-it-state-machine',effect:'Forces explicit problem framing — what kind of problem is this? — before any action is taken. Prevents rushing to solutions before understanding the question.',status:'—'},
-      {name:'Razor of Parsimony',skill:'occams-razor',effect:'Lists all plausible explanations ranked simplest → most complex. Tests the simplest first. Every additional assumption must earn its keep or be discarded.',status:'New'},
-      {name:'Spectral Reasoning',skill:'specter',effect:'Generates multiple hypotheses from observed evidence (abduction), then locates the relevant code structurally. No keyword grepping, no confirmation bias.',status:'—'},
-      {name:'Occam\'s Abduction',skill:'occam-abduction',effect:'Generate competing hypotheses → audit all available evidence → rank by assumption count → falsify or confirm the simplest. Strongest when multiple explanations fit.',status:'New'},
-      {name:'Structural Seeker',skill:'keyword-agnostic-logic-locator',effect:'Finds code by structural relationships (call graph, dataflow, type hierarchy) rather than grepping for names. Query by logic, not by keyword.',status:'—'},
-      {name:'Simple Path Scry',skill:'occam-mcts',effect:'Occams Razor ranks strategy branches by complexity first; Monte Carlo Tree Search explores the simplest viable branches before touching complex ones.',status:'New'},
-      {name:'Thought-Weave & Search',skill:'tree-of-thoughts-plus-monte-carlo-tree-search',effect:'Tree of Thoughts generates diverse reasoning branches; Monte Carlo Tree Search allocates deeper effort to the branches that earn it. Prevents first-branch lock-in.',status:'—'},
-      {name:'Court of Minds',skill:'jury',effect:'Spawns parallel perspectives with conflicting goals, lets them argue, and surfaces the conflict graph as the explanation. For decisions with genuinely ambiguous tradeoffs.',status:'—'},
-      {name:'Prism of Understanding',skill:'prism',effect:'Forces explicit confidence calibration (metacognitive monitoring) then compresses understanding to its essence. If you cannot compress it, you do not understand it.',status:'—'},
-      {name:'Analogy Bridge',skill:'cross-domain-analogy-generator',effect:'Forces analogies from unrelated domains (biology, music, traffic, architecture) to break fixation and generate novel solutions to stubborn problems.',status:'—'},
-      {name:'OODA Loop',skill:'ooda-loop-state-machine',effect:'Observe → Orient → Decide → Act. For environments where conditions change between actions — adversarial or rapid-response situations.',status:'—'},
-      {name:'Friction Governor',skill:'cognitive-friction-governor',effect:'Assigns a deliberation budget to each task. Each reasoning step consumes friction. When the budget is exhausted, you must decide. Prevents over-thinking trivial problems.',status:'—'},
-      {name:'Reward Path Backtrack',skill:'process-reward-model-protocol',effect:'Self-assigns process rewards to each reasoning step. Backtracks when cumulative reward drops below threshold. Prevents committing to wrong reasoning paths early.',status:'—'},
-      {name:'Analogy Solver',skill:'how-to-solve-it-analogy',effect:'When your problem resembles one already solved elsewhere, deliberately imports the structure of that prior solution rather than starting from scratch.',status:'—'},
-      {name:'Stepwise Verification',skill:'step-level-verification-protocol',effect:'Verifies each reasoning step before proceeding to the next. Prevents error propagation through multi-step chains where early mistakes compound.',status:'—'},
-      {name:'Grounding Ritual',skill:'assumption-grounding',effect:'States every assumption explicitly, verifies with the cheapest possible check, and only proceeds on confirmation. Based on Chain-of-Verification research.',status:'—'},
-      {name:'Trajectory Warden',skill:'trajectory-guard',effect:'Runtime meta-monitoring that detects failure spirals — repetitive loops, specification drift, stuck trajectories — and forcibly redirects strategy.',status:'—'},
-      {name:'Context Lifecycle',skill:'context-lifecycle-manager',effect:'Manages the full context lifecycle: budget tracking, exponential message decay, pruning of low-weight content, and token optimization. Extends useful context by 2-3x.',status:'—'},
-    ]
-  },
-  {
-    id:'process',real:'Process Improvement',
-    name:'School of Refinement',symbol:'⚙',
-    desc:'Rituals for improving systems, workflows, and outputs over time through disciplined iteration.',
-    spells:[
-      {name:'Deming Cycle',skill:'pdca-deming',effect:'Plan → Do → Check → Act. A measurement-anchored cycle of planning, execution, and verification before standardizing or escalating. For process and system improvement.',status:'—'},
-      {name:'Kata Practice',skill:'toyota-kata-state-machine',effect:'Scientific thinking pattern: understand the current condition, set a target condition, experiment toward it. For disciplined iteration instead of one large speculative change.',status:'—'},
-      {name:'Checkman Rite',skill:'checklist-manifesto',effect:'Checklist discipline for high-stakes procedures where expert knowledge is necessary but not sufficient. Prevents skip-ahead errors that cause most procedure failures.',status:'—'},
-      {name:'Crystallization',skill:'requirement-crystallization-protocol',effect:'Socratic questioning surfaces the critical assumptions, then Intent Specification crystallizes vague requests into locked, testable specs before any code is written.',status:'—'},
-      {name:'Pre-Flight Gate',skill:'pre-flight-intent-verification',effect:'Three-phase gate: Clarify → Specify → Ground. Surfaces critical assumptions, crystallizes intent into testable scenarios, verifies facts before acting. Universal pre-action check.',status:'New'},
-      {name:'Kata + Deming Synthesis',skill:'iterative-improvement-cycle',effect:'Fuses Toyota Kata (target condition / experiment), PDCA (measurement cycle), and Philosophy of Software Design (deep modules) into a single sequential improvement protocol.',status:'—'},
-      {name:'Zero Defect Ward',skill:'zero-defect-protocol',effect:'14-phase protocol for mission-critical features. Data contracting, invariant mapping, red-team critique, pre-mortem, and triple expert review before any code executes.',status:'—'},
-      {name:'Blueprint Codification',skill:'blueprint',effect:'Codifies messy human problems into types, schemas, and code. When you can state the problem in code, contradictions and gaps become impossible to ignore.',status:'—'},
-    ]
-  },
-  {
-    id:'code-review',real:'Code Review & Quality',
-    name:'School of Scrutiny',symbol:'◈',
-    desc:'Incantations for verifying, elevating, and safeguarding code quality before it ships.',
-    spells:[
-      {name:'Triad Perspective',skill:'rashomon-triad-hybrid',effect:'Three specialized reasoning modes — hypothesis generation, verification, and pattern extraction — argue from conflicting goals. The conflict graph becomes the explanation.',status:'—'},
-      {name:'Essence Test',skill:'compression-as-understanding',effect:'Compress your understanding of the code to its minimal essential form, then try to reconstruct the original. If you cannot compress it, you do not understand it.',status:'—'},
-      {name:'Confidence Calibration',skill:'metacognitive-monitoring',effect:'After every significant output, explicitly calibrate confidence vs. accuracy. Decide whether to KEEP or WITHDRAW your result, and BET or decline — measurable withdraw delta.',status:'—'},
-      {name:'Legacy Seam Working',skill:'working-effectively-with-legacy-code-state-machine',effect:'Characterize legacy behavior, create test seams, then transform in bounded slices with anti-loop protection. For brittle code with weak or no tests.',status:'—'},
-      {name:'Complexity Audit',skill:'philosophy-of-software-design-state-machine',effect:'Identify shallow abstractions and deepen module design. Manages complexity by ensuring each module hides one decision behind a clean interface.',status:'—'},
-      {name:'Pre-Commit Vigil',skill:'verify-before-integrate',effect:'Before integrating any external API, research paper concept, or library — verify the actual system behavior rather than trusting terminology alignment.',status:'—'},
-      {name:'LLM Pre-Push Ward',skill:'llm-pre-push-review',effect:'5-pass protocol targeting LLM-specific code review failures: hallucinated logic, silent vulnerabilities, overcorrection, scope creep, and context-ignorant reviews.',status:'—'},
-      {name:'Deployment Gate',skill:'pre-deployment-gate',effect:'7-pass pre-deployment checklist combining LLM Pre-Push Review with Vibe Coding Security Hardening. Execution, security, correctness, structure, integration, hardening, secrets.',status:'—',combos:['Security Warding','Vibe Hardening','LLM Pre-Push Ward','Failure Prophecy']},
-      {name:'Self-Verify Pipeline',skill:'self-verify-pipeline',effect:'5-phase escalating verification: internal critique → claim decomposition → tool verification → external sources. Catches failures early and cheaply.',status:'—'},
-      {name:'Task Intake Gate',skill:'task-intake-protocol',effect:'Cynefin problem classification + ETTO rigor calibration + Recognition-Primed Triage fused into one 3-phase decision gate before any work begins.',status:'—'},
-      {name:'Failure Prophecy',skill:'failure-analysis-protocol',effect:'Pre-Mortem + Inversion + Second-Order Thinking fused. Three failure lenses: invert success, narrate specific failures, trace cascading consequences.',status:'—'},
-      {name:'Security Warding',skill:'security-review-protocol',effect:'STRIDE threat analysis + Unsafe Control Actions hazard analysis + Vibe Coding Security hardening. Three security lenses fused.',status:'—'},
-      {name:'Safe Refactor',skill:'refactoring-state-machine',effect:'Structured refactoring protocol that improves structure without drifting into endless cleanup. Gates prevent scope creep and "while we are here" syndrome.',status:'—'},
-      {name:'Pragmatist\'s Way',skill:'pragmatic-programmer-state-machine',effect:'Bounded changes, reversible choices, automation over repeated toil, root-cause fixes instead of symptom patches, and practical scope control.',status:'—'},
-      {name:'Thoroughness Charm',skill:'thoroughness-check-etto',effect:'Systematic ETTO (Efficiency-Thoroughness Trade-Off) completeness check before any meaningful task execution. Prevents confidently doing the wrong thing.',status:'—'},
-      {name:'Strict Thoroughness',skill:'thoroughness-check-etto-state-machine',effect:'Enforced thoroughness state machine — a universal preflight protocol that gates execution behind completeness checks. Cannot proceed without passing each gate.',status:'—'},
-      {name:'Counterfactual Trial',skill:'counterfactual-policy-testing',effect:'Validates decisions by testing against explicit counterfactuals before committing. Generate null, opposite, and partial alternatives; only proceed if proposal beats all.',status:'—'},
-      {name:'Bounded Revision',skill:'bounded-self-revision',effect:'Structured self-improvement with finite revision cycles. After N rounds, stop — even if the output is not perfect. Prevents infinite polish loops.',status:'—'},
-      {name:'Speculative Drafting',skill:'speculative-drafting-verification',effect:'Generates multiple candidate solution branches in parallel, verifies each against constraints, and selects the best. Prevents local minima traps.',status:'—'},
-      {name:'Speculative Exploration',skill:'speculative-exploration-protocol',effect:'Fuses Speculative Drafting, Tree of Thoughts, and Process Reward Model. Branch candidates → score with PRM → prune low-reward branches → verify the best candidate.',status:'—'},
-      {name:'Bias Audit',skill:'cognitive-bias-checklist',effect:'Checks 9 established cognitive biases in important decisions or analyses. For slow-mode reasoning where bias could contaminate the output.',status:'—'},
-      {name:'Automated Bias Detection',skill:'cognitive-bias-auditor',effect:'Detects and mitigates cognitive biases in agent decisions using a companion auditing script. Tested on GPT-4o, Gemma 2, and Llama 3.1 across 9 biases.',status:'—'},
-      {name:'Self-Consistency Rite',skill:'self-consistency',effect:'Generates multiple independent reasoning paths to the same conclusion and checks whether they converge. If they do not converge, the answer is unreliable.',status:'—'},
-      {name:'Interactive Critique',skill:'tool-interactive-critic',effect:'Structured multi-tool critique process for existing drafts, answers, plans, or code changes. Uses tools to verify claims, not just review text.',status:'—'},
-      {name:'API Surface Scry',skill:'api-surface-anchoring',effect:'Before writing code that calls any external library or API, verifies the current API surface from authoritative docs. Prevents hallucinated signatures and wrong imports.',status:'—'},
-      {name:'Verified API Workflow',skill:'verified-api-workflow',effect:'Every verified API surface entry becomes an anchor. Code using external APIs is fully traceable to documentation you actually checked. Zero hallucinated APIs.',status:'—'},
-    ]
-  },
-  {
-    id:'architecture',real:'Architecture & Design',
-    name:'School of Architecture',symbol:'🏛',
-    desc:'Design rituals for systems that endure across dimensions of scale, time, and team boundaries.',
-    spells:[
-      {name:'Intent Binding',skill:'intent-specification-protocol',effect:'Scope control via explicit intent specification before writing any code. Prevents the Intent-Behavior Mirroring Effect where vague requests produce invasive output.',status:'—'},
-      {name:'Counterfactual Design',skill:'counterfactual-policy-testing',effect:'Tests architectural decisions against null, opposite, and partial alternatives. Only proceeds if the proposed change beats all alternatives in simulated outcomes.',status:'—'},
-      {name:'Team Topology Sight',skill:'team-topologies-ai',effect:'Organizational architecture patterns for arranging teams, services, and ownership boundaries without creating coordination chaos.',status:'—'},
-      {name:'Data System Principles',skill:'designing-data-intensive-applications-ai',effect:'Reason about storage choices, distributed behavior, and tradeoffs in reliability, scalability, and maintainability.',status:'—'},
-      {name:'Error Budget Divination',skill:'sre-error-budget',effect:'Makes the tradeoff between reliability and change velocity explicit, evidence-based, and governed. Data-driven SRE discipline.',status:'—'},
-      {name:'Ubiquitous Language',skill:'domain-driven-design',effect:'Bounded contexts, aggregates, entities, value objects, and domain events. Aligns code organization with business domain structure.',status:'—'},
-      {name:'Cynefin Compass',skill:'problem-mode-router-cynefin',effect:'Routes problems to the right category — Clear, Complicated, Complex, Chaotic — each with its own decision-making approach. Before choosing a solution, classify the problem.',status:'—'},
-      {name:'Acceleration Rite',skill:'accelerate-ai',effect:'Evidence-based improvement using the four key metrics: deployment frequency, lead time, mean time to restore, change failure rate. Based on State of DevOps research.',status:'—'},
-      {name:'Stability Warding',skill:'release-it-stability',effect:'Stability patterns for distributed systems under failure: circuit breakers, bulkheads, timeouts, backpressure, and graceful degradation.',status:'—'},
-      {name:'Boundary Weaving',skill:'separation-of-concerns',effect:'Prevents different concerns — orchestration, business logic, data access — from contaminating each other\'s reasoning, side effects, or state.',status:'—'},
-      {name:'Cynefin Gate',skill:'problem-mode-router-cynefin-state-machine',effect:'Enforced Cynefin routing where problem classification is a mandatory gate, not an optional lens. Cannot proceed without classifying.',status:'—'},
-      {name:'System Dynamics',skill:'thinking-in-systems-state-machine',effect:'Analyzes feedback loops, reinforcing/balancing dynamics, delayed effects, and multi-step downstream consequences before making system changes.',status:'—'},
-      {name:'Backward Compat Ward',skill:'api-design-backward-compatibility',effect:'Forces contract-first, additive-only API evolution. Consumer discovery before contract changes. Prevents shipping breaking changes.',status:'—'},
-      {name:'Full Architecture Audit',skill:'system-architecture-audit',effect:'Fuses DDIA, DDD, Thinking in Systems, and Release It into one sequential audit protocol. Each phase feeds the next.',status:'—'},
-    ]
-  },
-  {
-    id:'discovery',real:'Algorithm & Tool Discovery',
-    name:'School of Discovery',symbol:'✧',
-    desc:'Algorithms and automated tools that find solutions beyond human intuition.',
-    spells:[
-      {name:'Evolutionary Forge',skill:'evolutionary-tool-composer',effect:'Runs an evolutionary algorithm that mutates, crosses, and selects tool chains, prompt strategies, and code solutions by fitness. AlphaEvolve/OpenEvolve principles.',status:'—'},
-      {name:'Free Energy Seeker',skill:'active-inference-agent',effect:'Based on Friston\'s Free Energy Principle. Maintains hierarchical beliefs, computes Expected Free Energy for each action, selects policies minimizing predicted surprise.',status:'—'},
-    ]
-  },
-  {
-    id:'documentation',real:'Documentation & Communication',
-    name:'School of Expression',symbol:'✎',
-    desc:'Incantations for writing clearly, explaining complex systems, and communicating with stakeholders.',
-    spells:[
-      {name:'Intent Crystallization',skill:'intent-specification-protocol',effect:'Specifies and validates intent before writing any code. Transforms vague requests into precise, testable specifications.',status:'—'},
-      {name:'Doc Crafting',skill:'documentation-craft',effect:'5-phase structured writing: outline-first planning, context-aware drafting, quality verification. Inspired by multi-agent documentation systems and literate programming.',status:'—'},
-      {name:'Feynman Recitation',skill:'feynman-technique',effect:'Explains complex systems from the ground up in plain language. If you cannot explain it simply, you do not understand it well enough.',status:'—'},
-      {name:'Code Vision',skill:'everything-as-code-conceptualizer',effect:'Views any system, process, or problem through a "code lens" — codifying reveals hidden structure, assumptions, and edge cases that natural language obscures.',status:'—'},
-      {name:'Socratic Elicitation',skill:'socratic-clarification',effect:'Before executing an ambiguous or high-stakes task, surfaces and resolves the most critical unknown assumptions using structured questioning.',status:'—'},
-      {name:'Doc Navigation',skill:'large-documentation-navigation',effect:'Transforms unwieldy documentation repos into navigable, user-centered knowledge bases with multi-layered navigation systems.',status:'—'},
-      {name:'MECE Structuring',skill:'mece-pyramid-principle',effect:'Mutually Exclusive, Collectively Exhaustive structuring for complex outputs — plans, analyses, recommendations — so they are both complete and non-redundant.',status:'—'},
-      {name:'Steelman Argument',skill:'steelmanning',effect:'Before committing to a recommendation, genuinely tests whether the opposing position is stronger than it appears by building the strongest version of the counterargument.',status:'—'},
-      {name:'Calibrated Communication',skill:'stakeholder-communication',effect:'Separates facts from inferences, uses range estimates, and communicates unknown unknowns. Calibrates confidence by audience and decision urgency.',status:'—'},
-    ]
-  },
-  {
-    id:'planning',real:'Planning & Estimation',
-    name:'School of Foresight',symbol:'◇',
-    desc:'Rituals for estimating timelines, surfacing risks, and creating disciplined plans.',
-    spells:[
-      {name:'Base Rate Scry',skill:'reference-class-forecasting',effect:'Uses base rates from reference classes — how long did similar things actually take? — instead of intuition or optimistic inside-view estimates.',status:'—'},
-      {name:'Pre-Mortem Vision',skill:'pre-mortem-state-machine',effect:'Assumes the plan has already failed spectacularly, then works backward to determine what went wrong. Surfaces real risks that optimistic planning misses.',status:'—'},
-      {name:'Retrospective Mirror',skill:'retrospective',effect:'After-action review with Five Whys root cause analysis and structured action items. For learning from shipped features, incidents, and completed projects.',status:'—'},
-      {name:'Explore-Exploit Compass',skill:'explore-vs-exploit-state-machine',effect:'Decides whether to continue gathering information or commit to action. Balances the value of new information against the cost of delaying the decision.',status:'—'},
-      {name:'Bottleneck Sight',skill:'the-goal-theory-of-constraints-ai',effect:'Finds the single bottleneck constraining system throughput instead of optimizing everything. Based on Goldratt\'s Theory of Constraints.',status:'—'},
-      {name:'Explore-Exploit Lens',skill:'explore-vs-exploit',effect:'Decision framework for the explore-vs-exploit tradeoff. Use when deciding whether to search for better options or commit to a known-good one.',status:'—'},
-      {name:'Pre-Mortem Rite',skill:'pre-mortem',effect:'Prospective hindsight analysis framework. Imagine failure has already occurred, then trace backward to identify what caused it. Rank the risks and adjust the plan.',status:'—'},
-      {name:'Plan with Judge',skill:'plan-with-judge',effect:'Creates a structured implementation plan in JSONL format, then iteratively improves it using a stronger user-specified model as a judge until approved.',status:'—'},
-      {name:'Iterative Spec',skill:'iterative-spec-authoring',effect:'Authors a detailed technical spec grounded in research, runs up to 3 judge-LLM review cycles, then presents for user approval before implementation.',status:'—'},
-      {name:'Structured Feature Path',skill:'structured-feature-planning',effect:'7-phase: explore → search on failure → stuck detection → plan (JSONL) → self-review×2 → summary → execute. No hallucination when confused.',status:'—'},
-    ]
-  },
-  {
-    id:'learning',real:'Learning & Understanding',
-    name:'School of Knowledge',symbol:'✧',
-    desc:'Incantations for understanding new domains, stress-testing proposals, and thinking from first principles.',
-    spells:[
-      {name:'Compression Test',skill:'compression-as-understanding',effect:'Verifies understanding by compressing knowledge into its minimal essential form, then testing whether that compressed representation can reconstruct the original.',status:'—'},
-      {name:'Devil\'s Advocate',skill:'advocatus-diaboli',effect:'Spawns a genuinely separate adversarial sub-agent with no prior investment in the proposal. The adversary stress-tests your plan before you commit resources.',status:'—'},
-      {name:'Thought Tree',skill:'tree-of-thoughts',effect:'Branches multiple reasoning paths in parallel. When the correct path is unclear, explores diverse directions before committing to any single line of thinking.',status:'—'},
-      {name:'First Principles Forge',skill:'first-principles',effect:'Deconstructs problems to fundamental truths — what is genuinely known to be true? — and reasons up from there rather than reasoning by analogy or convention.',status:'—'},
-      {name:'Inversion Lens',skill:'inversion-mental-model',effect:'Think backwards. Instead of asking "how do I achieve X?", ask "what would guarantee I fail to achieve X?" then avoid those things. Reveals blind spots.',status:'—'},
-      {name:'Six Hats',skill:'six-thinking-hats',effect:'Examines problems from six distinct parallel perspectives: facts, emotions, risks, benefits, creativity, and process. Prevents collapsing all reasoning into one mode.',status:'—'},
-      {name:'Inversion Path',skill:'inversion-mental-model-state-machine',effect:'Structured backward thinking protocol for risk, failure, blind spots, and defensive design. A formal state machine ensures you actually reason through the inversion.',status:'—'},
-      {name:'Second Sight',skill:'second-order-thinking',effect:'Pushes past the immediate, obvious consequence to consider what happens next. And then what happens after that. Traces at least three orders of consequences.',status:'—'},
-      {name:'Bayesian Update',skill:'bayesian-updating',effect:'Maintains explicit prior beliefs, captures new evidence, and computes posterior probabilities. Prevents over-swinging on single data points or ignoring disconfirming evidence.',status:'—'},
-      {name:'Recognition Triage',skill:'recognition-primed-triage',effect:'For strong first moves under time pressure. Matches the current situation to patterns from experience and runs a mental simulation of the chosen course of action.',status:'—'},
-      {name:'Structured RPD',skill:'recognition-primed-triage-state-machine',effect:'Enforced incident-response triage protocol. Gates prevent reckless action while maintaining response tempo. For genuine time-critical situations.',status:'—'},
-      {name:'Fast-Slow Lens',skill:'kahneman-thinking-fast-slow-software-agent',effect:'Applies Kahneman\'s dual-process theory to coding, debugging, estimation, and architecture. Catches System 1 (fast, intuitive) errors before they ship.',status:'—'},
-      {name:'Hallucination Ward',skill:'faithfulness-aware-reasoning',effect:'Detects and prevents faithfulness hallucinations where reasoning sounds plausible but is not logically entailed by the premises. Based on arXiv research.',status:'—'},
-    ]
-  },
-  {
-    id:'anti-hallucination',real:'Reasoning & Anti-Hallucination',
-    name:'School of Veracity',symbol:'◈',
-    desc:'Wards against reasoning decay — incantations that keep agent thinking honest and grounded.',
-    spells:[
-      {name:'Claim Verification',skill:'claim-verification-reasoning',effect:'Breaks reasoning into atomic claims, assigns confidence labels, verifies uncertain claims with tools, and builds dependency graphs to prevent reasoning hallucinations.',status:'—'},
-      {name:'Context Density',skill:'context-density-operator',effect:'Maximizes decision-relevant information per token in the working context. Hierarchical memory with on-demand detail expansion. Based on information bottleneck principles.',status:'—'},
-      {name:'CoT Pruning',skill:'cot-pruning-reasoning',effect:'Two-pass compress: coarse step-level pruning removes reasoning steps that do not change the conclusion, then fine token-level compression. Retains only what matters.',status:'—'},
-      {name:'Verification Hybrid',skill:'reasoning-verification-hybrid',effect:'Master anti-hallucination protocol combining claim-level verification, backward contradiction checks, confidence calibration, and logical entailment validation.',status:'—'},
-      {name:'Selective Halt',skill:'selective-halt-reasoning',effect:'Monitors reasoning output for semantic stabilization. When consecutive reasoning steps converge on equivalent conclusions, halt early. Prevents wasted elaboration.',status:'—'},
-      {name:'Token Budget Warden',skill:'context-lifecycle-manager',effect:'Orchestrates context compression, CoT pruning, selective halting, and SOP capture in sequence. For long-horizon tasks where token burn is the bottleneck.',status:'—'},
-      {name:'Integrity Chain',skill:'reasoning-integrity-chain',effect:'An escalating 4-phase verification chain catching all hallucination types. Faithfulness → Claims → Verification → Selective Halt. Reduces false positives from ~13% to ~4%.',status:'—'},
-      {name:'Anchor Chain',skill:'hallucination-anchor-chain',effect:'Forces every factual claim to be anchored to a verified source. Unanchored claims are marked unverified and hidden from outputs. Builds a verifiable evidence chain.',status:'—'},
-      {name:'Contradiction Trap',skill:'self-contradiction-trap',effect:'Maintains a persistent belief store of claims made during the session. Detects when new claims contradict existing ones and forces resolution before continuing.',status:'—'},
-      {name:'Chaos Detection',skill:'chaos-detector',effect:'Computes Lyapunov exponents over token trajectories. Flags reasoning collapse before it happens — when token trajectories diverge chaotically, the session is at risk.',status:'—'},
-    ]
-  },
-  {
-    id:'software-dev',real:'Software Development',
-    name:'School of Crafting',symbol:'⚒',
-    desc:'Practical incantations for building, renaming, searching through, and shipping code.',
-    spells:[
-      {name:'Intent Binding',skill:'intent-specification-protocol',effect:'Clarifies intent before coding. Prevents the Intent-Behavior Mirroring Effect where vague requirements produce invasive, over-engineered output.',status:'—'},
-      {name:'Debug Workflow',skill:'debug-issue',effect:'Forces the reproduce → isolate → fix → verify cycle. Graph-powered code navigation traces issues through the system along dataflow edges.',status:'—'},
-      {name:'Codebase Walk',skill:'explore-codebase',effect:'Structured exploration with progressive deepening: module structure → file roles → symbol resolution. Token-efficient for unfamiliar codebases.',status:'—'},
-      {name:'Divide & Search',skill:'codebase-divide-conquer-search',effect:'Hierarchical codebase summarization + semantic similarity partitioning + parallel sub-agent deep investigation + ranked results with confidence scores.',status:'—'},
-      {name:'New Skill Rite',skill:'add-new-skill-to-repository',effect:'Standardized contribution workflow for adding skills to a skill repository. Documentation scaffolding, installation support, cross-platform verification.',status:'—'},
-      {name:'Rename & Recall',skill:'bulk-rename-and-update-references',effect:'Safely discovers all files to rename, renames them, and updates every cross-reference across the codebase. Prevents broken links and stale references.',status:'—'},
-      {name:'Supporting File Bind',skill:'skill-development-with-supporting-files',effect:'Workflow for creating skills that need supporting files beyond a single .md — Python scripts, templates, reference docs, config files.',status:'—'},
-      {name:'Local LLM Invocation',skill:'local-llm-tooling',effect:'Setup, prompting, and structured output extraction from local LLMs (Ollama, llama.cpp). No cloud dependency for inference.',status:'—'},
-      {name:'Safe Refactor',skill:'refactor-safely',effect:'Characterization testing to capture existing behavior, then bounded changes with immediate verification. Safe transformation of untested code.',status:'—'},
-      {name:'Review Lens',skill:'review-changes',effect:'Structured review checklist for evaluating code changes systematically rather than reading through aimlessly.',status:'—'},
-      {name:'Git Surgery',skill:'git-surgery',effect:'10 deterministic recovery protocols for common local git disasters: detached HEAD, botched rebase, force-push recovery, lost commits, merge conflicts.',status:'—'},
-      {name:'Knowledge Graph',skill:'code-knowledge-graph-mcp',effect:'MCP server with structured symbol and call-graph queries. Navigate code by structure, not by string search.',status:'—'},
-      {name:'Diagnostics Aggregator',skill:'dev-diagnostics-mcp',effect:'MCP server with unified parsers for ESLint, Biome, Ruff, tsc, Vitest, pytest. Returns structured JSON issues with severity and category.',status:'—'},
-      {name:'Battalion Auto-Fix',skill:'lint-battalion',effect:'Mass linter error remediation via auto-fix sprint + parallel subagent battalions. Handles 500+ trivial errors mechanically, escalates semantic ones to specialists.',status:'—'},
-      {name:'Verified Synthesis',skill:'verified-synthesize',effect:'Generates code plus Dafny formal specifications. Preconditions and postconditions are machine-checked via Z3 SMT solver. Provably correct code from natural language specs.',status:'—'},
-    ]
-  },
-  {
-    id:'multi-agent',real:'Multi-Agent & Coordination',
-    name:'School of Confluence',symbol:'✦',
-    desc:'Incantations for orchestrating multiple agents, sharing reasoning memory, and coordinating parallel workstreams.',
-    spells:[
-      {name:'Orchestrator Pattern',skill:'agentic-design-patterns-orchestrator',effect:'Workflow patterns for spawning specialized sub-agents: parallel fan-out, chain-of-thought delegation, evaluator-optimizer loops, and supervisor oversight.',status:'—'},
-      {name:'Orchestrator Gate',skill:'agentic-design-patterns-orchestrator-state-machine',effect:'Enforced agent orchestration state machine. Routes between sequential, parallel, and evaluator-optimizer workflows based on task requirements.',status:'—'},
-      {name:'Thought Retrieval',skill:'thought-retriever-coppermind',effect:'Three-layer memory architecture — working memory, retrieval tracking, procedural memory. Agents store structured thoughts that future agents retrieve and build on.',status:'—'},
-      {name:'Memory Hygiene',skill:'agent-memory-hygiene',effect:'Decides what to remember, what to forget, how long to trust stored context, and when to treat cached knowledge as stale. Memory lifecycle management.',status:'—'},
-      {name:'Branch Allocation',skill:'monte-carlo-tree-search',effect:'Allocates reasoning effort across multiple plausible strategy branches. Explores promising branches deeper while pruning low-value branches.',status:'—'},
-      {name:'Weak Link Detection',skill:'weak-link-detection-multi-agent',effect:'Identifies and isolates the weakest reasoning chain in multi-agent outputs before aggregation. Prevents one failing agent from corrupting the final result.',status:'—'},
-      {name:'SOP Evolution',skill:'sop-evolution-memory',effect:'Distills successful task trajectories into compact, reusable Standard Operating Procedures. Future similar tasks load the SOP instead of the full history.',status:'—'},
-      {name:'Scout Protocol',skill:'scout',effect:'Fast sub-agent pre-reads and distills only the relevant context from files for the main model. Saves tokens, reduces distraction, prevents getting lost in large codebases.',status:'—'},
-      {name:'Subagent Composer',skill:'subagent-composer',effect:'Composes high-context sub-agent briefs with skill loading, explicit boundaries, success criteria, and stop rules. Eliminates first-pass failures from incomplete briefs.',status:'—'},
-      {name:'Octopus Coordination',skill:'octopus',effect:'Distributed multi-agent coordination inspired by octopus biology: contract-driven decomposition, parallel delegation, shared workspace, inter-arm coordination, autotomy on failure.',status:'—'},
-    ]
-  },
-  {
-    id:'risk',real:'Risk & Safety Analysis',
-    name:'School of Warding',symbol:'🛡',
-    desc:'Protective incantations for safety-critical changes, threat analysis, and pre-deployment hardening.',
-    spells:[
-      {name:'STPA Ward',skill:'unsafe-control-actions-hazard-analysis',effect:'Systems-Theoretic Process Analysis. Identifies unsafe control actions that could create harm before they are designed into the system.',status:'—'},
-      {name:'Failure Scrying',skill:'pre-mortem',effect:'Prospective hindsight: imagine the plan has failed, then work backward to identify the causes. Surfaces risks that feel "unlikely" until you frame them as already having happened.',status:'—'},
-      {name:'Second-Order Sight',skill:'second-order-thinking',effect:'Traces chains of downstream consequences beyond the immediate effect of any action. Considers what happens next, and what happens after that.',status:'—'},
-      {name:'Stability Warding',skill:'release-it-stability',effect:'Stability patterns for distributed systems: circuit breakers, bulkheads, timeouts, backpressure, graceful degradation. Analyzes failure modes before they occur.',status:'—'},
-      {name:'Pre-Mortem Gate',skill:'pre-mortem-state-machine',effect:'Enforced prospective analysis protocol. Formally validates a plan before execution by assuming failure has already occurred and working backward to causes.',status:'—'},
-      {name:'STRIDE Analysis',skill:'security-threat-modeling',effect:'STRIDE (Spoofing, Tampering, Repudiation, Information Disclosure, Denial of Service, Elevation of Privilege) threat analysis for authentication, secrets, input handling.',status:'—'},
-      {name:'Vibe Hardening',skill:'vibe-coding-security-hardening',effect:'9-phase systematic hardening checklist targeting vulnerabilities that AI tools reliably introduce: exposed secrets, missing access controls, broken auth, injection flaws.',status:'—'},
-    ]
-  },
-  {
-    id:'cognitive-load',real:'Cognitive Load & Operator Support',
-    name:'School of Clarity',symbol:'◈',
-    desc:'Incantations for managing finite attention, reducing overhead, and keeping the agent focused.',
-    spells:[
-      {name:'Load Management',skill:'cognitive-load-operator-state-machine',effect:'Protocol for making information easier to understand, retain, and act on. Manages extraneous load, intrinsic complexity, and germane (productive) load.',status:'—'},
-      {name:'Context Lifecycle + Budget',skill:'context-lifecycle-manager',effect:'Full lifecycle management: context is born → tracked by budget operator → decays/pruned by rot-pruner → optimized by token-budget-operator. Extends useful context life 2-3x.',status:'—'},
-    ]
-  },
-  {
-    id:'testing',real:'Testing & Evaluation',
-    name:'School of Measurement',symbol:'⚖',
-    desc:'Rituals for empirically measuring whether a skill actually improves outcomes.',
-    spells:[
-      {name:'A/B Scry',skill:'skill-ab-evaluation',effect:'Runs an A/B evaluation of any skill against a baseline using isolated subagents, 5 trials each, and an objective rubric. Measures real % improvement in isolated worktrees.',status:'—'},
-      {name:'Empirical Justification',skill:'skill-ab-evaluation',effect:'Provides empirical data to justify skill refinement or retirement. Zero risk to current projects — all testing happens in isolated worktrees.',status:'—'},
-    ]
-  }
-];
-
-// ══════════════════════════════════════════════════════════════
-//  BUILD THE GRIMOIRE
-// ══════════════════════════════════════════════════════════════
-
-const recipes = [];
-const tabsEl = document.getElementById('tabContainer');
-const bookEl = document.getElementById('bookSpread');
-const searchInput = document.getElementById('searchInput');
-
-try {
-// Build tabs
-schools.forEach((s, i) => {
-  const btn = document.createElement('button');
-  btn.className = 'tab-btn' + (i === 0 ? ' active' : '');
-  btn.dataset.school = s.id;
-  btn.innerHTML = `${s.symbol} ${s.name} <span class="real-name">${s.real}</span>`;
-  btn.addEventListener('click', () => selectSchool(s.id));
-  tabsEl.appendChild(btn);
-});
-
-// Build Recipe Lab tab
-const labTab = document.createElement('button');
-labTab.className = 'tab-btn';
-labTab.dataset.school = 'recipe-lab';
-labTab.innerHTML = `⚗ Recipe Lab <span class="real-name">brew your own</span>`;
-labTab.addEventListener('click', () => selectSchool('recipe-lab'));
-tabsEl.appendChild(labTab);
-
-// Build school sections
-schools.forEach((s, i) => {
-  const section = document.createElement('div');
-  section.className = 'school-section' + (i === 0 ? ' active' : '');
-  section.id = `school-${s.id}`;
-  section.dataset.school = s.id;
-
-  const header = document.createElement('div');
-  header.className = 'school-header';
-  header.innerHTML = `
-    <span class="school-symbol">${s.symbol}</span>
-    <h2>${s.name}</h2>
-    <p class="school-desc">${s.desc}</p>
-    <div class="school-meta">
-      <span class="school-count">${s.spells.length} incantation${s.spells.length !== 1 ? 's' : ''}</span>
-      <span class="school-real">also known as: ${s.real}</span>
-    </div>
-  `;
-  section.appendChild(header);
-
-  const grid = document.createElement('div');
-  grid.className = 'spell-grid';
-  grid.id = `grid-${s.id}`;
-
-  s.spells.forEach(sp => {
-    const card = document.createElement('div');
-    card.className = 'spell-card';
-    card.dataset.search = `${sp.name} ${sp.skill} ${sp.effect}`.toLowerCase();
-    card.dataset.schoolId = s.id;
-
-    const statusClass = (sp.status || '').toLowerCase().replace(/[^a-z]/g,'');
-    const tier = sp.status && sp.status !== '—' ? `✧ ${sp.status}` : '';
-
-    card.innerHTML = `
-      ${tier ? `<div class="spell-tier">${tier}</div>` : ''}
-      <div class="spell-name">${sp.name}</div>
-      <div class="spell-incantation">〈 ${sp.skill} 〉</div>
-      <div class="spell-effect">${sp.effect}</div>
-      <div class="spell-footer">
-        <span class="spell-status ${statusClass}">${tier || 'common'}</span>
-        <span class="spell-reveal-hint">click to reveal</span>
-      </div>
-    `;
-
-    card.addEventListener('click', () => openSpell(sp, s));
-    grid.appendChild(card);
-  });
-
-  section.appendChild(grid);
-  bookEl.appendChild(section);
-});
-
-// Build Recipe Lab section
-const labSection = document.createElement('div');
-labSection.className = 'lab-section';
-labSection.id = 'school-recipe-lab';
-labSection.dataset.school = 'recipe-lab';
-
-const labHeader = document.createElement('div');
-labHeader.className = 'lab-header';
-labHeader.innerHTML = `
-  <h2>⚗ Recipe Lab</h2>
-  <p class="lab-sub">Select 2–5 incantations below and brew a custom ritual</p>
-`;
-labSection.appendChild(labHeader);
-
-// Cauldron (selection display)
-const cauldron = document.createElement('div');
-cauldron.className = 'lab-cauldron';
-cauldron.id = 'labCauldron';
-cauldron.innerHTML = `
-  <div class="cauldron-label">✦ Cauldron</div>
-  <div class="cauldron-empty" id="cauldronEmpty">Select incantations from the grid below…</div>
-  <div class="cauldron-chips" id="cauldronChips"></div>
-  <div class="cauldron-count" id="cauldronCount"></div>
-`;
-labSection.appendChild(cauldron);
-
-// Brew button
-const brewWrap = document.createElement('div');
-brewWrap.className = 'lab-brew-wrap';
-const brewBtnEl = document.createElement('button');
-brewBtnEl.className = 'lab-brew disabled';
-brewBtnEl.id = 'brewBtn';
-brewBtnEl.textContent = '⚗ Brew Ritual';
-brewBtnEl.disabled = true;
-brewWrap.appendChild(brewBtnEl);
-labSection.appendChild(brewWrap);
-
-// Output area
-const output = document.createElement('div');
-output.className = 'lab-output';
-output.id = 'labOutput';
-output.innerHTML = `
-  <div class="recipe-card">
-    <div class="rc-label">✦ Brewed Ritual</div>
-    <div class="rc-name" id="rcName">—</div>
-    <div class="rc-effect" id="rcEffect"></div>
-    <div class="rc-row"><span class="rc-l">Potency</span><span class="rc-v"><span class="rc-potency" id="rcPotency">—</span></span></div>
-    <div class="rc-row"><span class="rc-l">Best Scribed For</span><span class="rc-v" id="rcUseCase">—</span></div>
-    <div class="rc-row"><span class="rc-l">Incantations</span><span class="rc-v" id="rcSpells">—</span></div>
-  </div>
-`;
-labSection.appendChild(output);
-
-// Spell picker grid
-const pickerGrid = document.createElement('div');
-pickerGrid.className = 'spell-grid';
-pickerGrid.id = 'labPickerGrid';
-
-// Populate with all spells from all schools
-schools.forEach(s => {
-  s.spells.forEach(sp => {
-    const card = document.createElement('div');
-    card.className = 'spell-card';
-    card.dataset.spellName = sp.name;
-    card.dataset.schoolId = s.id;
-    card.style.cursor = 'pointer';
-    card.innerHTML = `
-      <div class="spell-name">${sp.name}</div>
-      <div class="spell-incantation">〈 ${sp.skill} 〉</div>
-      <div class="spell-effect">${sp.effect}</div>
-      <div class="spell-footer">
-        <span style="font-family:'Cinzel',serif;font-size:.5rem;text-transform:uppercase;letter-spacing:.06em;color:#4a3a2a">${s.symbol} ${s.name}</span>
-        <span style="font-family:'Cormorant Garamond',serif;font-style:italic;font-size:.7rem;color:#3a2a2a">click to select</span>
-      </div>
-    `;
-    card.addEventListener('click', () => toggleLabSpell(sp, s, card));
-    pickerGrid.appendChild(card);
-  });
-});
-labSection.appendChild(pickerGrid);
-bookEl.appendChild(labSection);
-} catch(e) {
-  console.error('GrimoireStack init error:', e);
-  // Show error on page so user can report it
-  const errDiv = document.createElement('div');
-  errDiv.style.cssText = 'color:#c97a7a;text-align:center;padding:30px;font-family:monospace;font-size:.85rem;background:rgba(30,10,10,.6);border:1px solid rgba(200,50,50,.15);border-radius:4px;margin:20px;z-index:10;position:relative';
-  errDiv.textContent = '⚠ ' + e.message;
-  document.querySelector('.book-spread')?.prepend(errDiv);
-}
-
-// ══════════════════════════════════════════════════════════════
-//  INTERACTIONS
-// ══════════════════════════════════════════════════════════════
-
-let currentSchool = schools[0].id;
-
-function selectSchool(id) {
-  currentSchool = id;
-  document.querySelectorAll('.school-section').forEach(el => el.classList.remove('active'));
-  document.querySelectorAll('.lab-section').forEach(el => el.classList.remove('active'));
-  document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
-  const section = document.getElementById(`school-${id}`);
-  if (section) section.classList.add('active');
-  const tab = document.querySelector(`.tab-btn[data-school="${id}"]`);
-  if (tab) tab.classList.add('active');
-  searchInput.value = '';
-  document.querySelectorAll('.spell-card').forEach(el => el.style.display = '');
-  document.querySelectorAll('.no-spells').forEach(el => el.remove());
-  // Reset scrying orb
-  const orb = document.getElementById('orbVessel');
-  if (orb) orb.classList.remove('scrying');
-  // Page creak sound on tab switch
-  setTimeout(pageCreak, 50);
-}
-
-// ══════════════════════════════════════════════════════════════
-//  WITCH LAUGH — Web Audio API synthesis
-// ══════════════════════════════════════════════════════════════
-
-let audioCtx = null;
-let laughPlayed = false;
-
-function witchLaugh() {
-  try {
-    if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-    if (audioCtx.state === 'suspended') audioCtx.resume();
-
-    const master = audioCtx.createGain();
-    master.gain.value = 0.25;
-    master.connect(audioCtx.destination);
-
-    // Reverb
-    const convolver = audioCtx.createConvolver();
-    const reverbLen = audioCtx.sampleRate * 0.4;
-    const impulse = audioCtx.createBuffer(1, reverbLen, audioCtx.sampleRate);
-    const data = impulse.getChannelData(0);
-    for (let i = 0; i < reverbLen; i++) data[i] = (Math.random() * 2 - 1) * Math.exp(-i / (reverbLen * 0.3));
-    convolver.buffer = impulse;
-    convolver.connect(master);
-
-    const reverbGain = audioCtx.createGain();
-    reverbGain.gain.value = 0.3;
-
-    // Laughter pattern: three cackling syllables
-    const laughs = [
-      { t: 0,    f1: 750, f2: 820, dur: 0.13 },
-      { t: 0.16, f1: 680, f2: 590, dur: 0.1  },
-      { t: 0.3,  f1: 820, f2: 700, dur: 0.12 },
-      { t: 0.48, f1: 600, f2: 520, dur: 0.18 },
-      { t: 0.7,  f1: 880, f2: 760, dur: 0.1  },
-      { t: 0.85, f1: 520, f2: 450, dur: 0.2  },
-    ];
-
-    laughs.forEach(({ t, f1, f2, dur }) => {
-      [0, 1].forEach(voice => {
-        const osc = audioCtx.createOscillator();
-        const gain = audioCtx.createGain();
-        const filter = audioCtx.createBiquadFilter();
-
-        osc.type = voice === 0 ? 'sawtooth' : 'triangle';
-        osc.frequency.setValueAtTime(f1, t);
-        osc.frequency.exponentialRampToValueAtTime(f2, t + dur * 0.6);
-
-        filter.type = 'bandpass';
-        filter.frequency.value = voice === 0 ? 1200 : 800;
-        filter.Q.value = 1.5;
-
-        // Vibrato
-        const vib = audioCtx.createOscillator();
-        vib.frequency.value = 35 + Math.random() * 15;
-        const vibG = audioCtx.createGain();
-        vibG.gain.value = 30 + Math.random() * 20;
-        vib.connect(vibG);
-        vibG.connect(osc.frequency);
-        vib.start();
-        vib.stop(t + dur + 0.05);
-
-        gain.gain.setValueAtTime(0, t);
-        gain.gain.linearRampToValueAtTime(0.3 - voice * 0.08, t + 0.015);
-        gain.gain.exponentialRampToValueAtTime(0.001, t + dur);
-
-        osc.connect(filter);
-        filter.connect(gain);
-        gain.connect(reverbGain);
-        reverbGain.connect(convolver);
-        gain.connect(master);
-
-        osc.start(t);
-        osc.stop(t + dur + 0.02);
-      });
-    });
-
-    // Airy noise burst between syllables (breathy laugh)
-    for (let n = 0; n < 3; n++) {
-      const noiseDur = 0.08 + Math.random() * 0.06;
-      const noiseStart = 0.08 + n * 0.25;
-      const buf = audioCtx.createBuffer(1, noiseDur * audioCtx.sampleRate, audioCtx.sampleRate);
-      const ch = buf.getChannelData(0);
-      for (let i = 0; i < ch.length; i++) ch[i] = Math.random() * 2 - 1;
-      const src = audioCtx.createBufferSource();
-      src.buffer = buf;
-      const ng = audioCtx.createGain();
-      ng.gain.setValueAtTime(0.04, noiseStart);
-      ng.gain.exponentialRampToValueAtTime(0.001, noiseStart + noiseDur);
-      src.connect(ng);
-      ng.connect(reverbGain);
-      src.start(noiseStart);
-    }
-  } catch(e) {
-    // Audio not available, fail silently
-  }
-}
-
-// ══════════════════════════════════════════════════════════════
-//  PAGE CREAK — Plays the turning-page MP3
-// ══════════════════════════════════════════════════════════════
-
-let pageCreakAudio = null;
-
-function pageCreak() {
-  try {
-    if (!pageCreakAudio) {
-      pageCreakAudio = new Audio('/turning-the-page.mp3');
-      pageCreakAudio.volume = 0.25;
-    } else {
-      pageCreakAudio.currentTime = 0;
-    }
-    pageCreakAudio.play();
-  } catch(e) { /* fail silently */ }
-}
-
-// ══════════════════════════════════════════════════════════════
-//  AMBIENCE — Eldritch room loop (starts on first interaction)
-// ══════════════════════════════════════════════════════════════
-
-let ambienceStarted = false;
-let ambienceNodes = [];
-
-function startAmbience() {
-  if (ambienceStarted) return;
-  ambienceStarted = true;
-  try {
-    if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-    if (audioCtx.state === 'suspended') audioCtx.resume();
-
-    const now = audioCtx.currentTime;
-
-    // Master for ambience — very quiet
-    const ambMaster = audioCtx.createGain();
-    ambMaster.gain.value = 0.035;
-    ambMaster.connect(audioCtx.destination);
-    ambienceNodes.push(ambMaster);
-
-    // 1) Low drone — the "room resonance"
-    const drone1 = audioCtx.createOscillator();
-    drone1.type = 'sine';
-    drone1.frequency.value = 52;
-    const drone1G = audioCtx.createGain();
-    drone1G.gain.value = 0.4;
-    drone1.connect(drone1G);
-    drone1G.connect(ambMaster);
-    drone1.start();
-    ambienceNodes.push(drone1);
-
-    // 2) Second drone slightly detuned — creates beating
-    const drone2 = audioCtx.createOscillator();
-    drone2.type = 'sine';
-    drone2.frequency.value = 55.3;
-    const drone2G = audioCtx.createGain();
-    drone2G.gain.value = 0.3;
-    drone2.connect(drone2G);
-    drone2G.connect(ambMaster);
-    drone2.start();
-    ambienceNodes.push(drone2);
-
-    // 3) Sub-bass rumble
-    const drone3 = audioCtx.createOscillator();
-    drone3.type = 'sine';
-    drone3.frequency.value = 31;
-    const drone3G = audioCtx.createGain();
-    drone3G.gain.value = 0.2;
-    drone3.connect(drone3G);
-    drone3G.connect(ambMaster);
-    drone3.start();
-    ambienceNodes.push(drone3);
-
-    // 4) Filtered air noise
-    const airLen = audioCtx.sampleRate * 4;
-    const airBuf = audioCtx.createBuffer(1, airLen, audioCtx.sampleRate);
-    const airCh = airBuf.getChannelData(0);
-    for (let i = 0; i < airLen; i++) airCh[i] = Math.random() * 2 - 1;
-    const airSrc = audioCtx.createBufferSource();
-    airSrc.buffer = airBuf;
-    airSrc.loop = true;
-    const airBP = audioCtx.createBiquadFilter();
-    airBP.type = 'bandpass';
-    airBP.frequency.value = 400;
-    airBP.Q.value = 0.3;
-    const airG = audioCtx.createGain();
-    airG.gain.value = 0.3;
-    airSrc.connect(airBP);
-    airBP.connect(airG);
-    airG.connect(ambMaster);
-    airSrc.start();
-    ambienceNodes.push(airSrc);
-
-    // 5) Candle crackle — random tiny pops
-    function scheduleCrackle() {
-      if (!ambienceStarted) return;
-      const nextCrackle = 2 + Math.random() * 8; // every 2-10 seconds
-      setTimeout(() => {
-        try {
-          if (!ambienceStarted) return;
-          const cNow = audioCtx.currentTime;
-          const cDur = 0.04 + Math.random() * 0.06;
-          const cLen = audioCtx.sampleRate * cDur;
-          const cBuf = audioCtx.createBuffer(1, cLen, audioCtx.sampleRate);
-          const cCh = cBuf.getChannelData(0);
-          for (let i = 0; i < cLen; i++) cCh[i] = (Math.random() * 2 - 1) * (1 - i / cLen);
-          const cSrc = audioCtx.createBufferSource();
-          cSrc.buffer = cBuf;
-          const cBP = audioCtx.createBiquadFilter();
-          cBP.type = 'bandpass';
-          cBP.frequency.value = 2000 + Math.random() * 1500;
-          cBP.Q.value = 2;
-          const cG = audioCtx.createGain();
-          cG.gain.setValueAtTime(0.15 + Math.random() * 0.1, cNow);
-          cG.gain.exponentialRampToValueAtTime(0.001, cNow + cDur);
-          cSrc.connect(cBP);
-          cBP.connect(cG);
-          cG.connect(ambMaster);
-          cSrc.start(cNow);
-        } catch(e) { /* */ }
-        if (ambienceStarted) scheduleCrackle();
-      }, nextCrackle * 1000);
-    }
-    scheduleCrackle();
-
-  } catch(e) { /* fail silently */ }
-}
-
-// Start ambience on first user interaction
-function tryStartAmbience() {
-  if (!ambienceStarted) startAmbience();
-  document.removeEventListener('click', tryStartAmbience);
-  document.removeEventListener('keydown', tryStartAmbience);
-  document.removeEventListener('touchstart', tryStartAmbience);
-}
-document.addEventListener('click', tryStartAmbience);
-document.addEventListener('keydown', tryStartAmbience);
-document.addEventListener('touchstart', tryStartAmbience);
-
-// ══════════════════════════════════════════════════════════════
-//  SCRYING ORB — Search with atmosphere
-// ══════════════════════════════════════════════════════════════
-
-const orbVessel = document.getElementById('orbVessel');
-
-// Init orb mist particles
-(function initOrbMist() {
-  const container = document.getElementById('orbMist');
-  for (let i = 0; i < 12; i++) {
-    const p = document.createElement('div');
-    p.className = 'mist-particle';
-    p.style.left = (10 + Math.random() * 80) + '%';
-    p.style.width = p.style.height = (2 + Math.random() * 6) + 'px';
-    p.style.animationDuration = (4 + Math.random() * 6) + 's';
-    p.style.animationDelay = (Math.random() * 4) + 's';
-    container.appendChild(p);
-  }
-})();
-
-// Click orb to focus search
-orbVessel.addEventListener('click', () => searchInput.focus());
-
-// Example search chips
-document.querySelectorAll('.ex-chip').forEach(chip => {
-  chip.addEventListener('click', () => {
-    searchInput.value = chip.dataset.query;
-    searchInput.dispatchEvent(new Event('input', { bubbles: true }));
-    searchInput.focus();
-  });
-});
-
-let laughingDebounce = null;
-
-searchInput.addEventListener('input', () => {
-  const q = searchInput.value.toLowerCase().trim();
-  const orbResult = document.getElementById('orbResult');
-
-  // Orb visual state
-  orbVessel.classList.toggle('scrying', q.length > 0);
-
-  if (!q) {
-    selectSchool(currentSchool);
-    document.querySelectorAll('.spell-card').forEach(el => {
-      el.classList.remove('glow', 'dim');
-      el.style.display = '';
-    });
-    orbResult.className = 'orb-result';
-    orbResult.textContent = '';
-    return;
-  }
-
-  let totalMatches = 0;
-  let firstMatch = true;
-
-  document.querySelectorAll('.school-section').forEach(section => {
-    const grid = section.querySelector('.spell-grid');
-    let hasMatch = false;
-    section.querySelectorAll('.spell-card').forEach(card => {
-      const match = card.dataset.search.includes(q);
-      card.classList.toggle('glow', match);
-      card.classList.toggle('dim', !match);
-      card.style.display = match ? '' : 'none';
-      if (match) {
-        hasMatch = true;
-        totalMatches++;
-        if (firstMatch) {
-          firstMatch = false;
-          card.scrollIntoView({ behavior: 'smooth', block: 'center' });
-        }
-      }
-    });
-    grid.querySelectorAll('.no-spells').forEach(el => el.remove());
-    if (!hasMatch) {
-      const empty = document.createElement('div');
-      empty.className = 'no-spells';
-      empty.textContent = 'The orb sees nothing matching your affliction…';
-      grid.appendChild(empty);
-    }
-    section.classList.toggle('active', hasMatch);
-  });
-  document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
-
-  // Update orb result display
-  if (totalMatches > 0) {
-    orbResult.textContent = `${totalMatches} incantation${totalMatches !== 1 ? 's' : ''} found`;
-    orbResult.className = 'orb-result show found';
-  } else {
-    orbResult.textContent = 'none found';
-    orbResult.className = 'orb-result show none';
-  }
-
-  // Witch laugh on first match
-  if (totalMatches > 0 && !laughPlayed) {
-    if (laughingDebounce) clearTimeout(laughingDebounce);
-    laughingDebounce = setTimeout(() => {
-      witchLaugh();
-      laughPlayed = true;
-    }, 400);
-  }
-  if (totalMatches === 0) laughPlayed = false;
-});
-
-// ══════════════════════════════════════════════════════════════
-//  RECIPE LAB — Brew custom spell combinations
-// ══════════════════════════════════════════════════════════════
-
-const labSelected = [];
-const cauldronChips = document.getElementById('cauldronChips');
-const cauldronEmpty = document.getElementById('cauldronEmpty');
-const cauldronCount = document.getElementById('cauldronCount');
-const brewBtn = document.getElementById('brewBtn');
-const labOutput = document.getElementById('labOutput');
-
-const potionPrefixes = ['Elixir','Potion','Tincture','Salve','Draught','Brew','Compound','Essence','Infusion','Extract'];
-const potionAdjectives = ['Ancient','Crimson','Shadow','Arcane','Ethereal','Verdant','Ashen','Silver','Amber','Violet','Deep','Restorative','Binding','Surging','Quiet'];
-const potionNouns = ['Remediation','Clarity','Insight','Resolve','Cognition','Scrutiny','Warding','Foresight','Synthesis','Convergence','Understanding','Crafting','Measurement','Refinement'];
-
-function toggleLabSpell(spell, school, cardEl) {
-  const idx = labSelected.findIndex(s => s.name === spell.name);
-  if (idx >= 0) {
-    labSelected.splice(idx, 1);
-    cardEl.classList.remove('glow');
-    cardEl.style.borderColor = '';
-  } else if (labSelected.length < 5) {
-    labSelected.push({ spell, school });
-    cardEl.classList.add('glow');
-    cardEl.style.borderColor = 'rgba(212,175,55,.3)';
-  }
-  updateCauldron();
-}
-
-function updateCauldron() {
-  cauldronChips.innerHTML = '';
-  labSelected.forEach((item, i) => {
-    const chip = document.createElement('span');
-    chip.className = 'cauldron-chip';
-    chip.textContent = `${item.school.symbol} ${item.spell.name}`;
-    chip.addEventListener('click', () => {
-      // Find and click the corresponding card in the picker grid
-      const cards = document.getElementById('labPickerGrid').querySelectorAll('.spell-card');
-      for (const c of cards) {
-        if (c.dataset.spellName === item.spell.name) {
-          c.click();
-          break;
-        }
-      }
-    });
-    chip.title = 'Click to remove';
-    cauldronChips.appendChild(chip);
-  });
-
-  cauldronEmpty.style.display = labSelected.length > 0 ? 'none' : '';
-  cauldronCount.textContent = labSelected.length > 0 ? `${labSelected.length} of 5 incantations selected` : '';
-  document.getElementById('labCauldron').classList.toggle('has-spells', labSelected.length > 0);
-
-  const ready = labSelected.length >= 2;
-  brewBtn.classList.toggle('disabled', !ready);
-  brewBtn.disabled = !ready;
-}
-
-brewBtn.addEventListener('click', brewRitual);
-
-function brewRitual() {
-  if (labSelected.length < 2) return;
-
-  // Generate recipe name
-  const prefix = potionPrefixes[Math.floor(Math.random() * potionPrefixes.length)];
-  const adj = potionAdjectives[Math.floor(Math.random() * potionAdjectives.length)];
-
-  // Determine schools involved
-  const involvedSchools = [...new Set(labSelected.map(s => s.school.name))];
-  let suffix;
-  if (involvedSchools.length === 1) {
-    // Single school: use a noun from that school
-    const schoolKey = labSelected[0].school.id;
-    const nounMap = {
-      debugging:'Remediation',reasoning:'Cognition',process:'Refinement',
-      'code-review':'Scrutiny',architecture:'Architecture',discovery:'Discovery',
-      documentation:'Expression',planning:'Foresight',learning:'Knowledge',
-      'anti-hallucination':'Veracity','software-dev':'Crafting','multi-agent':'Confluence',
-      risk:'Warding','cognitive-load':'Clarity',testing:'Measurement'
-    };
-    suffix = nounMap[schoolKey] || 'Power';
-  } else if (involvedSchools.length === 2) {
-    suffix = `${adj} Union`;
-  } else {
-    suffix = `${adj} Convergence`;
-  }
-
-  document.getElementById('rcName').textContent = `${prefix} of ${suffix}`;
-
-  // Generate combined effect from keywords
-  const allEffects = labSelected.map(s => s.spell.effect.toLowerCase());
-  const keywords = ['trace','debug','test','code','reason','verify','review','design','plan','build','learn','coordinate','ward','refactor','analyze','diagnose','fix','search','navigate','structure','model'];
-  const foundKeywords = keywords.filter(k => allEffects.some(e => e.includes(k)));
-  const uniqueKw = [...new Set(foundKeywords)];
-
-  let effect = 'A custom ritual combining ';
-  const names = labSelected.map(s => s.spell.name);
-  if (names.length === 2) effect += `${names[0]} and ${names[1]}.`;
-  else {
-    effect += names.slice(0, -1).join(', ') + ', and ' + names.slice(-1) + '.';
-  }
-  effect += ' When cast together, these incantations provide ';
-  if (uniqueKw.length > 0) {
-    effect += uniqueKw.slice(0, 3).join(', ') + ' capabilities.';
-  } else {
-    effect += 'a broad spectrum of agentic power.';
-  }
-  document.getElementById('rcEffect').textContent = effect;
-
-  // Generate use case
-  const useCases = [
-    'Investigating and resolving complex system failures',
-    'Validating code quality before production deployment',
-    'Navigating unfamiliar codebases with precision',
-    'Preventing reasoning errors in multi-step analysis',
-    'Coordinating multiple agents toward a shared goal',
-    'Designing robust architecture under uncertainty',
-    'Accelerating delivery while maintaining quality gates',
-    'Eliminating hallucinated claims from agent output',
-    'Refactoring legacy systems with zero regression risk',
-    'Planning complex features with stakeholder confidence',
-  ];
-  // Pick a use case that shares keywords with the effects
-  let bestUseCase = useCases[0];
-  for (const uc of useCases) {
-    const ucLower = uc.toLowerCase();
-    const matches = uniqueKw.filter(k => ucLower.includes(k)).length;
-    if (matches > (useCases.indexOf(bestUseCase) >= 0 ? uniqueKw.filter(k => useCases[0].toLowerCase().includes(k)).length : 0)) {
-      bestUseCase = uc;
-    }
-  }
-  document.getElementById('rcUseCase').textContent = bestUseCase;
-
-  // Potency based on statuses
-  const statuses = labSelected.map(s => s.spell.status);
-  const hasProven = statuses.some(s => s === 'Proven');
-  const hasMCP = statuses.some(s => s && s.includes('MCP'));
-  const hasNew = statuses.some(s => s === 'New');
-  let potency, potencyClass;
-  if (hasProven && hasMCP) { potency = 'Archmage'; potencyClass = 'archmage'; }
-  else if (hasProven && labSelected.length >= 3) { potency = 'Master'; potencyClass = 'master'; }
-  else if (hasProven) { potency = 'Adept'; potencyClass = 'adept'; }
-  else { potency = 'Apprentice'; potencyClass = 'apprentice'; }
-
-  const potEl = document.getElementById('rcPotency');
-  potEl.textContent = `✦ ${potency}`;
-  potEl.className = 'rc-potency ' + potencyClass;
-
-  document.getElementById('rcSpells').innerHTML = labSelected.map(s => `<em>${s.spell.name}</em>`).join(', ');
-
-  labOutput.classList.add('show');
-  labOutput.scrollIntoView({ behavior: 'smooth', block: 'center' });
-
-  // Witch laugh!
-  witchLaugh();
-}
-
-// ══════════════════════════════════════════════════════════════
-//  SPELL DETAIL MODAL
-// ══════════════════════════════════════════════════════════════
-
-function openSpell(spell, school) {
-  const statusStr = spell.status && spell.status !== '—' ? spell.status : 'Common';
-  const statusClass = (spell.status || 'common').toLowerCase().replace(/[^a-z]/g,'') || 'common';
-
-  modalSymbol.textContent = school.symbol;
-  modalSchool.textContent = school.name;
-  modalSchoolReal.textContent = `(${school.real})`;
-  modalTitle.textContent = spell.name;
-  modalIncantation.textContent = `〈 ${spell.skill} 〉`;
-  modalEffect.textContent = spell.effect;
-  modalStatus.textContent = statusStr;
-  modalStatus.className = 'tag ' + statusClass;
-  modalPath.textContent = spell.skill;
-
-  // Show additional note if present
-  if (spell.note) {
-    let noteEl = document.querySelector('.modal-note');
-    if (!noteEl) {
-      noteEl = document.createElement('div');
-      noteEl.className = 'modal-detail-row modal-note';
-      document.querySelector('.modal .modal-incantation').after(noteEl);
-    }
-    noteEl.innerHTML = `<div class="modal-detail-label">Note</div><div class="modal-detail-value">${spell.note}</div>`;
-    noteEl.style.display = 'flex';
-  } else {
-    const noteEl = document.querySelector('.modal-note');
-    if (noteEl) noteEl.style.display = 'none';
-  }
-
-  // Render synergistic pairings
-  const synGrid = document.getElementById('synGrid');
-  const synSection = document.getElementById('modalSynergies');
-  synGrid.innerHTML = '';
-  if (spell.combos && spell.combos.length > 0) {
-    synSection.style.display = 'block';
-    spell.combos.forEach(comboName => {
-      // Find the combo spell across all schools
-      let found = null;
-      for (const s of schools) {
-        for (const sp of s.spells) {
-          if (sp.name === comboName) { found = { spell: sp, school: s }; break; }
-        }
-        if (found) break;
-      }
-      const chip = document.createElement('span');
-      chip.className = 'syn-chip';
-      chip.textContent = found ? `✦ ${comboName}` : comboName;
-      if (found) {
-        chip.addEventListener('click', () => openSpell(found.spell, found.school));
-        chip.title = `Open ${comboName}`;
-      }
-      synGrid.appendChild(chip);
-    });
-  } else {
-    synSection.style.display = 'none';
-  }
-
-  modalRef.textContent = `〈 grimoirestack:${school.id}/${spell.skill} 〉`;
-  modalOverlay.classList.add('open');
-  document.body.style.overflow = 'hidden';
-}
-
-function closeModal() {
-  modalOverlay.classList.remove('open');
-  document.body.style.overflow = '';
-}
-
-modalClose.addEventListener('click', closeModal);
-modalOverlay.addEventListener('click', (e) => { if (e.target === modalOverlay) closeModal(); });
-document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeModal(); });
-
-// ══════════════════════════════════════════════════════════════
-//  EMBER PARTICLE EFFECT
-// ══════════════════════════════════════════════════════════════
-
-(function initEmbers() {
-  const container = document.getElementById('embers');
-  const types = ['ember-amber','ember-gold','ember-rune'];
-  // Small floating embers (fast, many)
-  for (let i = 0; i < 40; i++) {
-    const e = document.createElement('div');
-    e.className = 'ember ' + types[i % 3];
-    e.style.left = Math.random() * 100 + '%';
-    e.style.width = e.style.height = (2 + Math.random() * 3) + 'px';
-    e.style.animationDuration = (15 + Math.random() * 25) + 's';
-    e.style.animationDelay = (Math.random() * 20) + 's';
-    container.appendChild(e);
-  }
-  // Large drifting embers (slow, few) add atmosphere
-  for (let i = 0; i < 15; i++) {
-    const e = document.createElement('div');
-    e.className = 'ember ' + (i % 2 === 0 ? 'ember-amber' : 'ember-gold');
-    e.style.left = Math.random() * 100 + '%';
-    e.style.width = e.style.height = (5 + Math.random() * 8) + 'px';
-    e.style.animationDuration = (35 + Math.random() * 30) + 's';
-    e.style.animationDelay = (Math.random() * 30) + 's';
-    container.appendChild(e);
-  }
-})();
-} catch(e) {
-  console.error("GrimoireStack fatal:", e.message);
-}
-</script>
+<script type="module" src="app.js"></script>
 </body>
 </html>
