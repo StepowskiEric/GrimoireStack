@@ -68,6 +68,14 @@ body::before{
   pointer-events:none;z-index:0;
 }
 
+/* Dark vignette overlay */
+body::after{
+  content:'';
+  position:fixed;inset:0;
+  background:radial-gradient(ellipse 60% 50% at 50% 50%, transparent 30%, rgba(0,0,0,.4) 100%);
+  pointer-events:none;z-index:0;
+}
+
 /* ── Header ─────────────────────────────────────── */
 header{
   position:relative;z-index:2;
@@ -291,9 +299,39 @@ header .flare span:nth-child(3){animation-delay:1s}
   color:#3a2a1a;font-size:.8rem;
   pointer-events:none;
 }
+/* Search example chips */
+.orb-examples{
+  display:flex;flex-wrap:wrap;gap:5px;
+  justify-content:center;margin-top:8px;
+  opacity:.5;transition:opacity .3s;
+}
+.orb-examples:hover{opacity:1}
+.orb-examples .ex-label{
+  font-family:'Cinzel',serif;
+  font-size:.5rem;text-transform:uppercase;
+  letter-spacing:.08em;color:#3a2a2a;
+  margin-right:4px;padding-top:3px;
+}
+.orb-examples .ex-chip{
+  font-family:'Cormorant Garamond',serif;
+  font-style:italic;
+  font-size:.82rem;color:#5a4a3a;
+  padding:2px 10px;
+  border:1px solid rgba(212,175,55,.06);
+  border-radius:10px;
+  cursor:pointer;
+  transition:all .3s ease;
+  background:rgba(15,10,25,.4);
+}
+.orb-examples .ex-chip:hover{
+  border-color:rgba(212,175,55,.2);
+  color:#d4af37;
+  background:rgba(30,20,40,.6);
+}
 @media(max-width:500px){
   .orb-vessel{width:130px;height:130px}
   .orb-vessel .orb-rune{font-size:1.8rem}
+  .orb-examples .ex-chip{font-size:.75rem;padding:1px 7px}
 }
 
 /* ── Spell Glow Effects ───────────────────────── */
@@ -856,17 +894,27 @@ footer a:hover{color:#d4af37}
 
 <!-- Scrying Orb -->
 <div class="scrying-orb">
-  <div class="orb-vessel" id="orbVessel">
+  <div class="orb-vessel" id="orbVessel" tabindex="0" role="button" aria-label="Click to search">
     <div class="orb-ring"></div>
     <div class="orb-ring orb-ring-2"></div>
     <div class="orb-rim"></div>
     <div class="orb-inner-glow"></div>
     <div class="orb-rune">⟐</div>
+    <div class="orb-result" id="orbResult"></div>
     <div class="orb-mist" id="orbMist"></div>
   </div>
   <div style="position:relative;display:inline-block">
     <span class="orb-input-icon">⟐</span>
-    <input type="text" id="searchInput" class="orb-input" placeholder="Describe your affliction…" autocomplete="off">
+    <input type="text" id="searchInput" class="orb-input" placeholder="Search for a skill or describe your problem…" autocomplete="off">
+  </div>
+  <div class="orb-examples">
+    <span class="ex-label">Try:</span>
+    <span class="ex-chip" data-query="bug">🐛 bug</span>
+    <span class="ex-chip" data-query="test">🧪 test</span>
+    <span class="ex-chip" data-query="security">🛡 security</span>
+    <span class="ex-chip" data-query="refactor">🔧 refactor</span>
+    <span class="ex-chip" data-query="architecture">🏛 architecture</span>
+    <span class="ex-chip" data-query="code review">📋 code review</span>
   </div>
 </div>
 
@@ -1449,12 +1497,12 @@ labSection.appendChild(cauldron);
 // Brew button
 const brewWrap = document.createElement('div');
 brewWrap.className = 'lab-brew-wrap';
-const brewBtn = document.createElement('button');
-brewBtn.className = 'lab-brew disabled';
-brewBtn.id = 'brewBtn';
-brewBtn.textContent = '⚗ Brew Ritual';
-brewBtn.disabled = true;
-brewWrap.appendChild(brewBtn);
+const brewBtnEl = document.createElement('button');
+brewBtnEl.className = 'lab-brew disabled';
+brewBtnEl.id = 'brewBtn';
+brewBtnEl.textContent = '⚗ Brew Ritual';
+brewBtnEl.disabled = true;
+brewWrap.appendChild(brewBtnEl);
 labSection.appendChild(brewWrap);
 
 // Output area
@@ -1643,10 +1691,23 @@ const orbVessel = document.getElementById('orbVessel');
   }
 })();
 
+// Click orb to focus search
+orbVessel.addEventListener('click', () => searchInput.focus());
+
+// Example search chips
+document.querySelectorAll('.ex-chip').forEach(chip => {
+  chip.addEventListener('click', () => {
+    searchInput.value = chip.dataset.query;
+    searchInput.dispatchEvent(new Event('input', { bubbles: true }));
+    searchInput.focus();
+  });
+});
+
 let laughingDebounce = null;
 
 searchInput.addEventListener('input', () => {
   const q = searchInput.value.toLowerCase().trim();
+  const orbResult = document.getElementById('orbResult');
 
   // Orb visual state
   orbVessel.classList.toggle('scrying', q.length > 0);
@@ -1657,9 +1718,12 @@ searchInput.addEventListener('input', () => {
       el.classList.remove('glow', 'dim');
       el.style.display = '';
     });
+    orbResult.className = 'orb-result';
+    orbResult.textContent = '';
     return;
   }
 
+  let totalMatches = 0;
   let firstMatch = true;
 
   document.querySelectorAll('.school-section').forEach(section => {
@@ -1672,9 +1736,9 @@ searchInput.addEventListener('input', () => {
       card.style.display = match ? '' : 'none';
       if (match) {
         hasMatch = true;
+        totalMatches++;
         if (firstMatch) {
           firstMatch = false;
-          // Scroll first match into view
           card.scrollIntoView({ behavior: 'smooth', block: 'center' });
         }
       }
@@ -1690,15 +1754,24 @@ searchInput.addEventListener('input', () => {
   });
   document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
 
-  // Witch laugh on first match (debounced to once)
-  if (!firstMatch && !laughPlayed) {
+  // Update orb result display
+  if (totalMatches > 0) {
+    orbResult.textContent = `${totalMatches} incantation${totalMatches !== 1 ? 's' : ''} found`;
+    orbResult.className = 'orb-result show found';
+  } else {
+    orbResult.textContent = 'none found';
+    orbResult.className = 'orb-result show none';
+  }
+
+  // Witch laugh on first match
+  if (totalMatches > 0 && !laughPlayed) {
     if (laughingDebounce) clearTimeout(laughingDebounce);
     laughingDebounce = setTimeout(() => {
       witchLaugh();
       laughPlayed = true;
     }, 400);
   }
-  if (firstMatch) laughPlayed = false;
+  if (totalMatches === 0) laughPlayed = false;
 });
 
 // ══════════════════════════════════════════════════════════════
@@ -1940,13 +2013,24 @@ document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeModal
 (function initEmbers() {
   const container = document.getElementById('embers');
   const types = ['ember-amber','ember-gold','ember-rune'];
-  for (let i = 0; i < 50; i++) {
+  // Small floating embers (fast, many)
+  for (let i = 0; i < 40; i++) {
     const e = document.createElement('div');
     e.className = 'ember ' + types[i % 3];
     e.style.left = Math.random() * 100 + '%';
-    e.style.width = e.style.height = (2 + Math.random() * 4) + 'px';
-    e.style.animationDuration = (18 + Math.random() * 30) + 's';
-    e.style.animationDelay = (Math.random() * 25) + 's';
+    e.style.width = e.style.height = (2 + Math.random() * 3) + 'px';
+    e.style.animationDuration = (15 + Math.random() * 25) + 's';
+    e.style.animationDelay = (Math.random() * 20) + 's';
+    container.appendChild(e);
+  }
+  // Large drifting embers (slow, few) add atmosphere
+  for (let i = 0; i < 15; i++) {
+    const e = document.createElement('div');
+    e.className = 'ember ' + (i % 2 === 0 ? 'ember-amber' : 'ember-gold');
+    e.style.left = Math.random() * 100 + '%';
+    e.style.width = e.style.height = (5 + Math.random() * 8) + 'px';
+    e.style.animationDuration = (35 + Math.random() * 30) + 's';
+    e.style.animationDelay = (Math.random() * 30) + 's';
     container.appendChild(e);
   }
 })();
