@@ -615,6 +615,35 @@ header .flare span:nth-child(3){animation-delay:1s}
   grid-column:1/-1;
 }
 
+/* ── Modal Synergies ──────────────────────────── */
+.modal-synergies{
+  margin-top:14px;padding-top:14px;
+  border-top:1px solid rgba(212,175,55,.06);
+}
+.modal-synergies .syn-title{
+  font-family:'Cinzel',serif;
+  font-size:.55rem;text-transform:uppercase;
+  letter-spacing:.08em;color:#6a5a3a;margin-bottom:8px;
+}
+.modal-synergies .syn-grid{
+  display:flex;flex-wrap:wrap;gap:6px;
+}
+.modal-synergies .syn-chip{
+  font-family:'Cormorant Garamond',serif;
+  font-size:.82rem;color:#8a7a5a;
+  padding:4px 10px;
+  border:1px solid rgba(212,175,55,.08);
+  border-radius:12px;
+  cursor:pointer;
+  transition:all .3s ease;
+  background:rgba(212,175,55,.02);
+}
+.modal-synergies .syn-chip:hover{
+  border-color:rgba(212,175,55,.2);
+  color:#d4af37;
+  background:rgba(212,175,55,.04);
+}
+
 /* ── Footer ─────────────────────────────────────── */
 footer{
   position:relative;z-index:2;
@@ -696,8 +725,9 @@ footer a:hover{color:#d4af37}
       <div class="modal-detail-label">Skill Path</div>
       <div class="modal-detail-value" id="modalPath">—</div>
     </div>
-    <div class="modal-grimoire-ref">
-      <code id="modalRef">〈 grimoirestack:unknown 〉</code>
+    <div class="modal-synergies" id="modalSynergies">
+      <div class="syn-title">✦ Synergistic Pairings</div>
+      <div class="syn-grid" id="synGrid"></div>
     </div>
   </div>
 </div>
@@ -720,23 +750,23 @@ const schools = [
     name:'School of Remediation',symbol:'⚔',
     desc:'Incantations to banish bugs and restore order to broken code.',
     spells:[
-      {name:'Trace Sight',skill:'log-trace-correlation',effect:'Maps stack traces to source code, inspects context around the failure, and suggests the most likely fix. Best when you already have an error log or crash report in hand.',status:'Proven'},
-      {name:'Bisect Divination',skill:'bisect-debugging',effect:'Binary searches the commit history to isolate the exact change that introduced the bug. Fastest path to "what changed" when you know tests used to pass.',status:'Proven',note:'+9.9% speed'},
-      {name:'Debug Familiar',skill:'debug-subagent',effect:'Conjures a dedicated debugging subagent that enforces a debug-before-edit workflow. Proven to increase fix rate by 13-22% over editing without diagnosis.',status:'Proven'},
-      {name:'Purify Vision',skill:'purify-test-output',effect:'Slices noisy test output down to only the failure-relevant lines. Reduces token consumption by ~18.6% and focuses the LLM on the actual bug.',status:'Proven'},
+      {name:'Trace Sight',skill:'log-trace-correlation',effect:'Maps stack traces to source code, inspects context around the failure, and suggests the most likely fix. Best when you already have an error log or crash report in hand.',status:'Proven',combos:['Bisect Divination','Root Cause Revelation','Spectral Analysis']},
+      {name:'Bisect Divination',skill:'bisect-debugging',effect:'Binary searches the commit history to isolate the exact change that introduced the bug. Fastest path to "what changed" when you know tests used to pass.',status:'Proven',note:'+9.9% speed',combos:['Trace Sight','Iterative Mend','Root Cause Revelation']},
+      {name:'Debug Familiar',skill:'debug-subagent',effect:'Conjures a dedicated debugging subagent that enforces a debug-before-edit workflow. Proven to increase fix rate by 13-22% over editing without diagnosis.',status:'Proven',combos:['Instrumentation Charm','Spectral Analysis','Scout Protocol']},
+      {name:'Purify Vision',skill:'purify-test-output',effect:'Slices noisy test output down to only the failure-relevant lines. Reduces token consumption by ~18.6% and focuses the LLM on the actual bug.',status:'Proven',combos:['Instrumentation Charm','Test Oracle','Iterative Mend']},
       {name:'Instrumentation Charm',skill:'simulate-instrumentation',effect:'Auto-inserts temporary print/logging statements at key code points, runs the failing test, and captures runtime state. The captured values feed directly into debugging.',status:'Proven'},
       {name:'Iterative Mend',skill:'iterative-patch-repair',effect:'Loops patch → test → capture runtime → refine → augment the patch. Max N iterations with patch augmentation to avoid overfitting. +19.9% from augmentation alone.',status:'Proven'},
-      {name:'Root Cause Revelation',skill:'root-cause-analysis',effect:'Applies 5 Whys and Ishikawa (fishbone) diagrams to trace from symptom to true underlying cause. Prevents treating symptoms while the real defect remains.',status:'Framework'},
+      {name:'Root Cause Revelation',skill:'root-cause-analysis',effect:'Applies 5 Whys and Ishikawa (fishbone) diagrams to trace from symptom to true underlying cause. Prevents treating symptoms while the real defect remains.',status:'Framework',combos:['Occam\'s Verdict','Trace Sight','Bisect Divination']},
       {name:'Issue Graph Walk',skill:'debug-issue',effect:'Graph-powered code navigation that traces issues through the system along dataflow and call-graph edges rather than guessing.',status:'Framework'},
-      {name:'Pipeline of Restoration',skill:'debug-to-fix-pipeline',effect:'Fuses five research-backed debugging disciplines into one sequential 6-phase ritual. Each phase increases evidence quality while reducing token waste.',status:'Hybrid'},
+      {name:'Pipeline of Restoration',skill:'debug-to-fix-pipeline',effect:'Fuses five research-backed debugging disciplines into one sequential 6-phase ritual. Each phase increases evidence quality while reducing token waste.',status:'Hybrid',combos:['Spectral Analysis','Debug Familiar','Instrumentation Charm','Purify Vision','Iterative Mend']},
       {name:'Test Oracle',skill:'unit-test-debugging',effect:'Determines whether a failing test or the code under test is the source of truth. Prevents the agent from blindly "fixing" a correct implementation to match a wrong test.',status:'New'},
       {name:'Jest Invocation',skill:'jest-testing',effect:'Complete reference for writing correct Jest tests: matchers, async patterns, mocking strategies, configuration, and React Native specifics.',status:'New'},
       {name:'Remote Viewing',skill:'explore-codebase',effect:'Navigates unfamiliar code using graph-powered token-efficient exploration. Progressive deepening from module structure to line-level detail.',status:'Framework'},
-      {name:'Divide & Conquer',skill:'codebase-divide-conquer-search',effect:'Hierarchical codebase summarization → semantic partitioning → parallel sub-agent deep dives → ranked results with confidence scores. For finding code in massive repos.',status:'Proven'},
+      {name:'Divide & Conquer',skill:'codebase-divide-conquer-search',effect:'Hierarchical codebase summarization → semantic partitioning → parallel sub-agent deep dives → ranked results with confidence scores. For finding code in massive repos.',status:'Proven',combos:['Remote Viewing','Scout\'s Trail','Knowledge Graph']},
       {name:'Scout\'s Trail',skill:'navigator',effect:'A scout sub-agent reads and distills file context for the main model; a thought-retriever stores the distilled reasoning as retrievable traces. Builds a living investigation trail.',status:'—'},
       {name:'Occam\'s Verdict',skill:'occam-root-cause',effect:'Generates competing causal chains from observed symptoms, selects the simplest that fits all evidence, and verifies through falsification before committing to a fix.',status:'New'},
       {name:'Spectral Analysis',skill:'specter',effect:'Generates competing hypotheses (abductive reasoning) then locates code structurally — no keyword grepping, no root-cause guessing. Reason backwards from the symptom.',status:'—'},
-      {name:'Endurance Ward',skill:'long-task-survival-kit',effect:'Every 5 calls: checkpoint context, verify trajectory, re-ground assumptions. Prevents context overflow, failure spirals, and hallucinated facts on long debugging sessions.',status:'—'},
+      {name:'Endurance Ward',skill:'long-task-survival-kit',effect:'Every 5 calls: checkpoint context, verify trajectory, re-ground assumptions. Prevents context overflow, failure spirals, and hallucinated facts on long debugging sessions.',status:'—',combos:['Trajectory Warden','Context Lifecycle','Grounding Ritual']},
       {name:'Temporal Rewind',skill:'time-traveling-debugger',effect:'Records deterministic execution trace forward, then replays in reverse from the crash point to find the exact line where state first diverged. Time-travel debug for LLMs.',status:'MCP'},
       {name:'Environment Exorcism',skill:'environment-recovery',effect:'Structured vitals check (disk, versions, caches, ports, permissions) followed by targeted repair. For when commands fail before reaching your code.',status:'New'},
       {name:'Network Divination',skill:'network-api-debugging',effect:'Captures actual network traffic, diagnoses by status code pattern, and fixes by failure type. Covers CORS, auth tokens, rate limiting, redirect chains, WebSocket drops.',status:'New'},
@@ -798,7 +828,7 @@ const schools = [
       {name:'Complexity Audit',skill:'philosophy-of-software-design-state-machine',effect:'Identify shallow abstractions and deepen module design. Manages complexity by ensuring each module hides one decision behind a clean interface.',status:'—'},
       {name:'Pre-Commit Vigil',skill:'verify-before-integrate',effect:'Before integrating any external API, research paper concept, or library — verify the actual system behavior rather than trusting terminology alignment.',status:'—'},
       {name:'LLM Pre-Push Ward',skill:'llm-pre-push-review',effect:'5-pass protocol targeting LLM-specific code review failures: hallucinated logic, silent vulnerabilities, overcorrection, scope creep, and context-ignorant reviews.',status:'—'},
-      {name:'Deployment Gate',skill:'pre-deployment-gate',effect:'7-pass pre-deployment checklist combining LLM Pre-Push Review with Vibe Coding Security Hardening. Execution, security, correctness, structure, integration, hardening, secrets.',status:'—'},
+      {name:'Deployment Gate',skill:'pre-deployment-gate',effect:'7-pass pre-deployment checklist combining LLM Pre-Push Review with Vibe Coding Security Hardening. Execution, security, correctness, structure, integration, hardening, secrets.',status:'—',combos:['Security Warding','Vibe Hardening','LLM Pre-Push Ward','Failure Prophecy']},
       {name:'Self-Verify Pipeline',skill:'self-verify-pipeline',effect:'5-phase escalating verification: internal critique → claim decomposition → tool verification → external sources. Catches failures early and cheaply.',status:'—'},
       {name:'Task Intake Gate',skill:'task-intake-protocol',effect:'Cynefin problem classification + ETTO rigor calibration + Recognition-Primed Triage fused into one 3-phase decision gate before any work begins.',status:'—'},
       {name:'Failure Prophecy',skill:'failure-analysis-protocol',effect:'Pre-Mortem + Inversion + Second-Order Thinking fused. Three failure lenses: invert success, narrate specific failures, trace cascading consequences.',status:'—'},
@@ -993,25 +1023,155 @@ const schools = [
 ];
 
 // ══════════════════════════════════════════════════════════════
+//  ALCHEMICAL RECIPES — Situation → Spell Prescriptions
+// ══════════════════════════════════════════════════════════════
+
+const recipes = [
+  {
+    id:'stack-trace',
+    name:'Potion of Stack Trace Cure',
+    affliction:'The system crashes with an error log, stack trace, or exception report in hand.',
+    ingredients:[
+      { spell:'Trace Sight', role:'Primary divination — map the trace to source and inspect failure context' },
+      { spell:'Bisect Divination', role:'If the bug was introduced recently, binary search commits to find the exact change' },
+      { spell:'Root Cause Revelation', role:'If the same crash keeps recurring, trace past the symptom to the true defect' },
+    ],
+    caution:'Avoid PDCA Deming and Step-level Verification for runtime bugs — tested 0% correctness improvement and -1.6% efficiency on real repos.',
+    outcome:'Isolate the error location, identify the offending commit, fix the root cause without treating symptoms.'
+  },
+  {
+    id:'failing-tests',
+    name:'Elixir of Test Clarity',
+    affliction:'Unit tests are failing and it is unclear whether the test or the code under test is wrong.',
+    ingredients:[
+      { spell:'Test Oracle', role:'Primary diagnosis — determine whether the test assertions or the implementation is the source of truth' },
+      { spell:'Purify Vision', role:'Slice the noisy test output down to only failure-relevant lines' },
+      { spell:'Instrumentation Charm', role:'Inject temporary prints at key code points and capture actual runtime values' },
+    ],
+    caution:'',
+    outcome:'Know with certainty whether to fix the test or the code, with runtime evidence to confirm the fix.'
+  },
+  {
+    id:'debug-pipeline',
+    name:'Grand Ritual of Systematic Restoration',
+    affliction:'An end-to-end debugging workflow is needed for a complex, multi-cause failure.',
+    ingredients:[
+      { spell:'Spectral Analysis', role:'Generate competing hypotheses from observed symptoms (abductive reasoning)' },
+      { spell:'Debug Familiar', role:'Enforce debug-before-edit — the subagent investigates before any code changes' },
+      { spell:'Instrumentation Charm', role:'Insert probes to capture runtime state invisible in the source' },
+      { spell:'Purify Vision', role:'Clean the output so only failure-relevant lines feed the next step' },
+      { spell:'Iterative Mend', role:'Loop patch → test → refine → augment with anti-overfitting protection' },
+    ],
+    caution:'Do not skip steps. Each phase increases evidence quality while reducing token waste.',
+    outcome:'A structured pipeline from symptom to verified fix with no guessing.'
+  },
+  {
+    id:'root-cause',
+    name:'Tincture of Deep Causation',
+    affliction:'A bug keeps recurring despite repeated "fixes" — you need to find the true underlying cause.',
+    ingredients:[
+      { spell:'Root Cause Revelation', role:'Apply 5 Whys and Ishikawa diagrams to distinguish symptom from cause' },
+      { spell:'Occam\'s Verdict', role:'If multiple competing causes, select the simplest causal chain that fits all evidence' },
+    ],
+    caution:'Do not use PDCA Deming — tested -1.6% vs baseline on real repo bugs. It is for process improvement, not debugging.',
+    outcome:'The true underlying defect is identified and fixed, permanently.'
+  },
+  {
+    id:'unknown-codebase',
+    name:'Salve of Rapid Orientation',
+    affliction:'Dropped into an unfamiliar codebase and need to find relevant code quickly.',
+    ingredients:[
+      { spell:'Remote Viewing', role:'Graph-powered token-efficient exploration from module to line level' },
+      { spell:'Divide & Conquer', role:'For large codebases: hierarchical summarization + parallel sub-agent deep dives' },
+      { spell:'Scout\'s Trail', role:'A scout reads and distills context; the trail is stored for later retrieval' },
+    ],
+    caution:'',
+    outcome:'A mental map of the relevant code with a retrievable investigation trail.'
+  },
+  {
+    id:'multiple-causes',
+    name:'Razor of Parsimony Elixir',
+    affliction:'Multiple plausible explanations exist and you need to find the real one.',
+    ingredients:[
+      { spell:'Razor of Parsimony', role:'List alternatives ranked simplest → most complex; test simplest first' },
+      { spell:'Occam\'s Abduction', role:'Generate hypotheses, audit evidence, rank by assumption count, falsify or confirm' },
+      { spell:'Spectral Analysis', role:'For novel failures: abductive hypotheses with structural code location' },
+    ],
+    caution:'',
+    outcome:'The simplest explanation that fits all evidence, confirmed through falsification.'
+  },
+  {
+    id:'code-review-prenpush',
+    name:'Ward of Pre-Push Purity',
+    affliction:'LLM-generated code needs review before pushing — catch AI-specific failure modes.',
+    ingredients:[
+      { spell:'LLM Pre-Push Ward', role:'5-pass: hallucinated logic, silent vulns, overcorrection, scope creep, context ignorance' },
+      { spell:'API Surface Scry', role:'Verify every external API call against current authoritative docs' },
+      { spell:'Verified API Workflow', role:'100% traceability — every API call links back to docs you actually checked' },
+    ],
+    caution:'',
+    outcome:'Code free from the five systematic failure modes of LLM-generated code.'
+  },
+  {
+    id:'pre-deployment',
+    name:'Sigil of Deployment Readiness',
+    affliction:'Code is ready to ship but needs a final security and quality check before production.',
+    ingredients:[
+      { spell:'Deployment Gate', role:'7-pass: execution, security, correctness, structure, integration, hardening, secrets' },
+      { spell:'Security Warding', role:'STRIDE + Unsafe Control Actions + Vibe Coding Security fused' },
+      { spell:'Vibe Hardening', role:'9-phase checklist targeting vulnerabilities AI tools reliably introduce' },
+    ],
+    caution:'',
+    outcome:'Production-hardened code with no exposed secrets or injection flaws.'
+  },
+  {
+    id:'hard-problem',
+    name:'Philosopher\'s Stone Tincture',
+    affliction:'A genuinely hard problem with no clear starting point — circling without progress.',
+    ingredients:[
+      { spell:'First Step Oracle', role:'Forces explicit problem framing before any action is taken' },
+      { spell:'Court of Minds', role:'Spawn parallel perspectives with conflicting goals; let them argue' },
+      { spell:'Analogy Bridge', role:'Force analogies from an unrelated domain to break fixation' },
+      { spell:'Prism of Understanding', role:'Calibrate confidence, compress to essence — prove you understand it' },
+    ],
+    caution:'',
+    outcome:'A clear problem frame, multiple explored angles, and a path forward.'
+  },
+  {
+    id:'hallucination-defense',
+    name:'Aegis of Veracity',
+    affliction:'Agent reasoning produces plausible-sounding but false conclusions — anti-hallucination defense.',
+    ingredients:[
+      { spell:'Integrity Chain', role:'4-phase: faithfulness → claims → verification → selective halt' },
+      { spell:'Anchor Chain', role:'Every factual claim anchored to a verified source; unanchored claims hidden' },
+      { spell:'Contradiction Trap', role:'Maintain belief store; detect contradictions; force resolution' },
+      { spell:'Chaos Detection', role:'Monitor token trajectories for Lyapunov divergence — collapse detection' },
+    ],
+    caution:'',
+    outcome:'Reasoning logically entailed by verified premises, free from hallucination.'
+  },
+  {
+    id:'planning-spec',
+    name:'Oracle\'s Blueprint Draught',
+    affliction:'A multi-step feature needs a structured, reviewable plan before any code is written.',
+    ingredients:[
+      { spell:'Intent Binding', role:'Clarify intent before coding — prevent the Intent-Behavior Mirroring Effect' },
+      { spell:'Plan with Judge', role:'Create a plan in JSONL, iterate with a stronger judge until approved' },
+      { spell:'Iterative Spec', role:'Author spec grounded in research, run 3 judge-LLM review cycles' },
+      { spell:'Blueprint Codification', role:'Codify into types/schema — contradictions become impossible to ignore' },
+    ],
+    caution:'',
+    outcome:'A locked, reviewed, approved implementation plan before any code is written.'
+  },
+];
+
+// ══════════════════════════════════════════════════════════════
 //  BUILD THE GRIMOIRE
 // ══════════════════════════════════════════════════════════════
 
 const tabsEl = document.getElementById('tabContainer');
 const bookEl = document.getElementById('bookSpread');
 const searchInput = document.getElementById('searchInput');
-
-// Modal elements
-const modalOverlay = document.getElementById('modalOverlay');
-const modalClose = document.getElementById('modalClose');
-const modalSymbol = document.getElementById('modalSymbol');
-const modalSchool = document.getElementById('modalSchool');
-const modalSchoolReal = document.getElementById('modalSchoolReal');
-const modalTitle = document.getElementById('modalTitle');
-const modalIncantation = document.getElementById('modalIncantation');
-const modalEffect = document.getElementById('modalEffect');
-const modalStatus = document.getElementById('modalStatus');
-const modalPath = document.getElementById('modalPath');
-const modalRef = document.getElementById('modalRef');
 
 // Build tabs
 schools.forEach((s, i) => {
@@ -1301,6 +1461,34 @@ function openSpell(spell, school) {
   } else {
     const noteEl = document.querySelector('.modal-note');
     if (noteEl) noteEl.style.display = 'none';
+  }
+
+  // Render synergistic pairings
+  const synGrid = document.getElementById('synGrid');
+  const synSection = document.getElementById('modalSynergies');
+  synGrid.innerHTML = '';
+  if (spell.combos && spell.combos.length > 0) {
+    synSection.style.display = 'block';
+    spell.combos.forEach(comboName => {
+      // Find the combo spell across all schools
+      let found = null;
+      for (const s of schools) {
+        for (const sp of s.spells) {
+          if (sp.name === comboName) { found = { spell: sp, school: s }; break; }
+        }
+        if (found) break;
+      }
+      const chip = document.createElement('span');
+      chip.className = 'syn-chip';
+      chip.textContent = found ? `✦ ${comboName}` : comboName;
+      if (found) {
+        chip.addEventListener('click', () => openSpell(found.spell, found.school));
+        chip.title = `Open ${comboName}`;
+      }
+      synGrid.appendChild(chip);
+    });
+  } else {
+    synSection.style.display = 'none';
   }
 
   modalRef.textContent = `〈 grimoirestack:${school.id}/${spell.skill} 〉`;
