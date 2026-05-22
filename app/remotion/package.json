@@ -1,0 +1,20 @@
+{
+  "name": "grimoirestack-remotion",
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "build": "remotion render src/Root.tsx BookCover out/book-cover.mp4",
+    "preview": "remotion studio src/Root.tsx"
+  },
+  "dependencies": {
+    "react": "^19.1.0",
+    "react-dom": "^19.1.0",
+    "remotion": "^4.0.0"
+  },
+  "devDependencies": {
+    "@remotion/cli": "^4.0.0",
+    "@remotion/renderer": "^4.0.0",
+    "@types/react": "^19.1.0",
+    "typescript": "^5.8.0"
+  }
+}

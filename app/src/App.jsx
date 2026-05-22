@@ -8,8 +8,10 @@ import SchoolSection from './components/SchoolSection.jsx';
 import SpellModal from './components/SpellModal.jsx';
 import RecipeLab from './components/RecipeLab.jsx';
 import Footer from './components/Footer.jsx';
+import BookSplash from './components/BookSplash.tsx';
 
 export default function App() {
+  const [loaded, setLoaded] = useState(false);
   const [currentSchool, setCurrentSchool] = useState(schools[0].id);
   const [searchQuery, setSearchQuery] = useState('');
   const [modal, setModal] = useState(null);
@@ -131,6 +133,8 @@ export default function App() {
 
   return (
     <>
+      <BookSplash onFinish={() => setLoaded(true)} />
+      {loaded && <>
       <Embers />
       <header>
         <div className="wax-seal">⛧</div>
@@ -166,6 +170,7 @@ export default function App() {
 
       {modal && <SpellModal spell={modal.spell} school={modal.school} onClose={handleModalClose} />}
       <Footer />
+      </>}
     </>
   );
 }
