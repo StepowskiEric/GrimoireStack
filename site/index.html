@@ -1674,78 +1674,20 @@ function witchLaugh() {
 }
 
 // ══════════════════════════════════════════════════════════════
-//  PAGE CREAK — Plays when switching schools
+//  PAGE CREAK — Plays the turning-page MP3
 // ══════════════════════════════════════════════════════════════
+
+let pageCreakAudio = null;
 
 function pageCreak() {
   try {
-    if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-    if (audioCtx.state === 'suspended') audioCtx.resume();
-
-    const now = audioCtx.currentTime;
-    const master = audioCtx.createGain();
-    master.gain.value = 0.06;
-    master.connect(audioCtx.destination);
-
-    // Noise buffer for paper crackle sound
-    const dur = 0.35;
-    const len = audioCtx.sampleRate * dur;
-    const buf = audioCtx.createBuffer(1, len, audioCtx.sampleRate);
-    const ch = buf.getChannelData(0);
-    for (let i = 0; i < len; i++) {
-      // Weighted toward quieter values for a paper-like texture
-      ch[i] = (Math.random() * 2 - 1) * (1 - i / len * 0.7);
+    if (!pageCreakAudio) {
+      pageCreakAudio = new Audio('/turning-the-page.mp3');
+      pageCreakAudio.volume = 0.25;
+    } else {
+      pageCreakAudio.currentTime = 0;
     }
-
-    // Low-pass that sweeps down — the "settling" sound
-    const src = audioCtx.createBufferSource();
-    src.buffer = buf;
-    const filter = audioCtx.createBiquadFilter();
-    filter.type = 'lowpass';
-    filter.frequency.setValueAtTime(3000, now);
-    filter.frequency.exponentialRampToValueAtTime(300, now + dur * 0.8);
-    filter.Q.value = 2;
-
-    // Subtle bandpass layer for the "crackle" texture
-    const src2 = audioCtx.createBufferSource();
-    const buf2 = audioCtx.createBuffer(1, len, audioCtx.sampleRate);
-    const ch2 = buf2.getChannelData(0);
-    for (let i = 0; i < len; i++) {
-      ch2[i] = (Math.random() * 2 - 1) * Math.sin(i / len * 10) * 0.5;
-    }
-    src2.buffer = buf2;
-    const bp = audioCtx.createBiquadFilter();
-    bp.type = 'bandpass';
-    bp.frequency.value = 1200;
-    bp.Q.value = 0.5;
-
-    const gain2 = audioCtx.createGain();
-    gain2.gain.setValueAtTime(0.05, now);
-    gain2.gain.exponentialRampToValueAtTime(0.001, now + dur * 0.6);
-
-    src.connect(filter);
-    filter.connect(master);
-    src2.connect(bp);
-    bp.connect(gain2);
-    gain2.connect(master);
-
-    src.start(now);
-    src2.start(now);
-    src.stop(now + dur);
-    src2.stop(now + dur);
-
-    // Subtle book-thump at the end (page settling)
-    const thumpOsc = audioCtx.createOscillator();
-    thumpOsc.type = 'sine';
-    thumpOsc.frequency.setValueAtTime(80, now + dur);
-    thumpOsc.frequency.exponentialRampToValueAtTime(30, now + dur + 0.08);
-    const thumpG = audioCtx.createGain();
-    thumpG.gain.setValueAtTime(0.04, now + dur);
-    thumpG.gain.exponentialRampToValueAtTime(0.001, now + dur + 0.08);
-    thumpOsc.connect(thumpG);
-    thumpG.connect(master);
-    thumpOsc.start(now + dur);
-    thumpOsc.stop(now + dur + 0.1);
+    pageCreakAudio.play();
   } catch(e) { /* fail silently */ }
 }
 
