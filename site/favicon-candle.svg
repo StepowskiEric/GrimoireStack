@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
+  <rect width="32" height="32" rx="4" fill="#0b0a0f"/>
+  <!-- candle body -->
+  <rect x="13" y="14" width="6" height="12" rx="1" fill="#8a7a5a" opacity=".8"/>
+  <!-- candle drip -->
+  <path d="M12 26 Q12 28 14 28 L18 28 Q20 28 20 26" fill="#8a7a5a" opacity=".6"/>
+  <!-- wick -->
+  <line x1="16" y1="14" x2="16" y2="12" stroke="#5a4a3a" stroke-width="1"/>
+  <!-- flame outer -->
+  <path d="M16 4 Q20 10 16 14 Q12 10 16 4Z" fill="#d4af37" opacity=".7"/>
+  <!-- flame inner -->
+  <path d="M16 7 Q18 10 16 13 Q14 10 16 7Z" fill="#ffdd55" opacity=".5"/>
+  <!-- glow -->
+  <circle cx="16" cy="9" r="8" fill="#d4af37" opacity=".08"/>
+</svg>
