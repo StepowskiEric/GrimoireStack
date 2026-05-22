@@ -63,12 +63,17 @@ export default function SpellCast({ spellName, schoolSymbol, onComplete }: {
   const textScale = phase === 'entering' ? 2 : phase === 'burning' ? 1 : 0.8;
 
   return (
-    <div style={{
-      position: 'fixed', inset: 0, zIndex: 999,
-      display: 'flex', alignItems: 'center', justifyContent: 'center',
-      background: phase === 'parting' ? 'rgba(8,6,4,0)' : 'rgba(8,6,4,0.85)',
-      transition: 'background 0.5s ease',
-    }}>
+    <div
+      style={{
+        position: 'fixed', inset: 0, zIndex: 999,
+        display: 'flex', alignItems: 'center', justifyContent: 'center',
+        background: phase === 'parting' ? 'rgba(8,6,4,0)' : 'rgba(8,6,4,0.85)',
+        transition: 'background 0.5s ease',
+        cursor: 'pointer',
+      }}
+      onClick={onComplete}
+      title="Click to skip"
+    >
       {/* Rune particles */}
       {particles.map(p => (
         <span key={p.id} style={{

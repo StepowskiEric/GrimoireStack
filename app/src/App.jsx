@@ -17,6 +17,7 @@ export default function App() {
   const [searchQuery, setSearchQuery] = useState('');
   const [modal, setModal] = useState(null);
   const [casting, setCasting] = useState(null);
+  const [castEnabled, setCastEnabled] = useState(() => localStorage.getItem('grimoire-cast') !== 'off');
   const laughPlayedRef = useRef(false);
   const ambienceStartedRef = useRef(false);
 
@@ -122,16 +123,34 @@ export default function App() {
   }, [resetSearch]);
 
   const handleSpellClick = useCallback((spell, school) => {
-    setCasting({ spell, school });
-  }, []);
+    if (castEnabled) {
+      setCasting({ spell, school });
+    } else {
+      setModal({ spell, school });
+      document.body.style.overflow = 'hidden';
+    }
+  }, [castEnabled]);
 
   const handleCastComplete = useCallback(() => {
     setCasting(null);
+  }, []);
+
+  // When casting changes to non-null, reset modal
+  const prevCastingRef = useRef(null);
+  useEffect(() => {
     if (casting) {
-      setModal({ spell: casting.spell, school: casting.school });
-      document.body.style.overflow = 'hidden';
+      prevCastingRef.current = casting;
+    } else if (prevCastingRef.current && !modal) {
+      // Cast just finished — open modal
+      const prev = prevCastingRef.current;
+      prevCastingRef.current = null;
+      // Use timeout to let React process the cast removal first
+      setTimeout(() => {
+        setModal({ spell: prev.spell, school: prev.school });
+        document.body.style.overflow = 'hidden';
+      }, 50);
     }
-  }, [casting]);
+  }, [casting, modal]);
 
   const handleModalClose = useCallback((nextSpell, nextSchool) => {
     if (nextSpell && nextSchool) setModal({ spell: nextSpell, school: nextSchool });
@@ -169,12 +188,41 @@ export default function App() {
         orb below, or <span className="hero-tag">⚗ brew your own</span> recipe combinations.
       </div>
 
+      <div style={{ textAlign: 'center', marginTop: -8, marginBottom: 10, zIndex: 2, position: 'relative' }}>
+        <label style={{
+          fontFamily: "'Cinzel', serif", fontSize: '0.5rem', textTransform: 'uppercase',
+          letterSpacing: '0.08em', color: '#6a5a3a', cursor: 'pointer',
+          display: 'inline-flex', alignItems: 'center', gap: 6,
+          padding: '4px 10px', border: '1px solid rgba(160,120,70,.1)', borderRadius: 4,
+          transition: 'all .3s ease',
+        }}>
+          <input type="checkbox" checked={castEnabled}
+            onChange={() => {
+              const next = !castEnabled;
+              setCastEnabled(next);
+              localStorage.setItem('grimoire-cast', next ? 'on' : 'off');
+            }}
+            style={{ accentColor: '#8a6a30' }}
+          />
+          Cast animation
+        </label>
+      </div>
+
       <ScryingOrb searchQuery={searchQuery} onSearchChange={handleSearch} />
       <TabBar schools={schools} currentSchool={currentSchool} onSelect={handleSchoolSelect} isLab={isLab} />
 
       <main className="grimoire">
         <div className="book-spread">
           <div className="spine-line" />
+          <div className="page-stack-left" />
+          <div className="page-stack-right" />
+          <div className="page-layer-t" />
+          <div className="page-layer-b" />
+          <div className="page-layer-t2" />
+          <div className="page-layer-b2" />
+          <div className="ribbon" />
+          <div className="cover-edge-left" />
+          <div className="cover-edge-right" />
           <div className="page-edge" />
           <div className="page-edge-bottom" />
           <div className="rune-corner-tl">ᚦ ᛖ ᛒ</div>
