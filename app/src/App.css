@@ -366,16 +366,29 @@ header .flare span:nth-child(3){animation-delay:1s}
 .book-spread{
   position:relative;
   background:
-    radial-gradient(ellipse 120% 100% at 50% 50%, rgba(30,20,12,.94), rgba(15,10,6,.97));
-  border:2px solid rgba(180,140,80,.12);
+    radial-gradient(ellipse 120% 100% at 50% 50%, rgba(35,22,10,.93), rgba(18,12,6,.97));
+  border:2px solid rgba(160,120,70,.15);
   border-radius:6px;
   padding:40px 30px;
   box-shadow:
     0 0 80px rgba(0,0,0,.6),
-    0 0 30px rgba(212,175,55,.03),
-    inset 0 0 80px rgba(212,175,55,.02);
+    0 0 30px rgba(180,140,80,.02),
+    inset 0 -60px 60px -30px rgba(60,30,10,.15),
+    inset 0 60px 60px -30px rgba(60,30,10,.1),
+    inset -40px 0 50px -20px rgba(40,20,8,.08),
+    inset 40px 0 50px -20px rgba(40,20,8,.08);
   min-height:300px;
+  filter:url(#parchment);
 }
+/* Stains and burn marks */
+.book-spread .stain{
+  position:absolute;border-radius:50%;pointer-events:none;
+  background:radial-gradient(circle, rgba(60,30,10,.08), transparent 70%);
+}
+.book-spread .stain-1{width:80px;height:60px;top:15%;right:12%;transform:rotate(20deg)}
+.book-spread .stain-2{width:50px;height:40px;bottom:25%;left:8%;transform:rotate(-15deg)}
+.book-spread .stain-3{width:100px;height:30px;top:60%;right:20%;transform:rotate(45deg);background:radial-gradient(ellipse, rgba(50,25,8,.06), transparent 70%)}
+
 /* Runic corner ornaments */
 .book-spread::before{
   content:'ᚠ ᛗ ᚱ';position:absolute;
@@ -439,7 +452,7 @@ header .flare span:nth-child(3){animation-delay:1s}
 .school-header{
   text-align:center;margin-bottom:25px;
   padding-bottom:18px;
-  border-bottom:1px solid rgba(212,175,55,.08);
+  border-bottom:1px solid rgba(180,140,80,.08);
   position:relative;
 }
 .school-header::after{
@@ -488,14 +501,15 @@ header .flare span:nth-child(3){animation-delay:1s}
 
 /* ── Spell Card ─────────────────────────────────── */
 .spell-card{
-  background:linear-gradient(145deg, rgba(30,20,12,.78), rgba(20,14,8,.78));
-  border:1px solid rgba(180,140,80,.07);
+  background:linear-gradient(145deg, rgba(35,22,10,.8), rgba(22,14,6,.8));
+  border:1px solid rgba(160,120,70,.09);
   border-radius:5px;
   padding:16px 18px;
   cursor:pointer;
   transition:all .4s ease;
   position:relative;
   overflow:hidden;
+  box-shadow:inset 0 0 20px rgba(40,20,8,.04);
 }
 .spell-card::before{
   content:'';

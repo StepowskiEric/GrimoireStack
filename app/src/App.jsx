@@ -9,12 +9,14 @@ import SpellModal from './components/SpellModal.jsx';
 import RecipeLab from './components/RecipeLab.jsx';
 import Footer from './components/Footer.jsx';
 import BookSplash from './components/BookSplash.tsx';
+import SpellCast from './components/SpellCast.tsx';
 
 export default function App() {
   const [loaded, setLoaded] = useState(false);
   const [currentSchool, setCurrentSchool] = useState(schools[0].id);
   const [searchQuery, setSearchQuery] = useState('');
   const [modal, setModal] = useState(null);
+  const [casting, setCasting] = useState(null);
   const laughPlayedRef = useRef(false);
   const ambienceStartedRef = useRef(false);
 
@@ -120,9 +122,16 @@ export default function App() {
   }, [resetSearch]);
 
   const handleSpellClick = useCallback((spell, school) => {
-    setModal({ spell, school });
-    document.body.style.overflow = 'hidden';
+    setCasting({ spell, school });
   }, []);
+
+  const handleCastComplete = useCallback(() => {
+    setCasting(null);
+    if (casting) {
+      setModal({ spell: casting.spell, school: casting.school });
+      document.body.style.overflow = 'hidden';
+    }
+  }, [casting]);
 
   const handleModalClose = useCallback((nextSpell, nextSchool) => {
     if (nextSpell && nextSchool) setModal({ spell: nextSpell, school: nextSchool });
@@ -133,6 +142,17 @@ export default function App() {
 
   return (
     <>
+      <svg style={{ position: 'absolute', width: 0, height: 0 }}>
+        <filter id="parchment">
+          <feTurbulence type="fractalNoise" baseFrequency="0.015" numOctaves="4" seed="3" />
+          <feDisplacementMap in="SourceGraphic" scale="8" />
+        </filter>
+        <filter id="parchment-stain">
+          <feTurbulence type="fractalNoise" baseFrequency="0.04" numOctaves="3" seed="7" />
+          <feColorMatrix type="matrix" values="0 0 0 0 0.15  0 0 0 0 0.08  0 0 0 0 0.03  0 0 0 0.08 0" />
+          <feBlend in="SourceGraphic" mode="multiply" />
+        </filter>
+      </svg>
       <BookSplash onFinish={() => setLoaded(true)} />
       {loaded && <>
       <Embers />
@@ -159,6 +179,9 @@ export default function App() {
           <div className="page-edge-bottom" />
           <div className="rune-corner-tl">ᚦ ᛖ ᛒ</div>
           <div className="rune-corner-br">ᛟ ᚲ ᛉ</div>
+          <div className="stain stain-1" />
+          <div className="stain stain-2" />
+          <div className="stain stain-3" />
           {schools.map(s => (
             <SchoolSection key={s.id} school={s}
               isActive={currentSchool === s.id && !isLab && !searchQuery}
@@ -169,6 +192,7 @@ export default function App() {
       </main>
 
       {modal && <SpellModal spell={modal.spell} school={modal.school} onClose={handleModalClose} />}
+      {casting && <SpellCast spellName={casting.spell.name} schoolSymbol={casting.school.symbol} onComplete={handleCastComplete} />}
       <Footer />
       </>}
     </>
