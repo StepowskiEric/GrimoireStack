@@ -1571,6 +1571,8 @@ function selectSchool(id) {
   // Reset scrying orb
   const orb = document.getElementById('orbVessel');
   if (orb) orb.classList.remove('scrying');
+  // Page creak sound on tab switch
+  setTimeout(pageCreak, 50);
 }
 
 // ══════════════════════════════════════════════════════════════
@@ -1670,6 +1672,203 @@ function witchLaugh() {
     // Audio not available, fail silently
   }
 }
+
+// ══════════════════════════════════════════════════════════════
+//  PAGE CREAK — Plays when switching schools
+// ══════════════════════════════════════════════════════════════
+
+function pageCreak() {
+  try {
+    if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    if (audioCtx.state === 'suspended') audioCtx.resume();
+
+    const now = audioCtx.currentTime;
+    const master = audioCtx.createGain();
+    master.gain.value = 0.06;
+    master.connect(audioCtx.destination);
+
+    // Noise buffer for paper crackle sound
+    const dur = 0.35;
+    const len = audioCtx.sampleRate * dur;
+    const buf = audioCtx.createBuffer(1, len, audioCtx.sampleRate);
+    const ch = buf.getChannelData(0);
+    for (let i = 0; i < len; i++) {
+      // Weighted toward quieter values for a paper-like texture
+      ch[i] = (Math.random() * 2 - 1) * (1 - i / len * 0.7);
+    }
+
+    // Low-pass that sweeps down — the "settling" sound
+    const src = audioCtx.createBufferSource();
+    src.buffer = buf;
+    const filter = audioCtx.createBiquadFilter();
+    filter.type = 'lowpass';
+    filter.frequency.setValueAtTime(3000, now);
+    filter.frequency.exponentialRampToValueAtTime(300, now + dur * 0.8);
+    filter.Q.value = 2;
+
+    // Subtle bandpass layer for the "crackle" texture
+    const src2 = audioCtx.createBufferSource();
+    const buf2 = audioCtx.createBuffer(1, len, audioCtx.sampleRate);
+    const ch2 = buf2.getChannelData(0);
+    for (let i = 0; i < len; i++) {
+      ch2[i] = (Math.random() * 2 - 1) * Math.sin(i / len * 10) * 0.5;
+    }
+    src2.buffer = buf2;
+    const bp = audioCtx.createBiquadFilter();
+    bp.type = 'bandpass';
+    bp.frequency.value = 1200;
+    bp.Q.value = 0.5;
+
+    const gain2 = audioCtx.createGain();
+    gain2.gain.setValueAtTime(0.05, now);
+    gain2.gain.exponentialRampToValueAtTime(0.001, now + dur * 0.6);
+
+    src.connect(filter);
+    filter.connect(master);
+    src2.connect(bp);
+    bp.connect(gain2);
+    gain2.connect(master);
+
+    src.start(now);
+    src2.start(now);
+    src.stop(now + dur);
+    src2.stop(now + dur);
+
+    // Subtle book-thump at the end (page settling)
+    const thumpOsc = audioCtx.createOscillator();
+    thumpOsc.type = 'sine';
+    thumpOsc.frequency.setValueAtTime(80, now + dur);
+    thumpOsc.frequency.exponentialRampToValueAtTime(30, now + dur + 0.08);
+    const thumpG = audioCtx.createGain();
+    thumpG.gain.setValueAtTime(0.04, now + dur);
+    thumpG.gain.exponentialRampToValueAtTime(0.001, now + dur + 0.08);
+    thumpOsc.connect(thumpG);
+    thumpG.connect(master);
+    thumpOsc.start(now + dur);
+    thumpOsc.stop(now + dur + 0.1);
+  } catch(e) { /* fail silently */ }
+}
+
+// ══════════════════════════════════════════════════════════════
+//  AMBIENCE — Eldritch room loop (starts on first interaction)
+// ══════════════════════════════════════════════════════════════
+
+let ambienceStarted = false;
+let ambienceNodes = [];
+
+function startAmbience() {
+  if (ambienceStarted) return;
+  ambienceStarted = true;
+  try {
+    if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    if (audioCtx.state === 'suspended') audioCtx.resume();
+
+    const now = audioCtx.currentTime;
+
+    // Master for ambience — very quiet
+    const ambMaster = audioCtx.createGain();
+    ambMaster.gain.value = 0.035;
+    ambMaster.connect(audioCtx.destination);
+    ambienceNodes.push(ambMaster);
+
+    // 1) Low drone — the "room resonance"
+    const drone1 = audioCtx.createOscillator();
+    drone1.type = 'sine';
+    drone1.frequency.value = 52;
+    const drone1G = audioCtx.createGain();
+    drone1G.gain.value = 0.4;
+    drone1.connect(drone1G);
+    drone1G.connect(ambMaster);
+    drone1.start();
+    ambienceNodes.push(drone1);
+
+    // 2) Second drone slightly detuned — creates beating
+    const drone2 = audioCtx.createOscillator();
+    drone2.type = 'sine';
+    drone2.frequency.value = 55.3;
+    const drone2G = audioCtx.createGain();
+    drone2G.gain.value = 0.3;
+    drone2.connect(drone2G);
+    drone2G.connect(ambMaster);
+    drone2.start();
+    ambienceNodes.push(drone2);
+
+    // 3) Sub-bass rumble
+    const drone3 = audioCtx.createOscillator();
+    drone3.type = 'sine';
+    drone3.frequency.value = 31;
+    const drone3G = audioCtx.createGain();
+    drone3G.gain.value = 0.2;
+    drone3.connect(drone3G);
+    drone3G.connect(ambMaster);
+    drone3.start();
+    ambienceNodes.push(drone3);
+
+    // 4) Filtered air noise
+    const airLen = audioCtx.sampleRate * 4;
+    const airBuf = audioCtx.createBuffer(1, airLen, audioCtx.sampleRate);
+    const airCh = airBuf.getChannelData(0);
+    for (let i = 0; i < airLen; i++) airCh[i] = Math.random() * 2 - 1;
+    const airSrc = audioCtx.createBufferSource();
+    airSrc.buffer = airBuf;
+    airSrc.loop = true;
+    const airBP = audioCtx.createBiquadFilter();
+    airBP.type = 'bandpass';
+    airBP.frequency.value = 400;
+    airBP.Q.value = 0.3;
+    const airG = audioCtx.createGain();
+    airG.gain.value = 0.3;
+    airSrc.connect(airBP);
+    airBP.connect(airG);
+    airG.connect(ambMaster);
+    airSrc.start();
+    ambienceNodes.push(airSrc);
+
+    // 5) Candle crackle — random tiny pops
+    function scheduleCrackle() {
+      if (!ambienceStarted) return;
+      const nextCrackle = 2 + Math.random() * 8; // every 2-10 seconds
+      setTimeout(() => {
+        try {
+          if (!ambienceStarted) return;
+          const cNow = audioCtx.currentTime;
+          const cDur = 0.04 + Math.random() * 0.06;
+          const cLen = audioCtx.sampleRate * cDur;
+          const cBuf = audioCtx.createBuffer(1, cLen, audioCtx.sampleRate);
+          const cCh = cBuf.getChannelData(0);
+          for (let i = 0; i < cLen; i++) cCh[i] = (Math.random() * 2 - 1) * (1 - i / cLen);
+          const cSrc = audioCtx.createBufferSource();
+          cSrc.buffer = cBuf;
+          const cBP = audioCtx.createBiquadFilter();
+          cBP.type = 'bandpass';
+          cBP.frequency.value = 2000 + Math.random() * 1500;
+          cBP.Q.value = 2;
+          const cG = audioCtx.createGain();
+          cG.gain.setValueAtTime(0.15 + Math.random() * 0.1, cNow);
+          cG.gain.exponentialRampToValueAtTime(0.001, cNow + cDur);
+          cSrc.connect(cBP);
+          cBP.connect(cG);
+          cG.connect(ambMaster);
+          cSrc.start(cNow);
+        } catch(e) { /* */ }
+        if (ambienceStarted) scheduleCrackle();
+      }, nextCrackle * 1000);
+    }
+    scheduleCrackle();
+
+  } catch(e) { /* fail silently */ }
+}
+
+// Start ambience on first user interaction
+function tryStartAmbience() {
+  if (!ambienceStarted) startAmbience();
+  document.removeEventListener('click', tryStartAmbience);
+  document.removeEventListener('keydown', tryStartAmbience);
+  document.removeEventListener('touchstart', tryStartAmbience);
+}
+document.addEventListener('click', tryStartAmbience);
+document.addEventListener('keydown', tryStartAmbience);
+document.addEventListener('touchstart', tryStartAmbience);
 
 // ══════════════════════════════════════════════════════════════
 //  SCRYING ORB — Search with atmosphere
