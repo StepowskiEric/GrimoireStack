@@ -5,8 +5,7 @@
 Start with the protocol skills, especially:
 
 - `judgment-and-routing/thoroughness-check-etto-state-machine.md`
-  d05|
-  6ba|- `orchestration/pre-flight-intent-verification/SKILL.md` — unified pre-action gate (Clarify → Specify → Ground) before any significant task execution
+- `orchestration/pre-flight-intent-verification/SKILL.md` — unified pre-action gate (Clarify → Specify → Ground) before any significant task execution
 - `execution/how-to-solve-it-state-machine.md`
 - `execution/refactoring-state-machine.md`
 - `execution/working-effectively-with-legacy-code-state-machine.md`
@@ -58,7 +57,7 @@ Strong combinations include:
 - **Steelmanning + Advocatus Diaboli** → self-critique first (steelmanning), then a separate adversarial sub-agent attacks the proposal (advocatus-diaboli). Escalating review depth.
 - **Sub-Agent Composer + TDD** → when delegating code work, always compose the sub-agent with TDD plus task-relevant skills via subagent-composer
 - **Kahneman Fast/Slow + Cognitive Bias Checklist** → switch to slow mode, then verify the slow-mode output is bias-corrected
-  6ba|- **Pre-Flight Intent Verification + Refactoring State Machine** → clarify assumptions and crystallize intent before bounded execution; prevents confidently doing the wrong thing, then limits the blast radius once execution starts
+- **Pre-Flight Intent Verification + Refactoring State Machine** → clarify assumptions and crystallize intent before bounded execution; prevents confidently doing the wrong thing, then limits the blast radius once execution starts
 - **DDD + Team Topologies** → align domain boundaries to team structures
 - **Release It! + SRE Error Budget** → implement stability patterns, then govern the reliability-velocity tradeoff
 - **Socratic Clarification + Pre-Mortem** → surface the key assumption before planning, then validate the plan against failure
@@ -210,6 +209,13 @@ Why this works: the MCP server normalizes output from 6+ tools (ESLint, Biome, R
 4. `execution/pragmatic-programmer-state-machine.md` — keep changes bounded and reversible
 
 Why this stack works: long tasks are where agents fail most — context overflow, failure spirals, and specification drift compound over many turns. Budget tracking prevents silent instruction loss, trajectory guard catches stuck execution, assumption grounding prevents hallucinated facts from compounding, and the pragmatist protocol keeps scope bounded.
+
+### Fixing failing unit tests
+
+1. `development/unit-test-debugging/SKILL.md` — zoom-out-first workflow to diagnose whether test or code is wrong
+2. `development/jest-testing/SKILL.md` — Jest syntax reference for matchers, async patterns, mocking, and configuration
+
+Why this works: forces the agent to determine the source of truth before changing anything, prevents the "tests must be right" assumption, and provides explicit loop prevention and escalation paths (web search → advisor) when stuck. The Jest reference ensures correct test syntax when writing or fixing tests.
 
 ## Hybrid Skill Protocols
 

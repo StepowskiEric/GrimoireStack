@@ -4,12 +4,6 @@ Skills are organized into topic areas. Each entry shows its file path and whethe
 
 ---
 
-# Skill Catalog
-
-Skills are organized into five topic areas. Each entry shows its file path and whether it is a **[protocol]** (state-machine, enforces a workflow) or a **[framework]** (conceptual lens, improves judgment).
-
----
-
 ## 🔧 Execution — how-to-do-the-work protocols
 
 Skills for executing technical work in a bounded, disciplined way.
@@ -1330,6 +1324,22 @@ Still as references:
 **Use it when:** Renaming modules, components, or skills in a docs repo; changing naming conventions; reorganizing directory structures.
 
 **Best for:** Preventing broken links, stale references, and silent partial replacements during large-scale renames.
+
+### `development/unit-test-debugging/SKILL.md` · [protocol]
+
+**What it is:** A diagnostic workflow for fixing failing unit tests that prevents the "tests are the source of truth" assumption. Forces the agent to zoom out, diagnose whether the test or code is wrong, and apply the correct fix — not just make tests pass by changing code.
+
+**Use it when:** Fixing test failures, debugging test suites, resolving "tests are passing/failing unexpectedly," or when an agent keeps changing code to match failing tests without investigating root cause.
+
+**Best for:** Breaking out of fix-loops, determining which side is wrong (test vs code), preventing scope creep from one failing test to massive rewrites, and escalating to web search or advisor when stuck.
+
+### `development/jest-testing/SKILL.md` · [framework]
+
+**What it is:** Comprehensive reference for writing correct Jest tests covering matchers, async patterns, mocking, configuration, and React Native specifics. Provides quick-reference patterns and common gotchas.
+
+**Use it when:** Writing Jest tests, fixing test failures, setting up Jest configuration, mocking functions/modules, testing async code, snapshot testing, React Native testing, or when the user mentions Jest, test assertions, test.each, jest.fn, jest.mock.
+
+**Best for:** Quick lookups of Jest APIs, matcher syntax, async patterns, mock setup, React Native preset configuration, and common testing patterns.
 
 ### `judgment-and-routing/metacognitive-monitoring.md` · [protocol]
 
