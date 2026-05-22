@@ -969,6 +969,7 @@ footer a:hover{color:#d4af37}
 //  SCHOOLS & SPELLS
 // ══════════════════════════════════════════════════════════════
 
+try {
 const schools = [
   {
     id:'debugging',real:'Debugging',
@@ -1248,156 +1249,15 @@ const schools = [
 ];
 
 // ══════════════════════════════════════════════════════════════
-//  ALCHEMICAL RECIPES — Situation → Spell Prescriptions
-// ══════════════════════════════════════════════════════════════
-
-const recipes = [
-  {
-    id:'stack-trace',
-    name:'Potion of Stack Trace Cure',
-    affliction:'The system crashes with an error log, stack trace, or exception report in hand.',
-    ingredients:[
-      { spell:'Trace Sight', role:'Primary divination — map the trace to source and inspect failure context' },
-      { spell:'Bisect Divination', role:'If the bug was introduced recently, binary search commits to find the exact change' },
-      { spell:'Root Cause Revelation', role:'If the same crash keeps recurring, trace past the symptom to the true defect' },
-    ],
-    caution:'Avoid PDCA Deming and Step-level Verification for runtime bugs — tested 0% correctness improvement and -1.6% efficiency on real repos.',
-    outcome:'Isolate the error location, identify the offending commit, fix the root cause without treating symptoms.'
-  },
-  {
-    id:'failing-tests',
-    name:'Elixir of Test Clarity',
-    affliction:'Unit tests are failing and it is unclear whether the test or the code under test is wrong.',
-    ingredients:[
-      { spell:'Test Oracle', role:'Primary diagnosis — determine whether the test assertions or the implementation is the source of truth' },
-      { spell:'Purify Vision', role:'Slice the noisy test output down to only failure-relevant lines' },
-      { spell:'Instrumentation Charm', role:'Inject temporary prints at key code points and capture actual runtime values' },
-    ],
-    caution:'',
-    outcome:'Know with certainty whether to fix the test or the code, with runtime evidence to confirm the fix.'
-  },
-  {
-    id:'debug-pipeline',
-    name:'Grand Ritual of Systematic Restoration',
-    affliction:'An end-to-end debugging workflow is needed for a complex, multi-cause failure.',
-    ingredients:[
-      { spell:'Spectral Analysis', role:'Generate competing hypotheses from observed symptoms (abductive reasoning)' },
-      { spell:'Debug Familiar', role:'Enforce debug-before-edit — the subagent investigates before any code changes' },
-      { spell:'Instrumentation Charm', role:'Insert probes to capture runtime state invisible in the source' },
-      { spell:'Purify Vision', role:'Clean the output so only failure-relevant lines feed the next step' },
-      { spell:'Iterative Mend', role:'Loop patch → test → refine → augment with anti-overfitting protection' },
-    ],
-    caution:'Do not skip steps. Each phase increases evidence quality while reducing token waste.',
-    outcome:'A structured pipeline from symptom to verified fix with no guessing.'
-  },
-  {
-    id:'root-cause',
-    name:'Tincture of Deep Causation',
-    affliction:'A bug keeps recurring despite repeated "fixes" — you need to find the true underlying cause.',
-    ingredients:[
-      { spell:'Root Cause Revelation', role:'Apply 5 Whys and Ishikawa diagrams to distinguish symptom from cause' },
-      { spell:'Occam\'s Verdict', role:'If multiple competing causes, select the simplest causal chain that fits all evidence' },
-    ],
-    caution:'Do not use PDCA Deming — tested -1.6% vs baseline on real repo bugs. It is for process improvement, not debugging.',
-    outcome:'The true underlying defect is identified and fixed, permanently.'
-  },
-  {
-    id:'unknown-codebase',
-    name:'Salve of Rapid Orientation',
-    affliction:'Dropped into an unfamiliar codebase and need to find relevant code quickly.',
-    ingredients:[
-      { spell:'Remote Viewing', role:'Graph-powered token-efficient exploration from module to line level' },
-      { spell:'Divide & Conquer', role:'For large codebases: hierarchical summarization + parallel sub-agent deep dives' },
-      { spell:'Scout\'s Trail', role:'A scout reads and distills context; the trail is stored for later retrieval' },
-    ],
-    caution:'',
-    outcome:'A mental map of the relevant code with a retrievable investigation trail.'
-  },
-  {
-    id:'multiple-causes',
-    name:'Razor of Parsimony Elixir',
-    affliction:'Multiple plausible explanations exist and you need to find the real one.',
-    ingredients:[
-      { spell:'Razor of Parsimony', role:'List alternatives ranked simplest → most complex; test simplest first' },
-      { spell:'Occam\'s Abduction', role:'Generate hypotheses, audit evidence, rank by assumption count, falsify or confirm' },
-      { spell:'Spectral Analysis', role:'For novel failures: abductive hypotheses with structural code location' },
-    ],
-    caution:'',
-    outcome:'The simplest explanation that fits all evidence, confirmed through falsification.'
-  },
-  {
-    id:'code-review-prenpush',
-    name:'Ward of Pre-Push Purity',
-    affliction:'LLM-generated code needs review before pushing — catch AI-specific failure modes.',
-    ingredients:[
-      { spell:'LLM Pre-Push Ward', role:'5-pass: hallucinated logic, silent vulns, overcorrection, scope creep, context ignorance' },
-      { spell:'API Surface Scry', role:'Verify every external API call against current authoritative docs' },
-      { spell:'Verified API Workflow', role:'100% traceability — every API call links back to docs you actually checked' },
-    ],
-    caution:'',
-    outcome:'Code free from the five systematic failure modes of LLM-generated code.'
-  },
-  {
-    id:'pre-deployment',
-    name:'Sigil of Deployment Readiness',
-    affliction:'Code is ready to ship but needs a final security and quality check before production.',
-    ingredients:[
-      { spell:'Deployment Gate', role:'7-pass: execution, security, correctness, structure, integration, hardening, secrets' },
-      { spell:'Security Warding', role:'STRIDE + Unsafe Control Actions + Vibe Coding Security fused' },
-      { spell:'Vibe Hardening', role:'9-phase checklist targeting vulnerabilities AI tools reliably introduce' },
-    ],
-    caution:'',
-    outcome:'Production-hardened code with no exposed secrets or injection flaws.'
-  },
-  {
-    id:'hard-problem',
-    name:'Philosopher\'s Stone Tincture',
-    affliction:'A genuinely hard problem with no clear starting point — circling without progress.',
-    ingredients:[
-      { spell:'First Step Oracle', role:'Forces explicit problem framing before any action is taken' },
-      { spell:'Court of Minds', role:'Spawn parallel perspectives with conflicting goals; let them argue' },
-      { spell:'Analogy Bridge', role:'Force analogies from an unrelated domain to break fixation' },
-      { spell:'Prism of Understanding', role:'Calibrate confidence, compress to essence — prove you understand it' },
-    ],
-    caution:'',
-    outcome:'A clear problem frame, multiple explored angles, and a path forward.'
-  },
-  {
-    id:'hallucination-defense',
-    name:'Aegis of Veracity',
-    affliction:'Agent reasoning produces plausible-sounding but false conclusions — anti-hallucination defense.',
-    ingredients:[
-      { spell:'Integrity Chain', role:'4-phase: faithfulness → claims → verification → selective halt' },
-      { spell:'Anchor Chain', role:'Every factual claim anchored to a verified source; unanchored claims hidden' },
-      { spell:'Contradiction Trap', role:'Maintain belief store; detect contradictions; force resolution' },
-      { spell:'Chaos Detection', role:'Monitor token trajectories for Lyapunov divergence — collapse detection' },
-    ],
-    caution:'',
-    outcome:'Reasoning logically entailed by verified premises, free from hallucination.'
-  },
-  {
-    id:'planning-spec',
-    name:'Oracle\'s Blueprint Draught',
-    affliction:'A multi-step feature needs a structured, reviewable plan before any code is written.',
-    ingredients:[
-      { spell:'Intent Binding', role:'Clarify intent before coding — prevent the Intent-Behavior Mirroring Effect' },
-      { spell:'Plan with Judge', role:'Create a plan in JSONL, iterate with a stronger judge until approved' },
-      { spell:'Iterative Spec', role:'Author spec grounded in research, run 3 judge-LLM review cycles' },
-      { spell:'Blueprint Codification', role:'Codify into types/schema — contradictions become impossible to ignore' },
-    ],
-    caution:'',
-    outcome:'A locked, reviewed, approved implementation plan before any code is written.'
-  },
-];
-
-// ══════════════════════════════════════════════════════════════
 //  BUILD THE GRIMOIRE
 // ══════════════════════════════════════════════════════════════
 
+const recipes = [];
 const tabsEl = document.getElementById('tabContainer');
 const bookEl = document.getElementById('bookSpread');
 const searchInput = document.getElementById('searchInput');
 
+try {
 // Build tabs
 schools.forEach((s, i) => {
   const btn = document.createElement('button');
@@ -1549,6 +1409,14 @@ schools.forEach(s => {
 });
 labSection.appendChild(pickerGrid);
 bookEl.appendChild(labSection);
+} catch(e) {
+  console.error('GrimoireStack init error:', e);
+  // Show error on page so user can report it
+  const errDiv = document.createElement('div');
+  errDiv.style.cssText = 'color:#c97a7a;text-align:center;padding:30px;font-family:monospace;font-size:.85rem;background:rgba(30,10,10,.6);border:1px solid rgba(200,50,50,.15);border-radius:4px;margin:20px;z-index:10;position:relative';
+  errDiv.textContent = '⚠ ' + e.message;
+  document.querySelector('.book-spread')?.prepend(errDiv);
+}
 
 // ══════════════════════════════════════════════════════════════
 //  INTERACTIONS
@@ -2175,6 +2043,9 @@ document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeModal
     container.appendChild(e);
   }
 })();
+} catch(e) {
+  console.error("GrimoireStack fatal:", e.message);
+}
 </script>
 </body>
 </html>
