@@ -66,6 +66,18 @@ export default function SpellModal({ spell, school, onClose }) {
         <div className="modal-grimoire-ref">
           <code>〈 grimoirestack:{school.id}/{spell.skill} 〉</code>
         </div>
+
+        <button className="modal-share" onClick={() => {
+          const url = `${window.location.origin}${window.location.pathname}?s=${encodeURIComponent(spell.skill)}`;
+          if (navigator.share) {
+            navigator.share({ title: spell.name, text: spell.effect, url });
+          } else {
+            navigator.clipboard.writeText(url).then(() => {
+              const btn = document.querySelector('.modal-share');
+              if (btn) { btn.textContent = '✦ Link Copied!'; setTimeout(() => { btn.textContent = '✦ Share'; }, 2000); }
+            });
+          }
+        }}>✦ Share</button>
       </div>
     </div>
   );

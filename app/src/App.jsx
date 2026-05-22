@@ -36,6 +36,25 @@ export default function App() {
     };
   }, []);
 
+  // Handle ?s= deep link on page load
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const skillId = params.get('s');
+    if (skillId) {
+      for (const s of schools) {
+        for (const sp of s.spells) {
+          if (sp.skill === skillId) {
+            setTimeout(() => {
+              setModal({ spell: sp, school: s });
+              document.body.style.overflow = 'hidden';
+            }, 300);
+            return;
+          }
+        }
+      }
+    }
+  }, []);
+
   const resetSearch = useCallback(() => {
     document.querySelectorAll('.spell-card').forEach(el => el.classList.remove('glow', 'dim'));
     document.querySelectorAll('.no-spells').forEach(el => el.remove());
@@ -134,6 +153,8 @@ export default function App() {
           <div className="spine-line" />
           <div className="page-edge" />
           <div className="page-edge-bottom" />
+          <div className="rune-corner-tl">ᚦ ᛖ ᛒ</div>
+          <div className="rune-corner-br">ᛟ ᚲ ᛉ</div>
           {schools.map(s => (
             <SchoolSection key={s.id} school={s}
               isActive={currentSchool === s.id && !isLab && !searchQuery}
