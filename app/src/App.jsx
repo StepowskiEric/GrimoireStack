@@ -8,7 +8,7 @@ import TabBar from './components/TabBar.jsx';
 import SchoolSection from './components/SchoolSection.jsx';
 import SpellModal from './components/SpellModal.jsx';
 import RecipeLab from './components/RecipeLab.jsx';
-import WizardModal from './components/WizardModal.jsx';
+import WitchDoctorModal from './components/WitchDoctorModal.jsx';
 import Footer from './components/Footer.jsx';
 import BookSplash from './components/BookSplash.tsx';
 import SpellCast from './components/SpellCast.tsx';
@@ -19,7 +19,7 @@ export default function App() {
   const [searchQuery, setSearchQuery] = useState('');
   const [modal, setModal] = useState(null);
   const [casting, setCasting] = useState(null);
-  const [wizardOpen, setWizardOpen] = useState(false);
+  const [witchDoctorOpen, setWitchDoctorOpen] = useState(false);
   const [castEnabled, setCastEnabled] = useState(() => localStorage.getItem('grimoire-cast') !== 'off');
   const laughPlayedRef = useRef(false);
   const ambienceStartedRef = useRef(false);
@@ -166,7 +166,7 @@ export default function App() {
         </label>
       </div>
 
-      <ScryingOrb searchQuery={searchQuery} onSearchChange={handleSearch} totalMatches={searchResults.total} onWizardOpen={() => setWizardOpen(true)} />
+      <ScryingOrb searchQuery={searchQuery} onSearchChange={handleSearch} totalMatches={searchResults.total} onWizardOpen={() => setWitchDoctorOpen(true)} />
       <TabBar schools={schools} currentSchool={currentSchool} onSelect={handleSchoolSelect} isLab={isLab} />
 
       <main className="grimoire" id="main-content">
@@ -198,7 +198,7 @@ export default function App() {
         </div>
       </main>
 
-      {wizardOpen && <WizardModal schools={schools} onSelectSkill={(spell, sch) => { setWizardOpen(false); handleSpellClick(spell, sch); }} onClose={() => setWizardOpen(false)} />}
+      {witchDoctorOpen && <WitchDoctorModal schools={schools} onSelectSkill={(spell, sch) => { setWitchDoctorOpen(false); handleSpellClick(spell, sch); }} onClose={() => setWitchDoctorOpen(false)} />}
       {modal && <SpellModal spell={modal.spell} school={modal.school} onClose={handleModalClose} />}
       {casting && <SpellCast spellName={casting.spell.name} schoolSymbol={casting.school.symbol} onComplete={handleCastComplete} />}
       <Footer />

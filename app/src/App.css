@@ -1031,72 +1031,221 @@ footer a:hover{color:#d4af37}
 .lab-output .rc-potency.master{color:#c9a84c;border-color:rgba(201,168,76,.15)}
 .lab-output .rc-potency.archmage{color:#d47a4a;border-color:rgba(212,122,74,.15)}
 
-/* ── Affliction Wizard ─────────────────────────── */
-#wizardOverlay{display:none;align-items:center;justify-content:center}
-#wizardOverlay.open{display:flex}
-#wizardModal{max-width:520px;}
-.wizard-progress{
-  display:flex;align-items:center;gap:6px;
-  margin-bottom:24px;
+/* ── Witch Doctor ──────────────────────────── */
+#wdOverlay{
+  display:none;
+  position:fixed;inset:0;
+  background:rgba(0,0,0,.7);
+  z-index:100;
+  align-items:center;justify-content:center;
+  padding:20px;
+  backdrop-filter:blur(4px);
+  -webkit-backdrop-filter:blur(4px);
 }
-.wizard-step-pip{
-  height:3px;flex:1;border-radius:2px;
-  background:rgba(212,175,55,.08);
-  transition:background .4s ease;
+#wdOverlay.open{display:flex}
+#wdModal{max-width:600px;width:90vw;position:relative;overflow:hidden}
+
+/* Page-peal entrance */
+.wd-page-peal{animation:pagePeal .5s ease-out}
+@keyframes pagePeal{
+  0%{transform:scaleX(.02) perspective(800px) rotateY(-8deg);opacity:0}
+  40%{transform:scaleX(.6) perspective(800px) rotateY(2deg);opacity:.7}
+  100%{transform:scaleX(1) perspective(800px) rotateY(0);opacity:1}
 }
-.wizard-step-pip.done{background:rgba(212,175,55,.3)}
-.wizard-step-pip.active{background:rgba(212,175,55,.6)}
-.wizard-question{
+.wd-flipping{animation:flipOut .25s ease-in forwards}
+@keyframes flipOut{
+  0%{transform:perspective(800px) rotateY(0);opacity:1}
+  100%{transform:perspective(800px) rotateY(-90deg);opacity:0}
+}
+
+/* Reduced motion */
+@media(prefers-reduced-motion:reduce){
+  .wd-page-peal{animation:none}
+  .wd-flipping{animation:none}
+}
+
+/* Witch Doctor portrait */
+.wd-doctor{
+  text-align:center;margin:-6px 0 10px;
+  position:relative;
+  display:flex;justify-content:center;
+  align-items:center;
+}
+.wd-doctor-img{
+  width:120px;height:175px;
+  object-fit:contain;
+  position:relative;
+  filter:drop-shadow(0 0 12px rgba(180,140,80,.1));
+  animation:wdIdle 5s ease-in-out infinite;
+  pointer-events:none;
+}
+@keyframes wdIdle{
+  0%,100%{transform:translateY(0)}
+  50%{transform:translateY(-3px)}
+}
+
+/* Reveal burst */
+.wd-doctor.revealing .wd-doctor-img{
+  animation:wdRevealBurst .6s ease-out both;
+}
+@keyframes wdRevealBurst{
+  0%{filter:brightness(1);transform:scale(1)}
+  15%{filter:brightness(1.6) drop-shadow(0 0 25px rgba(212,175,55,.5));transform:scale(1.12)}
+  40%{filter:brightness(1.3) drop-shadow(0 0 15px rgba(212,175,55,.2));transform:scale(1.05)}
+  100%{filter:brightness(1);transform:scale(1)}
+}
+
+/* Rune progress */
+.wd-progress{
+  display:flex;align-items:center;justify-content:center;gap:10px;
+  margin-bottom:18px;
+}
+.wd-step-rune{
+  font-size:.85rem;font-family:serif;
+  color:rgba(212,175,55,.15);
+  transition:all .5s ease;
+}
+.wd-step-rune.done{color:rgba(212,175,55,.5);text-shadow:0 0 6px rgba(212,175,55,.15)}
+.wd-step-rune.active{color:#d4af37;text-shadow:0 0 10px rgba(212,175,55,.3)}
+
+/* Dust motes */
+.wd-dust{position:absolute;inset:0;pointer-events:none;overflow:hidden;z-index:0}
+.wd-dust-particle{
+  position:absolute;bottom:-10px;
+  border-radius:50%;
+  background:rgba(212,175,55,.2);
+  animation:wdDustUp linear infinite;
+}
+@keyframes wdDustUp{
+  0%{transform:translateY(0) scale(1);opacity:0}
+  10%{opacity:.3}
+  90%{opacity:.1}
+  100%{transform:translateY(-400px) scale(.6);opacity:0}
+}
+
+.wd-question{
   font-family:'Cinzel',serif;
   font-size:.65rem;text-transform:uppercase;
   letter-spacing:.12em;color:#6a5a3a;
   margin-bottom:16px;
-  text-align:center;
+  text-align:center;position:relative;z-index:1;
 }
-.wizard-subtitle{
+.wd-subtitle{
   font-style:italic;font-size:.9rem;color:#8a7a5a;
   text-align:center;margin:-12px 0 20px;
-  min-height:1.4em;
+  min-height:1.4em;position:relative;z-index:1;
 }
-.wizard-options{
+
+/* Cluster cards */
+.wd-cluster-grid{
+  display:grid;grid-template-columns:1fr 1fr;gap:8px;
+  margin-bottom:16px;position:relative;z-index:1;
+}
+.wd-cluster-grid.has-selection{margin-bottom:0}
+.wd-cluster-card{
+  display:flex;flex-direction:column;align-items:center;gap:6px;
+  padding:16px 12px;
+  background:linear-gradient(135deg, rgba(30,18,45,.85), rgba(18,10,28,.85));
+  border:1px solid rgba(212,175,55,.1);
+  border-radius:8px;
+  cursor:pointer;transition:all .3s ease;
+  text-align:center;
+}
+.wd-cluster-card:hover{
+  border-color:rgba(212,175,55,.25);
+  background:linear-gradient(135deg, rgba(40,25,55,.9), rgba(25,15,38,.9));
+  transform:translateY(-2px);
+  box-shadow:0 4px 16px rgba(0,0,0,.2);
+}
+.wd-cluster-card:active{transform:translateY(0) scale(.97)}
+.wd-cluster-card.active{
+  border-color:rgba(212,175,55,.35);
+  background:linear-gradient(135deg, rgba(50,30,60,.95), rgba(30,18,40,.95));
+  box-shadow:0 0 12px rgba(212,175,55,.08);
+}
+.wd-cluster-emoji{font-size:1.4rem;line-height:1}
+.wd-cluster-label{
+  font-family:'Cinzel',serif;
+  font-size:.65rem;text-transform:uppercase;
+  letter-spacing:.08em;color:#c8b99a;
+}
+.wd-cluster-count{
+  font-family:'Cormorant Garamond',serif;
+  font-size:.7rem;color:#6a5a3a;
+  padding:1px 8px;border-radius:8px;
+  background:rgba(212,175,55,.04);
+}
+.wd-cluster-card.active .wd-cluster-count{
+  color:#d4af37;background:rgba(212,175,55,.08);
+}
+
+/* Category reveal animation */
+.wd-options-reveal{animation:wdReveal .35s ease-out both}
+@keyframes wdReveal{
+  0%{opacity:0;transform:translateY(-6px)}
+  100%{opacity:1;transform:translateY(0)}
+}
+
+.wd-options{
   display:flex;flex-direction:column;gap:8px;
-  margin-bottom:24px;
+  margin-bottom:24px;position:relative;z-index:1;
 }
-.wizard-option{
+.wd-option{
   background:linear-gradient(135deg, rgba(22,15,35,.8), rgba(15,10,22,.8));
   border:1px solid rgba(212,175,55,.08);
   border-radius:5px;padding:13px 16px;
   cursor:pointer;transition:all .3s ease;
   text-align:left;
 }
-.wizard-option:hover{
+.wd-option:hover{
   border-color:rgba(212,175,55,.22);
   background:linear-gradient(135deg, rgba(30,20,45,.9), rgba(20,14,30,.9));
   transform:translateX(3px);
 }
-.wizard-option:active{transform:translateX(3px) scale(.98)}
-.wizard-option .opt-label{
+.wd-option:active{transform:translateX(3px) scale(.98)}
+.wd-option.selected{
+  border-color:rgba(212,175,55,.3);
+  background:rgba(212,175,55,.04);
+}
+.wd-option .opt-label{
   font-family:'Cinzel',serif;
   font-size:.75rem;color:#c8b99a;display:block;
   margin-bottom:3px;
 }
-.wizard-option .opt-desc{
+.wd-option .opt-desc{
   font-size:.82rem;color:#6a5a3a;
   font-style:italic;display:block;
 }
-.wizard-nav{
+
+/* Rune dividers between groups */
+.wd-divider{
+  display:flex;align-items:center;justify-content:center;
+  margin:16px 0 12px;gap:8px;
+}
+.wd-divider::before,.wd-divider::after{
+  content:'';flex:1;height:1px;
+  background:linear-gradient(90deg, transparent, rgba(212,175,55,.12), transparent);
+}
+.wd-divider-runes{
+  font-family:serif;font-size:.65rem;
+  color:rgba(212,175,55,.2);
+  letter-spacing:.25em;
+}
+
+.wd-nav{
   display:flex;justify-content:space-between;align-items:center;
   padding-top:16px;border-top:1px solid rgba(212,175,55,.06);
+  position:relative;z-index:1;
 }
-.wizard-back{
+.wd-back{
   font-family:'Cinzel',serif;font-size:.6rem;text-transform:uppercase;
   letter-spacing:.06em;color:#5a4a3a;
   background:none;border:none;cursor:pointer;transition:color .3s;
   padding:4px 0;
 }
-.wizard-back:hover{color:#d4af37}
-.wizard-back.hidden{visibility:hidden}
-.wizard-next{
+.wd-back:hover{color:#d4af37}
+.wd-back.hidden{visibility:hidden}
+.wd-next{
   font-family:'Cinzel',serif;font-size:.65rem;font-weight:600;
   text-transform:uppercase;letter-spacing:.06em;
   padding:7px 18px;
@@ -1106,36 +1255,69 @@ footer a:hover{color:#d4af37}
   color:#5a4a3a;cursor:not-allowed;
   transition:all .4s ease;
 }
-.wizard-next.ready{
+.wd-next.ready{
   border-color:rgba(212,175,55,.35);
   color:#d4af37;cursor:pointer;
 }
-.wizard-next.ready:hover{
+.wd-next.ready:hover{
   box-shadow:0 0 20px rgba(212,175,55,.1);
 }
-.wizard-result{
-  text-align:center;padding:10px 0 4px;
+.wd-result{
+  text-align:center;padding:6px 0 4px;
   animation:fadeIn .5s ease;
+  position:relative;z-index:1;
 }
-.wizard-result .wr-skill-name{
+/* School symbol badge */
+.wd-result .wr-badge{
+  display:inline-flex;align-items:center;justify-content:center;
+  width:44px;height:44px;border-radius:50%;
+  border:1px solid rgba(212,175,55,.2);
+  font-size:1.3rem;margin-bottom:8px;
+  background:radial-gradient(circle at 40% 35%, rgba(212,175,55,.06), transparent);
+  box-shadow:0 0 10px rgba(212,175,55,.06);
+}
+.wd-result .wr-skill-name{
   font-family:'Cinzel Decorative',serif;
   font-weight:700;font-size:1.15rem;color:#d4af37;
   margin-bottom:6px;
+  animation:burnIn .5s cubic-bezier(.34,1.56,.64,1) both;
 }
-.wizard-result .wr-effect{
+@keyframes burnIn{
+  0%{opacity:0;transform:scale(1.3);text-shadow:0 0 0 transparent}
+  100%{opacity:1;transform:scale(1);text-shadow:0 0 20px rgba(212,175,55,.15)}
+}
+.wd-result .wr-effect{
   font-size:.88rem;color:#8a7a5a;line-height:1.5;
   margin-bottom:12px;
+  animation:fadeIn .6s ease .15s both;
 }
-.wizard-result .wr-reason{
+/* Parchment reason block with rune corners */
+.wd-result .wr-reason{
   font-size:.82rem;color:#7a6a4a;
   font-style:italic;margin-bottom:14px;
-  padding:10px 14px;
+  padding:12px 16px;
+  position:relative;
   background:rgba(212,175,55,.03);
   border-left:2px solid rgba(212,175,55,.15);
   border-radius:0 4px 4px 0;
   text-align:left;
+  filter:url(#parchment-stain);
+  transition:box-shadow .3s ease;
 }
-.wizard-result .wr-cta{
+.wd-result .wr-reason:hover{
+  box-shadow:0 0 16px rgba(212,175,55,.06);
+}
+.wr-reason-rune-tl{
+  position:absolute;top:-4px;left:-6px;
+  font-family:serif;font-size:.5rem;
+  color:rgba(212,175,55,.15);
+}
+.wr-reason-rune-br{
+  position:absolute;bottom:-4px;right:-6px;
+  font-family:serif;font-size:.5rem;
+  color:rgba(212,175,55,.15);
+}
+.wd-result .wr-cta{
   font-family:'Cinzel',serif;
   font-size:.65rem;text-transform:uppercase;
   letter-spacing:.08em;
@@ -1146,21 +1328,24 @@ footer a:hover{color:#d4af37}
   color:#d4af37;cursor:pointer;
   transition:all .3s ease;
   display:inline-block;text-decoration:none;
+  animation:fadeIn .5s ease .35s both;
 }
-.wizard-result .wr-cta:hover{
+.wd-result .wr-cta:hover{
   box-shadow:0 0 20px rgba(212,175,55,.12);
 }
-.wizard-result .wr-cta:active{transform:scale(.97)}
-.wizard-result .wr-alts{
+.wd-result .wr-cta:active{transform:scale(.97)}
+.wd-result .wr-alts{
   margin-top:14px;
   font-family:'Cinzel',serif;font-size:.55rem;
   text-transform:uppercase;letter-spacing:.08em;
   color:#5a4a3a;margin-bottom:8px;
+  animation:fadeIn .5s ease .45s both;
 }
-.wizard-result .wr-alt-grid{
+.wd-result .wr-alt-grid{
   display:flex;flex-wrap:wrap;gap:6px;justify-content:center;
+  animation:fadeIn .5s ease .5s both;
 }
-.wizard-result .wr-alt-chip{
+.wd-result .wr-alt-chip{
   font-family:'Cormorant Garamond',serif;
   font-size:.82rem;color:#7a6a4a;
   padding:4px 12px;border-radius:12px;
@@ -1168,21 +1353,35 @@ footer a:hover{color:#d4af37}
   cursor:pointer;transition:all .3s ease;
   background:rgba(212,175,55,.02);
 }
-.wizard-result .wr-alt-chip:hover{
+.wd-result .wr-alt-chip:hover{
   border-color:rgba(212,175,55,.18);
   color:#d4af37;
 }
-.wizard-unsure{
-  text-align:center;margin-top:10px;
+/* More like this worm */
+.wd-result .wr-more{
+  margin-top:16px;
+  font-family:'Cormorant Garamond',serif;
+  font-style:italic;font-size:.8rem;color:#5a4a3a;
+  animation:fadeIn .5s ease .6s both;
 }
-.wizard-unsure button{
+.wd-result .wr-more-link{
+  color:#8a7a4a;cursor:pointer;
+  text-decoration:underline;text-underline-offset:2px;
+  transition:color .3s;
+}
+.wd-result .wr-more-link:hover{color:#d4af37}
+
+.wd-unsure{
+  text-align:center;margin-top:10px;position:relative;z-index:1;
+}
+.wd-unsure button{
   font-family:'Cormorant Garamond',serif;
   font-style:italic;font-size:.82rem;color:#4a3a2a;
   background:none;border:none;cursor:pointer;
   text-decoration:underline;text-underline-offset:3px;
   transition:color .3s;
 }
-.wizard-unsure button:hover{color:#6a5a3a}
+.wd-unsure button:hover{color:#6a5a3a}
 
 /* ── Responsive ─────────────────────────────────── */
 @media(max-width:700px){
@@ -1210,6 +1409,13 @@ footer a:hover{color:#d4af37}
   .recipe-header h2,.lab-header h2{font-size:1rem}
   .tabs{gap:3px;justify-content:flex-start;overflow-x:auto;padding-bottom:4px;flex-wrap:nowrap}
   .tab-btn{flex-shrink:0}
+  .wd-cluster-grid{grid-template-columns:1fr 1fr;gap:6px}
+  .wd-cluster-card{padding:12px 8px}
+  .wd-cluster-emoji{font-size:1.1rem}
+  .wd-doctor-img{width:80px;height:115px}
+  #wdModal{max-width:94vw;padding:14px 10px}
+  .wd-result .wr-skill-name{font-size:1rem}
+  .wd-divider{margin:12px 0 8px}
 }
 @media(max-width:400px){
   .book-spread{padding:14px 8px}

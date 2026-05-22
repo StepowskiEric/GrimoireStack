@@ -70,7 +70,7 @@ export default function ScryingOrb({ searchQuery, onSearchChange, totalMatches, 
           onMouseEnter={e => e.target.style.color = '#d4af37'}
           onMouseLeave={e => e.target.style.color = '#c8b99a'}
           onClick={onWizardOpen}>
-          ✦ Not sure what you need? Consult the Grimoire →
+          ✦ Not sure what you need? Consult the Witch Doctor →
         </span>
       </div>
     </div>

@@ -300,7 +300,7 @@ export const WIZARD_DATA = [
     ]
   },
   {
-    id:'reasoning', label:'🔍 Reasoning / Decision / Planning',
+    id:'reasoning', label:'🔮 Planning & Decisions',
     desc:"I'm confused or stuck — need to think clearly",
     situations:[
       { id:'complex-decision', label:'Complex decision with multiple options', desc:'Don\'t know which path to take', skill:'occams-razor', effect:'Favors the simplest sufficient explanation or solution. Forces trying the simplest thing that fits before escalating to alternatives.', reason:'Complex solutions often fail in complex ways. Simplicity is a reliability bet.', alt:'six-thinking-hats — for examining a decision from all angles instead of just picking one' },
@@ -357,37 +357,6 @@ export const WIZARD_DATA = [
       { id:'api-debugging', label:'API or network failure', desc:'Request is failing or behaving unexpectedly', skill:'network-api-debugging', effect:'Diagnoses CORS, auth tokens, rate limiting, redirect chains, WebSocket drops, and HTTP mismatches.', reason:'Network failures are often multi-layered. This skill maps the full chain and finds the breaking link.', alt:'native-data-fetching — for data fetching patterns in React Native or Expo apps' },
       { id:'data-fetching', label:'Data fetching in a React/Expo app', desc:'useLoaderData, fetch, React Query, SWR', skill:'native-data-fetching', effect:'Covers fetch API, React Query, SWR, error handling, caching, offline support, and Expo Router data loaders.', reason:'Data fetching has specific React patterns that differ from vanilla JS. This skill covers the right approach.', alt:'network-api-debugging — for debugging the underlying HTTP failures' },
       { id:'external-api', label:'Calling an external library or API', desc:'Need to verify current API surface', skill:'api-surface-anchoring', effect:'Verifies current API surface from authoritative docs before writing code. Prevents hallucinated signatures.', reason:'LLMs hallucinate API signatures. Verification before coding is the only reliable fix.', alt:'verified-api-workflow — for hybrid API anchoring + hallucination prevention chain' },
-    ]
-  },
-  {
-    id:'expo', label:'📱 Expo & React Native',
-    desc:"Mobile app development with Expo or React Native",
-    situations:[
-      { id:'expo-deployment', label:'Deploying to iOS App Store or Play Store', desc:'Build, submit, manage releases', skill:'expo-deployment', effect:'Deploying Expo apps to iOS App Store, Android Play Store, web hosting, and API routes.', reason:'App Store deployment has platform-specific requirements. This skill covers them both.', alt:'expo-dev-client — for building and distributing development clients via TestFlight' },
-      { id:'expo-ui', label:'Native UI components — SwiftUI or Jetpack Compose', desc:'Using @expo/ui in Expo', skill:'expo-ui-swiftui', effect:'Uses SwiftUI Views and modifiers in an Expo app via @expo/ui/swift-ui.', reason:'SwiftUI in Expo requires specific patterns — this skill covers them.', alt:'expo-ui-jetpack-compose — for Jetpack Compose equivalent' },
-      { id:'expo-upgrade', label:'Upgrading Expo SDK version', desc:'Migration, breaking changes, dependency issues', skill:'upgrading-expo', effect:'Guidelines for upgrading Expo SDK versions and fixing dependency issues.', reason:'SDK upgrades have predictable breaking changes. This skill maps them so you don\'t hit them empirically.', alt:'expo-sdk-56 — specific guidance for SDK 56 breaking changes' },
-      { id:'eas-workflow', label:'EAS build or CI/CD pipeline', desc:'GitHub Actions, EAS Update, workflow YAML', skill:'expo-cicd-workflows', effect:'Helps understand and write EAS workflow YAML files for Expo projects.', reason:'EAS CI/CD has specific YAML patterns. This skill ensures they\'re correct.', alt:'eas-update-insights — for checking the health of published EAS Updates after deployment' },
-    ]
-  },
-  {
-    id:'supabase', label:'🗄 Supabase & Backend',
-    desc:"Database, auth, edge functions, storage",
-    situations:[
-      { id:'supabase-core', label:'General Supabase questions', desc:'Auth, database, edge functions, storage', skill:'supabase', effect:'Covers all Supabase products: Database, Auth, Edge Functions, Realtime, Storage, Vectors, Cron, Queues.', reason:'Supabase has many product areas. This skill routes to the right one.', alt:'supabase-js — for JavaScript/TypeScript client library patterns' },
-      { id:'supabase-testing', label:'Testing Supabase database or RLS policies', desc:'pgTAP, migration testing, policy verification', skill:'supabase-testing', effect:'Test Supabase databases using pgTAP and client-side test patterns. Covers CLI test runner, RLS policy testing, Edge Function testing.', reason:'Database testing requires pgTAP patterns that differ from application testing.', alt:'supabase-security — for RLS policy security auditing' },
-      { id:'supabase-auth', label:'OAuth, SSO, MFA, or auth configuration', desc:'Identity providers, social login, enterprise SSO', skill:'supabase-auth', effect:'Covers OAuth/OIDC setup, SAML SSO, MFA, anonymous auth, identity linking, and auth hooks.', reason:'Auth configuration has security implications. This skill ensures correct setup.', alt:'supabase-email — for email templates, SMTP, and magic link configuration' },
-      { id:'supabase-queues', label:'Background jobs, queues, cron', desc:'pgmq, scheduled tasks, message processing', skill:'supabase-queues', effect:'Covers pgmq extension, creating/managing queues, enqueue/dequeue patterns, dead-letter queues, Edge Function consumers.', reason:'Queue design has specific patterns — this skill covers them so you don\'t re-derive them.', alt:'supabase-cron — for scheduled recurring jobs vs one-shot queue messages' },
-      { id:'supabase-storage', label:'File storage, RLS policies, signed URLs', desc:'Bucket management, upload, access control', skill:'supabase-storage', effect:'Covers buckets, RLS policies, signed URLs, CDN optimization, image transformations, and resumable uploads.', reason:'Storage security (RLS policies) is commonly misconfigured. This skill ensures correct access control.', alt:'supabase-security — for security hardening across all Supabase products' },
-    ]
-  },
-  {
-    id:'surrealdb', label:'🗃 SurrealDB',
-    desc:"SurrealDB modeling, queries, and deployment",
-    situations:[
-      { id:'surrealdb-modeling', label:'Schema design or data modeling', desc:'SCHEMAFULL vs SCHEMALESS, define fields, types', skill:'surrealdb-schema-design', effect:'Schema design patterns: SCHEMAFULL vs SCHEMALESS, DEFINE FIELD depth, STRICT mode, naming conventions.', reason:'SurrealDB schema design differs significantly from SQL — this skill ensures you use the right patterns.', alt:'surrealdb-surrealql — for the full query language reference' },
-      { id:'surrealdb-queries', label:'Querying and data access', desc:'SELECT, RELATE, subqueries, functions', skill:'surrealdb-surrealql', effect:'Full SurrealQL reference: SELECT, CREATE, INSERT, UPSERT, UPDATE, DELETE, RELATE, DEFINE, transactions, subqueries, graph traversal.', reason:'SurrealQL has SQL-like syntax with significant differences — this reference prevents common mistakes.', alt:'surrealdb-optimization — for query performance and indexing strategies' },
-      { id:'surrealdb-deployment', label:'Deploying or operating SurrealDB', desc:'Self-hosting, Docker, cloud, backups', skill:'surrealdb-deployment', effect:'Deploying and operating SurrealDB in production: CLI flags, Docker, storage engines, config, cloud, backups, monitoring.', reason:'Production SurrealDB has operational requirements that differ from development.', alt:'surrealdb-security — for capabilities, authentication, and network hardening' },
-      { id:'surrealdb-testing', label:'Testing SurrealDB or writing test queries', desc:'SDK tests, direct SQL testing, fixtures', skill:'surrealdb-testing', effect:'Testing strategies: SDK integration tests, direct SurrealQL via HTTP, CLI validation, transaction assertions.', reason:'SurrealDB\'s embedded mode enables deterministic testing — this skill shows you how to use it.', alt:'surrealdb-js-sdk — for JavaScript/TypeScript SDK patterns alongside testing' },
     ]
   },
   {

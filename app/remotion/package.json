@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "type": "module",
   "scripts": {
-    "build": "remotion render src/Root.tsx BookCover out/book-cover.mp4",
+    "build": "remotion render src/index.ts BookCover out/book-cover.mp4",
     "preview": "remotion studio src/Root.tsx"
   },
   "dependencies": {
