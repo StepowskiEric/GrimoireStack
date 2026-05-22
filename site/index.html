@@ -3,252 +3,311 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>GrimoireStack — Agent Spellbook</title>
+<title>GrimoireStack — The Warlock's Tome of Agent Incantations</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;900&family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=MedievalSharp&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700;900&family=Cinzel:wght@400;600;700;900&family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600&family=MedievalSharp&family=Special+Elite&display=swap" rel="stylesheet">
 <style>
-/* ── Reset & Base ────────────────────────────────────── */
+/* ── Reset & Base ────────────────────────────────── */
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 html{scroll-behavior:smooth}
 body{
-  background:#0b0a0f;
-  color:#d4c9a8;
+  background:#07060b;
+  color:#c8b99a;
   font-family:'Cormorant Garamond',serif;
-  font-size:18px;
-  line-height:1.6;
+  font-size:19px;
+  line-height:1.65;
   min-height:100vh;
   overflow-x:hidden;
 }
 ::selection{background:rgba(212,175,55,.35);color:#f5e6c8}
 
-/* ── Animated Background ───────────────────────────── */
-#particles{
+/* ── Animated Ember Background ──────────────────── */
+#embers{
   position:fixed;inset:0;
   pointer-events:none;
   z-index:0;
   overflow:hidden;
 }
-.particle{
+.ember{
   position:absolute;
-  width:3px;height:3px;
-  background:#d4af37;
   border-radius:50%;
   opacity:0;
-  animation:float linear infinite;
+  animation:drift linear infinite;
 }
-@keyframes float{
-  0%{transform:translateY(100vh) scale(0);opacity:0}
-  10%{opacity:.6}
-  90%{opacity:.4}
-  100%{transform:translateY(-10vh) scale(1);opacity:0}
+.ember-amber{
+  width:4px;height:4px;
+  background:radial-gradient(circle,#ffaa33,#cc7722);
+  box-shadow:0 0 6px #cc772288,0 0 12px #cc772244;
+}
+.ember-gold{
+  width:3px;height:3px;
+  background:radial-gradient(circle,#ffdd55,#d4af37);
+  box-shadow:0 0 6px #d4af3788,0 0 12px #d4af3744;
+}
+.ember-rune{
+  width:5px;height:5px;
+  background:radial-gradient(circle,#aa88ff,#6633cc);
+  box-shadow:0 0 8px #6633cc88,0 0 16px #6633cc44;
+}
+@keyframes drift{
+  0%{transform:translateY(100vh) translateX(0) scale(0);opacity:0}
+  8%{opacity:1}
+  85%{opacity:.6}
+  100%{transform:translateY(-10vh) translateX(40px) scale(1);opacity:0}
 }
 
-/* ── Background Gradient Overlay ──────────────────── */
+/* ── Background Overlay ─────────────────────────── */
 body::before{
   content:'';
   position:fixed;inset:0;
   background:
-    radial-gradient(ellipse 80% 60% at 50% 0%, rgba(100,70,30,.12) 0%, transparent 70%),
-    radial-gradient(ellipse 60% 50% at 50% 100%, rgba(60,40,100,.08) 0%, transparent 70%);
+    radial-gradient(ellipse 90% 60% at 50% 0%, rgba(180,80,20,.06) 0%, transparent 70%),
+    radial-gradient(ellipse 70% 50% at 50% 100%, rgba(80,30,120,.05) 0%, transparent 60%),
+    repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(255,255,255,.005) 2px, rgba(255,255,255,.005) 3px);
   pointer-events:none;z-index:0;
 }
 
-/* ── Header ──────────────────────────────────────────── */
+/* ── Header ─────────────────────────────────────── */
 header{
   position:relative;z-index:2;
   text-align:center;
-  padding:60px 20px 30px;
+  padding:50px 20px 20px;
+}
+header .wax-seal{
+  width:80px;height:80px;
+  margin:0 auto 18px;
+  background:radial-gradient(circle at 40% 35%, #9a1a1a, #5a0a0a 60%, #3a0505);
+  border-radius:50%;
+  border:3px solid #d4af37;
+  display:flex;align-items:center;justify-content:center;
+  font-family:'Cinzel Decorative',serif;
+  font-size:1.8rem;color:#d4af37;
+  box-shadow:0 0 30px rgba(212,175,55,.15),inset 0 0 20px rgba(0,0,0,.4);
+  position:relative;
+}
+header .wax-seal::after{
+  content:'';position:absolute;inset:6px;
+  border:1px solid rgba(212,175,55,.2);
+  border-radius:50%;
 }
 header h1{
-  font-family:'Cinzel',serif;
+  font-family:'Cinzel Decorative',serif;
   font-weight:900;
-  font-size:clamp(2rem,6vw,4.5rem);
+  font-size:clamp(1.8rem,5vw,4rem);
   color:#d4af37;
-  text-shadow:0 0 40px rgba(212,175,55,.25),0 0 80px rgba(212,175,55,.1);
-  letter-spacing:.12em;
-  text-transform:uppercase;
+  text-shadow:
+    0 0 40px rgba(212,175,55,.2),
+    0 0 80px rgba(212,175,55,.08),
+    2px 2px 0px #00000040;
+  letter-spacing:.08em;
 }
 header .subtitle{
   font-family:'Cinzel',serif;
   font-weight:400;
-  font-size:clamp(.85rem,2vw,1.2rem);
-  color:#8a7a5a;
-  letter-spacing:.35em;
+  font-size:clamp(.75rem,1.5vw,.95rem);
+  color:#6a5a3a;
+  letter-spacing:.3em;
   text-transform:uppercase;
-  margin-top:8px;
+  margin-top:6px;
 }
-header .ornament{
-  color:#5a4a2a;
-  font-size:1.6rem;
-  margin-top:10px;
-  letter-spacing:.5em;
+header .flare{
+  display:flex;align-items:center;justify-content:center;
+  gap:16px;margin-top:12px;
+  color:#3a2a1a;font-size:1.2rem;
+}
+header .flare span{display:inline-block;animation:flarePulse 3s ease-in-out infinite}
+header .flare span:nth-child(2){animation-delay:.5s}
+header .flare span:nth-child(3){animation-delay:1s}
+@keyframes flarePulse{
+  0%,100%{opacity:.3}
+  50%{opacity:.7}
 }
 
-/* ── School Tabs ────────────────────────────────────── */
+/* ── Tab Bar ────────────────────────────────────── */
 .tabs-wrapper{
   position:relative;z-index:2;
-  max-width:1400px;
-  margin:0 auto;
-  padding:0 20px;
+  max-width:1400px;margin:0 auto;padding:0 16px;
 }
 .tabs{
-  display:flex;
-  flex-wrap:wrap;
-  gap:6px;
-  justify-content:center;
-  margin-bottom:40px;
+  display:flex;flex-wrap:wrap;gap:5px;
+  justify-content:center;margin-bottom:30px;
 }
 .tab-btn{
   font-family:'Cinzel',serif;
-  font-size:.72rem;
-  font-weight:600;
-  letter-spacing:.04em;
-  text-transform:uppercase;
-  padding:8px 16px;
-  border:1px solid rgba(212,175,55,.2);
-  border-radius:4px;
-  background:rgba(20,15,30,.6);
-  color:#8a7a5a;
+  font-size:.65rem;font-weight:600;
+  letter-spacing:.03em;text-transform:uppercase;
+  padding:7px 12px;
+  border:1px solid rgba(212,175,55,.12);
+  border-radius:3px;
+  background:linear-gradient(135deg, rgba(20,15,30,.7), rgba(15,10,20,.7));
+  color:#6a5a3a;
   cursor:pointer;
-  transition:all .3s ease;
+  transition:all .35s ease;
   white-space:nowrap;
 }
 .tab-btn:hover{
-  border-color:rgba(212,175,55,.5);
+  border-color:rgba(212,175,55,.4);
   color:#d4af37;
-  background:rgba(30,22,40,.8);
-  box-shadow:0 0 15px rgba(212,175,55,.08);
+  background:linear-gradient(135deg, rgba(30,22,40,.9), rgba(20,15,30,.9));
+  box-shadow:0 0 12px rgba(212,175,55,.06);
 }
 .tab-btn.active{
-  border-color:#d4af37;
+  border-color:rgba(212,175,55,.6);
   color:#d4af37;
-  background:rgba(40,30,50,.9);
-  box-shadow:0 0 20px rgba(212,175,55,.12);
+  background:linear-gradient(135deg, rgba(40,30,55,.95), rgba(25,18,35,.95));
+  box-shadow:0 0 20px rgba(212,175,55,.1),inset 0 0 15px rgba(212,175,55,.03);
 }
+.tab-btn .real-name{
+  display:block;
+  font-family:'Cormorant Garamond',serif;
+  font-size:.6rem;text-transform:none;
+  color:#5a4a3a;letter-spacing:.02em;
+  margin-top:1px;
+  font-weight:400;
+}
+.tab-btn.active .real-name{color:#7a6a4a}
 
-/* ── Search ─────────────────────────────────────────── */
+/* ── Search ─────────────────────────────────────── */
 .search-wrapper{
   position:relative;z-index:2;
-  max-width:500px;
-  margin:0 auto 30px;
-  padding:0 20px;
+  max-width:420px;margin:0 auto 25px;padding:0 16px;
 }
 .search-wrapper input{
   width:100%;
-  padding:12px 18px 12px 44px;
-  background:rgba(20,15,30,.7);
-  border:1px solid rgba(212,175,55,.15);
-  border-radius:6px;
-  color:#d4c9a8;
+  padding:10px 14px 10px 38px;
+  background:rgba(15,10,25,.8);
+  border:1px solid rgba(212,175,55,.1);
+  border-radius:4px;
+  color:#c8b99a;
   font-family:'Cormorant Garamond',serif;
-  font-size:1.05rem;
+  font-size:1rem;
   outline:none;
   transition:border-color .3s,box-shadow .3s;
 }
 .search-wrapper input:focus{
-  border-color:rgba(212,175,55,.5);
-  box-shadow:0 0 20px rgba(212,175,55,.08);
+  border-color:rgba(212,175,55,.35);
+  box-shadow:0 0 15px rgba(212,175,55,.05);
 }
-.search-wrapper input::placeholder{color:#5a4a3a}
+.search-wrapper input::placeholder{color:#4a3a2a;font-style:italic}
 .search-wrapper .search-icon{
-  position:absolute;
-  left:30px;top:50%;
+  position:absolute;left:27px;top:50%;
   transform:translateY(-50%);
-  color:#5a4a3a;
-  font-size:1.1rem;
+  color:#4a3a2a;font-size:1rem;
   pointer-events:none;
 }
 
-/* ── Grimoire Book ──────────────────────────────────── */
+/* ── Grimoire Book ──────────────────────────────── */
 .grimoire{
   position:relative;z-index:2;
-  max-width:1400px;
-  margin:0 auto 60px;
-  padding:0 20px;
+  max-width:1400px;margin:0 auto 50px;padding:0 16px;
 }
 .book-spread{
-  display:grid;
-  grid-template-columns:1fr;
-  gap:0;
-  background:
-    radial-gradient(ellipse 100% 100% at 50% 50%, rgba(30,22,40,.9), rgba(15,10,20,.95));
-  border:1px solid rgba(212,175,55,.12);
-  border-radius:12px;
-  padding:30px 24px;
   position:relative;
+  background:
+    radial-gradient(ellipse 120% 100% at 50% 50%, rgba(28,18,38,.92), rgba(12,8,18,.96));
+  border:2px solid rgba(212,175,55,.1);
+  border-radius:6px;
+  padding:40px 30px;
   box-shadow:
-    0 0 60px rgba(0,0,0,.5),
-    inset 0 0 60px rgba(212,175,55,.03);
+    0 0 80px rgba(0,0,0,.6),
+    0 0 30px rgba(212,175,55,.03),
+    inset 0 0 80px rgba(212,175,55,.02);
+  min-height:300px;
 }
+/* Corner ornaments */
 .book-spread::before{
-  content:'';
+  content:'⚜';position:absolute;
+  top:12px;left:18px;
+  font-size:1.2rem;color:rgba(212,175,55,.08);
+}
+.book-spread::after{
+  content:'⚜';position:absolute;
+  bottom:12px;right:18px;
+  font-size:1.2rem;color:rgba(212,175,55,.08);
+  transform:rotate(180deg);
+}
+/* Book spine effect */
+.book-spread .spine-line{
+  position:absolute;top:0;bottom:0;left:50%;
+  width:1px;
+  background:linear-gradient(to bottom, transparent 5%, rgba(212,175,55,.08) 20%, rgba(212,175,55,.08) 80%, transparent 95%);
+  pointer-events:none;
+}
+/* Page edge glow */
+.book-spread .page-edge{
   position:absolute;
-  inset:8px;
-  border:1px solid rgba(212,175,55,.06);
-  border-radius:8px;
+  left:0;right:0;top:0;height:3px;
+  background:linear-gradient(90deg, transparent 5%, rgba(212,175,55,.06) 20%, rgba(212,175,55,.06) 80%, transparent 95%);
+  pointer-events:none;
+}
+.book-spread .page-edge-bottom{
+  position:absolute;
+  left:0;right:0;bottom:0;height:3px;
+  background:linear-gradient(90deg, transparent 5%, rgba(212,175,55,.06) 20%, rgba(212,175,55,.06) 80%, transparent 95%);
   pointer-events:none;
 }
 
-/* ── School Section ─────────────────────────────────── */
-.school-section{display:none}
+/* ── School Section ─────────────────────────────── */
+.school-section{display:none;animation:fadeIn .5s ease}
 .school-section.active{display:block}
+@keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+
 .school-header{
-  text-align:center;
-  margin-bottom:30px;
-  padding-bottom:20px;
-  border-bottom:1px solid rgba(212,175,55,.1);
+  text-align:center;margin-bottom:25px;
+  padding-bottom:18px;
+  border-bottom:1px solid rgba(212,175,55,.08);
+  position:relative;
 }
-.school-header .school-symbol{
-  font-size:2rem;
-  color:#d4af37;
-  display:block;
-  margin-bottom:6px;
+.school-header::after{
+  content:'◈';position:absolute;
+  bottom:-9px;left:50%;transform:translateX(-50%);
+  font-size:.7rem;color:rgba(212,175,55,.15);
+  background:#0e0a14;padding:0 10px;
 }
+.school-header .school-symbol{font-size:2rem;display:block;margin-bottom:4px}
 .school-header h2{
   font-family:'Cinzel',serif;
   font-weight:700;
-  font-size:clamp(1.3rem,3vw,2rem);
-  color:#d4af37;
-  letter-spacing:.08em;
+  font-size:clamp(1.1rem,2.5vw,1.7rem);
+  color:#d4af37;letter-spacing:.06em;
 }
 .school-header .school-desc{
-  font-style:italic;
-  color:#8a7a5a;
-  font-size:.95rem;
-  margin-top:4px;
+  font-style:italic;color:#8a7a5a;font-size:.9rem;margin-top:3px;
 }
-.spell-count{
-  display:inline-block;
-  font-family:'Cinzel',serif;
-  font-size:.7rem;
+.school-meta{
+  display:flex;justify-content:center;gap:14px;margin-top:8px;
+  font-family:'Cinzel',serif;font-size:.6rem;text-transform:uppercase;
+  letter-spacing:.06em;
+}
+.school-meta .school-count{
   color:#6a5a3a;
-  border:1px solid rgba(212,175,55,.1);
-  padding:2px 10px;
-  border-radius:10px;
-  margin-top:8px;
-  letter-spacing:.05em;
+  border:1px solid rgba(212,175,55,.08);
+  padding:2px 10px;border-radius:8px;
+}
+.school-meta .school-real{
+  color:#5a4a3a;
+  font-family:'Cormorant Garamond',serif;
+  text-transform:none;letter-spacing:.02em;
+  font-size:.75rem;font-style:italic;
+  border:1px solid rgba(212,175,55,.06);
+  padding:2px 10px;border-radius:8px;
 }
 
-/* ── Spell Grid ─────────────────────────────────────── */
+/* ── Spell Grid ─────────────────────────────────── */
 .spell-grid{
   display:grid;
   grid-template-columns:1fr;
-  gap:16px;
+  gap:12px;
 }
-@media(min-width:768px){
-  .book-spread{padding:40px 36px}
-  .spell-grid{grid-template-columns:1fr 1fr}
-}
-@media(min-width:1100px){
-  .spell-grid{grid-template-columns:1fr 1fr 1fr}
-}
+@media(min-width:700px){.spell-grid{grid-template-columns:1fr 1fr}}
+@media(min-width:1100px){.spell-grid{grid-template-columns:1fr 1fr 1fr}}
 
-/* ── Spell Card ─────────────────────────────────────── */
+/* ── Spell Card ─────────────────────────────────── */
 .spell-card{
-  background:linear-gradient(135deg, rgba(30,22,40,.7), rgba(20,15,30,.7));
-  border:1px solid rgba(212,175,55,.08);
-  border-radius:8px;
-  padding:18px;
+  background:linear-gradient(145deg, rgba(25,18,35,.75), rgba(18,12,25,.75));
+  border:1px solid rgba(212,175,55,.06);
+  border-radius:5px;
+  padding:16px 18px;
   cursor:pointer;
   transition:all .4s ease;
   position:relative;
@@ -256,117 +315,223 @@ header .ornament{
 }
 .spell-card::before{
   content:'';
-  position:absolute;
-  top:-50%;left:-50%;
-  width:200%;height:200%;
-  background:radial-gradient(circle at 30% 20%, rgba(212,175,55,.03), transparent 60%);
+  position:absolute;top:-60%;left:-60%;
+  width:220%;height:220%;
+  background:radial-gradient(circle at 25% 20%, rgba(212,175,55,.03), transparent 55%);
   opacity:0;
-  transition:opacity .5s ease;
+  transition:opacity .6s ease;
+  pointer-events:none;
+}
+.spell-card::after{
+  content:'✦';
+  position:absolute;bottom:8px;right:10px;
+  font-size:.5rem;color:rgba(212,175,55,.04);
+  pointer-events:none;
 }
 .spell-card:hover{
-  border-color:rgba(212,175,55,.25);
+  border-color:rgba(212,175,55,.18);
   transform:translateY(-2px);
-  box-shadow:0 8px 30px rgba(0,0,0,.3),0 0 20px rgba(212,175,55,.05);
+  box-shadow:
+    0 8px 25px rgba(0,0,0,.3),
+    0 0 15px rgba(212,175,55,.04);
 }
 .spell-card:hover::before{opacity:1}
 .spell-card .spell-tier{
   font-family:'Cinzel',serif;
-  font-size:.6rem;
-  text-transform:uppercase;
-  letter-spacing:.1em;
-  color:#6a5a3a;
-  margin-bottom:6px;
+  font-size:.55rem;text-transform:uppercase;
+  letter-spacing:.08em;
+  color:#6a5a3a;margin-bottom:5px;
 }
 .spell-card .spell-name{
   font-family:'Cinzel',serif;
   font-weight:600;
-  font-size:1rem;
-  color:#d4c9a8;
-  margin-bottom:4px;
+  font-size:1rem;color:#d4c9a8;
   line-height:1.3;
 }
 .spell-card .spell-incantation{
-  font-family:'MedievalSharp',cursive;
-  font-size:.8rem;
-  color:#6b5a4a;
-  margin-bottom:8px;
-  font-style:italic;
+  font-family:'Special Elite',cursive;
+  font-size:.7rem;color:#5a4a3a;
+  margin:2px 0 6px;
 }
 .spell-card .spell-effect{
-  font-size:.92rem;
-  color:#a89878;
-  line-height:1.5;
+  font-size:.88rem;color:#a89878;line-height:1.45;
+  display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;
+}
+.spell-card .spell-footer{
+  display:flex;align-items:center;justify-content:space-between;
+  margin-top:8px;
 }
 .spell-card .spell-status{
-  display:inline-block;
   font-family:'Cinzel',serif;
-  font-size:.55rem;
-  text-transform:uppercase;
-  letter-spacing:.08em;
-  padding:2px 10px;
-  border-radius:8px;
-  margin-top:10px;
-  border:1px solid;
+  font-size:.5rem;text-transform:uppercase;
+  letter-spacing:.06em;padding:2px 8px;
+  border-radius:6px;border:1px solid;
 }
-.spell-card .spell-status.proven{color:#6aaa6a;border-color:rgba(106,170,106,.2);background:rgba(106,170,106,.05)}
-.spell-card .spell-status.new{color:#c9a84c;border-color:rgba(201,168,76,.2);background:rgba(201,168,76,.05)}
-.spell-card .spell-status.framework{color:#8a7aaa;border-color:rgba(138,122,170,.2);background:rgba(138,122,170,.05)}
-.spell-card .spell-status.hybrid{color:#7ab8c9;border-color:rgba(122,184,201,.2);background:rgba(122,184,201,.05)}
-.spell-card .spell-status.includes{color:#c97a7a;border-color:rgba(201,122,122,.2);background:rgba(201,122,122,.05)}
+.spell-card .spell-status.proven{color:#6aaa6a;border-color:rgba(106,170,106,.15);background:rgba(106,170,106,.04)}
+.spell-card .spell-status.new{color:#c9a84c;border-color:rgba(201,168,76,.15);background:rgba(201,168,76,.04)}
+.spell-card .spell-status.framework{color:#8a7aaa;border-color:rgba(138,122,170,.15);background:rgba(138,122,170,.04)}
+.spell-card .spell-status.hybrid{color:#7ab8c9;border-color:rgba(122,184,201,.15);background:rgba(122,184,201,.04)}
+.spell-card .spell-status.includes{color:#c97a7a;border-color:rgba(201,122,122,.15);background:rgba(201,122,122,.04)}
+.spell-card .spell-reveal-hint{
+  font-family:'Cormorant Garamond',serif;
+  font-style:italic;font-size:.7rem;color:#4a3a2a;
+  transition:color .3s;
+}
+.spell-card:hover .spell-reveal-hint{color:#6a5a3a}
 
-/* ── Empty State ────────────────────────────────────── */
+/* ── Spell Detail Modal ─────────────────────────── */
+.modal-overlay{
+  display:none;
+  position:fixed;inset:0;
+  background:rgba(0,0,0,.7);
+  z-index:100;
+  align-items:center;justify-content:center;
+  padding:20px;
+  backdrop-filter:blur(4px);
+  -webkit-backdrop-filter:blur(4px);
+}
+.modal-overlay.open{display:flex}
+.modal{
+  background:linear-gradient(160deg, rgba(28,18,38,.98), rgba(15,10,22,.98));
+  border:1px solid rgba(212,175,55,.15);
+  border-radius:6px;
+  max-width:580px;width:100%;
+  max-height:90vh;overflow-y:auto;
+  padding:35px 30px;
+  position:relative;
+  box-shadow:
+    0 0 60px rgba(0,0,0,.5),
+    0 0 30px rgba(212,175,55,.05),
+    inset 0 0 40px rgba(212,175,55,.02);
+  animation:modalIn .35s ease;
+}
+@keyframes modalIn{from{opacity:0;transform:scale(.92) translateY(10px)}to{opacity:1;transform:scale(1) translateY(0)}}
+.modal .modal-close{
+  position:absolute;top:12px;right:16px;
+  background:none;border:none;
+  color:#5a4a3a;font-size:1.5rem;
+  cursor:pointer;transition:color .3s;
+  font-family:'Cormorant Garamond',serif;
+  line-height:1;
+}
+.modal .modal-close:hover{color:#d4af37}
+.modal .modal-symbol{
+  font-size:2.2rem;display:block;margin-bottom:6px;
+}
+.modal .modal-school{
+  font-family:'Cinzel',serif;
+  font-size:.65rem;text-transform:uppercase;
+  letter-spacing:.08em;color:#6a5a3a;margin-bottom:2px;
+}
+.modal .modal-school .modal-school-real{
+  font-family:'Cormorant Garamond',serif;
+  text-transform:none;letter-spacing:.02em;
+  font-size:.8rem;color:#5a4a3a;font-style:italic;
+}
+.modal .modal-title{
+  font-family:'Cinzel',serif;
+  font-weight:700;font-size:1.5rem;
+  color:#d4af37;margin-bottom:2px;
+  text-shadow:0 0 20px rgba(212,175,55,.1);
+}
+.modal .modal-incantation{
+  font-family:'Special Elite',cursive;
+  font-size:.85rem;color:#6a5a3a;
+  margin-bottom:16px;
+  padding-bottom:12px;
+  border-bottom:1px solid rgba(212,175,55,.08);
+}
+.modal .modal-section-title{
+  font-family:'Cinzel',serif;
+  font-size:.6rem;text-transform:uppercase;
+  letter-spacing:.08em;color:#6a5a3a;margin-bottom:4px;
+}
+.modal .modal-effect{
+  font-size:1rem;color:#c8b99a;line-height:1.6;
+  margin-bottom:16px;
+}
+.modal .modal-detail-row{
+  display:flex;gap:12px;
+  padding:8px 0;
+  border-bottom:1px solid rgba(212,175,55,.04);
+}
+.modal .modal-detail-row:last-child{border-bottom:none}
+.modal .modal-detail-label{
+  font-family:'Cinzel',serif;
+  font-size:.55rem;text-transform:uppercase;
+  letter-spacing:.06em;color:#6a5a3a;
+  min-width:80px;
+}
+.modal .modal-detail-value{
+  font-size:.9rem;color:#a89878;
+}
+.modal .modal-detail-value .tag{
+  display:inline-block;
+  font-family:'Cinzel',serif;font-size:.5rem;
+  text-transform:uppercase;letter-spacing:.05em;
+  padding:2px 8px;border-radius:6px;border:1px solid;
+}
+.modal .modal-detail-value .tag.proven{color:#6aaa6a;border-color:rgba(106,170,106,.15)}
+.modal .modal-detail-value .tag.new{color:#c9a84c;border-color:rgba(201,168,76,.15)}
+.modal .modal-detail-value .tag.framework{color:#8a7aaa;border-color:rgba(138,122,170,.15)}
+.modal .modal-detail-value .tag.hybrid{color:#7ab8c9;border-color:rgba(122,184,201,.15)}
+.modal .modal-detail-value .tag.includes{color:#c97a7a;border-color:rgba(201,122,122,.15)}
+.modal .modal-grimoire-ref{
+  text-align:center;margin-top:20px;
+  padding-top:14px;
+  border-top:1px solid rgba(212,175,55,.06);
+}
+.modal .modal-grimoire-ref code{
+  font-family:'Special Elite',cursive;
+  font-size:.75rem;color:#5a4a3a;
+  background:rgba(0,0,0,.2);
+  padding:3px 10px;border-radius:3px;
+}
+
+/* ── No Results ─────────────────────────────────── */
 .no-spells{
-  text-align:center;
-  padding:40px 20px;
-  color:#5a4a3a;
-  font-style:italic;
-  font-size:1.1rem;
+  text-align:center;padding:30px 20px;
+  color:#4a3a2a;font-style:italic;font-size:1.05rem;
   grid-column:1/-1;
 }
 
-/* ── Footer ─────────────────────────────────────────── */
+/* ── Footer ─────────────────────────────────────── */
 footer{
   position:relative;z-index:2;
-  text-align:center;
-  padding:30px 20px 50px;
-  color:#4a3a2a;
-  font-size:.85rem;
+  text-align:center;padding:25px 20px 40px;
+  color:#3a2a1a;font-size:.8rem;
 }
-footer .footer-ornament{
-  color:#3a2a1a;
-  letter-spacing:.3em;
-  font-size:1.2rem;
-  display:block;
-  margin-bottom:8px;
-}
-footer a{color:#6a5a3a;text-decoration:none}
+footer .footer-ornament{color:#2a1a0a;letter-spacing:.3em;font-size:1.1rem;display:block;margin-bottom:6px}
+footer a{color:#5a4a3a;text-decoration:none;transition:color .3s}
 footer a:hover{color:#d4af37}
 
-/* ── Responsive ─────────────────────────────────────── */
-@media(max-width:500px){
-  .tabs{gap:4px}
-  .tab-btn{font-size:.65rem;padding:6px 10px}
-  .book-spread{padding:20px 14px;border-radius:8px}
-  .spell-card{padding:14px}
+/* ── Responsive ─────────────────────────────────── */
+@media(max-width:600px){
+  .book-spread{padding:25px 16px;border-radius:4px}
+  .spell-card{padding:12px 14px}
+  .modal{padding:25px 20px}
+  .tab-btn{font-size:.6rem;padding:5px 8px}
+  header .wax-seal{width:60px;height:60px;font-size:1.3rem}
 }
 </style>
 </head>
 <body>
 
-<!-- Particles -->
-<div id="particles"></div>
+<!-- Embers -->
+<div id="embers"></div>
 
 <!-- Header -->
 <header>
-  <h1>✧ GrimoireStack ✧</h1>
-  <div class="subtitle">A Curious Collection of Agent Incantations</div>
-  <div class="ornament">⚜ ──── ❖ ──── ⚜</div>
+  <div class="wax-seal">⛧</div>
+  <h1>GrimoireStack</h1>
+  <div class="subtitle">The Warlock's Tome of Agent Incantations</div>
+  <div class="flare"><span>⚜</span><span>✦</span><span>⚜</span></div>
 </header>
 
 <!-- Search -->
 <div class="search-wrapper">
   <span class="search-icon">⟐</span>
-  <input type="text" id="searchInput" placeholder="Search spells by name or incantation…" autocomplete="off">
+  <input type="text" id="searchInput" placeholder="Search by spell name, incantation, or effect…" autocomplete="off">
 </div>
 
 <!-- Tabs -->
@@ -376,310 +541,323 @@ footer a:hover{color:#d4af37}
 
 <!-- Grimoire -->
 <main class="grimoire">
-  <div class="book-spread" id="bookSpread"></div>
+  <div class="book-spread" id="bookSpread">
+    <div class="spine-line"></div>
+    <div class="page-edge"></div>
+    <div class="page-edge-bottom"></div>
+  </div>
 </main>
+
+<!-- Spell Detail Modal -->
+<div class="modal-overlay" id="modalOverlay">
+  <div class="modal" id="modal">
+    <button class="modal-close" id="modalClose">✕</button>
+    <span class="modal-symbol" id="modalSymbol">⚔</span>
+    <div class="modal-school"><span id="modalSchool"></span> <span class="modal-school-real" id="modalSchoolReal"></span></div>
+    <div class="modal-title" id="modalTitle">—</div>
+    <div class="modal-incantation" id="modalIncantation">〈 — 〉</div>
+    <div class="modal-section-title">✦ Effect</div>
+    <div class="modal-effect" id="modalEffect">—</div>
+    <div class="modal-detail-row">
+      <div class="modal-detail-label">Status</div>
+      <div class="modal-detail-value"><span class="tag" id="modalStatus">—</span></div>
+    </div>
+    <div class="modal-detail-row">
+      <div class="modal-detail-label">Skill Path</div>
+      <div class="modal-detail-value" id="modalPath">—</div>
+    </div>
+    <div class="modal-grimoire-ref">
+      <code id="modalRef">〈 grimoirestack:unknown 〉</code>
+    </div>
+  </div>
+</div>
 
 <!-- Footer -->
 <footer>
   <span class="footer-ornament">⚜ ❦ ⚜</span>
   <p>GrimoireStack &copy; 2026 &middot; Forge your own incantations</p>
-  <p><a href="https://github.com/StepowskiEric/GrimoireStack" target="_blank">⇢ Discover more on GitHub ⇠</a></p>
+  <p><a href="https://github.com/StepowskiEric/GrimoireStack" target="_blank">⟐ Browse the source on GitHub ⟐</a></p>
 </footer>
 
 <script>
 // ══════════════════════════════════════════════════════════════
-//  SPELL DATA — Each school is a grimoire chapter
+//  SCHOOLS & SPELLS
 // ══════════════════════════════════════════════════════════════
 
 const schools = [
   {
-    id:'debugging',
-    name:'School of Remediation',
-    symbol:'⚔',
+    id:'debugging',real:'Debugging',
+    name:'School of Remediation',symbol:'⚔',
     desc:'Incantations to banish bugs and restore order to broken code.',
     spells:[
-      {name:'Trace Sight',skill:'log-trace-correlation',effect:'Maps stack traces to source, inspects context, suggests the fix.',status:'Proven'},
-      {name:'Bisect Divination',skill:'bisect-debugging',effect:'Binary searches commit history to isolate the exact change that broke the world.',status:'Proven'},
-      {name:'Debug Familiar',skill:'debug-subagent',effect:'Conjures a dedicated subagent that enforces debug-before-edit discipline.',status:'Proven'},
-      {name:'Purify Vision',skill:'purify-test-output',effect:'Slices noisy test output to reveal only the failure-relevant lines.',status:'Proven'},
-      {name:'Instrumentation Charm',skill:'simulate-instrumentation',effect:'Injects temporary prints at key points to capture runtime state.',status:'Proven'},
-      {name:'Iterative Mend',skill:'iterative-patch-repair',effect:'Loops patch → test → refine → augment until the bug yields.',status:'Proven'},
-      {name:'Root Cause Revelation',skill:'root-cause-analysis',effect:'5 Whys and Ishikawa diagrams to find the true cause, not the symptom.',status:'Framework'},
-      {name:'Issue Graph Walk',skill:'debug-issue',effect:'Graph-powered code navigation to trace issues through the system.',status:'Framework'},
-      {name:'Pipeline of Restoration',skill:'debug-to-fix-pipeline',effect:'Fuses five debugging disciplines into one sequential ritual.',status:'Hybrid'},
-      {name:'Test Oracle',skill:'unit-test-debugging',effect:'Determines whether the test or the code is the source of truth before fixing.',status:'New'},
-      {name:'Jest Invocation',skill:'jest-testing',effect:'Full reference for Jest matchers, async patterns, mocking, and config.',status:'New'},
-      {name:'Remote Viewing',skill:'explore-codebase',effect:'Navigates unfamiliar code with graph-powered token efficiency.',status:'Framework'},
-      {name:'Divide & Conquer',skill:'codebase-divide-conquer-search',effect:'Hierarchical summarization + parallel sub-agent deep dives for large codebases.',status:'Proven'},
-      {name:'Scout\'s Trail',skill:'navigator',effect:'Scout + Thought-Retriever build a retrievable reasoning trail through unknown code.',status:'—'},
-      {name:'Occam\'s Verdict',skill:'occam-root-cause',effect:'Selects the simplest causal chain from competing root cause candidates.',status:'New'},
-      {name:'Spectral Analysis',skill:'specter',effect:'Abductive hypotheses + structural code location — reason backwards from symptom.',status:'—'},
-      {name:'Endurance Ward',skill:'long-task-survival-kit',effect:'Checkpoints every 5 calls to prevent context decay on long debugging sessions.',status:'—'},
-      {name:'Temporal Rewind',skill:'time-traveling-debugger',effect:'Forward trace + backward rewind to find where state first diverged from expected.',status:'Includes MCP server'},
-      {name:'Environment Exorcism',skill:'environment-recovery',effect:'Structured vitals check + targeted repair for disk, versions, caches, ports, permissions.',status:'New'},
-      {name:'Network Divination',skill:'network-api-debugging',effect:'Captures actual traffic, diagnoses by status code, fixes by failure type.',status:'New'},
-      {name:'Minimal Summoning',skill:'minimal-reproduction',effect:'Writes the smallest possible test that demonstrates the bug, then debugs with ammunition.',status:'New'},
-      {name:'Occam\'s Ladder',skill:'occam-minimal-repro',effect:'Ranks triggers by complexity, tests simplest first, stops at first tier that reproduces.',status:'New'},
-      {name:'Escalation Rite',skill:'escalation-ladder',effect:'5-level protocol: self-correct → strategy change → rubber duck → scope reduction → retreat.',status:'New'},
-      {name:'Coordinated Strike',skill:'coordinated-change',effect:'Map change set, order dependencies, edit atomically, verify consistency.',status:'New'},
+      {name:'Trace Sight',skill:'log-trace-correlation',effect:'Maps stack traces to source code, inspects context around the failure, and suggests the most likely fix. Best when you already have an error log or crash report in hand.',status:'Proven'},
+      {name:'Bisect Divination',skill:'bisect-debugging',effect:'Binary searches the commit history to isolate the exact change that introduced the bug. Fastest path to "what changed" when you know tests used to pass.',status:'Proven',note:'+9.9% speed'},
+      {name:'Debug Familiar',skill:'debug-subagent',effect:'Conjures a dedicated debugging subagent that enforces a debug-before-edit workflow. Proven to increase fix rate by 13-22% over editing without diagnosis.',status:'Proven'},
+      {name:'Purify Vision',skill:'purify-test-output',effect:'Slices noisy test output down to only the failure-relevant lines. Reduces token consumption by ~18.6% and focuses the LLM on the actual bug.',status:'Proven'},
+      {name:'Instrumentation Charm',skill:'simulate-instrumentation',effect:'Auto-inserts temporary print/logging statements at key code points, runs the failing test, and captures runtime state. The captured values feed directly into debugging.',status:'Proven'},
+      {name:'Iterative Mend',skill:'iterative-patch-repair',effect:'Loops patch → test → capture runtime → refine → augment the patch. Max N iterations with patch augmentation to avoid overfitting. +19.9% from augmentation alone.',status:'Proven'},
+      {name:'Root Cause Revelation',skill:'root-cause-analysis',effect:'Applies 5 Whys and Ishikawa (fishbone) diagrams to trace from symptom to true underlying cause. Prevents treating symptoms while the real defect remains.',status:'Framework'},
+      {name:'Issue Graph Walk',skill:'debug-issue',effect:'Graph-powered code navigation that traces issues through the system along dataflow and call-graph edges rather than guessing.',status:'Framework'},
+      {name:'Pipeline of Restoration',skill:'debug-to-fix-pipeline',effect:'Fuses five research-backed debugging disciplines into one sequential 6-phase ritual. Each phase increases evidence quality while reducing token waste.',status:'Hybrid'},
+      {name:'Test Oracle',skill:'unit-test-debugging',effect:'Determines whether a failing test or the code under test is the source of truth. Prevents the agent from blindly "fixing" a correct implementation to match a wrong test.',status:'New'},
+      {name:'Jest Invocation',skill:'jest-testing',effect:'Complete reference for writing correct Jest tests: matchers, async patterns, mocking strategies, configuration, and React Native specifics.',status:'New'},
+      {name:'Remote Viewing',skill:'explore-codebase',effect:'Navigates unfamiliar code using graph-powered token-efficient exploration. Progressive deepening from module structure to line-level detail.',status:'Framework'},
+      {name:'Divide & Conquer',skill:'codebase-divide-conquer-search',effect:'Hierarchical codebase summarization → semantic partitioning → parallel sub-agent deep dives → ranked results with confidence scores. For finding code in massive repos.',status:'Proven'},
+      {name:'Scout\'s Trail',skill:'navigator',effect:'A scout sub-agent reads and distills file context for the main model; a thought-retriever stores the distilled reasoning as retrievable traces. Builds a living investigation trail.',status:'—'},
+      {name:'Occam\'s Verdict',skill:'occam-root-cause',effect:'Generates competing causal chains from observed symptoms, selects the simplest that fits all evidence, and verifies through falsification before committing to a fix.',status:'New'},
+      {name:'Spectral Analysis',skill:'specter',effect:'Generates competing hypotheses (abductive reasoning) then locates code structurally — no keyword grepping, no root-cause guessing. Reason backwards from the symptom.',status:'—'},
+      {name:'Endurance Ward',skill:'long-task-survival-kit',effect:'Every 5 calls: checkpoint context, verify trajectory, re-ground assumptions. Prevents context overflow, failure spirals, and hallucinated facts on long debugging sessions.',status:'—'},
+      {name:'Temporal Rewind',skill:'time-traveling-debugger',effect:'Records deterministic execution trace forward, then replays in reverse from the crash point to find the exact line where state first diverged. Time-travel debug for LLMs.',status:'MCP'},
+      {name:'Environment Exorcism',skill:'environment-recovery',effect:'Structured vitals check (disk, versions, caches, ports, permissions) followed by targeted repair. For when commands fail before reaching your code.',status:'New'},
+      {name:'Network Divination',skill:'network-api-debugging',effect:'Captures actual network traffic, diagnoses by status code pattern, and fixes by failure type. Covers CORS, auth tokens, rate limiting, redirect chains, WebSocket drops.',status:'New'},
+      {name:'Minimal Summoning',skill:'minimal-reproduction',effect:'Writes the smallest possible test that reliably demonstrates the bug. Having a minimal repro in hand dramatically accelerates all subsequent debugging steps.',status:'New'},
+      {name:'Occam\'s Ladder',skill:'occam-minimal-repro',effect:'Ranks possible reproduction triggers by complexity, tests the simplest first, and stops at the first tier that reproduces. Prevents elaborate setups when a one-liner suffices.',status:'New'},
+      {name:'Escalation Rite',skill:'escalation-ladder',effect:'5-level protocol: self-correct → strategy change → rubber duck → scope reduction → full retreat. Fills the gap between "stuck" and "abandon ship."',status:'New'},
+      {name:'Coordinated Strike',skill:'coordinated-change',effect:'Maps the full change set, orders dependencies, edits atomically across files, and verifies consistency. For fixes that touch multiple files.',status:'New'},
     ]
   },
   {
-    id:'reasoning',
-    name:'School of Cognition',
-    symbol:'◇',
-    desc:'Mental models and structured thinking for when the problem itself is unclear.',
+    id:'reasoning',real:'Reasoning & Problem Solving',
+    name:'School of Cognition',symbol:'◇',
+    desc:'Mental models and structured thought for when the problem itself is unclear.',
     spells:[
-      {name:'First Step Oracle',skill:'how-to-solve-it-state-machine',effect:'Forces problem framing before any action is taken.',status:'—'},
-      {name:'Razor of Parsimony',skill:'occams-razor',effect:'Ranks alternatives by complexity; tests simplest first; every assumption must earn its keep.',status:'New'},
-      {name:'Spectral Reasoning',skill:'specter',effect:'Abductive hypotheses + structural code location + disconfirmation protocol.',status:'—'},
-      {name:'Occam\'s Abduction',skill:'occam-abduction',effect:'Generates hypotheses, audits evidence, ranks by assumption count, falsifies or confirms.',status:'New'},
-      {name:'Structural Seeker',skill:'keyword-agnostic-logic-locator',effect:'Finds code by structure and relationships rather than grepping for keywords.',status:'—'},
-      {name:'Simple Path Scry',skill:'occam-mcts',effect:'Occam ranks branches by complexity first; MCTS explores simplest viable branches first.',status:'New'},
-      {name:'Thought-Weave + Search',skill:'tree-of-thoughts-plus-monte-carlo-tree-search',effect:'ToT generates branches; MCTS allocates effort — prevents first-branch lock-in.',status:'—'},
-      {name:'Court of Minds',skill:'jury',effect:'Parallel perspectives argue; the conflict graph reveals what truly matters.',status:'—'},
-      {name:'Prism of Understanding',skill:'prism',effect:'Confidence calibration + compression test — if you cannot compress it, you do not understand it.',status:'—'},
-      {name:'Analogy Bridge',skill:'cross-domain-analogy-generator',effect:'Forces foreign-domain analogies to break fixation and generate novel solutions.',status:'—'},
-      {name:'OODA Loop',skill:'ooda-loop-state-machine',effect:'Observe → Orient → Decide → Act cycle prevents premature solution-jumping.',status:'—'},
-      {name:'Friction Governor',skill:'cognitive-friction-governor',effect:'Budgets deliberation and forces decision before over-thinking trivial problems.',status:'—'},
-      {name:'Reward Path Backtrack',skill:'process-reward-model-protocol',effect:'Self-correcting reasoning path that backtracks when cumulative reward drops.',status:'—'},
-      {name:'Analogy Solver',skill:'how-to-solve-it-analogy',effect:'Structured analogy-based problem solving by importing prior solution structure.',status:'—'},
-      {name:'Stepwise Verification',skill:'step-level-verification-protocol',effect:'Verifies each reasoning step before proceeding — prevents error propagation.',status:'—'},
-      {name:'Grounding Ritual',skill:'assumption-grounding',effect:'States, verifies, and logs every assumption before acting on it.',status:'—'},
-      {name:'Trajectory Warden',skill:'trajectory-guard',effect:'Detects repetition loops, drift, and stuck trajectories — forces strategy change.',status:'—'},
-      {name:'Context Lifecycle',skill:'context-lifecycle-manager',effect:'Manages the full lifecycle: budget tracking, decay, pruning, optimization.',status:'Includes context_lifecycle.py'},
+      {name:'First Step Oracle',skill:'how-to-solve-it-state-machine',effect:'Forces explicit problem framing — what kind of problem is this? — before any action is taken. Prevents rushing to solutions before understanding the question.',status:'—'},
+      {name:'Razor of Parsimony',skill:'occams-razor',effect:'Lists all plausible explanations ranked simplest → most complex. Tests the simplest first. Every additional assumption must earn its keep or be discarded.',status:'New'},
+      {name:'Spectral Reasoning',skill:'specter',effect:'Generates multiple hypotheses from observed evidence (abduction), then locates the relevant code structurally. No keyword grepping, no confirmation bias.',status:'—'},
+      {name:'Occam\'s Abduction',skill:'occam-abduction',effect:'Generate competing hypotheses → audit all available evidence → rank by assumption count → falsify or confirm the simplest. Strongest when multiple explanations fit.',status:'New'},
+      {name:'Structural Seeker',skill:'keyword-agnostic-logic-locator',effect:'Finds code by structural relationships (call graph, dataflow, type hierarchy) rather than grepping for names. Query by logic, not by keyword.',status:'—'},
+      {name:'Simple Path Scry',skill:'occam-mcts',effect:'Occams Razor ranks strategy branches by complexity first; Monte Carlo Tree Search explores the simplest viable branches before touching complex ones.',status:'New'},
+      {name:'Thought-Weave & Search',skill:'tree-of-thoughts-plus-monte-carlo-tree-search',effect:'Tree of Thoughts generates diverse reasoning branches; Monte Carlo Tree Search allocates deeper effort to the branches that earn it. Prevents first-branch lock-in.',status:'—'},
+      {name:'Court of Minds',skill:'jury',effect:'Spawns parallel perspectives with conflicting goals, lets them argue, and surfaces the conflict graph as the explanation. For decisions with genuinely ambiguous tradeoffs.',status:'—'},
+      {name:'Prism of Understanding',skill:'prism',effect:'Forces explicit confidence calibration (metacognitive monitoring) then compresses understanding to its essence. If you cannot compress it, you do not understand it.',status:'—'},
+      {name:'Analogy Bridge',skill:'cross-domain-analogy-generator',effect:'Forces analogies from unrelated domains (biology, music, traffic, architecture) to break fixation and generate novel solutions to stubborn problems.',status:'—'},
+      {name:'OODA Loop',skill:'ooda-loop-state-machine',effect:'Observe → Orient → Decide → Act. For environments where conditions change between actions — adversarial or rapid-response situations.',status:'—'},
+      {name:'Friction Governor',skill:'cognitive-friction-governor',effect:'Assigns a deliberation budget to each task. Each reasoning step consumes friction. When the budget is exhausted, you must decide. Prevents over-thinking trivial problems.',status:'—'},
+      {name:'Reward Path Backtrack',skill:'process-reward-model-protocol',effect:'Self-assigns process rewards to each reasoning step. Backtracks when cumulative reward drops below threshold. Prevents committing to wrong reasoning paths early.',status:'—'},
+      {name:'Analogy Solver',skill:'how-to-solve-it-analogy',effect:'When your problem resembles one already solved elsewhere, deliberately imports the structure of that prior solution rather than starting from scratch.',status:'—'},
+      {name:'Stepwise Verification',skill:'step-level-verification-protocol',effect:'Verifies each reasoning step before proceeding to the next. Prevents error propagation through multi-step chains where early mistakes compound.',status:'—'},
+      {name:'Grounding Ritual',skill:'assumption-grounding',effect:'States every assumption explicitly, verifies with the cheapest possible check, and only proceeds on confirmation. Based on Chain-of-Verification research.',status:'—'},
+      {name:'Trajectory Warden',skill:'trajectory-guard',effect:'Runtime meta-monitoring that detects failure spirals — repetitive loops, specification drift, stuck trajectories — and forcibly redirects strategy.',status:'—'},
+      {name:'Context Lifecycle',skill:'context-lifecycle-manager',effect:'Manages the full context lifecycle: budget tracking, exponential message decay, pruning of low-weight content, and token optimization. Extends useful context by 2-3x.',status:'—'},
     ]
   },
   {
-    id:'process',
-    name:'School of Refinement',
-    symbol:'⚙',
-    desc:'Rituals for improving systems, workflows, and outputs over time.',
+    id:'process',real:'Process Improvement',
+    name:'School of Refinement',symbol:'⚙',
+    desc:'Rituals for improving systems, workflows, and outputs over time through disciplined iteration.',
     spells:[
-      {name:'Deming Cycle',skill:'pdca-deming',effect:'Plan-Do-Check-Act iterative improvement with measurement-anchored cycles.',status:'—'},
-      {name:'Kata Practice',skill:'toyota-kata-state-machine',effect:'Scientific thinking pattern for disciplined continuous improvement.',status:'—'},
-      {name:'Checkman Rite',skill:'checklist-manifesto',effect:'Checklist discipline for high-stakes procedures where experts still fail.',status:'—'},
-      {name:'Crystallization',skill:'requirement-crystallization-protocol',effect:'Socratic + Intent Spec — surface assumptions, lock specifications before coding.',status:'—'},
-      {name:'Pre-Flight Gate',skill:'pre-flight-intent-verification',effect:'Clarify → Specify → Ground: surfaces assumptions, crystallizes intent, verifies facts.',status:'New'},
-      {name:'Kata + Deming Synthesis',skill:'iterative-improvement-cycle',effect:'Fuses Toyota Kata, PDCA, and Philosophy of Software Design into one protocol.',status:'—'},
-      {name:'Zero Defect Ward',skill:'zero-defect-protocol',effect:'14-phase protocol: data contracting, invariants, red team, pre-mortem, triple critique.',status:'—'},
-      {name:'Blueprint Codification',skill:'blueprint',effect:'Codifies vague problems into types and schemas — contradictions become impossible to ignore.',status:'—'},
+      {name:'Deming Cycle',skill:'pdca-deming',effect:'Plan → Do → Check → Act. A measurement-anchored cycle of planning, execution, and verification before standardizing or escalating. For process and system improvement.',status:'—'},
+      {name:'Kata Practice',skill:'toyota-kata-state-machine',effect:'Scientific thinking pattern: understand the current condition, set a target condition, experiment toward it. For disciplined iteration instead of one large speculative change.',status:'—'},
+      {name:'Checkman Rite',skill:'checklist-manifesto',effect:'Checklist discipline for high-stakes procedures where expert knowledge is necessary but not sufficient. Prevents skip-ahead errors that cause most procedure failures.',status:'—'},
+      {name:'Crystallization',skill:'requirement-crystallization-protocol',effect:'Socratic questioning surfaces the critical assumptions, then Intent Specification crystallizes vague requests into locked, testable specs before any code is written.',status:'—'},
+      {name:'Pre-Flight Gate',skill:'pre-flight-intent-verification',effect:'Three-phase gate: Clarify → Specify → Ground. Surfaces critical assumptions, crystallizes intent into testable scenarios, verifies facts before acting. Universal pre-action check.',status:'New'},
+      {name:'Kata + Deming Synthesis',skill:'iterative-improvement-cycle',effect:'Fuses Toyota Kata (target condition / experiment), PDCA (measurement cycle), and Philosophy of Software Design (deep modules) into a single sequential improvement protocol.',status:'—'},
+      {name:'Zero Defect Ward',skill:'zero-defect-protocol',effect:'14-phase protocol for mission-critical features. Data contracting, invariant mapping, red-team critique, pre-mortem, and triple expert review before any code executes.',status:'—'},
+      {name:'Blueprint Codification',skill:'blueprint',effect:'Codifies messy human problems into types, schemas, and code. When you can state the problem in code, contradictions and gaps become impossible to ignore.',status:'—'},
     ]
   },
   {
-    id:'code-review',
-    name:'School of Scrutiny',
-    symbol:'◈',
-    desc:'Incantations for reviewing, verifying, and elevating code quality.',
+    id:'code-review',real:'Code Review & Quality',
+    name:'School of Scrutiny',symbol:'◈',
+    desc:'Incantations for verifying, elevating, and safeguarding code quality before it ships.',
     spells:[
-      {name:'Triad Perspective',skill:'rashomon-triad-hybrid',effect:'Three perspectives (security, perf, maintainability) argue and surface conflicts.',status:'—'},
-      {name:'Essence Test',skill:'compression-as-understanding',effect:'Compress understanding to its essence, then test reconstruction.',status:'—'},
-      {name:'Confidence Calibration',skill:'metacognitive-monitoring',effect:'Forces explicit calibration between confidence and accuracy on every output.',status:'—'},
-      {name:'Legacy Seam Working',skill:'working-effectively-with-legacy-code-state-machine',effect:'Safe change protocol for brittle code with weak tests.',status:'—'},
-      {name:'Complexity Audit',skill:'philosophy-of-software-design-state-machine',effect:'Manages complexity, identifies shallow abstractions, deepens module design.',status:'—'},
-      {name:'Pre-Commit Vigil',skill:'verify-before-integrate',effect:'Verifies actual system behavior before integrating API docs or paper concepts.',status:'—'},
-      {name:'LLM Pre-Push Ward',skill:'llm-pre-push-review',effect:'5-pass protocol catching LLM-specific failures: hallucinated logic, silent vulns, overcorrection.',status:'—'},
-      {name:'Deployment Gate',skill:'pre-deployment-gate',effect:'7-pass pre-push + production hardening checklist for deployment readiness.',status:'—'},
-      {name:'Self-Verify Pipeline',skill:'self-verify-pipeline',effect:'5-phase escalating verification: self-critique → claims decomposition → tool verification.',status:'—'},
-      {name:'Task Intake Gate',skill:'task-intake-protocol',effect:'Cynefin + ETTO + RPT fused into one universal preflight gate.',status:'—'},
-      {name:'Failure Prophecy',skill:'failure-analysis-protocol',effect:'Pre-Mortem + Inversion + Second-Order Thinking fused into one pre-commitment analysis.',status:'—'},
-      {name:'Security Warding',skill:'security-review-protocol',effect:'STRIDE + Unsafe Control Actions + Vibe Coding Security fused into three security lenses.',status:'—'},
-      {name:'Safe Refactor',skill:'refactoring-state-machine',effect:'Structured refactoring protocol that improves structure without endless cleanup.',status:'—'},
-      {name:'Pragmatist\'s Way',skill:'pragmatic-programmer-state-machine',effect:'Bounded changes, reversible choices, automation over toil, root-cause fixes.',status:'—'},
-      {name:'Thoroughness Charm',skill:'thoroughness-check-etto',effect:'Systematic completeness check before executing any meaningful task.',status:'—'},
-      {name:'Strict Thoroughness',skill:'thoroughness-check-etto-state-machine',effect:'Enforced thoroughness state machine — cannot proceed without completing each gate.',status:'—'},
-      {name:'Counterfactual Trial',skill:'counterfactual-policy-testing',effect:'Tests decisions against null, opposite, and partial alternatives before committing.',status:'—'},
-      {name:'Bounded Revision',skill:'bounded-self-revision',effect:'Structured self-improvement with finite revision cycles.',status:'—'},
-      {name:'Speculative Drafting',skill:'speculative-drafting-verification',effect:'Generates multiple candidate solutions in parallel and selects the best.',status:'—'},
-      {name:'Speculative Exploration',skill:'speculative-exploration-protocol',effect:'Speculative drafting + tree of thoughts + process reward model fused sequentially.',status:'—'},
-      {name:'Bias Audit',skill:'cognitive-bias-checklist',effect:'Detect and mitigate cognitive biases in decision-making and analysis.',status:'—'},
-      {name:'Automated Bias Detection',skill:'cognitive-bias-auditor',effect:'Detects 9 biases from arXiv:2410.02820 with companion auditing script.',status:'—'},
-      {name:'Self-Consistency Rite',skill:'self-consistency',effect:'Cross-checks reasoning by generating multiple independent paths to the conclusion.',status:'—'},
-      {name:'Interactive Critique',skill:'tool-interactive-critic',effect:'Structured critique process using tools to verify an existing draft or plan.',status:'—'},
-      {name:'API Surface Scry',skill:'api-surface-anchoring',effect:'Verifies current API surface from authoritative docs before writing any code.',status:'—'},
-      {name:'Verified API Workflow',skill:'verified-api-workflow',effect:'Every API call is fully traceable to docs you actually checked — no hallucinated APIs.',status:'Includes verified_api.py'},
+      {name:'Triad Perspective',skill:'rashomon-triad-hybrid',effect:'Three specialized reasoning modes — hypothesis generation, verification, and pattern extraction — argue from conflicting goals. The conflict graph becomes the explanation.',status:'—'},
+      {name:'Essence Test',skill:'compression-as-understanding',effect:'Compress your understanding of the code to its minimal essential form, then try to reconstruct the original. If you cannot compress it, you do not understand it.',status:'—'},
+      {name:'Confidence Calibration',skill:'metacognitive-monitoring',effect:'After every significant output, explicitly calibrate confidence vs. accuracy. Decide whether to KEEP or WITHDRAW your result, and BET or decline — measurable withdraw delta.',status:'—'},
+      {name:'Legacy Seam Working',skill:'working-effectively-with-legacy-code-state-machine',effect:'Characterize legacy behavior, create test seams, then transform in bounded slices with anti-loop protection. For brittle code with weak or no tests.',status:'—'},
+      {name:'Complexity Audit',skill:'philosophy-of-software-design-state-machine',effect:'Identify shallow abstractions and deepen module design. Manages complexity by ensuring each module hides one decision behind a clean interface.',status:'—'},
+      {name:'Pre-Commit Vigil',skill:'verify-before-integrate',effect:'Before integrating any external API, research paper concept, or library — verify the actual system behavior rather than trusting terminology alignment.',status:'—'},
+      {name:'LLM Pre-Push Ward',skill:'llm-pre-push-review',effect:'5-pass protocol targeting LLM-specific code review failures: hallucinated logic, silent vulnerabilities, overcorrection, scope creep, and context-ignorant reviews.',status:'—'},
+      {name:'Deployment Gate',skill:'pre-deployment-gate',effect:'7-pass pre-deployment checklist combining LLM Pre-Push Review with Vibe Coding Security Hardening. Execution, security, correctness, structure, integration, hardening, secrets.',status:'—'},
+      {name:'Self-Verify Pipeline',skill:'self-verify-pipeline',effect:'5-phase escalating verification: internal critique → claim decomposition → tool verification → external sources. Catches failures early and cheaply.',status:'—'},
+      {name:'Task Intake Gate',skill:'task-intake-protocol',effect:'Cynefin problem classification + ETTO rigor calibration + Recognition-Primed Triage fused into one 3-phase decision gate before any work begins.',status:'—'},
+      {name:'Failure Prophecy',skill:'failure-analysis-protocol',effect:'Pre-Mortem + Inversion + Second-Order Thinking fused. Three failure lenses: invert success, narrate specific failures, trace cascading consequences.',status:'—'},
+      {name:'Security Warding',skill:'security-review-protocol',effect:'STRIDE threat analysis + Unsafe Control Actions hazard analysis + Vibe Coding Security hardening. Three security lenses fused.',status:'—'},
+      {name:'Safe Refactor',skill:'refactoring-state-machine',effect:'Structured refactoring protocol that improves structure without drifting into endless cleanup. Gates prevent scope creep and "while we are here" syndrome.',status:'—'},
+      {name:'Pragmatist\'s Way',skill:'pragmatic-programmer-state-machine',effect:'Bounded changes, reversible choices, automation over repeated toil, root-cause fixes instead of symptom patches, and practical scope control.',status:'—'},
+      {name:'Thoroughness Charm',skill:'thoroughness-check-etto',effect:'Systematic ETTO (Efficiency-Thoroughness Trade-Off) completeness check before any meaningful task execution. Prevents confidently doing the wrong thing.',status:'—'},
+      {name:'Strict Thoroughness',skill:'thoroughness-check-etto-state-machine',effect:'Enforced thoroughness state machine — a universal preflight protocol that gates execution behind completeness checks. Cannot proceed without passing each gate.',status:'—'},
+      {name:'Counterfactual Trial',skill:'counterfactual-policy-testing',effect:'Validates decisions by testing against explicit counterfactuals before committing. Generate null, opposite, and partial alternatives; only proceed if proposal beats all.',status:'—'},
+      {name:'Bounded Revision',skill:'bounded-self-revision',effect:'Structured self-improvement with finite revision cycles. After N rounds, stop — even if the output is not perfect. Prevents infinite polish loops.',status:'—'},
+      {name:'Speculative Drafting',skill:'speculative-drafting-verification',effect:'Generates multiple candidate solution branches in parallel, verifies each against constraints, and selects the best. Prevents local minima traps.',status:'—'},
+      {name:'Speculative Exploration',skill:'speculative-exploration-protocol',effect:'Fuses Speculative Drafting, Tree of Thoughts, and Process Reward Model. Branch candidates → score with PRM → prune low-reward branches → verify the best candidate.',status:'—'},
+      {name:'Bias Audit',skill:'cognitive-bias-checklist',effect:'Checks 9 established cognitive biases in important decisions or analyses. For slow-mode reasoning where bias could contaminate the output.',status:'—'},
+      {name:'Automated Bias Detection',skill:'cognitive-bias-auditor',effect:'Detects and mitigates cognitive biases in agent decisions using a companion auditing script. Tested on GPT-4o, Gemma 2, and Llama 3.1 across 9 biases.',status:'—'},
+      {name:'Self-Consistency Rite',skill:'self-consistency',effect:'Generates multiple independent reasoning paths to the same conclusion and checks whether they converge. If they do not converge, the answer is unreliable.',status:'—'},
+      {name:'Interactive Critique',skill:'tool-interactive-critic',effect:'Structured multi-tool critique process for existing drafts, answers, plans, or code changes. Uses tools to verify claims, not just review text.',status:'—'},
+      {name:'API Surface Scry',skill:'api-surface-anchoring',effect:'Before writing code that calls any external library or API, verifies the current API surface from authoritative docs. Prevents hallucinated signatures and wrong imports.',status:'—'},
+      {name:'Verified API Workflow',skill:'verified-api-workflow',effect:'Every verified API surface entry becomes an anchor. Code using external APIs is fully traceable to documentation you actually checked. Zero hallucinated APIs.',status:'—'},
     ]
   },
   {
-    id:'architecture',
-    name:'School of Architecture',
-    symbol:'🏛',
-    desc:'Design rituals for systems that endure across dimensions of scale and time.',
+    id:'architecture',real:'Architecture & Design',
+    name:'School of Architecture',symbol:'🏛',
+    desc:'Design rituals for systems that endure across dimensions of scale, time, and team boundaries.',
     spells:[
-      {name:'Intent Binding',skill:'intent-specification-protocol',effect:'Scope control via explicit intent specification before writing code. Includes MCP server.',status:'—'},
-      {name:'Counterfactual Design',skill:'counterfactual-policy-testing',effect:'Tests architectural decisions against null, opposite, and partial alternatives.',status:'—'},
-      {name:'Team Topology Sight',skill:'team-topologies-ai',effect:'Organizational architecture patterns for team and system boundaries.',status:'—'},
-      {name:'Data System Principles',skill:'designing-data-intensive-applications-ai',effect:'Reliability, scalability, and maintainability principles for data systems.',status:'—'},
-      {name:'Error Budget Divination',skill:'sre-error-budget',effect:'Makes reliability vs. velocity tradeoffs explicit, evidence-based, and governed.',status:'—'},
-      {name:'Ubiquitous Language',skill:'domain-driven-design',effect:'Bounded contexts and shared language for aligning code with business domain.',status:'—'},
-      {name:'Cynefin Compass',skill:'problem-mode-router-cynefin',effect:'Routes problems to the right approach using the Cynefin framework.',status:'—'},
-      {name:'Acceleration Rite',skill:'accelerate-ai',effect:'Evidence-based improvement for engineering delivery and operational reliability.',status:'—'},
-      {name:'Stability Warding',skill:'release-it-stability',effect:'Stability patterns for distributed systems under failure conditions.',status:'—'},
-      {name:'Boundary Weaving',skill:'separation-of-concerns',effect:'Prevents different concerns from contaminating each other\'s reasoning or state.',status:'—'},
-      {name:'Cynefin Gate',skill:'problem-mode-router-cynefin-state-machine',effect:'Enforced Cynefin routing — classification is a mandatory gate, not an optional lens.',status:'—'},
-      {name:'System Dynamics',skill:'thinking-in-systems-state-machine',effect:'Analyzes feedback loops, delayed effects, and multi-step downstream consequences.',status:'—'},
-      {name:'Backward Compat Ward',skill:'api-design-backward-compatibility',effect:'Forces contract-first, additive-only API evolution. Consumer discovery before change.',status:'—'},
-      {name:'Full Architecture Audit',skill:'system-architecture-audit',effect:'Fuses DDIA + DDD + Thinking in Systems + Release It into one sequential audit.',status:'—'},
+      {name:'Intent Binding',skill:'intent-specification-protocol',effect:'Scope control via explicit intent specification before writing any code. Prevents the Intent-Behavior Mirroring Effect where vague requests produce invasive output.',status:'—'},
+      {name:'Counterfactual Design',skill:'counterfactual-policy-testing',effect:'Tests architectural decisions against null, opposite, and partial alternatives. Only proceeds if the proposed change beats all alternatives in simulated outcomes.',status:'—'},
+      {name:'Team Topology Sight',skill:'team-topologies-ai',effect:'Organizational architecture patterns for arranging teams, services, and ownership boundaries without creating coordination chaos.',status:'—'},
+      {name:'Data System Principles',skill:'designing-data-intensive-applications-ai',effect:'Reason about storage choices, distributed behavior, and tradeoffs in reliability, scalability, and maintainability.',status:'—'},
+      {name:'Error Budget Divination',skill:'sre-error-budget',effect:'Makes the tradeoff between reliability and change velocity explicit, evidence-based, and governed. Data-driven SRE discipline.',status:'—'},
+      {name:'Ubiquitous Language',skill:'domain-driven-design',effect:'Bounded contexts, aggregates, entities, value objects, and domain events. Aligns code organization with business domain structure.',status:'—'},
+      {name:'Cynefin Compass',skill:'problem-mode-router-cynefin',effect:'Routes problems to the right category — Clear, Complicated, Complex, Chaotic — each with its own decision-making approach. Before choosing a solution, classify the problem.',status:'—'},
+      {name:'Acceleration Rite',skill:'accelerate-ai',effect:'Evidence-based improvement using the four key metrics: deployment frequency, lead time, mean time to restore, change failure rate. Based on State of DevOps research.',status:'—'},
+      {name:'Stability Warding',skill:'release-it-stability',effect:'Stability patterns for distributed systems under failure: circuit breakers, bulkheads, timeouts, backpressure, and graceful degradation.',status:'—'},
+      {name:'Boundary Weaving',skill:'separation-of-concerns',effect:'Prevents different concerns — orchestration, business logic, data access — from contaminating each other\'s reasoning, side effects, or state.',status:'—'},
+      {name:'Cynefin Gate',skill:'problem-mode-router-cynefin-state-machine',effect:'Enforced Cynefin routing where problem classification is a mandatory gate, not an optional lens. Cannot proceed without classifying.',status:'—'},
+      {name:'System Dynamics',skill:'thinking-in-systems-state-machine',effect:'Analyzes feedback loops, reinforcing/balancing dynamics, delayed effects, and multi-step downstream consequences before making system changes.',status:'—'},
+      {name:'Backward Compat Ward',skill:'api-design-backward-compatibility',effect:'Forces contract-first, additive-only API evolution. Consumer discovery before contract changes. Prevents shipping breaking changes.',status:'—'},
+      {name:'Full Architecture Audit',skill:'system-architecture-audit',effect:'Fuses DDIA, DDD, Thinking in Systems, and Release It into one sequential audit protocol. Each phase feeds the next.',status:'—'},
     ]
   },
   {
-    id:'discovery',
-    name:'School of Discovery',
-    symbol:'✧',
-    desc:'Algorithms and tools that find solutions beyond human intuition.',
+    id:'discovery',real:'Algorithm & Tool Discovery',
+    name:'School of Discovery',symbol:'✧',
+    desc:'Algorithms and automated tools that find solutions beyond human intuition.',
     spells:[
-      {name:'Evolutionary Forge',skill:'evolutionary-tool-composer',effect:'Evolutionary algorithm that mutates, crosses, and selects tool chains by fitness.',status:'—'},
-      {name:'Free Energy Seeker',skill:'active-inference-agent',effect:'Friston\'s Free Energy Principle — minimizes Expected Free Energy for Bayesian decisions.',status:'—'},
+      {name:'Evolutionary Forge',skill:'evolutionary-tool-composer',effect:'Runs an evolutionary algorithm that mutates, crosses, and selects tool chains, prompt strategies, and code solutions by fitness. AlphaEvolve/OpenEvolve principles.',status:'—'},
+      {name:'Free Energy Seeker',skill:'active-inference-agent',effect:'Based on Friston\'s Free Energy Principle. Maintains hierarchical beliefs, computes Expected Free Energy for each action, selects policies minimizing predicted surprise.',status:'—'},
     ]
   },
   {
-    id:'documentation',
-    name:'School of Expression',
-    symbol:'✎',
-    desc:'Incantations for writing, explaining, and communicating with clarity.',
+    id:'documentation',real:'Documentation & Communication',
+    name:'School of Expression',symbol:'✎',
+    desc:'Incantations for writing clearly, explaining complex systems, and communicating with stakeholders.',
     spells:[
-      {name:'Intent Crystallization',skill:'intent-specification-protocol',effect:'Specify and validate intent before writing any code at all.',status:'—'},
-      {name:'Doc Crafting',skill:'documentation-craft',effect:'5-phase structured writing: outline-first, context-aware drafting, quality verification.',status:'—'},
-      {name:'Feynman Recitation',skill:'feynman-technique',effect:'Explains complex systems from the ground up in simple language.',status:'—'},
-      {name:'Code Vision',skill:'everything-as-code-conceptualizer',effect:'Views any system through a code lens — reveals hidden structure and assumptions.',status:'—'},
-      {name:'Socratic Elicitation',skill:'socratic-clarification',effect:'Surface the most critical unknown assumptions before acting.',status:'—'},
-      {name:'Doc Navigation',skill:'large-documentation-navigation',effect:'Transforms unwieldy documentation into navigable, user-centered knowledge bases.',status:'—'},
-      {name:'MECE Structuring',skill:'mece-pyramid-principle',effect:'Mutually exclusive, collectively exhaustive structuring for complex outputs.',status:'—'},
-      {name:'Steelman Argument',skill:'steelmanning',effect:'Builds the strongest version of the opposing position before recommending action.',status:'—'},
-      {name:'Calibrated Communication',skill:'stakeholder-communication',effect:'Facts vs. inferences, range estimates, unknowns — calibrated by audience and urgency.',status:'—'},
+      {name:'Intent Crystallization',skill:'intent-specification-protocol',effect:'Specifies and validates intent before writing any code. Transforms vague requests into precise, testable specifications.',status:'—'},
+      {name:'Doc Crafting',skill:'documentation-craft',effect:'5-phase structured writing: outline-first planning, context-aware drafting, quality verification. Inspired by multi-agent documentation systems and literate programming.',status:'—'},
+      {name:'Feynman Recitation',skill:'feynman-technique',effect:'Explains complex systems from the ground up in plain language. If you cannot explain it simply, you do not understand it well enough.',status:'—'},
+      {name:'Code Vision',skill:'everything-as-code-conceptualizer',effect:'Views any system, process, or problem through a "code lens" — codifying reveals hidden structure, assumptions, and edge cases that natural language obscures.',status:'—'},
+      {name:'Socratic Elicitation',skill:'socratic-clarification',effect:'Before executing an ambiguous or high-stakes task, surfaces and resolves the most critical unknown assumptions using structured questioning.',status:'—'},
+      {name:'Doc Navigation',skill:'large-documentation-navigation',effect:'Transforms unwieldy documentation repos into navigable, user-centered knowledge bases with multi-layered navigation systems.',status:'—'},
+      {name:'MECE Structuring',skill:'mece-pyramid-principle',effect:'Mutually Exclusive, Collectively Exhaustive structuring for complex outputs — plans, analyses, recommendations — so they are both complete and non-redundant.',status:'—'},
+      {name:'Steelman Argument',skill:'steelmanning',effect:'Before committing to a recommendation, genuinely tests whether the opposing position is stronger than it appears by building the strongest version of the counterargument.',status:'—'},
+      {name:'Calibrated Communication',skill:'stakeholder-communication',effect:'Separates facts from inferences, uses range estimates, and communicates unknown unknowns. Calibrates confidence by audience and decision urgency.',status:'—'},
     ]
   },
   {
-    id:'planning',
-    name:'School of Foresight',
-    symbol:'◈',
-    desc:'Rituals for estimation, risk analysis, and disciplined planning.',
+    id:'planning',real:'Planning & Estimation',
+    name:'School of Foresight',symbol:'◇',
+    desc:'Rituals for estimating timelines, surfacing risks, and creating disciplined plans.',
     spells:[
-      {name:'Base Rate Scry',skill:'reference-class-forecasting',effect:'Estimates timelines using base rates from reference classes instead of intuition.',status:'—'},
-      {name:'Pre-Mortem Vision',skill:'pre-mortem-state-machine',effect:'Prospective hindsight — assumes failure has happened and works backward to causes.',status:'—'},
-      {name:'Retrospective Mirror',skill:'retrospective',effect:'After-action review with Five Whys and actionable improvement items.',status:'—'},
-      {name:'Explore-Exploit Compass',skill:'explore-vs-exploit-state-machine',effect:'Decides whether to keep gathering information or commit to action.',status:'—'},
-      {name:'Bottleneck Sight',skill:'the-goal-theory-of-constraints-ai',effect:'Finds the real bottleneck in any system instead of optimizing everything.',status:'—'},
-      {name:'Explore-Exploit Lens',skill:'explore-vs-exploit',effect:'Decision framework for the explore-vs-exploit tradeoff in resource allocation.',status:'—'},
-      {name:'Pre-Mortem Rite',skill:'pre-mortem',effect:'Prospective hindsight analysis framework for surfacing risks before committing.',status:'—'},
-      {name:'Plan with Judge',skill:'plan-with-judge',effect:'Creates a structured plan, then iteratively improves it with a stronger judge model.',status:'—'},
-      {name:'Iterative Spec',skill:'iterative-spec-authoring',effect:'Authors a spec, runs 3 judge-LLM review cycles, then presents for user approval.',status:'—'},
-      {name:'Structured Feature Path',skill:'structured-feature-planning',effect:'7-phase: explore → search → stuck detection → plan → self-review×2 → execute.',status:'—'},
+      {name:'Base Rate Scry',skill:'reference-class-forecasting',effect:'Uses base rates from reference classes — how long did similar things actually take? — instead of intuition or optimistic inside-view estimates.',status:'—'},
+      {name:'Pre-Mortem Vision',skill:'pre-mortem-state-machine',effect:'Assumes the plan has already failed spectacularly, then works backward to determine what went wrong. Surfaces real risks that optimistic planning misses.',status:'—'},
+      {name:'Retrospective Mirror',skill:'retrospective',effect:'After-action review with Five Whys root cause analysis and structured action items. For learning from shipped features, incidents, and completed projects.',status:'—'},
+      {name:'Explore-Exploit Compass',skill:'explore-vs-exploit-state-machine',effect:'Decides whether to continue gathering information or commit to action. Balances the value of new information against the cost of delaying the decision.',status:'—'},
+      {name:'Bottleneck Sight',skill:'the-goal-theory-of-constraints-ai',effect:'Finds the single bottleneck constraining system throughput instead of optimizing everything. Based on Goldratt\'s Theory of Constraints.',status:'—'},
+      {name:'Explore-Exploit Lens',skill:'explore-vs-exploit',effect:'Decision framework for the explore-vs-exploit tradeoff. Use when deciding whether to search for better options or commit to a known-good one.',status:'—'},
+      {name:'Pre-Mortem Rite',skill:'pre-mortem',effect:'Prospective hindsight analysis framework. Imagine failure has already occurred, then trace backward to identify what caused it. Rank the risks and adjust the plan.',status:'—'},
+      {name:'Plan with Judge',skill:'plan-with-judge',effect:'Creates a structured implementation plan in JSONL format, then iteratively improves it using a stronger user-specified model as a judge until approved.',status:'—'},
+      {name:'Iterative Spec',skill:'iterative-spec-authoring',effect:'Authors a detailed technical spec grounded in research, runs up to 3 judge-LLM review cycles, then presents for user approval before implementation.',status:'—'},
+      {name:'Structured Feature Path',skill:'structured-feature-planning',effect:'7-phase: explore → search on failure → stuck detection → plan (JSONL) → self-review×2 → summary → execute. No hallucination when confused.',status:'—'},
     ]
   },
   {
-    id:'learning',
-    name:'School of Knowledge',
-    symbol:'✧',
-    desc:'Incantations for understanding new domains and stress-testing ideas.',
+    id:'learning',real:'Learning & Understanding',
+    name:'School of Knowledge',symbol:'✧',
+    desc:'Incantations for understanding new domains, stress-testing proposals, and thinking from first principles.',
     spells:[
-      {name:'Compression Test',skill:'compression-as-understanding',effect:'Verifies understanding by compressing to essence and testing reconstruction.',status:'—'},
-      {name:'Devil\'s Advocate',skill:'advocatus-diaboli',effect:'Separate adversarial sub-agent attacks your proposal before you commit to it.',status:'—'},
-      {name:'Thought Tree',skill:'tree-of-thoughts',effect:'Branches multiple reasoning paths to explore a topic without premature commitment.',status:'—'},
-      {name:'First Principles Forge',skill:'first-principles',effect:'Deconstructs problems to fundamental truths and reasons up from there.',status:'—'},
-      {name:'Inversion Lens',skill:'inversion-mental-model',effect:'Thinks backwards — considers how to achieve the opposite of the desired outcome.',status:'—'},
-      {name:'Six Hats',skill:'six-thinking-hats',effect:'Examines problems from six distinct parallel thinking modes.',status:'—'},
-      {name:'Inversion Path',skill:'inversion-mental-model-state-machine',effect:'Structured backward thinking protocol for risk, failure, and defensive design.',status:'—'},
-      {name:'Second Sight',skill:'second-order-thinking',effect:'Reasons past the immediate consequence to consider what happens next — and next.',status:'—'},
-      {name:'Bayesian Update',skill:'bayesian-updating',effect:'Maintains probabilistic beliefs and updates them on new evidence without over-swinging.',status:'—'},
-      {name:'Recognition Triage',skill:'recognition-primed-triage',effect:'Expert pattern matching for strong first moves under time pressure.',status:'—'},
-      {name:'Structured RPD',skill:'recognition-primed-triage-state-machine',effect:'Enforced triage protocol for incident response with gates against reckless action.',status:'—'},
-      {name:'Fast-Slow Lens',skill:'kahneman-thinking-fast-slow-software-agent',effect:'Dual-process thinking model — catches fast-mode errors before they ship.',status:'—'},
-      {name:'Hallucination Ward',skill:'faithfulness-aware-reasoning',effect:'Ensures reasoning is logically entailed by premises — prevents faithfulness hallucinations.',status:'—'},
+      {name:'Compression Test',skill:'compression-as-understanding',effect:'Verifies understanding by compressing knowledge into its minimal essential form, then testing whether that compressed representation can reconstruct the original.',status:'—'},
+      {name:'Devil\'s Advocate',skill:'advocatus-diaboli',effect:'Spawns a genuinely separate adversarial sub-agent with no prior investment in the proposal. The adversary stress-tests your plan before you commit resources.',status:'—'},
+      {name:'Thought Tree',skill:'tree-of-thoughts',effect:'Branches multiple reasoning paths in parallel. When the correct path is unclear, explores diverse directions before committing to any single line of thinking.',status:'—'},
+      {name:'First Principles Forge',skill:'first-principles',effect:'Deconstructs problems to fundamental truths — what is genuinely known to be true? — and reasons up from there rather than reasoning by analogy or convention.',status:'—'},
+      {name:'Inversion Lens',skill:'inversion-mental-model',effect:'Think backwards. Instead of asking "how do I achieve X?", ask "what would guarantee I fail to achieve X?" then avoid those things. Reveals blind spots.',status:'—'},
+      {name:'Six Hats',skill:'six-thinking-hats',effect:'Examines problems from six distinct parallel perspectives: facts, emotions, risks, benefits, creativity, and process. Prevents collapsing all reasoning into one mode.',status:'—'},
+      {name:'Inversion Path',skill:'inversion-mental-model-state-machine',effect:'Structured backward thinking protocol for risk, failure, blind spots, and defensive design. A formal state machine ensures you actually reason through the inversion.',status:'—'},
+      {name:'Second Sight',skill:'second-order-thinking',effect:'Pushes past the immediate, obvious consequence to consider what happens next. And then what happens after that. Traces at least three orders of consequences.',status:'—'},
+      {name:'Bayesian Update',skill:'bayesian-updating',effect:'Maintains explicit prior beliefs, captures new evidence, and computes posterior probabilities. Prevents over-swinging on single data points or ignoring disconfirming evidence.',status:'—'},
+      {name:'Recognition Triage',skill:'recognition-primed-triage',effect:'For strong first moves under time pressure. Matches the current situation to patterns from experience and runs a mental simulation of the chosen course of action.',status:'—'},
+      {name:'Structured RPD',skill:'recognition-primed-triage-state-machine',effect:'Enforced incident-response triage protocol. Gates prevent reckless action while maintaining response tempo. For genuine time-critical situations.',status:'—'},
+      {name:'Fast-Slow Lens',skill:'kahneman-thinking-fast-slow-software-agent',effect:'Applies Kahneman\'s dual-process theory to coding, debugging, estimation, and architecture. Catches System 1 (fast, intuitive) errors before they ship.',status:'—'},
+      {name:'Hallucination Ward',skill:'faithfulness-aware-reasoning',effect:'Detects and prevents faithfulness hallucinations where reasoning sounds plausible but is not logically entailed by the premises. Based on arXiv research.',status:'—'},
     ]
   },
   {
-    id:'anti-hallucination',
-    name:'School of Veracity',
-    symbol:'◈',
-    desc:'Wards against reasoning decay — incantations that keep agent thinking honest.',
+    id:'anti-hallucination',real:'Reasoning & Anti-Hallucination',
+    name:'School of Veracity',symbol:'◈',
+    desc:'Wards against reasoning decay — incantations that keep agent thinking honest and grounded.',
     spells:[
-      {name:'Claim Verification',skill:'claim-verification-reasoning',effect:'Breaks reasoning into atomic claims, assigns confidence, verifies uncertain claims with tools.',status:'—'},
-      {name:'Context Density',skill:'context-density-operator',effect:'Maximizes decision-relevant information per token in the agent\'s working context.',status:'—'},
-      {name:'CoT Pruning',skill:'cot-pruning-reasoning',effect:'Compresses chain-of-thought to retain only steps that change the conclusion.',status:'—'},
-      {name:'Verification Hybrid',skill:'reasoning-verification-hybrid',effect:'Master anti-hallucination: claim verification + contradiction checks + confidence calibration.',status:'—'},
-      {name:'Selective Halt',skill:'selective-halt-reasoning',effect:'Monitors reasoning output and halts when consecutive steps converge on equivalent conclusions.',status:'—'},
-      {name:'Token Budget Warden',skill:'context-lifecycle-manager',effect:'Orchestrates compression, pruning, halting, and SOP capture — the anti-hallucination stack.',status:'—'},
-      {name:'Integrity Chain',skill:'reasoning-integrity-chain',effect:'Faithfulness + claims + verification + selective halt fused into one escalating protocol.',status:'—'},
-      {name:'Anchor Chain',skill:'hallucination-anchor-chain',effect:'Every factual claim anchored to a verified source. Unanchored claims are hidden from output.',status:'Includes anchor_chain.py'},
-      {name:'Contradiction Trap',skill:'self-contradiction-trap',effect:'Maintains a belief store; detects when new claims contradict existing ones; forces resolution.',status:'Includes belief_store.py'},
-      {name:'Chaos Detection',skill:'chaos-detector',effect:'Lyapunov exponent over token trajectories flags reasoning collapse before it happens.',status:'Includes lyapunov.py'},
+      {name:'Claim Verification',skill:'claim-verification-reasoning',effect:'Breaks reasoning into atomic claims, assigns confidence labels, verifies uncertain claims with tools, and builds dependency graphs to prevent reasoning hallucinations.',status:'—'},
+      {name:'Context Density',skill:'context-density-operator',effect:'Maximizes decision-relevant information per token in the working context. Hierarchical memory with on-demand detail expansion. Based on information bottleneck principles.',status:'—'},
+      {name:'CoT Pruning',skill:'cot-pruning-reasoning',effect:'Two-pass compress: coarse step-level pruning removes reasoning steps that do not change the conclusion, then fine token-level compression. Retains only what matters.',status:'—'},
+      {name:'Verification Hybrid',skill:'reasoning-verification-hybrid',effect:'Master anti-hallucination protocol combining claim-level verification, backward contradiction checks, confidence calibration, and logical entailment validation.',status:'—'},
+      {name:'Selective Halt',skill:'selective-halt-reasoning',effect:'Monitors reasoning output for semantic stabilization. When consecutive reasoning steps converge on equivalent conclusions, halt early. Prevents wasted elaboration.',status:'—'},
+      {name:'Token Budget Warden',skill:'context-lifecycle-manager',effect:'Orchestrates context compression, CoT pruning, selective halting, and SOP capture in sequence. For long-horizon tasks where token burn is the bottleneck.',status:'—'},
+      {name:'Integrity Chain',skill:'reasoning-integrity-chain',effect:'An escalating 4-phase verification chain catching all hallucination types. Faithfulness → Claims → Verification → Selective Halt. Reduces false positives from ~13% to ~4%.',status:'—'},
+      {name:'Anchor Chain',skill:'hallucination-anchor-chain',effect:'Forces every factual claim to be anchored to a verified source. Unanchored claims are marked unverified and hidden from outputs. Builds a verifiable evidence chain.',status:'—'},
+      {name:'Contradiction Trap',skill:'self-contradiction-trap',effect:'Maintains a persistent belief store of claims made during the session. Detects when new claims contradict existing ones and forces resolution before continuing.',status:'—'},
+      {name:'Chaos Detection',skill:'chaos-detector',effect:'Computes Lyapunov exponents over token trajectories. Flags reasoning collapse before it happens — when token trajectories diverge chaotically, the session is at risk.',status:'—'},
     ]
   },
   {
-    id:'software-dev',
-    name:'School of Crafting',
-    symbol:'⚒',
-    desc:'Practical incantations for building, renaming, searching, and shipping code.',
+    id:'software-dev',real:'Software Development',
+    name:'School of Crafting',symbol:'⚒',
+    desc:'Practical incantations for building, renaming, searching through, and shipping code.',
     spells:[
-      {name:'Intent Binding',skill:'intent-specification-protocol',effect:'Clarifies intent before coding — prevents over-engineering and scope creep.',status:'—'},
-      {name:'Debug Workflow',skill:'debug-issue',effect:'Forces reproduce-isolate-fix-verify cycle for structured debugging.',status:'—'},
-      {name:'Codebase Walk',skill:'explore-codebase',effect:'Structured exploration with progressive deepening into unfamiliar code.',status:'—'},
-      {name:'Divide & Search',skill:'codebase-divide-conquer-search',effect:'Hierarchical summarization + semantic ranking + parallel sub-agents for large codebases.',status:'—'},
-      {name:'New Skill Rite',skill:'add-new-skill-to-repository',effect:'Standardized contribution process with documentation and cross-platform verification.',status:'—'},
-      {name:'Rename & Recall',skill:'bulk-rename-and-update-references',effect:'Safely discovers, renames, and updates all cross-references across the codebase.',status:'—'},
-      {name:'Supporting File Bind',skill:'skill-development-with-supporting-files',effect:'Workflow for skills that need external scripts, templates, or config files.',status:'—'},
-      {name:'Local LLM Invocation',skill:'local-llm-tooling',effect:'Setup, prompting, and structured output extraction from local models (Ollama, llama.cpp).',status:'—'},
-      {name:'Safe Refactor',skill:'refactor-safely',effect:'Characterization testing + bounded changes for safe code refactoring.',status:'—'},
-      {name:'Review Lens',skill:'review-changes',effect:'Structured review checklist for evaluating code changes.',status:'—'},
-      {name:'Git Surgery',skill:'git-surgery',effect:'10 deterministic recovery protocols for detached HEAD, botched rebase, force-push overwrite.',status:'—'},
-      {name:'Knowledge Graph',skill:'code-knowledge-graph-mcp',effect:'MCP server with structured symbol and call-graph queries for code navigation.',status:'—'},
-      {name:'Diagnostics Aggregator',skill:'dev-diagnostics-mcp',effect:'MCP server with unified parsers for ESLint, Biome, Ruff, tsc, Vitest, pytest.',status:'—'},
-      {name:'Battalion Auto-Fix',skill:'lint-battalion',effect:'Auto-fix sprint + parallel subagent battalions for fixing 500+ linter errors.',status:'—'},
-      {name:'Verified Synthesis',skill:'verified-synthesize',effect:'Generates code + Dafny spec, machine-checked via Z3 SMT solver for provable correctness.',status:'Includes dafny_verify.py'},
+      {name:'Intent Binding',skill:'intent-specification-protocol',effect:'Clarifies intent before coding. Prevents the Intent-Behavior Mirroring Effect where vague requirements produce invasive, over-engineered output.',status:'—'},
+      {name:'Debug Workflow',skill:'debug-issue',effect:'Forces the reproduce → isolate → fix → verify cycle. Graph-powered code navigation traces issues through the system along dataflow edges.',status:'—'},
+      {name:'Codebase Walk',skill:'explore-codebase',effect:'Structured exploration with progressive deepening: module structure → file roles → symbol resolution. Token-efficient for unfamiliar codebases.',status:'—'},
+      {name:'Divide & Search',skill:'codebase-divide-conquer-search',effect:'Hierarchical codebase summarization + semantic similarity partitioning + parallel sub-agent deep investigation + ranked results with confidence scores.',status:'—'},
+      {name:'New Skill Rite',skill:'add-new-skill-to-repository',effect:'Standardized contribution workflow for adding skills to a skill repository. Documentation scaffolding, installation support, cross-platform verification.',status:'—'},
+      {name:'Rename & Recall',skill:'bulk-rename-and-update-references',effect:'Safely discovers all files to rename, renames them, and updates every cross-reference across the codebase. Prevents broken links and stale references.',status:'—'},
+      {name:'Supporting File Bind',skill:'skill-development-with-supporting-files',effect:'Workflow for creating skills that need supporting files beyond a single .md — Python scripts, templates, reference docs, config files.',status:'—'},
+      {name:'Local LLM Invocation',skill:'local-llm-tooling',effect:'Setup, prompting, and structured output extraction from local LLMs (Ollama, llama.cpp). No cloud dependency for inference.',status:'—'},
+      {name:'Safe Refactor',skill:'refactor-safely',effect:'Characterization testing to capture existing behavior, then bounded changes with immediate verification. Safe transformation of untested code.',status:'—'},
+      {name:'Review Lens',skill:'review-changes',effect:'Structured review checklist for evaluating code changes systematically rather than reading through aimlessly.',status:'—'},
+      {name:'Git Surgery',skill:'git-surgery',effect:'10 deterministic recovery protocols for common local git disasters: detached HEAD, botched rebase, force-push recovery, lost commits, merge conflicts.',status:'—'},
+      {name:'Knowledge Graph',skill:'code-knowledge-graph-mcp',effect:'MCP server with structured symbol and call-graph queries. Navigate code by structure, not by string search.',status:'—'},
+      {name:'Diagnostics Aggregator',skill:'dev-diagnostics-mcp',effect:'MCP server with unified parsers for ESLint, Biome, Ruff, tsc, Vitest, pytest. Returns structured JSON issues with severity and category.',status:'—'},
+      {name:'Battalion Auto-Fix',skill:'lint-battalion',effect:'Mass linter error remediation via auto-fix sprint + parallel subagent battalions. Handles 500+ trivial errors mechanically, escalates semantic ones to specialists.',status:'—'},
+      {name:'Verified Synthesis',skill:'verified-synthesize',effect:'Generates code plus Dafny formal specifications. Preconditions and postconditions are machine-checked via Z3 SMT solver. Provably correct code from natural language specs.',status:'—'},
     ]
   },
   {
-    id:'multi-agent',
-    name:'School of Confluence',
-    symbol:'✦',
-    desc:'Incantations for coordinating multiple agents across shared tasks.',
+    id:'multi-agent',real:'Multi-Agent & Coordination',
+    name:'School of Confluence',symbol:'✦',
+    desc:'Incantations for orchestrating multiple agents, sharing reasoning memory, and coordinating parallel workstreams.',
     spells:[
-      {name:'Orchestrator Pattern',skill:'agentic-design-patterns-orchestrator',effect:'Agent workflow patterns for spawning specialized sub-agents.',status:'—'},
-      {name:'Orchestrator Gate',skill:'agentic-design-patterns-orchestrator-state-machine',effect:'Enforced agent orchestration state machine.',status:'—'},
-      {name:'Thought Retrieval',skill:'thought-retriever-coppermind',effect:'Memory-augmented reasoning — stores structured thoughts for future retrieval.',status:'—'},
-      {name:'Memory Hygiene',skill:'agent-memory-hygiene',effect:'Decides what to remember, what to forget, and when stored context is stale.',status:'—'},
-      {name:'Branch Allocation',skill:'monte-carlo-tree-search',effect:'Allocates reasoning effort across multiple plausible strategy branches.',status:'—'},
-      {name:'Weak Link Detection',skill:'weak-link-detection-multi-agent',effect:'Identifies the weakest reasoning chain before aggregation — prevents error amplification.',status:'—'},
-      {name:'SOP Evolution',skill:'sop-evolution-memory',effect:'Distills successful trajectories into compact reusable Standard Operating Procedures.',status:'—'},
-      {name:'Scout Protocol',skill:'scout',effect:'Fast sub-agent pre-reads and distills file context for the main model.',status:'—'},
-      {name:'Subagent Composer',skill:'subagent-composer',effect:'Task-to-skill mapping that loads TDD and relevant skills automatically for sub-agents.',status:'—'},
-      {name:'Octopus Coordination',skill:'octopus',effect:'Contract-first decomposition, bounded parallel arms, shared workspace, retraction on failure.',status:'—'},
+      {name:'Orchestrator Pattern',skill:'agentic-design-patterns-orchestrator',effect:'Workflow patterns for spawning specialized sub-agents: parallel fan-out, chain-of-thought delegation, evaluator-optimizer loops, and supervisor oversight.',status:'—'},
+      {name:'Orchestrator Gate',skill:'agentic-design-patterns-orchestrator-state-machine',effect:'Enforced agent orchestration state machine. Routes between sequential, parallel, and evaluator-optimizer workflows based on task requirements.',status:'—'},
+      {name:'Thought Retrieval',skill:'thought-retriever-coppermind',effect:'Three-layer memory architecture — working memory, retrieval tracking, procedural memory. Agents store structured thoughts that future agents retrieve and build on.',status:'—'},
+      {name:'Memory Hygiene',skill:'agent-memory-hygiene',effect:'Decides what to remember, what to forget, how long to trust stored context, and when to treat cached knowledge as stale. Memory lifecycle management.',status:'—'},
+      {name:'Branch Allocation',skill:'monte-carlo-tree-search',effect:'Allocates reasoning effort across multiple plausible strategy branches. Explores promising branches deeper while pruning low-value branches.',status:'—'},
+      {name:'Weak Link Detection',skill:'weak-link-detection-multi-agent',effect:'Identifies and isolates the weakest reasoning chain in multi-agent outputs before aggregation. Prevents one failing agent from corrupting the final result.',status:'—'},
+      {name:'SOP Evolution',skill:'sop-evolution-memory',effect:'Distills successful task trajectories into compact, reusable Standard Operating Procedures. Future similar tasks load the SOP instead of the full history.',status:'—'},
+      {name:'Scout Protocol',skill:'scout',effect:'Fast sub-agent pre-reads and distills only the relevant context from files for the main model. Saves tokens, reduces distraction, prevents getting lost in large codebases.',status:'—'},
+      {name:'Subagent Composer',skill:'subagent-composer',effect:'Composes high-context sub-agent briefs with skill loading, explicit boundaries, success criteria, and stop rules. Eliminates first-pass failures from incomplete briefs.',status:'—'},
+      {name:'Octopus Coordination',skill:'octopus',effect:'Distributed multi-agent coordination inspired by octopus biology: contract-driven decomposition, parallel delegation, shared workspace, inter-arm coordination, autotomy on failure.',status:'—'},
     ]
   },
   {
-    id:'risk',
-    name:'School of Warding',
-    symbol:'🛡',
-    desc:'Protective incantations for safety-critical changes and threat analysis.',
+    id:'risk',real:'Risk & Safety Analysis',
+    name:'School of Warding',symbol:'🛡',
+    desc:'Protective incantations for safety-critical changes, threat analysis, and pre-deployment hardening.',
     spells:[
-      {name:'STPA Ward',skill:'unsafe-control-actions-hazard-analysis',effect:'STPA safety analysis — identifies unsafe control actions before they cause harm.',status:'—'},
-      {name:'Failure Scrying',skill:'pre-mortem',effect:'Prospective hindsight — imagines failure before it happens to prevent it.',status:'—'},
-      {name:'Second-Order Sight',skill:'second-order-thinking',effect:'Traces chains of downstream consequences beyond the immediate effect.',status:'—'},
-      {name:'Stability Warding',skill:'release-it-stability',effect:'Stability patterns for distributed systems under failure conditions.',status:'—'},
-      {name:'Pre-Mortem Gate',skill:'pre-mortem-state-machine',effect:'Enforced prospective analysis protocol — assumes failure, works backward to causes.',status:'—'},
-      {name:'STRIDE Analysis',skill:'security-threat-modeling',effect:'STRIDE-based threat analysis for authentication, secrets, input, and data.',status:'—'},
-      {name:'Vibe Hardening',skill:'vibe-coding-security-hardening',effect:'9-phase checklist hardening AI-generated apps against common vulnerabilities.',status:'—'},
+      {name:'STPA Ward',skill:'unsafe-control-actions-hazard-analysis',effect:'Systems-Theoretic Process Analysis. Identifies unsafe control actions that could create harm before they are designed into the system.',status:'—'},
+      {name:'Failure Scrying',skill:'pre-mortem',effect:'Prospective hindsight: imagine the plan has failed, then work backward to identify the causes. Surfaces risks that feel "unlikely" until you frame them as already having happened.',status:'—'},
+      {name:'Second-Order Sight',skill:'second-order-thinking',effect:'Traces chains of downstream consequences beyond the immediate effect of any action. Considers what happens next, and what happens after that.',status:'—'},
+      {name:'Stability Warding',skill:'release-it-stability',effect:'Stability patterns for distributed systems: circuit breakers, bulkheads, timeouts, backpressure, graceful degradation. Analyzes failure modes before they occur.',status:'—'},
+      {name:'Pre-Mortem Gate',skill:'pre-mortem-state-machine',effect:'Enforced prospective analysis protocol. Formally validates a plan before execution by assuming failure has already occurred and working backward to causes.',status:'—'},
+      {name:'STRIDE Analysis',skill:'security-threat-modeling',effect:'STRIDE (Spoofing, Tampering, Repudiation, Information Disclosure, Denial of Service, Elevation of Privilege) threat analysis for authentication, secrets, input handling.',status:'—'},
+      {name:'Vibe Hardening',skill:'vibe-coding-security-hardening',effect:'9-phase systematic hardening checklist targeting vulnerabilities that AI tools reliably introduce: exposed secrets, missing access controls, broken auth, injection flaws.',status:'—'},
     ]
   },
   {
-    id:'cognitive-load',
-    name:'School of Clarity',
-    symbol:'◈',
-    desc:'Incantations for managing finite attention and reducing cognitive overhead.',
+    id:'cognitive-load',real:'Cognitive Load & Operator Support',
+    name:'School of Clarity',symbol:'◈',
+    desc:'Incantations for managing finite attention, reducing overhead, and keeping the agent focused.',
     spells:[
-      {name:'Load Management',skill:'cognitive-load-operator-state-machine',effect:'Protocol for managing cognitive load and preventing overwhelm.',status:'—'},
-      {name:'Context Lifecycle + Budget',skill:'context-lifecycle-manager',effect:'Full lifecycle: token budget + decay + pruning + optimization for finite context windows.',status:'—'},
+      {name:'Load Management',skill:'cognitive-load-operator-state-machine',effect:'Protocol for making information easier to understand, retain, and act on. Manages extraneous load, intrinsic complexity, and germane (productive) load.',status:'—'},
+      {name:'Context Lifecycle + Budget',skill:'context-lifecycle-manager',effect:'Full lifecycle management: context is born → tracked by budget operator → decays/pruned by rot-pruner → optimized by token-budget-operator. Extends useful context life 2-3x.',status:'—'},
     ]
   },
   {
-    id:'testing',
-    name:'School of Measurement',
-    symbol:'⚖',
-    desc:'Rituals for evaluating and proving the effectiveness of other incantations.',
+    id:'testing',real:'Testing & Evaluation',
+    name:'School of Measurement',symbol:'⚖',
+    desc:'Rituals for empirically measuring whether a skill actually improves outcomes.',
     spells:[
-      {name:'A/B Scry',skill:'skill-ab-evaluation',effect:'5-trial A/B test with objective rubric — measures real improvement without touching projects.',status:'—'},
-      {name:'Empirical Justification',skill:'skill-ab-evaluation',effect:'Provides empirical data to justify skill refinement through isolated worktree testing.',status:'—'},
+      {name:'A/B Scry',skill:'skill-ab-evaluation',effect:'Runs an A/B evaluation of any skill against a baseline using isolated subagents, 5 trials each, and an objective rubric. Measures real % improvement in isolated worktrees.',status:'—'},
+      {name:'Empirical Justification',skill:'skill-ab-evaluation',effect:'Provides empirical data to justify skill refinement or retirement. Zero risk to current projects — all testing happens in isolated worktrees.',status:'—'},
     ]
   }
 ];
@@ -692,12 +870,25 @@ const tabsEl = document.getElementById('tabContainer');
 const bookEl = document.getElementById('bookSpread');
 const searchInput = document.getElementById('searchInput');
 
+// Modal elements
+const modalOverlay = document.getElementById('modalOverlay');
+const modalClose = document.getElementById('modalClose');
+const modalSymbol = document.getElementById('modalSymbol');
+const modalSchool = document.getElementById('modalSchool');
+const modalSchoolReal = document.getElementById('modalSchoolReal');
+const modalTitle = document.getElementById('modalTitle');
+const modalIncantation = document.getElementById('modalIncantation');
+const modalEffect = document.getElementById('modalEffect');
+const modalStatus = document.getElementById('modalStatus');
+const modalPath = document.getElementById('modalPath');
+const modalRef = document.getElementById('modalRef');
+
 // Build tabs
 schools.forEach((s, i) => {
   const btn = document.createElement('button');
   btn.className = 'tab-btn' + (i === 0 ? ' active' : '');
   btn.dataset.school = s.id;
-  btn.textContent = `${s.symbol} ${s.name}`;
+  btn.innerHTML = `${s.symbol} ${s.name} <span class="real-name">${s.real}</span>`;
   btn.addEventListener('click', () => selectSchool(s.id));
   tabsEl.appendChild(btn);
 });
@@ -709,18 +900,19 @@ schools.forEach((s, i) => {
   section.id = `school-${s.id}`;
   section.dataset.school = s.id;
 
-  // Header
   const header = document.createElement('div');
   header.className = 'school-header';
   header.innerHTML = `
     <span class="school-symbol">${s.symbol}</span>
     <h2>${s.name}</h2>
     <p class="school-desc">${s.desc}</p>
-    <span class="spell-count">${s.spells.length} incantation${s.spells.length !== 1 ? 's' : ''}</span>
+    <div class="school-meta">
+      <span class="school-count">${s.spells.length} incantation${s.spells.length !== 1 ? 's' : ''}</span>
+      <span class="school-real">also known as: ${s.real}</span>
+    </div>
   `;
   section.appendChild(header);
 
-  // Grid
   const grid = document.createElement('div');
   grid.className = 'spell-grid';
   grid.id = `grid-${s.id}`;
@@ -729,17 +921,23 @@ schools.forEach((s, i) => {
     const card = document.createElement('div');
     card.className = 'spell-card';
     card.dataset.search = `${sp.name} ${sp.skill} ${sp.effect}`.toLowerCase();
+    card.dataset.schoolId = s.id;
 
-    const statusClass = sp.status.toLowerCase().replace(/[^a-z]/g,'');
-    const tier = sp.status !== '—' ? `✧ ${sp.status}` : '';
+    const statusClass = (sp.status || '').toLowerCase().replace(/[^a-z]/g,'');
+    const tier = sp.status && sp.status !== '—' ? `✧ ${sp.status}` : '';
 
     card.innerHTML = `
       ${tier ? `<div class="spell-tier">${tier}</div>` : ''}
       <div class="spell-name">${sp.name}</div>
       <div class="spell-incantation">〈 ${sp.skill} 〉</div>
       <div class="spell-effect">${sp.effect}</div>
+      <div class="spell-footer">
+        <span class="spell-status ${statusClass}">${tier || 'common'}</span>
+        <span class="spell-reveal-hint">click to reveal</span>
+      </div>
     `;
 
+    card.addEventListener('click', () => openSpell(sp, s));
     grid.appendChild(card);
   });
 
@@ -757,9 +955,10 @@ function selectSchool(id) {
   currentSchool = id;
   document.querySelectorAll('.school-section').forEach(el => el.classList.remove('active'));
   document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
-  document.getElementById(`school-${id}`).classList.add('active');
-  document.querySelector(`.tab-btn[data-school="${id}"]`).classList.add('active');
-  // Clear search when switching schools
+  const section = document.getElementById(`school-${id}`);
+  if (section) section.classList.add('active');
+  const tab = document.querySelector(`.tab-btn[data-school="${id}"]`);
+  if (tab) tab.classList.add('active');
   searchInput.value = '';
   document.querySelectorAll('.spell-card').forEach(el => el.style.display = '');
   document.querySelectorAll('.no-spells').forEach(el => el.remove());
@@ -768,61 +967,90 @@ function selectSchool(id) {
 // Search
 searchInput.addEventListener('input', () => {
   const q = searchInput.value.toLowerCase().trim();
+  if (!q) { selectSchool(currentSchool); return; }
 
-  // Show all schools if searching
-  document.querySelectorAll('.school-section').forEach(el => {
-    el.classList.toggle('active', !q || el.dataset.school === currentSchool);
-  });
-  document.querySelectorAll('.tab-btn').forEach(el => {
-    el.classList.toggle('active', !q && el.dataset.school === currentSchool);
-  });
-
-  if (!q) {
-    // Restore normal view
-    selectSchool(currentSchool);
-    return;
-  }
-
-  // Search across all sections
   document.querySelectorAll('.school-section').forEach(section => {
     const grid = section.querySelector('.spell-grid');
     let hasMatch = false;
-
     section.querySelectorAll('.spell-card').forEach(card => {
       const match = card.dataset.search.includes(q);
       card.style.display = match ? '' : 'none';
       if (match) hasMatch = true;
     });
-
-    // Remove old no-spells
     grid.querySelectorAll('.no-spells').forEach(el => el.remove());
-
     if (!hasMatch) {
       const empty = document.createElement('div');
       empty.className = 'no-spells';
-      empty.textContent = 'No incantations match your search…';
+      empty.textContent = 'No incantations match your search across the stars…';
       grid.appendChild(empty);
     }
-
-    section.classList.toggle('active', hasMatch || q);
+    section.classList.toggle('active', hasMatch);
   });
+  document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
 });
 
 // ══════════════════════════════════════════════════════════════
-//  PARTICLE EFFECT
+//  SPELL DETAIL MODAL
 // ══════════════════════════════════════════════════════════════
 
-(function initParticles() {
-  const container = document.getElementById('particles');
-  for (let i = 0; i < 40; i++) {
-    const p = document.createElement('div');
-    p.className = 'particle';
-    p.style.left = Math.random() * 100 + '%';
-    p.style.width = (1 + Math.random() * 3) + 'px';
-    p.style.height = p.style.width;
-    p.style.animationDuration = (15 + Math.random() * 25) + 's';
-    p.style.animationDelay = (Math.random() * 20) + 's';
-    container.appendChild(p);
+function openSpell(spell, school) {
+  const statusStr = spell.status && spell.status !== '—' ? spell.status : 'Common';
+  const statusClass = (spell.status || 'common').toLowerCase().replace(/[^a-z]/g,'') || 'common';
+
+  modalSymbol.textContent = school.symbol;
+  modalSchool.textContent = school.name;
+  modalSchoolReal.textContent = `(${school.real})`;
+  modalTitle.textContent = spell.name;
+  modalIncantation.textContent = `〈 ${spell.skill} 〉`;
+  modalEffect.textContent = spell.effect;
+  modalStatus.textContent = statusStr;
+  modalStatus.className = 'tag ' + statusClass;
+  modalPath.textContent = spell.skill;
+
+  // Show additional note if present
+  if (spell.note) {
+    let noteEl = document.querySelector('.modal-note');
+    if (!noteEl) {
+      noteEl = document.createElement('div');
+      noteEl.className = 'modal-detail-row modal-note';
+      document.querySelector('.modal .modal-incantation').after(noteEl);
+    }
+    noteEl.innerHTML = `<div class="modal-detail-label">Note</div><div class="modal-detail-value">${spell.note}</div>`;
+    noteEl.style.display = 'flex';
+  } else {
+    const noteEl = document.querySelector('.modal-note');
+    if (noteEl) noteEl.style.display = 'none';
+  }
+
+  modalRef.textContent = `〈 grimoirestack:${school.id}/${spell.skill} 〉`;
+  modalOverlay.classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeModal() {
+  modalOverlay.classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+modalClose.addEventListener('click', closeModal);
+modalOverlay.addEventListener('click', (e) => { if (e.target === modalOverlay) closeModal(); });
+document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeModal(); });
+
+// ══════════════════════════════════════════════════════════════
+//  EMBER PARTICLE EFFECT
+// ══════════════════════════════════════════════════════════════
+
+(function initEmbers() {
+  const container = document.getElementById('embers');
+  const types = ['ember-amber','ember-gold','ember-rune'];
+  for (let i = 0; i < 50; i++) {
+    const e = document.createElement('div');
+    e.className = 'ember ' + types[i % 3];
+    e.style.left = Math.random() * 100 + '%';
+    e.style.width = e.style.height = (2 + Math.random() * 4) + 'px';
+    e.style.animationDuration = (18 + Math.random() * 30) + 's';
+    e.style.animationDelay = (Math.random() * 25) + 's';
+    container.appendChild(e);
   }
 })();
 </script>
