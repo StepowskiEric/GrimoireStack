@@ -15,7 +15,6 @@ import SpellCast from './components/SpellCast.tsx';
 import RitualSection from './components/RitualSection.jsx';
 import ApprenticeWelcome, { STORAGE_KEY as WELCOME_STORAGE_KEY } from './components/ApprenticeWelcome.jsx';
 import BookmarkOfFirstRites from './components/BookmarkOfFirstRites.jsx';
-import BestialityOfAfflictions from './components/BestialityOfAfflictions.jsx';
 import { getSpellTier, TIER_META } from './data/tiers.js';
 import { REPO_URL } from './data/constants.js';
 import { useSpellInteraction } from './hooks/useSpellInteraction.js';
@@ -104,21 +103,6 @@ export default function App() {
     const tier = getSpellTier(spell);
     return { tier, ...TIER_META[tier] };
   }, []);
-
-  const handleOpenAfflictionSkill = useCallback((skillId, schoolId) => {
-    const school = schools.find((s) => s.id === schoolId);
-    const spell = school?.spells.find((sp) => sp.skill === skillId);
-    if (spell && school) {
-      handleSpellClick(spell, school);
-    } else {
-      const input = document.getElementById('searchInput');
-      if (input) {
-        input.value = skillId;
-        input.dispatchEvent(new Event('input', { bubbles: true }));
-        input.focus();
-      }
-    }
-  }, [handleSpellClick]);
 
   return (
     <>
@@ -229,8 +213,6 @@ export default function App() {
           <div className="marginalia m1">beware the recursion</div>
           <div className="marginalia m2">~ Fol. iii ~</div>
           <div className="folio">·  Folio III  ·</div>
-
-          <BestialityOfAfflictions onOpenSkill={handleOpenAfflictionSkill} />
 
           {schools.map((s) => (
             <SchoolSection key={s.id} school={s}
