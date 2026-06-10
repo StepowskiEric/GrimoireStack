@@ -258,7 +258,7 @@ export default function App() {
           )}
 
           {!searchQuery && !isLab && !isRitual && (
-            <Observatory schools={schools} />
+            <Observatory schools={schools} onSpellClick={handleSpellClick} />
           )}
 
           {isRitual ? <RitualSection /> : null}

@@ -2,16 +2,6 @@ import { describe, it, expect, vi } from 'vitest';
 import { renderHook, act } from '@testing-library/react';
 import { useFavorites } from '../hooks/useFavorites.js';
 
-const sampleSchools = [
-  {
-    id: 'debugging',
-    spells: [
-      { name: 'Trace Sight', skill: 'log-trace-correlation' },
-      { name: 'Debug Familiar', skill: 'debug-subagent' },
-    ],
-  },
-];
-
 describe('useFavorites', () => {
   beforeEach(() => {
     localStorage.clear();
@@ -81,14 +71,14 @@ describe('useFavorites', () => {
     act(() => {
       result.current.toggleFavorite('Trace Sight', 'log-trace-correlation');
     });
-    const found = result.current.findFavoriteSpell('log-trace-correlation', sampleSchools);
+    const found = result.current.findFavoriteSpell('log-trace-correlation');
     expect(found).not.toBeNull();
     expect(found.spell.name).toBe('Trace Sight');
   });
 
   it('returns null when favorite spell is not found', () => {
     const { result } = renderHook(() => useFavorites());
-    const found = result.current.findFavoriteSpell('unknown-skill', sampleSchools);
+    const found = result.current.findFavoriteSpell('unknown-skill');
     expect(found).toBeNull();
   });
 });

@@ -1,5 +1,6 @@
 import { useState, useCallback, useEffect, useRef } from 'react';
 import { WIZARD_DATA } from '../data/schools.js';
+import { spellCatalog } from '../data/spellCatalogInstance.js';
 
 const DIVIDER_RUNES = ['ᚦ ᛖ ᛒ', 'ᛟ ᚲ ᛉ', 'ᚠ ᛗ ᚱ'];
 const PROGRESS_RUNES = ['ᚦ', 'ᛖ', 'ᛟ'];
@@ -173,20 +174,18 @@ export default function WitchDoctorModal({ schools, onSelectSkill, onClose }) {
 
   const openSkill = useCallback((skillId) => {
     playRandomVoice();
-    for (const school of schools) {
-      const spell = school.spells.find(s => s.skill === skillId);
-      if (spell) { onSelectSkill(spell, school); return; }
+    const entry = spellCatalog.resolveBySkill(skillId);
+    if (entry) {
+      onSelectSkill(entry.spell, entry.school);
+    } else {
+      handleClose();
     }
-    handleClose();
-  }, [schools, onSelectSkill, onClose, handleClose]);
+  }, [onSelectSkill, onClose, handleClose]);
 
   const getSpellNameBySkill = useCallback((skillId) => {
-    for (const school of schools) {
-      const spell = school.spells.find(s => s.skill === skillId);
-      if (spell) return spell.name;
-    }
-    return null;
-  }, [schools]);
+    const entry = spellCatalog.resolveBySkill(skillId);
+    return entry ? entry.spell.name : null;
+  }, []);
 
   // Select cluster: show only that group's categories
   const selectCluster = useCallback((clusterId) => {
@@ -351,12 +350,8 @@ export default function WitchDoctorModal({ schools, onSelectSkill, onClose }) {
           <div className="wd-result">
             {/* School symbol badge */}
             {(() => {
-              let sym = null;
-              for (const s of schools) {
-                const sp = s.spells.find(sp => sp.skill === sitData.skill);
-                if (sp) { sym = s.symbol; break; }
-              }
-              return sym ? <div className="wr-badge">{sym}</div> : null;
+              const entry = spellCatalog.resolveBySkill(sitData.skill);
+              return entry ? <div className="wr-badge">{entry.school.symbol}</div> : null;
             })()}
 
             <div className="wr-skill-name">{getSpellNameBySkill(sitData.skill) || sitData.skill}</div>

@@ -1,15 +1,10 @@
 import { useEffect, useRef, useState, useCallback } from 'react';
-import schools from '../data/schools.js';
-import { TIER_META } from '../data/tiers.js';
-import { getSpellTier } from '../data/tiers.js';
+import { TIER_META, getSpellTier } from '../data/tiers.js';
+import { spellCatalog } from '../data/spellCatalogInstance.js';
 
 function findSpell(name) {
-  for (const s of schools) {
-    for (const sp of s.spells) {
-      if (sp.name === name) return { spell: sp, school: s };
-    }
-  }
-  return null;
+  const entry = spellCatalog.resolveByName(name);
+  return entry ? { spell: entry.spell, school: entry.school } : null;
 }
 
 let mapCache = null;

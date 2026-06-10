@@ -1,6 +1,6 @@
 import { useMemo } from 'react';
 
-export default function Observatory({ schools }) {
+export default function Observatory({ schools, onSpellClick }) {
   const recentSpells = useMemo(() => {
     const spells = [];
     for (const school of schools) {
@@ -12,6 +12,8 @@ export default function Observatory({ schools }) {
             school: school.name,
             schoolSymbol: school.symbol,
             schoolId: school.id,
+            spell: sp,
+            schoolRef: school,
           });
         }
       }
@@ -30,11 +32,16 @@ export default function Observatory({ schools }) {
       </div>
       <div className="observatory-grid">
         {recentSpells.map((sp) => (
-          <div key={sp.skill} className="observatory-star">
+          <button
+            key={sp.skill}
+            type="button"
+            className="observatory-star"
+            onClick={() => onSpellClick?.(sp.spell, sp.schoolRef)}
+          >
             <span className="star-symbol" aria-hidden="true">{sp.schoolSymbol}</span>
             <span className="star-name">{sp.name}</span>
             <span className="star-school">{sp.school}</span>
-          </div>
+          </button>
         ))}
       </div>
     </div>

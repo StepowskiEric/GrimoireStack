@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { WIZARD_DATA } from '../data/schools.js';
+import { spellCatalog } from '../data/spellCatalogInstance.js';
 
 const CLUSTERS = [
   { id: 'fix', label: 'Fix it', emoji: '🐛' },
@@ -28,19 +29,13 @@ export default function TomeOfAilments({ schools, onSelectSkill, onClose }) {
     : [];
 
   const getSpellName = (skillId) => {
-    for (const school of schools) {
-      const spell = school.spells.find((s) => s.skill === skillId);
-      if (spell) return spell.name;
-    }
-    return skillId;
+    const name = spellCatalog.getSpellNameBySkill(skillId);
+    return name || skillId;
   };
 
   const getSchoolSymbol = (skillId) => {
-    for (const school of schools) {
-      const spell = school.spells.find((s) => s.skill === skillId);
-      if (spell) return school.symbol;
-    }
-    return '✦';
+    const entry = spellCatalog.resolveBySkill(skillId);
+    return entry ? entry.school.symbol : '✦';
   };
 
   return (
@@ -80,14 +75,12 @@ export default function TomeOfAilments({ schools, onSelectSkill, onClose }) {
                   type="button"
                   className="tome-situation"
                   onClick={() => {
-                    for (const school of schools) {
-                      const spell = school.spells.find((s) => s.skill === sit.skill);
-                      if (spell) {
-                        onSelectSkill(spell, school);
-                        return;
-                      }
+                    const entry = spellCatalog.resolveBySkill(sit.skill);
+                    if (entry) {
+                      onSelectSkill(entry.spell, entry.school);
+                    } else {
+                      onClose();
                     }
-                    onClose();
                   }}
                 >
                   <span className="tome-sit-label">{sit.label}</span>

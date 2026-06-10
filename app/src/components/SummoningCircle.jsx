@@ -1,17 +1,15 @@
 import { useState, useCallback } from 'react';
+import { spellCatalog } from '../data/spellCatalogInstance.js';
 
 export default function SummoningCircle({ schools, onSpellClick, favorites, onToggleFavorite }) {
   const [open, setOpen] = useState(false);
 
   const findSpell = useCallback(
     (skill) => {
-      for (const school of schools) {
-        const spell = school.spells.find((s) => s.skill === skill);
-        if (spell) return { spell, school };
-      }
-      return null;
+      const entry = spellCatalog.resolveBySkill(skill);
+      return entry ? { spell: entry.spell, school: entry.school } : null;
     },
-    [schools]
+    []
   );
 
   return (

@@ -1,5 +1,6 @@
 import { useState, useCallback, useEffect, useRef } from 'react';
 import { WIZARD_DATA } from '../data/schools.js';
+import { spellCatalog } from '../data/spellCatalogInstance.js';
 
 export default function WizardModal({ schools, onSelectSkill, onClose }) {
   const [step, setStep] = useState(0);
@@ -56,20 +57,18 @@ export default function WizardModal({ schools, onSelectSkill, onClose }) {
   }, [step]);
 
   const openSkill = useCallback((skillId) => {
-    for (const school of schools) {
-      const spell = school.spells.find(s => s.skill === skillId);
-      if (spell) { onSelectSkill(spell, school); return; }
+    const entry = spellCatalog.resolveBySkill(skillId);
+    if (entry) {
+      onSelectSkill(entry.spell, entry.school);
+    } else {
+      onClose();
     }
-    onClose();
-  }, [schools, onSelectSkill, onClose]);
+  }, [onSelectSkill, onClose]);
 
   const getSpellNameBySkill = useCallback((skillId) => {
-    for (const school of schools) {
-      const spell = school.spells.find(s => s.skill === skillId);
-      if (spell) return spell.name;
-    }
-    return null;
-  }, [schools]);
+    const entry = spellCatalog.resolveBySkill(skillId);
+    return entry ? entry.spell.name : null;
+  }, []);
 
   return (
     <div className="modal-overlay open" id="wizardOverlay" onClick={(e) => { if (e.target === e.currentTarget) onClose(); }}>

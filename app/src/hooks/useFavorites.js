@@ -1,4 +1,5 @@
 import { useState, useEffect, useCallback } from 'react';
+import { spellCatalog } from '../data/spellCatalogInstance.js';
 
 const STORAGE_KEY = 'grimoire-favorites';
 
@@ -38,16 +39,11 @@ export function useFavorites() {
     });
   }, []);
 
-  const findFavoriteSpell = useCallback(
-    (skill, schools) => {
-      for (const school of schools) {
-        const spell = school.spells.find((s) => s.skill === skill);
-        if (spell) return { spell, school };
-      }
-      return null;
-    },
-    []
-  );
+  const findFavoriteSpell = useCallback((skill) => {
+    const entry = spellCatalog.resolveBySkill(skill);
+    if (!entry) return null;
+    return { spell: entry.spell, school: entry.school };
+  }, []);
 
   return { favorites, isFavorited, toggleFavorite, findFavoriteSpell };
 }
