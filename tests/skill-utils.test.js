@@ -120,6 +120,27 @@ describe('skill-utils', () => {
       expect(map.debugging).toEqual(['debugging/bar.md']);
     });
   });
+
+  describe('discoverSkills edge cases', () => {
+    const fixtureRoot = path.resolve(repoRoot, 'tests/fixtures/skill-discovery');
+
+    it('prefers sibling markdown files over SKILL.md directories', () => {
+      const skills = skillUtils.discoverSkills(fixtureRoot);
+      expect(skills).toContain('execution/bar.md');
+      expect(skills).not.toContain('execution/bar/SKILL.md');
+    });
+
+    it('ignores hidden files', () => {
+      const skills = skillUtils.discoverSkills(fixtureRoot);
+      expect(skills).not.toContain('execution/.hidden.md');
+    });
+
+    it('ignores README files', () => {
+      const skills = skillUtils.discoverSkills(fixtureRoot);
+      expect(skills).not.toContain('execution/README.md');
+      expect(skills).not.toContain('docs/README.md');
+    });
+  });
 });
 
 describe('CLI contract', () => {
@@ -133,5 +154,35 @@ describe('CLI contract', () => {
     const { stdout } = await execFileAsync('node', ['bin/install.js', 'list'], { cwd: repoRoot });
     expect(stdout).toContain("Jerry's Agent Skills (");
     expect(stdout).toContain('Execution — how-to-do-the-work protocols');
+  });
+
+  it('rejects invalid command with help text', async () => {
+    try {
+      await execFileAsync('node', ['bin/install.js', 'bad'], { cwd: repoRoot });
+    } catch (error) {
+      expect(error.stderr).toContain('Unknown command');
+      return;
+    }
+    throw new Error('Expected CLI to exit with an error for an unknown command');
+  });
+
+  it('reports missing skill match', async () => {
+    try {
+      await execFileAsync('node', ['bin/install.js', 'install', '--agent', 'copilot', '--skill', 'missing'], { cwd: repoRoot });
+    } catch (error) {
+      expect(error.stderr).toContain('No skill found matching');
+      return;
+    }
+    throw new Error('Expected CLI to exit with an error for a missing skill');
+  });
+
+  it('enforces --agent or --dest with --skill', async () => {
+    try {
+      await execFileAsync('node', ['bin/install.js', 'install', '--skill', 'foo'], { cwd: repoRoot });
+    } catch (error) {
+      expect(error.stderr).toContain('--skill requires --agent or --dest');
+      return;
+    }
+    throw new Error('Expected CLI to exit with an error when --skill is used without --agent or --dest');
   });
 });
