@@ -132,6 +132,20 @@ export default function App() {
           <feColorMatrix type="matrix" values="0 0 0 0 0.15  0 0 0 0 0.08  0 0 0 0 0.03  0 0 0 0.08 0" />
           <feBlend in="SourceGraphic" mode="multiply" />
         </filter>
+        <filter id="paper-grain" x="0" y="0" width="100%" height="100%">
+          <feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="2" seed="5" stitchTiles="stitch" />
+          <feColorMatrix type="matrix" values="0 0 0 0 0.18  0 0 0 0 0.10  0 0 0 0 0.05  0 0 0 0.18 0" />
+          <feComposite in2="SourceGraphic" operator="in" />
+        </filter>
+        <filter id="leather-grain" x="0" y="0" width="100%" height="100%">
+          <feTurbulence type="fractalNoise" baseFrequency="0.65" numOctaves="2" seed="11" stitchTiles="stitch" />
+          <feColorMatrix type="matrix" values="0 0 0 0 0.08  0 0 0 0 0.05  0 0 0 0 0.02  0 0 0 0.35 0" />
+          <feComposite in2="SourceGraphic" operator="in" />
+        </filter>
+        <filter id="ink-blot" x="-20%" y="-20%" width="140%" height="140%">
+          <feTurbulence type="fractalNoise" baseFrequency="0.05" numOctaves="3" seed="9" />
+          <feDisplacementMap in="SourceGraphic" scale="6" />
+        </filter>
       </svg>
       <BookSplash onFinish={() => setLoaded(true)} />
       {loaded && <>
@@ -165,9 +179,9 @@ export default function App() {
       <div style={{ textAlign: 'center', marginTop: -8, marginBottom: 10, zIndex: 2, position: 'relative' }}>
         <label style={{
           fontFamily: "'Cinzel', serif", fontSize: '0.5rem', textTransform: 'uppercase',
-          letterSpacing: '0.08em', color: '#6a5a3a', cursor: 'pointer',
+          letterSpacing: '0.08em', color: '#a89878', cursor: 'pointer',
           display: 'inline-flex', alignItems: 'center', gap: 6,
-          padding: '4px 10px', border: '1px solid rgba(160,120,70,.1)', borderRadius: 4,
+          padding: '4px 10px', border: '1px solid rgba(180,140,80,.22)', borderRadius: 4,
           transition: 'all .3s ease',
         }}>
           <input type="checkbox" checked={castEnabled}
@@ -204,6 +218,19 @@ export default function App() {
           <div className="stain stain-1" />
           <div className="stain stain-2" />
           <div className="stain stain-3" />
+          <div className="burn b1" />
+          <div className="burn b2" />
+          <div className="foxing f1" />
+          <div className="foxing f2" />
+          <div className="foxing f3" />
+          <div className="foxing f4" />
+          <div className="foxing f5" />
+          <div className="ink-blot ib1" />
+          <div className="ink-blot ib2" />
+          <div className="ink-blot ib3" />
+          <div className="marginalia m1">beware the recursion</div>
+          <div className="marginalia m2">~ Fol. iii ~</div>
+          <div className="folio">·  Folio III  ·</div>
           {schools.map(s => (
             <SchoolSection key={s.id} school={s}
               isActive={currentSchool === s.id && !isLab && !isRitual && !searchQuery}
