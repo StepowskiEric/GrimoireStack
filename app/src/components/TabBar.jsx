@@ -3,7 +3,7 @@ import { useCallback, useRef } from 'react';
 export default function TabBar({ schools, currentSchool, onSelect, isLab }) {
   const tabRefs = useRef({});
 
-  const allIds = [...schools.map(s => s.id), 'recipe-lab'];
+  const allIds = [...schools.map(s => s.id), 'ritual', 'recipe-lab'];
 
   const onKeyDown = useCallback((e, index) => {
     let nextIndex = index;
@@ -33,6 +33,17 @@ export default function TabBar({ schools, currentSchool, onSelect, isLab }) {
             {s.symbol} {s.name} <span className="real-name">{s.real}</span>
           </button>
         ))}
+        <button key="ritual"
+          ref={el => tabRefs.current['ritual'] = el}
+          role="tab"
+          aria-selected={currentSchool === 'ritual'}
+          tabIndex={currentSchool === 'ritual' ? 0 : -1}
+          className={`tab-btn tab-btn-ritual${currentSchool === 'ritual' ? ' active' : ''}`}
+          data-school="ritual"
+          onClick={() => onSelect('ritual')}
+          onKeyDown={e => onKeyDown(e, allIds.length - 2)}>
+          ⛧ Ritual <span className="real-name">summon the grimoire</span>
+        </button>
         <button key="recipe-lab"
           ref={el => tabRefs.current['recipe-lab'] = el}
           role="tab"

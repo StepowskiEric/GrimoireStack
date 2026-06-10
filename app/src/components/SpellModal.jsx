@@ -87,17 +87,41 @@ export default function SpellModal({ spell, school, onClose }) {
           <code>〈 grimoirestack:{school.id}/{spell.skill} 〉</code>
         </div>
 
-        <button className="modal-share" onClick={() => {
-          const url = `${window.location.origin}${window.location.pathname}?s=${encodeURIComponent(spell.skill)}`;
-          if (navigator.share) {
-            navigator.share({ title: spell.name, text: spell.effect, url });
-          } else {
-            navigator.clipboard.writeText(url).then(() => {
-              const btn = document.querySelector('.modal-share');
-              if (btn) { btn.textContent = '✦ Link Copied!'; setTimeout(() => { btn.textContent = '✦ Share'; }, 2000); }
+        <div className="modal-actions">
+          <button className="modal-share modal-share-half" onClick={(e) => {
+            const url = `${window.location.origin}${window.location.pathname}?s=${encodeURIComponent(spell.skill)}`;
+            const btn = e.currentTarget;
+            const restore = () => { btn.textContent = '✦ Share'; };
+            if (navigator.share) {
+              navigator.share({ title: spell.name, text: spell.effect, url }).catch(() => {});
+            } else if (navigator.clipboard) {
+              navigator.clipboard.writeText(url).then(() => {
+                btn.textContent = '✦ Link Copied!';
+                setTimeout(restore, 2000);
+              }).catch(() => {
+                btn.textContent = '✦ Copy failed';
+                setTimeout(restore, 2000);
+              });
+            }
+          }}>✦ Share</button>
+          <button className="modal-share modal-share-half modal-inscribe" onClick={(e) => {
+            const cmd = `npx jerry-skills install --agent claude --skill ${spell.skill}`;
+            const btn = e.currentTarget;
+            const restore = () => { btn.textContent = '✦ Inscribe to your Workshop'; };
+            if (!navigator.clipboard) {
+              btn.textContent = '✦ Copy unsupported';
+              setTimeout(restore, 2000);
+              return;
+            }
+            navigator.clipboard.writeText(cmd).then(() => {
+              btn.textContent = '✦ Incantation Inscribed';
+              setTimeout(restore, 2000);
+            }).catch(() => {
+              btn.textContent = '✦ Copy failed';
+              setTimeout(restore, 2000);
             });
-          }
-        }}>✦ Share</button>
+          }}>✦ Inscribe to your Workshop</button>
+        </div>
       </div>
     </div>
   );

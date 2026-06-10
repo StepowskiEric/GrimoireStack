@@ -12,6 +12,8 @@ import WitchDoctorModal from './components/WitchDoctorModal.jsx';
 import Footer from './components/Footer.jsx';
 import BookSplash from './components/BookSplash.tsx';
 import SpellCast from './components/SpellCast.tsx';
+import RitualSection from './components/RitualSection.jsx';
+import { REPO_URL } from './data/constants.js';
 
 export default function App() {
   const [loaded, setLoaded] = useState(false);
@@ -26,6 +28,7 @@ export default function App() {
 
   const searchResults = useMemo(() => searchSpells(schools, searchQuery), [searchQuery]);
   const isLab = currentSchool === 'recipe-lab';
+  const isRitual = currentSchool === 'ritual';
 
   useEffect(() => {
     const handler = () => {
@@ -134,7 +137,20 @@ export default function App() {
       {loaded && <>
       <Embers />
       <header>
-        <div className="wax-seal">⛧</div>
+        <div className="wax-seal-row">
+          <div className="wax-seal">⛧</div>
+          <a
+            className="header-sigil"
+            href={REPO_URL}
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="Open the GrimoireStack repository on GitHub"
+            title="Browse the source on GitHub"
+          >
+            <span className="header-sigil-glyph" aria-hidden="true">⟐</span>
+            <span className="header-sigil-text">github</span>
+          </a>
+        </div>
         <h1>GrimoireStack</h1>
         <div className="subtitle">The Warlock's Tome of Agent Incantations</div>
         <div className="flare"><span>⚜</span><span>✦</span><span>⚜</span></div>
@@ -190,10 +206,11 @@ export default function App() {
           <div className="stain stain-3" />
           {schools.map(s => (
             <SchoolSection key={s.id} school={s}
-              isActive={currentSchool === s.id && !isLab && !searchQuery}
+              isActive={currentSchool === s.id && !isLab && !isRitual && !searchQuery}
               searchQuery={searchQuery}
               onSpellClick={handleSpellClick} />
           ))}
+          {isRitual ? <RitualSection /> : null}
           {isLab ? <RecipeLab schools={schools} /> : null}
         </div>
       </main>
