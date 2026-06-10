@@ -316,19 +316,19 @@ import SummoningCircle from '../components/SummoningCircle.jsx';
 
 describe('SummoningCircle', () => {
   it('renders the toggle button with count', () => {
-    render(<SummoningCircle schools={[sampleSchool]} onSpellClick={() => {}} />);
+    render(<SummoningCircle schools={[sampleSchool]} onSpellClick={() => {}} favorites={[]} onToggleFavorite={() => {}} />);
     expect(screen.getByLabelText('Open Summoning Circle')).toBeInTheDocument();
   });
 
   it('opens panel when toggle is clicked', () => {
-    render(<SummoningCircle schools={[sampleSchool]} onSpellClick={() => {}} />);
+    render(<SummoningCircle schools={[sampleSchool]} onSpellClick={() => {}} favorites={[]} onToggleFavorite={() => {}} />);
     fireEvent.click(screen.getByLabelText('Open Summoning Circle'));
     expect(screen.getByText('The Summoning Circle')).toBeInTheDocument();
     expect(screen.getByText('The circle is silent…')).toBeInTheDocument();
   });
 
   it('closes panel when close button is clicked', () => {
-    render(<SummoningCircle schools={[sampleSchool]} onSpellClick={() => {}} />);
+    render(<SummoningCircle schools={[sampleSchool]} onSpellClick={() => {}} favorites={[]} onToggleFavorite={() => {}} />);
     fireEvent.click(screen.getByLabelText('Open Summoning Circle'));
     fireEvent.click(screen.getByLabelText('Close circle'));
     expect(screen.queryByText('The Summoning Circle')).not.toBeInTheDocument();

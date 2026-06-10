@@ -43,7 +43,7 @@ export default function App() {
   const isLab = currentSchool === 'recipe-lab';
   const isRitual = currentSchool === 'ritual';
 
-  const { isFavorited, toggleFavorite } = useFavorites();
+  const { favorites, isFavorited, toggleFavorite } = useFavorites();
 
   const {
     modal,
@@ -277,7 +277,7 @@ export default function App() {
       {modal && <SpellModal spell={modal.spell} school={modal.school} onClose={handleModalClose} />}
       {casting && <SpellCast spellName={casting.spell.name} schoolSymbol={casting.school.symbol} onComplete={handleCastComplete} />}
       <RecipeLabExplainer visible={isLab} onDismiss={() => {}} />
-      <SummoningCircle schools={schools} onSpellClick={handleSpellClick} />
+      <SummoningCircle schools={schools} onSpellClick={handleSpellClick} favorites={favorites} onToggleFavorite={toggleFavorite} />
       <Footer />
       </>}
     </>

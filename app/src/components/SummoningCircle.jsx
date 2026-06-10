@@ -1,38 +1,7 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useCallback } from 'react';
 
-const STORAGE_KEY = 'grimoire-favorites';
-
-function loadFavorites() {
-  try {
-    const raw = localStorage.getItem(STORAGE_KEY);
-    return raw ? JSON.parse(raw) : [];
-  } catch {
-    return [];
-  }
-}
-
-function saveFavorites(favs) {
-  try {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(favs));
-  } catch {}
-}
-
-export default function SummoningCircle({ schools, onSpellClick }) {
-  const [favorites, setFavorites] = useState(loadFavorites);
+export default function SummoningCircle({ schools, onSpellClick, favorites, onToggleFavorite }) {
   const [open, setOpen] = useState(false);
-
-  useEffect(() => {
-    saveFavorites(favorites);
-  }, [favorites]);
-
-  const toggleFavorite = useCallback((spellName, skill) => {
-    setFavorites((prev) => {
-      const exists = prev.some((f) => f.skill === skill);
-      if (exists) return prev.filter((f) => f.skill !== skill);
-      if (prev.length >= 12) return prev;
-      return [...prev, { name: spellName, skill, addedAt: Date.now() }];
-    });
-  }, []);
 
   const findSpell = useCallback(
     (skill) => {
@@ -43,11 +12,6 @@ export default function SummoningCircle({ schools, onSpellClick }) {
       return null;
     },
     [schools]
-  );
-
-  const isFavorited = useCallback(
-    (skill) => favorites.some((f) => f.skill === skill),
-    [favorites]
   );
 
   return (
@@ -105,7 +69,7 @@ export default function SummoningCircle({ schools, onSpellClick }) {
                     <button
                       type="button"
                       className="circle-glyph-unbind"
-                      onClick={() => toggleFavorite(fav.name, fav.skill)}
+                      onClick={() => onToggleFavorite(fav.name, fav.skill)}
                       aria-label={`Unbind ${fav.name}`}
                       title="Unbind"
                     >
