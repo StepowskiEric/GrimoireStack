@@ -90,7 +90,10 @@ export default function ApprenticeWelcome({ onClose }) {
             ) : null}
             <button
               className="welcome-next"
-              onClick={() => setIndex((prev) => (prev + 1) % panels.length)}
+              onClick={() => {
+                if (index === panels.length - 1) onClose();
+                else setIndex((prev) => prev + 1);
+              }}
               type="button"
             >
               {index === panels.length - 1 ? 'Enter the Grimoire' : 'Continue →'}

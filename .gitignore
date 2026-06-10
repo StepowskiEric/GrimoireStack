@@ -4,7 +4,7 @@ node_modules/
 app/dist/
 app/remotion/out/
 app-dist/
-site/dist/
+site/
 # App npm caches
 app/.npm-cache/
 app/tmp-npm-cache/
