@@ -1,5 +1,7 @@
 import { useEffect, useRef } from 'react';
 import schools from '../data/schools.js';
+import { TIER_META } from '../data/tiers.js';
+import { getSpellTier } from '../data/tiers.js';
 
 function findSpell(name) {
   for (const s of schools) {
@@ -14,6 +16,7 @@ export default function SpellModal({ spell, school, onClose }) {
   if (!spell) return null;
   const statusStr = spell.status && spell.status !== '—' ? spell.status : 'Common';
   const statusClass = (spell.status || 'common').toLowerCase().replace(/[^a-z]/g, '') || 'common';
+  const { tier, label, className: tierClass, title: tierTitle } = TIER_META[getSpellTier(spell)];
   const modalRef = useRef(null);
 
   // Focus trap
@@ -58,6 +61,15 @@ export default function SpellModal({ spell, school, onClose }) {
           <div className="modal-detail-label">Status</div>
           <div className="modal-detail-value">
             <span className={`tag ${statusClass}`}>{statusStr}</span>
+          </div>
+        </div>
+        <div className="modal-detail-row">
+          <div className="modal-detail-label">Arcane Tier</div>
+          <div className="modal-detail-value">
+            <span className={`sigil-tier ${tierClass}`} title={tierTitle}>
+              <span className="sigil-mark" aria-hidden="true">⟐</span>
+              <span className="sigil-label">{label}</span>
+            </span>
           </div>
         </div>
         <div className="modal-detail-row">

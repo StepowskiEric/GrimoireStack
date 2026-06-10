@@ -2093,3 +2093,270 @@ footer .footer-install-hint em{
   border-color:rgba(212,175,55,.6);
   box-shadow:0 0 18px rgba(212,175,55,.1);
 }
+
+/* ── Bookmark of First Rites ───────────────────── */
+.bookmark-wrapper{
+  position:relative;
+  z-index:2;
+  max-width:1200px;
+  margin:0 auto 14px;
+  padding:0 16px;
+}
+.bookmark-ribbon{
+  height:10px;
+  border-radius:2px;
+  margin-bottom:8px;
+  background:
+    linear-gradient(180deg, rgba(120,40,20,.9), rgba(90,22,10,.92)),
+    repeating-linear-gradient(90deg, transparent, transparent 6px, rgba(0,0,0,.12) 6px, rgba(0,0,0,.12) 7px);
+  border:1px solid rgba(212,175,55,.18);
+  box-shadow:
+    0 8px 18px rgba(0,0,0,.35),
+    inset 0 0 12px rgba(0,0,0,.25),
+    0 0 24px rgba(180,120,60,.08);
+}
+.bookmark-panel{
+  display:flex;
+  flex-direction:column;
+  gap:10px;
+  padding:14px 16px;
+  background:rgba(40,28,16,.55);
+  border:1px solid rgba(180,140,80,.14);
+  border-radius:6px;
+}
+.bookmark-title{
+  display:inline-flex;
+  align-items:center;
+  gap:10px;
+  font-family:'Cinzel',serif;
+  font-size:.62rem;
+  text-transform:uppercase;
+  letter-spacing:.12em;
+  color:#c8b898;
+}
+.bookmark-seal{
+  width:30px;height:30px;
+  display:inline-flex;align-items:center;justify-content:center;
+  border-radius:50%;
+  background:radial-gradient(circle at 40% 35%, #8a2222, #4a0f0f 65%, #2a0707);
+  border:1px solid rgba(212,175,55,.45);
+  color:#f1d08a;
+  font-size:.85rem;
+  box-shadow:0 0 18px rgba(212,175,55,.18), inset 0 0 12px rgba(0,0,0,.35);
+}
+.bookmark-chips{
+  display:flex;
+  flex-wrap:wrap;
+  gap:8px;
+}
+.bookmark-chip{
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  padding:7px 12px;
+  border-radius:14px;
+  border:1px solid rgba(180,140,80,.18);
+  background:linear-gradient(135deg, rgba(50,30,14,.75), rgba(38,22,10,.75));
+  color:#c8b898;
+  font-family:'Cinzel',serif;
+  font-size:.62rem;
+  letter-spacing:.04em;
+  cursor:pointer;
+  transition:transform 200ms var(--ease-out), border-color 200ms ease, color 200ms ease, box-shadow 200ms ease;
+}
+.bookmark-chip:hover{
+  transform:translateY(-1px);
+  border-color:rgba(212,175,55,.4);
+  color:#f3e8ce;
+  box-shadow:0 0 18px rgba(212,175,55,.08);
+}
+.bookmark-chip:active{transform:scale(.97)}
+.bookmark-chip-action{
+  background:linear-gradient(135deg, rgba(60,38,18,.85), rgba(44,26,12,.85));
+  border-color:rgba(212,175,55,.22);
+  color:#d4af37;
+}
+.bookmark-chip-action:hover{
+  border-color:rgba(212,175,55,.55);
+  box-shadow:0 0 24px rgba(212,175,55,.12);
+}
+.bookmark-emoji{font-size:.95rem;line-height:1}
+.bookmark-label{white-space:nowrap}
+
+/* ── Arcane Tier Badges ────────────────────────── */
+.sigil-tier{
+  display:inline-flex;
+  align-items:center;
+  gap:6px;
+  padding:3px 10px;
+  border-radius:999px;
+  border:1px solid rgba(180,140,80,.18);
+  background:rgba(20,12,6,.08);
+  font-family:'Cinzel',serif;
+  font-size:.58rem;
+  letter-spacing:.06em;
+  text-transform:uppercase;
+}
+.sigil-mark{
+  font-size:.7rem;
+  color:rgba(212,175,55,.8);
+}
+.sigil-label{color:#c8b898}
+
+.sigil-tier-faded{
+  color:#9a8a70;
+  border-color:rgba(120,110,90,.18);
+  background:rgba(20,18,14,.06);
+}
+.sigil-tier-apprentice{
+  color:#b8c8d8;
+  border-color:rgba(120,150,180,.22);
+  background:rgba(16,24,36,.08);
+}
+.sigil-tier-adept{
+  color:#c8b8e8;
+  border-color:rgba(140,120,190,.24);
+  background:rgba(30,22,50,.08);
+}
+.sigil-tier-master{
+  color:#e8d8a8;
+  border-color:rgba(200,170,100,.28);
+  background:rgba(45,35,14,.1);
+}
+.sigil-tier-archmage{
+  color:#f1d08a;
+  border-color:rgba(220,150,80,.35);
+  background:rgba(60,28,10,.12);
+  box-shadow:0 0 18px rgba(212,120,40,.12);
+  animation:archmagePulse 3.2s ease-in-out infinite;
+}
+@keyframes archmagePulse{
+  0%,100%{box-shadow:0 0 14px rgba(212,120,40,.1)}
+  50%{box-shadow:0 0 24px rgba(212,160,70,.22)}
+}
+
+.spell-card .spell-tier.sigil-tier{
+  margin-bottom:8px;
+  align-self:flex-start;
+}
+
+/* ── Bestiary of Common Afflictions ────────────── */
+.bestiary-section{
+  position:relative;
+  z-index:2;
+  max-width:1100px;
+  margin:0 auto 28px;
+  padding:22px 18px 24px;
+  background:rgba(40,28,16,.55);
+  border:1px solid rgba(180,140,80,.14);
+  border-radius:6px;
+}
+.bestiary-header{
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap:6px;
+  margin-bottom:18px;
+  text-align:center;
+}
+.bestiary-ornament{
+  font-family:'MedievalSharp',serif;
+  font-size:.65rem;
+  letter-spacing:.28em;
+  color:rgba(180,130,60,.35);
+}
+.bestiary-title{
+  font-family:'Cinzel',serif;
+  font-weight:700;
+  font-size:clamp(1.05rem,2.2vw,1.35rem);
+  color:#6a3a1a;
+  letter-spacing:.06em;
+}
+.bestiary-subtitle{
+  font-family:'Cormorant Garamond',serif;
+  font-style:italic;
+  font-size:.88rem;
+  color:#8a7a5a;
+}
+.bestiary-table-wrap{
+  overflow-x:auto;
+}
+.bestiary-table{
+  width:100%;
+  border-collapse:collapse;
+  font-size:.92rem;
+}
+.bestiary-table thead th{
+  font-family:'Cinzel',serif;
+  font-size:.58rem;
+  text-transform:uppercase;
+  letter-spacing:.08em;
+  color:#5a4428;
+  padding:10px 12px;
+  border-bottom:1px solid rgba(180,140,80,.18);
+  text-align:left;
+}
+.bestiary-row{
+  transition:background .25s ease, box-shadow .25s ease;
+}
+.bestiary-row:hover{
+  background:rgba(212,175,55,.06);
+  box-shadow:inset 0 0 24px rgba(212,175,55,.04);
+}
+.bestiary-row td{
+  padding:12px 12px;
+  vertical-align:middle;
+  border-bottom:1px solid rgba(180,140,80,.08);
+  color:#2a1a0a;
+}
+.bestiary-symptom{
+  display:inline-flex;
+  flex-direction:column;
+  gap:4px;
+  background:none;
+  border:none;
+  padding:0;
+  color:#2a1a0a;
+  font-family:inherit;
+  font-size:inherit;
+  cursor:pointer;
+  text-align:left;
+}
+.bestiary-symptom:hover .bestiary-quote{
+  color:#d4af37;
+  text-shadow:0 0 10px rgba(212,175,55,.25);
+}
+.bestiary-quote{
+  color:#8a7a5a;
+  font-size:.95rem;
+  margin-right:4px;
+}
+.bestiary-note{
+  font-family:'Cormorant Garamond',serif;
+  font-style:italic;
+  font-size:.8rem;
+  color:#6a5a3a;
+}
+.bestiary-incantation{
+  font-family:'Special Elite',cursive;
+  font-size:.88rem;
+  color:#4a3a2a;
+  background:rgba(212,175,55,.06);
+  border:1px solid rgba(180,140,80,.18);
+  border-radius:4px;
+  padding:4px 10px;
+  cursor:pointer;
+  transition:color .3s, border-color .3s, background .3s;
+}
+.bestiary-incantation:hover{
+  color:#d4af37;
+  border-color:rgba(212,175,55,.35);
+  background:rgba(212,175,55,.12);
+}
+.bestiary-school{
+  font-family:'Cinzel',serif;
+  font-size:.72rem;
+  text-transform:uppercase;
+  letter-spacing:.06em;
+  color:#5a4428;
+}
