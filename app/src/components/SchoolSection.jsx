@@ -1,7 +1,7 @@
 import { useMemo } from 'react';
 import SpellCard from './SpellCard.jsx';
 
-export default function SchoolSection({ school, isActive, onSpellClick, searchQuery }) {
+export default function SchoolSection({ school, isActive, onSpellClick, searchQuery, isFavorited, onToggleFavorite }) {
   const matchingSet = useMemo(() => {
     if (!searchQuery) return null;
     const q = searchQuery.toLowerCase();
@@ -35,6 +35,8 @@ export default function SchoolSection({ school, isActive, onSpellClick, searchQu
           return (
             <SpellCard key={key} spell={sp}
               onClick={() => onSpellClick(sp, school)}
+              onToggleFavorite={onToggleFavorite}
+              isFavorited={isFavorited?.(sp.skill)}
               matched={!searchQuery || matchingSet.has(key)} />
           );
         })}

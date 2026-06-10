@@ -2239,3 +2239,484 @@ footer .footer-install-hint em{
   margin-bottom:8px;
   align-self:flex-start;
 }
+
+/* ══════════════════════════════════════════════════════════════
+   NEW COMPONENTS CSS — Librarian's Ledger, Legend, Marginalia,
+   Whispers, Observatory, Summoning Circle, Tome, Explainer
+   ══════════════════════════════════════════════════════════════ */
+
+/* ── Spell Star (favorite toggle) ────────────────── */
+.spell-star{
+  position:absolute;top:8px;right:8px;
+  background:none;border:none;
+  font-size:1rem;color:rgba(180,140,80,.25);
+  cursor:pointer;transition:all .25s ease;
+  padding:2px 4px;line-height:1;
+}
+.spell-star:hover{color:rgba(212,175,55,.6);transform:scale(1.15)}
+.spell-star.favorited{color:#d4af37;text-shadow:0 0 8px rgba(212,175,55,.3)}
+
+/* ── Librarian's Ledger ─────────────────────────── */
+.ledger-wrapper{
+  position:relative;z-index:2;
+  max-width:1200px;margin:0 auto 16px;
+  padding:0 16px;
+}
+.ledger-seal{
+  text-align:center;font-size:1.2rem;color:rgba(212,175,55,.15);
+  margin-bottom:6px;
+}
+.ledger-panel{
+  display:flex;flex-wrap:wrap;gap:8px;
+  justify-content:center;
+  padding:12px 16px;
+  background:rgba(40,28,16,.5);
+  border:1px solid rgba(180,140,80,.12);
+  border-radius:6px;
+}
+.ledger-entry{
+  display:flex;align-items:center;gap:6px;
+  padding:6px 14px;
+  border:1px solid rgba(180,140,80,.1);
+  border-radius:20px;
+  background:linear-gradient(135deg, rgba(50,32,14,.7), rgba(38,24,10,.7));
+  font-family:'Cinzel',serif;
+  font-size:.6rem;text-transform:uppercase;letter-spacing:.06em;
+  color:#c8b898;
+}
+.ledger-rune{font-size:.75rem;color:rgba(212,175,55,.5)}
+.ledger-value{font-size:.85rem;color:#d4af37;font-weight:700}
+.ledger-label{color:#a89878}
+
+/* ── Legend of Sigils ───────────────────────────── */
+.legend-toggle{
+  display:inline-flex;align-items:center;gap:6px;
+  font-family:'Cinzel',serif;font-size:.55rem;text-transform:uppercase;
+  letter-spacing:.08em;color:#a89878;
+  background:linear-gradient(135deg, rgba(40,28,16,.7), rgba(28,18,10,.7));
+  border:1px solid rgba(180,140,80,.18);border-radius:4px;
+  padding:5px 12px;cursor:pointer;
+  transition:all .3s ease;
+}
+.legend-toggle:hover{
+  border-color:rgba(212,175,55,.4);color:#d4af37;
+  box-shadow:0 0 12px rgba(212,175,55,.06);
+}
+.legend-toggle-text{display:inline}
+.legend-modal{max-width:520px}
+.legend-title{
+  font-family:'Cinzel Decorative',serif;font-weight:700;
+  font-size:1.1rem;color:#6a3a1a;letter-spacing:.06em;
+  text-align:center;margin-bottom:2px;
+}
+.legend-subtitle{
+  font-family:'Cormorant Garamond',serif;font-style:italic;
+  font-size:.85rem;color:#5a4428;text-align:center;margin-bottom:16px;
+}
+.legend-section{margin-bottom:18px}
+.legend-section-title{
+  font-family:'Cinzel',serif;font-size:.55rem;text-transform:uppercase;
+  letter-spacing:.1em;color:#6a4a2a;margin-bottom:10px;
+}
+.legend-grid{display:flex;flex-direction:column;gap:8px}
+.legend-row{
+  display:flex;align-items:center;gap:12px;
+  padding:8px 10px;
+  border:1px solid rgba(180,140,80,.06);
+  border-radius:4px;
+  background:rgba(20,12,6,.02);
+}
+.legend-desc{
+  font-size:.85rem;color:#4a3a2a;line-height:1.4;
+}
+.legend-hint{
+  text-align:center;font-family:'Cormorant Garamond',serif;
+  font-style:italic;font-size:.82rem;color:#7a6a4a;
+  margin-top:12px;padding-top:12px;
+  border-top:1px solid rgba(212,175,55,.06);
+}
+
+/* ── Apprentice Marginalia ─────────────────────── */
+.marginalia-wrapper{
+  position:relative;z-index:2;
+  max-width:600px;margin:-8px auto 18px;
+  padding:0 16px;
+}
+.marginalia-trigger{
+  display:flex;align-items:center;gap:8px;
+  width:100%;
+  font-family:'Cinzel',serif;font-size:.6rem;text-transform:uppercase;
+  letter-spacing:.08em;color:#a89878;
+  background:linear-gradient(135deg, rgba(40,28,16,.55), rgba(28,18,10,.55));
+  border:1px solid rgba(180,140,80,.12);border-radius:4px;
+  padding:8px 14px;cursor:pointer;
+  transition:all .3s ease;text-align:left;
+}
+.marginalia-trigger:hover{
+  border-color:rgba(212,175,55,.3);color:#d4af37;
+}
+.marginalia-icon{color:rgba(212,175,55,.5);font-size:.85rem}
+.marginalia-trigger-text{flex:1}
+.marginalia-chevron{font-size:.6rem;color:#7a6a4a}
+.marginalia-content{
+  margin-top:8px;
+  padding:16px 18px;
+  background:linear-gradient(145deg, #e0d4bc, #d4c8b0);
+  border:1px solid rgba(100,70,30,.12);
+  border-radius:4px;
+  animation:fadeIn .35s ease;
+}
+.marginalia-content p{
+  font-size:.92rem;color:#2a1a0a;line-height:1.6;margin-bottom:10px;
+}
+.marginalia-content p:last-child{margin-bottom:0}
+.marginalia-content strong{color:#6a3a1a}
+.marginalia-content em{color:#5a4428}
+.marginalia-footer{
+  display:flex;align-items:center;gap:8px;
+  margin-top:12px;padding-top:10px;
+  border-top:1px solid rgba(212,175,55,.08);
+  font-family:'Cinzel',serif;font-size:.5rem;text-transform:uppercase;
+  letter-spacing:.08em;color:#7a6a4a;
+}
+.marginalia-rune{color:rgba(212,175,55,.35);font-size:.75rem}
+
+/* ── Whispers from the Void ────────────────────── */
+.whispers-wrapper{
+  grid-column:1/-1;
+  display:flex;flex-direction:column;align-items:center;
+  gap:16px;padding:40px 20px;text-align:center;
+  animation:fadeIn .5s ease;
+}
+.whispers-orb{
+  width:80px;height:80px;border-radius:50%;
+  background:radial-gradient(circle at 50% 40%, rgba(20,14,8,.95), rgba(10,6,3,.98));
+  border:1px solid rgba(212,175,55,.06);
+  display:flex;align-items:center;justify-content:center;
+  position:relative;
+}
+.whispers-orb-inner{
+  width:50px;height:50px;border-radius:50%;
+  background:radial-gradient(circle at 50% 50%, rgba(180,140,80,.04), transparent 60%);
+  animation:orbPulse 4s ease-in-out infinite;
+}
+.whispers-title{
+  font-family:'Cinzel Decorative',serif;font-weight:700;
+  font-size:1.1rem;color:#6a3a1a;letter-spacing:.06em;
+}
+.whispers-body{
+  font-size:.95rem;color:#4a3a2a;font-style:italic;line-height:1.5;
+}
+.whispers-body em{color:#6a3a1a}
+.whispers-actions{margin-top:4px}
+.whispers-action{
+  font-family:'Cinzel',serif;font-size:.65rem;font-weight:600;
+  text-transform:uppercase;letter-spacing:.08em;
+  padding:8px 20px;
+  border:1px solid rgba(212,175,55,.2);border-radius:4px;
+  background:linear-gradient(135deg, rgba(40,28,16,.9), rgba(28,18,10,.9));
+  color:#d4af37;cursor:pointer;
+  transition:all .3s ease;
+}
+.whispers-action:hover{
+  box-shadow:0 0 20px rgba(212,175,55,.1);
+}
+.whispers-hint{
+  font-family:'Cormorant Garamond',serif;
+  font-style:italic;font-size:.82rem;color:#7a6a4a;
+}
+.whispers-hint em{color:#5a4428}
+
+/* ── Observatory ─────────────────────────────────── */
+.observatory-wrapper{
+  grid-column:1/-1;
+  margin:24px 0 12px;
+  padding:18px 20px;
+  background:linear-gradient(145deg, rgba(212,175,55,.04), rgba(212,175,55,.01));
+  border:1px solid rgba(180,140,80,.1);
+  border-radius:6px;
+  animation:fadeIn .5s ease;
+}
+.observatory-header{
+  display:flex;align-items:center;gap:8px;
+  margin-bottom:14px;
+}
+.observatory-sigil{font-size:1.1rem;color:rgba(212,175,55,.5)}
+.observatory-title{
+  font-family:'Cinzel',serif;font-weight:700;
+  font-size:.75rem;text-transform:uppercase;letter-spacing:.08em;
+  color:#6a3a1a;
+}
+.observatory-subtitle{
+  font-family:'Cormorant Garamond',serif;font-style:italic;
+  font-size:.75rem;color:#7a6a4a;
+}
+.observatory-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fill, minmax(180px, 1fr));
+  gap:8px;
+}
+.observatory-star{
+  display:flex;align-items:center;gap:8px;
+  padding:8px 12px;
+  border:1px solid rgba(180,140,80,.08);border-radius:4px;
+  background:rgba(20,12,6,.02);
+  transition:all .25s ease;
+}
+.observatory-star:hover{
+  border-color:rgba(212,175,55,.18);
+  background:rgba(212,175,55,.03);
+  transform:translateX(2px);
+}
+.star-symbol{font-size:1rem;color:rgba(212,175,55,.4)}
+.star-name{
+  font-family:'Cinzel',serif;font-size:.65rem;
+  color:#4a3a2a;line-height:1.3;
+}
+.star-school{
+  font-family:'Cormorant Garamond',serif;font-size:.7rem;
+  color:#7a6a4a;margin-left:auto;
+}
+
+/* ── Summoning Circle ───────────────────────────── */
+.circle-toggle{
+  position:fixed;bottom:20px;right:20px;z-index:90;
+  width:48px;height:48px;border-radius:50%;
+  background:radial-gradient(circle at 40% 35%, #5a1008, #2a0503 60%, #1a0303);
+  border:2px solid rgba(212,175,55,.35);
+  color:#d4af37;font-size:1.1rem;
+  display:flex;align-items:center;justify-content:center;
+  cursor:pointer;transition:all .3s ease;
+  box-shadow:0 4px 16px rgba(0,0,0,.4),0 0 20px rgba(212,175,55,.1);
+}
+.circle-toggle:hover{
+  transform:scale(1.08);
+  border-color:rgba(212,175,55,.6);
+  box-shadow:0 6px 24px rgba(0,0,0,.5),0 0 30px rgba(212,175,55,.18);
+}
+.circle-count{
+  position:absolute;top:-6px;right:-6px;
+  width:18px;height:18px;border-radius:50%;
+  background:#d4af37;color:#1a0e06;
+  font-family:'Cinzel',serif;font-size:.5rem;font-weight:700;
+  display:flex;align-items:center;justify-content:center;
+  border:1px solid rgba(212,175,55,.5);
+}
+.circle-panel{
+  position:fixed;bottom:80px;right:20px;z-index:91;
+  width:320px;max-height:420px;overflow-y:auto;
+  background:linear-gradient(160deg, #d8ccb5, #c8b898);
+  border:1px solid rgba(212,175,55,.15);border-radius:6px;
+  padding:16px 18px;
+  box-shadow:0 10px 40px rgba(0,0,0,.5),0 0 20px rgba(212,175,55,.06);
+  animation:modalIn .3s ease;
+}
+.circle-header{
+  display:flex;align-items:center;justify-content:space-between;
+  margin-bottom:12px;
+  padding-bottom:10px;
+  border-bottom:1px solid rgba(212,175,55,.08);
+}
+.circle-title{
+  font-family:'Cinzel',serif;font-weight:700;
+  font-size:.7rem;text-transform:uppercase;letter-spacing:.08em;
+  color:#6a3a1a;
+}
+.circle-close{
+  background:none;border:none;
+  color:#3a2a1a;font-size:1.2rem;cursor:pointer;
+  transition:color .3s;padding:0;line-height:1;
+}
+.circle-close:hover{color:#d4af37}
+.circle-empty{
+  text-align:center;padding:20px 10px;
+}
+.circle-empty-rune{
+  font-size:2rem;color:rgba(212,175,55,.15);margin-bottom:8px;
+}
+.circle-empty-text{
+  font-family:'Cinzel',serif;font-size:.7rem;text-transform:uppercase;
+  letter-spacing:.06em;color:#6a3a1a;margin-bottom:4px;
+}
+.circle-empty-hint{
+  font-family:'Cormorant Garamond',serif;font-style:italic;
+  font-size:.8rem;color:#7a6a4a;
+}
+.circle-glyphs{
+  display:flex;flex-direction:column;gap:6px;
+}
+.circle-glyph{
+  display:flex;align-items:center;gap:6px;
+}
+.circle-glyph-inner{
+  flex:1;display:flex;align-items:center;gap:8px;
+  padding:8px 12px;
+  border:1px solid rgba(180,140,80,.1);border-radius:4px;
+  background:rgba(20,12,6,.02);
+  cursor:pointer;transition:all .25s ease;
+  text-align:left;
+}
+.circle-glyph-inner:hover{
+  border-color:rgba(212,175,55,.2);
+  background:rgba(212,175,55,.03);
+}
+.circle-glyph-symbol{font-size:1rem;color:rgba(212,175,55,.5)}
+.circle-glyph-name{
+  font-family:'Cinzel',serif;font-size:.65rem;color:#4a3a2a;
+}
+.circle-glyph-unbind{
+  flex:0 0 auto;
+  width:26px;height:26px;border-radius:50%;
+  background:none;border:1px solid rgba(180,140,80,.15);
+  color:#7a6a4a;font-size:.7rem;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;
+  transition:all .25s ease;
+}
+.circle-glyph-unbind:hover{
+  border-color:rgba(180,60,30,.4);color:#c97a6a;
+}
+
+/* ── Tome of Ailments ───────────────────────────── */
+.tome-link{
+  display:inline-flex;align-items:center;gap:6px;
+  font-family:'Cinzel',serif;font-size:.55rem;text-transform:uppercase;
+  letter-spacing:.08em;color:#a89878;
+  background:linear-gradient(135deg, rgba(40,28,16,.7), rgba(28,18,10,.7));
+  border:1px solid rgba(180,140,80,.18);border-radius:4px;
+  padding:5px 12px;cursor:pointer;
+  transition:all .3s ease;
+}
+.tome-link:hover{
+  border-color:rgba(212,175,55,.4);color:#d4af37;
+  box-shadow:0 0 12px rgba(212,175,55,.06);
+}
+.tome-modal{max-width:640px}
+.tome-title{
+  font-family:'Cinzel Decorative',serif;font-weight:700;
+  font-size:1.1rem;color:#6a3a1a;letter-spacing:.06em;
+  text-align:center;margin-bottom:2px;
+}
+.tome-subtitle{
+  font-family:'Cormorant Garamond',serif;font-style:italic;
+  font-size:.85rem;color:#5a4428;text-align:center;margin-bottom:18px;
+}
+.tome-clusters{
+  display:flex;flex-wrap:wrap;gap:8px;justify-content:center;
+  margin-bottom:16px;
+}
+.tome-cluster{
+  display:flex;align-items:center;gap:8px;
+  padding:10px 16px;
+  border:1px solid rgba(180,140,80,.15);border-radius:6px;
+  background:linear-gradient(135deg, rgba(40,28,16,.75), rgba(28,18,10,.75));
+  color:#c8b898;font-family:'Cinzel',serif;
+  font-size:.6rem;text-transform:uppercase;letter-spacing:.06em;
+  cursor:pointer;transition:all .3s ease;
+}
+.tome-cluster:hover{
+  border-color:rgba(212,175,55,.3);
+  background:linear-gradient(135deg, rgba(50,32,16,.85), rgba(35,22,12,.85));
+}
+.tome-cluster.active{
+  border-color:rgba(212,175,55,.4);
+  color:#d4af37;
+  background:linear-gradient(135deg, rgba(60,38,18,.9), rgba(44,26,12,.9));
+  box-shadow:0 0 12px rgba(212,175,55,.08);
+}
+.tome-cluster-emoji{font-size:1.1rem}
+.tome-cluster-label{white-space:nowrap}
+.tome-situations{
+  display:flex;flex-direction:column;gap:8px;
+  animation:fadeIn .35s ease;
+}
+.tome-situation{
+  display:flex;flex-wrap:wrap;align-items:center;gap:6px;
+  padding:12px 14px;
+  border:1px solid rgba(180,140,80,.08);border-radius:5px;
+  background:linear-gradient(135deg, rgba(22,15,35,.8), rgba(15,10,22,.8));
+  color:#c8b898;cursor:pointer;transition:all .25s ease;
+  text-align:left;
+}
+.tome-situation:hover{
+  border-color:rgba(212,175,55,.2);
+  background:linear-gradient(135deg, rgba(30,20,45,.9), rgba(20,14,30,.9));
+  transform:translateX(3px);
+}
+.tome-sit-label{
+  font-family:'Cinzel',serif;font-size:.7rem;color:#d4c4a0;
+  display:block;width:100%;margin-bottom:2px;
+}
+.tome-sit-desc{
+  font-size:.8rem;color:#a89878;font-style:italic;
+  flex:1;
+}
+.tome-sit-skill{
+  display:flex;align-items:center;gap:6px;
+  font-family:'Cinzel',serif;font-size:.6rem;
+  color:#d4af37;padding:2px 8px;
+  border:1px solid rgba(212,175,55,.15);border-radius:10px;
+  background:rgba(212,175,55,.04);
+}
+.tome-empty{
+  text-align:center;padding:20px;
+  font-style:italic;font-size:.9rem;color:#7a6a4a;
+}
+.tome-hint{
+  text-align:center;padding:16px;
+  font-family:'Cormorant Garamond',serif;font-style:italic;
+  font-size:.85rem;color:#7a6a4a;
+}
+
+/* ── Recipe Lab Explainer ───────────────────────── */
+.explainer-modal{max-width:480px}
+.explainer-symbol{
+  text-align:center;font-size:2.4rem;
+  color:rgba(212,175,55,.25);margin-bottom:4px;
+}
+.explainer-title{
+  font-family:'Cinzel Decorative',serif;font-weight:700;
+  font-size:1.1rem;color:#6a3a1a;letter-spacing:.06em;
+  text-align:center;margin-bottom:12px;
+}
+.explainer-body p{
+  font-size:.92rem;color:#2a1a0a;line-height:1.6;margin-bottom:10px;
+}
+.explainer-body p:last-child{margin-bottom:0}
+.explainer-body strong{color:#6a3a1a}
+.explainer-body em{color:#5a4428}
+.explainer-cta{
+  display:block;width:100%;margin-top:16px;
+  font-family:'Cinzel',serif;font-size:.65rem;font-weight:600;
+  text-transform:uppercase;letter-spacing:.08em;
+  padding:10px 20px;
+  border:1px solid rgba(212,175,55,.3);border-radius:4px;
+  background:linear-gradient(135deg, rgba(40,28,16,.9), rgba(28,18,10,.9));
+  color:#d4af37;cursor:pointer;
+  transition:all .3s ease;
+}
+.explainer-cta:hover{
+  box-shadow:0 0 20px rgba(212,175,55,.1);
+}
+.explainer-footer{
+  text-align:center;margin-top:12px;
+  font-family:'Cormorant Garamond',serif;font-style:italic;
+  font-size:.72rem;color:#7a6a4a;
+}
+
+/* ── Responsive for new components ──────────────── */
+@media(max-width:700px){
+  .ledger-panel{padding:10px 12px}
+  .ledger-entry{padding:5px 10px;font-size:.55rem}
+  .ledger-rune{font-size:.65rem}
+  .marginalia-wrapper{padding:0 12px}
+  .marginalia-content{padding:12px 14px}
+  .whispers-wrapper{padding:30px 16px}
+  .observatory-grid{grid-template-columns:repeat(auto-fill, minmax(140px, 1fr))}
+  .circle-panel{width:280px;right:12px;bottom:72px}
+  .tome-situation{padding:10px 12px}
+}
+@media(max-width:400px){
+  .ledger-entry{font-size:.5rem;padding:4px 8px}
+  .circle-panel{width:260px}
+  .observatory-grid{grid-template-columns:1fr 1fr}
+}

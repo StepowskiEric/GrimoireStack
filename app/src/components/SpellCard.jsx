@@ -1,6 +1,6 @@
 import { getSpellTier, TIER_META } from '../data/tiers.js';
 
-export default function SpellCard({ spell, onClick, matched, children }) {
+export default function SpellCard({ spell, onClick, matched, children, isFavorited, onToggleFavorite }) {
   const statusClass = (spell.status || '').toLowerCase().replace(/[^a-z]/g, '');
   const legacyTier = spell.status && spell.status !== '—' ? `✧ ${spell.status}` : '';
   const tierInfo = TIER_META[getSpellTier(spell)];
@@ -11,6 +11,11 @@ export default function SpellCard({ spell, onClick, matched, children }) {
       e.preventDefault();
       onClick?.();
     }
+  };
+
+  const handleStarClick = (e) => {
+    e.stopPropagation();
+    onToggleFavorite?.(spell.name, spell.skill);
   };
 
   return (
@@ -32,6 +37,17 @@ export default function SpellCard({ spell, onClick, matched, children }) {
           </span>
         ) : (
           <span className="sigil-tier-text">{legacyTier || 'common'}</span>
+        )}
+        {onToggleFavorite && (
+          <button
+            type="button"
+            className={`spell-star${isFavorited ? ' favorited' : ''}`}
+            onClick={handleStarClick}
+            aria-label={isFavorited ? 'Unbind from Summoning Circle' : 'Bind to Summoning Circle'}
+            title={isFavorited ? 'Unbind' : 'Bind to Circle'}
+          >
+            {isFavorited ? '⛧' : '☆'}
+          </button>
         )}
       </div>
       <div className="spell-name">{spell.name}</div>

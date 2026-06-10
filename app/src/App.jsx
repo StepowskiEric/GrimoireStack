@@ -18,6 +18,15 @@ import BookmarkOfFirstRites from './components/BookmarkOfFirstRites.jsx';
 import { getSpellTier, TIER_META } from './data/tiers.js';
 import { REPO_URL } from './data/constants.js';
 import { useSpellInteraction } from './hooks/useSpellInteraction.js';
+import { useFavorites } from './hooks/useFavorites.js';
+import LibrariansLedger from './components/LibrariansLedger.jsx';
+import LegendOfSigils from './components/LegendOfSigils.jsx';
+import ApprenticeMarginalia from './components/ApprenticeMarginalia.jsx';
+import WhispersFromTheVoid from './components/WhispersFromTheVoid.jsx';
+import Observatory from './components/Observatory.jsx';
+import SummoningCircle from './components/SummoningCircle.jsx';
+import TomeOfAilments from './components/TomeOfAilments.jsx';
+import RecipeLabExplainer from './components/RecipeLabExplainer.jsx';
 
 export default function App() {
   const [loaded, setLoaded] = useState(false);
@@ -25,6 +34,7 @@ export default function App() {
   const [searchQuery, setSearchQuery] = useState('');
   const [castEnabled, setCastEnabled] = useState(() => localStorage.getItem('grimoire-cast') !== 'off');
   const [welcomeOpen, setWelcomeOpen] = useState(() => localStorage.getItem(WELCOME_STORAGE_KEY) !== 'true');
+  const [tomeOpen, setTomeOpen] = useState(false);
   const laughPlayedRef = useRef(false);
   const ambienceStartedRef = useRef(false);
   const initializedRef = useRef(false);
@@ -32,6 +42,8 @@ export default function App() {
   const searchResults = useMemo(() => searchSpells(schools, searchQuery), [searchQuery]);
   const isLab = currentSchool === 'recipe-lab';
   const isRitual = currentSchool === 'ritual';
+
+  const { isFavorited, toggleFavorite } = useFavorites();
 
   const {
     modal,
@@ -155,11 +167,15 @@ export default function App() {
         <div className="flare"><span>⚜</span><span>✦</span><span>⚜</span></div>
       </header>
 
+      <LibrariansLedger schools={schools} />
+
       <div className="hero-desc">
         A living collection of <em>agentic incantations</em> — skills for debugging, reasoning,
         code review, architecture, and more. Browse by school, <em>scry by affliction</em> in the
         orb below, or <span className="hero-tag">⚗ brew your own</span> recipe combinations.
       </div>
+
+      <ApprenticeMarginalia />
 
       <div style={{ textAlign: 'center', marginTop: -8, marginBottom: 10, zIndex: 2, position: 'relative' }}>
         <label style={{
@@ -178,6 +194,20 @@ export default function App() {
       </div>
 
       <ScryingOrb searchQuery={searchQuery} onSearchChange={handleSearch} totalMatches={searchResults.total} onWizardOpen={() => setWitchDoctorOpen(true)} />
+
+      <div style={{ textAlign: 'center', marginTop: -10, marginBottom: 14, zIndex: 2, position: 'relative', display: 'flex', gap: 12, justifyContent: 'center', flexWrap: 'wrap' }}>
+        <LegendOfSigils />
+        <button
+          type="button"
+          className="tome-link"
+          onClick={() => setTomeOpen(true)}
+          aria-label="Open Tome of Common Ailments"
+        >
+          <span aria-hidden="true">⟐</span>
+          <span>Tome of Ailments</span>
+        </button>
+      </div>
+
       <TabBar schools={schools} currentSchool={currentSchool} onSelect={handleSchoolSelect} isLab={isLab} />
       <BookmarkOfFirstRites onSearchChange={handleSearch} onWizardOpen={() => setWitchDoctorOpen(true)} />
 
@@ -218,16 +248,36 @@ export default function App() {
             <SchoolSection key={s.id} school={s}
               isActive={currentSchool === s.id && !isLab && !isRitual && !searchQuery}
               searchQuery={searchQuery}
-              onSpellClick={handleSpellClick} />
+              onSpellClick={handleSpellClick}
+              isFavorited={isFavorited}
+              onToggleFavorite={toggleFavorite} />
           ))}
+
+          {searchQuery && searchResults.total === 0 && (
+            <WhispersFromTheVoid searchQuery={searchQuery} totalMatches={0} onWizardOpen={() => setWitchDoctorOpen(true)} />
+          )}
+
+          {!searchQuery && !isLab && !isRitual && (
+            <Observatory schools={schools} />
+          )}
+
           {isRitual ? <RitualSection /> : null}
           {isLab ? <RecipeLab schools={schools} /> : null}
         </div>
       </main>
 
+      {tomeOpen && (
+        <TomeOfAilments
+          schools={schools}
+          onSelectSkill={(spell, sch) => { setTomeOpen(false); handleSpellClick(spell, sch); }}
+          onClose={() => setTomeOpen(false)}
+        />
+      )}
       {witchDoctorOpen && <WitchDoctorModal schools={schools} onSelectSkill={(spell, sch) => { setWitchDoctorOpen(false); handleSpellClick(spell, sch); }} onClose={() => setWitchDoctorOpen(false)} />}
       {modal && <SpellModal spell={modal.spell} school={modal.school} onClose={handleModalClose} />}
       {casting && <SpellCast spellName={casting.spell.name} schoolSymbol={casting.school.symbol} onComplete={handleCastComplete} />}
+      <RecipeLabExplainer visible={isLab} onDismiss={() => {}} />
+      <SummoningCircle schools={schools} onSpellClick={handleSpellClick} />
       <Footer />
       </>}
     </>
