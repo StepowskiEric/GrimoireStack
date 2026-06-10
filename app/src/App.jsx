@@ -13,6 +13,7 @@ import Footer from './components/Footer.jsx';
 import BookSplash from './components/BookSplash.tsx';
 import SpellCast from './components/SpellCast.tsx';
 import RitualSection from './components/RitualSection.jsx';
+import ApprenticeWelcome, { STORAGE_KEY as WELCOME_STORAGE_KEY } from './components/ApprenticeWelcome.jsx';
 import { REPO_URL } from './data/constants.js';
 import { useSpellInteraction } from './hooks/useSpellInteraction.js';
 
@@ -21,8 +22,10 @@ export default function App() {
   const [currentSchool, setCurrentSchool] = useState(schools[0].id);
   const [searchQuery, setSearchQuery] = useState('');
   const [castEnabled, setCastEnabled] = useState(() => localStorage.getItem('grimoire-cast') !== 'off');
+  const [welcomeOpen, setWelcomeOpen] = useState(() => localStorage.getItem(WELCOME_STORAGE_KEY) !== 'true');
   const laughPlayedRef = useRef(false);
   const ambienceStartedRef = useRef(false);
+  const initializedRef = useRef(false);
 
   const searchResults = useMemo(() => searchSpells(schools, searchQuery), [searchQuery]);
   const isLab = currentSchool === 'recipe-lab';
@@ -86,6 +89,14 @@ export default function App() {
     });
   }, []);
 
+  const handleWelcomeClose = useCallback(() => {
+    if (!initializedRef.current) {
+      initializedRef.current = true;
+      localStorage.setItem(WELCOME_STORAGE_KEY, 'true');
+    }
+    setWelcomeOpen(false);
+  }, []);
+
   return (
     <>
       <svg style={{ position: 'absolute', width: 0, height: 0 }}>
@@ -116,6 +127,7 @@ export default function App() {
       <BookSplash onFinish={() => setLoaded(true)} />
       {loaded && <>
       <Embers />
+      {welcomeOpen && <ApprenticeWelcome onClose={handleWelcomeClose} />}
       <header>
         <div className="wax-seal-row">
           <div className="wax-seal">⛧</div>

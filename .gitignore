@@ -5,6 +5,9 @@ app/dist/
 app/remotion/out/
 app-dist/
 site/dist/
+# App npm caches
+app/.npm-cache/
+app/tmp-npm-cache/
 # Media / export outputs
 app/screenshots/
 *.mp4

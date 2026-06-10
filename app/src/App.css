@@ -1976,3 +1976,120 @@ footer .footer-install-hint em{
   .ritual-cmd-row{padding:6px 6px 6px 10px}
   .ritual-cmd{font-size:.72rem}
 }
+
+/* ── Apprentice Welcome ────────────────────────── */
+.welcome-modal{
+  max-width:520px;
+  padding:32px 28px 24px;
+  text-align:center;
+  display:flex;
+  flex-direction:column;
+  gap:18px;
+}
+.welcome-symbol{
+  font-size:2.4rem;
+  color:#d4af37;
+  text-shadow:0 0 18px rgba(212,175,55,.25);
+  animation:welcomeSymbolPulse 3.5s ease-in-out infinite;
+}
+@keyframes welcomeSymbolPulse{
+  0%,100%{opacity:.85;transform:translateY(0)}
+  50%{opacity:1;transform:translateY(-2px)}
+}
+.welcome-title{
+  font-family:'Cinzel',serif;
+  font-weight:700;
+  font-size:clamp(1.1rem,2.5vw,1.45rem);
+  color:#6a3a1a;
+  letter-spacing:.06em;
+  line-height:1.35;
+}
+.welcome-body{
+  font-size:.98rem;
+  color:#2a1a0a;
+  line-height:1.6;
+}
+.welcome-accent{
+  font-family:'Cormorant Garamond',serif;
+  font-style:italic;
+  font-size:.88rem;
+  color:#5a4428;
+  line-height:1.5;
+}
+.welcome-progress{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:8px;
+}
+.welcome-pip{
+  height:3px;
+  flex:1;
+  border-radius:3px;
+  background:rgba(100,70,30,.15);
+  transition:background .35s ease;
+}
+.welcome-pip.done{background:rgba(212,175,55,.45)}
+.welcome-pip.active{background:rgba(212,175,55,.85)}
+.welcome-nav{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:12px;
+}
+.welcome-skip{
+  font-family:'Cinzel',serif;
+  font-size:.55rem;
+  text-transform:uppercase;
+  letter-spacing:.08em;
+  color:#5a4428;
+  background:none;
+  border:none;
+  cursor:pointer;
+  text-decoration:underline;
+  text-underline-offset:3px;
+  transition:color .3s;
+}
+.welcome-skip:hover{color:#6a3a1a}
+.welcome-actions{
+  display:flex;
+  gap:8px;
+  justify-content:flex-end;
+}
+.welcome-back{
+  font-family:'Cinzel',serif;
+  font-size:.58rem;
+  text-transform:uppercase;
+  letter-spacing:.06em;
+  padding:6px 12px;
+  border:1px solid rgba(100,70,30,.2);
+  border-radius:4px;
+  background:rgba(20,12,6,.04);
+  color:#5a4428;
+  cursor:pointer;
+  transition:color .3s,border-color .3s,background .3s;
+}
+.welcome-back:hover{
+  color:#6a3a1a;
+  border-color:rgba(100,70,30,.35);
+  background:rgba(20,12,6,.08);
+}
+.welcome-next{
+  font-family:'Cinzel',serif;
+  font-size:.6rem;
+  font-weight:600;
+  text-transform:uppercase;
+  letter-spacing:.06em;
+  padding:6px 14px;
+  border:1px solid rgba(212,175,55,.35);
+  border-radius:4px;
+  background:linear-gradient(135deg, rgba(40,28,16,.85), rgba(28,18,10,.85));
+  color:#6a3a1a;
+  cursor:pointer;
+  transition:color .3s,border-color .3s,box-shadow .3s;
+}
+.welcome-next:hover{
+  color:#d4af37;
+  border-color:rgba(212,175,55,.6);
+  box-shadow:0 0 18px rgba(212,175,55,.1);
+}
