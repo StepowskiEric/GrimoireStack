@@ -1,8 +1,22 @@
 .worktrees/
 node_modules/
-# Added by code-review-graph
+# App build/output artifacts
+app/dist/
+app/remotion/out/
+app-dist/
+site/dist/
+# Media / export outputs
+app/screenshots/
+*.mp4
+*.mp3
+*.png
+*.jpg
+*.jpeg
+*.gif
+# Workspaces / generated tooling
+.worktrees/
 .code-review-graph/
-benchmarks/
+droid-wiki/
 # Junk
 .DS_Store
 *.pyc

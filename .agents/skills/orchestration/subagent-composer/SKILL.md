@@ -22,6 +22,14 @@ A well-composed brief eliminates the most common sub-agent failure modes:
 - Builds the wrong thing because context was incomplete
 - Burns the sub-agent's context window on irrelevant background before it starts working
 
+### TL;DR
+
+All improvements are documented below, but the three rules that prevent 80%+ of failures:
+
+1. **Every brief must have: Task → adjacent Success Criteria → Boundaries → Stop Rules** — in that order, no gaps.
+2. **Always load `subagent-laws` + `tdd` for code tasks.** Always assign a **Persona** so the sub-agent knows *who to be*. Always move **Skills Loaded** to the top of the brief (after Goal) so the sub-agent knows what lenses to use before reading instructions.
+3. **Verify the output yourself after the sub-agent returns** — run the tests, inspect the diff, check for scope drift. The sub-agent says "pass" — you confirm.
+
 ---
 
 ## Core Principle
@@ -40,6 +48,27 @@ Good briefs answer:
 4. **What rules** must it follow? (style, boundaries, anti-patterns)
 5. **What does success look like?** (criteria, format, completion signal)
 6. **What should it avoid?** (scope boundaries, known anti-patterns, explicit exclusions)
+
+---
+
+## Delegation Decision Tree
+
+Before composing any brief, decide whether to delegate at all. The cost of dispatching a
+sub-agent (context load, coordination, verification) can easily exceed the cost of doing the
+work yourself. Use this table:
+
+| Task scope | Do it yourself | Delegate |
+|---|---|---|
+| **1-2 files, well-understood patterns** | ✅ Faster and cheaper | ❌ Overhead exceeds benefit |
+| **3+ files, clear module boundaries** | ❌ Too much context to hold | ✅ Sub-agent isolates cleanly |
+| **Needs fresh perspective / adversarial review** | ❌ You're biased by prior work | ✅ Use `context: "fresh"` |
+| **High-risk (financial, auth, data loss potential)** | ❌ Expensive to get wrong | ✅ But add a **review gate** after delegation |
+| **Repetitive / mechanical (rename, lint, format)** | ❌ Low judgment needed | ✅ Sub-agent handles bulk |
+| **Exploratory / research (no fixed answer)** | ❌ Let sub-agent iterate | ✅ Use **iterative delegation** with checkpoints |
+
+**Rule of thumb**: If the task is in one module and fits in your working memory, do it yourself.
+If it crosses module boundaries or needs a specific expertise lens you don't currently hold,
+delegate.
 
 ---
 
@@ -79,6 +108,12 @@ A high-context brief has these sections, in this order:
 ## Goal
 <one-sentence description of what the sub-agent must produce>
 
+## Skills Loaded
+<list of skills loaded and why — placed early so the sub-agent knows what lenses to use>
+
+## Persona
+<who the sub-agent should be — role, expertise, perspective>
+
 ## Why This Matters
 <what problem this solves and what would break if it fails — gives the sub-agent judgment>
 
@@ -102,10 +137,15 @@ A high-context brief has these sections, in this order:
 
 ## Stop Rules
 <when to stop — "stop after 3 iterations", "stop if X fails", "stop if you hit Y constraint">
-
-## Skills Loaded
-- skill-name — why it's relevant
 ```
+
+**Key placement rules:**
+- **Skills Loaded** is placed right after Goal — the sub-agent must know what reasoning frameworks
+  it's expected to use *before* it reads the detailed instructions.
+- **Success Criteria** is placed immediately after Task — the "what to do" and "how to know it's
+  done" are adjacent, not separated by intervening sections.
+- **Persona** sits between Skills Loaded and Why This Matters — the sub-agent knows its lenses
+  and its identity before learning the stakes.
 
 ### Section-by-Section Guidance
 
@@ -116,6 +156,44 @@ One sentence. The sub-agent should be able to read just this and know what it's 
 ✅ Good: "Fix the session timeout bug in the auth module so expired tokens don't crash the app."
 ❌ Bad:  "Fix the auth bug."
 ```
+
+#### Skills Loaded (moved to top)
+List every skill loaded in the `skill` parameter, with a one-line explanation of why it's
+relevant. This is the first thing the sub-agent sees after the goal — it establishes the
+reasoning frameworks that will govern the work.
+
+```
+✅ Good:
+Skills loaded:
+- tdd — write tests first, then implement
+- subagent-laws — non-negotiable rules: don't fix pre-existing issues outside scope, don't break passing tests
+- root-cause-analysis — trace the actual cause, not the symptom
+- diagnose — structured reproduction → minimise → hypothesise loop
+
+❌ Bad: (omitting this section or burying it at the bottom)
+```
+
+#### Persona (new)
+Tell the sub-agent who it should be. Role assignment is one of the highest-leverage
+patterns in LLM delegation: it primes the model to activate the right knowledge and
+tone for the task.
+
+```
+✅ Good: "You are a senior platform engineer who has owned this auth module for 3 years.
+          You value correctness over speed and always write the regression test first."
+
+✅ Good: "You are a freshly onboarded junior developer seeing this code for the first time.
+          You follow instructions literally and never make assumptions about intent."
+
+✅ Good: "You are a security engineer performing a threat model review. You assume every
+          input is malicious until proven otherwise."
+```
+
+**When to use which persona:**
+- **Senior expert** — for bug fixes, refactoring, and implementation where judgment matters
+- **Junior / literalist** — for mechanical tasks where you need exact compliance, no creativity
+- **Security reviewer** — for audits, threat modeling, and any code handling auth / data / storage
+- **Fresh eyes** — for code review and UX critique, where anchoring to prior assumptions hurts
 
 #### Why This Matters
 Explain the stakes in one sentence. This gives the sub-agent *judgment* when it encounters
@@ -147,12 +225,11 @@ subagent({
 })
 ```
 
-Longer context dasts (data schemas, existing pattern catalogs) belong in a scratchpad file
+Longer context dumps (data schemas, existing pattern catalogs) belong in a scratchpad file
 referenced by path, not inline in the task field.
 
 ```
 ✅ Good:
-```
 Relevant files:
 - src/auth/SessionManager.ts — the file with the bug
 - src/auth/TokenService.ts — the retry pattern to follow (see handleRefresh at line 30)
@@ -177,7 +254,6 @@ to make, say how to choose. If some steps depend on others, say so.
 
 ```
 ✅ Good:
-```
 1. Write a failing test that reproduces the bug: expired token + failed refresh = navigation instead of retry
 2. Find the error path in SessionManager.ts (around line 89)
 3. Add one retry attempt before navigating to /login
@@ -194,7 +270,6 @@ This section is intentionally placed *immediately after* the task steps — the 
 
 ```
 ✅ Good:
-```
 - [ ] Failing test reproduces the bug deterministically (run it 3 times, it fails each time)
 - [ ] Fix is in SessionManager.ts only (git diff shows only this file modified)
 - [ ] All auth tests pass (npm test -- auth)
@@ -209,7 +284,6 @@ Non-negotiable constraints. These are the guardrails the sub-agent must not cros
 
 ```
 ✅ Good:
-```
 - Follow the existing error boundary pattern in TokenService.ts — do not add new try/catch blocks
 - Use the existing retry logger at src/utils/logger.ts — do not import console
 - All public functions must have JSDoc comments (project convention)
@@ -233,7 +307,6 @@ it started. Pre-existing failures in unrelated code are someone else's problem.
 
 ```
 ✅ Good:
-```
 This task is scoped to SessionManager.ts only. Do NOT:
 - Modify the login form or navigation logic
 - Change the token refresh interval (that's a separate config task)
@@ -250,7 +323,6 @@ Exact shape of what the sub-agent should produce. Include file names, paths, for
 
 ```
 ✅ Good:
-```
 After completing the fix, write a summary to /tmp/auth-fix-report.md with:
 1. Root cause (one paragraph)
 2. Files changed (git diff --name-only)
@@ -267,7 +339,6 @@ When to stop iterating. Prevents the sub-agent from running forever on "one more
 
 ```
 ✅ Good:
-```
 Stop after all success criteria are met. Do not add extra refactoring, cleanup, or
 "improvements" beyond what is specified. If you hit a blocker that requires a decision
 not covered by the brief, use intercom to escalate — do not decide unilaterally.
@@ -281,20 +352,15 @@ not covered by the brief, use intercom to escalate — do not decide unilaterall
 
 Not every task needs the full brief. Choose the level that matches the task.
 
-### Minimal (simple, low-risk, familiar codebase)
-- Goal + Task + Success Criteria + Output Format
-- ~100 words total
-
-### Standard (typical code work)
-- Goal + Why + Context + Task + Success Criteria + Rules + Boundaries + Output Format + Stop Rules
-- ~300–500 words
-
-### Comprehensive (complex, high-risk, unfamiliar codebase, or multi-step)
-- All sections, including detailed context dump (file list, schema excerpts, existing patterns)
-- For large context dumps, use `reads` parameter or attach a scratchpad file rather than inlining
-- ~500–1000 words total in the task field; additional files loaded via `reads`
+| Level | Sections | Word Budget | When to Use |
+|-------|----------|-------------|-------------|
+| **Minimal** | Goal → Skills Loaded → Task → Success Criteria → Output Format → Stop Rules | ~100 words | Simple, low-risk, familiar codebase; mechanical tasks; one-file changes |
+| **Standard** | Goal → Skills Loaded → Persona → Why → Context → Task → Success Criteria → Rules → Boundaries → Output Format → Stop Rules | ~300–500 words | Typical code work; most delegations; moderate complexity |
+| **Comprehensive** | All sections + detailed context dump + `reads` for large files | ~500–1000 words (+ `reads`) | Complex, high-risk, unfamiliar codebase, or multi-step; security-critical; cross-module |
 
 **Rule**: When in doubt, use Standard. Under-contexting is the most common sub-agent failure mode.
+**Template mappings**: Minimal ↔ Basic Template in Part 8, Standard ↔ Standard Template,
+Comprehensive ↔ Full Template.
 
 ### Blocker Escalation
 
@@ -326,7 +392,7 @@ needs its own context slice — not the same full context, and not disjointed fr
 4. **No cross-contamination** — an agent solving problem A should not receive context about
    problem B's implementation details, only the interface contract it depends on.
 
-### Example: Parallel Implementation
+### Pattern: Parallel Implementation
 
 ```
 Task: Build a new "favorites" feature with a backend endpoint and a UI tab.
@@ -350,7 +416,7 @@ Brief for Agent B:
   use the provided contract definition in this brief.
 ```
 
-### Example: Sequential Chain
+### Pattern: Sequential Chain
 
 ```
 Task: Research a library, then implement an integration based on findings.
@@ -371,6 +437,103 @@ Brief for Agent B:
 - Rules: Follow the pattern described in the research, use the recommended library
 - Output: src/payments/stripe-webhook.ts + tests
 ```
+
+### Pattern: Iterative Delegation (NEW)
+
+Some tasks benefit from multi-round delegation with review gates between rounds. This is
+useful when the task has high uncertainty, the approach is not yet settled, or you want
+to course-correct before the sub-agent commits to a full implementation.
+
+**Round-based workflow:**
+
+```
+Round 1 — Sketch / Research / Explore:
+Agent: "Sketch 2-3 approaches for [problem]. Output trade-off analysis to /tmp/approaches.md."
+Parent: Reviews approaches, picks one, writes Round 2 brief.
+
+Round 2 — Prototype / Phase 1:
+Agent: "Implement the chosen approach for [module A]. Write tests. No optimizations yet."
+Parent: Reviews implementation, checks tests, writes Round 3 brief.
+
+Round 3 — Complete / Polish:
+Agent: "Complete the remaining modules (B, C). Add error handling. Run full suite."
+```
+
+**Template for iterative delegation:**
+
+```python
+# Round 1
+subagent({
+    agent: "worker",
+    skill: ["subagent-laws", "research"],
+    task: f"""## Goal
+Explore 3 approaches for implementing [feature].
+
+## Persona
+You are a senior architect evaluating options. You compare trade-offs, not completeness.
+
+## Your Task
+1. Research [domain/problem]
+2. Write 2-3 approaches with pros/cons for each
+3. Recommend one
+
+## Success Criteria
+- [ ] Each approach has concrete trade-offs listed
+- [ ] Recommendation is justified
+
+## Output
+Write to workspace/_artifacts/exploration.md
+Do NOT implement anything.
+
+Skills loaded:
+- subagent-laws — scope discipline
+- research — structured exploration""",
+    output: "exploration.md",
+    outputMode: "file-only"
+})
+
+# ... parent reviews, then Round 2 ...
+subagent({
+    agent: "worker",
+    skill: ["tdd", "subagent-laws"],
+    reads: ["workspace/_artifacts/exploration.md"],
+    task: f"""## Goal
+Implement the chosen approach from the exploration phase.
+
+## Persona
+You are a disciplined engineer implementing a reviewed design. You follow the spec exactly.
+
+## Context You Need
+The exploration artifact is pre-loaded at workspace/_artifacts/exploration.md.
+The recommended approach is: [approach name].
+
+## Your Task
+[phase 1 implementation steps]
+
+## Success Criteria
+[phase 1 criteria]
+
+## Boundaries
+Do NOT optimize, refactor beyond scope, or change the chosen approach.
+
+Skills loaded:
+- tdd — tests first
+- subagent-laws — scope discipline""",
+    output: "phase1.md",
+    outputMode: "file-only"
+})
+```
+
+**When to use iterative delegation:**
+- The solution space is not well understood (explore first, then commit)
+- The parent wants a review gate before the sub-agent invests in full implementation
+- The task spans multiple natural phases with different skill requirements per phase
+- The cost of a wrong full implementation is high
+
+**When NOT to use iterative delegation:**
+- The task is well-understood and bounded (one-shot is faster)
+- The parent doesn't have time to review between rounds
+- The phases are tightly coupled and can't be reviewed independently
 
 ---
 
@@ -423,7 +586,7 @@ you want it to follow vs. ignore.
 Fix: Name the specific file or pattern. "Follow the error handling pattern in
 TokenService.ts — specifically the catch block at line 42."
 
-### The "Goldilocks" Brief (NEW)
+### The "Goldilocks" Brief
 > Dictate every line of code, every variable name, every import order.
 
 Problem: The sub-agent has no room to exercise judgment and will produce mechanical, rigid code
@@ -431,7 +594,7 @@ that doesn't adapt to edge cases it discovers mid-implementation.
 Fix: Specify the *what* and *why*, let the sub-agent choose the *how*. Give it the destination,
 not the turn-by-turn directions.
 
-### The "Moving Target" Brief (NEW)
+### The "Moving Target" Brief
 > Send follow-up messages that quietly change requirements after the sub-agent has started.
 
 Problem: The sub-agent built against one set of requirements and is now executing against
@@ -439,7 +602,7 @@ another. It either ignores the change (wrong output) or restarts from scratch (w
 Fix: Freeze requirements once dispatched. If requirements change, dispatch a *new* task to
 the same or a different sub-agent — don't mutate the existing one.
 
-### The "Rewrite" Brief (NEW)
+### The "Rewrite" Brief
 > "Refactor this to use the new pattern."
 
 Problem: The sub-agent doesn't know what "new" means, what the target pattern looks like, or
@@ -448,7 +611,7 @@ Fix: Include a before/after snippet or point to the reference implementation. "R
 error handling in SessionManager.ts to match the pattern in TokenService.ts (see handleRefresh
 at line 30 — try/catch with logged retry)."
 
-### The "Context Anchor" Brief (NEW)
+### The "Context Anchor" Brief
 > Dump the parent's entire reasoning chain into the brief, including wrong guesses and abandoned
 approaches.
 
@@ -458,7 +621,7 @@ Fix: Strip parent reasoning. Include only confirmed facts, accepted decisions, a
 state. "We tried approach X and ruled it out because [concrete reason]" is fine.
 "Then I thought maybe it could be Y or Z..." is noise.
 
-### The "Fix Everything" Brief (NEW)
+### The "Fix Everything" Brief
 > "Fix the auth bug." — and the sub-agent proceeds to fix lint errors in 6 other files, rewrite
 > failing tests it didn't break, and refactor a neighboring module "while it's in there."
 
@@ -470,7 +633,7 @@ failing tests, or code quality issues in other files — note them and stop." Ad
 issues handler instruction: "If you find failing tests that predate your change, confirm they
 were already failing before you started. If so, report them and move on."
 
-### The "Fixer" Anti-Pattern — Pre-existing Issues (NEW)
+### The "Fixer" Anti-Pattern — Pre-existing Issues
 Sub-agents will often encounter pre-existing failures in the codebase: lint errors in nearby
 files, tests that were already red before the change, or code smells in related modules. The
 natural instinct is to "fix" them. **Do not let them.**
@@ -492,6 +655,31 @@ Pre-existing issues: If you encounter lint errors, failing tests, or code qualit
 files outside your assigned scope, note them in your output and stop. Do not fix them unless
 explicitly instructed. Your scope is [file-or-module-name] only.
 ```
+
+### The "No Persona" Anti-Pattern
+> Dispatch a sub-agent to "review this PR" without telling it *who* it should be.
+
+Problem: The sub-agent defaults to a generic, neutral tone — missing the adversarial sharpness
+of a security reviewer, the practicality of a senior engineer, or the fresh perspective of a
+newcomer.
+Fix: Always assign a persona. "You are a security engineer reviewing auth code. You assume
+every input is malicious until proven otherwise."
+
+### The "No Post-Delegation Check" Anti-Pattern
+> Dispatch, receive "Done", and merge.
+
+Problem: Sub-agents routinely claim "all tests pass" or "lint is clean" when they haven't
+actually run the commands, or when they ran them on a stale state.
+Fix: Always run your own verification after the sub-agent returns (see Part 10).
+
+### The "Cheapest Agent" Anti-Pattern
+> Use the cheapest / fastest model for every sub-agent dispatch.
+
+Problem: Complex reasoning tasks (bug diagnosis, security review, architecture design) need
+stronger models. Using a weak model for a hard task produces wrong output that costs more
+to fix than using the right model in the first place.
+Fix: Match model capability to task complexity. Spend tokens on the sub-agent, save tokens
+on the brief compression (see Part 9).
 
 ---
 
@@ -523,6 +711,15 @@ Be precise about what you want the sub-agent to inherit vs. ignore.
 
 ```
 Goal: Fix the session timeout bug so expired tokens trigger a retry instead of crashing.
+
+Skills loaded:
+- tdd — write tests first, then implement
+- subagent-laws — non-negotiable rules: don't fix pre-existing issues outside scope, don't break passing tests
+- root-cause-analysis — trace the actual cause, not the symptom
+- diagnose — structured reproduction → minimise → hypothesise loop
+
+Persona: You are a senior platform engineer who has owned this auth module for 3 years.
+         You value correctness over speed and always write the regression test first.
 
 Why: Users lose their work when the token silently expires. This is the #1 support complaint
      this week and blocks the Q2 retention goal.
@@ -558,6 +755,8 @@ Boundaries:
 - Scoped to SessionManager.ts only
 - Do NOT: modify the login form, change the token refresh interval, touch the backend API,
   update CHANGELOG.md, or modify package.json
+- Pre-existing issues: if you find lint errors or failing tests in other files, note them
+  and stop — do not fix them
 
 Output format:
 - Write a 3-paragraph summary to /tmp/auth-fix-report.md: root cause, files changed, verification results
@@ -567,12 +766,6 @@ Stop rules:
 - Stop after all success criteria are met
 - Do not add extra refactoring or "improvements" beyond what is specified
 - If you hit a blocker requiring a decision not covered here, use intercom to escalate — do not decide unilaterally
-
-Skills loaded:
-- tdd — write tests first, then implement
-- subagent-laws — non-negotiable rules: don't fix pre-existing issues outside scope, don't break passing tests, don't commit unasked
-- root-cause-analysis — trace the actual cause, not the symptom
-- diagnose — structured reproduction → minimise → hypothesise loop
 ```
 
 ### Example 2: Implement a Feature (high-context brief)
@@ -580,6 +773,16 @@ Skills loaded:
 ```
 Goal: Add a team invitation endpoint that accepts an email and team ID, creates a pending
       membership, and sends a notification email.
+
+Skills loaded:
+- tdd — write tests first, then implement
+- subagent-laws — non-negotiable rules: don't fix pre-existing issues outside scope
+- api-design-backward-compatibility — endpoint contract design
+- security-threat-modeling — authorization and input validation
+- domain-driven-design — the invitation domain has its own lifecycle worth modelling
+
+Persona: You are a backend engineer building API endpoints for a B2B SaaS product.
+         You design for extensibility and always validate inputs at the boundary.
 
 Why: The enterprise plan requires team-level collaboration. This endpoint unblocks the sales
      team's largest prospect (closing in 10 days).
@@ -625,6 +828,8 @@ Boundaries:
 - Do NOT: modify existing team routes, change the invitations table schema, implement
   invitation acceptance flow (that's a separate task), modify email templates beyond the
   invitation content, touch frontend code
+- Pre-existing issues: if you encounter lint errors or failing tests in other files, note
+  them and stop — do not fix them
 
 Output format:
 - Modified files: src/api/routes/teams.ts, src/api/__tests__/teams.test.ts
@@ -636,21 +841,49 @@ Stop rules:
 - Stop after all success criteria are met
 - Do not implement the invitation acceptance flow or token-based acceptance link
 - If the invitations table schema is insufficient, stop and report — do not add columns
-
-Skills loaded:
-- tdd — write tests first, then implement
-- subagent-laws — non-negotiable rules: don't fix pre-existing issues outside scope, don't break passing tests, don't commit unasked
-- api-design-backward-compatibility — endpoint contract design
-- security-threat-modeling — authorization and input validation
-- domain-driven-design — the invitation domain has its own lifecycle worth modelling
-
 ```
 
 ---
 
 ## Part 8: Invocation Templates
 
-### Basic Template (minimal context)
+### Minimal Template
+
+Use for simple, low-risk, well-understood tasks (~100 words). Maps to the "Minimal" context level.
+
+```python
+subagent({
+    agent: "<agent-name>",
+    skill: ["tdd", "subagent-laws"],
+    context: "fork",
+    task: f"""## Goal
+<one sentence>
+
+## Skills Loaded
+- tdd — write tests first
+- subagent-laws — scope discipline
+
+## Your Task
+1. <step 1>
+2. <step 2>
+3. <step 3>
+
+## Success Criteria
+- [ ] <criterion 1>
+- [ ] <criterion 2>
+
+## Output Format
+<one line describing what to produce>
+
+## Stop Rules
+Stop after success criteria met. No extra work.""",
+    outputMode: "inline"
+})
+```
+
+### Standard Template
+
+Use for typical code work (~300-500 words). Maps to the "Standard" context level.
 
 ```python
 subagent({
@@ -661,40 +894,67 @@ subagent({
     task: f"""## Goal
 <one sentence>
 
+## Skills Loaded
+- tdd — write tests first, then implement
+- <task-skill-1> — why it's relevant
+- <task-skill-2> — why it's relevant
+
+## Persona
+<who the sub-agent should be>
+
+## Why This Matters
+<stakes and consequences>
+
+## Context You Need
+<files, data, constraints, patterns>
+<For large context: reference pre-loaded files>
+
 ## Your Task
 <step-by-step instructions>
 
 ## Success Criteria
 <measurable checks>
 
+## Rules to Follow
+<non-negotiable constraints>
+
+## Boundaries
+<explicit exclusions — what NOT to do>
+
 ## Output Format
 <what to produce>
 
 ## Stop Rules
-<when to stop>
-
-Skills loaded:
-- tdd — write tests first, then implement
-- <task-skill> — why it's relevant"""
+<when to stop>"""
 })
 ```
 
-### Full Template (comprehensive context)
+### Full Template (Comprehensive)
 
-Use for complex, high-risk, or unfamiliar tasks. Includes all sections. Large files loaded
-via `reads` rather than inlined.
+Use for complex, high-risk, or unfamiliar tasks (~500-1000 words + `reads`). Maps to the
+"Comprehensive" context level. Includes all sections.
 
 ```python
 subagent({
     agent: "<agent-name>",
-    skill: ["tdd", "subagent-laws", "<task-skill-1>", "<task-skill-2>"],
+    skill: ["tdd", "subagent-laws", "<task-skill-1>", "<task-skill-2>", "<task-skill-3>"],
     context: "fork",
     reads: ["<large-file-1>", "<large-file-2>"],  # pre-load instead of inlining
     task: f"""## Goal
 <one sentence>
 
+## Skills Loaded
+- tdd — write tests first, then implement
+- subagent-laws — scope discipline, pre-existing issues guard
+- <task-skill-1> — why it's relevant
+- <task-skill-2> — why it's relevant
+- <task-skill-3> — why it's relevant
+
+## Persona
+<who the sub-agent should be>
+
 ## Why This Matters
-<stakes and consequences>
+<stakes and consequences — what would break if this fails>
 
 ## Context You Need
 <files, data, constraints, patterns, what's already been tried>
@@ -704,23 +964,21 @@ subagent({
 <step-by-step instructions>
 
 ## Success Criteria
-<measurable, testable checks>
+<measurable, testable checks — checklist format preferred>
 
 ## Rules to Follow
 <non-negotiable constraints>
 
 ## Boundaries
 <explicit exclusions — what NOT to do>
+<Pre-existing issues: note any problems outside scope and stop — do not fix>
 
 ## Output Format
 <exact shape and file names>
 
 ## Stop Rules
 <when to stop iterating>
-
-## Skills Loaded
-- skill-name — why it's relevant
-- skill-name — why it's relevant"""
+<blocker escalation: use intercom if a decision not covered in the brief arises>"""
 })
 ```
 
@@ -734,9 +992,16 @@ subagent({
     parallel: [
         {
             agent: "worker",
-                    reads: ["<shared-contract-file>"],
+            reads: ["<shared-contract-file>"],
             task: f"""## Goal
 <agent-A-specific goal>
+
+## Skills Loaded
+- tdd — tests first
+- subagent-laws — scope discipline
+
+## Persona
+<agent-A-specific persona>
 
 ## Contract (shared with other agents)
 {shared_contract_definition}
@@ -759,9 +1024,16 @@ Stop after success criteria are met. Do not touch agent B's files.""",
         },
         {
             agent: "worker",
-                    reads: ["<shared-contract-file>"],
+            reads: ["<shared-contract-file>"],
             task: f"""## Goal
 <agent-B-specific goal>
+
+## Skills Loaded
+- tdd — tests first
+- subagent-laws — scope discipline
+
+## Persona
+<agent-B-specific persona>
 
 ## Contract (shared with other agents)
 {shared_contract_definition}
@@ -788,23 +1060,178 @@ Stop after success criteria are met. Do not touch agent A's files.""",
 })
 ```
 
+### Template Variables
+
+When using chain mode (`chain: [...]`), the following template variables are available
+for `task` strings:
+
+| Variable | Description | Available in |
+|----------|-------------|--------------|
+| `{task}` | The original user request / top-level task | All chain steps |
+| `{previous}` | The text response from the previous chain step | Steps 2+ |
+| `{chain_dir}` | A shared temp directory for chain artifacts | All chain steps |
+
+```python
+# Example: chain with template variables
+subagent({
+    chain: [
+        { agent: "worker", task: "## Your Task\nResearch approaches for {task} and write to {chain_dir}/research.md" },
+        { agent: "worker", task: "## Context\nResearch from previous step is at {chain_dir}/research.md\n\n## Your Task\nImplement the recommended approach from {previous}" }
+    ]
+})
+```
+
+Note that `{previous}` holds the *text response* of the prior agent, not the full conversation.
+If the prior agent writes to a file, reference it via `{chain_dir}` instead.
+
+---
+
+## Part 9: Cost & Budget Awareness
+
+Every sub-agent dispatch has a cost in tokens, latency, and verification effort. Be deliberate:
+
+### Token Budget
+
+| Context Level | Brief size | Working memory left for sub-agent | Best for |
+|--------------|------------|-----------------------------------|----------|
+| Minimal | ~100 words | ~95% of context window | Mechanical tasks, simple edits |
+| Standard | ~300-500 words | ~80-90% | Typical implementations |
+| Comprehensive | ~500-1000 words + reads | ~60-75% | Complex work needing full context |
+
+**Keep briefs under ~800 words for complex tasks.** A compressed brief leaves the sub-agent
+more working memory for reasoning. Use `reads` for any file >100 lines.
+
+### Model Selection
+
+| Task type | Recommended model tier | Rationale |
+|-----------|----------------------|-----------|
+| Simple mechanical (rename, format, lint) | Fast/cheap model | Low judgment needed |
+| Bug diagnosis, security review, architecture | Strongest available | High reasoning load |
+| Code generation with clear spec | Mid-tier | TDD guards most errors |
+| Adversarial review / fresh perspective | Strongest + `context: "fresh"` | Independence matters |
+
+**Rule of thumb:** Spend tokens on the sub-agent's reasoning (stronger model), save tokens
+on brief compression (shorter brief + `reads`). Don't use a cheap model for a hard task —
+the cost of fixing wrong output exceeds the model savings.
+
+### Parallel Dispatch Cost
+
+| Agents | Total token cost | Coordination overhead | Best for |
+|--------|-----------------|----------------------|----------|
+| 1 | Lowest | None | Self-contained tasks |
+| 2-3 | Moderate | Low | Cleanly separable modules |
+| 4-6 | High | Moderate | Large features with clear boundaries |
+| 7+ | Very high | High | Rarely worth it; prefer chaining |
+
+Keep parallel agents to ≤4 unless the modules are truly independent with no shared state.
+
+---
+
+## Part 10: Post-Delegation Verification
+
+After the sub-agent returns, the parent must verify the output before integrating it.
+The sub-agent says "done" — you confirm.
+
+### Verification Checklist
+
+Run these checks in order. Stop at the first failure.
+
+```
+[ ] 1. Output artifact exists at the specified path
+[ ] 2. All modified files exist (git status / ls confirms)
+[ ] 3. Tests pass (run the test command yourself — don't trust the sub-agent's report)
+[ ] 4. Only specified files were modified (git diff --name-only confirms scope discipline)
+[ ] 5. No new console.log / debug statements (grep for these)
+[ ] 6. Lint passes (run the linter yourself)
+[ ] 7. Type-check passes (run tsc or equivalent)
+[ ] 8. The sub-agent did not modify files outside its boundaries
+[ ] 9. Pre-existing issues were noted, not fixed (if any were reported)
+[ ] 10. Success criteria are actually met (re-check each one)
+```
+
+### Common Sub-Agent Deceptions
+
+Sub-agents don't *intend* to deceive, but they reliably produce these patterns:
+
+| They say | Reality | Verification |
+|----------|---------|--------------|
+| "All tests pass" | Tests weren't run, or ran against stale state | Run tests yourself |
+| "Only file X was modified" | Files Y and Z also changed | `git diff --name-only` |
+| "Lint is clean" | Linter wasn't installed/configured | Run the linter yourself |
+| "I followed the pattern" | New code doesn't match existing style | Read the diff |
+| "I noted the pre-existing issues" | Issues weren't actually checked | Check original state yourself |
+
+### Integration Decision
+
+After verification, choose one of:
+
+| Outcome | Action |
+|---------|--------|
+| **All checks pass** | Integrate the output (commit, PR, or merge as appropriate) |
+| **Minor issues found** | Fix them yourself (if quick) or re-delegate with specific correction brief |
+| **Major issues found** | Re-delegate with a correction brief that names each failure specifically. Do NOT re-send the original brief — the sub-agent will repeat the same mistakes. |
+| **Output is wrong or harmful** | Discard the output. Re-delegate with a stronger model, a tighter brief, or do the work yourself. |
+
+### When to Re-Delegate vs. Fix Yourself
+
+- **1-2 small issues** in an otherwise correct output: fix yourself (cheaper than another dispatch)
+- **3+ issues** or **one systematic error**: re-delegate with a targeted correction brief
+- **Fundamental approach is wrong**: discard, reconsider the brief, and re-delegate with a fresh approach or different persona
+
+### Correction Brief Template
+
+```
+## Goal
+Fix the issues in the previous implementation at [path].
+
+## Previous Issues (identified by parent)
+1. [Issue 1: specific and concrete]
+2. [Issue 2: specific and concrete]
+
+## Your Task
+1. [Focused fix for issue 1]
+2. [Focused fix for issue 2]
+3. Run the full test suite and confirm all pass
+
+## Success Criteria
+- [ ] Issue 1 is resolved: [verification]
+- [ ] Issue 2 is resolved: [verification]
+- [ ] No new files were modified beyond fixing the issues
+- [ ] All tests pass
+
+## Boundaries
+- Do NOT refactor, improve, or add features
+- Do NOT touch files unrelated to the listed issues
+- Pre-existing issues rule still applies: don't fix what wasn't broken by your change
+
+## Stop Rules
+Stop after the listed issues are fixed and tests pass.
+```
+
 ---
 
 ## Agent Rules
 
 ### Do
 - always load `subagent-laws` and `tdd` for every sub-agent dispatch — these are non-negotiable
+- assign a **Persona** in every brief — the sub-agent needs to know *who to be*
 - add any other task-relevant skills on top (debugging, security, API design, architecture, etc.)
 - match extra skills to the task's primary risk areas
 - tell the sub-agent *why* each skill was loaded ("use X for Y")
+- place **Skills Loaded** right after Goal, not at the bottom of the brief
+- place **Success Criteria** immediately after Task (adjacent pairing)
 - use `context: "fork"` for awareness of prior decisions, `context: "fresh"` for independent reasoning
 - include the full context the sub-agent needs — file paths, type definitions, existing patterns, constraints
 - use `reads` for files larger than ~100 lines instead of inlining them
 - set explicit boundaries — state what is NOT in scope
-- place Success Criteria immediately after Task steps (adjacent pairing)
 - define specific success criteria — measurable, testable, verifiable
 - include stop rules — prevent infinite "improvement" loops
 - use `intercom` for blocker escalation — don't let sub-agents decide unilaterally when blocked
+- **verify the output yourself after the sub-agent returns** — run tests, inspect the diff, check scope
+- use the **Delegation Decision Tree** before deciding to delegate at all
+- consider **Iterative Delegation** for high-uncertainty tasks — sketch first, implement later
+- match model capability to task complexity — use strongest models for diagnosis, security, and architecture
+- be cost-aware: a compressed brief + strong sub-agent model beats a verbose brief + cheap sub-agent model
 
 ### Do Not
 - dispatch a sub-agent without considering what skills it needs
@@ -818,6 +1245,12 @@ Stop after success criteria are met. Do not touch agent A's files.""",
 - let a sub-agent run forever — always include stop rules
 - anchor a sub-agent to the parent's wrong assumptions — strip parent reasoning, keep only facts
 - omit scope discipline for pre-existing issues — sub-agents will fix everything they can see unless told not to
+- omit a **Persona** — the sub-agent defaults to generic if you don't give it an identity
+- trust the sub-agent's "all tests pass" claim — **verify it yourself** after return
+- re-delegate with the same brief when the first attempt had issues — the sub-agent will repeat the same mistakes
+- dispatch more than 4 parallel agents — coordination overhead exceeds benefit
+- use a cheap model for a hard reasoning task — the cost of fixing wrong output exceeds the model savings
+- change requirements mid-dispatch — freeze requirements, then dispatch a new task if they change
 
 ---
 
@@ -830,6 +1263,7 @@ Stop after success criteria are met. Do not touch agent A's files.""",
 - **Separation of Concerns** — keep each sub-agent's brief scoped to one concern; don't mix concerns within a single brief
 - **Weak-Link Detection** — if a sub-agent's output looks weak, weak-link-detection tells you how to score and repair it
 - **Advocatus Diaboli** — use subagent-composer to load the Diaboli with an adversarial system prompt and adversarial reasoning skills
+- **Pre-Mortem / Inversion** — use before the final brief dispatch as a "last check" gate: "what would cause this delegation to fail?"
 
 ---
 
@@ -841,15 +1275,26 @@ A sub-agent brief is high-context when:
 - [ ] `subagent-laws` was included in every sub-agent dispatch
 - [ ] `tdd` was included for any code-producing task
 - [ ] All relevant skills were loaded with explanations
-- [ ] The brief includes Goal, Why, Context, Task, Success Criteria, Rules, Boundaries, Output Format, and Stop Rules
+- [ ] Skills Loaded appears **right after Goal** (not at the bottom of the brief)
+- [ ] A **Persona** is assigned — the sub-agent knows who to be
+- [ ] The brief includes Goal, Skills Loaded, Persona, Why, Context, Task, Success Criteria, Rules, Boundaries, Output Format, and Stop Rules (or appropriate subset per context level)
 - [ ] Task and Success Criteria are adjacent (not separated by intervening sections)
 - [ ] Context uses `reads` for files >100 lines rather than inlining
 - [ ] Context includes file paths, type definitions, and existing patterns — not vague references
 - [ ] Boundaries explicitly state what is NOT in scope
+- [ ] Pre-existing issues are explicitly addressed — the brief states that the sub-agent should note, not fix, problems outside scope
 - [ ] Success criteria are specific and measurable
 - [ ] Stop rules are present
-- [ ] `context: "fork"` vs `"fresh"` was chosen deliberately
 - [ ] Blocker escalation via `intercom` is documented in stop rules
-- [ ] **Pre-existing issues are explicitly addressed** — the brief states whether the sub-agent should fix, note, or ignore lint errors, failing tests, and code quality issues outside the assigned scope
+- [ ] `context: "fork"` vs `"fresh"` was chosen deliberately
+- [ ] The **Delegation Decision Tree** supports the decision to delegate (not do it yourself)
+- [ ] **Model capability** matches task complexity
+- [ ] **Parallel count** is ≤4 if multiple agents
 - [ ] For code tasks: the output is test-first and addresses the concerns each loaded skill covers
 - [ ] For non-code tasks: the output reflects the reasoning frameworks loaded
+
+And after the sub-agent returns:
+
+- [ ] **Parent verification checklist** was run (tests, lint, diff, scope check)
+- [ ] If issues found: correction brief was written (not a re-send of the original brief)
+- [ ] If output was wrong: it was discarded, not half-integrated

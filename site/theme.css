@@ -29,7 +29,7 @@ html { scroll-behavior: smooth; }
 
 body {
   background: var(--bg);
-  color: var(--ink);
+  color: #f1e7d1;
   font-family: 'Cormorant Garamond', serif;
   font-size: 19px;
   line-height: 1.65;
