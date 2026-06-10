@@ -966,20 +966,23 @@ header .flare span:nth-child(3){animation-delay:1s}
 .modal .modal-share{
   display:block;margin:14px auto 0;
   font-family:'Cinzel',serif;
-  font-size:.55rem;text-transform:uppercase;
-  letter-spacing:.08em;
-  padding:6px 16px;
-  border:1px solid rgba(212,175,55,.1);
+  font-size:.66rem;text-transform:uppercase;
+  letter-spacing:.07em;
+  padding:8px 16px;
+  border:1px solid rgba(212,175,55,.35);
   border-radius:4px;
-  background:rgba(212,175,55,.03);
-  color:#b8a888;
+  background:linear-gradient(180deg, rgba(74,50,24,.96), rgba(42,26,10,.96));
+  color:#f5ead0;
+  font-weight:700;
+  text-shadow:0 1px 0 rgba(0,0,0,.35);
   cursor:pointer;
   transition:all .3s ease;
 }
 .modal .modal-share:hover{
-  border-color:rgba(212,175,55,.25);
-  color:#6a3a1a;
-  background:rgba(212,175,55,.05);
+  border-color:rgba(212,175,55,.65);
+  color:#fff3d9;
+  background:linear-gradient(180deg, rgba(92,64,30,.98), rgba(54,34,14,.98));
+  box-shadow:0 0 18px rgba(212,175,55,.16);
 }
 
 /* ── No Results ─────────────────────────────────── */
@@ -1935,22 +1938,23 @@ footer .footer-install-hint em{
 
 /* ── Spell Modal: actions row (Share + Inscribe) ─── */
 .modal-actions{
-  display:flex;gap:8px;margin-top:14px;
+  display:flex;gap:10px;margin-top:16px;
   justify-content:center;flex-wrap:wrap;
 }
 .modal-share-half{
-  margin:0;flex:1;min-width:0;max-width:220px;
+  margin:0;flex:1;min-width:0;max-width:240px;
 }
 .modal-inscribe{
-  border-color:rgba(212,175,55,.35);
-  background:linear-gradient(135deg, rgba(212,175,55,.12), rgba(212,175,55,.04));
-  color:#d4af37;
+  border-color:rgba(241,206,112,.85);
+  background:linear-gradient(135deg, #f1ce70, #b98a26);
+  color:#1a120a;
+  text-shadow:none;
 }
 .modal-inscribe:hover{
-  border-color:rgba(212,175,55,.65);
-  color:#f5e6c8;
-  background:linear-gradient(135deg, rgba(212,175,55,.22), rgba(212,175,55,.08));
-  box-shadow:0 0 16px rgba(212,175,55,.18);
+  border-color:rgba(255,233,160,.95);
+  color:#0f0a05;
+  background:linear-gradient(135deg, #ffe18a, #d4a63a);
+  box-shadow:0 0 16px rgba(212,175,55,.22);
 }
 
 /* ── Responsive: Ritual + Sigil ─────────────────── */
