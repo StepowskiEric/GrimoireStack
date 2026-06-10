@@ -14,14 +14,12 @@ import BookSplash from './components/BookSplash.tsx';
 import SpellCast from './components/SpellCast.tsx';
 import RitualSection from './components/RitualSection.jsx';
 import { REPO_URL } from './data/constants.js';
+import { useSpellInteraction } from './hooks/useSpellInteraction.js';
 
 export default function App() {
   const [loaded, setLoaded] = useState(false);
   const [currentSchool, setCurrentSchool] = useState(schools[0].id);
   const [searchQuery, setSearchQuery] = useState('');
-  const [modal, setModal] = useState(null);
-  const [casting, setCasting] = useState(null);
-  const [witchDoctorOpen, setWitchDoctorOpen] = useState(false);
   const [castEnabled, setCastEnabled] = useState(() => localStorage.getItem('grimoire-cast') !== 'off');
   const laughPlayedRef = useRef(false);
   const ambienceStartedRef = useRef(false);
@@ -29,6 +27,18 @@ export default function App() {
   const searchResults = useMemo(() => searchSpells(schools, searchQuery), [searchQuery]);
   const isLab = currentSchool === 'recipe-lab';
   const isRitual = currentSchool === 'ritual';
+
+  const {
+    modal,
+    casting,
+    witchDoctorOpen,
+    setWitchDoctorOpen,
+    handleSpellClick,
+    handleCastComplete,
+    handleModalClose,
+    handleWitchDoctorSelect,
+    handleWitchDoctorClose,
+  } = useSpellInteraction(castEnabled);
 
   useEffect(() => {
     const handler = () => {
@@ -50,26 +60,6 @@ export default function App() {
     };
   }, []);
 
-  // Handle ?s= deep link on page load
-  useEffect(() => {
-    const params = new URLSearchParams(window.location.search);
-    const skillId = params.get('s');
-    if (skillId) {
-      for (const s of schools) {
-        for (const sp of s.spells) {
-          if (sp.skill === skillId) {
-            setTimeout(() => {
-              setModal({ spell: sp, school: s });
-              document.body.style.overflow = 'hidden';
-            }, 300);
-            return;
-          }
-        }
-      }
-    }
-  }, []);
-
-  // Witch laugh on first search match
   useEffect(() => {
     if (searchResults.total > 0 && !laughPlayedRef.current) {
       const t = setTimeout(() => { witchLaugh(); laughPlayedRef.current = true; }, 400);
@@ -88,36 +78,12 @@ export default function App() {
     setSearchQuery(q);
   }, []);
 
-  const handleSpellClick = useCallback((spell, school) => {
-    if (castEnabled) {
-      setCasting({ spell, school });
-    } else {
-      setModal({ spell, school });
-      document.body.style.overflow = 'hidden';
-    }
-  }, [castEnabled]);
-
-  const handleCastComplete = useCallback(() => {
-    setCasting(null);
-  }, []);
-
-  const prevCastingRef = useRef(null);
-  useEffect(() => {
-    if (casting) {
-      prevCastingRef.current = casting;
-    } else if (prevCastingRef.current && !modal) {
-      const prev = prevCastingRef.current;
-      prevCastingRef.current = null;
-      setTimeout(() => {
-        setModal({ spell: prev.spell, school: prev.school });
-        document.body.style.overflow = 'hidden';
-      }, 50);
-    }
-  }, [casting, modal]);
-
-  const handleModalClose = useCallback((nextSpell, nextSchool) => {
-    if (nextSpell && nextSchool) setModal({ spell: nextSpell, school: nextSchool });
-    else { setModal(null); document.body.style.overflow = ''; }
+  const toggleCast = useCallback(() => {
+    setCastEnabled((prev) => {
+      const next = !prev;
+      localStorage.setItem('grimoire-cast', next ? 'on' : 'off');
+      return next;
+    });
   }, []);
 
   return (
@@ -185,11 +151,7 @@ export default function App() {
           transition: 'all .3s ease',
         }}>
           <input type="checkbox" checked={castEnabled}
-            onChange={() => {
-              const next = !castEnabled;
-              setCastEnabled(next);
-              localStorage.setItem('grimoire-cast', next ? 'on' : 'off');
-            }}
+            onChange={toggleCast}
             style={{ accentColor: '#8a6a30' }}
           />
           Cast animation
