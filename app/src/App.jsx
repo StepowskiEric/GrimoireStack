@@ -141,6 +141,11 @@ function AppInner() {
     }
   }, [dismissNotFound, handleSpellClick]);
 
+  // Stable refs for callbacks declared further down — pattern 6a.
+  // Lets keyboardHandlers (declared above the callbacks it closes over) avoid TDZ.
+  const handleWelcomeCloseRef = useRef(null);
+  const handleModalCloseRef = useRef(null);
+
   const keyboardHandlers = useMemo(() => ({
     openCheatsheet: () => setShortcutsOpen(true),
     focusSearch: () => {
@@ -153,10 +158,11 @@ function AppInner() {
       if (tomeOpen) { setTomeOpen(false); handled = true; }
       if (witchDoctorOpen) { setWitchDoctorOpen(false); handled = true; }
       if (modal) { handleModalClose(); handled = true; }
-      if (welcomeOpen) { handleWelcomeClose(); handled = true; }
+      if (welcomeOpen) { handleWelcomeCloseRef.current(); handled = true; }
       return handled;
     },
-  }), [shortcutsOpen, tomeOpen, witchDoctorOpen, modal, handleModalClose, welcomeOpen, handleWelcomeClose, setWitchDoctorOpen]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps -- handleWelcomeCloseRef is a stable ref to the latest handleWelcomeClose
+  }), [shortcutsOpen, tomeOpen, witchDoctorOpen, modal, handleModalClose, welcomeOpen, setWitchDoctorOpen]);
 
   useKeyboardShortcuts(keyboardHandlers, loaded);
 
@@ -214,6 +220,11 @@ function AppInner() {
     setWelcomeOpen(false);
   }, []);
 
+  // Render-side ref sync (pattern 6a) — keep the refs current with the latest
+  // stable callbacks so keyboardHandlers can read them without TDZ.
+  handleWelcomeCloseRef.current = handleWelcomeClose;
+  handleModalCloseRef.current = handleModalClose;
+
   const spellTier = useCallback((spell) => {
     const tier = getSpellTier(spell);
     return { tier, ...TIER_META[tier] };
@@ -266,8 +277,8 @@ function AppInner() {
           </a>
           <LanguageToggle />
         </div>
-        <h1>GrimoireStack</h1>
-        <div className="subtitle">The Warlock's Tome of Agent Incantations</div>
+        <h1>{t('appTitle')}</h1>
+        <div className="subtitle">{t('appSubtitle')}</div>
         <div className="flare"><span>⚜</span><span>✦</span><span>⚜</span></div>
       </header>
 
@@ -315,7 +326,6 @@ function AppInner() {
           className="cast-bones-btn"
           onClick={handleCastBones}
           title={t('castBonesTitle')}
-          aria-label={t('castBonesTitle')}
         >
           {t('castBones')}
         </button>

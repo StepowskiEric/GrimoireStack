@@ -271,7 +271,7 @@ const schools = [
     desc:'Rituals for empirically measuring whether a skill actually improves outcomes.',
     spells:[
       {name:'A/B Scry',skill:'skill-ab-evaluation',effect:'Runs an A/B evaluation of any skill against a baseline using isolated subagents, 5 trials each, and an objective rubric. Measures real % improvement in isolated worktrees.',status:'—'},
-      {name:'Empirical Justification',skill:'skill-ab-evaluation',effect:'Provides empirical data to justify skill refinement or retirement. Zero risk to current projects — all testing happens in isolated worktrees.',status:'—'},
+      {name:'Empirical Justification',skill:'empirical-justification',effect:'Provides empirical data to justify skill refinement or retirement. Zero risk to current projects — all testing happens in isolated worktrees.',status:'—'},
     ]
   }
 ];

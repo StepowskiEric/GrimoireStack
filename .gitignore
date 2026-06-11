@@ -31,3 +31,7 @@ coppermind_memory_triage_research.json
 .npm-cache/
 benchmarks/
 refactor-target.md
+
+# Playwright / test artifacts
+app/test-results/
+app/playwright-report/
