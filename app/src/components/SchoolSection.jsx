@@ -1,8 +1,9 @@
 import { useMemo } from 'react';
 import SpellCard from './SpellCard.jsx';
 
-export default function SchoolSection({ school, isActive, onSpellClick, searchQuery, isFavorited, onToggleFavorite }) {
+export default function SchoolSection({ school, isActive, onSpellClick, searchQuery, isFavorited, onToggleFavorite, matchKeySet }) {
   const matchingSet = useMemo(() => {
+    if (matchKeySet) return matchKeySet;
     if (!searchQuery) return null;
     const q = searchQuery.toLowerCase();
     const set = new Set();
@@ -11,10 +12,10 @@ export default function SchoolSection({ school, isActive, onSpellClick, searchQu
       if (searchable.includes(q)) set.add(sp.name + '\0' + sp.skill);
     }
     return set;
-  }, [school, searchQuery]);
+  }, [school, searchQuery, matchKeySet]);
 
   const hasMatch = !matchingSet || matchingSet.size > 0;
-  const show = isActive || (searchQuery && hasMatch);
+  const show = isActive || (matchingSet && hasMatch);
 
   return (
     <div className={`school-section${show ? ' active' : ''}`} id={`school-${school.id}`}>
@@ -37,10 +38,10 @@ export default function SchoolSection({ school, isActive, onSpellClick, searchQu
               onClick={() => onSpellClick(sp, school)}
               onToggleFavorite={onToggleFavorite}
               isFavorited={isFavorited?.(sp.skill)}
-              matched={!searchQuery || matchingSet.has(key)} />
+              matched={!matchingSet || matchingSet.has(key)} />
           );
         })}
-        {searchQuery && !hasMatch ? (
+        {matchingSet && !hasMatch ? (
           <div className="no-spells">The orb sees nothing matching your affliction…</div>
         ) : null}
       </div>

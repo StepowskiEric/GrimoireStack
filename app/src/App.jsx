@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback, useRef, useMemo } from 'react';
 import schools from './data/schools.js';
-import { searchSpells } from './search.js';
+import { searchSpells, filterSpells } from './search.js';
 import { witchLaugh, pageCreak, startAmbience } from './audio/sounds.js';
 import Embers from './components/Embers.jsx';
 import ScryingOrb from './components/ScryingOrb.jsx';
@@ -19,6 +19,9 @@ import { getSpellTier, TIER_META } from './data/tiers.js';
 import { REPO_URL } from './data/constants.js';
 import { useSpellInteraction } from './hooks/useSpellInteraction.js';
 import { useFavorites } from './hooks/useFavorites.js';
+import { useRecentlyViewed } from './hooks/useRecentlyViewed.js';
+import { useMarginalia } from './hooks/useMarginalia.js';
+import { useKeyboardShortcuts } from './hooks/useKeyboardShortcuts.js';
 import LibrariansLedger from './components/LibrariansLedger.jsx';
 import LegendOfSigils from './components/LegendOfSigils.jsx';
 import ApprenticeMarginalia from './components/ApprenticeMarginalia.jsx';
@@ -28,6 +31,11 @@ import SummoningCircle from './components/SummoningCircle.jsx';
 import TomeOfAilments from './components/TomeOfAilments.jsx';
 import RecipeLabExplainer from './components/RecipeLabExplainer.jsx';
 import LanguageToggle from './components/LanguageToggle.jsx';
+import FilterChips from './components/FilterChips.jsx';
+import StaleLinkBanner from './components/StaleLinkBanner.jsx';
+import ShortcutsModal from './components/ShortcutsModal.jsx';
+import InstallPrompt from './components/InstallPrompt.jsx';
+import { spellCatalog } from './data/spellCatalogInstance.js';
 import { LanguageProvider, useLanguage } from './i18n/LanguageContext';
 
 export default function App() {
@@ -46,15 +54,34 @@ function AppInner() {
   const [castEnabled, setCastEnabled] = useState(() => localStorage.getItem('grimoire-cast') !== 'off');
   const [welcomeOpen, setWelcomeOpen] = useState(() => localStorage.getItem(WELCOME_STORAGE_KEY) !== 'true');
   const [tomeOpen, setTomeOpen] = useState(false);
+  const [shortcutsOpen, setShortcutsOpen] = useState(false);
+  const [schoolFilter, setSchoolFilter] = useState(new Set());
+  const [tierFilter, setTierFilter] = useState(new Set());
+  const [favoritesOnly, setFavoritesOnly] = useState(false);
   const laughPlayedRef = useRef(false);
   const ambienceStartedRef = useRef(false);
   const initializedRef = useRef(false);
 
-  const searchResults = useMemo(() => searchSpells(schools, searchQuery), [searchQuery]);
+  const { favorites, isFavorited, toggleFavorite } = useFavorites();
+  const { recent, record: recordRecent } = useRecentlyViewed();
+  const marginalia = useMarginalia();
+
+  const searchResults = useMemo(
+    () => searchSpells(schools, searchQuery),
+    [searchQuery]
+  );
+  const filterResults = useMemo(
+    () => filterSpells(schools, {
+      query: searchQuery,
+      schoolFilter: schoolFilter.size > 0 ? schoolFilter : null,
+      tierFilter: tierFilter.size > 0 ? tierFilter : null,
+      favoritesOnly,
+      isFavorited,
+    }),
+    [searchQuery, schoolFilter, tierFilter, favoritesOnly, isFavorited]
+  );
   const isLab = currentSchool === 'recipe-lab';
   const isRitual = currentSchool === 'ritual';
-
-  const { favorites, isFavorited, toggleFavorite } = useFavorites();
 
   const {
     modal,
@@ -66,7 +93,72 @@ function AppInner() {
     handleModalClose,
     handleWitchDoctorSelect,
     handleWitchDoctorClose,
+    notFoundSkill,
+    dismissNotFound,
   } = useSpellInteraction(castEnabled);
+
+  // Record spell view in history when modal opens
+  useEffect(() => {
+    if (modal) recordRecent(modal.spell.name, modal.spell.skill);
+  }, [modal?.spell.skill, modal, recordRecent]);
+
+  const toggleSchool = useCallback((id) => {
+    setSchoolFilter((prev) => {
+      const next = new Set(prev);
+      if (next.has(id)) next.delete(id); else next.add(id);
+      return next;
+    });
+  }, []);
+
+  const toggleTier = useCallback((key) => {
+    setTierFilter((prev) => {
+      const next = new Set(prev);
+      if (next.has(key)) next.delete(key); else next.add(key);
+      return next;
+    });
+  }, []);
+
+  const toggleFavorites = useCallback(() => setFavoritesOnly((v) => !v), []);
+
+  const clearAllFilters = useCallback(() => {
+    setSchoolFilter(new Set());
+    setTierFilter(new Set());
+    setFavoritesOnly(false);
+  }, []);
+
+  const handleCastBones = useCallback(() => {
+    const all = schools.flatMap((s) => s.spells.map((sp) => ({ spell: sp, school: s })));
+    if (!all.length) return;
+    const pick = all[Math.floor(Math.random() * all.length)];
+    handleSpellClick(pick.spell, pick.school);
+  }, [handleSpellClick]);
+
+  const handleNotFoundSelect = useCallback((skill) => {
+    const found = spellCatalog.resolveBySkill(skill);
+    if (found) {
+      dismissNotFound();
+      handleSpellClick(found.spell, found.school);
+    }
+  }, [dismissNotFound, handleSpellClick]);
+
+  const keyboardHandlers = useMemo(() => ({
+    openCheatsheet: () => setShortcutsOpen(true),
+    focusSearch: () => {
+      const input = document.getElementById('searchInput');
+      if (input) { input.focus(); input.select?.(); }
+    },
+    handleGlobalEscape: () => {
+      let handled = false;
+      if (shortcutsOpen) { setShortcutsOpen(false); handled = true; }
+      if (tomeOpen) { setTomeOpen(false); handled = true; }
+      if (witchDoctorOpen) { setWitchDoctorOpen(false); handled = true; }
+      if (modal) { handleModalClose(); handled = true; }
+      if (welcomeOpen) { handleWelcomeClose(); handled = true; }
+      return handled;
+    },
+  }), [shortcutsOpen, tomeOpen, witchDoctorOpen, modal, handleModalClose, welcomeOpen, handleWelcomeClose, setWitchDoctorOpen]);
+
+  useKeyboardShortcuts(keyboardHandlers, loaded);
 
   useEffect(() => {
     const handler = () => {
@@ -218,7 +310,27 @@ function AppInner() {
           <span aria-hidden="true">⟐</span>
           <span>Tome of Ailments</span>
         </button>
+        <button
+          type="button"
+          className="cast-bones-btn"
+          onClick={handleCastBones}
+          title={t('castBonesTitle')}
+          aria-label={t('castBonesTitle')}
+        >
+          {t('castBones')}
+        </button>
       </div>
+
+      <FilterChips
+        schools={schools}
+        schoolFilter={schoolFilter}
+        tierFilter={tierFilter}
+        favoritesOnly={favoritesOnly}
+        onToggleSchool={toggleSchool}
+        onToggleTier={toggleTier}
+        onToggleFavorites={toggleFavorites}
+        onClear={clearAllFilters}
+      />
 
       <TabBar schools={schools} currentSchool={currentSchool} onSelect={handleSchoolSelect} isLab={isLab} />
       <BookmarkOfFirstRites onSearchChange={handleSearch} onWizardOpen={() => setWitchDoctorOpen(true)} />
@@ -256,17 +368,41 @@ function AppInner() {
           <div className="marginalia m2">~ Fol. iii ~</div>
           <div className="folio">·  Folio III  ·</div>
 
-          {schools.map((s) => (
-            <SchoolSection key={s.id} school={s}
-              isActive={currentSchool === s.id && !isLab && !isRitual && !searchQuery}
-              searchQuery={searchQuery}
-              onSpellClick={handleSpellClick}
-              isFavorited={isFavorited}
-              onToggleFavorite={toggleFavorite} />
-          ))}
+          {schools.map((s) => {
+            const filterActive = searchQuery || schoolFilter.size > 0 || tierFilter.size > 0 || favoritesOnly;
+            const matchKeySet = filterActive
+              ? new Set(filterResults.bySchool[s.id] || [])
+              : null;
+            const hasMatch = !filterActive || (filterResults.bySchool[s.id]?.length || 0) > 0;
+            const visible = (!isLab && !isRitual) && (
+              filterActive
+                ? hasMatch
+                : currentSchool === s.id
+            );
+            return (
+              <SchoolSection
+                key={s.id}
+                school={s}
+                isActive={visible}
+                searchQuery={searchQuery}
+                onSpellClick={handleSpellClick}
+                isFavorited={isFavorited}
+                onToggleFavorite={toggleFavorite}
+                matchKeySet={matchKeySet}
+              />
+            );
+          })}
 
-          {searchQuery && searchResults.total === 0 && (
+          {searchQuery && searchResults.total === 0 && !notFoundSkill && (
             <WhispersFromTheVoid searchQuery={searchQuery} totalMatches={0} onWizardOpen={() => setWitchDoctorOpen(true)} />
+          )}
+
+          {notFoundSkill && (
+            <StaleLinkBanner
+              skill={notFoundSkill}
+              onSelect={handleNotFoundSelect}
+              onDismiss={dismissNotFound}
+            />
           )}
 
           {!searchQuery && !isLab && !isRitual && (
@@ -286,11 +422,19 @@ function AppInner() {
         />
       )}
       {witchDoctorOpen && <WitchDoctorModal schools={schools} onSelectSkill={(spell, sch) => { setWitchDoctorOpen(false); handleSpellClick(spell, sch); }} onClose={() => setWitchDoctorOpen(false)} />}
-      {modal && <SpellModal spell={modal.spell} school={modal.school} onClose={handleModalClose} />}
+      {modal && <SpellModal spell={modal.spell} school={modal.school} onClose={handleModalClose} marginalia={marginalia} />}
       {casting && <SpellCast spellName={casting.spell.name} schoolSymbol={casting.school.symbol} onComplete={handleCastComplete} />}
       <RecipeLabExplainer visible={isLab} onDismiss={() => {}} />
-      <SummoningCircle schools={schools} onSpellClick={handleSpellClick} favorites={favorites} onToggleFavorite={toggleFavorite} />
-      <Footer />
+      <SummoningCircle
+        schools={schools}
+        onSpellClick={handleSpellClick}
+        favorites={favorites}
+        onToggleFavorite={toggleFavorite}
+        recent={recent}
+      />
+      {shortcutsOpen && <ShortcutsModal onClose={() => setShortcutsOpen(false)} />}
+      <Footer onShowShortcuts={() => setShortcutsOpen(true)} />
+      <InstallPrompt />
       </>}
     </>
   );

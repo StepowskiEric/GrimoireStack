@@ -125,13 +125,16 @@ const INSCRIBE_AGENTS = [
   { id: 'factory-droid', label: 'Factory Droid', prefix: 'Copy skill to ~/.factory/skills/' },
 ];
 
-export default function SpellModal({ spell, school, onClose }) {
+export default function SpellModal({ spell, school, onClose, marginalia }) {
   if (!spell) return null;
 
   const [viewMode, setViewMode] = useState('plain'); // 'plain' | 'full'
   const [mdContent, setMdContent] = useState(null);
   const [mdLoading, setMdLoading] = useState(false);
   const [inscribeAgent, setInscribeAgent] = useState('claude');
+  const [note, setNote] = useState(marginalia?.getNote(spell.skill) || '');
+  const [noteStatus, setNoteStatus] = useState('');
+  const noteTimerRef = useRef(null);
 
   const statusStr = spell.status && spell.status !== '—' ? spell.status : 'Common';
   const statusClass = (spell.status || 'common').toLowerCase().replace(/[^a-z]/g, '') || 'common';
@@ -162,7 +165,32 @@ export default function SpellModal({ spell, school, onClose }) {
     setViewMode('plain');
     setMdContent(null);
     setMdLoading(false);
-  }, [spell.skill]);
+    setNote(marginalia?.getNote(spell.skill) || '');
+    setNoteStatus('');
+  }, [spell.skill, marginalia]);
+
+  useEffect(() => () => {
+    if (noteTimerRef.current) clearTimeout(noteTimerRef.current);
+  }, []);
+
+  const handleNoteChange = (e) => {
+    const value = e.target.value;
+    setNote(value);
+    setNoteStatus('saving…');
+    if (noteTimerRef.current) clearTimeout(noteTimerRef.current);
+    noteTimerRef.current = setTimeout(() => {
+      marginalia?.setNote(spell.skill, value);
+      setNoteStatus('saved');
+      noteTimerRef.current = setTimeout(() => setNoteStatus(''), 1400);
+    }, 350);
+  };
+
+  const handleClearNote = () => {
+    setNote('');
+    marginalia?.clear(spell.skill);
+    setNoteStatus('cleared');
+    setTimeout(() => setNoteStatus(''), 1400);
+  };
 
   // Focus trap
   useEffect(() => {
@@ -266,6 +294,26 @@ export default function SpellModal({ spell, school, onClose }) {
                 </div>
               </div>
             ) : null}
+
+            <div className="marginalia-section">
+              <div className="marginalia-header">
+                <span className="marginalia-title">✎ Apprentice Marginalia</span>
+                {note ? (
+                  <button type="button" className="marginalia-clear" onClick={handleClearNote}>
+                    ✕ Erase
+                  </button>
+                ) : null}
+              </div>
+              <textarea
+                className="marginalia-textarea"
+                value={note}
+                onChange={handleNoteChange}
+                placeholder="Scribe your own notes here. They stay on this device."
+                aria-label="Personal notes for this spell"
+                spellCheck="false"
+              />
+              <div className="marginalia-status" aria-live="polite">{noteStatus}</div>
+            </div>
           </>
         ) : (
           <div className="modal-full-entry">
@@ -291,7 +339,7 @@ export default function SpellModal({ spell, school, onClose }) {
 
         <div className="modal-actions">
           <button className="modal-share modal-share-half" onClick={(e) => {
-            const url = `${window.location.origin}${window.location.pathname}?s=${encodeURIComponent(spell.skill)}`;
+            const url = `${window.location.origin}/s/${encodeURIComponent(spell.skill)}`;
             const btn = e.currentTarget;
             const restore = () => { btn.textContent = '✦ Share'; };
             if (navigator.share) {

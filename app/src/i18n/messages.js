@@ -94,6 +94,51 @@ export const messages = {
     noFullEntry: 'No full grimoire entry found for this incantation.',
     noFullEntryHint: 'The scroll may still be in the scribe\'s hands.',
     mdLoading: 'Unfurling the scroll...',
+
+    // Marginalia
+    marginaliaTitle: '✎ Apprentice Marginalia',
+    marginaliaPlaceholder: "Scribe your own notes here. They stay on this device.",
+    marginaliaErase: '✕ Erase',
+    marginaliaAriaLabel: 'Personal notes for this spell',
+    marginaliaSaving: 'saving…',
+    marginaliaSaved: 'saved',
+    marginaliaCleared: 'cleared',
+
+    // Stale-link banner
+    notFoundTitle: 'The incantation has been unbound',
+    notFoundMessage: 'No spell named {skill} is inscribed in the current grimoire.',
+    notFoundSuggestionsLead: 'Did you mean…',
+    notFoundDismiss: '✕ Dismiss',
+
+    // Cast the bones
+    castBones: '✦ Cast the bones',
+    castBonesTitle: 'Open a random incantation',
+
+    // Shortcuts modal
+    shortcutsTitle: 'Runes of Power',
+    shortcutsSubtitle: 'Keyboard shortcuts for the warlock on the go',
+    shortcutsFootnote: 'Shortcuts are inert when typing in the search or a note.',
+    shortcutsClose: 'Close cheatsheet',
+
+    // Install prompt
+    installTitle: '✦ Summon GrimoireStack to your device',
+    installAction: 'Install',
+    installDismiss: 'Dismiss install',
+
+    // Footer
+    shortcutsLink: 'keyboard shortcuts',
+
+    // Filters
+    filterSchoolLabel: 'School:',
+    filterTierLabel: 'Tier:',
+    filterFavorites: 'Favorites',
+    filterClear: '✕ Clear',
+    filterFavoritesTitle: 'Show only favorited incantations',
+
+    // Summoning Circle
+    recentTab: 'Recently Cast ({count})',
+    favoritesTab: 'Favorites ({count})',
+    recentEmpty: 'No spells cast yet. Open one to begin your trail.',
   },
   plain: {
     // App shell
@@ -178,6 +223,51 @@ export const messages = {
     noFullEntry: 'No full documentation found for this skill.',
     noFullEntryHint: 'Documentation may still be in progress.',
     mdLoading: 'Loading documentation...',
+
+    // Marginalia
+    marginaliaTitle: '✎ Personal Notes',
+    marginaliaPlaceholder: 'Write your own notes here. They stay on this device.',
+    marginaliaErase: '✕ Erase',
+    marginaliaAriaLabel: 'Personal notes for this skill',
+    marginaliaSaving: 'saving…',
+    marginaliaSaved: 'saved',
+    marginaliaCleared: 'cleared',
+
+    // Stale-link banner
+    notFoundTitle: 'Skill not found',
+    notFoundMessage: 'No skill named {skill} exists in the current catalog.',
+    notFoundSuggestionsLead: 'Did you mean…',
+    notFoundDismiss: '✕ Dismiss',
+
+    // Cast the bones
+    castBones: '✦ Cast the bones',
+    castBonesTitle: 'Open a random skill',
+
+    // Shortcuts modal
+    shortcutsTitle: 'Keyboard Shortcuts',
+    shortcutsSubtitle: 'Quick reference for power users',
+    shortcutsFootnote: 'Shortcuts are inert when typing in the search or a note.',
+    shortcutsClose: 'Close cheatsheet',
+
+    // Install prompt
+    installTitle: '✦ Install GrimoireStack',
+    installAction: 'Install',
+    installDismiss: 'Dismiss install',
+
+    // Footer
+    shortcutsLink: 'keyboard shortcuts',
+
+    // Filters
+    filterSchoolLabel: 'Category:',
+    filterTierLabel: 'Tier:',
+    filterFavorites: 'Favorites',
+    filterClear: '✕ Clear',
+    filterFavoritesTitle: 'Show only favorited skills',
+
+    // Summoning Circle
+    recentTab: 'Recently Viewed ({count})',
+    favoritesTab: 'Favorites ({count})',
+    recentEmpty: 'No skills viewed yet. Open one to start your trail.',
   },
 };
 

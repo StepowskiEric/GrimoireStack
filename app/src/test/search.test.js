@@ -115,3 +115,69 @@ describe('searchSpells', () => {
     expect(result.bySchool.debugging[0]).toBe('Trace Sight\0log-trace-correlation');
   });
 });
+
+import { filterSpells, getSpellTierForFilter } from '../search.js';
+import { TIER_META } from '../data/tiers.js';
+
+describe('filterSpells', () => {
+  const favFn = (skill) => skill === 'log-trace-correlation';
+
+  it('returns all spells when no filters and no query', () => {
+    const result = filterSpells(sampleSchools, { isFavorited: () => false });
+    expect(result.total).toBe(4);
+  });
+
+  it('narrows by school filter', () => {
+    const result = filterSpells(sampleSchools, { schoolFilter: new Set(['reasoning']), isFavorited: () => false });
+    expect(result.total).toBe(2);
+    expect(result.bySchool).toHaveProperty('reasoning');
+    expect(result.bySchool).not.toHaveProperty('debugging');
+  });
+
+  it('narrows by tier filter', () => {
+    const result = filterSpells(sampleSchools, { tierFilter: new Set(['master']), isFavorited: () => false });
+    // 'bisect-debugging' has status 'Proven' so tier = 'adept' (Proven, no combo)
+    // 'tree-of-thoughts' has no status ('—') so tier = 'faded'
+    // 'log-trace-correlation' has 'Proven' so tier = 'adept'
+    // 'occams-razor' has no status so tier = 'faded'
+    // No master tier in this sample
+    expect(result.total).toBe(0);
+  });
+
+  it('narrows by favorites only', () => {
+    const result = filterSpells(sampleSchools, { favoritesOnly: true, isFavorited: favFn });
+    expect(result.total).toBe(1);
+    expect(result.bySchool.debugging[0]).toContain('log-trace-correlation');
+  });
+
+  it('combines query and filters (AND)', () => {
+    const result = filterSpells(sampleSchools, {
+      query: 'razor',
+      tierFilter: new Set(['faded']),
+      isFavorited: () => false,
+    });
+    expect(result.total).toBe(1);
+  });
+
+  it('returns empty when query and filters are mutually exclusive', () => {
+    const result = filterSpells(sampleSchools, {
+      query: 'razor',
+      schoolFilter: new Set(['debugging']),
+      isFavorited: () => false,
+    });
+    expect(result.total).toBe(0);
+  });
+
+  it('returns empty for empty school filter set', () => {
+    const result = filterSpells(sampleSchools, { schoolFilter: new Set(), isFavorited: () => false });
+    expect(result.total).toBe(0);
+  });
+});
+
+describe('getSpellTierForFilter', () => {
+  it('returns the same tier key as getSpellTier', () => {
+    const sample = sampleSchools[0].spells[0];
+    const tier = getSpellTierForFilter(sample);
+    expect(TIER_META).toHaveProperty(tier);
+  });
+});

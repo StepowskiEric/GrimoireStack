@@ -1,4 +1,8 @@
 import '@testing-library/jest-dom';
+import { expect } from 'vitest';
+import { toHaveNoViolations } from 'vitest-axe/matchers';
+
+expect.extend({ toHaveNoViolations });
 
 // Provide a working localStorage for jsdom tests
 const storage = new Map();

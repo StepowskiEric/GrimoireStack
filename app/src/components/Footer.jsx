@@ -1,4 +1,4 @@
-export default function Footer() {
+export default function Footer({ onShowShortcuts }) {
   return (
     <footer>
       <span className="footer-ornament">⚜ ❦ ⚜</span>
@@ -8,6 +8,14 @@ export default function Footer() {
       </p>
       <p className="footer-install-hint">
         To summon: <code>npx jerry-skills install</code> &middot; visit the <em>Ritual</em> tab above
+        {onShowShortcuts ? (
+          <>
+            {' '}&middot;{' '}
+            <button type="button" className="footer-shortcut" onClick={onShowShortcuts} aria-label="Show keyboard shortcuts">
+              <span aria-hidden="true">⌨</span> keyboard shortcuts <kbd style={{ fontSize: '.7em', opacity: .8 }}> ? </kbd>
+            </button>
+          </>
+        ) : null}
       </p>
     </footer>
   );

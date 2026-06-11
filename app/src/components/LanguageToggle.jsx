@@ -1,17 +1,23 @@
-import { useMessages } from '../i18n/messages';
+import { useLanguage } from '../i18n/LanguageContext';
 
 export default function LanguageToggle() {
-  const { lang, setLang } = useMessages();
+  const { lang, setLang } = useLanguage();
+
+  const isGrimoire = lang === 'grimoire';
 
   return (
     <button
       type="button"
-      className="language-toggle"
-      onClick={() => setLang(lang === 'grimoire' ? 'plain' : 'grimoire')}
-      aria-label={lang === 'grimoire' ? 'Switch to plain English' : 'Switch to themed language'}
-      title={lang === 'grimoire' ? 'Switch to plain English' : 'Switch to themed language'}
+      className={`language-toggle${isGrimoire ? ' is-grimoire' : ' is-plain'}`}
+      onClick={() => setLang(isGrimoire ? 'plain' : 'grimoire')}
+      aria-label={isGrimoire ? 'Switch to plain English' : 'Switch to themed (grimoire) language'}
+      title={isGrimoire ? 'Switch to plain English' : 'Switch to themed (grimoire) language'}
+      aria-pressed={!isGrimoire}
     >
-      {lang === 'grimoire' ? 'Plain' : 'Grimoire'}
+      <span className="language-toggle-rune" aria-hidden="true">{isGrimoire ? '⛧' : '✦'}</span>
+      <span className="language-toggle-text">
+        {isGrimoire ? 'Grimoire' : 'Plain'}
+      </span>
     </button>
   );
 }

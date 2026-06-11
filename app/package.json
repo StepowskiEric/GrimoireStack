@@ -5,7 +5,10 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "vite build",
+    "build": "vite build && node scripts/prerender.mjs && node scripts/build-sitemap.mjs",
+    "build:vite": "vite build",
+    "build:prerender": "node scripts/prerender.mjs",
+    "build:sitemap": "node scripts/build-sitemap.mjs",
     "preview": "vite preview",
     "test": "vitest run",
     "test:watch": "vitest"
@@ -19,8 +22,10 @@
     "@testing-library/jest-dom": "^6.9.1",
     "@testing-library/react": "^16.3.2",
     "@vitejs/plugin-react": "^4.4.1",
+    "axe-core": "^4.12.1",
     "jsdom": "^29.1.1",
     "vite": "^6.3.5",
-    "vitest": "^4.1.7"
+    "vitest": "^4.1.7",
+    "vitest-axe": "^0.1.0"
   }
 }
