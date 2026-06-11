@@ -116,12 +116,22 @@ function escapeHtml(text) {
     .replace(/"/g, '&quot;');
 }
 
+const INSCRIBE_AGENTS = [
+  { id: 'claude', label: 'Claude Code', prefix: 'npx jerry-skills install --agent claude' },
+  { id: 'codex', label: 'OpenAI Codex', prefix: 'npx jerry-skills install --agent codex' },
+  { id: 'copilot', label: 'VS Code Copilot', prefix: 'npx jerry-skills install --agent copilot' },
+  { id: 'hermes', label: 'Hermes', prefix: 'npx jerry-skills install --agent hermes' },
+  { id: 'antigravity', label: 'Antigravity', prefix: 'npx jerry-skills install --agent antigravity' },
+  { id: 'factory-droid', label: 'Factory Droid', prefix: 'Copy skill to ~/.factory/skills/' },
+];
+
 export default function SpellModal({ spell, school, onClose }) {
   if (!spell) return null;
 
   const [viewMode, setViewMode] = useState('plain'); // 'plain' | 'full'
   const [mdContent, setMdContent] = useState(null);
   const [mdLoading, setMdLoading] = useState(false);
+  const [inscribeAgent, setInscribeAgent] = useState('claude');
 
   const statusStr = spell.status && spell.status !== '—' ? spell.status : 'Common';
   const statusClass = (spell.status || 'common').toLowerCase().replace(/[^a-z]/g, '') || 'common';
@@ -296,23 +306,38 @@ export default function SpellModal({ spell, school, onClose }) {
               });
             }
           }}>✦ Share</button>
-          <button className="modal-share modal-share-half modal-inscribe" onClick={(e) => {
-            const cmd = `npx jerry-skills install --agent claude --skill ${spell.skill}`;
-            const btn = e.currentTarget;
-            const restore = () => { btn.textContent = '✦ Inscribe to your Workshop'; };
-            if (!navigator.clipboard) {
-              btn.textContent = '✦ Copy unsupported';
-              setTimeout(restore, 2000);
-              return;
-            }
-            navigator.clipboard.writeText(cmd).then(() => {
-              btn.textContent = '✦ Incantation Inscribed';
-              setTimeout(restore, 2000);
-            }).catch(() => {
-              btn.textContent = '✦ Copy failed';
-              setTimeout(restore, 2000);
-            });
-          }}>✦ Inscribe to your Workshop</button>
+          <div className="modal-inscribe-group">
+            <select
+              className="modal-inscribe-select"
+              value={inscribeAgent}
+              onChange={(e) => setInscribeAgent(e.target.value)}
+              aria-label="Select target agent"
+            >
+              {INSCRIBE_AGENTS.map(agent => (
+                <option key={agent.id} value={agent.id}>{agent.label}</option>
+              ))}
+            </select>
+            <button className="modal-share modal-share-half modal-inscribe" onClick={(e) => {
+              const agent = INSCRIBE_AGENTS.find(a => a.id === inscribeAgent);
+              const cmd = agent.id === 'factory-droid'
+                ? `Copy ${spell.skill}/SKILL.md into ~/.factory/skills/${spell.skill}/`
+                : `${agent.prefix} --skill ${spell.skill}`;
+              const btn = e.currentTarget;
+              const restore = () => { btn.textContent = '✦ Inscribe to your Workshop'; };
+              if (!navigator.clipboard) {
+                btn.textContent = '✦ Copy unsupported';
+                setTimeout(restore, 2000);
+                return;
+              }
+              navigator.clipboard.writeText(cmd).then(() => {
+                btn.textContent = '✦ Incantation Inscribed';
+                setTimeout(restore, 2000);
+              }).catch(() => {
+                btn.textContent = '✦ Copy failed';
+                setTimeout(restore, 2000);
+              });
+            }}>✦ Inscribe to your Workshop</button>
+          </div>
         </div>
       </div>
     </div>

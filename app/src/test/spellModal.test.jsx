@@ -47,6 +47,17 @@ describe('SpellModal action buttons', () => {
     expect(inscribeBtn.textContent).toBe('✦ Inscribe to your Workshop');
   });
 
+  it('changes the copied command when a different agent is selected', async () => {
+    render(<SpellModal spell={sampleSpell} school={sampleSchool} onClose={() => {}} />);
+    const select = screen.getByLabelText(/select target agent/i);
+    await act(async () => { fireEvent.change(select, { target: { value: 'factory-droid' } }); });
+    const inscribeBtn = screen.getByRole('button', { name: /inscribe to your workshop/i });
+    await act(async () => { fireEvent.click(inscribeBtn); });
+    expect(navigator.clipboard.writeText).toHaveBeenCalledWith(
+      'Copy log-trace-correlation/SKILL.md into ~/.factory/skills/log-trace-correlation/'
+    );
+  });
+
   it('shows a Copy failed state if clipboard rejects', async () => {
     vi.spyOn(navigator.clipboard, 'writeText').mockRejectedValue(new Error('blocked'));
     render(<SpellModal spell={sampleSpell} school={sampleSchool} onClose={() => {}} />);

@@ -1956,6 +1956,22 @@ footer .footer-install-hint em{
   background:linear-gradient(135deg, #ffe18a, #d4a63a);
   box-shadow:0 0 16px rgba(212,175,55,.22);
 }
+.modal-inscribe-group{
+  display:flex;gap:8px;align-items:center;justify-content:center;flex-wrap:wrap;
+}
+.modal-inscribe-select{
+  font-family:'Cinzel',serif;font-size:.6rem;text-transform:uppercase;letter-spacing:.07em;
+  padding:6px 10px;border-radius:4px;border:1px solid rgba(212,175,55,.55);
+  background:linear-gradient(180deg, rgba(42,26,10,.96), rgba(26,14,6,.96));
+  color:#f5ead0;text-shadow:0 1px 0 rgba(0,0,0,.35);
+  cursor:pointer;
+}
+.modal-inscribe-select:hover{
+  border-color:rgba(212,175,55,.75);color:#fff3d9;
+}
+.modal-inscribe-select option{
+  background:#1a120a;color:#f5ead0;
+}
 
 /* ── Responsive: Ritual + Sigil ─────────────────── */
 @media(max-width:700px){

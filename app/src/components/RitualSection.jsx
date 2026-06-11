@@ -9,6 +9,7 @@ const AGENTS = [
   { id: 'hermes', label: 'Hermes', desc: '~/.hermes/skills/' },
   { id: 'claude', label: 'Claude Code', desc: '~/.claude/skills/' },
   { id: 'antigravity', label: 'Antigravity', desc: '~/.antigravity/skills/' },
+  { id: 'factory-droid', label: 'Factory Droid', desc: '~/.factory/skills/ (manual)' },
 ];
 
 function CopyButton({ value, label = 'Copy', copiedLabel = '✦ Inscribed', onCopied, className = 'copy-btn' }) {

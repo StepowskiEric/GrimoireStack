@@ -25,12 +25,17 @@ See [docs/installation.md](docs/installation.md) for full details including all 
 
 | Agent | Install location | Format |
 |-------|-----------------|--------|
+| **Factory Droid** | `~/.factory/skills/` | `name/SKILL.md` (flat), lowercase-hyphen directory name |
 | **OpenAI Codex** | `~/.agents/skills/` | `topic/name/SKILL.md` with YAML frontmatter |
 | **VS Code Copilot** | `~/.copilot/skills/` | `name/SKILL.md` (flat), name must be lowercase-hyphen matching directory |
 | **Pi Agent** | `~/.pi/agent/skills/` | `name/SKILL.md` (flat), same as Copilot |
 | **Hermes** | `~/.hermes/skills/` | `topic/name/SKILL.md` with YAML frontmatter |
 | **Claude Code** | `~/.claude/skills/` | `topic/name/SKILL.md` with YAML frontmatter |
 | **Antigravity** | `~/.antigravity/skills/` | `topic/name/SKILL.md` with YAML frontmatter |
+
+## Factory Droid
+
+Install skills to `~/.factory/skills/` using a flat directory structure matching the skill's `name` field (lowercase-hyphen). Each skill should be a directory containing a `SKILL.md` with YAML frontmatter. Factory Droid discovers skills automatically from this folder. Skills can be invoked directly with `/skill-name`, or the Droid can load them automatically when they match the current task. Use `disable-model-invocation: true` in frontmatter to restrict a skill to manual invocation only.
 
 The installer automatically adapts the format for each agent:
 - Copilot and Pi use a flat structure (no topic subdirectories) and slug-normalize the `name` field to match the directory
