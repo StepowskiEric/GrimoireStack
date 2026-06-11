@@ -27,8 +27,19 @@ import Observatory from './components/Observatory.jsx';
 import SummoningCircle from './components/SummoningCircle.jsx';
 import TomeOfAilments from './components/TomeOfAilments.jsx';
 import RecipeLabExplainer from './components/RecipeLabExplainer.jsx';
+import LanguageToggle from './components/LanguageToggle.jsx';
+import { LanguageProvider, useLanguage } from './i18n/LanguageContext';
 
 export default function App() {
+  return (
+    <LanguageProvider>
+      <AppInner />
+    </LanguageProvider>
+  );
+}
+
+function AppInner() {
+  const { t } = useLanguage();
   const [loaded, setLoaded] = useState(false);
   const [currentSchool, setCurrentSchool] = useState(schools[0].id);
   const [searchQuery, setSearchQuery] = useState('');
@@ -161,6 +172,7 @@ export default function App() {
             <span className="header-sigil-glyph" aria-hidden="true">⟐</span>
             <span className="header-sigil-text">github</span>
           </a>
+          <LanguageToggle />
         </div>
         <h1>GrimoireStack</h1>
         <div className="subtitle">The Warlock's Tome of Agent Incantations</div>

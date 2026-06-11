@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { witchLaugh } from '../audio/sounds.js';
+import { useLanguage } from '../i18n/LanguageContext';
 
 const PREFIXES = ['Elixir', 'Potion', 'Tincture', 'Salve', 'Draught', 'Brew', 'Compound', 'Essence', 'Infusion', 'Extract'];
 const ADJECTIVES = ['Ancient', 'Crimson', 'Shadow', 'Arcane', 'Ethereal', 'Verdant', 'Ashen', 'Silver', 'Amber', 'Violet', 'Deep', 'Restorative', 'Binding', 'Surging', 'Quiet'];
@@ -30,6 +31,7 @@ const KEYWORDS = ['trace', 'debug', 'test', 'code', 'reason', 'verify', 'review'
   'navigate', 'structure', 'model'];
 
 export default function RecipeLab({ schools }) {
+  const { t } = useLanguage();
   const [selected, setSelected] = useState([]);
   const [brewed, setBrewed] = useState(null);
 
@@ -77,12 +79,12 @@ export default function RecipeLab({ schools }) {
   return (
     <div className="lab-section active" id="school-recipe-lab">
       <div className="lab-header">
-        <h2>⚗ Recipe Lab</h2>
-        <p className="lab-sub">Select 2–5 incantations below and brew a custom ritual</p>
+        <h2>{t('recipeTitle')}</h2>
+        <p className="lab-sub">{t('recipeSub')}</p>
       </div>
       <div className={`lab-cauldron${selected.length > 0 ? ' has-spells' : ''}`}>
-        <div className="cauldron-label">✦ Cauldron</div>
-        {selected.length === 0 ? <div className="cauldron-empty">Select incantations from the grid below…</div> : null}
+        <div className="cauldron-label">{t('cauldronLabel')}</div>
+        {selected.length === 0 ? <div className="cauldron-empty">{t('cauldronEmpty')}</div> : null}
         <div className="cauldron-chips">
           {selected.map((item, i) => (
             <button key={i} type="button" className="cauldron-chip" onClick={() => toggleSpell(item.spell, item.school)} aria-label={`Remove ${item.spell.name}`}>
@@ -94,14 +96,14 @@ export default function RecipeLab({ schools }) {
       </div>
       <div className="lab-brew-wrap">
         <button className={`lab-brew${selected.length < 2 ? ' disabled' : ''}`} disabled={selected.length < 2} onClick={brew}>
-          ⚗ Brew Ritual
+          {t('brewButton')}
         </button>
       </div>
 
       {brewed ? (
         <div className="lab-output show">
           <div className="recipe-card">
-            <div className="rc-label">✦ Brewed Ritual</div>
+            <div className="rc-label">{t('brewedRitual')}</div>
             <div className="rc-name">{brewed.name}</div>
             <div className="rc-effect">{brewed.effect}</div>
             <div className="rc-row">
@@ -113,7 +115,7 @@ export default function RecipeLab({ schools }) {
               <span className="rc-v">{brewed.bestUseCase}</span>
             </div>
             <div className="rc-row">
-              <span className="rc-l">Incantations</span>
+              <span className="rc-l">{t('incantationsLabel')}</span>
               <span className="rc-v">{brewed.names.map((n, i) => <em key={i}>{n}{i < brewed.names.length - 1 ? ', ' : ''}</em>)}</span>
             </div>
           </div>

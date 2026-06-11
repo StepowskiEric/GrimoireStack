@@ -1,8 +1,18 @@
 import { describe, it, expect, vi } from 'vitest';
 import { render, screen, fireEvent, act } from '@testing-library/react';
+import { LanguageProvider } from '../i18n/LanguageContext';
 import SpellCard from '../components/SpellCard.jsx';
 import SchoolSection from '../components/SchoolSection.jsx';
 import ScryingOrb from '../components/ScryingOrb.jsx';
+import LibrariansLedger from '../components/LibrariansLedger.jsx';
+import LegendOfSigils from '../components/LegendOfSigils.jsx';
+import ApprenticeMarginalia from '../components/ApprenticeMarginalia.jsx';
+import WhispersFromTheVoid from '../components/WhispersFromTheVoid.jsx';
+import Observatory from '../components/Observatory.jsx';
+import SummoningCircle from '../components/SummoningCircle.jsx';
+import TomeOfAilments from '../components/TomeOfAilments.jsx';
+import RecipeLabExplainer from '../components/RecipeLabExplainer.jsx';
+import RecipeLab from '../components/RecipeLab.jsx';
 
 const sampleSpell = {
   name: 'Trace Sight',
@@ -163,9 +173,6 @@ describe('ScryingOrb', () => {
   });
 });
 
-// ── LibrariansLedger ────────────────────────────────
-import LibrariansLedger from '../components/LibrariansLedger.jsx';
-
 describe('LibrariansLedger', () => {
   it('renders ledger entries', () => {
     render(<LibrariansLedger schools={[sampleSchool]} />);
@@ -193,9 +200,6 @@ describe('LibrariansLedger', () => {
     expect(combosEntry.textContent).toContain('1');
   });
 });
-
-// ── LegendOfSigils ──────────────────────────────────
-import LegendOfSigils from '../components/LegendOfSigils.jsx';
 
 describe('LegendOfSigils', () => {
   it('renders the legend toggle button', () => {
@@ -225,9 +229,6 @@ describe('LegendOfSigils', () => {
   });
 });
 
-// ── ApprenticeMarginalia ─────────────────────────────
-import ApprenticeMarginalia from '../components/ApprenticeMarginalia.jsx';
-
 describe('ApprenticeMarginalia', () => {
   it('renders collapsed trigger', () => {
     render(<ApprenticeMarginalia />);
@@ -248,9 +249,6 @@ describe('ApprenticeMarginalia', () => {
     expect(screen.queryByText(/agent skill/i)).not.toBeInTheDocument();
   });
 });
-
-// ── WhispersFromTheVoid ──────────────────────────────
-import WhispersFromTheVoid from '../components/WhispersFromTheVoid.jsx';
 
 describe('WhispersFromTheVoid', () => {
   it('does not render when there are matches', () => {
@@ -276,9 +274,6 @@ describe('WhispersFromTheVoid', () => {
     expect(onWizardOpen).toHaveBeenCalledTimes(1);
   });
 });
-
-// ── Observatory ───────────────────────────────────────
-import Observatory from '../components/Observatory.jsx';
 
 describe('Observatory', () => {
   it('renders newly added spells', () => {
@@ -311,9 +306,6 @@ describe('Observatory', () => {
   });
 });
 
-// ── SummoningCircle ──────────────────────────────────
-import SummoningCircle from '../components/SummoningCircle.jsx';
-
 describe('SummoningCircle', () => {
   it('renders the toggle button with count', () => {
     render(<SummoningCircle schools={[sampleSchool]} onSpellClick={() => {}} favorites={[]} onToggleFavorite={() => {}} />);
@@ -334,9 +326,6 @@ describe('SummoningCircle', () => {
     expect(screen.queryByText('The Summoning Circle')).not.toBeInTheDocument();
   });
 });
-
-// ── TomeOfAilments ───────────────────────────────────
-import TomeOfAilments from '../components/TomeOfAilments.jsx';
 
 describe('TomeOfAilments', () => {
   it('renders the tome modal', () => {
@@ -359,9 +348,6 @@ describe('TomeOfAilments', () => {
     expect(onClose).toHaveBeenCalledTimes(1);
   });
 });
-
-// ── RecipeLabExplainer ─────────────────────────────────
-import RecipeLabExplainer from '../components/RecipeLabExplainer.jsx';
 
 describe('RecipeLabExplainer', () => {
   beforeEach(() => {
@@ -468,5 +454,19 @@ describe('SpellCard favorites', () => {
     fireEvent.click(screen.getByLabelText('Bind to Summoning Circle'));
     expect(toggle).toHaveBeenCalledTimes(1);
     expect(onClick).not.toHaveBeenCalled();
+  });
+});
+
+describe('RecipeLab', () => {
+  const renderWithLang = (ui, lang = 'grimoire') => render(<LanguageProvider>{ui}</LanguageProvider>);
+
+  it('renders the recipe lab title', () => {
+    renderWithLang(<RecipeLab schools={[sampleSchool]} />);
+    expect(screen.getByText('⚗ Recipe Lab')).toBeInTheDocument();
+  });
+
+  it('renders the default copy for the current language', () => {
+    renderWithLang(<RecipeLab schools={[sampleSchool]} />);
+    expect(screen.getByText('Select 2–5 incantations below and brew a custom ritual')).toBeInTheDocument();
   });
 });
