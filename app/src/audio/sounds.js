@@ -79,6 +79,20 @@ function pageCreak() {
   } catch(e) {}
 }
 
+let pageTurnAudio = null;
+
+function pageTurn() {
+  try {
+    if (!pageTurnAudio) {
+      pageTurnAudio = new Audio('/turning-the-page.mp3');
+      pageTurnAudio.volume = 0.3;
+    } else {
+      pageTurnAudio.currentTime = 0;
+    }
+    pageTurnAudio.play();
+  } catch(e) {}
+}
+
 function startAmbience() {
   if (ambienceStarted) return;
   ambienceStarted = true;
@@ -145,4 +159,136 @@ function startAmbience() {
   } catch(e) {}
 }
 
-export { witchLaugh, pageCreak, startAmbience };
+export { witchLaugh, pageCreak, pageTurn, startAmbience, castTear, castBoom, castScratch, castThud };
+
+// ── Lidless Eye Cast SFX ─────────────────────────────
+// Four short synthesized cues for the Bloodborne / Cthulhu cast effect.
+// All use the shared audioCtx singleton and are wrapped in try/catch
+// to match the existing defensive pattern.
+
+function ensureCtx() {
+  if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+  if (audioCtx.state === 'suspended') audioCtx.resume();
+  return audioCtx;
+}
+
+function castTear() {
+  try {
+    const ctx = ensureCtx();
+    const now = ctx.currentTime;
+    const master = ctx.createGain();
+    master.gain.value = 0.22;
+    master.connect(ctx.destination);
+    const dur = 0.2;
+    const len = Math.floor(dur * ctx.sampleRate);
+    const buf = ctx.createBuffer(1, len, ctx.sampleRate);
+    const ch = buf.getChannelData(0);
+    for (let i = 0; i < len; i++) ch[i] = Math.random() * 2 - 1;
+    const src = ctx.createBufferSource();
+    src.buffer = buf;
+    const bp = ctx.createBiquadFilter();
+    bp.type = 'bandpass';
+    bp.frequency.value = 1200;
+    bp.Q.value = 2;
+    const g = ctx.createGain();
+    g.gain.setValueAtTime(0, now);
+    g.gain.linearRampToValueAtTime(0.4, now + 0.02);
+    g.gain.exponentialRampToValueAtTime(0.001, now + dur);
+    src.connect(bp); bp.connect(g); g.connect(master);
+    src.start(now);
+    src.stop(now + dur + 0.02);
+  } catch (e) {}
+}
+
+function castBoom() {
+  try {
+    const ctx = ensureCtx();
+    const now = ctx.currentTime;
+    const master = ctx.createGain();
+    master.gain.value = 0.22;
+    master.connect(ctx.destination);
+    // Sine sub-bass with pitch drop
+    const osc = ctx.createOscillator();
+    osc.type = 'sine';
+    osc.frequency.setValueAtTime(55, now);
+    osc.frequency.exponentialRampToValueAtTime(35, now + 0.4);
+    const og = ctx.createGain();
+    og.gain.setValueAtTime(0, now);
+    og.gain.linearRampToValueAtTime(0.5, now + 0.008);
+    og.gain.exponentialRampToValueAtTime(0.001, now + 0.6);
+    osc.connect(og); og.connect(master);
+    osc.start(now); osc.stop(now + 0.65);
+    // Sub-bass noise burst
+    const nDur = 0.25;
+    const nLen = Math.floor(nDur * ctx.sampleRate);
+    const nBuf = ctx.createBuffer(1, nLen, ctx.sampleRate);
+    const nCh = nBuf.getChannelData(0);
+    for (let i = 0; i < nLen; i++) nCh[i] = (Math.random() * 2 - 1) * (1 - i / nLen);
+    const nSrc = ctx.createBufferSource();
+    nSrc.buffer = nBuf;
+    const lp = ctx.createBiquadFilter();
+    lp.type = 'lowpass';
+    lp.frequency.value = 120;
+    const ng = ctx.createGain();
+    ng.gain.setValueAtTime(0.3, now);
+    ng.gain.exponentialRampToValueAtTime(0.001, now + nDur);
+    nSrc.connect(lp); lp.connect(ng); ng.connect(master);
+    nSrc.start(now);
+  } catch (e) {}
+}
+
+function castScratch() {
+  try {
+    const ctx = ensureCtx();
+    const now = ctx.currentTime;
+    const master = ctx.createGain();
+    master.gain.value = 0.18;
+    master.connect(ctx.destination);
+    // 6 short high-frequency bursts, like a sigil being scratched into stone
+    for (let i = 0; i < 6; i++) {
+      const t = now + i * 0.1;
+      const dur = 0.06;
+      const len = Math.floor(dur * ctx.sampleRate);
+      const buf = ctx.createBuffer(1, len, ctx.sampleRate);
+      const ch = buf.getChannelData(0);
+      for (let j = 0; j < len; j++) ch[j] = (Math.random() * 2 - 1) * (1 - j / len);
+      const src = ctx.createBufferSource();
+      src.buffer = buf;
+      const hp = ctx.createBiquadFilter();
+      hp.type = 'highpass';
+      hp.frequency.value = 3000 + Math.random() * 3000;
+      const g = ctx.createGain();
+      g.gain.setValueAtTime(0.15 + Math.random() * 0.08, t);
+      g.gain.exponentialRampToValueAtTime(0.001, t + dur);
+      src.connect(hp); hp.connect(g); g.connect(master);
+      src.start(t);
+    }
+  } catch (e) {}
+}
+
+function castThud() {
+  try {
+    const ctx = ensureCtx();
+    const now = ctx.currentTime;
+    const master = ctx.createGain();
+    master.gain.value = 0.22;
+    master.connect(ctx.destination);
+    const dur = 0.2;
+    const len = Math.floor(dur * ctx.sampleRate);
+    const buf = ctx.createBuffer(1, len, ctx.sampleRate);
+    const ch = buf.getChannelData(0);
+    for (let i = 0; i < len; i++) ch[i] = Math.random() * 2 - 1;
+    const src = ctx.createBufferSource();
+    src.buffer = buf;
+    const lp = ctx.createBiquadFilter();
+    lp.type = 'lowpass';
+    lp.frequency.value = 200;
+    const g = ctx.createGain();
+    g.gain.setValueAtTime(0, now);
+    g.gain.linearRampToValueAtTime(0.6, now + 0.005);
+    g.gain.exponentialRampToValueAtTime(0.001, now + dur);
+    src.connect(lp); lp.connect(g); g.connect(master);
+    src.start(now);
+    src.stop(now + dur + 0.02);
+  } catch (e) {}
+}

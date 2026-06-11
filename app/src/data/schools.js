@@ -1,7 +1,7 @@
 const schools = [
   {
     id:'debugging',real:'Debugging',
-    name:'School of Remediation',symbol:'⚔',
+    name:'School of Remediation',symbol:'🔮',
     desc:'Incantations to banish bugs and restore order to broken code.',
     spells:[
       {name:'Trace Sight',skill:'log-trace-correlation',effect:'Maps stack traces to source code, inspects context around the failure, and suggests the most likely fix. Best when you already have an error log or crash report in hand.',status:'Proven',combos:['Bisect Divination','Root Cause Revelation','Spectral Analysis']},

@@ -50,7 +50,7 @@ export default function BookSplash({ onFinish }: { onFinish: () => void }) {
   return (
     <div style={{
       position: 'fixed', inset: 0, zIndex: 1000,
-      background: '#080604',
+      background: '#020203',
       opacity: fading ? 0 : 1,
       transition: 'opacity 1s ease',
       display: 'flex', alignItems: 'center', justifyContent: 'center',
@@ -76,15 +76,15 @@ export default function BookSplash({ onFinish }: { onFinish: () => void }) {
           position: 'absolute', bottom: 30, right: 30,
           fontFamily: "'Cinzel', serif", fontSize: '0.65rem', textTransform: 'uppercase',
           letterSpacing: '0.08em', padding: '8px 18px',
-          border: '1px solid rgba(212,175,55,0.15)', borderRadius: 4,
-          background: 'rgba(8,6,4,0.7)', color: '#6a5a3a',
+          border: '1px solid rgba(0,229,196,0.15)', borderRadius: 4,
+          background: 'rgba(5,5,8,0.8)', color: '#475569',
           cursor: 'pointer', backdropFilter: 'blur(4px)',
           transition: 'all 0.3s ease',
         }}
-        onMouseEnter={e => { e.currentTarget.style.borderColor = 'rgba(212,175,55,0.3)'; e.currentTarget.style.color = '#d4af37'; }}
-        onMouseLeave={e => { e.currentTarget.style.borderColor = 'rgba(212,175,55,0.15)'; e.currentTarget.style.color = '#6a5a3a'; }}
+        onMouseEnter={e => { e.currentTarget.style.borderColor = 'rgba(0,229,196,0.4)'; e.currentTarget.style.color = '#00e5c4'; }}
+        onMouseLeave={e => { e.currentTarget.style.borderColor = 'rgba(0,229,196,0.15)'; e.currentTarget.style.color = '#475569'; }}
       >
-        ✦ Skip Intro
+        👁️ Skip Intro
       </button>
     </div>
   );

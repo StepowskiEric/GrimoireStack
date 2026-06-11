@@ -3,18 +3,11 @@ import schools from './data/schools.js';
 import { searchSpells, filterSpells } from './search.js';
 import { witchLaugh, pageCreak, startAmbience } from './audio/sounds.js';
 import Embers from './components/Embers.jsx';
-import ScryingOrb from './components/ScryingOrb.jsx';
-import TabBar from './components/TabBar.jsx';
-import SchoolSection from './components/SchoolSection.jsx';
-import SpellModal from './components/SpellModal.jsx';
-import RecipeLab from './components/RecipeLab.jsx';
-import WitchDoctorModal from './components/WitchDoctorModal.jsx';
-import Footer from './components/Footer.jsx';
 import BookSplash from './components/BookSplash.tsx';
-import SpellCast from './components/SpellCast.tsx';
-import RitualSection from './components/RitualSection.jsx';
+import LidlessEyeCast from './components/LidlessEyeCast.tsx';
+import './components/LidlessEyeCast.css';
 import ApprenticeWelcome, { STORAGE_KEY as WELCOME_STORAGE_KEY } from './components/ApprenticeWelcome.jsx';
-import BookmarkOfFirstRites from './components/BookmarkOfFirstRites.jsx';
+import GrimoireStackLayout from './components/GrimoireStackLayout.jsx';
 import { getSpellTier, TIER_META } from './data/tiers.js';
 import { REPO_URL } from './data/constants.js';
 import { useSpellInteraction } from './hooks/useSpellInteraction.js';
@@ -22,28 +15,19 @@ import { useFavorites } from './hooks/useFavorites.js';
 import { useRecentlyViewed } from './hooks/useRecentlyViewed.js';
 import { useMarginalia } from './hooks/useMarginalia.js';
 import { useKeyboardShortcuts } from './hooks/useKeyboardShortcuts.js';
-import LibrariansLedger from './components/LibrariansLedger.jsx';
-import LegendOfSigils from './components/LegendOfSigils.jsx';
-import ApprenticeMarginalia from './components/ApprenticeMarginalia.jsx';
-import WhispersFromTheVoid from './components/WhispersFromTheVoid.jsx';
-import Observatory from './components/Observatory.jsx';
-import SummoningCircle from './components/SummoningCircle.jsx';
-import TomeOfAilments from './components/TomeOfAilments.jsx';
-import RecipeLabExplainer from './components/RecipeLabExplainer.jsx';
-import LanguageToggle from './components/LanguageToggle.jsx';
-import FilterChips from './components/FilterChips.jsx';
-import StaleLinkBanner from './components/StaleLinkBanner.jsx';
-import ShortcutsModal from './components/ShortcutsModal.jsx';
-import InstallPrompt from './components/InstallPrompt.jsx';
 import { spellCatalog } from './data/spellCatalogInstance.js';
 import { LanguageProvider, useLanguage } from './i18n/LanguageContext';
-import SpellIndex from './components/SpellIndex.jsx';
-import ChangelogSection from './components/ChangelogSection.jsx';
-import SpellGraph from './components/SpellGraph.jsx';
-import CompareSpellsModal from './components/CompareSpellsModal.jsx';
-import ProblemIntakeModal from './components/ProblemIntakeModal.jsx';
 import { useSignals } from './hooks/useSignals.js';
 import { exportAsJson, exportAsMarkdown, copyToClipboard } from './utils/exporter.js';
+
+// New book layout components
+import BookLayout from './components/BookLayout.jsx';
+import ShortcutsModal from './components/ShortcutsModal.jsx';
+import CompareSpellsModal from './components/CompareSpellsModal.jsx';
+import ProblemIntakeModal from './components/ProblemIntakeModal.jsx';
+import WitchDoctorModal from './components/WitchDoctorModal.jsx';
+import SpellModal from './components/SpellModal.jsx';
+import InstallPrompt from './components/InstallPrompt.jsx';
 
 export default function App() {
   return (
@@ -276,6 +260,20 @@ function AppInner() {
     return { tier, ...TIER_META[tier] };
   }, []);
 
+  // Featured schools state
+  const [featuredSchools, setFeaturedSchools] = useState(() => {
+    const saved = localStorage.getItem('grimoire-featured-schools');
+    return saved ? JSON.parse(saved) : ['debugging', 'reasoning', 'process', 'architecture', 'testing', 'creativity'];
+  });
+
+  // Load featured schools from localStorage
+  useEffect(() => {
+    const saved = localStorage.getItem('grimoire-featured-schools');
+    if (saved) {
+      setFeaturedSchools(JSON.parse(saved));
+    }
+  }, []);
+
   return (
     <>
       <svg style={{ position: 'absolute', width: 0, height: 0 }}>
@@ -307,207 +305,76 @@ function AppInner() {
       {loaded && <>
       <Embers />
       {welcomeOpen && <ApprenticeWelcome onClose={handleWelcomeClose} />}
-      <header>
-        <div className="wax-seal-row">
-          <div className="wax-seal">⛧</div>
-          <a
-            className="header-sigil"
-            href={REPO_URL}
-            target="_blank"
-            rel="noopener noreferrer"
-            aria-label="Open the GrimoireStack repository on GitHub"
-            title="Browse the source on GitHub"
-          >
-            <span className="header-sigil-glyph" aria-hidden="true">⟐</span>
-            <span className="header-sigil-text">github</span>
-          </a>
-          <LanguageToggle />
-        </div>
-        <h1>{t('appTitle')}</h1>
-        <div className="subtitle">{t('appSubtitle')}</div>
-        <div className="flare"><span>⚜</span><span>✦</span><span>⚜</span></div>
-      </header>
-
-      <LibrariansLedger schools={schools} />
-
-      <div className="hero-desc">
-        A living collection of <em>agentic incantations</em> — skills for debugging, reasoning,
-        code review, architecture, and more. Browse by school, <em>scry by affliction</em> in the
-        orb below, or <span className="hero-tag">⚗ brew your own</span> recipe combinations.
-        New: <em>describe your problem</em> in plain language, <em>compare spells</em>, and explore
-        the <em>spell web</em>.
-      </div>
-
-      <ApprenticeMarginalia />
-
-      <div style={{ textAlign: 'center', marginTop: -8, marginBottom: 10, zIndex: 2, position: 'relative' }}>
-        <label style={{
-          fontFamily: "'Cinzel', serif", fontSize: '0.5rem', textTransform: 'uppercase',
-          letterSpacing: '0.08em', color: '#a89878', cursor: 'pointer',
-          display: 'inline-flex', alignItems: 'center', gap: 6,
-          padding: '4px 10px', border: '1px solid rgba(180,140,80,.22)', borderRadius: 4,
-          transition: 'all .3s ease',
-        }}>
-          <input type="checkbox" checked={castEnabled}
-            onChange={toggleCast}
-            style={{ accentColor: '#8a6a30' }}
-          />
-          Cast animation
-        </label>
-      </div>
-
-      <ScryingOrb searchQuery={searchQuery} onSearchChange={handleSearch} totalMatches={searchResults.total} onWizardOpen={() => setWitchDoctorOpen(true)} />
-
-      <div style={{ textAlign: 'center', marginTop: -10, marginBottom: 14, zIndex: 2, position: 'relative', display: 'flex', gap: 12, justifyContent: 'center', flexWrap: 'wrap' }}>
-        <LegendOfSigils />
-        <button
-          type="button"
-          className="tome-link"
-          onClick={() => setIntakeOpen(true)}
-          aria-label="Describe your problem"
-        >
-          <span aria-hidden="true">🜲</span>
-          <span>Describe Your Problem</span>
-        </button>
-        <button
-          type="button"
-          className="tome-link"
-          onClick={() => setCompareOpen(true)}
-          aria-label="Compare two spells"
-        >
-          <span aria-hidden="true">⚖</span>
-          <span>Compare Spells</span>
-        </button>
-        <button
-          type="button"
-          className="cast-bones-btn"
-          onClick={handleCastBones}
-          title={t('castBonesTitle')}
-        >
-          {t('castBones')}
-        </button>
-      </div>
-
-      <FilterChips
+      
+      {/* GrimoireStack Layout */}
+      <GrimoireStackLayout
         schools={schools}
+        currentSchool={currentSchool}
+        onSchoolSelect={(id) => {
+          if (id === null) {
+            // View all schools
+            setCurrentSchool('all');
+          } else {
+            setCurrentSchool(id);
+            handleSchoolSelect(id);
+          }
+        }}
+        searchQuery={searchQuery}
+        onSearchChange={handleSearch}
+        totalMatches={searchResults.total}
+        onSpellClick={handleSpellClick}
+        isFavorited={isFavorited}
+        onToggleFavorite={toggleFavorite}
+        favorites={favorites}
+        recent={recent}
+        marginalia={marginalia}
+        getVote={getVote}
+        castVote={castVote}
+        aggregateFor={aggregateFor}
+        castEnabled={castEnabled}
+        onToggleCast={toggleCast}
+        onWizardOpen={() => setWitchDoctorOpen(true)}
+        onIntakeOpen={() => setIntakeOpen(true)}
+        onCompareOpen={() => setCompareOpen(true)}
+        onCastBones={handleCastBones}
+        onExportJson={handleExportJson}
+        onExportMarkdown={handleExportMarkdown}
+        onShowShortcuts={() => setShortcutsOpen(true)}
         schoolFilter={schoolFilter}
         tierFilter={tierFilter}
         favoritesOnly={favoritesOnly}
         onToggleSchool={toggleSchool}
         onToggleTier={toggleTier}
         onToggleFavorites={toggleFavorites}
-        onClear={clearAllFilters}
+        onClearFilters={clearAllFilters}
+        filterResults={filterResults}
+        featuredSchools={featuredSchools}
+        onFeaturedSchoolsChange={setFeaturedSchools}
       />
 
-      <TabBar schools={schools} currentSchool={currentSchool} onSelect={handleSchoolSelect} isLab={isLab} />
-      <BookmarkOfFirstRites onSearchChange={handleSearch} onWizardOpen={() => setWitchDoctorOpen(true)} />
-
-      <main className="grimoire" id="main-content">
-        <div className="book-spread">
-          <div className="spine-line" />
-          <div className="page-stack-left" />
-          <div className="page-stack-right" />
-          <div className="page-layer-t" />
-          <div className="page-layer-b" />
-          <div className="page-layer-t2" />
-          <div className="page-layer-b2" />
-          <div className="ribbon" />
-          <div className="cover-edge-left" />
-          <div className="cover-edge-right" />
-          <div className="page-edge" />
-          <div className="page-edge-bottom" />
-          <div className="rune-corner-tl">ᚦ ᛖ ᛒ</div>
-          <div className="rune-corner-br">ᛟ ᚲ ᛉ</div>
-          <div className="stain stain-1" />
-          <div className="stain stain-2" />
-          <div className="stain stain-3" />
-          <div className="burn b1" />
-          <div className="burn b2" />
-          <div className="foxing f1" />
-          <div className="foxing f2" />
-          <div className="foxing f3" />
-          <div className="foxing f4" />
-          <div className="foxing f5" />
-          <div className="ink-blot ib1" />
-          <div className="ink-blot ib2" />
-          <div className="ink-blot ib3" />
-          <div className="marginalia m1">beware the recursion</div>
-          <div className="marginalia m2">~ Fol. iii ~</div>
-          <div className="folio">·  Folio III  ·</div>
-
-          {schools.map((s) => {
-            const filterActive = searchQuery || schoolFilter.size > 0 || tierFilter.size > 0 || favoritesOnly;
-            const matchKeySet = filterActive
-              ? new Set(filterResults.bySchool[s.id] || [])
-              : null;
-            const hasMatch = !filterActive || (filterResults.bySchool[s.id]?.length || 0) > 0;
-            const visible = !isSpecial && (
-              filterActive
-                ? hasMatch
-                : currentSchool === s.id
-            );
-            return (
-              <SchoolSection
-                key={s.id}
-                school={s}
-                isActive={visible}
-                searchQuery={searchQuery}
-                onSpellClick={handleSpellClick}
-                isFavorited={isFavorited}
-                onToggleFavorite={toggleFavorite}
-                matchKeySet={matchKeySet}
-              />
-            );
-          })}
-
-          {searchQuery && searchResults.total === 0 && !notFoundSkill && (
-            <WhispersFromTheVoid searchQuery={searchQuery} totalMatches={0} onWizardOpen={() => setWitchDoctorOpen(true)} />
-          )}
-
-          {notFoundSkill && (
-            <StaleLinkBanner
-              skill={notFoundSkill}
-              onSelect={handleNotFoundSelect}
-              onDismiss={dismissNotFound}
-            />
-          )}
-
-          {!searchQuery && !isSpecial && (
-            <Observatory schools={schools} onSpellClick={handleSpellClick} />
-          )}
-
-          {isRitual ? <RitualSection /> : null}
-          {isLab ? <RecipeLab schools={schools} /> : null}
-          {isIndex ? <SpellIndex onSpellClick={handleSpellClick} /> : null}
-          {isGraph ? <SpellGraph schools={schools} onSpellClick={handleSpellClick} /> : null}
-          {isChangelog ? <ChangelogSection onSpellClick={handleSpellClick} /> : null}
-        </div>
-      </main>
-
-      {tomeOpen && (
-        <TomeOfAilments
+      {/* Modals */}
+      {witchDoctorOpen && (
+        <WitchDoctorModal
           schools={schools}
-          onSelectSkill={(spell, sch) => { setTomeOpen(false); handleSpellClick(spell, sch); }}
-          onClose={() => setTomeOpen(false)}
+          onSelectSkill={(spell, sch) => {
+            setWitchDoctorOpen(false);
+            handleSpellClick(spell, sch);
+          }}
+          onClose={() => setWitchDoctorOpen(false)}
         />
       )}
-      {witchDoctorOpen && <WitchDoctorModal schools={schools} onSelectSkill={(spell, sch) => { setWitchDoctorOpen(false); handleSpellClick(spell, sch); }} onClose={() => setWitchDoctorOpen(false)} />}
-      {modal && <SpellModal spell={modal.spell} school={modal.school} onClose={handleModalClose} marginalia={marginalia} getVote={getVote} castVote={castVote} aggregateFor={aggregateFor} />}
-      {casting && <SpellCast spellName={casting.spell.name} schoolSymbol={casting.school.symbol} onComplete={handleCastComplete} />}
-      <RecipeLabExplainer visible={isLab} onDismiss={() => {}} />
-      <SummoningCircle
-        schools={schools}
-        onSpellClick={handleSpellClick}
-        favorites={favorites}
-        onToggleFavorite={toggleFavorite}
-        recent={recent}
-      />
-      {shortcutsOpen && <ShortcutsModal onClose={() => setShortcutsOpen(false)} />}
+      {shortcutsOpen && (
+        <ShortcutsModal onClose={() => setShortcutsOpen(false)} />
+      )}
       {compareOpen && (
         <CompareSpellsModal
           left={compareLeft?.spell}
           right={compareRight?.spell}
-          onClose={() => { setCompareOpen(false); setCompareLeft(null); setCompareRight(null); }}
+          onClose={() => {
+            setCompareOpen(false);
+            setCompareLeft(null);
+            setCompareRight(null);
+          }}
           onPickSlot={handlePickCompareSlot}
           onSelect={(spell, school) => {
             setCompareOpen(false);
@@ -526,14 +393,29 @@ function AppInner() {
           }}
         />
       )}
-      {exportToast ? (
-        <div className="export-toast" role="status" aria-live="polite">{exportToast}</div>
-      ) : null}
-      <Footer
-        onShowShortcuts={() => setShortcutsOpen(true)}
-        onExportJson={handleExportJson}
-        onExportMarkdown={handleExportMarkdown}
-      />
+      {modal && (
+        <SpellModal
+          spell={modal.spell}
+          school={modal.school}
+          onClose={handleModalClose}
+          marginalia={marginalia}
+          getVote={getVote}
+          castVote={castVote}
+          aggregateFor={aggregateFor}
+        />
+      )}
+      {casting && (
+        <LidlessEyeCast
+          spell={casting.spell}
+          school={casting.school}
+          onComplete={handleCastComplete}
+        />
+      )}
+      {exportToast && (
+        <div className="export-toast" role="status" aria-live="polite">
+          {exportToast}
+        </div>
+      )}
       <InstallPrompt />
       </>}
     </>

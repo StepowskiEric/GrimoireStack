@@ -16,8 +16,6 @@ export function useSpellInteraction(castEnabled) {
   const [casting, setCasting] = useState(null);
   const [witchDoctorOpen, setWitchDoctorOpen] = useState(false);
   const [notFoundSkill, setNotFoundSkill] = useState(null);
-  const prevCastingRef = useRef(null);
-  const castCompleteRef = useRef(false);
   const userOpenedRef = useRef(false);
 
   const lockBody = useCallback(() => {
@@ -65,27 +63,17 @@ export function useSpellInteraction(castEnabled) {
     }
   }, [castEnabled, openModal]);
 
+  // Cast completion is an event, not a state transition. The LidlessEyeCast
+  // component calls onComplete when the close phase finishes — we open the
+  // modal directly from the event handler, no useEffect cascade needed.
+  // We open in a microtask so the cast component can unmount first (avoids
+  // the modal mounting on top of the still-rendering eye).
   const handleCastComplete = useCallback(() => {
-    castCompleteRef.current = true;
-    setCasting(null);
-  }, []);
-
-  useEffect(() => {
-    if (casting) {
-      prevCastingRef.current = casting;
-    }
-  }, [casting]);
-
-  useEffect(() => {
-    if (!casting && castCompleteRef.current && prevCastingRef.current && !modal) {
-      const prev = prevCastingRef.current;
-      prevCastingRef.current = null;
-      castCompleteRef.current = false;
-      setTimeout(() => {
-        openModal(prev.spell, prev.school);
-      }, 50);
-    }
-  }, [casting, modal, openModal]);
+    setCasting((c) => {
+      if (c) openModal(c.spell, c.school);
+      return null;
+    });
+  }, [openModal]);
 
   const handleWitchDoctorSelect = useCallback((spell, school) => {
     setWitchDoctorOpen(false);
