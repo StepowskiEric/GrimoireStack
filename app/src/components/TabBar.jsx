@@ -22,9 +22,11 @@ export default function TabBar({ schools, currentSchool, onSelect, isLab }) {
       <nav className="tabs" id="tabContainer" role="tablist" aria-label="Schools">
         {schools.map((s, i) => (
           <button key={s.id}
+            id={`tab-${s.id}`}
             ref={el => tabRefs.current[s.id] = el}
             role="tab"
             aria-selected={currentSchool === s.id}
+            aria-controls={`school-${s.id}`}
             tabIndex={currentSchool === s.id ? 0 : -1}
             className={`tab-btn${currentSchool === s.id ? ' active' : ''}`}
             data-school={s.id}
@@ -34,9 +36,11 @@ export default function TabBar({ schools, currentSchool, onSelect, isLab }) {
           </button>
         ))}
         <button key="ritual"
+          id="tab-ritual"
           ref={el => tabRefs.current['ritual'] = el}
           role="tab"
           aria-selected={currentSchool === 'ritual'}
+          aria-controls="school-ritual"
           tabIndex={currentSchool === 'ritual' ? 0 : -1}
           className={`tab-btn tab-btn-ritual${currentSchool === 'ritual' ? ' active' : ''}`}
           data-school="ritual"
@@ -45,9 +49,11 @@ export default function TabBar({ schools, currentSchool, onSelect, isLab }) {
           ⛧ Ritual <span className="real-name">summon the grimoire</span>
         </button>
         <button key="recipe-lab"
+          id="tab-recipe-lab"
           ref={el => tabRefs.current['recipe-lab'] = el}
           role="tab"
           aria-selected={isLab}
+          aria-controls="school-recipe-lab"
           tabIndex={isLab ? 0 : -1}
           className={`tab-btn${isLab ? ' active' : ''}`}
           data-school="recipe-lab"

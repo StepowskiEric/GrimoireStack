@@ -85,9 +85,9 @@ export default function RecipeLab({ schools }) {
         {selected.length === 0 ? <div className="cauldron-empty">Select incantations from the grid below…</div> : null}
         <div className="cauldron-chips">
           {selected.map((item, i) => (
-            <span key={i} className="cauldron-chip" onClick={() => toggleSpell(item.spell, item.school)} title="Click to remove">
+            <button key={i} type="button" className="cauldron-chip" onClick={() => toggleSpell(item.spell, item.school)} aria-label={`Remove ${item.spell.name}`}>
               {item.school.symbol} {item.spell.name}
-            </span>
+            </button>
           ))}
         </div>
         {selected.length > 0 ? <div className="cauldron-count">{selected.length} of 5 incantations selected</div> : null}

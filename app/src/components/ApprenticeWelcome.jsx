@@ -28,14 +28,25 @@ const transition = {
 
 export default function ApprenticeWelcome({ onClose }) {
   const [index, setIndex] = useState(0);
+  const modalRef = useRef(null);
 
   useEffect(() => {
-    const handler = (event) => {
-      if (event.key === 'Escape') onClose();
+    if (!modalRef.current) return;
+    const modal = modalRef.current;
+    const focusable = modal.querySelectorAll('button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])');
+    const first = focusable[0];
+    const last = focusable[focusable.length - 1];
+    first?.focus();
+
+    const handler = (e) => {
+      if (e.key === 'Escape') { onClose(); return; }
+      if (e.key !== 'Tab' || !focusable.length) return;
+      if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last?.focus(); }
+      else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first?.focus(); }
     };
-    document.addEventListener('keydown', handler);
-    return () => document.removeEventListener('keydown', handler);
-  }, [onClose]);
+    modal.addEventListener('keydown', handler);
+    return () => modal.removeEventListener('keydown', handler);
+  }, [index, onClose]);
 
   const current = panels[index];
 
@@ -43,6 +54,7 @@ export default function ApprenticeWelcome({ onClose }) {
     <div className="modal-overlay open" onClick={(event) => { if (event.target === event.currentTarget) onClose(); }}>
       <motion.div
         className="modal welcome-modal"
+        ref={modalRef}
         role="dialog"
         aria-modal="true"
         aria-label="Apprentice welcome"

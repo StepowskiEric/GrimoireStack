@@ -52,26 +52,18 @@ export default function ScryingOrb({ searchQuery, onSearchChange, totalMatches, 
       <div className="orb-examples">
         <span className="ex-label">Try:</span>
         {exampleQueries.map(q => (
-          <span key={q} className="ex-chip" onClick={() => {
+          <button key={q} type="button" className="ex-chip" onClick={() => {
             const input = document.getElementById('searchInput');
             if (input) { input.value = q; input.dispatchEvent(new Event('input', { bubbles: true })); input.focus(); }
           }}>
             {q}
-          </span>
+          </button>
         ))}
       </div>
       <div style={{ textAlign: 'center', marginTop: 10 }}>
-        <span role="button" tabIndex={0} style={{
-          fontFamily: "'Cinzel', serif", fontSize: '0.6rem', textTransform: 'uppercase',
-          letterSpacing: '0.08em', color: '#c8b99a', cursor: 'pointer',
-          borderBottom: '1px dashed rgba(212,175,55,.2)',
-          transition: 'color .3s',
-        }}
-          onMouseEnter={e => e.target.style.color = '#d4af37'}
-          onMouseLeave={e => e.target.style.color = '#c8b99a'}
-          onClick={onWizardOpen}>
+        <button type="button" className="orb-wizard-link" onClick={onWizardOpen}>
           ✦ Not sure what you need? Consult the Witch Doctor →
-        </span>
+        </button>
       </div>
     </div>
   );

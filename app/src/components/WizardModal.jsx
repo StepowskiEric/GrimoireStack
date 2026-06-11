@@ -124,14 +124,14 @@ export default function WizardModal({ schools, onSelectSkill, onClose }) {
             <div className="wr-skill-name">{getSpellNameBySkill(sitData.skill) || sitData.skill}</div>
             <div className="wr-effect">{sitData.effect}</div>
             <div className="wr-reason">{sitData.reason}</div>
-            <span className="wr-cta" onClick={() => openSkill(sitData.skill)}>⚔ Open in Grimoire →</span>
+            <button type="button" className="wr-cta" onClick={() => openSkill(sitData.skill)}>⚔ Open in Grimoire →</button>
             {sitData.alt ? (
               <>
                 <div className="wr-alts">Or perhaps:</div>
                 <div className="wr-alt-grid">
-                  <span className="wr-alt-chip" onClick={() => openSkill(sitData.alt)}>
+                  <button type="button" className="wr-alt-chip" onClick={() => openSkill(sitData.alt)}>
                     {getSpellNameBySkill(sitData.alt) || sitData.alt}
-                  </span>
+                  </button>
                 </div>
               </>
             ) : null}
