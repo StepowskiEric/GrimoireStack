@@ -139,6 +139,38 @@ export const messages = {
     recentTab: 'Recently Cast ({count})',
     favoritesTab: 'Favorites ({count})',
     recentEmpty: 'No spells cast yet. Open one to begin your trail.',
+
+    // New tabs
+    indexTab: '🗂 Index',
+    graphTab: '🕸 Graph',
+    changelogTab: '📜 Changelog',
+    indexSub: 'A flat alphabetical catalogue of every incantation, independent of school.',
+    graphSub: 'The grimoire as a graph — spells are nodes, synergies are edges.',
+    changelogSub: 'Recently inscribed and revised incantations.',
+
+    // Compare
+    compareTitle: '⚖ Compare Incantations',
+    compareSubtitle: 'Side-by-side comparison of two spells',
+    comparePickFirst: '+ Pick first spell',
+    comparePickSecond: '+ Pick second spell',
+    comparePickSpell: 'Choose a spell for the {slot} side',
+    compareNoMatch: 'Pick two spells to compare their effect, status, and synergies.',
+    compareDiff: 'Different',
+    compareSame: 'Same',
+
+    // Problem intake
+    intakeTitle: 'What Ails You?',
+    intakeSubtitle: 'Describe your problem in plain language — the orb will suggest incantations.',
+    intakePlaceholder: "e.g. 'I have a flaky test that only fails in CI' or 'I need to coordinate three agents'…",
+    intakeSubmit: '✦ Reveal Suggestions',
+    intakeExamples: 'Or try a sample problem:',
+    intakeNoMatch: 'The orb sees no clear match. Try broader terms, or browse by school.',
+    intakeSuggested: '{count} suggested incantation{plural}',
+
+    // Export
+    exportJson: 'JSON',
+    exportMarkdown: 'Markdown',
+    exportLabel: 'Export your config:',
   },
   plain: {
     // App shell
@@ -268,6 +300,38 @@ export const messages = {
     recentTab: 'Recently Viewed ({count})',
     favoritesTab: 'Favorites ({count})',
     recentEmpty: 'No skills viewed yet. Open one to start your trail.',
+
+    // New tabs
+    indexTab: '🗂 Index',
+    graphTab: '🕸 Graph',
+    changelogTab: '📜 Changelog',
+    indexSub: 'A flat alphabetical list of every skill, independent of category.',
+    graphSub: 'The catalog as a graph — skills are nodes, connections are edges.',
+    changelogSub: 'Recently added and updated skills.',
+
+    // Compare
+    compareTitle: '⚖ Compare Skills',
+    compareSubtitle: 'Side-by-side comparison of two skills',
+    comparePickFirst: '+ Pick first skill',
+    comparePickSecond: '+ Pick second skill',
+    comparePickSkill: 'Choose a skill for the {slot} side',
+    compareNoMatch: 'Pick two skills to compare their effect, status, and synergies.',
+    compareDiff: 'Different',
+    compareSame: 'Same',
+
+    // Problem intake
+    intakeTitle: 'What Ails You?',
+    intakeSubtitle: 'Describe your problem in plain language to get skill suggestions.',
+    intakePlaceholder: "e.g. 'I have a flaky test that only fails in CI' or 'I need to coordinate three agents'…",
+    intakeSubmit: '✦ Reveal Suggestions',
+    intakeExamples: 'Or try a sample problem:',
+    intakeNoMatch: 'No clear match found. Try broader terms, or browse by category.',
+    intakeSuggested: '{count} suggested skill{plural}',
+
+    // Export
+    exportJson: 'JSON',
+    exportMarkdown: 'Markdown',
+    exportLabel: 'Export your config:',
   },
 };
 

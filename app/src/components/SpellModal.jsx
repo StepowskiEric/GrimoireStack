@@ -125,7 +125,7 @@ const INSCRIBE_AGENTS = [
   { id: 'factory-droid', label: 'Factory Droid', prefix: 'Copy skill to ~/.factory/skills/' },
 ];
 
-export default function SpellModal({ spell, school, onClose, marginalia }) {
+export default function SpellModal({ spell, school, onClose, marginalia, getVote, castVote, aggregateFor }) {
   if (!spell) return null;
 
   const [viewMode, setViewMode] = useState('plain'); // 'plain' | 'full'
@@ -314,6 +314,40 @@ export default function SpellModal({ spell, school, onClose, marginalia }) {
               />
               <div className="marginalia-status" aria-live="polite">{noteStatus}</div>
             </div>
+
+            {getVote && aggregateFor ? (() => {
+              const userVote = getVote(spell.skill);
+              const agg = aggregateFor(spell);
+              return (
+                <div className="signal-section" aria-label="Community signal">
+                  <div className="signal-row">
+                    <span className="signal-question">Did this help?</span>
+                    <div className="signal-buttons">
+                      <button
+                        type="button"
+                        className={`signal-btn signal-up${userVote === 'up' ? ' active' : ''}`}
+                        onClick={() => castVote?.(spell.skill, 'up')}
+                        aria-label="This spell helped me"
+                        title="This helped"
+                      >
+                        <span aria-hidden="true">▲</span>
+                        <span className="signal-count">{agg.up}</span>
+                      </button>
+                      <button
+                        type="button"
+                        className={`signal-btn signal-down${userVote === 'down' ? ' active' : ''}`}
+                        onClick={() => castVote?.(spell.skill, 'down')}
+                        aria-label="This spell did not help"
+                        title="Did not help"
+                      >
+                        <span aria-hidden="true">▼</span>
+                        <span className="signal-count">{agg.down}</span>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              );
+            })() : null}
           </>
         ) : (
           <div className="modal-full-entry">

@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "vite build && node scripts/prerender.mjs && node scripts/build-sitemap.mjs",
+    "build": "vite build && node scripts/prerender.mjs && node scripts/build-sitemap.mjs && node scripts/build-rss.mjs",
     "build:vite": "vite build",
     "build:prerender": "node scripts/prerender.mjs",
     "build:sitemap": "node scripts/build-sitemap.mjs",

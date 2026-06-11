@@ -37,6 +37,13 @@ import ShortcutsModal from './components/ShortcutsModal.jsx';
 import InstallPrompt from './components/InstallPrompt.jsx';
 import { spellCatalog } from './data/spellCatalogInstance.js';
 import { LanguageProvider, useLanguage } from './i18n/LanguageContext';
+import SpellIndex from './components/SpellIndex.jsx';
+import ChangelogSection from './components/ChangelogSection.jsx';
+import SpellGraph from './components/SpellGraph.jsx';
+import CompareSpellsModal from './components/CompareSpellsModal.jsx';
+import ProblemIntakeModal from './components/ProblemIntakeModal.jsx';
+import { useSignals } from './hooks/useSignals.js';
+import { exportAsJson, exportAsMarkdown, copyToClipboard } from './utils/exporter.js';
 
 export default function App() {
   return (
@@ -62,9 +69,16 @@ function AppInner() {
   const ambienceStartedRef = useRef(false);
   const initializedRef = useRef(false);
 
+  // New feature states
+  const [compareOpen, setCompareOpen] = useState(false);
+  const [compareLeft, setCompareLeft] = useState(null);  // { spell, school }
+  const [compareRight, setCompareRight] = useState(null);  // { spell, school }
+  const [intakeOpen, setIntakeOpen] = useState(false);
+
   const { favorites, isFavorited, toggleFavorite } = useFavorites();
   const { recent, record: recordRecent } = useRecentlyViewed();
   const marginalia = useMarginalia();
+  const { getVote, vote: castVote, aggregateFor } = useSignals();
 
   const searchResults = useMemo(
     () => searchSpells(schools, searchQuery),
@@ -82,6 +96,10 @@ function AppInner() {
   );
   const isLab = currentSchool === 'recipe-lab';
   const isRitual = currentSchool === 'ritual';
+  const isIndex = currentSchool === 'index';
+  const isGraph = currentSchool === 'graph';
+  const isChangelog = currentSchool === 'changelog';
+  const isSpecial = isLab || isRitual || isIndex || isGraph || isChangelog;
 
   const {
     modal,
@@ -141,6 +159,32 @@ function AppInner() {
     }
   }, [dismissNotFound, handleSpellClick]);
 
+  // Compare spells helpers
+  const handlePickCompareSlot = useCallback((slot, spell, school) => {
+    if (slot === 'left') setCompareLeft({ spell, school });
+    else setCompareRight({ spell, school });
+  }, []);
+
+  // Export config
+  const [exportToast, setExportToast] = useState('');
+  const exportTimerRef = useRef(null);
+
+  const handleExportJson = useCallback(async () => {
+    const json = exportAsJson({ favorites, marginalia, recent });
+    const ok = await copyToClipboard(json);
+    setExportToast(ok ? 'JSON copied!' : 'Copy failed');
+    if (exportTimerRef.current) clearTimeout(exportTimerRef.current);
+    exportTimerRef.current = setTimeout(() => setExportToast(''), 2200);
+  }, [favorites, marginalia, recent]);
+
+  const handleExportMarkdown = useCallback(async () => {
+    const md = exportAsMarkdown({ favorites, marginalia, recent });
+    const ok = await copyToClipboard(md);
+    setExportToast(ok ? 'Markdown copied!' : 'Copy failed');
+    if (exportTimerRef.current) clearTimeout(exportTimerRef.current);
+    exportTimerRef.current = setTimeout(() => setExportToast(''), 2200);
+  }, [favorites, marginalia, recent]);
+
   // Stable refs for callbacks declared further down — pattern 6a.
   // Lets keyboardHandlers (declared above the callbacks it closes over) avoid TDZ.
   const handleWelcomeCloseRef = useRef(null);
@@ -157,12 +201,14 @@ function AppInner() {
       if (shortcutsOpen) { setShortcutsOpen(false); handled = true; }
       if (tomeOpen) { setTomeOpen(false); handled = true; }
       if (witchDoctorOpen) { setWitchDoctorOpen(false); handled = true; }
+      if (compareOpen) { setCompareOpen(false); handled = true; }
+      if (intakeOpen) { setIntakeOpen(false); handled = true; }
       if (modal) { handleModalClose(); handled = true; }
       if (welcomeOpen) { handleWelcomeCloseRef.current(); handled = true; }
       return handled;
     },
   // eslint-disable-next-line react-hooks/exhaustive-deps -- handleWelcomeCloseRef is a stable ref to the latest handleWelcomeClose
-  }), [shortcutsOpen, tomeOpen, witchDoctorOpen, modal, handleModalClose, welcomeOpen, setWitchDoctorOpen]);
+  }), [shortcutsOpen, tomeOpen, witchDoctorOpen, compareOpen, intakeOpen, modal, handleModalClose, welcomeOpen, setWitchDoctorOpen]);
 
   useKeyboardShortcuts(keyboardHandlers, loaded);
 
@@ -288,6 +334,8 @@ function AppInner() {
         A living collection of <em>agentic incantations</em> — skills for debugging, reasoning,
         code review, architecture, and more. Browse by school, <em>scry by affliction</em> in the
         orb below, or <span className="hero-tag">⚗ brew your own</span> recipe combinations.
+        New: <em>describe your problem</em> in plain language, <em>compare spells</em>, and explore
+        the <em>spell web</em>.
       </div>
 
       <ApprenticeMarginalia />
@@ -315,11 +363,20 @@ function AppInner() {
         <button
           type="button"
           className="tome-link"
-          onClick={() => setTomeOpen(true)}
-          aria-label="Open Tome of Common Ailments"
+          onClick={() => setIntakeOpen(true)}
+          aria-label="Describe your problem"
         >
-          <span aria-hidden="true">⟐</span>
-          <span>Tome of Ailments</span>
+          <span aria-hidden="true">🜲</span>
+          <span>Describe Your Problem</span>
+        </button>
+        <button
+          type="button"
+          className="tome-link"
+          onClick={() => setCompareOpen(true)}
+          aria-label="Compare two spells"
+        >
+          <span aria-hidden="true">⚖</span>
+          <span>Compare Spells</span>
         </button>
         <button
           type="button"
@@ -384,7 +441,7 @@ function AppInner() {
               ? new Set(filterResults.bySchool[s.id] || [])
               : null;
             const hasMatch = !filterActive || (filterResults.bySchool[s.id]?.length || 0) > 0;
-            const visible = (!isLab && !isRitual) && (
+            const visible = !isSpecial && (
               filterActive
                 ? hasMatch
                 : currentSchool === s.id
@@ -415,12 +472,15 @@ function AppInner() {
             />
           )}
 
-          {!searchQuery && !isLab && !isRitual && (
+          {!searchQuery && !isSpecial && (
             <Observatory schools={schools} onSpellClick={handleSpellClick} />
           )}
 
           {isRitual ? <RitualSection /> : null}
           {isLab ? <RecipeLab schools={schools} /> : null}
+          {isIndex ? <SpellIndex onSpellClick={handleSpellClick} /> : null}
+          {isGraph ? <SpellGraph schools={schools} onSpellClick={handleSpellClick} /> : null}
+          {isChangelog ? <ChangelogSection onSpellClick={handleSpellClick} /> : null}
         </div>
       </main>
 
@@ -432,7 +492,7 @@ function AppInner() {
         />
       )}
       {witchDoctorOpen && <WitchDoctorModal schools={schools} onSelectSkill={(spell, sch) => { setWitchDoctorOpen(false); handleSpellClick(spell, sch); }} onClose={() => setWitchDoctorOpen(false)} />}
-      {modal && <SpellModal spell={modal.spell} school={modal.school} onClose={handleModalClose} marginalia={marginalia} />}
+      {modal && <SpellModal spell={modal.spell} school={modal.school} onClose={handleModalClose} marginalia={marginalia} getVote={getVote} castVote={castVote} aggregateFor={aggregateFor} />}
       {casting && <SpellCast spellName={casting.spell.name} schoolSymbol={casting.school.symbol} onComplete={handleCastComplete} />}
       <RecipeLabExplainer visible={isLab} onDismiss={() => {}} />
       <SummoningCircle
@@ -443,7 +503,37 @@ function AppInner() {
         recent={recent}
       />
       {shortcutsOpen && <ShortcutsModal onClose={() => setShortcutsOpen(false)} />}
-      <Footer onShowShortcuts={() => setShortcutsOpen(true)} />
+      {compareOpen && (
+        <CompareSpellsModal
+          left={compareLeft?.spell}
+          right={compareRight?.spell}
+          onClose={() => { setCompareOpen(false); setCompareLeft(null); setCompareRight(null); }}
+          onPickSlot={handlePickCompareSlot}
+          onSelect={(spell, school) => {
+            setCompareOpen(false);
+            setCompareLeft(null);
+            setCompareRight(null);
+            if (spell && school) handleSpellClick(spell, school);
+          }}
+        />
+      )}
+      {intakeOpen && (
+        <ProblemIntakeModal
+          onClose={() => setIntakeOpen(false)}
+          onSelectSpell={(spell, school) => {
+            setIntakeOpen(false);
+            if (spell && school) handleSpellClick(spell, school);
+          }}
+        />
+      )}
+      {exportToast ? (
+        <div className="export-toast" role="status" aria-live="polite">{exportToast}</div>
+      ) : null}
+      <Footer
+        onShowShortcuts={() => setShortcutsOpen(true)}
+        onExportJson={handleExportJson}
+        onExportMarkdown={handleExportMarkdown}
+      />
       <InstallPrompt />
       </>}
     </>

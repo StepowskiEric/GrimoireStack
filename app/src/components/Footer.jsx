@@ -1,4 +1,4 @@
-export default function Footer({ onShowShortcuts }) {
+export default function Footer({ onShowShortcuts, onExportJson, onExportMarkdown }) {
   return (
     <footer>
       <span className="footer-ornament">⚜ ❦ ⚜</span>
@@ -17,6 +17,19 @@ export default function Footer({ onShowShortcuts }) {
           </>
         ) : null}
       </p>
+      <div className="footer-export">
+        <span className="footer-export-label">Export your config:</span>
+        {onExportJson ? (
+          <button type="button" className="footer-export-btn" onClick={onExportJson}>
+            JSON
+          </button>
+        ) : null}
+        {onExportMarkdown ? (
+          <button type="button" className="footer-export-btn" onClick={onExportMarkdown}>
+            Markdown
+          </button>
+        ) : null}
+      </div>
     </footer>
   );
 }
