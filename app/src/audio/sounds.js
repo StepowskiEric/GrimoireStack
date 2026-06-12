@@ -80,7 +80,7 @@ function witchLaugh() {
       src.connect(ng); ng.connect(reverbGain);
       src.start(noiseStart);
     }
-  } catch {}
+  } catch (e) { console.warn('[audio]', e); }
 }
 
 function pageCreak() {
@@ -93,7 +93,7 @@ function pageCreak() {
       pageCreakAudio.currentTime = 0;
     }
     pageCreakAudio.play();
-  } catch {}
+  } catch (e) { console.warn('[audio]', e); }
 }
 
 let pageTurnAudio = null;
@@ -108,7 +108,7 @@ function pageTurn() {
       pageTurnAudio.currentTime = 0;
     }
     pageTurnAudio.play();
-  } catch {}
+  } catch (e) { console.warn('[audio]', e); }
 }
 
 function startAmbience() {
@@ -170,12 +170,12 @@ function startAmbience() {
           cG.gain.exponentialRampToValueAtTime(0.001, cNow + cDur);
           cSrc.connect(cBP); cBP.connect(cG); cG.connect(ambMaster);
           cSrc.start(cNow);
-        } catch {}
+        } catch (e) { console.warn('[audio crackle]', e); }
         if (ambienceStarted) scheduleCrackle();
       }, nextCrackle * 1000);
     }
     scheduleCrackle();
-  } catch {}
+  } catch (e) { console.warn('[audio]', e); }
 }
 
 
@@ -198,7 +198,7 @@ function stopAmbience() {
     try {
       if (typeof node.stop === 'function') node.stop();
       if (typeof node.disconnect === 'function') node.disconnect();
-    } catch {}
+    } catch (e) { console.warn('[audio stop]', e); }
   }
   ambienceNodes.length = 0;
 }
@@ -229,7 +229,7 @@ function castTear() {
     src.connect(bp); bp.connect(g); g.connect(master);
     src.start(now);
     src.stop(now + dur + 0.02);
-  } catch {}
+  } catch (e) { console.warn('[audio]', e); }
 }
 
 function castBoom() {
@@ -267,7 +267,7 @@ function castBoom() {
     ng.gain.exponentialRampToValueAtTime(0.001, now + nDur);
     nSrc.connect(lp); lp.connect(ng); ng.connect(master);
     nSrc.start(now);
-  } catch {}
+  } catch (e) { console.warn('[audio]', e); }
 }
 
 function castScratch() {
@@ -297,7 +297,7 @@ function castScratch() {
       src.connect(hp); hp.connect(g); g.connect(master);
       src.start(t);
     }
-  } catch {}
+  } catch (e) { console.warn('[audio]', e); }
 }
 
 function castThud() {
@@ -325,7 +325,7 @@ function castThud() {
     src.connect(lp); lp.connect(g); g.connect(master);
     src.start(now);
     src.stop(now + dur + 0.02);
-  } catch {}
+  } catch (e) { console.warn('[audio]', e); }
 }
 
 // ── Spine Interaction SFX ─────────────────────────────
@@ -358,7 +358,7 @@ function hoverWhisper() {
     g.gain.value = 0.4;
     src.connect(bp); bp.connect(g); g.connect(master);
     src.start(now);
-  } catch {}
+  } catch (e) { console.warn('[audio]', e); }
 }
 
 function wetTendril() {
@@ -391,7 +391,7 @@ function wetTendril() {
       src.connect(lp); lp.connect(g); g.connect(master);
       src.start(t);
     }
-  } catch {}
+  } catch (e) { console.warn('[audio]', e); }
 }
 // ── Background whispers ────────────────────────────────
 // Occasional short whispers layered over the ambience to thicken the
@@ -437,7 +437,7 @@ function playOneWhisper() {
     // Play() returns a promise that can reject if the user has not
     // interacted with the page; we deliberately swallow that error.
     audio.play().catch(() => {});
-  } catch {}
+  } catch (e) { console.warn('[audio]', e); }
 }
 
 function scheduleNextWhisper() {

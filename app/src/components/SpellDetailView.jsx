@@ -76,7 +76,18 @@ export default function SpellDetailView({
         <div className="spell-detail__actions">
           <button
             className={`spell-detail__fav ${favorited ? 'spell-detail__fav--active' : ''}`}
-            onClick={() => onToggleFavorite(activeSpell.name, activeSpell.skill)}
+            onClick={() => {
+              const result = onToggleFavorite(activeSpell.name, activeSpell.skill);
+              if (result === false) {
+                const toast = document.createElement('div');
+                toast.className = 'export-toast';
+                toast.textContent = 'Binding circle is full (max 12)';
+                toast.setAttribute('role', 'status');
+                toast.setAttribute('aria-live', 'polite');
+                document.body.appendChild(toast);
+                setTimeout(() => toast.remove(), 2200);
+              }
+            }}
             type="button"
             data-testid="warded-seal"
           >

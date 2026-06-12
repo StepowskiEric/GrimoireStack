@@ -115,6 +115,8 @@ export function useEldritchCast({ onComplete }) {
     // Reject skip if we haven't reached the skippable window yet
     const elapsed = performance.now() - startRef.current + offsetRef.current;
     if (elapsed < SKIP_AFTER) return;
+    // Mark completed immediately so the rAF tick cannot also fire completion
+    completedRef.current = true;
     // Jump to close phase: shift offset so elapsed lands at TOTAL - CLOSE_DURATION
     offsetRef.current = (TOTAL - CLOSE_DURATION) - (performance.now() - startRef.current);
     if (offsetRef.current < 0) offsetRef.current = 0;
@@ -125,10 +127,7 @@ export function useEldritchCast({ onComplete }) {
     }
     // Schedule completion after the close phase duration
     setTimeout(() => {
-      if (!completedRef.current) {
-        completedRef.current = true;
-        onCompleteRef.current?.();
-      }
+      onCompleteRef.current?.();
     }, CLOSE_DURATION);
   }, []);
 

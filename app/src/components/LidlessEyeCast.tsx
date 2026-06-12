@@ -1,3 +1,4 @@
+import { useMemo } from 'react';
 import { useEldritchCast } from '../hooks/useEldritchCast.js';
 import { getSchoolSigil } from '../data/schoolSigils.jsx';
 import SchoolSigil from './SchoolSigil.tsx';
@@ -11,6 +12,23 @@ interface Props {
 export default function LidlessEyeCast({ spell, school, onComplete }: Props) {
   const { phase, canSkip, reduced, handleSkip } = useEldritchCast({ onComplete });
   const Sigil = getSchoolSigil(school.id);
+
+  // Seed vein geometry once per mount so Math.random() doesn't cause
+  // visual jitter on every re-render during the animation phase.
+  const veins = useMemo(() =>
+    Array.from({ length: 8 }, (_, i) => {
+      const a = (i / 8) * Math.PI * 2;
+      const inner = 8 + Math.random() * 4;
+      const outer = 50 + Math.random() * 8;
+      const x1 = 120 + Math.cos(a) * inner;
+      const y1 = 80 + Math.sin(a) * inner * 0.7;
+      const midX = 120 + Math.cos(a) * (outer * 0.6);
+      const midY = 80 + Math.sin(a) * (outer * 0.6) * 0.7;
+      const x2 = 120 + Math.cos(a) * outer;
+      const y2 = 80 + Math.sin(a) * outer * 0.7;
+      return { x1, y1, midX, midY, x2, y2 };
+    }),
+  []);
 
   // Reduced motion: simple cross-fade
   if (reduced) {
@@ -121,30 +139,19 @@ export default function LidlessEyeCast({ spell, school, onComplete }: Props) {
               {/* Cracks — radiating red veins */}
               {showVeins && (
                 <g className="lidless-eye__veins">
-                  {Array.from({ length: 8 }).map((_, i) => {
-                    const a = (i / 8) * Math.PI * 2;
-                    const inner = 8 + Math.random() * 4;
-                    const outer = 50 + Math.random() * 8;
-                    const x1 = 120 + Math.cos(a) * inner;
-                    const y1 = 80 + Math.sin(a) * inner * 0.7;
-                    const midX = 120 + Math.cos(a) * (outer * 0.6);
-                    const midY = 80 + Math.sin(a) * (outer * 0.6) * 0.7;
-                    const x2 = 120 + Math.cos(a) * outer;
-                    const y2 = 80 + Math.sin(a) * outer * 0.7;
-                    return (
-                      // eslint-disable-next-line react/no-array-index-key
-                      <path key={i}
-                        d={`M ${x1} ${y1} L ${midX} ${midY} L ${x2} ${y2}`}
-                        stroke="#3a0606"
-                        strokeWidth="1.2"
-                        strokeLinecap="round"
-                        fill="none"
-                        opacity="0.85"
-                        className="lidless-eye__vein"
-                        pathLength={1}
-                      />
-                    );
-                  })}
+                  {veins.map((v, i) => (
+                    // eslint-disable-next-line react/no-array-index-key
+                    <path key={i}
+                      d={`M ${v.x1} ${v.y1} L ${v.midX} ${v.midY} L ${v.x2} ${v.y2}`}
+                      stroke="#3a0606"
+                      strokeWidth="1.2"
+                      strokeLinecap="round"
+                      fill="none"
+                      opacity="0.85"
+                      className="lidless-eye__vein"
+                      pathLength={1}
+                    />
+                  ))}
                 </g>
               )}
 

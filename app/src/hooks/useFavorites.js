@@ -31,13 +31,19 @@ export function useFavorites() {
   );
 
   const toggleFavorite = useCallback((spellName, skill) => {
+    let added = false;
     setFavorites((prev) => {
       const exists = prev.some((f) => f.skill === skill);
       if (exists) return prev.filter((f) => f.skill !== skill);
       if (prev.length >= 12) return prev;
+      added = true;
       return [...prev, { name: spellName, skill, addedAt: Date.now() }];
     });
-  }, []);
+    // Return false if at cap, true if added/removed
+    const alreadyFav = favorites.some((f) => f.skill === skill);
+    if (alreadyFav) return true; // removed successfully
+    return added; // true if added, false if capped
+  }, [favorites]);
 
   const findFavoriteSpell = useCallback((skill) => {
     const entry = grimoireIndex.resolveBySkill(skill);

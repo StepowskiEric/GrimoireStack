@@ -16,7 +16,17 @@ export default function SpellCard({ spell, onClick, matched, children, isFavorit
 
   const handleStarClick = (e) => {
     e.stopPropagation();
-    onToggleFavorite?.(spell.name, spell.skill);
+    const result = onToggleFavorite?.(spell.name, spell.skill);
+    // Show a brief toast if the favorites cap was reached
+    if (result === false) {
+      const toast = document.createElement('div');
+      toast.className = 'export-toast';
+      toast.textContent = 'Binding circle is full (max 12)';
+      toast.setAttribute('role', 'status');
+      toast.setAttribute('aria-live', 'polite');
+      document.body.appendChild(toast);
+      setTimeout(() => toast.remove(), 2200);
+    }
   };
 
   return (

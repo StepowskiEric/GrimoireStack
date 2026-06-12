@@ -28,6 +28,7 @@ const schools = [
       {name:'Occam\'s Ladder',skill:'occam-minimal-repro',effect:'Ranks possible reproduction triggers by complexity, tests the simplest first, and stops at the first tier that reproduces. Prevents elaborate setups when a one-liner suffices.',status:'New'},
       {name:'Escalation Rite',skill:'escalation-ladder',effect:'5-level protocol: self-correct → strategy change → rubber duck → scope reduction → full retreat. Fills the gap between "stuck" and "abandon ship."',status:'New'},
       {name:'Coordinated Strike',skill:'coordinated-change',effect:'Maps the full change set, orders dependencies, edits atomically across files, and verifies consistency. For fixes that touch multiple files.',status:'New'},
+      {name:'Abductive Strike',skill:'abductive-first-debugging',effect:'Generates multiple competing hypotheses from observed symptoms, selects the one that best explains all evidence. Abductive reasoning over trial-and-error.',status:'New'},
     ]
   },
   {
@@ -101,6 +102,9 @@ const schools = [
       {name:'Interactive Critique',skill:'tool-interactive-critic',effect:'Structured multi-tool critique process for existing drafts, answers, plans, or code changes. Uses tools to verify claims, not just review text.',status:'—'},
       {name:'API Surface Scry',skill:'api-surface-anchoring',effect:'Before writing code that calls any external library or API, verifies the current API surface from authoritative docs. Prevents hallucinated signatures and wrong imports.',status:'—'},
       {name:'Verified API Workflow',skill:'verified-api-workflow',effect:'Every verified API surface entry becomes an anchor. Code using external APIs is fully traceable to documentation you actually checked. Zero hallucinated APIs.',status:'—'},
+      {name:'TypeScript Vigil',skill:'super-review-typescript',effect:'Targets five specific failure modes in LLM-authored TypeScript: security vulnerabilities, hallucinated APIs, logic errors, type-safety violations, architectural decay.',status:'New'},
+      {name:'Review Mastery',skill:'code-review-excellence',effect:'Structured review practices: constructive feedback, early bug detection, knowledge sharing, and team morale. Covers the full review lifecycle.',status:'New'},
+      {name:'Adversarial Trial',skill:'adversarial-review',effect:'Stress-tests proposals against a separate adversarial sub-agent with no prior investment. Tool-mediated review, not self-critique.',status:'New'},
     ]
   },
   {
@@ -122,6 +126,7 @@ const schools = [
       {name:'System Dynamics',skill:'thinking-in-systems-state-machine',effect:'Analyzes feedback loops, reinforcing/balancing dynamics, delayed effects, and multi-step downstream consequences before making system changes.',status:'—'},
       {name:'Backward Compat Ward',skill:'api-design-backward-compatibility',effect:'Forces contract-first, additive-only API evolution. Consumer discovery before contract changes. Prevents shipping breaking changes.',status:'—'},
       {name:'Full Architecture Audit',skill:'system-architecture-audit',effect:'Fuses DDIA, DDD, Thinking in Systems, and Release It into one sequential audit protocol. Each phase feeds the next.',status:'—'},
+      {name:'Deepening Ritual',skill:'improve-codebase-architecture',effect:'Finds deepening opportunities in a codebase informed by domain language in CONTEXT.md and decisions in docs/adr/. Refactors toward deeper modules.',status:'New'},
     ]
   },
   {
@@ -164,6 +169,7 @@ const schools = [
       {name:'Plan with Judge',skill:'plan-with-judge',effect:'Creates a structured implementation plan in JSONL format, then iteratively improves it using a stronger user-specified model as a judge until approved.',status:'—'},
       {name:'Iterative Spec',skill:'iterative-spec-authoring',effect:'Authors a detailed technical spec grounded in research, runs up to 3 judge-LLM review cycles, then presents for user approval before implementation.',status:'—'},
       {name:'Structured Feature Path',skill:'structured-feature-planning',effect:'7-phase: explore → search on failure → stuck detection → plan (JSONL) → self-review×2 → summary → execute. No hallucination when confused.',status:'—'},
+      {name:'Final Word',skill:'summarize',effect:'EMERGENCY STOP + HANDOFF REPORT. Preserves full context for the next agent when sessions must end. Zero memory loss across handoffs.',status:'New'},
     ]
   },
   {
@@ -223,6 +229,7 @@ const schools = [
       {name:'Diagnostics Aggregator',skill:'dev-diagnostics-mcp',effect:'MCP server with unified parsers for ESLint, Biome, Ruff, tsc, Vitest, pytest. Returns structured JSON issues with severity and category.',status:'—'},
       {name:'Battalion Auto-Fix',skill:'lint-battalion',effect:'Mass linter error remediation via auto-fix sprint + parallel subagent battalions. Handles 500+ trivial errors mechanically, escalates semantic ones to specialists.',status:'—'},
       {name:'Verified Synthesis',skill:'verified-synthesize',effect:'Generates code plus Dafny formal specifications. Preconditions and postconditions are machine-checked via Z3 SMT solver. Provably correct code from natural language specs.',status:'—'},
+      {name:'Data Fetch Ward',skill:'native-data-fetching',effect:'Covers fetch API, React Query, SWR, error handling, caching, offline support, and Expo Router data loaders for React Native and Expo apps.',status:'New'},
     ]
   },
   {
@@ -272,6 +279,9 @@ const schools = [
     spells:[
       {name:'A/B Scry',skill:'skill-ab-evaluation',effect:'Runs an A/B evaluation of any skill against a baseline using isolated subagents, 5 trials each, and an objective rubric. Measures real % improvement in isolated worktrees.',status:'—'},
       {name:'Empirical Justification',skill:'empirical-justification',effect:'Provides empirical data to justify skill refinement or retirement. Zero risk to current projects — all testing happens in isolated worktrees.',status:'—'},
+      {name:'Red-Green Rite',skill:'test-driven-development',effect:'Red-green-refactor loop. Write the test first, watch it fail, write the minimal fix, then refactor. Test-first development for safe code changes.',status:'New'},
+      {name:'Vitest Conjuration',skill:'vitest',effect:'Fast unit testing powered by Vite with Jest-compatible API. Mocking, coverage, fixtures, and test filtering for modern frontend projects.',status:'New'},
+      {name:'Playwright Binding',skill:'playwright-best-practices',effect:'Comprehensive browser automation testing: E2E, component, API, visual, accessibility, security. Page objects, fixtures, and CI integration.',status:'New'},
     ]
   }
 ];
