@@ -5,6 +5,7 @@ import { LanguageProvider } from '../i18n/LanguageContext';
 import ShortcutsModal from '../components/ShortcutsModal.jsx';
 import InstallPrompt from '../components/InstallPrompt.jsx';
 import BestiaryCodex from '../components/BestiaryCodex.jsx';
+import StaleLinkBanner from '../components/StaleLinkBanner.jsx';
 
 const sampleSchools = [
   {
@@ -56,6 +57,20 @@ describe('a11y', () => {
   it('InstallPrompt (hidden) has no axe violations', async () => {
     const { container } = renderWithLang(<InstallPrompt />);
     const results = await axe(container);
+    expect(results).toHaveNoViolations();
+  });
+
+  it('StaleLinkBanner has no axe violations', async () => {
+    const { container } = renderWithLang(
+      <StaleLinkBanner
+        skill="no-such-typo"
+        onDismiss={() => {}}
+        onSelectSkill={() => {}}
+      />
+    );
+    const results = await axe(container, {
+      rules: { region: { enabled: false } },
+    });
     expect(results).toHaveNoViolations();
   });
 });

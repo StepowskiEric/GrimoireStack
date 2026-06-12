@@ -27,13 +27,13 @@ export default function FavoritesView({
 
   return (
     <div className="favorites-view">
-      <h2 className="favorites-view__title">My Spellbook</h2>
+      <h2 className="favorites-view__title">The Vault</h2>
       
       {/* Favorites section */}
       <div className="favorites-view__section">
-        <h3>★ Favorite Spells ({favoriteSpells.length})</h3>
+        <h3>★ Bound Incantations ({favoriteSpells.length})</h3>
         {favoriteSpells.length === 0 ? (
-          <p className="favorites-view__empty">No favorite spells yet. Click the star icon on any spell to add it here.</p>
+          <p className="favorites-view__empty">The circle is silent. No entity is yet bound to your service — seal one with the star to keep it near.</p>
         ) : (
           <div className="favorites-view__list">
             {favoriteSpells.map(({ spell, school }) => (
@@ -65,9 +65,9 @@ export default function FavoritesView({
 
       {/* Recently viewed section */}
       <div className="favorites-view__section">
-        <h3>🕐 Recently Viewed</h3>
+        <h3>🕐 Trail of Recent Summons</h3>
         {recentSpells.length === 0 ? (
-          <p className="favorites-view__empty">No recently viewed spells.</p>
+          <p className="favorites-view__empty">The trail is cold. No incantation has yet been opened in the Eye.</p>
         ) : (
           <div className="favorites-view__list">
             {recentSpells.map(({ spell, school }) => (
@@ -89,13 +89,13 @@ export default function FavoritesView({
 
       {/* Marginalia section */}
       <div className="favorites-view__section">
-        <h3>📝 Marginalia</h3>
+        <h3>📝 Marginalia — Your Annotations</h3>
         {(() => {
           // Handle both hook object { notes } and plain notes object
           const notesObj = marginalia?.notes || marginalia || {};
           const entries = Object.entries(notesObj);
           if (entries.length === 0) {
-            return <p className="favorites-view__empty">No marginalia notes yet.</p>;
+            return <p className="favorites-view__empty">The page is clean. No annotations have yet been inscribed in the margin.</p>;
           }
           return (
             <div className="favorites-view__list">

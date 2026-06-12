@@ -8,6 +8,8 @@ import InstallPrompt from '../components/InstallPrompt.jsx';
 import ApprenticeWelcome from '../components/ApprenticeWelcome.jsx';
 import BestiaryCodex from '../components/BestiaryCodex.jsx';
 import RecipeLabView from '../components/RecipeLabView.jsx';
+import StaleLinkBanner from '../components/StaleLinkBanner.jsx';
+import SettingsView from '../components/SettingsView.jsx';
 import { searchSpells } from '../search.js';
 
 const sampleSpell = {
@@ -442,5 +444,103 @@ describe('SpellCard favorites', () => {
     fireEvent.click(screen.getByLabelText(/bind to/i));
     expect(toggle).toHaveBeenCalledTimes(1);
     expect(onClick).not.toHaveBeenCalled();
+  });
+});
+
+// ── StaleLinkBanner (deep-link to missing skill) ──────
+describe('StaleLinkBanner', () => {
+  const renderWithLang = (ui) => render(<LanguageProvider>{ui}</LanguageProvider>);
+
+  it('shows the unknown skill in the message and a dismiss button', () => {
+    const onDismiss = vi.fn();
+    renderWithLang(
+      <StaleLinkBanner skill="no-such-typo" onDismiss={onDismiss} onSelectSkill={() => {}} />
+    );
+    expect(screen.getByText(/no-such-typo/i)).toBeInTheDocument();
+    fireEvent.click(screen.getByRole('button', { name: /dismiss/i }));
+    expect(onDismiss).toHaveBeenCalledTimes(1);
+  });
+
+  it('suggests similar skills from the catalog', () => {
+    renderWithLang(
+      <StaleLinkBanner
+        skill="log-trace" // partial match against "log-trace-correlation"
+        onDismiss={() => {}}
+        onSelectSkill={() => {}}
+      />
+    );
+    expect(screen.getByRole('button', { name: 'log-trace-correlation' })).toBeInTheDocument();
+  });
+
+  it('routes a clicked suggestion through onSelectSkill with the resolved school', () => {
+    const onSelectSkill = vi.fn();
+    renderWithLang(
+      <StaleLinkBanner
+        skill="log-trace"
+        onDismiss={() => {}}
+        onSelectSkill={onSelectSkill}
+      />
+    );
+    fireEvent.click(screen.getByRole('button', { name: 'log-trace-correlation' }));
+    expect(onSelectSkill).toHaveBeenCalledTimes(1);
+    const [skill, school] = onSelectSkill.mock.calls[0];
+    expect(skill).toBe('log-trace-correlation');
+    expect(school.id).toBe('debugging');
+  });
+});
+
+// ── SettingsView (Ritual Chamber) ─────────────────────
+describe('SettingsView', () => {
+  it('renders the four sections and a working language select', () => {
+    render(
+      <LanguageProvider>
+        <SettingsView
+          castEnabled
+          onToggleCast={() => {}}
+          onShowShortcuts={() => {}}
+          onExportJson={() => {}}
+          onExportMarkdown={() => {}}
+        />
+      </LanguageProvider>
+    );
+    expect(screen.getByText('Ritual Chamber')).toBeInTheDocument();
+    const select = screen.getByLabelText(/Language/i);
+    expect(select).toBeInTheDocument();
+    expect(select.value).toBe('grimoire');
+  });
+
+  it('points the GitHub link at the real repository', () => {
+    render(
+      <LanguageProvider>
+        <SettingsView
+          castEnabled
+          onToggleCast={() => {}}
+          onShowShortcuts={() => {}}
+          onExportJson={() => {}}
+          onExportMarkdown={() => {}}
+        />
+      </LanguageProvider>
+    );
+    // Open the About section
+    fireEvent.click(screen.getByText('About'));
+    const link = screen.getByRole('link', { name: /Source Repository/i });
+    expect(link.getAttribute('href')).toBe('https://github.com/StepowskiEric/GrimoireStack');
+  });
+
+  it('switches language when the select changes', () => {
+    render(
+      <LanguageProvider>
+        <SettingsView
+          castEnabled
+          onToggleCast={() => {}}
+          onShowShortcuts={() => {}}
+          onExportJson={() => {}}
+          onExportMarkdown={() => {}}
+        />
+      </LanguageProvider>
+    );
+    const select = screen.getByLabelText(/Language/i);
+    fireEvent.change(select, { target: { value: 'plain' } });
+    expect(select.value).toBe('plain');
   });
 });

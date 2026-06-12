@@ -78,7 +78,7 @@ export default function CompareSpellsModal({ left, right, onClose, onSelect, onP
                       <div className="compare-slot-hint">Click to replace</div>
                     </>
                   ) : (
-                    <div className="compare-slot-empty">+ Pick first spell</div>
+                    <div className="compare-slot-empty">✦ Summon the first incantation</div>
                   )}
                 </button>
               </div>
@@ -97,7 +97,7 @@ export default function CompareSpellsModal({ left, right, onClose, onSelect, onP
                       <div className="compare-slot-hint">Click to replace</div>
                     </>
                   ) : (
-                    <div className="compare-slot-empty">+ Pick second spell</div>
+                    <div className="compare-slot-empty">✦ Summon the second</div>
                   )}
                 </button>
               </div>
@@ -141,7 +141,8 @@ export default function CompareSpellsModal({ left, right, onClose, onSelect, onP
               </div>
             ) : (
               <div className="compare-prompt">
-                Pick two spells to compare their effect, status, and synergies.
+                Bind two incantations to weigh them. The Eye will set them
+                side by side — effect, status, and the threads that bind them.
               </div>
             )}
           </>
@@ -164,7 +165,7 @@ export default function CompareSpellsModal({ left, right, onClose, onSelect, onP
             />
             <div className="compare-picker-list">
               {filtered.length === 0 ? (
-                <div className="compare-picker-empty">No matching spells.</div>
+                <div className="compare-picker-empty">The abyss returns no incantations for this scrying.</div>
               ) : (
                 filtered.map(({ spell, school }) => {
                   const isThis = (pickerSlot === 'left' && left?.skill === spell.skill) ||

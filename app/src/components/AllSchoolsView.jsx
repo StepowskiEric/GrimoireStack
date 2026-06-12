@@ -49,7 +49,7 @@ export default function AllSchoolsView({
 
       {filteredSchools.length === 0 && (
         <div className="all-schools-view__empty">
-          <p>No schools match your search.</p>
+          <p>The abyss returns no wardens for this scrying. Try a different glyph.</p>
         </div>
       )}
     </div>

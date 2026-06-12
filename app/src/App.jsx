@@ -21,6 +21,7 @@ import WitchDoctorModal from './components/WitchDoctorModal.jsx';
 import CompareSpellsModal from './components/CompareSpellsModal.jsx';
 import ProblemIntakeModal from './components/ProblemIntakeModal.jsx';
 import SpellModal from './components/SpellModal.jsx';
+import StaleLinkBanner from './components/StaleLinkBanner.jsx';
 
 const ShortcutsModal = lazy(() => import('./components/ShortcutsModal.jsx'));
 
@@ -293,6 +294,13 @@ function AppInner() {
       </svg>
       <Embers />
       {welcomeOpen && <ApprenticeWelcome onClose={handleWelcomeClose} />}
+      {notFoundSkill && (
+        <StaleLinkBanner
+          skill={notFoundSkill}
+          onDismiss={dismissNotFound}
+          onSelectSkill={handleNotFoundSelect}
+        />
+      )}
       
       {/* GrimoireStack Layout */}
       <GrimoireStackLayout
