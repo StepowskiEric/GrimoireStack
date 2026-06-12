@@ -4,11 +4,12 @@ import SpellDetailView from './SpellDetailView.jsx';
 import SpellCard from './SpellCard.jsx';
 import FavoritesView from './FavoritesView.jsx';
 import RecipeLabView from './RecipeLabView.jsx';
-import ArcaneToolsView from './ArcaneToolsView.jsx';
+import BestiaryCodex from './BestiaryCodex.jsx';
 import SettingsView from './SettingsView.jsx';
 import AllSchoolsView from './AllSchoolsView.jsx';
 import GrimoireEye from './GrimoireEye.jsx';
 import Icon from './Icon.jsx';
+import LanguageToggle from './LanguageToggle.jsx';
 import { pageTurn } from '../audio/sounds.js';
 
 const TABS = {
@@ -48,6 +49,7 @@ export default function GrimoireStackLayout({
   onWizardOpen,
   onIntakeOpen,
   onCompareOpen,
+  onCompareTwo,
   onCastBones,
   onExportJson,
   onExportMarkdown,
@@ -63,6 +65,15 @@ export default function GrimoireStackLayout({
   featuredSchools,
   onFeaturedSchoolsChange,
 }) {
+  // hasNote lookup for the Bestiary Codex "Annotated" filter
+  const hasNote = useCallback(
+    (skill) => {
+      const notes = marginalia?.notes || marginalia;
+      if (!notes || typeof notes !== 'object') return false;
+      return Boolean(notes[skill] && String(notes[skill]).trim());
+    },
+    [marginalia]
+  );
   const [activeTab, setActiveTab] = useState(TABS.LIBRARY);
   const [pageKey, setPageKey] = useState('home');
   const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
@@ -211,13 +222,16 @@ export default function GrimoireStackLayout({
             schools={schools}
             onSpellClick={handleSpellCardClick}
             onCompareOpen={onCompareOpen}
+            onCompareTwo={onCompareTwo}
           />
         );
       case TABS.ARCANE_TOOLS:
         return (
-          <ArcaneToolsView
+          <BestiaryCodex
             schools={schools}
             onSpellClick={handleSpellCardClick}
+            isFavorited={isFavorited}
+            hasNote={hasNote}
           />
         );
       case TABS.SETTINGS:
@@ -348,6 +362,7 @@ export default function GrimoireStackLayout({
           </nav>
 
           <div className="eye-sidebar__footer">
+            <LanguageToggle />
             <button className="eye-footer-link" onClick={onShowShortcuts} type="button">
               ⌨ Shortcuts
             </button>

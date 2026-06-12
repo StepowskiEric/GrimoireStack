@@ -7,17 +7,22 @@ import LidlessEyeCast from './components/LidlessEyeCast.tsx';
 import './components/LidlessEyeCast.css';
 import ApprenticeWelcome, { STORAGE_KEY as WELCOME_STORAGE_KEY } from './components/ApprenticeWelcome.jsx';
 import GrimoireStackLayout from './components/GrimoireStackLayout.jsx';
-import { getSpellTier, TIER_META } from './data/tiers.js';
 import { useSpellInteraction } from './hooks/useSpellInteraction.js';
 import { useFavorites } from './hooks/useFavorites.js';
 import { useRecentlyViewed } from './hooks/useRecentlyViewed.js';
 import { useMarginalia } from './hooks/useMarginalia.js';
 import { useKeyboardShortcuts } from './hooks/useKeyboardShortcuts.js';
 import { spellCatalog } from './data/spellCatalogInstance.js';
-import { LanguageProvider, useLanguage } from './i18n/LanguageContext';
+import { LanguageProvider } from './i18n/LanguageContext';
 import { useSignals } from './hooks/useSignals.js';
 import { exportAsJson, exportAsMarkdown, copyToClipboard } from './utils/exporter.js';
 import ErrorBoundary from './components/ErrorBoundary.jsx';
+import WitchDoctorModal from './components/WitchDoctorModal.jsx';
+import CompareSpellsModal from './components/CompareSpellsModal.jsx';
+import ProblemIntakeModal from './components/ProblemIntakeModal.jsx';
+import SpellModal from './components/SpellModal.jsx';
+
+const ShortcutsModal = lazy(() => import('./components/ShortcutsModal.jsx'));
 
 export default function App() {
   return (
@@ -30,12 +35,10 @@ export default function App() {
 }
 
 function AppInner() {
-  const { t } = useLanguage();
   const [currentSchool, setCurrentSchool] = useState(schools[0].id);
   const [searchQuery, setSearchQuery] = useState('');
   const [castEnabled, setCastEnabled] = useState(() => localStorage.getItem('grimoire-cast') !== 'off');
   const [welcomeOpen, setWelcomeOpen] = useState(() => localStorage.getItem(WELCOME_STORAGE_KEY) !== 'true');
-  const [tomeOpen, setTomeOpen] = useState(false);
   const [shortcutsOpen, setShortcutsOpen] = useState(false);
   const [schoolFilter, setSchoolFilter] = useState(new Set());
   const [tierFilter, setTierFilter] = useState(new Set());
@@ -44,7 +47,7 @@ function AppInner() {
   const ambienceStartedRef = useRef(false);
   const initializedRef = useRef(false);
 
-  // New feature states
+  // Modal state
   const [compareOpen, setCompareOpen] = useState(false);
   const [compareLeft, setCompareLeft] = useState(null);  // { spell, school }
   const [compareRight, setCompareRight] = useState(null);  // { spell, school }
@@ -69,12 +72,6 @@ function AppInner() {
     }),
     [searchQuery, schoolFilter, tierFilter, favoritesOnly, isFavorited]
   );
-  const isLab = currentSchool === 'recipe-lab';
-  const isRitual = currentSchool === 'ritual';
-  const isIndex = currentSchool === 'index';
-  const isGraph = currentSchool === 'graph';
-  const isChangelog = currentSchool === 'changelog';
-  const isSpecial = isLab || isRitual || isIndex || isGraph || isChangelog;
 
   const {
     modal,
@@ -140,6 +137,13 @@ function AppInner() {
     else setCompareRight({ spell, school });
   }, []);
 
+  // Pre-fill both compare slots at once (used by the Rituals tab "Compare" button)
+  const handleCompareTwo = useCallback((leftSpell, leftSchool, rightSpell, rightSchool) => {
+    setCompareLeft({ spell: leftSpell, school: leftSchool });
+    setCompareRight({ spell: rightSpell, school: rightSchool });
+    setCompareOpen(true);
+  }, []);
+
   // Export config
   const [exportToast, setExportToast] = useState('');
   const exportTimerRef = useRef(null);
@@ -174,7 +178,6 @@ function AppInner() {
     handleGlobalEscape: () => {
       let handled = false;
       if (shortcutsOpen) { setShortcutsOpen(false); handled = true; }
-      if (tomeOpen) { setTomeOpen(false); handled = true; }
       if (witchDoctorOpen) { setWitchDoctorOpen(false); handled = true; }
       if (compareOpen) { setCompareOpen(false); handled = true; }
       if (intakeOpen) { setIntakeOpen(false); handled = true; }
@@ -183,7 +186,7 @@ function AppInner() {
       return handled;
     },
   // eslint-disable-next-line react-hooks/exhaustive-deps -- handleWelcomeCloseRef is a stable ref to the latest handleWelcomeClose
-  }), [shortcutsOpen, tomeOpen, witchDoctorOpen, compareOpen, intakeOpen, modal, handleModalClose, welcomeOpen, setWitchDoctorOpen]);
+  }), [shortcutsOpen, witchDoctorOpen, compareOpen, intakeOpen, modal, handleModalClose, welcomeOpen, setWitchDoctorOpen]);
 
   useKeyboardShortcuts(keyboardHandlers);
 
@@ -246,24 +249,20 @@ function AppInner() {
   handleWelcomeCloseRef.current = handleWelcomeClose;
   handleModalCloseRef.current = handleModalClose;
 
-  const spellTier = useCallback((spell) => {
-    const tier = getSpellTier(spell);
-    return { tier, ...TIER_META[tier] };
-  }, []);
-
-  // Featured schools state
+  // Featured schools state — lifted so the eye re-renders when the user
+  // customizes the selection in SchoolCardGrid. The SchoolCardGrid now calls
+  // onFeaturedSchoolsChange (lifting state) AND writes to localStorage; the
+  // initial state on mount reads from the same localStorage key.
   const [featuredSchools, setFeaturedSchools] = useState(() => {
-    const saved = localStorage.getItem('grimoire-featured-schools');
-    return saved ? JSON.parse(saved) : ['debugging', 'reasoning', 'process', 'architecture', 'testing', 'creativity'];
+    try {
+      const saved = localStorage.getItem('grimoire-featured-schools');
+      if (saved) {
+        const parsed = JSON.parse(saved);
+        if (Array.isArray(parsed) && parsed.length > 0) return parsed;
+      }
+    } catch {}
+    return ['debugging', 'reasoning', 'process', 'architecture', 'testing', 'creativity'];
   });
-
-  // Load featured schools from localStorage
-  useEffect(() => {
-    const saved = localStorage.getItem('grimoire-featured-schools');
-    if (saved) {
-      setFeaturedSchools(JSON.parse(saved));
-    }
-  }, []);
 
   return (
     <>
@@ -325,6 +324,7 @@ function AppInner() {
         onWizardOpen={() => setWitchDoctorOpen(true)}
         onIntakeOpen={() => setIntakeOpen(true)}
         onCompareOpen={() => setCompareOpen(true)}
+        onCompareTwo={handleCompareTwo}
         onCastBones={handleCastBones}
         onExportJson={handleExportJson}
         onExportMarkdown={handleExportMarkdown}

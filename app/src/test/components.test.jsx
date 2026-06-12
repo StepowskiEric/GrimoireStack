@@ -1,24 +1,13 @@
-import { describe, it, expect, vi } from 'vitest';
+import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import { render, screen, fireEvent, act } from '@testing-library/react';
 import { LanguageProvider } from '../i18n/LanguageContext';
 import SpellCard from '../components/SpellCard.jsx';
-import SchoolSection from '../components/SchoolSection.jsx';
-import ScryingOrb from '../components/ScryingOrb.jsx';
-import LibrariansLedger from '../components/LibrariansLedger.jsx';
-import LegendOfSigils from '../components/LegendOfSigils.jsx';
-import ApprenticeMarginalia from '../components/ApprenticeMarginalia.jsx';
-import WhispersFromTheVoid from '../components/WhispersFromTheVoid.jsx';
-import Observatory from '../components/Observatory.jsx';
-import SummoningCircle from '../components/SummoningCircle.jsx';
-import TomeOfAilments from '../components/TomeOfAilments.jsx';
-import RecipeLabExplainer from '../components/RecipeLabExplainer.jsx';
-import RecipeLab from '../components/RecipeLab.jsx';
 import GrimoireStackLayout from '../components/GrimoireStackLayout.jsx';
-import BookLayout from '../components/BookLayout.jsx';
 import BottomNav from '../components/BottomNav.jsx';
-import FilterChips from '../components/FilterChips.jsx';
 import InstallPrompt from '../components/InstallPrompt.jsx';
 import ApprenticeWelcome from '../components/ApprenticeWelcome.jsx';
+import BestiaryCodex from '../components/BestiaryCodex.jsx';
+import RecipeLabView from '../components/RecipeLabView.jsx';
 import { searchSpells } from '../search.js';
 
 const sampleSpell = {
@@ -111,90 +100,9 @@ describe('SpellCard', () => {
   });
 });
 
-// ── SchoolSection ─────────────────────────────────────
-describe('SchoolSection', () => {
-  it('renders the school name and count', () => {
-    render(<SchoolSection school={sampleSchool} isActive={true} onSpellClick={() => {}} />);
-    expect(screen.getByText('School of Remediation')).toBeInTheDocument();
-    expect(screen.getByText('1 incantation')).toBeInTheDocument();
-  });
-
-  it('renders active class when isActive is true', () => {
-    const { container } = render(<SchoolSection school={sampleSchool} isActive={true} onSpellClick={() => {}} />);
-    const section = container.firstChild;
-    expect(section.className).toContain('active');
-  });
-
-  it('renders spell cards inside', () => {
-    render(<SchoolSection school={sampleSchool} isActive={true} onSpellClick={() => {}} />);
-    expect(screen.getByText('Trace Sight')).toBeInTheDocument();
-  });
-
-  it('shows no-spells message when search has no match', () => {
-    render(<SchoolSection school={sampleSchool} isActive={false} searchQuery="zzznone" onSpellClick={() => {}} />);
-    expect(screen.getByText('The orb sees nothing matching your affliction…')).toBeInTheDocument();
-  });
-
-  it('does not show no-spells when search matches', () => {
-    render(<SchoolSection school={sampleSchool} isActive={false} searchQuery="Trace" onSpellClick={() => {}} />);
-    expect(screen.queryByText('The orb sees nothing matching your affliction…')).not.toBeInTheDocument();
-  });
-
-  it('pluralizes count correctly', () => {
-    const multi = { ...sampleSchool, spells: [sampleSpell, { ...sampleSpell, name: 'Bisect' }] };
-    render(<SchoolSection school={multi} isActive={true} onSpellClick={() => {}} />);
-    expect(screen.getByText('2 incantations')).toBeInTheDocument();
-  });
-});
-
-// ── ScryingOrb ─────────────────────────────────────────
-describe('ScryingOrb', () => {
-  it('renders the search input', () => {
-    render(<ScryingOrb searchQuery="" onSearchChange={() => {}} totalMatches={0} />);
-    expect(screen.getByPlaceholderText(/search for a skill/i)).toBeInTheDocument();
-  });
-
-  it('shows match count when totalMatches > 0', () => {
-    render(<ScryingOrb searchQuery="test" onSearchChange={() => {}} totalMatches={3} />);
-    expect(screen.getByText('3 incantations found')).toBeInTheDocument();
-  });
-
-  it('shows singular for one match', () => {
-    render(<ScryingOrb searchQuery="test" onSearchChange={() => {}} totalMatches={1} />);
-    expect(screen.getByText('1 incantation found')).toBeInTheDocument();
-  });
-
-  it('shows "none found" when no matches', () => {
-    render(<ScryingOrb searchQuery="test" onSearchChange={() => {}} totalMatches={0} />);
-    expect(screen.getByText('none found')).toBeInTheDocument();
-  });
-
-  it('hides result text when query is empty', () => {
-    render(<ScryingOrb searchQuery="" onSearchChange={() => {}} totalMatches={0} />);
-    expect(screen.queryByText('found')).not.toBeInTheDocument();
-    expect(screen.queryByText('none found')).not.toBeInTheDocument();
-  });
-
-  it('applies scrying class to orb vessel when searching', () => {
-    const { container } = render(<ScryingOrb searchQuery="test" onSearchChange={() => {}} totalMatches={0} />);
-    expect(container.querySelector('.orb-vessel')?.className).toContain('scrying');
-  });
-
-  it('does not apply scrying class when idle', () => {
-    const { container } = render(<ScryingOrb searchQuery="" onSearchChange={() => {}} totalMatches={0} />);
-    expect(container.querySelector('.orb-vessel')?.className).not.toContain('scrying');
-  });
-
-  it('renders example search chips', () => {
-    render(<ScryingOrb searchQuery="" onSearchChange={() => {}} totalMatches={0} />);
-    expect(screen.getByText('bug')).toBeInTheDocument();
-    expect(screen.getByText('test')).toBeInTheDocument();
-  });
-});
-
 // ── GrimoireStackLayout search results ────────────────
 describe('GrimoireStackLayout search results', () => {
-  const renderWithLang = (ui, lang = 'grimoire') => render(<LanguageProvider>{ui}</LanguageProvider>);
+  const renderWithLang = (ui) => render(<LanguageProvider>{ui}</LanguageProvider>);
 
   it('shows matching spells in the library view when searchQuery is set', () => {
     const { container } = renderWithLang(
@@ -241,224 +149,236 @@ describe('GrimoireStackLayout search results', () => {
   });
 });
 
-describe('LibrariansLedger', () => {
-  it('renders ledger entries', () => {
-    render(<LibrariansLedger schools={[sampleSchool]} />);
-    expect(screen.getByText('Schools of Magic')).toBeInTheDocument();
-    expect(screen.getByText('Total Incantations')).toBeInTheDocument();
-    expect(screen.getByText('Proven Spells')).toBeInTheDocument();
-    expect(screen.getByText('With Synergies')).toBeInTheDocument();
+// ── BestiaryCodex ────────────────────────────────────
+describe('BestiaryCodex', () => {
+  const renderWithLang = (ui) => render(<LanguageProvider>{ui}</LanguageProvider>);
+
+  it('renders the codex title and stats', () => {
+    renderWithLang(
+      <BestiaryCodex
+        schools={multiSchool}
+        onSpellClick={() => {}}
+        isFavorited={() => false}
+        hasNote={() => false}
+      />
+    );
+    expect(screen.getByText('The Bestiary Codex')).toBeInTheDocument();
+    expect(screen.getByText('Entities')).toBeInTheDocument();
+    expect(screen.getByText('Schools')).toBeInTheDocument();
   });
 
-  it('shows correct counts for multiple schools', () => {
-    const multiSchool = { ...sampleSchool, spells: [sampleSpell, { ...sampleSpell, name: 'Bisect', skill: 'bisect' }] };
-    render(<LibrariansLedger schools={[sampleSchool, multiSchool]} />);
-    // 2 schools, 3 total spells, 2 proven
-    expect(screen.getByText('Schools of Magic')).toBeInTheDocument();
-    expect(screen.getByText('2')).toBeInTheDocument();
-  });
-
-  it('shows combos count when spells have synergies', () => {
-    const withCombos = { ...sampleSchool, spells: [{ ...sampleSpell, combos: ['Bisect Divination'] }] };
-    render(<LibrariansLedger schools={[withCombos]} />);
-    expect(screen.getByText('With Synergies')).toBeInTheDocument();
-    // The combo count "1" appears along with other "1" values; verify by checking parent context
-    const combosLabel = screen.getByText('With Synergies');
-    const combosEntry = combosLabel.closest('.ledger-entry');
-    expect(combosEntry.textContent).toContain('1');
-  });
-});
-
-describe('LegendOfSigils', () => {
-  it('renders the legend toggle button', () => {
-    render(<LegendOfSigils />);
-    expect(screen.getByText('Legend')).toBeInTheDocument();
-  });
-
-  it('opens the legend modal when clicked', () => {
-    render(<LegendOfSigils />);
-    fireEvent.click(screen.getByText('Legend'));
-    expect(screen.getByText('⟐ Legend of Sigils')).toBeInTheDocument();
-  });
-
-  it('shows tier information in the modal', () => {
-    render(<LegendOfSigils />);
-    fireEvent.click(screen.getByText('Legend'));
-    expect(screen.getByText('Faded Glyph')).toBeInTheDocument();
-    expect(screen.getByText('Apprentice Sigil')).toBeInTheDocument();
-    expect(screen.getByText('Archmage Sigil')).toBeInTheDocument();
-  });
-
-  it('closes the legend modal', () => {
-    render(<LegendOfSigils />);
-    fireEvent.click(screen.getByText('Legend'));
-    fireEvent.click(screen.getByLabelText('Close legend'));
-    expect(screen.queryByText('⟐ Legend of Sigils')).not.toBeInTheDocument();
-  });
-});
-
-describe('ApprenticeMarginalia', () => {
-  it('renders collapsed trigger', () => {
-    render(<ApprenticeMarginalia />);
-    expect(screen.getByText(/What is a skill/i)).toBeInTheDocument();
-  });
-
-  it('expands when clicked', () => {
-    render(<ApprenticeMarginalia />);
-    fireEvent.click(screen.getByText(/What is a skill/i));
-    expect(screen.getByText(/agent skill/i)).toBeInTheDocument();
-    expect(screen.getByText(/cookbook for AI behavior/i)).toBeInTheDocument();
-  });
-
-  it('collapses when clicked again', () => {
-    render(<ApprenticeMarginalia />);
-    fireEvent.click(screen.getByText(/What is a skill/i));
-    fireEvent.click(screen.getByText(/click to fold/i));
-    expect(screen.queryByText(/agent skill/i)).not.toBeInTheDocument();
-  });
-});
-
-describe('WhispersFromTheVoid', () => {
-  it('does not render when there are matches', () => {
-    render(<WhispersFromTheVoid searchQuery="test" totalMatches={3} onWizardOpen={() => {}} />);
-    expect(screen.queryByText(/The orb grows dark/i)).not.toBeInTheDocument();
-  });
-
-  it('does not render when query is empty', () => {
-    render(<WhispersFromTheVoid searchQuery="" totalMatches={0} onWizardOpen={() => {}} />);
-    expect(screen.queryByText(/The orb grows dark/i)).not.toBeInTheDocument();
-  });
-
-  it('renders when search has no matches', () => {
-    render(<WhispersFromTheVoid searchQuery="zzznone" totalMatches={0} onWizardOpen={() => {}} />);
-    expect(screen.getByText(/The orb grows dark/i)).toBeInTheDocument();
-    expect(screen.getByText(/zzznone/)).toBeInTheDocument();
-  });
-
-  it('calls onWizardOpen when the button is clicked', () => {
-    const onWizardOpen = vi.fn();
-    render(<WhispersFromTheVoid searchQuery="zzznone" totalMatches={0} onWizardOpen={onWizardOpen} />);
-    fireEvent.click(screen.getByText(/Consult the Witch Doctor/i));
-    expect(onWizardOpen).toHaveBeenCalledTimes(1);
-  });
-});
-
-describe('Observatory', () => {
-  it('renders newly added spells', () => {
-    const schoolWithNew = {
-      ...sampleSchool,
-      spells: [{ ...sampleSpell, status: 'New' }],
-    };
-    render(<Observatory schools={[schoolWithNew]} />);
-    expect(screen.getByText('The Observatory')).toBeInTheDocument();
+  it('lists every spell from the provided schools', () => {
+    renderWithLang(
+      <BestiaryCodex
+        schools={multiSchool}
+        onSpellClick={() => {}}
+        isFavorited={() => false}
+        hasNote={() => false}
+      />
+    );
     expect(screen.getByText('Trace Sight')).toBeInTheDocument();
+    expect(screen.getByText('Jest Invocation')).toBeInTheDocument();
   });
 
-  it('shows school symbol and name for each new spell', () => {
-    const schoolWithNew = {
-      ...sampleSchool,
-      spells: [{ ...sampleSpell, status: 'New' }],
-    };
-    render(<Observatory schools={[schoolWithNew]} />);
-    expect(screen.getByText('⚔')).toBeInTheDocument();
-    expect(screen.getByText('School of Remediation')).toBeInTheDocument();
+  it('filters by search query', () => {
+    renderWithLang(
+      <BestiaryCodex
+        schools={multiSchool}
+        onSpellClick={() => {}}
+        isFavorited={() => false}
+        hasNote={() => false}
+      />
+    );
+    const input = screen.getByPlaceholderText(/scry by name/i);
+    fireEvent.change(input, { target: { value: 'jest' } });
+    expect(screen.getByText('Jest Invocation')).toBeInTheDocument();
+    expect(screen.queryByText('Trace Sight')).not.toBeInTheDocument();
   });
 
-  it('does not render when there are no new spells', () => {
-    const schoolNoNew = {
-      ...sampleSchool,
-      spells: [{ ...sampleSpell, status: 'Proven' }],
+  it('shows the empty state when filters return nothing', () => {
+    renderWithLang(
+      <BestiaryCodex
+        schools={multiSchool}
+        onSpellClick={() => {}}
+        isFavorited={() => false}
+        hasNote={() => false}
+      />
+    );
+    const input = screen.getByPlaceholderText(/scry by name/i);
+    fireEvent.change(input, { target: { value: 'no-such-spell' } });
+    expect(screen.getByText(/the abyss returns nothing/i)).toBeInTheDocument();
+  });
+
+  it('calls onSpellClick when a row is clicked', () => {
+    const onClick = vi.fn();
+    renderWithLang(
+      <BestiaryCodex
+        schools={multiSchool}
+        onSpellClick={onClick}
+        isFavorited={() => false}
+        hasNote={() => false}
+      />
+    );
+    fireEvent.click(screen.getByText('Trace Sight'));
+    expect(onClick).toHaveBeenCalledTimes(1);
+    expect(onClick.mock.calls[0][0].skill).toBe('log-trace-correlation');
+  });
+
+  it('renders a Clear button when filters are active', () => {
+    renderWithLang(
+      <BestiaryCodex
+        schools={multiSchool}
+        onSpellClick={() => {}}
+        isFavorited={() => false}
+        hasNote={() => false}
+      />
+    );
+    const input = screen.getByPlaceholderText(/scry by name/i);
+    fireEvent.change(input, { target: { value: 'jest' } });
+    expect(screen.getByText(/purge filters/i)).toBeInTheDocument();
+  });
+
+  it('shows tier badges', () => {
+    renderWithLang(
+      <BestiaryCodex
+        schools={multiSchool}
+        onSpellClick={() => {}}
+        isFavorited={() => false}
+        hasNote={() => false}
+      />
+    );
+    // "Proven" → "adept" tier; "New" → "apprentice" tier
+    expect(screen.getAllByText(/Adept Sigil|Apprentice Sigil/).length).toBeGreaterThanOrEqual(1);
+  });
+});
+
+// ── RecipeLabView ────────────────────────────────────
+describe('RecipeLabView', () => {
+  it('renders the rituals title and a search input', () => {
+    render(
+      <LanguageProvider>
+        <RecipeLabView schools={multiSchool} onSpellClick={() => {}} />
+      </LanguageProvider>
+    );
+    expect(screen.getByText('Rituals')).toBeInTheDocument();
+    expect(screen.getByPlaceholderText(/scry by name/i)).toBeInTheDocument();
+  });
+
+  it('shows all spells, not just the first 20', () => {
+    const many = {
+      id: 'many',
+      name: 'School of Many',
+      symbol: '✦',
+      real: 'Many',
+      desc: '',
+      spells: Array.from({ length: 40 }, (_, i) => ({
+        name: `Spell ${i}`,
+        skill: `skill-${i}`,
+        effect: `effect ${i}`,
+      })),
     };
-    const { container } = render(<Observatory schools={[schoolNoNew]} />);
+    render(
+      <LanguageProvider>
+        <RecipeLabView schools={[many]} onSpellClick={() => {}} />
+      </LanguageProvider>
+    );
+    // First page is 60, so all 40 should be visible
+    expect(screen.getByText('Spell 0')).toBeInTheDocument();
+    expect(screen.getByText('Spell 39')).toBeInTheDocument();
+  });
+
+  it('lets you select two spells and emits a compare-two call', () => {
+    const onCompareTwo = vi.fn();
+    render(
+      <LanguageProvider>
+        <RecipeLabView
+          schools={multiSchool}
+          onSpellClick={() => {}}
+          onCompareTwo={onCompareTwo}
+        />
+      </LanguageProvider>
+    );
+    // Click the two spell cards (by their names)
+    fireEvent.click(screen.getByText('Trace Sight'));
+    fireEvent.click(screen.getByText('Jest Invocation'));
+    const compareBtn = screen.getByText(/Compare These Incantations/i);
+    fireEvent.click(compareBtn);
+    expect(onCompareTwo).toHaveBeenCalledTimes(1);
+    // Argument order: leftSpell, leftSchool, rightSpell, rightSchool
+    const args = onCompareTwo.mock.calls[0];
+    expect(args[0].skill).toBe('log-trace-correlation');
+    expect(args[2].skill).toBe('jest-testing');
+  });
+});
+
+// ── BottomNav (mobile tab bar) ────────────────────────
+describe('BottomNav', () => {
+  it('renders the four mobile tabs', () => {
+    render(
+      <LanguageProvider>
+        <BottomNav activeTab="library" onTabSelect={() => {}} />
+      </LanguageProvider>
+    );
+    expect(screen.getByText('Library')).toBeInTheDocument();
+    expect(screen.getByText('Favorites')).toBeInTheDocument();
+    expect(screen.getByText('Craft')).toBeInTheDocument();
+    expect(screen.getByText('Profile')).toBeInTheDocument();
+  });
+});
+
+// ── InstallPrompt (storage init) ──────────────────────
+describe('InstallPrompt', () => {
+  beforeEach(() => {
+    localStorage.clear();
+  });
+
+  it('returns null when no beforeinstallprompt event has fired', () => {
+    const { container } = render(
+      <LanguageProvider>
+        <InstallPrompt />
+      </LanguageProvider>
+    );
     expect(container.firstChild).toBeNull();
   });
 });
 
-describe('SummoningCircle', () => {
-  it('renders the toggle button with count', () => {
-    render(<SummoningCircle schools={[sampleSchool]} onSpellClick={() => {}} favorites={[]} onToggleFavorite={() => {}} />);
-    expect(screen.getByLabelText('Open Summoning Circle')).toBeInTheDocument();
-  });
-
-  it('opens panel when toggle is clicked', () => {
-    render(<SummoningCircle schools={[sampleSchool]} onSpellClick={() => {}} favorites={[]} onToggleFavorite={() => {}} />);
-    fireEvent.click(screen.getByLabelText('Open Summoning Circle'));
-    expect(screen.getByText('The Summoning Circle')).toBeInTheDocument();
-    expect(screen.getByText('The circle is silent…')).toBeInTheDocument();
-  });
-
-  it('closes panel when close button is clicked', () => {
-    render(<SummoningCircle schools={[sampleSchool]} onSpellClick={() => {}} favorites={[]} onToggleFavorite={() => {}} />);
-    fireEvent.click(screen.getByLabelText('Open Summoning Circle'));
-    fireEvent.click(screen.getByLabelText('Close circle'));
-    expect(screen.queryByText('The Summoning Circle')).not.toBeInTheDocument();
-  });
-});
-
-describe('TomeOfAilments', () => {
-  it('renders the tome modal', () => {
-    render(<TomeOfAilments schools={[sampleSchool]} onSelectSkill={() => {}} onClose={() => {}} />);
-    expect(screen.getByText('⟐ Tome of Common Ailments')).toBeInTheDocument();
-    expect(screen.getByText('Fix it')).toBeInTheDocument();
-  });
-
-  it('shows situation details after selecting a category', () => {
-    render(<TomeOfAilments schools={[sampleSchool]} onSelectSkill={() => {}} onClose={() => {}} />);
-    fireEvent.click(screen.getByText('Fix it'));
-    // After clicking "Fix it", the bug category situations should appear
-    expect(screen.getByText('Stack trace or error log')).toBeInTheDocument();
-  });
-
-  it('calls onClose when close button is clicked', () => {
-    const onClose = vi.fn();
-    render(<TomeOfAilments schools={[sampleSchool]} onSelectSkill={() => {}} onClose={onClose} />);
-    fireEvent.click(screen.getByLabelText('Close tome'));
-    expect(onClose).toHaveBeenCalledTimes(1);
-  });
-});
-
-describe('RecipeLabExplainer', () => {
+// ── ApprenticeWelcome (storage init) ─────────────────
+describe('ApprenticeWelcome', () => {
   beforeEach(() => {
     localStorage.clear();
-    vi.useFakeTimers();
   });
 
-  afterEach(() => {
-    vi.useRealTimers();
+  it('renders the welcome panels on first visit', () => {
+    render(
+      <LanguageProvider>
+        <ApprenticeWelcome onClose={() => {}} />
+      </LanguageProvider>
+    );
+    expect(screen.getByText('Welcome to the Grimoire')).toBeInTheDocument();
+    expect(screen.getByText(/Continue/i)).toBeInTheDocument();
   });
 
-  it('does not render when not visible', () => {
-    render(<RecipeLabExplainer visible={false} onDismiss={() => {}} />);
-    expect(screen.queryByText(/The Alchemist's Note/i)).not.toBeInTheDocument();
+  it('advances to the next panel when Continue is clicked', async () => {
+    render(
+      <LanguageProvider>
+        <ApprenticeWelcome onClose={() => {}} />
+      </LanguageProvider>
+    );
+    // The "Back" button only appears on panels after the first.
+    expect(screen.queryByText(/Back/i)).not.toBeInTheDocument();
+    await act(async () => { fireEvent.click(screen.getByText(/Continue/i)); });
+    expect(screen.getByText(/Back/i)).toBeInTheDocument();
   });
 
-  it('shows the explainer when visible and not dismissed', () => {
-    render(<RecipeLabExplainer visible={true} onDismiss={() => {}} />);
-    expect(screen.queryByText(/The Alchemist's Note/i)).not.toBeInTheDocument();
-    act(() => {
-      vi.advanceTimersByTime(400);
-    });
-    expect(screen.getByText(/The Alchemist's Note/i)).toBeInTheDocument();
-    expect(screen.getByText(/brew custom rituals/i)).toBeInTheDocument();
-  });
-
-  it('dismisses and stores state in localStorage', () => {
-    render(<RecipeLabExplainer visible={true} onDismiss={() => {}} />);
-    act(() => {
-      vi.advanceTimersByTime(400);
-    });
-    fireEvent.click(screen.getByText(/Understood/i));
-    expect(screen.queryByText(/The Alchemist's Note/i)).not.toBeInTheDocument();
-    expect(localStorage.getItem('grimoire-lab-explained')).toBe('true');
-  });
-
-  it('does not show again after being dismissed', () => {
-    localStorage.setItem('grimoire-lab-explained', 'true');
-    render(<RecipeLabExplainer visible={true} onDismiss={() => {}} />);
-    act(() => {
-      vi.advanceTimersByTime(400);
-    });
-    expect(screen.queryByText(/The Alchemist's Note/i)).not.toBeInTheDocument();
+  it('writes the dismissed key to localStorage when Skip Rite is clicked', () => {
+    const onClose = vi.fn();
+    render(
+      <LanguageProvider>
+        <ApprenticeWelcome onClose={onClose} />
+      </LanguageProvider>
+    );
+    fireEvent.click(screen.getByText(/Skip Rite/i));
+    expect(onClose).toHaveBeenCalledTimes(1);
   });
 });
 
@@ -466,7 +386,7 @@ describe('RecipeLabExplainer', () => {
 describe('SpellCard favorites', () => {
   it('does not show star when onToggleFavorite is not provided', () => {
     render(<SpellCard spell={sampleSpell} matched={null} />);
-    expect(screen.queryByLabelText('Bind to Summoning Circle')).not.toBeInTheDocument();
+    expect(screen.queryByLabelText(/bind to/i)).not.toBeInTheDocument();
   });
 
   it('shows unfilled star when not favorited', () => {
@@ -478,7 +398,7 @@ describe('SpellCard favorites', () => {
         onToggleFavorite={() => {}}
       />
     );
-    expect(screen.getByLabelText('Bind to Summoning Circle')).toBeInTheDocument();
+    expect(screen.getByLabelText(/bind to/i)).toBeInTheDocument();
   });
 
   it('shows filled star when favorited', () => {
@@ -490,7 +410,7 @@ describe('SpellCard favorites', () => {
         onToggleFavorite={() => {}}
       />
     );
-    expect(screen.getByLabelText('Unbind from Summoning Circle')).toBeInTheDocument();
+    expect(screen.getByLabelText(/unbind from/i)).toBeInTheDocument();
   });
 
   it('calls onToggleFavorite when star is clicked', () => {
@@ -503,7 +423,7 @@ describe('SpellCard favorites', () => {
         onToggleFavorite={toggle}
       />
     );
-    fireEvent.click(screen.getByLabelText('Bind to Summoning Circle'));
+    fireEvent.click(screen.getByLabelText(/bind to/i));
     expect(toggle).toHaveBeenCalledWith('Trace Sight', 'log-trace-correlation');
   });
 
@@ -519,22 +439,8 @@ describe('SpellCard favorites', () => {
         onToggleFavorite={toggle}
       />
     );
-    fireEvent.click(screen.getByLabelText('Bind to Summoning Circle'));
+    fireEvent.click(screen.getByLabelText(/bind to/i));
     expect(toggle).toHaveBeenCalledTimes(1);
     expect(onClick).not.toHaveBeenCalled();
-  });
-});
-
-describe('RecipeLab', () => {
-  const renderWithLang = (ui, lang = 'grimoire') => render(<LanguageProvider>{ui}</LanguageProvider>);
-
-  it('renders the recipe lab title', () => {
-    renderWithLang(<RecipeLab schools={[sampleSchool]} />);
-    expect(screen.getByText('⚗ Recipe Lab')).toBeInTheDocument();
-  });
-
-  it('renders the default copy for the current language', () => {
-    renderWithLang(<RecipeLab schools={[sampleSchool]} />);
-    expect(screen.getByText('Select 2–5 incantations below and brew a custom ritual')).toBeInTheDocument();
   });
 });

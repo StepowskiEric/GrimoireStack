@@ -34,8 +34,8 @@ export default function SchoolCardGrid({
   };
 
   const handleSaveFeatured = () => {
-    // Here you would save to localStorage or context
     localStorage.setItem('grimoire-featured-schools', JSON.stringify(tempFeatured));
+    onFeaturedSchoolsChange?.(tempFeatured);
     setIsEditing(false);
   };
 

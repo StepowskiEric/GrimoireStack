@@ -3,9 +3,8 @@ import { render } from '@testing-library/react';
 import { axe } from 'vitest-axe';
 import { LanguageProvider } from '../i18n/LanguageContext';
 import ShortcutsModal from '../components/ShortcutsModal.jsx';
-import StaleLinkBanner from '../components/StaleLinkBanner.jsx';
-import FilterChips from '../components/FilterChips.jsx';
 import InstallPrompt from '../components/InstallPrompt.jsx';
+import BestiaryCodex from '../components/BestiaryCodex.jsx';
 
 const sampleSchools = [
   {
@@ -41,44 +40,13 @@ describe('a11y', () => {
     expect(results).toHaveNoViolations();
   });
 
-  it('StaleLinkBanner has no axe violations', async () => {
+  it('BestiaryCodex has no axe violations', async () => {
     const { container } = renderWithLang(
-      <StaleLinkBanner skill="totally-unknown" onSelect={() => {}} onDismiss={() => {}} />
-    );
-    const results = await axe(container);
-    expect(results).toHaveNoViolations();
-  });
-
-  it('FilterChips has no axe violations', async () => {
-    const noop = () => {};
-    const { container } = renderWithLang(
-      <FilterChips
+      <BestiaryCodex
         schools={sampleSchools}
-        schoolFilter={new Set()}
-        tierFilter={new Set()}
-        favoritesOnly={false}
-        onToggleSchool={noop}
-        onToggleTier={noop}
-        onToggleFavorites={noop}
-        onClear={noop}
-      />
-    );
-    const results = await axe(container);
-    expect(results).toHaveNoViolations();
-  });
-
-  it('FilterChips with active filters has no axe violations', async () => {
-    const noop = () => {};
-    const { container } = renderWithLang(
-      <FilterChips
-        schools={sampleSchools}
-        schoolFilter={new Set(['debugging'])}
-        tierFilter={new Set(['adept'])}
-        favoritesOnly
-        onToggleSchool={noop}
-        onToggleTier={noop}
-        onToggleFavorites={noop}
-        onClear={noop}
+        onSpellClick={() => {}}
+        isFavorited={() => false}
+        hasNote={() => false}
       />
     );
     const results = await axe(container);

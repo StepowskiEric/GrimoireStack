@@ -25,15 +25,16 @@ export default function SpellDetailView({
 
   // If viewing a specific spell
   if (activeSpell) {
-    const vote = getVote ? getVote(activeSpell) : null;
+    const vote = getVote ? getVote(activeSpell.skill) : null;
     const { name: tierName } = vote || { name: 'Common' };
-    
+    const favorited = isFavorited(activeSpell.name, activeSpell.skill);
+
     return (
       <div className="spell-detail">
         <button className="spell-detail__back" onClick={handleBackToSchool} type="button">
           ← Back to {school.name}
         </button>
-        
+
         <div className="spell-detail__header">
           <span className="spell-detail__symbol">{school.symbol}</span>
           <h2 className="spell-detail__name">{activeSpell.name}</h2>
@@ -72,11 +73,11 @@ export default function SpellDetailView({
 
         <div className="spell-detail__actions">
           <button
-            className={`spell-detail__fav ${isFavorited(activeSpell.name) ? 'spell-detail__fav--active' : ''}`}
-            onClick={() => onToggleFavorite(activeSpell.name)}
+            className={`spell-detail__fav ${favorited ? 'spell-detail__fav--active' : ''}`}
+            onClick={() => onToggleFavorite(activeSpell.name, activeSpell.skill)}
             type="button"
           >
-            {isFavorited(activeSpell.name) ? '★ Favorited' : '☆ Add to Favorites'}
+            {favorited ? '★ Favorited' : '☆ Add to Favorites'}
           </button>
         </div>
 

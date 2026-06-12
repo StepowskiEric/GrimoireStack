@@ -135,3 +135,177 @@ A good agent-skill repository should preserve both:
 
 - **control** where behavior must be constrained
 - **judgment** where thinking quality matters more than workflow ceremony
+
+---
+
+# The GrimoireStack App
+
+A React + Vite single-page app that presents the skill catalog as a living eldritch grimoire. Browse schools, search the abyss, cast spells, and inscribe them into your agent's workshop.
+
+```
+app/
+├── src/
+│   ├── App.jsx               # Root: providers, state, modals, lazy splits
+│   ├── App.css               # Theme tokens + every component style
+│   ├── data/                 # schools, spell catalog, schema, sigils, graph
+│   ├── hooks/                # Favorites, Recent, Marginalia, Signals, Cast
+│   ├── components/           # See "Components" below
+│   ├── i18n/                 # Grimoire ↔ Plain language toggle
+│   ├── utils/                # Exporter, problem match, URL spell sync
+│   ├── audio/                # Witch laugh, page creak, ambience
+│   └── test/                 # Vitest unit + a11y + Playwright e2e
+└── scripts/                  # prerender, sitemap, RSS build steps
+```
+
+## Design language
+
+The interface is themed as a Cthulhu-mythos / Bloodborne-style grimoire. Design tokens in `App.css` `:root`:
+
+| Token group | Purpose |
+|-------------|---------|
+| `--abyss`, `--abyss-deep`, `--void` | Background — pitch black with subtle violet wash |
+| `--sickly`, `--sickly-bright`, `--sickly-dim` | Bioluminescent teal-green for eye glow and active states |
+| `--bruised`, `--bruised-dim` | Cosmic purple for chrome highlights and active links |
+| `--moonlight`, `--moonlight-dim`, `--moonlight-mute` | Tarnished parchment text colors |
+| `--blood`, `--blood-dim` | Sparingly used for warnings and OOD results |
+| `--gold`, `--gold-bright`, `--gold-glow` | Active focus rings and key highlights |
+| `--leather`, `--leather-mid`, `--leather-edge` | Card surfaces |
+| `--purple`, `--purple-dim`, `--purple-glow` | Decorative rune accents |
+
+Typography: `Cinzel` / `Cinzel Decorative` (serif display) and `Cormorant Garamond` (body) loaded via Google Fonts in the prerendered HTML.
+
+## Layout (the "Great Eye")
+
+```
+┌─────────────────────────────────────────────────────────────┐
+│  Top nav: ARCHIVE | THE VAULT | RITUALS                     │
+├──────────────┬──────────────────────────┬───────────────────┤
+│              │                          │                   │
+│   Sidebar    │      Center stage        │     Right panel   │
+│              │                          │                   │
+│  · Brand     │     Great Eye SVG        │   Tab content     │
+│  · Stats     │   (breathing, blinking,  │   (Library /      │
+│  · Warden    │    mouse-tracking pupil) │    Vault /        │
+│  · Tabs      │                          │    Rituals /      │
+│  · Footer    │   Featured school        │    Bestiary /     │
+│    links     │   filaments around eye   │    Settings)      │
+│              │   Search in pupil        │                   │
+└──────────────┴──────────────────────────┴───────────────────┘
+```
+
+`GrimoireStackLayout.jsx` orchestrates all three panes. On screens narrower than 768 px the sidebar collapses to a bottom nav (`BottomNav.jsx`).
+
+## Components (current)
+
+| Component | Role |
+|-----------|------|
+| `GrimoireStackLayout` | Three-pane layout shell |
+| `GrimoireEye` | The animated central eye with mouse-tracking pupil, search input, and featured school filaments |
+| `SchoolCardGrid` | Featured schools with "Customize" picker; selection persisted to `localStorage['grimoire-featured-schools']` |
+| `AllSchoolsView` | Searchable grid of every school |
+| `SpellDetailView` | School-detail page; lists spells with favorite + marginalia per spell |
+| `SpellCard` | Single spell card with favorite toggle |
+| `FavoritesView` | The Vault — favorites, recently viewed, marginalia |
+| `RecipeLabView` | The Rituals tab — pick 2 spells and open the compare modal |
+| `BestiaryCodex` | The Bestiary — alphabetical compendium with deep filters and cosmic-horror visual treatment |
+| `SettingsView` | Cast animation toggle, language switch, export, keyboard shortcut link, GitHub |
+| `SpellModal` | Full spell view — Plain English ↔ Full Grimoire Entry toggle, marginalia, signals (up/down), share, multi-agent inscribe |
+| `LidlessEyeCast` | Animated SVG cast that opens before the modal; per-school hand-drawn sigils (`schoolSigils.jsx`); 5 phases (wake, bleed, sigil, name, close) |
+| `CompareSpellsModal` | Side-by-side spell comparison with picker |
+| `ProblemIntakeModal` | Free-text problem → ranked spell suggestions |
+| `WitchDoctorModal` | Guided category → situation → spell flow |
+| `ShortcutsModal` | `?` keyboard cheatsheet |
+| `ApprenticeWelcome` | 3-panel first-visit onboarding |
+| `InstallPrompt` | PWA install prompt (dismissed via `localStorage['grimoire-install-dismissed']`) |
+| `ErrorBoundary` | Top-level error boundary |
+| `Embers` | Drifting bioluminescent particles (fixed background) |
+| `Icon` | Hand-crafted SVG icon set (archive, vault, alembic, tools, sigil, search) |
+| `LanguageToggle` | Grimoire ↔ Plain language switcher (mounted in the sidebar) |
+
+## Data model
+
+The contract is defined in `data/schema.js` (with `validateSpell`, `validateSchool`, `validateSchools`, `validateWizardData`).
+
+**School** — `{ id, real, name, symbol, desc, spells[] }`
+
+**Spell** — `{ name, skill, effect, status?, note?, combos?[] }`
+
+**Sources of derived data:**
+- `data/spellCatalog.js` — id-based spell lookup; used by compare, intake, witch doctor
+- `data/spellMetadata.js` — alphabetical index, recently-updated feed (with explicit `lastUpdated` dates and curated `note` strings), per-spell "is explicit" flag
+- `data/spellGraph.js` — nodes + edges (weighted by reciprocal combo mentions) for any future relationship graph
+- `data/tiers.js` — `TIER_META` for arcane-tier badges
+- `data/schoolSigils.jsx` — 15 hand-drawn SVG sigils, one per school
+- `data/wizardData` (`schools.js` `WIZARD_DATA`) — 11 categories × 70 situations; used by `WitchDoctorModal` and `ProblemIntakeModal`
+- `data/constants.js` — `REPO_URL`
+
+## Hooks
+
+| Hook | What it stores | Storage key |
+|------|----------------|-------------|
+| `useFavorites` | Per-spell favorite state | `grimoire-favorites` |
+| `useRecentlyViewed` | MRU list of opened spells | `grimoire-recent` |
+| `useMarginalia` | Per-spell scratchpad notes | `grimoire-marginalia` |
+| `useSignals` | Local up/down votes + deterministic synthetic aggregate | `grimoire-signals`, `grimoire-signals-aggregate` |
+| `useKeyboardShortcuts` | Global `?` / `/` / `j` / `k` / `f` / `Esc` handling | — |
+| `useSpellInteraction` | Modal + casting + URL sync + not-found state | — |
+| `useEldritchCast` | The five-phase cast animation timeline | — |
+| `useLanguage` (`i18n/LanguageContext`) | Grimoire ↔ Plain language | `grimoire-lang` |
+| `useSpellInteraction` also handles `?s=<skill>` and `/s/<skill>` deep links via `utils/urlSpellSync.js` |
+
+All `useStorage` writes are wrapped in `try { ... } catch {}` so private-mode browsers degrade gracefully.
+
+## URL routing
+
+Per-spell deep links:
+
+- `https://<host>/s/<skill>` — canonical
+- `https://<host>/?s=<skill>` — legacy
+
+Opening one of these URLs auto-opens the spell modal after a 300 ms delay (to let the eye render). Browser back/forward is hooked to the same state machine via `popstate`. Unknown skills trigger the not-found path in `useSpellInteraction`.
+
+## Keyboard shortcuts
+
+| Key | Action |
+|-----|--------|
+| `?` | Open the cheatsheet modal |
+| `/` | Focus the search input in the pupil |
+| `j` / `↓` | Focus next visible spell card |
+| `k` / `↑` | Focus previous visible spell card |
+| `f` | Toggle favorite on the focused card |
+| `Esc` | Close the topmost modal/overlay (welcome, shortcuts, witch doctor, compare, intake, spell modal) |
+
+## Build pipeline
+
+```bash
+cd app
+npm run dev           # vite dev server
+npm run build         # vite build + prerender + sitemap + RSS
+npm test              # vitest
+npm run test:e2e      # playwright (requires dev server)
+```
+
+`npm run build` runs four steps in order:
+
+1. `vite build` — bundle the SPA
+2. `scripts/prerender.mjs` — pre-render all `schools` and per-spell `/s/<skill>` routes to static HTML for SEO and OG tags
+3. `scripts/build-sitemap.mjs` — emit `sitemap.xml`
+4. `scripts/build-rss.mjs` — emit the changelog RSS feed
+
+Output: `app/dist/`. Deploy with `npx wrangler pages deploy dist --project-name grimoirestack`.
+
+## Testing
+
+- **Vitest unit tests** in `app/src/test/` — covers data, hooks, utils, components, a11y, search, exporter, problem matcher, spell graph, spell metadata, URL sync
+- **Playwright e2e** at the repo root — covers navigation, search, favorites, marginalia, signals, keyboard shortcuts, PWA install prompt, axe a11y
+- Run only unit: `cd app && npm test`
+- Run only e2e: `cd app && npm run test:e2e:prod` (uses the built `dist/`)
+- Run all: `cd app && npm test && npm run test:e2e:prod`
+
+## Theming overrides
+
+Add a CSS variable override in `App.css` `:root` or a `<style>` block. The app honors `prefers-reduced-motion` by collapsing the cast animation to a cross-fade (`lidless-cast--reduced`).
+
+## Removing or reimplementing features
+
+See [`FEATURES_ARCHIVE.md`](./FEATURES_ARCHIVE.md) for a catalog of features that existed in earlier designs and were deliberately removed during the eldritch refactor, with notes on how each could be reimplemented in the current theme.
