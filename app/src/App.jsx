@@ -2,7 +2,7 @@ import { useState, useEffect, useCallback, useRef, useMemo, lazy, Suspense } fro
 import { BrowserRouter } from 'react-router-dom';
 import schools from './data/schools.js';
 import { searchSpells, filterSpells } from './search.js';
-import { witchLaugh, pageCreak, startAmbience } from './audio/sounds.js';
+import { witchLaugh, pageCreak, startAmbience, startWhispers, setAudioEnabled as setSiteAudioEnabled } from './audio/sounds.js';
 import Embers from './components/Embers.jsx';
 import LidlessEyeCast from './components/LidlessEyeCast.tsx';
 import './components/LidlessEyeCast.css';
@@ -13,7 +13,7 @@ import { useFavorites } from './hooks/useFavorites.js';
 import { useRecentlyViewed } from './hooks/useRecentlyViewed.js';
 import { useMarginalia } from './hooks/useMarginalia.js';
 import { useKeyboardShortcuts } from './hooks/useKeyboardShortcuts.js';
-import { spellCatalog } from './data/spellCatalogInstance.js';
+import { grimoireIndex } from './data/grimoireIndexInstance.js';
 import { LanguageProvider } from './i18n/LanguageContext';
 import { useSignals } from './hooks/useSignals.js';
 import { exportAsJson, exportAsMarkdown, copyToClipboard } from './utils/exporter.js';
@@ -42,6 +42,7 @@ function AppInner() {
   const [currentSchool, setCurrentSchool] = useState(schools[0].id);
   const [searchQuery, setSearchQuery] = useState('');
   const [castEnabled, setCastEnabled] = useState(() => localStorage.getItem('grimoire-cast') !== 'off');
+  const [audioEnabled, setAudioEnabled] = useState(() => localStorage.getItem('grimoire-audio') !== 'off');
   const [welcomeOpen, setWelcomeOpen] = useState(() => localStorage.getItem(WELCOME_STORAGE_KEY) !== 'true');
   const [shortcutsOpen, setShortcutsOpen] = useState(false);
   const [schoolFilter, setSchoolFilter] = useState(new Set());
@@ -49,7 +50,33 @@ function AppInner() {
   const [favoritesOnly, setFavoritesOnly] = useState(false);
   const laughPlayedRef = useRef(false);
   const ambienceStartedRef = useRef(false);
+  const whispersStartedRef = useRef(false);
   const initializedRef = useRef(false);
+
+  // Render-side sync: the sounds.js module owns a master audio flag
+  // that every audio function checks. When the React state changes
+  // (initial mount, or a Settings toggle), we mirror it to the module
+  // in the same render — no useEffect, no deferred cycle, so toggling
+  // off stops the running ambience / whisper scheduler immediately.
+  // The sentinel `null` initial value forces a sync on the first render
+  // so the module flag reflects localStorage before any audio fires.
+  const prevAudioEnabledRef = useRef(null);
+  if (prevAudioEnabledRef.current !== audioEnabled) {
+    const wasEnabled = prevAudioEnabledRef.current;
+    prevAudioEnabledRef.current = audioEnabled;
+    setSiteAudioEnabled(audioEnabled);
+    if (wasEnabled === true && audioEnabled === false) {
+      whispersStartedRef.current = false;
+    } else if (wasEnabled === false && audioEnabled === true) {
+      // Re-enable after the first gesture: kick the whisper scheduler
+      // back off immediately. If the first gesture hasn't happened
+      // yet, the first-gesture handler below will start it.
+      if (ambienceStartedRef.current) {
+        whispersStartedRef.current = true;
+        startWhispers();
+      }
+    }
+  }
 
   // Modal state
   const [compareOpen, setCompareOpen] = useState(false);
@@ -124,7 +151,7 @@ function AppInner() {
   }, [handleSpellClick]);
 
   const handleNotFoundSelect = useCallback((skill) => {
-    const found = spellCatalog.resolveBySkill(skill);
+    const found = grimoireIndex.resolveBySkill(skill);
     if (found) {
       dismissNotFound();
       handleSpellClick(found.spell, found.school);
@@ -194,6 +221,10 @@ function AppInner() {
         ambienceStartedRef.current = true;
         startAmbience();
       }
+      if (audioEnabled && !whispersStartedRef.current) {
+        whispersStartedRef.current = true;
+        startWhispers();
+      }
       document.removeEventListener('click', handler);
       document.removeEventListener('keydown', handler);
       document.removeEventListener('touchstart', handler);
@@ -206,7 +237,7 @@ function AppInner() {
       document.removeEventListener('keydown', handler);
       document.removeEventListener('touchstart', handler);
     };
-  }, []);
+  }, [audioEnabled]);
 
   useEffect(() => {
     if (searchResults.total > 0 && !laughPlayedRef.current) {
@@ -230,6 +261,14 @@ function AppInner() {
     setCastEnabled((prev) => {
       const next = !prev;
       localStorage.setItem('grimoire-cast', next ? 'on' : 'off');
+      return next;
+    });
+  }, []);
+
+  const toggleAudio = useCallback(() => {
+    setAudioEnabled((prev) => {
+      const next = !prev;
+      localStorage.setItem('grimoire-audio', next ? 'on' : 'off');
       return next;
     });
   }, []);
@@ -326,6 +365,8 @@ function AppInner() {
         aggregateFor={aggregateFor}
         castEnabled={castEnabled}
         onToggleCast={toggleCast}
+        audioEnabled={audioEnabled}
+        onToggleAudio={toggleAudio}
         onIntakeOpen={() => setIntakeOpen(true)}
         onCompareOpen={() => setCompareOpen(true)}
         onCompareTwo={handleCompareTwo}

@@ -7,6 +7,8 @@ const GITHUB_REPO_URL = 'https://github.com/StepowskiEric/GrimoireStack';
 export default function SettingsView({
   castEnabled,
   onToggleCast,
+  audioEnabled,
+  onToggleAudio,
   onShowShortcuts,
   onExportJson,
   onExportMarkdown,
@@ -94,6 +96,21 @@ export default function SettingsView({
               falls; the pupil dilates; the incantation reveals itself.
               Turn this off for those who prefer the quick reveal.
             </p>
+            <div className="settings-view__option">
+              <label className="settings-view__toggle">
+                <input
+                  type="checkbox"
+                  checked={audioEnabled}
+                  onChange={onToggleAudio}
+                />
+                <span>Enable sounds</span>
+              </label>
+              <p className="settings-view__option-hint">
+                Silences the ambient drone, page creaks, cackles, and the
+                distant background whispers. Mute the incantation if the
+                workshop demands silence.
+              </p>
+            </div>
             <div className="settings-view__option">
               <label className="settings-view__toggle">
                 <input

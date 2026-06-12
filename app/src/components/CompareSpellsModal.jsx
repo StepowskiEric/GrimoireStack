@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState, useCallback, useMemo } from 'react';
-import { getAllFlat } from '../data/spellMetadata.js';
+import { grimoireIndex } from '../data/grimoireIndexInstance.js';
 import { compareSpells } from '../utils/markdownExport.js';
 import ModalEye from './ModalEye.tsx';
 import SchoolSigil from './SchoolSigil.tsx';
@@ -10,7 +10,7 @@ export default function CompareSpellsModal({ left, right, onClose, onSelect, onP
   const [pickerSlot, setPickerSlot] = useState(null); // 'left' | 'right' | null
   const [pickerQuery, setPickerQuery] = useState('');
 
-  const all = useMemo(() => getAllFlat(), []);
+  const all = useMemo(() => grimoireIndex.allEntries(), []);
 
   useEffect(() => {
     const modal = modalRef.current;

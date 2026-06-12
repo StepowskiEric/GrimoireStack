@@ -6,7 +6,6 @@ import {
   getRecentlyUpdated,
   getChangeFeed,
   getAlphabeticalIndex,
-  getAllFlat,
 } from '../data/spellMetadata.js';
 
 describe('spellMetadata', () => {
@@ -104,15 +103,6 @@ describe('spellMetadata', () => {
 
     it('each entry has spell and school', () => {
       const items = getAlphabeticalIndex();
-      expect(items[0]).toHaveProperty('spell');
-      expect(items[0]).toHaveProperty('school');
-    });
-  });
-
-  describe('getAllFlat', () => {
-    it('returns a flat array of all spells with school', () => {
-      const items = getAllFlat();
-      expect(items.length).toBeGreaterThan(10);
       expect(items[0]).toHaveProperty('spell');
       expect(items[0]).toHaveProperty('school');
     });

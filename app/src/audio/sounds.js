@@ -3,7 +3,23 @@ let pageCreakAudio = null;
 let ambienceStarted = false;
 const ambienceNodes = [];
 
+// ── Master audio gate ───────────────────────────────────
+// `audioEnabled` is the single switch for all sounds on the site.
+// When false, every audio function below is a no-op and any running
+// ambience / whisper scheduler stops. The React side (App.jsx) owns
+// the persisted preference and calls setAudioEnabled() to sync.
+let audioEnabled = true;
+
+function setAudioEnabled(enabled) {
+  audioEnabled = !!enabled;
+  if (!audioEnabled) {
+    stopAmbience();
+    stopWhispers();
+  }
+}
+
 function witchLaugh() {
+  if (!audioEnabled) return;
   try {
     if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
     if (audioCtx.state === 'suspended') audioCtx.resume();
@@ -68,6 +84,7 @@ function witchLaugh() {
 }
 
 function pageCreak() {
+  if (!audioEnabled) return;
   try {
     if (!pageCreakAudio) {
       pageCreakAudio = new Audio('/turning-the-page.mp3');
@@ -82,6 +99,7 @@ function pageCreak() {
 let pageTurnAudio = null;
 
 function pageTurn() {
+  if (!audioEnabled) return;
   try {
     if (!pageTurnAudio) {
       pageTurnAudio = new Audio('/turning-the-page.mp3');
@@ -94,6 +112,7 @@ function pageTurn() {
 }
 
 function startAmbience() {
+  if (!audioEnabled) return;
   if (ambienceStarted) return;
   ambienceStarted = true;
   try {
@@ -171,7 +190,21 @@ function ensureCtx() {
   return audioCtx;
 }
 
+// Tear down the running ambience. All nodes are stopped and disconnected;
+// the recursive crackle scheduler exits because `ambienceStarted` flips.
+function stopAmbience() {
+  ambienceStarted = false;
+  for (const node of ambienceNodes) {
+    try {
+      if (typeof node.stop === 'function') node.stop();
+      if (typeof node.disconnect === 'function') node.disconnect();
+    } catch {}
+  }
+  ambienceNodes.length = 0;
+}
+
 function castTear() {
+  if (!audioEnabled) return;
   try {
     const ctx = ensureCtx();
     const now = ctx.currentTime;
@@ -200,6 +233,7 @@ function castTear() {
 }
 
 function castBoom() {
+  if (!audioEnabled) return;
   try {
     const ctx = ensureCtx();
     const now = ctx.currentTime;
@@ -237,6 +271,7 @@ function castBoom() {
 }
 
 function castScratch() {
+  if (!audioEnabled) return;
   try {
     const ctx = ensureCtx();
     const now = ctx.currentTime;
@@ -266,6 +301,7 @@ function castScratch() {
 }
 
 function castThud() {
+  if (!audioEnabled) return;
   try {
     const ctx = ensureCtx();
     const now = ctx.currentTime;
@@ -296,6 +332,7 @@ function castThud() {
 // Faint, unsettling sounds for the cosmic horror Archives experience.
 
 function hoverWhisper() {
+  if (!audioEnabled) return;
   try {
     const ctx = ensureCtx();
     const now = ctx.currentTime;
@@ -325,6 +362,7 @@ function hoverWhisper() {
 }
 
 function wetTendril() {
+  if (!audioEnabled) return;
   try {
     const ctx = ensureCtx();
     const now = ctx.currentTime;
@@ -355,5 +393,102 @@ function wetTendril() {
     }
   } catch {}
 }
+// ── Background whispers ────────────────────────────────
+// Occasional short whispers layered over the ambience to thicken the
+// atmosphere. Plays at a sparse, randomized interval (30–90s) and at
+// low volume so it stays background.
+//
+// The scheduler is owned by module-level state, not a React effect.
+// It checks the master `audioEnabled` flag at every step, so flipping
+// the Settings "Enable sounds" toggle off mid-session stops both the
+// currently-playing whisper and the next scheduled one.
 
-export { witchLaugh, pageCreak, pageTurn, startAmbience, castTear, castBoom, castScratch, castThud, hoverWhisper, wetTendril };
+const WHISPER_URLS = [
+  '/whispering_1.mp3',
+  '/whispering_2.mp3',
+  '/whispering_3.mp3',
+  '/whispering_4.mp3',
+  '/whispering_5.mp3',
+  '/whispering_6.mp3',
+  '/whispering_7.mp3',
+];
+
+// Gap between whispers. Lower bound is high enough that the longest
+// recorded whisper finishes before the next one can start. Upper bound
+// is sparse so the user is not constantly interrupted.
+const WHISPER_FIRST_DELAY_MS = 18000;     // first whisper ~18s in
+const WHISPER_MIN_GAP_MS = 30000;         // 30s minimum between whispers
+const WHISPER_MAX_GAP_MS = 90000;         // up to 90s between whispers
+const WHISPER_VOLUME = 0.18;              // background level
+
+let whispersStarted = false;
+let whisperTimer = null;
+
+function pickWhisperUrl() {
+  return WHISPER_URLS[Math.floor(Math.random() * WHISPER_URLS.length)];
+}
+
+function playOneWhisper() {
+  if (!audioEnabled) return;
+  try {
+    const url = pickWhisperUrl();
+    const audio = new Audio(url);
+    audio.volume = WHISPER_VOLUME;
+    // Play() returns a promise that can reject if the user has not
+    // interacted with the page; we deliberately swallow that error.
+    audio.play().catch(() => {});
+  } catch {}
+}
+
+function scheduleNextWhisper() {
+  if (!whispersStarted) return;
+  if (!audioEnabled) return;
+  const gap =
+    WHISPER_MIN_GAP_MS + Math.random() * (WHISPER_MAX_GAP_MS - WHISPER_MIN_GAP_MS);
+  whisperTimer = setTimeout(() => {
+    if (!whispersStarted) return;
+    if (!audioEnabled) return;
+    playOneWhisper();
+    scheduleNextWhisper();
+  }, gap);
+}
+
+function startWhispers() {
+  if (whispersStarted) return;
+  if (!audioEnabled) return;
+  whispersStarted = true;
+  // First whisper: 18–25s after start, so the ambience has time to
+  // settle before the first whisper layers on top.
+  const firstDelay = WHISPER_FIRST_DELAY_MS + Math.random() * 7000;
+  whisperTimer = setTimeout(() => {
+    if (!whispersStarted) return;
+    if (!audioEnabled) return;
+    playOneWhisper();
+    scheduleNextWhisper();
+  }, firstDelay);
+}
+
+function stopWhispers() {
+  whispersStarted = false;
+  if (whisperTimer) {
+    clearTimeout(whisperTimer);
+    whisperTimer = null;
+  }
+}
+
+export {
+  witchLaugh,
+  pageCreak,
+  pageTurn,
+  startAmbience,
+  stopAmbience,
+  castTear,
+  castBoom,
+  castScratch,
+  castThud,
+  hoverWhisper,
+  wetTendril,
+  startWhispers,
+  stopWhispers,
+  setAudioEnabled,
+};

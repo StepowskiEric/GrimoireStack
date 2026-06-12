@@ -1,9 +1,19 @@
 import { useEffect, useRef, useState, useMemo } from 'react';
-import { matchProblemToSpells, suggestExampleProblems } from '../utils/problemMatch.js';
-import { spellCatalog } from '../data/spellCatalogInstance.js';
+import { grimoireIndex } from '../data/grimoireIndexInstance.js';
 import ModalEye from './ModalEye.tsx';
 import SchoolSigil from './SchoolSigil.tsx';
 import Icon from './Icon.jsx';
+
+const SUGGEST_EXAMPLE_PROBLEMS = [
+  'My tests are failing in CI but pass locally',
+  'I have a production bug with no clear repro',
+  'Need to refactor a 2000-line legacy module safely',
+  'Designing a new microservice and worried about coupling',
+  'My code review is taking forever, want to focus on real issues',
+  'The agent keeps hallucinating APIs that do not exist',
+  'Need to coordinate three subagents without losing context',
+  'Want to verify an answer before I commit to it',
+];
 
 export default function ProblemIntakeModal({ onClose, onSelectSpell }) {
   const modalRef = useRef(null);
@@ -27,10 +37,10 @@ export default function ProblemIntakeModal({ onClose, onSelectSpell }) {
   }, [onClose]);
 
   const matches = useMemo(() => {
-    return matchProblemToSpells(query, { limit: 6 });
+    return grimoireIndex.matchProblem(query, { limit: 6 });
   }, [query]);
 
-  const examples = useMemo(() => suggestExampleProblems(), []);
+  const examples = useMemo(() => SUGGEST_EXAMPLE_PROBLEMS, []);
 
   const handleSubmit = (e) => {
     e?.preventDefault?.();
@@ -41,7 +51,7 @@ export default function ProblemIntakeModal({ onClose, onSelectSpell }) {
   };
 
   const handleOpenSpell = (spell) => {
-    const entry = spellCatalog.resolveBySkill(spell.skill);
+    const entry = grimoireIndex.resolveBySkill(spell.skill);
     if (entry) onSelectSpell?.(entry.spell, entry.school);
     else onClose?.();
   };

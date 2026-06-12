@@ -1,6 +1,7 @@
 import { useState, useMemo, useCallback } from 'react';
 import { TIER_META, getSpellTier } from '../data/tiers.js';
-import { getAlphabeticalIndex, getSpellLastUpdated } from '../data/spellMetadata.js';
+import { getSpellLastUpdated } from '../data/spellMetadata.js';
+import { grimoireIndex } from '../data/grimoireIndexInstance.js';
 import SchoolSigil from './SchoolSigil.tsx';
 
 const TIER_ORDER = ['archmage', 'master', 'adept', 'apprentice', 'faded'];
@@ -55,7 +56,7 @@ export default function BestiaryCodex({
 
   const all = useMemo(() => {
     // Prefer the `schools` prop (so tests can inject custom data); fall back
-    // to the global alphabetical index for the production runtime.
+    // to the grimoireIndex alphabetical sort for the production runtime.
     if (Array.isArray(schools) && schools.length > 0) {
       const list = [];
       for (const school of schools) {
@@ -66,7 +67,11 @@ export default function BestiaryCodex({
       list.sort((a, b) => a.spell.name.localeCompare(b.spell.name));
       return list;
     }
-    return getAlphabeticalIndex().map((e) => ({ ...e, _key: `${e.school.id}::${e.spell.skill}` }));
+    return grimoireIndex
+      .allEntries()
+      .slice()
+      .sort((a, b) => a.spell.name.localeCompare(b.spell.name))
+      .map((e) => ({ ...e, _key: `${e.school.id}::${e.spell.skill}` }));
   }, [schools]);
 
   const _schoolById = useMemo(() => {

@@ -1,13 +1,15 @@
 /**
  * GrimoireStack — Spell metadata
  *
- * Per-spell "lastUpdated" dates and curated change notes.
- * Spells without an explicit entry fall back to a deterministic
- * hash-based date within the past year so the changelog is always
- * populated and stable.
+ * Per-spell "lastUpdated" dates and curated change notes. Spells without
+ * an explicit entry fall back to a deterministic hash-based date within
+ * the past year so the changelog is always populated and stable.
+ *
+ * Iteration over the corpus goes through `grimoireIndex` — this module
+ * only adds the metadata layer (explicit curation, recency sort) on top.
  */
 
-import schools from './schools.js';
+import { grimoireIndex } from './grimoireIndexInstance.js';
 
 const ISO = (date) => date.toISOString().slice(0, 10);
 
@@ -120,22 +122,18 @@ export function isExplicitlyUpdated(skill) {
 }
 
 export function getRecentlyUpdated(limit = 12) {
-  const entries = [];
-  for (const school of schools) {
-    for (const sp of school.spells) {
-      entries.push({
-        skill: sp.skill,
-        name: sp.name,
-        spell: sp,
-        school: school,
-        lastUpdated: getSpellLastUpdated(sp.skill),
-        isExplicit: isExplicitlyUpdated(sp.skill),
-        note: getSpellNote(sp.skill),
-      });
-    }
-  }
-  entries.sort((a, b) => b.lastUpdated.localeCompare(a.lastUpdated));
-  return entries.slice(0, limit);
+  return grimoireIndex.allEntries()
+    .map(({ spell, school }) => ({
+      skill: spell.skill,
+      name: spell.name,
+      spell,
+      school,
+      lastUpdated: getSpellLastUpdated(spell.skill),
+      isExplicit: isExplicitlyUpdated(spell.skill),
+      note: getSpellNote(spell.skill),
+    }))
+    .sort((a, b) => b.lastUpdated.localeCompare(a.lastUpdated))
+    .slice(0, limit);
 }
 
 export function getChangeFeed(limit = 30) {
@@ -143,16 +141,7 @@ export function getChangeFeed(limit = 30) {
 }
 
 export function getAlphabeticalIndex() {
-  const all = [];
-  for (const school of schools) {
-    for (const sp of school.spells) {
-      all.push({ spell: sp, school });
-    }
-  }
-  all.sort((a, b) => a.spell.name.localeCompare(b.spell.name));
-  return all;
-}
-
-export function getAllFlat() {
-  return schools.flatMap((s) => s.spells.map((sp) => ({ spell: sp, school: s })));
+  return grimoireIndex.allEntries()
+    .slice()
+    .sort((a, b) => a.spell.name.localeCompare(b.spell.name));
 }

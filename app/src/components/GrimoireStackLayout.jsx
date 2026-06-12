@@ -55,6 +55,8 @@ export default function GrimoireStackLayout({
   _aggregateFor,
   castEnabled,
   onToggleCast,
+  audioEnabled,
+  onToggleAudio,
   _onIntakeOpen,
   onCompareOpen,
   onCompareTwo,
@@ -246,6 +248,8 @@ export default function GrimoireStackLayout({
           <SettingsView
             castEnabled={castEnabled}
             onToggleCast={onToggleCast}
+            audioEnabled={audioEnabled}
+            onToggleAudio={onToggleAudio}
             onShowShortcuts={onShowShortcuts}
             onExportJson={onExportJson}
             onExportMarkdown={onExportMarkdown}

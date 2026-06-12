@@ -1,15 +1,6 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
-import schools from '../data/schools.js';
+import { grimoireIndex } from '../data/grimoireIndexInstance.js';
 import { parseSpellFromLocation, buildPathForSpell } from '../utils/urlSpellSync.js';
-
-function findSpellBySkill(skill) {
-  for (const s of schools) {
-    for (const sp of s.spells) {
-      if (sp.skill === skill) return { spell: sp, school: s };
-    }
-  }
-  return null;
-}
 
 function pushSpellUrl(skill) {
   if (typeof window === 'undefined') return;
@@ -85,7 +76,7 @@ export function useSpellInteraction(castEnabled) {
   useEffect(() => {
     const skillId = parseSpellFromLocation(window.location);
     if (!skillId) return;
-    const found = findSpellBySkill(skillId);
+    const found = grimoireIndex.resolveBySkill(skillId);
     if (found) {
       setTimeout(() => {
         openModal(found.spell, found.school);
@@ -106,7 +97,7 @@ export function useSpellInteraction(castEnabled) {
         setNotFoundSkill(null);
         return;
       }
-      const found = findSpellBySkill(skillId);
+      const found = grimoireIndex.resolveBySkill(skillId);
       if (found) {
         setModal({ spell: found.spell, school: found.school });
         setNotFoundSkill(null);

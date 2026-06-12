@@ -1,5 +1,5 @@
 import { useMemo } from 'react';
-import { findSimilarSkills } from '../utils/findSimilarSkills.js';
+import { grimoireIndex } from '../data/grimoireIndexInstance.js';
 import { useLanguage } from '../i18n/LanguageContext';
 import Icon from './Icon.jsx';
 
@@ -7,7 +7,7 @@ export default function StaleLinkBanner({ skill, onDismiss, onSelectSkill }) {
   const { lang } = useLanguage();
   const isGrimoire = lang === 'grimoire';
 
-  const suggestions = useMemo(() => findSimilarSkills(skill, 4), [skill]);
+  const suggestions = useMemo(() => grimoireIndex.similarTo(skill, 4), [skill]);
 
   const title = isGrimoire
     ? 'The incantation has been unbound'
@@ -33,12 +33,12 @@ export default function StaleLinkBanner({ skill, onDismiss, onSelectSkill }) {
             <div className="notfound-suggestions">
               {suggestions.map((entry) => (
                 <button
-                  key={entry.skill}
+                  key={entry.spell.skill}
                   type="button"
                   className="notfound-suggestion"
-                  onClick={() => onSelectSkill?.(entry.skill, entry.school)}
+                  onClick={() => onSelectSkill?.(entry.spell.skill, entry.school)}
                 >
-                  {entry.skill}
+                  {entry.spell.skill}
                 </button>
               ))}
             </div>

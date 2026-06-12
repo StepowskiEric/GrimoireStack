@@ -1,12 +1,12 @@
 import { useEffect, useRef, useState, useCallback, useMemo } from 'react';
 import { TIER_META, getSpellTier } from '../data/tiers.js';
-import { spellCatalog } from '../data/spellCatalogInstance.js';
+import { grimoireIndex } from '../data/grimoireIndexInstance.js';
 import { buildShareUrl } from '../utils/urlSpellSync.js';
 import Icon from './Icon.jsx';
 import SchoolSigil from './SchoolSigil.tsx';
 
 function findSpell(name) {
-  const entry = spellCatalog.resolveByName(name);
+  const entry = grimoireIndex.resolveByName(name);
   return entry ? { spell: entry.spell, school: entry.school } : null;
 }
 
