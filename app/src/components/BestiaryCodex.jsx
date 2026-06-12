@@ -68,7 +68,7 @@ export default function BestiaryCodex({
     return getAlphabeticalIndex().map((e) => ({ ...e, _key: `${e.school.id}::${e.spell.skill}` }));
   }, [schools]);
 
-  const schoolById = useMemo(() => {
+  const _schoolById = useMemo(() => {
     const m = new Map();
     for (const s of schools) m.set(s.id, s);
     return m;
@@ -285,6 +285,7 @@ export default function BestiaryCodex({
 
           <div className="bestiary-codex__filter-row">
             <span className="bestiary-codex__filter-label" aria-hidden="true">Status</span>
+            {/* eslint-disable-next-line jsx-a11y/no-onchange */}
             <select
               className="bestiary-codex__select"
               value={statusFilter}
@@ -296,6 +297,7 @@ export default function BestiaryCodex({
               ))}
             </select>
             <span className="bestiary-codex__filter-label" aria-hidden="true">Sort</span>
+            {/* eslint-disable-next-line jsx-a11y/no-onchange */}
             <select
               className="bestiary-codex__select"
               value={sortBy}
@@ -365,7 +367,7 @@ export default function BestiaryCodex({
           ) : null}
         </div>
       ) : (
-        <ul className="bestiary-codex__list" role="list">
+        <ul className="bestiary-codex__list">
           {visible.map(({ spell, school, _key }) => {
             const tier = getSpellTier(spell);
             const tierMeta = TIER_META[tier];

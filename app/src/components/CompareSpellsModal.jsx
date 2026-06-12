@@ -49,6 +49,7 @@ export default function CompareSpellsModal({ left, right, onClose, onSelect, onP
   }, [pickerSlot, onPickSlot]);
 
   return (
+    // eslint-disable-next-line jsx-a11y/click-events-have-key-events, jsx-a11y/no-static-element-interactions
     <div className="modal-overlay open" onClick={(e) => {
       if (e.target === e.currentTarget) {
         if (pickerSlot) { setPickerSlot(null); return; }
@@ -56,7 +57,7 @@ export default function CompareSpellsModal({ left, right, onClose, onSelect, onP
       }
     }}>
       <div className="modal compare-modal" ref={modalRef} role="dialog" aria-modal="true" aria-label="Compare spells">
-        <button className="modal-close" onClick={onClose} aria-label="Close compare">✕</button>
+        <button className="modal-close" onClick={onClose} aria-label="Close compare" type="button">✕</button>
         <span className="modal-symbol" aria-hidden="true">⚖</span>
         <div className="modal-title">Compare Incantations</div>
         <div className="modal-school">Side-by-side comparison of two spells</div>
@@ -156,12 +157,13 @@ export default function CompareSpellsModal({ left, right, onClose, onSelect, onP
             </div>
             <input
               type="text"
-              autoFocus
               value={pickerQuery}
               onChange={(e) => setPickerQuery(e.target.value)}
               placeholder="Search by name, skill, or school…"
               className="compare-picker-input"
               aria-label="Search spells to compare"
+              // eslint-disable-next-line jsx-a11y/no-autofocus
+              autoFocus
             />
             <div className="compare-picker-list">
               {filtered.length === 0 ? (

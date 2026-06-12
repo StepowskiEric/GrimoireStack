@@ -3,8 +3,6 @@ import { useMemo } from 'react';
 export default function AllSchoolsView({
   schools,
   onSchoolSelect,
-  isFavorited,
-  onToggleFavorite,
   searchQuery,
 }) {
   // Filter schools based on search query

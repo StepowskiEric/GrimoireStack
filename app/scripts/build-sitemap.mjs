@@ -3,7 +3,7 @@
  * Run after `vite build`. Wire from `npm run build`.
  */
 
-import { readFile, writeFile, mkdir, stat } from 'node:fs/promises';
+import { writeFile, stat } from 'node:fs/promises';
 import { dirname, join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 

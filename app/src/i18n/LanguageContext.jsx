@@ -1,4 +1,4 @@
-import { createContext, useContext } from 'react';
+import { createContext, useContext, useMemo } from 'react';
 import { useMessages } from './messages';
 
 export const LanguageContext = createContext({
@@ -9,8 +9,9 @@ export const LanguageContext = createContext({
 
 export function LanguageProvider({ children }) {
   const { lang, setLang, t } = useMessages();
+  const value = useMemo(() => ({ lang, setLang, t }), [lang, setLang, t]);
   return (
-    <LanguageContext.Provider value={{ lang, setLang, t }}>
+    <LanguageContext.Provider value={value}>
       {children}
     </LanguageContext.Provider>
   );

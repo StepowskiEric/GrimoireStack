@@ -18,15 +18,6 @@ export const messages = {
     castToggleLabel: 'Cast animation',
     browseHint: 'Browse by school, scry by affliction in the orb below, or brew your own recipe combinations.',
 
-    // Recipe Lab
-    recipeTitle: 'Recipe Lab',
-    recipeSub: 'Select 2–5 incantations below and brew a custom ritual',
-    cauldronLabel: '✦ Cauldron',
-    cauldronEmpty: 'Select incantations from the grid below…',
-    brewButton: 'Brew Ritual',
-    brewedRitual: '✦ Brewed Ritual',
-    incantationsLabel: 'Incantations',
-
     // Modal actions
     share: '✦ Share',
     shareCopied: '✦ Link Copied!',
@@ -53,7 +44,7 @@ export const messages = {
     companionDesc: 'Two optional companions ship alongside the incantations:',
     inscribedToast: '✦ The incantation has been inscribed. Paste it into your terminal to summon.',
 
-    // Recipe Lab
+    // Recipe Lab (themed versions)
     recipeTitle: '⚗ Recipe Lab',
     recipeSub: 'Select 2–5 incantations below and brew a custom ritual',
     cauldronLabel: '✦ Cauldron',
@@ -178,15 +169,6 @@ export const messages = {
     appSubtitle: 'A collection of reusable AI agent skills',
     castToggleLabel: 'Cast animation',
     browseHint: 'Browse by category, search by keyword or problem description, or combine skills in the recipe lab.',
-
-    // Recipe Lab
-    recipeTitle: 'Recipe Lab',
-    recipeSub: 'Select 2–5 skills below and combine them',
-    cauldronLabel: 'Selected skills',
-    cauldronEmpty: 'Choose skills from the grid below…',
-    brewButton: 'Combine',
-    brewedRitual: '✦ Combined Recipe',
-    incantationsLabel: 'Skills',
 
     // Modal actions
     share: '✦ Share',

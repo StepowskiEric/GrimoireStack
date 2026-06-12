@@ -5,15 +5,10 @@ export default function SpellDetailView({
   onBack,
   isFavorited,
   onToggleFavorite,
-  marginalia,
   getVote,
-  castVote,
-  aggregateFor,
 }) {
   const [activeSpell, setActiveSpell] = useState(null);
   const [note, setNote] = useState('');
-
-  if (!school) return null;
 
   const handleSpellSelect = useCallback((spell) => {
     setActiveSpell(spell);
@@ -22,6 +17,8 @@ export default function SpellDetailView({
   const handleBackToSchool = useCallback(() => {
     setActiveSpell(null);
   }, []);
+
+  if (!school) return null;
 
   // If viewing a specific spell
   if (activeSpell) {
@@ -64,8 +61,8 @@ export default function SpellDetailView({
           <div className="spell-detail__combos">
             <h3>Combinations</h3>
             <div className="spell-detail__combo-list">
-              {activeSpell.combos.map((combo, i) => (
-                <span key={i} className="spell-detail__combo-tag">{combo}</span>
+              {activeSpell.combos.map((combo) => (
+                <span key={combo} className="spell-detail__combo-tag">{combo}</span>
               ))}
             </div>
           </div>
@@ -111,9 +108,9 @@ export default function SpellDetailView({
       <div className="spell-detail__spell-list">
         <h3>Incantations ({school.spells.length})</h3>
         <div className="spell-detail__spells">
-          {school.spells.map((spell, i) => (
+          {school.spells.map((spell) => (
             <button
-              key={i}
+              key={spell.skill}
               className="spell-detail__spell-item"
               onClick={() => handleSpellSelect(spell)}
               type="button"

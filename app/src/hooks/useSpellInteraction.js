@@ -29,7 +29,6 @@ function pushRootUrl() {
 export function useSpellInteraction(castEnabled) {
   const [modal, setModal] = useState(null);
   const [casting, setCasting] = useState(null);
-  const [witchDoctorOpen, setWitchDoctorOpen] = useState(false);
   const [notFoundSkill, setNotFoundSkill] = useState(null);
   const userOpenedRef = useRef(false);
 
@@ -82,15 +81,6 @@ export function useSpellInteraction(castEnabled) {
     });
   }, [openModal]);
 
-  const handleWitchDoctorSelect = useCallback((spell, school) => {
-    setWitchDoctorOpen(false);
-    handleSpellClick(spell, school);
-  }, [handleSpellClick]);
-
-  const handleWitchDoctorClose = useCallback(() => {
-    setWitchDoctorOpen(false);
-  }, []);
-
   // Open spell from URL on mount (do not push — URL is already correct)
   useEffect(() => {
     const skillId = parseSpellFromLocation(window.location);
@@ -139,13 +129,9 @@ export function useSpellInteraction(castEnabled) {
   return {
     modal,
     casting,
-    witchDoctorOpen,
-    setWitchDoctorOpen,
     handleSpellClick,
     handleCastComplete,
     handleModalClose: closeModal,
-    handleWitchDoctorSelect,
-    handleWitchDoctorClose,
     notFoundSkill,
     dismissNotFound,
   };

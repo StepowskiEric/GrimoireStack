@@ -51,6 +51,7 @@ export default function ApprenticeWelcome({ onClose }) {
   const current = panels[index];
 
   return (
+    // eslint-disable-next-line jsx-a11y/click-events-have-key-events, jsx-a11y/no-static-element-interactions
     <div className="modal-overlay open" onClick={(event) => { if (event.target === event.currentTarget) onClose(); }}>
       <motion.div
         className="modal welcome-modal"
@@ -63,7 +64,7 @@ export default function ApprenticeWelcome({ onClose }) {
         exit={{ opacity: 0, y: 18, scale: 0.97 }}
         transition={transition}
       >
-        <button className="modal-close" onClick={onClose} aria-label="Close welcome">✕</button>
+        <button className="modal-close" onClick={onClose} aria-label="Close welcome" type="button">✕</button>
 
         <AnimatePresence mode="wait">
           <motion.div

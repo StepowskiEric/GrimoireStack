@@ -194,28 +194,27 @@ const INSCRIBE_AGENTS = [
 ];
 
 export default function SpellModal({ spell, school, onClose, marginalia, getVote, castVote, aggregateFor }) {
-  if (!spell) return null;
-
   // Stable per-day timestamp so the metadata line doesn't flicker on re-render
   const firstSeen = useMemo(
     () => new Date().toISOString().slice(0, 10),
-    [spell.skill]
+    []
   );
 
   const [viewMode, setViewMode] = useState('plain'); // 'plain' | 'full'
   const [mdContent, setMdContent] = useState(null);
   const [mdLoading, setMdLoading] = useState(false);
   const [inscribeAgent, setInscribeAgent] = useState('claude');
-  const [note, setNote] = useState(marginalia?.getNote(spell.skill) || '');
+  const [note, setNote] = useState(marginalia?.getNote(spell?.skill) || '');
   const [noteStatus, setNoteStatus] = useState('');
   const noteTimerRef = useRef(null);
 
-  const statusStr = spell.status && spell.status !== '—' ? spell.status : 'Common';
-  const statusClass = (spell.status || 'common').toLowerCase().replace(/[^a-z]/g, '') || 'common';
-  const { label, className: tierClass, title: tierTitle } = TIER_META[getSpellTier(spell)];
+  const statusStr = spell?.status && spell?.status !== '—' ? spell?.status : 'Common';
+  const statusClass = (spell?.status || 'common').toLowerCase().replace(/[^a-z]/g, '') || 'common';
+  const { label, className: tierClass, title: tierTitle } = TIER_META[getSpellTier(spell || { skill: '' })];
   const modalRef = useRef(null);
 
   const loadMd = useCallback(async () => {
+    if (!spell) return;
     if (mdContent !== null || mdLoading) return;
     setMdLoading(true);
     const text = await fetchSkillMd(spell.skill);
@@ -226,7 +225,7 @@ export default function SpellModal({ spell, school, onClose, marginalia, getVote
       setMdContent('');
     }
     setMdLoading(false);
-  }, [spell.skill, mdContent, mdLoading]);
+  }, [spell, mdContent, mdLoading]);
 
   useEffect(() => {
     if (viewMode === 'full' && mdContent === null && !mdLoading) {
@@ -235,6 +234,7 @@ export default function SpellModal({ spell, school, onClose, marginalia, getVote
   }, [viewMode, mdContent, mdLoading, loadMd]);
 
   useEffect(() => {
+    if (!spell) return;
     // Reset when spell changes: default to 'full' if a markdown entry exists
     setMdContent(null);
     setMdLoading(false);
@@ -248,13 +248,14 @@ export default function SpellModal({ spell, school, onClose, marginalia, getVote
         setViewMode('plain');
       }
     });
-  }, [spell.skill, marginalia]);
+  }, [spell, spell?.skill, marginalia]);
 
   useEffect(() => () => {
     if (noteTimerRef.current) clearTimeout(noteTimerRef.current);
   }, []);
 
   const handleNoteChange = (e) => {
+    if (!spell) return;
     const value = e.target.value;
     setNote(value);
     setNoteStatus('saving…');
@@ -267,6 +268,7 @@ export default function SpellModal({ spell, school, onClose, marginalia, getVote
   };
 
   const handleClearNote = () => {
+    if (!spell) return;
     setNote('');
     marginalia?.clear(spell.skill);
     setNoteStatus('cleared');
@@ -289,18 +291,23 @@ export default function SpellModal({ spell, school, onClose, marginalia, getVote
     };
     modal.addEventListener('keydown', handler);
     return () => modal.removeEventListener('keydown', handler);
-  }, [onClose, viewMode, mdContent]);
+  }, [onClose, viewMode, mdContent, spell]);
 
   const hasFullEntry = useRef(false);
   useEffect(() => {
+    if (!spell) return;
     fetchSkillMap().then(map => {
       hasFullEntry.current = !!map[spell.skill];
     });
-  }, [spell.skill]);
+  }, [spell, spell?.skill]);
+
+  if (!spell) return null;
 
   return (
+    // eslint-disable-next-line jsx-a11y/click-events-have-key-events, jsx-a11y/no-static-element-interactions
     <div className="modal-overlay open" onClick={(e) => { if (e.target === e.currentTarget) onClose(); }}>
       {/* Background peering eyes — drift + occasional blink, decorative */}
+      {/* eslint-disable-next-line react/no-array-index-key */}
       <div className="modal-bg-eyes" aria-hidden="true">
         {Array.from({ length: 7 }).map((_, i) => (
           <span key={i} className={`modal-bg-eye modal-bg-eye--${i + 1}`}>
@@ -411,7 +418,7 @@ export default function SpellModal({ spell, school, onClose, marginalia, getVote
           );
         })}
 
-        <button className="modal-close" onClick={onClose} aria-label="Close spell details">✕</button>
+        <button type="button" className="modal-close" onClick={onClose} aria-label="Close spell details">✕</button>
 
         {/* Eldritch whisper — Cthulhu-mythos preamble at the top of the scroll */}
         <p className="modal-whisper">
@@ -446,6 +453,7 @@ export default function SpellModal({ spell, school, onClose, marginalia, getVote
         {/* View mode toggle */}
         <div className="modal-view-toggle">
           <button
+            type="button"
             className={viewMode === 'plain' ? 'active' : ''}
             onClick={() => setViewMode('plain')}
             aria-pressed={viewMode === 'plain'}
@@ -453,6 +461,7 @@ export default function SpellModal({ spell, school, onClose, marginalia, getVote
             ✦ Plain English
           </button>
           <button
+            type="button"
             className={viewMode === 'full' ? 'active' : ''}
             onClick={() => setViewMode('full')}
             aria-pressed={viewMode === 'full'}
@@ -501,6 +510,9 @@ export default function SpellModal({ spell, school, onClose, marginalia, getVote
                     return (
                       <span key={comboName} className="syn-chip"
                         onClick={() => found && onClose(found.spell, found.school)}
+                        onKeyDown={(e) => { if ((e.key === 'Enter' || e.key === ' ') && found) onClose(found.spell, found.school); }}
+                        role="button"
+                        tabIndex={0}
                         title={found ? `Open ${comboName}` : ''}>
                         ✦ {comboName}
                       </span>
@@ -577,6 +589,7 @@ export default function SpellModal({ spell, school, onClose, marginalia, getVote
                 <p className="modal-md-empty-hint">The scroll may still be in the scribe's hands.</p>
               </div>
             ) : (
+              // eslint-disable-next-line react/no-danger
               <div className="modal-md-content" dangerouslySetInnerHTML={{ __html: mdContent }} />
             )}
           </div>
@@ -589,7 +602,7 @@ export default function SpellModal({ spell, school, onClose, marginalia, getVote
         <p className="modal-warning">Speak not of this to those who sleep.</p>
 
         <div className="modal-actions">
-          <button className="modal-share modal-share-half modal-goo-btn" onClick={(e) => {
+          <button type="button" className="modal-share modal-share-half modal-goo-btn" onClick={(e) => {
             const url = buildShareUrl(window.location.origin, spell.skill);
             const btn = e.currentTarget;
             const restore = () => { btn.innerHTML = btn.dataset.originalHtml; };
@@ -614,6 +627,7 @@ export default function SpellModal({ spell, school, onClose, marginalia, getVote
             <span className="modal-goo-label">✦ Share</span>
           </button>
           <div className="modal-inscribe-group">
+            {/* eslint-disable-next-line jsx-a11y/no-onchange */}
             <select
               className="modal-inscribe-select"
               value={inscribeAgent}
@@ -624,7 +638,7 @@ export default function SpellModal({ spell, school, onClose, marginalia, getVote
                 <option key={agent.id} value={agent.id}>{agent.label}</option>
               ))}
             </select>
-            <button className="modal-share modal-share-half modal-inscribe modal-goo-btn" onClick={(e) => {
+            <button type="button" className="modal-share modal-share-half modal-inscribe modal-goo-btn" onClick={(e) => {
               const agent = INSCRIBE_AGENTS.find(a => a.id === inscribeAgent);
               const cmd = agent.id === 'factory-droid'
                 ? `Copy ${spell.skill}/SKILL.md into ~/.factory/skills/${spell.skill}/`

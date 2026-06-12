@@ -41,6 +41,9 @@ export default function FavoritesView({
                 key={spell.name}
                 className="favorites-view__item"
                 onClick={() => onSpellClick(spell, school)}
+                role="button"
+                tabIndex={0}
+                onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); onSpellClick(spell, school); } }}
               >
                 <span className="favorites-view__symbol">{school.symbol}</span>
                 <div className="favorites-view__info">
@@ -75,6 +78,9 @@ export default function FavoritesView({
                 key={spell.name}
                 className="favorites-view__item"
                 onClick={() => onSpellClick(spell, school)}
+                role="button"
+                tabIndex={0}
+                onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); onSpellClick(spell, school); } }}
               >
                 <span className="favorites-view__symbol">{school.symbol}</span>
                 <div className="favorites-view__info">

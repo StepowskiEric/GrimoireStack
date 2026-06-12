@@ -17,7 +17,6 @@ import { LanguageProvider } from './i18n/LanguageContext';
 import { useSignals } from './hooks/useSignals.js';
 import { exportAsJson, exportAsMarkdown, copyToClipboard } from './utils/exporter.js';
 import ErrorBoundary from './components/ErrorBoundary.jsx';
-import WitchDoctorModal from './components/WitchDoctorModal.jsx';
 import CompareSpellsModal from './components/CompareSpellsModal.jsx';
 import ProblemIntakeModal from './components/ProblemIntakeModal.jsx';
 import SpellModal from './components/SpellModal.jsx';
@@ -78,13 +77,9 @@ function AppInner() {
   const {
     modal,
     casting,
-    witchDoctorOpen,
-    setWitchDoctorOpen,
     handleSpellClick,
     handleCastComplete,
     handleModalClose,
-    handleWitchDoctorSelect,
-    handleWitchDoctorClose,
     notFoundSkill,
     dismissNotFound,
   } = useSpellInteraction(castEnabled);
@@ -180,15 +175,13 @@ function AppInner() {
     handleGlobalEscape: () => {
       let handled = false;
       if (shortcutsOpen) { setShortcutsOpen(false); handled = true; }
-      if (witchDoctorOpen) { setWitchDoctorOpen(false); handled = true; }
       if (compareOpen) { setCompareOpen(false); handled = true; }
       if (intakeOpen) { setIntakeOpen(false); handled = true; }
       if (modal) { handleModalClose(); handled = true; }
       if (welcomeOpen) { handleWelcomeCloseRef.current(); handled = true; }
       return handled;
     },
-  // eslint-disable-next-line react-hooks/exhaustive-deps -- handleWelcomeCloseRef is a stable ref to the latest handleWelcomeClose
-  }), [shortcutsOpen, witchDoctorOpen, compareOpen, intakeOpen, modal, handleModalClose, welcomeOpen, setWitchDoctorOpen]);
+  }), [shortcutsOpen, compareOpen, intakeOpen, modal, handleModalClose, welcomeOpen]);
 
   useKeyboardShortcuts(keyboardHandlers);
 
@@ -330,7 +323,6 @@ function AppInner() {
         aggregateFor={aggregateFor}
         castEnabled={castEnabled}
         onToggleCast={toggleCast}
-        onWizardOpen={() => setWitchDoctorOpen(true)}
         onIntakeOpen={() => setIntakeOpen(true)}
         onCompareOpen={() => setCompareOpen(true)}
         onCompareTwo={handleCompareTwo}
@@ -351,18 +343,6 @@ function AppInner() {
       />
 
       {/* Modals — lazy-loaded with themed fallback */}
-      {witchDoctorOpen && (
-        <Suspense fallback={<div className="modal-suspense-fallback">Summoning...</div>}>
-          <WitchDoctorModal
-            schools={schools}
-            onSelectSkill={(spell, sch) => {
-              setWitchDoctorOpen(false);
-              handleSpellClick(spell, sch);
-            }}
-            onClose={() => setWitchDoctorOpen(false)}
-          />
-        </Suspense>
-      )}
       {shortcutsOpen && (
         <Suspense fallback={<div className="modal-suspense-fallback">Summoning...</div>}>
           <ShortcutsModal onClose={() => setShortcutsOpen(false)} />

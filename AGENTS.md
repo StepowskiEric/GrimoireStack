@@ -87,25 +87,27 @@ and confirm it is clean. Skipping it has shipped ReferenceErrors
 (notably missing imports in `App.jsx` when new modals/banners were
 added) to production before.
 
-1. `cd app && npm test` — all suites green, no skipped-then-failed
-2. `cd app && npm run build` — vite + prerender + sitemap + RSS all
+1. `cd app && npm run lint` — zero errors, zero warnings (or manually
+   review each if the rule set was recently tuned)
+2. `cd app && npm test` — all suites green, no skipped-then-failed
+3. `cd app && npm run build` — vite + prerender + sitemap + RSS all
    finish without errors
-3. Smoke the dev server: `cd app && npm run dev` and open
+4. Smoke the dev server: `cd app && npm run dev` and open
    `http://localhost:5173`. Check the browser console for
    `ReferenceError`, `TypeError`, or `is not defined` errors. The
    build can succeed with a missing JSX reference (it just bundles
    the file) and only runtime catches it.
-4. Verify every JSX component rendered in `App.jsx` and
+5. Verify every JSX component rendered in `App.jsx` and
    `GrimoireStackLayout.jsx` has a matching `import` at the top of
    the file. A new `<X ... />` in JSX without a matching
    `import X from './components/X.jsx'` will crash in production.
-5. `git status` — review every modified and untracked file before
+6. `git status` — review every modified and untracked file before
    staging
-6. `git diff --cached` — scan the staged diff for secrets
+7. `git diff --cached` — scan the staged diff for secrets
    (api keys, tokens, passwords) and accidental console.log bloat
-7. `git log --oneline -3` — confirm the commit landed with the
+8. `git log --oneline -3` — confirm the commit landed with the
    intended message style
-8. `git push origin main` — push
-9. `npx wrangler pages deploy dist --project-name grimoirestack` —
-   deploy. A transient `fetch failed` is fine to retry; the second
-   run reports `Deployment complete`.
+9. `git push origin main` — push
+10. `npx wrangler pages deploy dist --project-name grimoirestack` —
+    deploy. A transient `fetch failed` is fine to retry; the second
+    run reports `Deployment complete`.

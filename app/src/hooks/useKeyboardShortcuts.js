@@ -75,7 +75,6 @@ export function useKeyboardShortcuts(handlers, enabled = true) {
             star.click();
           }
         }
-        return;
       }
     };
 

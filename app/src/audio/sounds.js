@@ -1,13 +1,13 @@
 let audioCtx = null;
 let pageCreakAudio = null;
 let ambienceStarted = false;
-let ambienceNodes = [];
+const ambienceNodes = [];
 
 function witchLaugh() {
   try {
     if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
     if (audioCtx.state === 'suspended') audioCtx.resume();
-    const now = audioCtx.currentTime;
+    const _now = audioCtx.currentTime;
     const master = audioCtx.createGain();
     master.gain.value = 0.25;
     master.connect(audioCtx.destination);
@@ -64,7 +64,7 @@ function witchLaugh() {
       src.connect(ng); ng.connect(reverbGain);
       src.start(noiseStart);
     }
-  } catch(e) {}
+  } catch {}
 }
 
 function pageCreak() {
@@ -76,7 +76,7 @@ function pageCreak() {
       pageCreakAudio.currentTime = 0;
     }
     pageCreakAudio.play();
-  } catch(e) {}
+  } catch {}
 }
 
 let pageTurnAudio = null;
@@ -90,7 +90,7 @@ function pageTurn() {
       pageTurnAudio.currentTime = 0;
     }
     pageTurnAudio.play();
-  } catch(e) {}
+  } catch {}
 }
 
 function startAmbience() {
@@ -99,7 +99,7 @@ function startAmbience() {
   try {
     if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
     if (audioCtx.state === 'suspended') audioCtx.resume();
-    const now = audioCtx.currentTime;
+    const _now = audioCtx.currentTime;
     const ambMaster = audioCtx.createGain();
     ambMaster.gain.value = 0.035;
     ambMaster.connect(audioCtx.destination);
@@ -151,12 +151,12 @@ function startAmbience() {
           cG.gain.exponentialRampToValueAtTime(0.001, cNow + cDur);
           cSrc.connect(cBP); cBP.connect(cG); cG.connect(ambMaster);
           cSrc.start(cNow);
-        } catch(e) {}
+        } catch {}
         if (ambienceStarted) scheduleCrackle();
       }, nextCrackle * 1000);
     }
     scheduleCrackle();
-  } catch(e) {}
+  } catch {}
 }
 
 export { witchLaugh, pageCreak, pageTurn, startAmbience, castTear, castBoom, castScratch, castThud };
@@ -197,7 +197,7 @@ function castTear() {
     src.connect(bp); bp.connect(g); g.connect(master);
     src.start(now);
     src.stop(now + dur + 0.02);
-  } catch (e) {}
+  } catch {}
 }
 
 function castBoom() {
@@ -234,7 +234,7 @@ function castBoom() {
     ng.gain.exponentialRampToValueAtTime(0.001, now + nDur);
     nSrc.connect(lp); lp.connect(ng); ng.connect(master);
     nSrc.start(now);
-  } catch (e) {}
+  } catch {}
 }
 
 function castScratch() {
@@ -263,7 +263,7 @@ function castScratch() {
       src.connect(hp); hp.connect(g); g.connect(master);
       src.start(t);
     }
-  } catch (e) {}
+  } catch {}
 }
 
 function castThud() {
@@ -290,5 +290,5 @@ function castThud() {
     src.connect(lp); lp.connect(g); g.connect(master);
     src.start(now);
     src.stop(now + dur + 0.02);
-  } catch (e) {}
+  } catch {}
 }

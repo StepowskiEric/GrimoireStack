@@ -1,4 +1,4 @@
-import { useRef, useEffect, useState, useCallback } from 'react';
+import { useRef, useEffect, useState } from 'react';
 
 export default function GrimoireEye({ searchQuery, onSearchChange, totalMatches, featuredSchools, onSchoolSelect, isSearching, eyeRadius = 220 }) {
   const containerRef = useRef(null);
@@ -57,7 +57,7 @@ export default function GrimoireEye({ searchQuery, onSearchChange, totalMatches,
 
   // Background eye blink data - bigger specks
   const bgEyes = useRef(
-    Array.from({ length: 30 }, (_, i) => ({
+    Array.from({ length: 30 }, (_, _i) => ({
       x: 5 + Math.random() * 90,
       y: 5 + Math.random() * 90,
       size: 1.2 + Math.random() * 2.2,

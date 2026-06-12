@@ -13,15 +13,15 @@ for (let i = 0; i < 60; i++) {
   if (/Local:.*http/.test(devOut)) break;
   await wait(500);
 }
-const m = devOut.match(/http:\/\/localhost:\d+/);
-const url = m ? m[0] : 'http://localhost:5173';
+const match2 = devOut.match(/http:\/\/localhost:\d+/);
+const url = match2 ? match2[0] : 'http://localhost:5173';
 console.log(`Dev server at ${url}`);
 
 const browser = await chromium.launch();
 const page = await browser.newContext({ viewport: { width: 1280, height: 800 } }).then((c) => c.newPage());
 
 const consoleMsgs = [];
-page.on('console', (m) => consoleMsgs.push(`[${m.type()}] ${m.text()}`));
+page.on('console', (consoleMsg) => consoleMsgs.push(`[${consoleMsg.type()}] ${consoleMsg.text()}`));
 const pageErrors = [];
 page.on('pageerror', (e) => pageErrors.push(`${e.name}: ${e.message}\n${e.stack || ''}`));
 
@@ -43,9 +43,9 @@ await page.screenshot({ path: 'diagnose-splash.png' });
 console.log('--- render state ---');
 console.log(JSON.stringify(renderState, null, 2));
 console.log('--- console (' + consoleMsgs.length + ') ---');
-consoleMsgs.slice(0, 20).forEach((m) => console.log('  ' + m));
+consoleMsgs.slice(0, 20).forEach((msg) => console.log('  ' + msg));
 console.log('--- page errors (' + pageErrors.length + ') ---');
-pageErrors.slice(0, 3).forEach((m) => console.log('  ' + m));
+pageErrors.slice(0, 3).forEach((err) => console.log('  ' + err));
 
 await browser.close();
 dev.kill();

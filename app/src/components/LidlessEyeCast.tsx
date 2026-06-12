@@ -16,9 +16,11 @@ export default function LidlessEyeCast({ spell, school, onComplete }: Props) {
     return (
       <div
         className="lidless-cast lidless-cast--reduced"
-        role="status"
+        role="button"
         aria-live="assertive"
+        tabIndex={0}
         onClick={onComplete}
+        onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); onComplete(); } }}
         title="Dismiss"
       >
         <div className="lidless-cast__reduced-inner">
@@ -37,9 +39,11 @@ export default function LidlessEyeCast({ spell, school, onComplete }: Props) {
   return (
     <div
       className={`lidless-cast lidless-cast--${phase} ${canSkip ? 'lidless-cast--skippable' : ''}`}
-      role="status"
+      role="button"
+      tabIndex={0}
       aria-live="assertive"
       onClick={handleSkip}
+      onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); handleSkip(); } }}
       title={canSkip ? 'Click to skip' : ''}
     >
       <div className="lidless-cast__stage">
@@ -95,6 +99,7 @@ export default function LidlessEyeCast({ spell, school, onComplete }: Props) {
               const x2 = 120 + Math.cos(a) * 52;
               const y2 = 80 + Math.sin(a) * 35;
               return (
+                // eslint-disable-next-line react/no-array-index-key
                 <line key={i} x1={x1} y1={y1} x2={x2} y2={y2}
                   stroke="rgba(196, 184, 152, 0.05)" strokeWidth="0.6" />
               );
@@ -126,8 +131,8 @@ export default function LidlessEyeCast({ spell, school, onComplete }: Props) {
                     const x2 = 120 + Math.cos(a) * outer;
                     const y2 = 80 + Math.sin(a) * outer * 0.7;
                     return (
-                      <path
-                        key={i}
+                      // eslint-disable-next-line react/no-array-index-key
+                      <path key={i}
                         d={`M ${x1} ${y1} L ${midX} ${midY} L ${x2} ${y2}`}
                         stroke="#3a0606"
                         strokeWidth="1.2"

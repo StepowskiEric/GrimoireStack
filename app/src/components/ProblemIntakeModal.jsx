@@ -44,14 +44,15 @@ export default function ProblemIntakeModal({ onClose, onSelectSpell }) {
   };
 
   return (
-    <div className="modal-overlay open" onClick={(e) => { if (e.target === e.currentTarget) onClose(); }}>
+    <div className="modal-overlay open" onClick={(e) => { if (e.target === e.currentTarget) onClose(); }} role="button" tabIndex={0} onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); onClose(); } }}>
       <div className="modal intake-modal" ref={modalRef} role="dialog" aria-modal="true" aria-label="Describe your problem">
-        <button className="modal-close" onClick={onClose} aria-label="Close intake">✕</button>
+        <button className="modal-close" onClick={onClose} aria-label="Close intake" type="button">✕</button>
         <span className="modal-symbol" aria-hidden="true">🜲</span>
         <div className="modal-title">What Ails You?</div>
         <div className="modal-school">Describe your problem in plain language — the orb will suggest incantations.</div>
 
         <form className="intake-form" onSubmit={handleSubmit}>
+          {/* eslint-disable jsx-a11y/no-autofocus */}
           <textarea
             className="intake-textarea"
             value={query}
@@ -61,6 +62,7 @@ export default function ProblemIntakeModal({ onClose, onSelectSpell }) {
             rows={3}
             autoFocus
           />
+          {/* eslint-enable jsx-a11y/no-autofocus */}
           <button
             type="submit"
             className="intake-submit"

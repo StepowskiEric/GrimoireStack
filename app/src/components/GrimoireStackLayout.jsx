@@ -42,28 +42,27 @@ export default function GrimoireStackLayout({
   recent,
   marginalia,
   getVote,
-  castVote,
-  aggregateFor,
+  _castVote,
+  _aggregateFor,
   castEnabled,
   onToggleCast,
-  onWizardOpen,
-  onIntakeOpen,
+  _onIntakeOpen,
   onCompareOpen,
   onCompareTwo,
-  onCastBones,
+  _onCastBones,
   onExportJson,
   onExportMarkdown,
   onShowShortcuts,
-  schoolFilter,
-  tierFilter,
-  favoritesOnly,
-  onToggleSchool,
-  onToggleTier,
-  onToggleFavorites,
-  onClearFilters,
-  filterResults,
+  _schoolFilter,
+  _tierFilter,
+  _favoritesOnly,
+  _onToggleSchool,
+  _onToggleTier,
+  _onToggleFavorites,
+  _onClearFilters,
+  _filterResults,
   featuredSchools,
-  onFeaturedSchoolsChange,
+  _onFeaturedSchoolsChange,
 }) {
   // hasNote lookup for the Bestiary Codex "Annotated" filter
   const hasNote = useCallback(
@@ -130,10 +129,7 @@ export default function GrimoireStackLayout({
           onBack={() => handleSchoolCardClick(activeSchool.id)}
           isFavorited={isFavorited}
           onToggleFavorite={onToggleFavorite}
-          marginalia={marginalia}
           getVote={getVote}
-          castVote={castVote}
-          aggregateFor={aggregateFor}
         />
       );
     }
@@ -142,8 +138,6 @@ export default function GrimoireStackLayout({
         <AllSchoolsView
           schools={schools}
           onSchoolSelect={handleSchoolCardClick}
-          isFavorited={isFavorited}
-          onToggleFavorite={onToggleFavorite}
           searchQuery={searchQuery}
         />
       );
@@ -190,8 +184,6 @@ export default function GrimoireStackLayout({
           <AllSchoolsView
             schools={schools}
             onSchoolSelect={handleSchoolCardClick}
-            isFavorited={isFavorited}
-            onToggleFavorite={onToggleFavorite}
             searchQuery={searchQuery}
           />
         ) : (
@@ -200,8 +192,6 @@ export default function GrimoireStackLayout({
             featuredSchools={featuredSchools}
             onSchoolSelect={handleSchoolCardClick}
             onViewAll={() => handleSchoolCardClick(null)}
-            isFavorited={isFavorited}
-            onToggleFavorite={onToggleFavorite}
           />
         );
       case TABS.SPELLBOOK:

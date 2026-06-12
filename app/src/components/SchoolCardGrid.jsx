@@ -8,8 +8,7 @@ export default function SchoolCardGrid({
   featuredSchools = DEFAULT_FEATURED,
   onSchoolSelect,
   onViewAll,
-  isFavorited,
-  onToggleFavorite,
+  onFeaturedSchoolsChange,
 }) {
   const [isEditing, setIsEditing] = useState(false);
   const [tempFeatured, setTempFeatured] = useState(featuredSchools);

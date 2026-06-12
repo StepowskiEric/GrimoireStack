@@ -52,6 +52,7 @@ export default function SettingsView({
             </p>
             <div className="settings-view__option">
               <label htmlFor="lang-select">Language</label>
+              {/* eslint-disable-next-line jsx-a11y/no-onchange */}
               <select
                 id="lang-select"
                 className="settings-view__select"

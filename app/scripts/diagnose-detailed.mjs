@@ -11,15 +11,15 @@ for (let i = 0; i < 60; i++) {
   if (/Local:.*http/.test(devOut)) break;
   await wait(500);
 }
-const m = devOut.match(/http:\/\/localhost:\d+/);
-const url = m ? m[0] : 'http://localhost:5173';
+const match2 = devOut.match(/http:\/\/localhost:\d+/);
+const url = match2 ? match2[0] : 'http://localhost:5173';
 console.log(`Dev server at ${url}`);
 
 const browser = await chromium.launch();
 const page = await browser.newContext({ viewport: { width: 1280, height: 800 } }).then((c) => c.newPage());
 
 const events = [];
-page.on('console', (m) => events.push(`[console.${m.type()}] ${m.text()}`));
+page.on('console', (consoleMsg) => events.push(`[console.${consoleMsg.type()}] ${consoleMsg.text()}`));
 page.on('pageerror', (e) => events.push(`[pageerror] ${e.name}: ${e.message}\n${e.stack || ''}`));
 page.on('requestfailed', (r) => events.push(`[requestfailed] ${r.url()} — ${r.failure()?.errorText}`));
 
