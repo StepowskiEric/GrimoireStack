@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState, useCallback, useMemo } from 'react';
 import { TIER_META, getSpellTier } from '../data/tiers.js';
 import { spellCatalog } from '../data/spellCatalogInstance.js';
+import { buildShareUrl } from '../utils/urlSpellSync.js';
 
 function findSpell(name) {
   const entry = spellCatalog.resolveByName(name);
@@ -8,6 +9,8 @@ function findSpell(name) {
 }
 
 let mapCache = null;
+const mdCache = new Map();
+
 async function fetchSkillMap() {
   if (mapCache) return mapCache;
   try {
@@ -22,57 +25,66 @@ async function fetchSkillMap() {
 }
 
 async function fetchSkillMd(skillId) {
+  if (mdCache.has(skillId)) return mdCache.get(skillId);
   const map = await fetchSkillMap();
   const path = map[skillId];
-  if (!path) return null;
+  if (!path) {
+    mdCache.set(skillId, '');
+    return '';
+  }
   try {
     const res = await fetch(path);
     if (!res.ok) throw new Error('Not found');
-    return await res.text();
+    const text = await res.text();
+    mdCache.set(skillId, text);
+    return text;
   } catch {
-    return null;
+    mdCache.set(skillId, '');
+    return '';
   }
 }
 
-function simpleMarkdownToHtml(md) {
-  let html = md
-    .replace(/\r\n/g, '\n')
-    // code blocks
-    .replace(/```[\s\S]*?```/g, (m) => {
-      const content = m.slice(3, -3).replace(/^\w+\n/, '');
-      return `<pre><code>${escapeHtml(content)}</code></pre>`;
-    })
-    // inline code
-    .replace(/`([^`]+)`/g, '<code>$1</code>')
-    // headers
-    .replace(/^#{1,6}\s+(.*)$/gm, (m, t) => {
-      const level = m.match(/^#+/)[0].length;
-      return `<h${level}>${t}</h${level}>`;
-    })
-    // bold / italic
-    .replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>')
-    .replace(/\*([^*]+)\*/g, '<em>$1</em>')
-    // links
-    .replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2" target="_blank" rel="noopener noreferrer">$1</a>')
-    // horizontal rule
-    .replace(/^---\s*$/gm, '<hr />')
-    // unordered lists
-    .replace(/^(\s*)-\s+(.*)$/gm, (m, indent, text) => {
-      const depth = Math.floor(indent.length / 2);
-      return `<li data-depth="${depth}">${text}</li>`;
-    })
-    // ordered lists
-    .replace(/^(\s*)\d+\.\s+(.*)$/gm, (m, indent, text) => {
-      const depth = Math.floor(indent.length / 2);
-      return `<li data-depth="${depth}">${text}</li>`;
-    })
-    // checkboxes
-    .replace(/^(\s*)-\s*\[([ xX])\]\s*(.*)$/gm, (m, indent, checked, text) => {
-      const isChecked = checked.toLowerCase() === 'x';
-      return `<li class="check-item"><span class="check-box${isChecked ? ' checked' : ''}"></span>${text}</li>`;
-    });
+function parseTables(html) {
+  const lines = html.split('\n');
+  const out = [];
+  let i = 0;
+  while (i < lines.length) {
+    const line = lines[i].trim();
+    if (line.startsWith('|') && line.endsWith('|')) {
+      const tableLines = [];
+      while (i < lines.length) {
+        const l = lines[i].trim();
+        if (l.startsWith('|') && l.endsWith('|')) {
+          tableLines.push(l);
+          i++;
+        } else {
+          break;
+        }
+      }
+      if (tableLines.length >= 2) {
+        const sep = tableLines[1].slice(1, -1);
+        const isSep = sep.split('|').every(c => /^[-:\s]+$/.test(c.trim()));
+        if (isSep) {
+          const headers = tableLines[0].slice(1, -1).split('|').map(h => h.trim());
+          const bodyRows = tableLines.slice(2).map(row => row.slice(1, -1).split('|').map(c => c.trim()));
+          const thead = `<thead><tr>${headers.map(h => `<th>${h}</th>`).join('')}</tr></thead>`;
+          const tbody = `<tbody>${bodyRows.map(r => `<tr>${r.map(c => `<td>${c}</td>`).join('')}</tr>`).join('')}</tbody>`;
+          out.push(`<table class="md-table">${thead}${tbody}</table>`);
+        } else {
+          tableLines.forEach(l => out.push(l));
+        }
+      } else {
+        tableLines.forEach(l => out.push(l));
+      }
+    } else {
+      out.push(lines[i]);
+      i++;
+    }
+  }
+  return out.join('\n');
+}
 
-  // Wrap consecutive li elements in ul/ol
+function wrapLists(html) {
   const lines = html.split('\n');
   const out = [];
   let inList = false;
@@ -95,15 +107,71 @@ function simpleMarkdownToHtml(md) {
     }
   }
   if (inList) out.push(`</${listType}>`);
-  html = out.join('\n');
+  return out.join('\n');
+}
 
-  // paragraphs for non-tag lines
+function simpleMarkdownToHtml(md) {
+  const text = md.replace(/\r\n/g, '\n');
+
+  // Phase 1: Extract fenced code blocks to placeholders
+  const codeBlocks = [];
+  let html = text.replace(/```[\s\S]*?```/g, (m) => {
+    const content = m.slice(3, -3).replace(/^\w+\n/, '');
+    codeBlocks.push(`<pre><code>${escapeHtml(content)}</code></pre>`);
+    return `___CODE_BLOCK_${codeBlocks.length - 1}___`;
+  });
+
+  // Phase 2: Block-level elements
+  // Tables
+  html = parseTables(html);
+  // Blockquotes
+  html = html.replace(/^>\s+(.*)$/gm, '<blockquote>$1</blockquote>');
+  // Headers
+  html = html.replace(/^#{1,6}\s+(.*)$/gm, (m, t) => {
+    const level = m.match(/^#+/)[0].length;
+    return `<h${level}>${t}</h${level}>`;
+  });
+  // Horizontal rule
+  html = html.replace(/^---\s*$/gm, '<hr />');
+  // Unordered lists
+  html = html.replace(/^(\s*)-\s+(.*)$/gm, (m, indent, txt) => {
+    const depth = Math.floor(indent.length / 2);
+    return `<li data-depth="${depth}">${txt}</li>`;
+  });
+  // Ordered lists
+  html = html.replace(/^(\s*)\d+\.\s+(.*)$/gm, (m, indent, txt) => {
+    const depth = Math.floor(indent.length / 2);
+    return `<li data-depth="${depth}">${txt}</li>`;
+  });
+  // Checkboxes
+  html = html.replace(/^(\s*)-\s*\[([ xX])\]\s*(.*)$/gm, (m, indent, checked, txt) => {
+    const isChecked = checked.toLowerCase() === 'x';
+    return `<li class="check-item"><span class="check-box${isChecked ? ' checked' : ''}"></span>${txt}</li>`;
+  });
+  // Wrap consecutive list items
+  html = wrapLists(html);
+  // Paragraphs for remaining non-tag lines
   html = html.split('\n').map(l => {
     const t = l.trim();
     if (!t) return '<br />';
     if (t.startsWith('<') && !t.startsWith('<br')) return l;
     return `<p>${t}</p>`;
   }).join('\n');
+
+  // Phase 3: Inline elements
+  // Strikethrough
+  html = html.replace(/~~([^~]+)~~/g, '<del>$1</del>');
+  // Bold
+  html = html.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
+  // Italic
+  html = html.replace(/\*([^*]+)\*/g, '<em>$1</em>');
+  // Inline code
+  html = html.replace(/`([^`]+)`/g, '<code>$1</code>');
+  // Links
+  html = html.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2" target="_blank" rel="noopener noreferrer">$1</a>');
+
+  // Phase 4: Restore code blocks
+  html = html.replace(/___CODE_BLOCK_(\d+)___/g, (_, i) => codeBlocks[+i]);
 
   return html;
 }
@@ -167,12 +235,19 @@ export default function SpellModal({ spell, school, onClose, marginalia, getVote
   }, [viewMode, mdContent, mdLoading, loadMd]);
 
   useEffect(() => {
-    // Reset when spell changes
-    setViewMode('plain');
+    // Reset when spell changes: default to 'full' if a markdown entry exists
     setMdContent(null);
     setMdLoading(false);
     setNote(marginalia?.getNote(spell.skill) || '');
     setNoteStatus('');
+    fetchSkillMap().then(map => {
+      if (map[spell.skill]) {
+        setViewMode('full');
+        // loadMd will be triggered by the viewMode effect below
+      } else {
+        setViewMode('plain');
+      }
+    });
   }, [spell.skill, marginalia]);
 
   useEffect(() => () => {
@@ -515,7 +590,7 @@ export default function SpellModal({ spell, school, onClose, marginalia, getVote
 
         <div className="modal-actions">
           <button className="modal-share modal-share-half modal-goo-btn" onClick={(e) => {
-            const url = `${window.location.origin}/s/${encodeURIComponent(spell.skill)}`;
+            const url = buildShareUrl(window.location.origin, spell.skill);
             const btn = e.currentTarget;
             const restore = () => { btn.innerHTML = btn.dataset.originalHtml; };
             if (!btn.dataset.originalHtml) btn.dataset.originalHtml = btn.innerHTML;
@@ -531,7 +606,8 @@ export default function SpellModal({ spell, school, onClose, marginalia, getVote
                 setTimeout(restore, 2000);
               });
             }
-          }}>
+          }}
+          >
             <span className="modal-goo-seal" aria-hidden="true">
               <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" strokeWidth="1.2" /><circle cx="12" cy="12" r="5" fill="none" stroke="currentColor" strokeWidth="0.8" /><path d="M 12 4 L 13 11 L 20 12 L 13 13 L 12 20 L 11 13 L 4 12 L 11 11 Z" fill="currentColor" opacity="0.6" /></svg>
             </span>

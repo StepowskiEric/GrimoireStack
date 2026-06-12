@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback, useRef, useMemo } from 'react';
+import { useState, useEffect, useCallback, useRef, useMemo, lazy, Suspense } from 'react';
 import schools from './data/schools.js';
 import { searchSpells, filterSpells } from './search.js';
 import { witchLaugh, pageCreak, startAmbience } from './audio/sounds.js';
@@ -8,7 +8,6 @@ import './components/LidlessEyeCast.css';
 import ApprenticeWelcome, { STORAGE_KEY as WELCOME_STORAGE_KEY } from './components/ApprenticeWelcome.jsx';
 import GrimoireStackLayout from './components/GrimoireStackLayout.jsx';
 import { getSpellTier, TIER_META } from './data/tiers.js';
-import { REPO_URL } from './data/constants.js';
 import { useSpellInteraction } from './hooks/useSpellInteraction.js';
 import { useFavorites } from './hooks/useFavorites.js';
 import { useRecentlyViewed } from './hooks/useRecentlyViewed.js';
@@ -18,20 +17,14 @@ import { spellCatalog } from './data/spellCatalogInstance.js';
 import { LanguageProvider, useLanguage } from './i18n/LanguageContext';
 import { useSignals } from './hooks/useSignals.js';
 import { exportAsJson, exportAsMarkdown, copyToClipboard } from './utils/exporter.js';
-
-// New book layout components
-import BookLayout from './components/BookLayout.jsx';
-import ShortcutsModal from './components/ShortcutsModal.jsx';
-import CompareSpellsModal from './components/CompareSpellsModal.jsx';
-import ProblemIntakeModal from './components/ProblemIntakeModal.jsx';
-import WitchDoctorModal from './components/WitchDoctorModal.jsx';
-import SpellModal from './components/SpellModal.jsx';
-import InstallPrompt from './components/InstallPrompt.jsx';
+import ErrorBoundary from './components/ErrorBoundary.jsx';
 
 export default function App() {
   return (
     <LanguageProvider>
-      <AppInner />
+      <ErrorBoundary>
+        <AppInner />
+      </ErrorBoundary>
     </LanguageProvider>
   );
 }
@@ -348,57 +341,67 @@ function AppInner() {
         onFeaturedSchoolsChange={setFeaturedSchools}
       />
 
-      {/* Modals */}
+      {/* Modals — lazy-loaded with themed fallback */}
       {witchDoctorOpen && (
-        <WitchDoctorModal
-          schools={schools}
-          onSelectSkill={(spell, sch) => {
-            setWitchDoctorOpen(false);
-            handleSpellClick(spell, sch);
-          }}
-          onClose={() => setWitchDoctorOpen(false)}
-        />
+        <Suspense fallback={<div className="modal-suspense-fallback">Summoning...</div>}>
+          <WitchDoctorModal
+            schools={schools}
+            onSelectSkill={(spell, sch) => {
+              setWitchDoctorOpen(false);
+              handleSpellClick(spell, sch);
+            }}
+            onClose={() => setWitchDoctorOpen(false)}
+          />
+        </Suspense>
       )}
       {shortcutsOpen && (
-        <ShortcutsModal onClose={() => setShortcutsOpen(false)} />
+        <Suspense fallback={<div className="modal-suspense-fallback">Summoning...</div>}>
+          <ShortcutsModal onClose={() => setShortcutsOpen(false)} />
+        </Suspense>
       )}
       {compareOpen && (
-        <CompareSpellsModal
-          left={compareLeft?.spell}
-          right={compareRight?.spell}
-          onClose={() => {
-            setCompareOpen(false);
-            setCompareLeft(null);
-            setCompareRight(null);
-          }}
-          onPickSlot={handlePickCompareSlot}
-          onSelect={(spell, school) => {
-            setCompareOpen(false);
-            setCompareLeft(null);
-            setCompareRight(null);
-            if (spell && school) handleSpellClick(spell, school);
-          }}
-        />
+        <Suspense fallback={<div className="modal-suspense-fallback">Summoning...</div>}>
+          <CompareSpellsModal
+            left={compareLeft?.spell}
+            right={compareRight?.spell}
+            onClose={() => {
+              setCompareOpen(false);
+              setCompareLeft(null);
+              setCompareRight(null);
+            }}
+            onPickSlot={handlePickCompareSlot}
+            onSelect={(spell, school) => {
+              setCompareOpen(false);
+              setCompareLeft(null);
+              setCompareRight(null);
+              if (spell && school) handleSpellClick(spell, school);
+            }}
+          />
+        </Suspense>
       )}
       {intakeOpen && (
-        <ProblemIntakeModal
-          onClose={() => setIntakeOpen(false)}
-          onSelectSpell={(spell, school) => {
-            setIntakeOpen(false);
-            if (spell && school) handleSpellClick(spell, school);
-          }}
-        />
+        <Suspense fallback={<div className="modal-suspense-fallback">Summoning...</div>}>
+          <ProblemIntakeModal
+            onClose={() => setIntakeOpen(false)}
+            onSelectSpell={(spell, school) => {
+              setIntakeOpen(false);
+              if (spell && school) handleSpellClick(spell, school);
+            }}
+          />
+        </Suspense>
       )}
       {modal && (
-        <SpellModal
-          spell={modal.spell}
-          school={modal.school}
-          onClose={handleModalClose}
-          marginalia={marginalia}
-          getVote={getVote}
-          castVote={castVote}
-          aggregateFor={aggregateFor}
-        />
+        <Suspense fallback={<div className="modal-suspense-fallback">Summoning...</div>}>
+          <SpellModal
+            spell={modal.spell}
+            school={modal.school}
+            onClose={handleModalClose}
+            marginalia={marginalia}
+            getVote={getVote}
+            castVote={castVote}
+            aggregateFor={aggregateFor}
+          />
+        </Suspense>
       )}
       {casting && (
         <LidlessEyeCast

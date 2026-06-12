@@ -11,6 +11,21 @@ function findSpellBySkill(skill) {
   return null;
 }
 
+function pushSpellUrl(skill) {
+  if (typeof window === 'undefined') return;
+  const target = buildPathForSpell(skill);
+  if (window.location.pathname + window.location.search !== target) {
+    window.history.pushState(null, '', target);
+  }
+}
+
+function pushRootUrl() {
+  if (typeof window === 'undefined') return;
+  if (window.location.pathname !== '/') {
+    window.history.pushState(null, '', '/');
+  }
+}
+
 export function useSpellInteraction(castEnabled) {
   const [modal, setModal] = useState(null);
   const [casting, setCasting] = useState(null);
@@ -26,32 +41,24 @@ export function useSpellInteraction(castEnabled) {
     document.body.style.overflow = '';
   }, []);
 
-  const syncUrlToModal = useCallback((m) => {
-    if (typeof window === 'undefined') return;
-    if (m) {
-      const target = buildPathForSpell(m.spell.skill);
-      if (window.location.pathname + window.location.search !== target) {
-        window.history.replaceState(null, '', target);
-      }
-    } else if (userOpenedRef.current) {
-      window.history.replaceState(null, '', window.location.pathname);
-    }
-  }, []);
-
   const openModal = useCallback((spell, school) => {
     setModal({ spell, school });
     setNotFoundSkill(null);
     userOpenedRef.current = true;
     lockBody();
+    pushSpellUrl(spell.skill);
   }, [lockBody]);
 
   const closeModal = useCallback((nextSpell, nextSchool) => {
     if (nextSpell && nextSchool) {
       setModal({ spell: nextSpell, school: nextSchool });
       userOpenedRef.current = true;
+      pushSpellUrl(nextSpell.skill);
     } else {
       setModal(null);
       unlockBody();
+      userOpenedRef.current = false;
+      pushRootUrl();
     }
   }, [unlockBody]);
 
@@ -84,12 +91,7 @@ export function useSpellInteraction(castEnabled) {
     setWitchDoctorOpen(false);
   }, []);
 
-  // Keep URL in sync with the open modal
-  useEffect(() => {
-    syncUrlToModal(modal);
-  }, [modal, syncUrlToModal]);
-
-  // Open spell from URL on mount
+  // Open spell from URL on mount (do not push — URL is already correct)
   useEffect(() => {
     const skillId = parseSpellFromLocation(window.location);
     if (!skillId) return;
@@ -130,7 +132,7 @@ export function useSpellInteraction(castEnabled) {
   const dismissNotFound = useCallback(() => {
     setNotFoundSkill(null);
     if (typeof window !== 'undefined') {
-      window.history.replaceState(null, '', window.location.pathname);
+      window.history.replaceState(null, '', '/');
     }
   }, []);
 

@@ -35,6 +35,10 @@
   --silver-dim:#4a4a52;
   --silver-mute:#3a3a42;
   --eye-glow:rgba(138,154,106,.06);
+  --purple:#7c3aed;
+  --purple-dim:#5b21b6;
+  --purple-glow:rgba(124,58,237,.12);
+  --sickly-bright:#a8b88a;
 }
 
 /* ── Reset & Base ────────────────────────────────── */
@@ -3581,6 +3585,31 @@ footer .footer-install-hint em{
 .modal-md-content em{
   color:#3a2a1a;
 }
+.modal-md-content blockquote{
+  border-left:3px solid rgba(138,154,106,.45);
+  padding:8px 14px;margin:10px 0;
+  background:rgba(20,30,12,.08);border-radius:0 4px 4px 0;
+  font-style:italic;color:#3a2a18;
+}
+.modal-md-content del{
+  color:#7a5a4a;text-decoration:line-through;
+}
+.modal-md-content table.md-table{
+  width:100%;border-collapse:collapse;margin:10px 0;
+  font-size:.9rem;color:#2a1a08;
+}
+.modal-md-content table.md-table th,
+.modal-md-content table.md-table td{
+  border:1px solid rgba(20,30,12,.2);
+  padding:6px 10px;text-align:left;
+}
+.modal-md-content table.md-table th{
+  background:rgba(20,30,12,.12);
+  font-family:'Cinzel',serif;font-size:.65rem;text-transform:uppercase;letter-spacing:.06em;
+}
+.modal-md-content table.md-table tr:nth-child(even){
+  background:rgba(20,30,12,.04);
+}
 
 /* ── Responsive for new components ──────────────── */
 @media(max-width:700px){
@@ -3763,6 +3792,62 @@ footer .footer-install-hint em{
 .footer-export-label{font-family:'Cinzel',serif;font-size:.48rem;text-transform:uppercase;letter-spacing:.06em;color:#5a4a3a}
 .footer-export-btn{background:rgba(26,20,10,.5);border:1px solid rgba(180,140,80,.1);border-radius:3px;padding:3px 8px;font-family:'Cinzel',serif;font-size:.46rem;color:#6a5a3a;cursor:pointer;transition:all .2s ease}
 .footer-export-btn:hover{border-color:rgba(212,175,55,.25);color:#a89878}
+
+/* ── Suspense Fallback ───────────────────────────── */
+.modal-suspense-fallback{
+  position:fixed;inset:0;z-index:100;
+  display:flex;align-items:center;justify-content:center;
+  background:radial-gradient(ellipse at center, rgba(8,10,6,.78) 0%, rgba(2,2,3,.96) 80%);
+  backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);
+  font-family:'Cinzel Decorative',serif;font-size:1.2rem;color:#d4af37;
+  letter-spacing:.1em;text-shadow:0 0 20px rgba(212,175,55,.2);
+  animation:ritualToastIn .4s ease;
+}
+
+/* ── Error Boundary ──────────────────────────────── */
+.grimoire-error{
+  position:fixed;inset:0;z-index:10000;
+  display:flex;align-items:center;justify-content:center;
+  background:radial-gradient(ellipse at center, rgba(8,10,6,.85) 0%, rgba(2,2,3,.98) 80%);
+  backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);
+  padding:20px;
+}
+.grimoire-error__scroll{
+  max-width:480px;width:100%;
+  background:linear-gradient(160deg, #c8b890 0%, #a89870 60%, #8a7858 100%);
+  border:1px solid rgba(20,22,18,.5);border-radius:6px;
+  padding:36px 28px;text-align:center;
+  box-shadow:0 0 60px rgba(0,0,0,.6), inset 0 0 40px rgba(20,30,12,.2);
+}
+.grimoire-error__rune{
+  display:block;font-size:2.4rem;color:#3a3018;
+  text-shadow:0 0 18px rgba(138,154,106,.35);margin-bottom:8px;
+}
+.grimoire-error__title{
+  font-family:'Cinzel Decorative',serif;font-size:1.4rem;color:#3a2010;
+  margin-bottom:8px;letter-spacing:.04em;
+}
+.grimoire-error__desc{
+  font-family:'IM Fell English',serif;font-size:1rem;color:#2a1a08;
+  margin-bottom:14px;line-height:1.5;
+}
+.grimoire-error__trace{
+  font-family:'Special Elite',cursive;font-size:.78rem;color:#3a2a18;
+  background:rgba(20,30,12,.15);border:1px solid rgba(20,30,12,.2);
+  border-radius:4px;padding:10px 14px;margin-bottom:18px;
+  text-align:left;overflow-x:auto;
+}
+.grimoire-error__reload{
+  font-family:'Cinzel',serif;font-size:.7rem;text-transform:uppercase;
+  letter-spacing:.08em;padding:9px 20px;
+  border:1px solid rgba(138,154,106,.4);border-radius:4px;
+  background:linear-gradient(180deg, rgba(26,28,18,.95), rgba(14,16,10,.95));
+  color:#c4d4a0;cursor:pointer;transition:all .3s ease;
+}
+.grimoire-error__reload:hover{
+  border-color:rgba(138,154,106,.7);color:#dde8b8;
+  box-shadow:0 0 18px rgba(138,154,106,.25);
+}
 
 /* ════════════════════════════════════════════════════
    BOOK LAYOUT - Stitch Design Recreation
