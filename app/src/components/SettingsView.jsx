@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { useLanguage } from '../i18n/LanguageContext';
+import Icon from './Icon.jsx';
 
 const GITHUB_REPO_URL = 'https://github.com/StepowskiEric/GrimoireStack';
 
@@ -14,10 +15,10 @@ export default function SettingsView({
   const { lang, setLang } = useLanguage();
 
   const sections = [
-    { id: 'language', name: 'Language', icon: '✦' },
-    { id: 'data', name: 'Data', icon: '⛁' },
-    { id: 'display', name: 'Display', icon: '◉' },
-    { id: 'about', name: 'About', icon: '⛧' },
+    { id: 'language', name: 'Language', icon: 'warded-seal' },
+    { id: 'data', name: 'Data', icon: 'archive' },
+    { id: 'display', name: 'Display', icon: 'eye-fragment' },
+    { id: 'about', name: 'About', icon: 'sigil' },
   ];
 
   return (
@@ -35,7 +36,7 @@ export default function SettingsView({
             onClick={() => setActiveSection(section.id)}
             type="button"
           >
-            <span className="settings-view__section-icon">{section.icon}</span>
+            <span className="settings-view__section-icon"><Icon name={section.icon} size={18} /></span>
             <span className="settings-view__section-name">{section.name}</span>
           </button>
         ))}
@@ -76,10 +77,10 @@ export default function SettingsView({
             </p>
             <div className="settings-view__actions">
               <button className="settings-view__action-btn" onClick={onExportJson} type="button">
-                ⛧ Export as JSON
+                Export as JSON
               </button>
               <button className="settings-view__action-btn" onClick={onExportMarkdown} type="button">
-                ✦ Export as Markdown
+                Export as Markdown
               </button>
             </div>
           </div>
@@ -117,7 +118,7 @@ export default function SettingsView({
             </p>
             <div className="settings-view__links">
               <button className="settings-view__link" onClick={onShowShortcuts} type="button">
-                ⌨ Runes of Power
+                Runes of Power
               </button>
               <a
                 className="settings-view__link"
@@ -125,7 +126,7 @@ export default function SettingsView({
                 target="_blank"
                 rel="noopener noreferrer"
               >
-                ⛧ Source Repository
+                Source Repository
               </a>
             </div>
           </div>

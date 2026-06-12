@@ -1,4 +1,5 @@
 import { useRef, useEffect, useState } from 'react';
+import SchoolSigil from './SchoolSigil.tsx';
 
 export default function GrimoireEye({ searchQuery, onSearchChange, totalMatches, featuredSchools, onSchoolSelect, isSearching, eyeRadius = 220 }) {
   const containerRef = useRef(null);
@@ -314,7 +315,7 @@ export default function GrimoireEye({ searchQuery, onSearchChange, totalMatches,
                 title={school.name}
               >
                 <span className="eye-filament-btn__glow" />
-                <span className="eye-filament-btn__symbol">{school.symbol}</span>
+                <span className="eye-filament-btn__symbol"><SchoolSigil schoolId={school.id} size={22} /></span>
                 <span className="eye-filament-btn__name">{school.real}</span>
                 <span className="eye-filament-btn__count">{school.spells.length}</span>
               </button>

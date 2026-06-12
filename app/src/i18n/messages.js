@@ -19,38 +19,38 @@ export const messages = {
     browseHint: 'Browse by school, scry by affliction in the orb below, or brew your own recipe combinations.',
 
     // Modal actions
-    share: '✦ Share',
-    shareCopied: '✦ Link Copied!',
-    shareFailed: '✦ Copy failed',
-    inscribe: '✦ Inscribe to your Workshop',
-    inscribeCopied: '✦ Incantation Inscribed',
-    inscribeFailed: '✦ Copy failed',
-    inscribeUnsupported: '✦ Copy unsupported',
-    viewPlain: '✦ Plain English',
-    viewFull: '✦ Full Grimoire Entry',
+    share: 'Share',
+    shareCopied: 'Link Copied!',
+    shareFailed: 'Copy failed',
+    inscribe: 'Inscribe to your Workshop',
+    inscribeCopied: 'Incantation Inscribed',
+    inscribeFailed: 'Copy failed',
+    inscribeUnsupported: 'Copy unsupported',
+    viewPlain: 'Plain English',
+    viewFull: 'Full Grimoire Entry',
 
     // Ritual section
-    ritualTitle: '⛧ Ritual of Summoning',
+    ritualTitle: 'Ritual of Summoning',
     ritualSub: 'To bind these incantations to your own workshop, inscribe them into your agent\'s grimoire. The following rites summon the full collection or any single spell.',
-    primaryIncantation: '✦ The Primary Incantation',
+    primaryIncantation: 'The Primary Incantation',
     primaryDesc: 'Summon every incantation in the grimoire. The picker will guide you through agent and spell selection.',
-    codexAgents: '✦ Codex of Agents',
+    codexAgents: 'Codex of Agents',
     codexDesc: 'Each agent receives a different folder format. Choose yours and inscribe the whole collection.',
-    singleSpell: '✦ Single-Spell Inscription',
+    singleSpell: 'Single-Spell Inscription',
     singleDesc: 'For when you only need one incantation. Repeat the --skill flag to inscribe several at once.',
-    grimoireRef: '✦ The Grimoire Reference',
+    grimoireRef: 'The Grimoire Reference',
     refFormat: '〈 grimoirestack:<topic>/<spell-name> 〉',
-    companionTooling: '✦ Companion Tooling',
+    companionTooling: 'Companion Tooling',
     companionDesc: 'Two optional companions ship alongside the incantations:',
-    inscribedToast: '✦ The incantation has been inscribed. Paste it into your terminal to summon.',
+    inscribedToast: 'The incantation has been inscribed. Paste it into your terminal to summon.',
 
     // Recipe Lab (themed versions)
-    recipeTitle: '⚗ Recipe Lab',
+    recipeTitle: 'Recipe Lab',
     recipeSub: 'Select 2–5 incantations below and brew a custom ritual',
-    cauldronLabel: '✦ Cauldron',
+    cauldronLabel: 'Cauldron',
     cauldronEmpty: 'Select incantations from the grid below…',
-    brewButton: '⚗ Brew Ritual',
-    brewedRitual: '✦ Brewed Ritual',
+    brewButton: 'Brew Ritual',
+    brewedRitual: 'Brewed Ritual',
     incantationsLabel: 'Incantations',
     removeChipTitle: 'Click to remove',
 
@@ -69,7 +69,7 @@ export const messages = {
     // Scrying Orb
     orbLabel: 'Click to search',
     orbTry: 'Try:',
-    orbConsult: '✦ Not sure what you need? Consult the Witch Doctor →',
+    orbConsult: 'Not sure what you need? Consult the Witch Doctor →',
 
     // Footer
     footerTagline: 'Forge your own incantations',
@@ -87,9 +87,9 @@ export const messages = {
     mdLoading: 'Unfurling the scroll...',
 
     // Marginalia
-    marginaliaTitle: '✎ Apprentice Marginalia',
+    marginaliaTitle: 'Apprentice Marginalia',
     marginaliaPlaceholder: "Scribe your own notes here. They stay on this device.",
-    marginaliaErase: '✕ Erase',
+    marginaliaErase: 'Erase',
     marginaliaAriaLabel: 'Personal notes for this spell',
     marginaliaSaving: 'saving…',
     marginaliaSaved: 'saved',
@@ -99,10 +99,10 @@ export const messages = {
     notFoundTitle: 'The incantation has been unbound',
     notFoundMessage: 'No spell named {skill} is inscribed in the current grimoire.',
     notFoundSuggestionsLead: 'Did you mean…',
-    notFoundDismiss: '✕ Dismiss',
+    notFoundDismiss: 'Dismiss',
 
     // Cast the bones
-    castBones: '✦ Cast the bones',
+    castBones: 'Cast the bones',
     castBonesTitle: 'Open a random incantation',
 
     // Shortcuts modal
@@ -112,7 +112,7 @@ export const messages = {
     shortcutsClose: 'Close cheatsheet',
 
     // Install prompt
-    installTitle: '✦ Summon GrimoireStack to your device',
+    installTitle: 'Summon GrimoireStack to your device',
     installAction: 'Install',
     installDismiss: 'Dismiss install',
 
@@ -123,7 +123,7 @@ export const messages = {
     filterSchoolLabel: 'School:',
     filterTierLabel: 'Tier:',
     filterFavorites: 'Favorites',
-    filterClear: '✕ Clear',
+    filterClear: 'Clear',
     filterFavoritesTitle: 'Show only favorited incantations',
 
     // Summoning Circle
@@ -132,15 +132,15 @@ export const messages = {
     recentEmpty: 'No spells cast yet. Open one to begin your trail.',
 
     // New tabs
-    indexTab: '🗂 Index',
-    graphTab: '🕸 Graph',
-    changelogTab: '📜 Changelog',
+    indexTab: 'Index',
+    graphTab: 'Graph',
+    changelogTab: 'Changelog',
     indexSub: 'A flat alphabetical catalogue of every incantation, independent of school.',
     graphSub: 'The grimoire as a graph — spells are nodes, synergies are edges.',
     changelogSub: 'Recently inscribed and revised incantations.',
 
     // Compare
-    compareTitle: '⚖ Compare Incantations',
+    compareTitle: 'Compare Incantations',
     compareSubtitle: 'Side-by-side comparison of two spells',
     comparePickFirst: '+ Pick first spell',
     comparePickSecond: '+ Pick second spell',
@@ -153,7 +153,7 @@ export const messages = {
     intakeTitle: 'What Ails You?',
     intakeSubtitle: 'Describe your problem in plain language — the orb will suggest incantations.',
     intakePlaceholder: "e.g. 'I have a flaky test that only fails in CI' or 'I need to coordinate three agents'…",
-    intakeSubmit: '✦ Reveal Suggestions',
+    intakeSubmit: 'Reveal Suggestions',
     intakeExamples: 'Or try a sample problem:',
     intakeNoMatch: 'The orb sees no clear match. Try broader terms, or browse by school.',
     intakeSuggested: '{count} suggested incantation{plural}',
@@ -171,38 +171,38 @@ export const messages = {
     browseHint: 'Browse by category, search by keyword or problem description, or combine skills in the recipe lab.',
 
     // Modal actions
-    share: '✦ Share',
-    shareCopied: '✦ Link Copied!',
-    shareFailed: '✦ Copy failed',
-    inscribe: '✦ Copy to Clipboard',
-    inscribeCopied: '✦ Copied',
-    inscribeFailed: '✦ Copy failed',
-    inscribeUnsupported: '✦ Copy unsupported',
-    viewPlain: '✦ Plain Description',
-    viewFull: '✦ Full Documentation',
+    share: 'Share',
+    shareCopied: 'Link Copied!',
+    shareFailed: 'Copy failed',
+    inscribe: 'Copy to Clipboard',
+    inscribeCopied: 'Copied',
+    inscribeFailed: 'Copy failed',
+    inscribeUnsupported: 'Copy unsupported',
+    viewPlain: 'Plain Description',
+    viewFull: 'Full Documentation',
 
     // Ritual section
-    ritualTitle: '⛧ Installation Guide',
+    ritualTitle: 'Installation Guide',
     ritualSub: 'Install these skills into your agent\'s configuration folder. Below are commands for the full collection or individual skills.',
-    primaryIncantation: '✦ Install All Skills',
+    primaryIncantation: 'Install All Skills',
     primaryDesc: 'Install every skill in the catalog. The picker will guide you through agent and skill selection.',
-    codexAgents: '✦ Supported Agents',
+    codexAgents: 'Supported Agents',
     codexDesc: 'Each agent uses a different folder structure. Choose yours and install the full collection.',
-    singleSpell: '✦ Install Single Skill',
+    singleSpell: 'Install Single Skill',
     singleDesc: 'Install just one skill. Repeat the --skill flag to install several at once.',
-    grimoireRef: '✦ Reference Format',
+    grimoireRef: 'Reference Format',
     refFormat: 'grimoirestack:<topic>/<spell-name>',
-    companionTooling: '✦ Companion Tools',
+    companionTooling: 'Companion Tools',
     companionDesc: 'Two optional companions ship alongside the skills:',
-    inscribedToast: '✦ Copied to clipboard. Paste it into your terminal to install.',
+    inscribedToast: 'Copied to clipboard. Paste it into your terminal to install.',
 
     // Recipe Lab
-    recipeTitle: '⚗ Recipe Lab',
+    recipeTitle: 'Recipe Lab',
     recipeSub: 'Select 2–5 skills below and create a custom combination',
-    cauldronLabel: '✦ Selected Skills',
+    cauldronLabel: 'Selected Skills',
     cauldronEmpty: 'Select skills from the grid below…',
-    brewButton: '⚗ Generate Combination',
-    brewedRitual: '✦ Generated Combination',
+    brewButton: 'Generate Combination',
+    brewedRitual: 'Generated Combination',
     incantationsLabel: 'Skills',
     removeChipTitle: 'Click to remove',
 
@@ -221,7 +221,7 @@ export const messages = {
     // Scrying Orb
     orbLabel: 'Click to search',
     orbTry: 'Try:',
-    orbConsult: '✦ Not sure what you need? Consult the Skill Recommender →',
+    orbConsult: 'Not sure what you need? Consult the Skill Recommender →',
 
     // Footer
     footerTagline: 'Build your own skill combinations',
@@ -239,9 +239,9 @@ export const messages = {
     mdLoading: 'Loading documentation...',
 
     // Marginalia
-    marginaliaTitle: '✎ Personal Notes',
+    marginaliaTitle: 'Personal Notes',
     marginaliaPlaceholder: 'Write your own notes here. They stay on this device.',
-    marginaliaErase: '✕ Erase',
+    marginaliaErase: 'Erase',
     marginaliaAriaLabel: 'Personal notes for this skill',
     marginaliaSaving: 'saving…',
     marginaliaSaved: 'saved',
@@ -251,10 +251,10 @@ export const messages = {
     notFoundTitle: 'Skill not found',
     notFoundMessage: 'No skill named {skill} exists in the current catalog.',
     notFoundSuggestionsLead: 'Did you mean…',
-    notFoundDismiss: '✕ Dismiss',
+    notFoundDismiss: 'Dismiss',
 
     // Cast the bones
-    castBones: '✦ Cast the bones',
+    castBones: 'Cast the bones',
     castBonesTitle: 'Open a random skill',
 
     // Shortcuts modal
@@ -264,7 +264,7 @@ export const messages = {
     shortcutsClose: 'Close cheatsheet',
 
     // Install prompt
-    installTitle: '✦ Install GrimoireStack',
+    installTitle: 'Install GrimoireStack',
     installAction: 'Install',
     installDismiss: 'Dismiss install',
 
@@ -275,7 +275,7 @@ export const messages = {
     filterSchoolLabel: 'Category:',
     filterTierLabel: 'Tier:',
     filterFavorites: 'Favorites',
-    filterClear: '✕ Clear',
+    filterClear: 'Clear',
     filterFavoritesTitle: 'Show only favorited skills',
 
     // Summoning Circle
@@ -284,15 +284,15 @@ export const messages = {
     recentEmpty: 'No skills viewed yet. Open one to start your trail.',
 
     // New tabs
-    indexTab: '🗂 Index',
-    graphTab: '🕸 Graph',
-    changelogTab: '📜 Changelog',
+    indexTab: 'Index',
+    graphTab: 'Graph',
+    changelogTab: 'Changelog',
     indexSub: 'A flat alphabetical list of every skill, independent of category.',
     graphSub: 'The catalog as a graph — skills are nodes, connections are edges.',
     changelogSub: 'Recently added and updated skills.',
 
     // Compare
-    compareTitle: '⚖ Compare Skills',
+    compareTitle: 'Compare Skills',
     compareSubtitle: 'Side-by-side comparison of two skills',
     comparePickFirst: '+ Pick first skill',
     comparePickSecond: '+ Pick second skill',
@@ -305,7 +305,7 @@ export const messages = {
     intakeTitle: 'What Ails You?',
     intakeSubtitle: 'Describe your problem in plain language to get skill suggestions.',
     intakePlaceholder: "e.g. 'I have a flaky test that only fails in CI' or 'I need to coordinate three agents'…",
-    intakeSubmit: '✦ Reveal Suggestions',
+    intakeSubmit: 'Reveal Suggestions',
     intakeExamples: 'Or try a sample problem:',
     intakeNoMatch: 'No clear match found. Try broader terms, or browse by category.',
     intakeSuggested: '{count} suggested skill{plural}',

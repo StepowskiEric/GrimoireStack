@@ -1,6 +1,7 @@
 import { useMemo } from 'react';
 import { findSimilarSkills } from '../utils/findSimilarSkills.js';
 import { useLanguage } from '../i18n/LanguageContext';
+import Icon from './Icon.jsx';
 
 export default function StaleLinkBanner({ skill, onDismiss, onSelectSkill }) {
   const { lang } = useLanguage();
@@ -15,15 +16,14 @@ export default function StaleLinkBanner({ skill, onDismiss, onSelectSkill }) {
     ? `No spell named "${skill}" is inscribed in the current grimoire.`
     : `No skill named "${skill}" exists in the current catalog.`;
   const leadText = isGrimoire ? 'Did you mean…' : 'Did you mean…';
-  const dismissLabel = isGrimoire ? '✕ Dismiss' : '✕ Dismiss';
-  const leadGlyph = isGrimoire ? '⛧' : '⚠';
+  const dismissLabel = 'Dismiss';
   const ariaLabel = isGrimoire
     ? `Unknown incantation ${skill}. Suggestion banner.`
     : `Unknown skill ${skill}. Suggestion banner.`;
 
   return (
     <div className="notfound-banner" role="alert" aria-live="polite" aria-label={ariaLabel}>
-      <div className="notfound-glyph" aria-hidden="true">{leadGlyph}</div>
+      <div className="notfound-glyph" aria-hidden="true"><Icon name="eye-fragment" size={20} /></div>
       <div className="notfound-body">
         <div className="notfound-title">{title}</div>
         <div className="notfound-msg">{message}</div>
@@ -50,7 +50,8 @@ export default function StaleLinkBanner({ skill, onDismiss, onSelectSkill }) {
           onClick={onDismiss}
           aria-label={dismissLabel}
         >
-          {dismissLabel}
+          <Icon name="close" size={12} />
+          <span>{dismissLabel}</span>
         </button>
       </div>
     </div>

@@ -23,7 +23,6 @@ describe('spellGraph', () => {
         expect(node).toHaveProperty('label');
         expect(node).toHaveProperty('schoolId');
         expect(node).toHaveProperty('schoolName');
-        expect(node).toHaveProperty('schoolSymbol');
       }
     });
 

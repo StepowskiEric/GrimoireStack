@@ -6,7 +6,6 @@ const sampleSchools = [
   {
     id: 'debugging',
     name: 'School of Remediation',
-    symbol: '⚔',
     spells: [
       { name: 'Trace Sight', skill: 'log-trace-correlation', effect: 'Maps stack traces to source code and suggests fixes.' },
       { name: 'Bisect Divination', skill: 'bisect-debugging', effect: 'Binary searches commit history for the regression commit.' },
@@ -15,7 +14,6 @@ const sampleSchools = [
   {
     id: 'reasoning',
     name: 'School of Cognition',
-    symbol: '◇',
     spells: [
       { name: 'Razor of Parsimony', skill: 'occams-razor', effect: 'Favors the simplest sufficient explanation.' },
       { name: 'Thought-Weave', skill: 'tree-of-thoughts', effect: 'Branches multiple reasoning paths in parallel.' },

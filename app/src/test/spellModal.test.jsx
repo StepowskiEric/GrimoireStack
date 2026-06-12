@@ -12,7 +12,6 @@ const sampleSpell = {
 const sampleSchool = {
   id: 'debugging',
   name: 'School of Remediation',
-  symbol: '⚔',
   real: 'Debugging',
 };
 
@@ -38,13 +37,13 @@ describe('SpellModal action buttons', () => {
     render(<SpellModal spell={sampleSpell} school={sampleSchool} onClose={() => {}} />);
     const inscribeBtn = screen.getByRole('button', { name: /inscribe to your workshop/i });
     await act(async () => { fireEvent.click(inscribeBtn); });
-    expect(inscribeBtn.textContent).toBe('✦ Incantation Inscribed');
+    expect(inscribeBtn.textContent).toBe('Incantation Inscribed');
     expect(navigator.clipboard.writeText).toHaveBeenCalledWith(
       'npx jerry-skills install --agent claude --skill log-trace-correlation'
     );
     // After the timeout, the original text must be restored
     await act(() => new Promise(r => setTimeout(r, 2100)));
-    expect(inscribeBtn.textContent).toBe('✦ Inscribe to your Workshop');
+    expect(inscribeBtn.textContent).toBe('Inscribe to your Workshop');
   });
 
   it('changes the copied command when a different agent is selected', async () => {
@@ -63,6 +62,6 @@ describe('SpellModal action buttons', () => {
     render(<SpellModal spell={sampleSpell} school={sampleSchool} onClose={() => {}} />);
     const inscribeBtn = screen.getByRole('button', { name: /inscribe to your workshop/i });
     await act(async () => { fireEvent.click(inscribeBtn); });
-    expect(inscribeBtn.textContent).toBe('✦ Copy failed');
+    expect(inscribeBtn.textContent).toBe('Copy failed');
   });
 });

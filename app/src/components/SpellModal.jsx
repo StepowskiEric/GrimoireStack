@@ -2,6 +2,8 @@ import { useEffect, useRef, useState, useCallback, useMemo } from 'react';
 import { TIER_META, getSpellTier } from '../data/tiers.js';
 import { spellCatalog } from '../data/spellCatalogInstance.js';
 import { buildShareUrl } from '../utils/urlSpellSync.js';
+import Icon from './Icon.jsx';
+import SchoolSigil from './SchoolSigil.tsx';
 
 function findSpell(name) {
   const entry = spellCatalog.resolveByName(name);
@@ -418,7 +420,9 @@ export default function SpellModal({ spell, school, onClose, marginalia, getVote
           );
         })}
 
-        <button type="button" className="modal-close" onClick={onClose} aria-label="Close spell details">✕</button>
+        <button type="button" className="modal-close modal-close--icon" onClick={onClose} aria-label="Close spell details">
+          <Icon name="close" size={18} />
+        </button>
 
         {/* Eldritch whisper — Cthulhu-mythos preamble at the top of the scroll */}
         <p className="modal-whisper">
@@ -433,7 +437,7 @@ export default function SpellModal({ spell, school, onClose, marginalia, getVote
             <path d="M 40 0 C 28 12, 22 24, 26 36 C 28 44, 34 50, 38 56"
               fill="none" stroke="rgba(20,22,18,0.6)" strokeWidth="1.4" strokeLinecap="round" />
           </svg>
-          <span className="modal-symbol">{school.symbol}</span>
+          <span className="modal-symbol"><SchoolSigil schoolId={school.id} size={28} /></span>
           <svg className="modal-tendril modal-tendril--r" viewBox="0 0 40 60" aria-hidden="true">
             <path d="M 0 0 C 12 12, 18 24, 14 36 C 12 44, 6 50, 2 56 C 0 58, 0 60, 0 60"
               fill="none" stroke="rgba(40,48,28,0.85)" strokeWidth="3" strokeLinecap="round" />
@@ -458,7 +462,7 @@ export default function SpellModal({ spell, school, onClose, marginalia, getVote
             onClick={() => setViewMode('plain')}
             aria-pressed={viewMode === 'plain'}
           >
-            ✦ Plain English
+            Plain English
           </button>
           <button
             type="button"
@@ -466,7 +470,7 @@ export default function SpellModal({ spell, school, onClose, marginalia, getVote
             onClick={() => setViewMode('full')}
             aria-pressed={viewMode === 'full'}
           >
-            ✦ Full Grimoire Entry
+            Full Grimoire Entry
           </button>
         </div>
 
@@ -479,7 +483,7 @@ export default function SpellModal({ spell, school, onClose, marginalia, getVote
               </div>
             ) : null}
 
-            <div className="modal-section-title">✦ Effect</div>
+            <div className="modal-section-title">Effect</div>
             <div className="modal-effect">{spell.effect}</div>
             <div className="modal-detail-row">
               <div className="modal-detail-label">Status</div>
@@ -503,7 +507,7 @@ export default function SpellModal({ spell, school, onClose, marginalia, getVote
 
             {spell.combos?.length > 0 ? (
               <div className="modal-synergies">
-                <div className="syn-title">✦ Synergistic Pairings</div>
+                <div className="syn-title">Synergistic Pairings</div>
                 <div className="syn-grid">
                   {spell.combos.map(comboName => {
                     const found = findSpell(comboName);
@@ -514,7 +518,7 @@ export default function SpellModal({ spell, school, onClose, marginalia, getVote
                         role="button"
                         tabIndex={0}
                         title={found ? `Open ${comboName}` : ''}>
-                        ✦ {comboName}
+                        {comboName}
                       </span>
                     );
                   })}
@@ -524,10 +528,10 @@ export default function SpellModal({ spell, school, onClose, marginalia, getVote
 
             <div className="marginalia-section">
               <div className="marginalia-header">
-                <span className="marginalia-title">✎ Apprentice Marginalia</span>
+                <span className="marginalia-title">Apprentice Marginalia</span>
                 {note ? (
                   <button type="button" className="marginalia-clear" onClick={handleClearNote}>
-                    ✕ Erase
+                    Erase
                   </button>
                 ) : null}
               </div>
@@ -611,11 +615,11 @@ export default function SpellModal({ spell, school, onClose, marginalia, getVote
               navigator.share({ title: spell.name, text: spell.effect, url }).catch(() => {});
             } else if (navigator.clipboard) {
               navigator.clipboard.writeText(url).then(() => {
-                btn.innerHTML = '✦ Link Copied!';
+                btn.innerHTML = 'Link Copied!';
                 btn.classList.add('modal-goo-btn--broken');
                 setTimeout(restore, 2000);
               }).catch(() => {
-                btn.innerHTML = '✦ Copy failed';
+                btn.innerHTML = 'Copy failed';
                 setTimeout(restore, 2000);
               });
             }
@@ -624,7 +628,7 @@ export default function SpellModal({ spell, school, onClose, marginalia, getVote
             <span className="modal-goo-seal" aria-hidden="true">
               <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" strokeWidth="1.2" /><circle cx="12" cy="12" r="5" fill="none" stroke="currentColor" strokeWidth="0.8" /><path d="M 12 4 L 13 11 L 20 12 L 13 13 L 12 20 L 11 13 L 4 12 L 11 11 Z" fill="currentColor" opacity="0.6" /></svg>
             </span>
-            <span className="modal-goo-label">✦ Share</span>
+            <span className="modal-goo-label">Share</span>
           </button>
           <div className="modal-inscribe-group">
             {/* eslint-disable-next-line jsx-a11y/no-onchange */}
@@ -647,23 +651,23 @@ export default function SpellModal({ spell, school, onClose, marginalia, getVote
               const restore = () => { btn.innerHTML = btn.dataset.originalHtml; btn.classList.remove('modal-goo-btn--broken'); };
               if (!btn.dataset.originalHtml) btn.dataset.originalHtml = btn.innerHTML;
               if (!navigator.clipboard) {
-                btn.innerHTML = '✦ Copy unsupported';
+                btn.innerHTML = 'Copy unsupported';
                 setTimeout(restore, 2000);
                 return;
               }
               navigator.clipboard.writeText(cmd).then(() => {
-                btn.innerHTML = '✦ Incantation Inscribed';
+                btn.innerHTML = 'Incantation Inscribed';
                 btn.classList.add('modal-goo-btn--broken');
                 setTimeout(restore, 2000);
               }).catch(() => {
-                btn.innerHTML = '✦ Copy failed';
+                btn.innerHTML = 'Copy failed';
                 setTimeout(restore, 2000);
               });
             }}>
               <span className="modal-goo-seal" aria-hidden="true">
                 <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" strokeWidth="1.2" /><circle cx="12" cy="12" r="5" fill="none" stroke="currentColor" strokeWidth="0.8" /><path d="M 12 4 L 13 11 L 20 12 L 13 13 L 12 20 L 11 13 L 4 12 L 11 11 Z" fill="currentColor" opacity="0.6" /></svg>
               </span>
-              <span className="modal-goo-label">✦ Inscribe to your Workshop</span>
+              <span className="modal-goo-label">Inscribe to your Workshop</span>
             </button>
           </div>
         </div>

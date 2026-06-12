@@ -1,6 +1,7 @@
 import { useState, useMemo, useCallback } from 'react';
 import { TIER_META, getSpellTier } from '../data/tiers.js';
 import { getAlphabeticalIndex, getSpellLastUpdated } from '../data/spellMetadata.js';
+import SchoolSigil from './SchoolSigil.tsx';
 
 const TIER_ORDER = ['archmage', 'master', 'adept', 'apprentice', 'faded'];
 
@@ -24,7 +25,7 @@ function statusClass(status) {
   return (status || 'common').toLowerCase().replace(/[^a-z]/g, '') || 'common';
 }
 
-function formatDate(iso) {
+function _formatDate(iso) {
   if (!iso) return '—';
   try {
     return new Date(iso + 'T00:00:00Z').toLocaleDateString('en-US', {
@@ -220,59 +221,58 @@ export default function BestiaryCodex({
             <span className="bestiary-codex__stat-label">Master-Tier</span>
           </div>
         </div>
-      </header>
 
-      {/* Filter rail */}
-      <div className="bestiary-codex__filters">
-        <div className="bestiary-codex__search">
-          <span className="bestiary-codex__search-rune" aria-hidden="true">⟐</span>
-          <input
-            type="text"
-            value={query}
-            onChange={(e) => { setQuery(e.target.value); setPage(0); }}
-            placeholder="Scry by name, skill, effect, or school…"
-            aria-label="Search the bestiary"
-            className="bestiary-codex__search-input"
-          />
-        </div>
-
-        <div className="bestiary-codex__filter-rows">
-          <div className="bestiary-codex__filter-row">
-            <span className="bestiary-codex__filter-label" aria-hidden="true">School</span>
-            <div className="bestiary-codex__chips">
-              {schools.map((s) => {
-                const active = schoolFilter.has(s.id);
-                return (
-                  <button
-                    key={s.id}
-                    type="button"
-                    className={`bestiary-codex__chip${active ? ' is-active' : ''}`}
-                    onClick={() => toggleSchool(s.id)}
-                    aria-pressed={active}
-                    title={s.real}
-                  >
-                    <span className="bestiary-codex__chip-glyph" aria-hidden="true">{s.symbol}</span>
-                    <span className="bestiary-codex__chip-text">{s.real}</span>
-                  </button>
-                );
-              })}
-            </div>
+        {/* Filter rail — integrated into header */}
+        <div className="bestiary-codex__filters">
+          <div className="bestiary-codex__search">
+            <span className="bestiary-codex__search-rune" aria-hidden="true">⟐</span>
+            <input
+              type="text"
+              value={query}
+              onChange={(e) => { setQuery(e.target.value); setPage(0); }}
+              placeholder="Scry by name, skill, effect, or school…"
+              aria-label="Search the bestiary"
+              className="bestiary-codex__search-input"
+            />
           </div>
 
-          <div className="bestiary-codex__filter-row">
-            <span className="bestiary-codex__filter-label" aria-hidden="true">Tier</span>
-            <div className="bestiary-codex__chips">
-              {TIER_ORDER.map((key) => {
-                const meta = TIER_META[key];
-                if (!meta) return null;
-                const active = tierFilter.has(key);
-                return (
-                  <button
-                    key={key}
-                    type="button"
-                    className={`bestiary-codex__chip bestiary-codex__chip--${meta.className.split('-').pop()}${active ? ' is-active' : ''}`}
-                    onClick={() => toggleTier(key)}
-                    aria-pressed={active}
+          <div className="bestiary-codex__filter-rows">
+            <div className="bestiary-codex__filter-row">
+              <span className="bestiary-codex__filter-label" aria-hidden="true">School</span>
+              <div className="bestiary-codex__chips">
+                {schools.map((s) => {
+                  const active = schoolFilter.has(s.id);
+                  return (
+                    <button
+                      key={s.id}
+                      type="button"
+                      className={`bestiary-codex__chip${active ? ' is-active' : ''}`}
+                      onClick={() => toggleSchool(s.id)}
+                      aria-pressed={active}
+                      title={s.real}
+                    >
+                      <span className="bestiary-codex__chip-glyph" aria-hidden="true"><SchoolSigil schoolId={s.id} size={18} /></span>
+                      <span className="bestiary-codex__chip-text">{s.real}</span>
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
+
+            <div className="bestiary-codex__filter-row">
+              <span className="bestiary-codex__filter-label" aria-hidden="true">Tier</span>
+              <div className="bestiary-codex__chips">
+                {TIER_ORDER.map((key) => {
+                  const meta = TIER_META[key];
+                  if (!meta) return null;
+                  const active = tierFilter.has(key);
+                  return (
+                    <button
+                      key={key}
+                      type="button"
+                      className={`bestiary-codex__chip bestiary-codex__chip--${meta.className.split('-').pop()}${active ? ' is-active' : ''}`}
+                      onClick={() => toggleTier(key)}
+                      aria-pressed={active}
                     title={meta.title}
                   >
                     <span className="bestiary-codex__chip-glyph" aria-hidden="true">⟐</span>
@@ -282,72 +282,75 @@ export default function BestiaryCodex({
               })}
             </div>
           </div>
-
-          <div className="bestiary-codex__filter-row">
-            <span className="bestiary-codex__filter-label" aria-hidden="true">Status</span>
-            {/* eslint-disable-next-line jsx-a11y/no-onchange */}
-            <select
-              className="bestiary-codex__select"
-              value={statusFilter}
-              onChange={(e) => { setStatusFilter(e.target.value); setPage(0); }}
-              aria-label="Filter by status"
-            >
-              {STATUS_OPTIONS.map(opt => (
-                <option key={opt.id} value={opt.id}>{opt.label}</option>
-              ))}
-            </select>
-            <span className="bestiary-codex__filter-label" aria-hidden="true">Sort</span>
-            {/* eslint-disable-next-line jsx-a11y/no-onchange */}
-            <select
-              className="bestiary-codex__select"
-              value={sortBy}
-              onChange={(e) => setSortBy(e.target.value)}
-              aria-label="Sort entries"
-            >
-              {SORT_OPTIONS.map(opt => (
-                <option key={opt.id} value={opt.id}>{opt.label}</option>
-              ))}
-            </select>
           </div>
 
-          <div className="bestiary-codex__filter-row bestiary-codex__filter-row--toggles">
-            <label className="bestiary-codex__toggle">
-              <input
-                type="checkbox"
-                checked={combosOnly}
-                onChange={(e) => { setCombosOnly(e.target.checked); setPage(0); }}
-              />
-              <span>Synergies only</span>
-            </label>
-            <label className="bestiary-codex__toggle">
-              <input
-                type="checkbox"
-                checked={favoritesOnly}
-                onChange={(e) => { setFavoritesOnly(e.target.checked); setPage(0); }}
-              />
-              <span>★ Favorited</span>
-            </label>
-            <label className="bestiary-codex__toggle">
-              <input
-                type="checkbox"
-                checked={annotatedOnly}
-                onChange={(e) => { setAnnotatedOnly(e.target.checked); setPage(0); }}
-              />
-              <span>✎ Annotated</span>
-            </label>
-            {anyActive ? (
-              <button
-                type="button"
-                className="bestiary-codex__clear"
-                onClick={clearAll}
-                title="Clear all filters"
+          <div className="bestiary-codex__filter-rows">
+            <div className="bestiary-codex__filter-row">
+              <span className="bestiary-codex__filter-label" aria-hidden="true">Status</span>
+              {/* eslint-disable-next-line jsx-a11y/no-onchange */}
+              <select
+                className="bestiary-codex__select"
+                value={statusFilter}
+                onChange={(e) => { setStatusFilter(e.target.value); setPage(0); }}
+                aria-label="Filter by status"
               >
-                ✕ Purge filters
-              </button>
-            ) : null}
+                {STATUS_OPTIONS.map(opt => (
+                  <option key={opt.id} value={opt.id}>{opt.label}</option>
+                ))}
+              </select>
+              <span className="bestiary-codex__filter-label" aria-hidden="true">Sort</span>
+              {/* eslint-disable-next-line jsx-a11y/no-onchange */}
+              <select
+                className="bestiary-codex__select"
+                value={sortBy}
+                onChange={(e) => setSortBy(e.target.value)}
+                aria-label="Sort entries"
+              >
+                {SORT_OPTIONS.map(opt => (
+                  <option key={opt.id} value={opt.id}>{opt.label}</option>
+                ))}
+              </select>
+            </div>
+
+            <div className="bestiary-codex__filter-row bestiary-codex__filter-row--toggles">
+              <label className="bestiary-codex__toggle">
+                <input
+                  type="checkbox"
+                  checked={combosOnly}
+                  onChange={(e) => { setCombosOnly(e.target.checked); setPage(0); }}
+                />
+                <span>Synergies only</span>
+              </label>
+              <label className="bestiary-codex__toggle">
+                <input
+                  type="checkbox"
+                  checked={favoritesOnly}
+                  onChange={(e) => { setFavoritesOnly(e.target.checked); setPage(0); }}
+                />
+                <span>Favorited</span>
+              </label>
+              <label className="bestiary-codex__toggle">
+                <input
+                  type="checkbox"
+                  checked={annotatedOnly}
+                  onChange={(e) => { setAnnotatedOnly(e.target.checked); setPage(0); }}
+                />
+                <span>Annotated</span>
+              </label>
+              {anyActive ? (
+                <button
+                  type="button"
+                  className="bestiary-codex__clear"
+                  onClick={clearAll}
+                  title="Clear all filters"
+                >
+                  Purge filters
+                </button>
+              ) : null}
+            </div>
           </div>
         </div>
-      </div>
+      </header>
 
       {/* Result count */}
       <div className="bestiary-codex__count">
@@ -356,7 +359,7 @@ export default function BestiaryCodex({
         {pageCount > 1 ? ` · page ${safePage + 1} of ${pageCount}` : ''}
       </div>
 
-      {/* List */}
+      {/* Table */}
       {visible.length === 0 ? (
         <div className="bestiary-codex__empty">
           <p>The abyss returns nothing for this filter.</p>
@@ -367,77 +370,61 @@ export default function BestiaryCodex({
           ) : null}
         </div>
       ) : (
-        <ul className="bestiary-codex__list">
-          {visible.map(({ spell, school, _key }) => {
-            const tier = getSpellTier(spell);
-            const tierMeta = TIER_META[tier];
-            const statusStr = spell.status && spell.status !== '—' ? spell.status : 'Common';
-            const comboCount = Array.isArray(spell.combos) ? spell.combos.length : 0;
-            const favorited = isFavorited?.(spell.name, spell.skill);
-            const noted = hasNote?.(spell.skill);
-            return (
-              <li key={_key || spell.skill} className="bestiary-codex__item">
-                <button
-                  type="button"
-                  className="bestiary-codex__row"
-                  onClick={() => onSpellClick?.(spell, school)}
-                >
-                  <span className="bestiary-codex__row-glyph" aria-hidden="true">
-                    {school.symbol}
-                  </span>
-                  <div className="bestiary-codex__row-body">
-                    <div className="bestiary-codex__row-name-row">
-                      <span className="bestiary-codex__row-name">{spell.name}</span>
-                      <span className={`bestiary-codex__row-tag ${statusClass(statusStr)}`}>
-                        {statusStr}
+        <div className="bestiary-codex__table-wrap">
+          <table className="bestiary-codex__table">
+            <thead>
+              <tr>
+                <th className="bestiary-codex__th bestiary-codex__th--name">Skill</th>
+                <th className="bestiary-codex__th bestiary-codex__th--tier">Tier</th>
+                <th className="bestiary-codex__th bestiary-codex__th--effect">Effect</th>
+              </tr>
+            </thead>
+            <tbody>
+              {visible.map(({ spell, school, _key }) => {
+                const tier = getSpellTier(spell);
+                const tierMeta = TIER_META[tier];
+                const statusStr = spell.status && spell.status !== '—' ? spell.status : 'Common';
+                const comboCount = Array.isArray(spell.combos) ? spell.combos.length : 0;
+                const compactLabel = tierMeta.label.split(' ')[0];
+                return (
+                  <tr
+                    key={_key || spell.skill}
+                    className={`bestiary-codex__tr bestiary-codex__tr--${tier}`}
+                    onClick={() => onSpellClick?.(spell, school)}
+                    role="button"
+                    tabIndex={0}
+                    onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') onSpellClick?.(spell, school); }}
+                  >
+                    <td className="bestiary-codex__td bestiary-codex__td--name">
+                      <span className="bestiary-codex__td-name">{spell.name}</span>
+                      <span className="bestiary-codex__td-meta">
+                        <span className="bestiary-codex__td-school"><SchoolSigil schoolId={school.id} size={16} /></span>
+                        {statusStr !== 'Common' ? (
+                          <span className={`bestiary-codex__td-status ${statusClass(statusStr)}`}>{statusStr}</span>
+                        ) : null}
+                        {comboCount > 0 ? (
+                          <span className="bestiary-codex__td-combos">{comboCount}</span>
+                        ) : null}
                       </span>
-                    </div>
-                    <div className="bestiary-codex__row-meta">
-                      <span className="bestiary-codex__row-skill">〈 {spell.skill} 〉</span>
-                      <span className="bestiary-codex__row-sep" aria-hidden="true">·</span>
-                      <span className="bestiary-codex__row-school">{school.real}</span>
-                      {comboCount > 0 ? (
-                        <>
-                          <span className="bestiary-codex__row-sep" aria-hidden="true">·</span>
-                          <span className="bestiary-codex__row-combos" title="Synergistic pairings">
-                            ⚯ {comboCount}
-                          </span>
-                        </>
-                      ) : null}
-                      {noted ? (
-                        <>
-                          <span className="bestiary-codex__row-sep" aria-hidden="true">·</span>
-                          <span className="bestiary-codex__row-note" title="Has marginalia">✎</span>
-                        </>
-                      ) : null}
-                      {favorited ? (
-                        <>
-                          <span className="bestiary-codex__row-sep" aria-hidden="true">·</span>
-                          <span className="bestiary-codex__row-fav" title="Favorited">★</span>
-                        </>
-                      ) : null}
-                    </div>
-                    <div className="bestiary-codex__row-effect">{spell.effect}</div>
-                  </div>
-                  <div className="bestiary-codex__row-tier">
-                    <span
-                      className={`bestiary-codex__tier-badge ${tierMeta.className}`}
-                      title={tierMeta.title}
-                    >
-                      <span className="bestiary-codex__tier-mark" aria-hidden="true">⟐</span>
-                      <span className="bestiary-codex__tier-label">{tierMeta.label}</span>
-                    </span>
-                    {sortBy === 'recent' ? (
-                      <span className="bestiary-codex__row-date">
-                        {formatDate(getSpellLastUpdated(spell.skill))}
+                    </td>
+                    <td className="bestiary-codex__td bestiary-codex__td--tier">
+                      <span
+                        className={`bestiary-codex__tier-badge ${tierMeta.className}`}
+                        title={tierMeta.title}
+                      >
+                        <span className="bestiary-codex__tier-mark" aria-hidden="true">⟐</span>
+                        <span className="bestiary-codex__tier-label">{compactLabel}</span>
                       </span>
-                    ) : null}
-                  </div>
-                </button>
-              </li>
-            );
-          })}
-        </ul>
+                    </td>
+                    <td className="bestiary-codex__td bestiary-codex__td--effect">
+                      {spell.effect}
+                    </td>
+                  </tr>
+                );
+              })}
+            </tbody>
+          </table>
+        </div>
       )}
 
       {/* Pagination */}

@@ -1,4 +1,5 @@
 import { useState, useCallback, useEffect } from 'react';
+import { useNavigate, useLocation } from 'react-router-dom';
 import SchoolCardGrid from './SchoolCardGrid.jsx';
 import SpellDetailView from './SpellDetailView.jsx';
 import SpellCard from './SpellCard.jsx';
@@ -8,23 +9,31 @@ import BestiaryCodex from './BestiaryCodex.jsx';
 import SettingsView from './SettingsView.jsx';
 import AllSchoolsView from './AllSchoolsView.jsx';
 import GrimoireEye from './GrimoireEye.jsx';
+import SchoolSigil from './SchoolSigil.tsx';
 import Icon from './Icon.jsx';
-import LanguageToggle from './LanguageToggle.jsx';
 import { pageTurn } from '../audio/sounds.js';
 
 const TABS = {
   LIBRARY: 'library',
   SPELLBOOK: 'spellbook',
-  RECIPE_LAB: 'recipe-lab',
-  ARCANE_TOOLS: 'arcane-tools',
+  RECIPE_LAB: 'rituals',
+  ARCANE_TOOLS: 'bestiary',
   SETTINGS: 'settings',
 };
 
+const TAB_ROUTES = {
+  [TABS.LIBRARY]: '/',
+  [TABS.SPELLBOOK]: '/vault',
+  [TABS.RECIPE_LAB]: '/rituals',
+  [TABS.ARCANE_TOOLS]: '/bestiary',
+  [TABS.SETTINGS]: '/settings',
+};
+
 const TAB_LABELS = {
-  [TABS.LIBRARY]: { name: 'The Archives', icon: 'archive' },
+  [TABS.LIBRARY]: { name: 'The Spine', icon: 'archive' },
   [TABS.SPELLBOOK]: { name: 'The Vault', icon: 'vault' },
-  [TABS.RECIPE_LAB]: { name: "Alchemist's Workshop", icon: 'alembic' },
-  [TABS.ARCANE_TOOLS]: { name: 'Arcane Tools', icon: 'tools' },
+  [TABS.RECIPE_LAB]: { name: 'The Crucible', icon: 'alembic' },
+  [TABS.ARCANE_TOOLS]: { name: 'The Bestiary', icon: 'tools' },
   [TABS.SETTINGS]: { name: 'Settings', icon: 'sigil' },
 };
 
@@ -73,10 +82,24 @@ export default function GrimoireStackLayout({
     },
     [marginalia]
   );
-  const [activeTab, setActiveTab] = useState(TABS.LIBRARY);
-  const [pageKey, setPageKey] = useState('home');
+  const navigate = useNavigate();
+  const location = useLocation();
   const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
   const [isSearching, setIsSearching] = useState(false);
+
+  // Derive active tab from URL
+  const activeTab = (() => {
+    const path = location.pathname;
+    if (path === '/') return TABS.LIBRARY;
+    if (path === '/vault') return TABS.SPELLBOOK;
+    if (path === '/rituals') return TABS.RECIPE_LAB;
+    if (path === '/bestiary') return TABS.ARCANE_TOOLS;
+    if (path === '/settings') return TABS.SETTINGS;
+    return TABS.LIBRARY;
+  })();
+
+  // Track page state for sub-views
+  const [pageKey, setPageKey] = useState('home');
 
   useEffect(() => {
     const handleResize = () => setIsMobile(window.innerWidth < 768);
@@ -89,10 +112,11 @@ export default function GrimoireStackLayout({
   }, [searchQuery]);
 
   const handleTabSelect = useCallback((tab) => {
-    setActiveTab(tab);
-    setPageKey(tab);
+    const route = TAB_ROUTES[tab] || '/';
+    setPageKey('home');
+    navigate(route);
     pageTurn();
-  }, []);
+  }, [navigate]);
 
   const handleSchoolCardClick = useCallback((schoolId) => {
     onSchoolSelect(schoolId);
@@ -122,6 +146,7 @@ export default function GrimoireStackLayout({
 
   // Render the active content panel
   const renderContent = () => {
+    // Handle sub-views within tabs
     if (pageKey === 'spell-detail' && activeSchool) {
       return (
         <SpellDetailView
@@ -130,15 +155,6 @@ export default function GrimoireStackLayout({
           isFavorited={isFavorited}
           onToggleFavorite={onToggleFavorite}
           getVote={getVote}
-        />
-      );
-    }
-    if (pageKey === 'all-schools') {
-      return (
-        <AllSchoolsView
-          schools={schools}
-          onSchoolSelect={handleSchoolCardClick}
-          searchQuery={searchQuery}
         />
       );
     }
@@ -155,7 +171,7 @@ export default function GrimoireStackLayout({
               ← All Schools
             </button>
             <div className="school-detail__title">
-              <span className="school-detail__symbol">{activeSchool.symbol}</span>
+              <span className="school-detail__symbol"><SchoolSigil schoolId={activeSchool.id} size={36} /></span>
               <div>
                 <h2 className="school-detail__name">{activeSchool.real}</h2>
                 <p className="school-detail__count">
@@ -178,6 +194,8 @@ export default function GrimoireStackLayout({
         </div>
       );
     }
+
+    // Main tab content
     switch (activeTab) {
       case TABS.LIBRARY:
         return searchQuery ? (
@@ -191,7 +209,6 @@ export default function GrimoireStackLayout({
             schools={schools}
             featuredSchools={featuredSchools}
             onSchoolSelect={handleSchoolCardClick}
-            onViewAll={() => handleSchoolCardClick(null)}
           />
         );
       case TABS.SPELLBOOK:
@@ -240,9 +257,6 @@ export default function GrimoireStackLayout({
             schools={schools}
             featuredSchools={featuredSchools}
             onSchoolSelect={handleSchoolCardClick}
-            onViewAll={() => handleSchoolCardClick(null)}
-            isFavorited={isFavorited}
-            onToggleFavorite={onToggleFavorite}
           />
         );
     }
@@ -285,7 +299,7 @@ export default function GrimoireStackLayout({
       {!isMobile && (
         <nav className="eye-top-nav" aria-label="Main navigation">
           {[
-            { id: TABS.LIBRARY, label: 'ARCHIVE' },
+            { id: TABS.LIBRARY, label: 'SPINE' },
             { id: TABS.SPELLBOOK, label: 'THE VAULT' },
             { id: TABS.RECIPE_LAB, label: 'RITUALS' },
           ].map((tab) => (
@@ -352,15 +366,14 @@ export default function GrimoireStackLayout({
           </nav>
 
           <div className="eye-sidebar__footer">
-            <LanguageToggle />
             <button className="eye-footer-link" onClick={onShowShortcuts} type="button">
-              ⌨ Shortcuts
+              <Icon name="sigil" size={14} /> Shortcuts
             </button>
             <button className="eye-footer-link" onClick={onExportJson} type="button">
-              📋 Export JSON
+              <Icon name="archive" size={14} /> Export JSON
             </button>
             <button className="eye-footer-link" onClick={onExportMarkdown} type="button">
-              📄 Export MD
+              <Icon name="changelog" size={14} /> Export MD
             </button>
           </div>
         </aside>
@@ -380,8 +393,10 @@ export default function GrimoireStackLayout({
 
         {/* Right panel - content */}
         <aside className="eye-panel">
-          <div className="eye-panel__content">
-            {renderContent()}
+          <div className="eye-panel__content" key={`${activeTab}-${pageKey}-${searchQuery || ''}`}>
+            <div className="spine-transition">
+              {renderContent()}
+            </div>
           </div>
         </aside>
       </div>

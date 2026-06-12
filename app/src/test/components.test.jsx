@@ -1,5 +1,6 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import { render, screen, fireEvent, act } from '@testing-library/react';
+import { BrowserRouter } from 'react-router-dom';
 import { LanguageProvider } from '../i18n/LanguageContext';
 import SpellCard from '../components/SpellCard.jsx';
 import GrimoireStackLayout from '../components/GrimoireStackLayout.jsx';
@@ -22,7 +23,6 @@ const sampleSpell = {
 const sampleSchool = {
   id: 'debugging',
   name: 'School of Remediation',
-  symbol: '⚔',
   real: 'Debugging',
   desc: 'Incantations to banish bugs.',
   spells: [sampleSpell],
@@ -33,7 +33,6 @@ const multiSchool = [
   {
     id: 'testing',
     name: 'School of Validation',
-    symbol: '🛡',
     real: 'Testing',
     desc: 'Incantations to prove correctness.',
     spells: [{ name: 'Jest Invocation', skill: 'jest-testing', effect: 'Write correct Jest tests.', status: 'New' }],
@@ -104,7 +103,7 @@ describe('SpellCard', () => {
 
 // ── GrimoireStackLayout search results ────────────────
 describe('GrimoireStackLayout search results', () => {
-  const renderWithLang = (ui) => render(<LanguageProvider>{ui}</LanguageProvider>);
+  const renderWithLang = (ui) => render(<BrowserRouter><LanguageProvider>{ui}</LanguageProvider></BrowserRouter>);
 
   it('shows matching spells in the library view when searchQuery is set', () => {
     const { container } = renderWithLang(
@@ -146,8 +145,8 @@ describe('GrimoireStackLayout search results', () => {
       />
     );
 
-    expect(screen.getByText('School of Validation')).toBeInTheDocument();
-    expect(container.querySelector('.all-schools-view__card')).not.toBeNull();
+    expect(screen.getAllByText('Testing').length).toBeGreaterThanOrEqual(1);
+    expect(container.querySelector('.bestiary-index__row')).not.toBeNull();
   });
 });
 
@@ -250,7 +249,8 @@ describe('BestiaryCodex', () => {
       />
     );
     // "Proven" → "adept" tier; "New" → "apprentice" tier
-    expect(screen.getAllByText(/Adept Sigil|Apprentice Sigil/).length).toBeGreaterThanOrEqual(1);
+    // Badges show the compact label (e.g., "Adept" not "Adept Sigil")
+    expect(screen.getAllByText(/^Adept$|^Apprentice$/).length).toBeGreaterThanOrEqual(1);
   });
 });
 
@@ -270,7 +270,6 @@ describe('RecipeLabView', () => {
     const many = {
       id: 'many',
       name: 'School of Many',
-      symbol: '✦',
       real: 'Many',
       desc: '',
       spells: Array.from({ length: 40 }, (_, i) => ({

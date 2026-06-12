@@ -1,4 +1,5 @@
 import { useLanguage } from '../i18n/LanguageContext';
+import Icon from './Icon.jsx';
 
 export default function LanguageToggle() {
   const { lang, setLang } = useLanguage();
@@ -14,7 +15,7 @@ export default function LanguageToggle() {
       title={isGrimoire ? 'Switch to plain English' : 'Switch to themed (grimoire) language'}
       aria-pressed={!isGrimoire}
     >
-      <span className="language-toggle-rune" aria-hidden="true">{isGrimoire ? '⛧' : '✦'}</span>
+      <span className="language-toggle-rune" aria-hidden="true"><Icon name={isGrimoire ? 'eye-fragment' : 'warded-seal'} size={14} /></span>
       <span className="language-toggle-text">
         {isGrimoire ? 'Grimoire' : 'Plain'}
       </span>

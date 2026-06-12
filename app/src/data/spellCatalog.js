@@ -10,7 +10,6 @@ import { validateSchools } from './schema.js';
 
 const UNKNOWN_SCHOOL_ID = 'unknown';
 const UNKNOWN_SCHOOL_NAME = 'Unknown School';
-const UNKNOWN_SYMBOL = '✦';
 
 function buildIndexes(schools) {
   const bySkill = new Map();
@@ -69,5 +68,5 @@ export function createSpellCatalog(schools) {
 }
 
 export const SPELL_CATALOG_FALLBACK = {
-  school: { id: UNKNOWN_SCHOOL_ID, name: UNKNOWN_SCHOOL_NAME, symbol: UNKNOWN_SYMBOL },
+  school: { id: UNKNOWN_SCHOOL_ID, name: UNKNOWN_SCHOOL_NAME },
 };

@@ -1,4 +1,7 @@
 import { useState, useCallback } from 'react';
+import { schoolColors } from '../utils/schoolColors.js';
+import SchoolSigil from './SchoolSigil.tsx';
+import Icon from './Icon.jsx';
 
 export default function SpellDetailView({
   school,
@@ -9,6 +12,7 @@ export default function SpellDetailView({
 }) {
   const [activeSpell, setActiveSpell] = useState(null);
   const [note, setNote] = useState('');
+  const colors = school ? schoolColors(school.id) : {};
 
   const handleSpellSelect = useCallback((spell) => {
     setActiveSpell(spell);
@@ -27,13 +31,14 @@ export default function SpellDetailView({
     const favorited = isFavorited(activeSpell.name, activeSpell.skill);
 
     return (
-      <div className="spell-detail">
+      <div className="spell-detail" style={colors.cssVars}>
+        <div className="spell-detail__spine-deco" aria-hidden="true" />
         <button className="spell-detail__back" onClick={handleBackToSchool} type="button">
-          ← Back to {school.name}
+          ← Back to {school.real}
         </button>
 
-        <div className="spell-detail__header">
-          <span className="spell-detail__symbol">{school.symbol}</span>
+        <div className="spell-detail__header spell-detail__header--spell">
+          <span className="spell-detail__symbol"><SchoolSigil schoolId={school.id} size={42} /></span>
           <h2 className="spell-detail__name">{activeSpell.name}</h2>
           <div className="spell-detail__meta">
             <span className="spell-detail__tier">{tierName}</span>
@@ -73,8 +78,10 @@ export default function SpellDetailView({
             className={`spell-detail__fav ${favorited ? 'spell-detail__fav--active' : ''}`}
             onClick={() => onToggleFavorite(activeSpell.name, activeSpell.skill)}
             type="button"
+            data-testid="warded-seal"
           >
-            {favorited ? '★ Favorited' : '☆ Add to Favorites'}
+            <Icon name="warded-seal" size={16} />
+            <span>{favorited ? 'Favorited' : 'Add to Favorites'}</span>
           </button>
         </div>
 
@@ -94,19 +101,20 @@ export default function SpellDetailView({
 
   // School view with spell list
   return (
-    <div className="spell-detail">
+    <div className="spell-detail" style={colors.cssVars}>
+      <div className="spell-detail__spine-deco" aria-hidden="true" />
       <button className="spell-detail__back" onClick={onBack} type="button">
-        ← Back to Library
+        ← Back to The Spine
       </button>
       
       <div className="spell-detail__header">
-        <span className="spell-detail__symbol">{school.symbol}</span>
-        <h2 className="spell-detail__name">{school.name}</h2>
+        <span className="spell-detail__symbol"><SchoolSigil schoolId={school.id} size={48} /></span>
+        <h2 className="spell-detail__name">{school.real}</h2>
         <p className="spell-detail__desc">{school.desc}</p>
+        <div className="spell-detail__school-count">{school.spells.length} incantations</div>
       </div>
 
       <div className="spell-detail__spell-list">
-        <h3>Incantations ({school.spells.length})</h3>
         <div className="spell-detail__spells">
           {school.spells.map((spell) => (
             <button
@@ -116,8 +124,8 @@ export default function SpellDetailView({
               type="button"
             >
               <div className="spell-detail__spell-name">{spell.name}</div>
-              <div className="spell-detail__spell-effect">{spell.effect.slice(0, 100)}...</div>
-              {spell.status && (
+              <div className="spell-detail__spell-effect">{spell.effect.slice(0, 120)}{spell.effect.length > 120 ? '...' : ''}</div>
+              {spell.status && spell.status !== '—' && (
                 <span className={`spell-detail__spell-status spell-detail__spell-status--${spell.status.toLowerCase()}`}>
                   {spell.status}
                 </span>

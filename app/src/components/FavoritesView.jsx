@@ -1,4 +1,6 @@
 import { useMemo } from 'react';
+import SchoolSigil from './SchoolSigil.tsx';
+import Icon from './Icon.jsx';
 
 export default function FavoritesView({
   schools,
@@ -31,7 +33,7 @@ export default function FavoritesView({
       
       {/* Favorites section */}
       <div className="favorites-view__section">
-        <h3>★ Bound Incantations ({favoriteSpells.length})</h3>
+        <h3>Bound Incantations ({favoriteSpells.length})</h3>
         {favoriteSpells.length === 0 ? (
           <p className="favorites-view__empty">The circle is silent. No entity is yet bound to your service — seal one with the star to keep it near.</p>
         ) : (
@@ -45,7 +47,7 @@ export default function FavoritesView({
                 tabIndex={0}
                 onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); onSpellClick(spell, school); } }}
               >
-                <span className="favorites-view__symbol">{school.symbol}</span>
+                <span className="favorites-view__symbol"><SchoolSigil schoolId={school.id} size={22} /></span>
                 <div className="favorites-view__info">
                   <div className="favorites-view__name">{spell.name}</div>
                   <div className="favorites-view__school">{school.name}</div>
@@ -57,8 +59,10 @@ export default function FavoritesView({
                     onToggleFavorite(spell.name);
                   }}
                   type="button"
+                  aria-label={isFavorited(spell.name) ? 'Unbind' : 'Bind'}
+                  data-testid="warded-seal"
                 >
-                  ★
+                  <Icon name="warded-seal" size={16} />
                 </button>
               </div>
             ))}
@@ -68,7 +72,7 @@ export default function FavoritesView({
 
       {/* Recently viewed section */}
       <div className="favorites-view__section">
-        <h3>🕐 Trail of Recent Summons</h3>
+        <h3>Trail of Recent Summons</h3>
         {recentSpells.length === 0 ? (
           <p className="favorites-view__empty">The trail is cold. No incantation has yet been opened in the Eye.</p>
         ) : (
@@ -82,7 +86,7 @@ export default function FavoritesView({
                 tabIndex={0}
                 onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); onSpellClick(spell, school); } }}
               >
-                <span className="favorites-view__symbol">{school.symbol}</span>
+                <span className="favorites-view__symbol"><SchoolSigil schoolId={school.id} size={22} /></span>
                 <div className="favorites-view__info">
                   <div className="favorites-view__name">{spell.name}</div>
                   <div className="favorites-view__school">{school.name}</div>
@@ -95,7 +99,7 @@ export default function FavoritesView({
 
       {/* Marginalia section */}
       <div className="favorites-view__section">
-        <h3>📝 Marginalia — Your Annotations</h3>
+        <h3>Marginalia — Your Annotations</h3>
         {(() => {
           // Handle both hook object { notes } and plain notes object
           const notesObj = marginalia?.notes || marginalia || {};

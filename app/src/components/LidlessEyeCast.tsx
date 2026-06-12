@@ -1,5 +1,6 @@
 import { useEldritchCast } from '../hooks/useEldritchCast.js';
 import { getSchoolSigil } from '../data/schoolSigils.jsx';
+import SchoolSigil from './SchoolSigil.tsx';
 
 interface Props {
   spell: { name: string; effect: string; status?: string };
@@ -24,7 +25,7 @@ export default function LidlessEyeCast({ spell, school, onComplete }: Props) {
         title="Dismiss"
       >
         <div className="lidless-cast__reduced-inner">
-          <span className="lidless-cast__reduced-symbol">{school.symbol}</span>
+          <span className="lidless-cast__reduced-symbol"><SchoolSigil schoolId={school.id} size={32} /></span>
           <h2 className="lidless-cast__reduced-name">{spell.name}</h2>
         </div>
       </div>

@@ -1,4 +1,5 @@
 import { useState, useMemo, useCallback } from 'react';
+import SchoolSigil from './SchoolSigil.tsx';
 
 export default function RecipeLabView({
   schools,
@@ -73,14 +74,14 @@ export default function RecipeLabView({
 
       {/* Selected spells for comparison */}
       <div className="recipe-lab-view__selected">
-        <h3>✦ Cauldron ({selectedSpells.length}/2)</h3>
+        <h3>Cauldron ({selectedSpells.length}/2)</h3>
         {selectedSpells.length === 0 ? (
           <p className="recipe-lab-view__empty">Mark two incantations from the grid below…</p>
         ) : (
           <div className="recipe-lab-view__selected-list">
             {selectedSpells.map((item) => (
               <div key={item.spell.skill} className="recipe-lab-view__selected-item">
-                <span className="recipe-lab-view__symbol">{item.school.symbol}</span>
+                <span className="recipe-lab-view__symbol"><SchoolSigil schoolId={item.school.id} size={20} /></span>
                 <span className="recipe-lab-view__name">{item.spell.name}</span>
                 <button
                   className="recipe-lab-view__remove"
@@ -100,14 +101,14 @@ export default function RecipeLabView({
             onClick={handleCompare}
             type="button"
           >
-            ⚖ Compare These Incantations
+            Compare These Incantations
           </button>
         ) : null}
       </div>
 
       {/* Spell browser */}
       <div className="recipe-lab-view__browser">
-        <h3>✦ Incantations</h3>
+        <h3>Incantations</h3>
         <input
           type="text"
           value={query}
@@ -132,7 +133,7 @@ export default function RecipeLabView({
                 aria-pressed={selected}
                 title={item.spell.effect}
               >
-                <span className="recipe-lab-view__spell-symbol">{item.school.symbol}</span>
+                <span className="recipe-lab-view__spell-symbol"><SchoolSigil schoolId={item.school.id} size={20} /></span>
                 <span className="recipe-lab-view__spell-name">{item.spell.name}</span>
                 <span className="recipe-lab-view__spell-school">{item.school.real}</span>
               </button>

@@ -31,7 +31,6 @@ export function buildSpellGraph({ skillFilter = null } = {}) {
         label: sp.name,
         schoolId: school.id,
         schoolName: school.name,
-        schoolSymbol: school.symbol,
         tier: sp.status || 'Common',
         comboCount: Array.isArray(sp.combos) ? sp.combos.length : 0,
       });

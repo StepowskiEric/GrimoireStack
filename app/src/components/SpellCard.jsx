@@ -1,8 +1,9 @@
 import { getSpellTier, TIER_META } from '../data/tiers.js';
+import Icon from './Icon.jsx';
 
 export default function SpellCard({ spell, onClick, matched, children, isFavorited, onToggleFavorite }) {
   const statusClass = (spell.status || '').toLowerCase().replace(/[^a-z]/g, '');
-  const legacyTier = spell.status && spell.status !== '—' ? `✧ ${spell.status}` : '';
+  const legacyTier = spell.status && spell.status !== '—' ? `${spell.status}` : '';
   const tierInfo = TIER_META[getSpellTier(spell)];
   const showTierBadge = spell.status && spell.status !== '—';
 
@@ -45,8 +46,9 @@ export default function SpellCard({ spell, onClick, matched, children, isFavorit
             onClick={handleStarClick}
             aria-label={isFavorited ? 'Unbind from Summoning Circle' : 'Bind to Summoning Circle'}
             title={isFavorited ? 'Unbind' : 'Bind to Circle'}
+            data-testid="warded-seal"
           >
-            {isFavorited ? '⛧' : '☆'}
+            <Icon name="warded-seal" size={18} />
           </button>
         )}
       </div>

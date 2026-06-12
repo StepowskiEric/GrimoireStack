@@ -1,7 +1,7 @@
 const schools = [
   {
     id:'debugging',real:'Debugging',
-    name:'School of Remediation',symbol:'🔮',
+    name:'School of Remediation',
     desc:'Incantations to banish bugs and restore order to broken code.',
     spells:[
       {name:'Trace Sight',skill:'log-trace-correlation',effect:'Maps stack traces to source code, inspects context around the failure, and suggests the most likely fix. Best when you already have an error log or crash report in hand.',status:'Proven',combos:['Bisect Divination','Root Cause Revelation','Spectral Analysis']},
@@ -32,7 +32,7 @@ const schools = [
   },
   {
     id:'reasoning',real:'Reasoning & Problem Solving',
-    name:'School of Cognition',symbol:'◇',
+    name:'School of Cognition',
     desc:'Mental models and structured thought for when the problem itself is unclear.',
     spells:[
       {name:'First Step Oracle',skill:'how-to-solve-it-state-machine',effect:'Forces explicit problem framing — what kind of problem is this? — before any action is taken. Prevents rushing to solutions before understanding the question.',status:'—'},
@@ -57,7 +57,7 @@ const schools = [
   },
   {
     id:'process',real:'Process Improvement',
-    name:'School of Refinement',symbol:'⚙',
+    name:'School of Refinement',
     desc:'Rituals for improving systems, workflows, and outputs over time through disciplined iteration.',
     spells:[
       {name:'Deming Cycle',skill:'pdca-deming',effect:'Plan → Do → Check → Act. A measurement-anchored cycle of planning, execution, and verification before standardizing or escalating. For process and system improvement.',status:'—'},
@@ -72,7 +72,7 @@ const schools = [
   },
   {
     id:'code-review',real:'Code Review & Quality',
-    name:'School of Scrutiny',symbol:'◈',
+    name:'School of Scrutiny',
     desc:'Incantations for verifying, elevating, and safeguarding code quality before it ships.',
     spells:[
       {name:'Triad Perspective',skill:'rashomon-triad-hybrid',effect:'Three specialized reasoning modes — hypothesis generation, verification, and pattern extraction — argue from conflicting goals. The conflict graph becomes the explanation.',status:'—'},
@@ -105,7 +105,7 @@ const schools = [
   },
   {
     id:'architecture',real:'Architecture & Design',
-    name:'School of Architecture',symbol:'🏛',
+    name:'School of Architecture',
     desc:'Design rituals for systems that endure across dimensions of scale, time, and team boundaries.',
     spells:[
       {name:'Intent Binding',skill:'intent-specification-protocol',effect:'Scope control via explicit intent specification before writing any code. Prevents the Intent-Behavior Mirroring Effect where vague requests produce invasive output.',status:'—'},
@@ -126,7 +126,7 @@ const schools = [
   },
   {
     id:'discovery',real:'Algorithm & Tool Discovery',
-    name:'School of Discovery',symbol:'✧',
+    name:'School of Discovery',
     desc:'Algorithms and automated tools that find solutions beyond human intuition.',
     spells:[
       {name:'Evolutionary Forge',skill:'evolutionary-tool-composer',effect:'Runs an evolutionary algorithm that mutates, crosses, and selects tool chains, prompt strategies, and code solutions by fitness. AlphaEvolve/OpenEvolve principles.',status:'—'},
@@ -135,7 +135,7 @@ const schools = [
   },
   {
     id:'documentation',real:'Documentation & Communication',
-    name:'School of Expression',symbol:'✎',
+    name:'School of Expression',
     desc:'Incantations for writing clearly, explaining complex systems, and communicating with stakeholders.',
     spells:[
       {name:'Intent Crystallization',skill:'intent-specification-protocol',effect:'Specifies and validates intent before writing any code. Transforms vague requests into precise, testable specifications.',status:'—'},
@@ -151,7 +151,7 @@ const schools = [
   },
   {
     id:'planning',real:'Planning & Estimation',
-    name:'School of Foresight',symbol:'◇',
+    name:'School of Foresight',
     desc:'Rituals for estimating timelines, surfacing risks, and creating disciplined plans.',
     spells:[
       {name:'Base Rate Scry',skill:'reference-class-forecasting',effect:'Uses base rates from reference classes — how long did similar things actually take? — instead of intuition or optimistic inside-view estimates.',status:'—'},
@@ -168,7 +168,7 @@ const schools = [
   },
   {
     id:'learning',real:'Learning & Understanding',
-    name:'School of Knowledge',symbol:'✧',
+    name:'School of Knowledge',
     desc:'Incantations for understanding new domains, stress-testing proposals, and thinking from first principles.',
     spells:[
       {name:'Compression Test',skill:'compression-as-understanding',effect:'Verifies understanding by compressing knowledge into its minimal essential form, then testing whether that compressed representation can reconstruct the original.',status:'—'},
@@ -188,7 +188,7 @@ const schools = [
   },
   {
     id:'anti-hallucination',real:'Reasoning & Anti-Hallucination',
-    name:'School of Veracity',symbol:'◈',
+    name:'School of Veracity',
     desc:'Wards against reasoning decay — incantations that keep agent thinking honest and grounded.',
     spells:[
       {name:'Claim Verification',skill:'claim-verification-reasoning',effect:'Breaks reasoning into atomic claims, assigns confidence labels, verifies uncertain claims with tools, and builds dependency graphs to prevent reasoning hallucinations.',status:'—'},
@@ -205,7 +205,7 @@ const schools = [
   },
   {
     id:'software-dev',real:'Software Development',
-    name:'School of Crafting',symbol:'⚒',
+    name:'School of Crafting',
     desc:'Practical incantations for building, renaming, searching through, and shipping code.',
     spells:[
       {name:'Intent Binding',skill:'intent-specification-protocol',effect:'Clarifies intent before coding. Prevents the Intent-Behavior Mirroring Effect where vague requirements produce invasive, over-engineered output.',status:'—'},
@@ -227,7 +227,7 @@ const schools = [
   },
   {
     id:'multi-agent',real:'Multi-Agent & Coordination',
-    name:'School of Confluence',symbol:'✦',
+    name:'School of Confluence',
     desc:'Incantations for orchestrating multiple agents, sharing reasoning memory, and coordinating parallel workstreams.',
     spells:[
       {name:'Orchestrator Pattern',skill:'agentic-design-patterns-orchestrator',effect:'Workflow patterns for spawning specialized sub-agents: parallel fan-out, chain-of-thought delegation, evaluator-optimizer loops, and supervisor oversight.',status:'—'},
@@ -244,7 +244,7 @@ const schools = [
   },
   {
     id:'risk',real:'Risk & Safety Analysis',
-    name:'School of Warding',symbol:'🛡',
+    name:'School of Warding',
     desc:'Protective incantations for safety-critical changes, threat analysis, and pre-deployment hardening.',
     spells:[
       {name:'STPA Ward',skill:'unsafe-control-actions-hazard-analysis',effect:'Systems-Theoretic Process Analysis. Identifies unsafe control actions that could create harm before they are designed into the system.',status:'—'},
@@ -258,7 +258,7 @@ const schools = [
   },
   {
     id:'cognitive-load',real:'Cognitive Load & Operator Support',
-    name:'School of Clarity',symbol:'◈',
+    name:'School of Clarity',
     desc:'Incantations for managing finite attention, reducing overhead, and keeping the agent focused.',
     spells:[
       {name:'Load Management',skill:'cognitive-load-operator-state-machine',effect:'Protocol for making information easier to understand, retain, and act on. Manages extraneous load, intrinsic complexity, and germane (productive) load.',status:'—'},
@@ -267,7 +267,7 @@ const schools = [
   },
   {
     id:'testing',real:'Testing & Evaluation',
-    name:'School of Measurement',symbol:'⚖',
+    name:'School of Measurement',
     desc:'Rituals for empirically measuring whether a skill actually improves outcomes.',
     spells:[
       {name:'A/B Scry',skill:'skill-ab-evaluation',effect:'Runs an A/B evaluation of any skill against a baseline using isolated subagents, 5 trials each, and an objective rubric. Measures real % improvement in isolated worktrees.',status:'—'},
@@ -284,7 +284,7 @@ export default schools;
 
 export const WIZARD_DATA = [
   {
-    id:'bug', label:'🐛 Bug / Failure / Regression',
+    id:'bug', label:'Bug / Failure / Regression',
     desc:"Something isn't working and I need to find and fix it",
     situations:[
       { id:'stack-trace', label:'Stack trace or error log', desc:'Read a trace, find the problem', skill:'log-trace-correlation', effect:'Maps stack traces to source code, inspects context around the failure, and suggests the most likely fix.', reason:'Optimized for errors you already have in hand — the trace IS the data you need to act on.', alt:'bisect-debugging — if you need to find when this started' },
@@ -300,7 +300,7 @@ export const WIZARD_DATA = [
     ]
   },
   {
-    id:'reasoning', label:'🔮 Planning & Decisions',
+    id:'reasoning', label:'Planning & Decisions',
     desc:"I'm confused or stuck — need to think clearly",
     situations:[
       { id:'complex-decision', label:'Complex decision with multiple options', desc:'Don\'t know which path to take', skill:'occams-razor', effect:'Favors the simplest sufficient explanation or solution. Forces trying the simplest thing that fits before escalating to alternatives.', reason:'Complex solutions often fail in complex ways. Simplicity is a reliability bet.', alt:'six-thinking-hats — for examining a decision from all angles instead of just picking one' },
@@ -312,7 +312,7 @@ export const WIZARD_DATA = [
     ]
   },
   {
-    id:'code-review', label:'📋 Code Review & Quality',
+    id:'code-review', label:'Code Review & Quality',
     desc:"Need to evaluate code — mine or someone else's",
     situations:[
       { id:'doubt-quality', label:'General quality or correctness doubts', desc:'Something feels off but can\'t articulate it', skill:'code-review-excellence', effect:'Provides constructive feedback, catches bugs early, and fosters knowledge sharing while maintaining team morale.', reason:'General quality review benefits from a structured framework — this skill covers the full review lifecycle.', alt:'super-review-typescript — specialized for the five failure modes of LLM-authored TypeScript' },
@@ -322,7 +322,7 @@ export const WIZARD_DATA = [
     ]
   },
   {
-    id:'architecture', label:'🏛 Architecture & Design',
+    id:'architecture', label:'Architecture & Design',
     desc:"Structure, pattern, or system-level decisions",
     situations:[
       { id:'system-design', label:'System-level architecture or design', desc:'Large-scale structural decisions', skill:'system-architecture-audit', effect:'Four-phase audit: system mapping → boundary analysis → data flow analysis → stability assessment.', reason:'System architecture is complex enough to need a structured audit framework — this enforces completeness.', alt:'domain-driven-design — for reasoning about software architecture in terms of the business domain' },
@@ -332,7 +332,7 @@ export const WIZARD_DATA = [
     ]
   },
   {
-    id:'refactoring', label:'🔧 Refactoring & Code Improvement',
+    id:'refactoring', label:'Refactoring & Code Improvement',
     desc:"Improving code without changing its behavior",
     situations:[
       { id:'brittle-code', label:'Brittle code with weak tests or tight coupling', desc:'Scared to change it', skill:'working-effectively-with-legacy-code-state-machine', effect:'Changes brittle code through characterization, seam creation, then transformation in bounded slices with anti-loop protection.', reason:'Legacy code requires a specific workflow — this enforces the discipline that prevents making things worse.', alt:'legacy-rescue-protocol — fuse of Working Effectively with Legacy Code + Refactoring State Machine for maximum protection' },
@@ -341,7 +341,7 @@ export const WIZARD_DATA = [
     ]
   },
   {
-    id:'testing-skill', label:'🧪 Testing & Evaluation',
+    id:'testing-skill', label:'Testing & Evaluation',
     desc:"Writing tests, measuring quality, benchmarking",
     situations:[
       { id:'test-writing', label:'Writing or fixing unit/integration tests', desc:'Need correct tests for correctness', skill:'jest-testing', effect:'Comprehensive guide for correct Jest tests: matchers, async patterns, mocking, configuration, and React Native specifics.', reason:'Jest has specific failure modes — this skill covers them so you write tests that actually test what you think they test.', alt:'vitest — if you\'re on Vitest instead of Jest (same API, faster)' },
@@ -351,7 +351,7 @@ export const WIZARD_DATA = [
     ]
   },
   {
-    id:'api-data', label:'🌐 API, Network & Data Fetching',
+    id:'api-data', label:'API, Network & Data Fetching',
     desc:"Working with APIs, HTTP, or data retrieval",
     situations:[
       { id:'api-debugging', label:'API or network failure', desc:'Request is failing or behaving unexpectedly', skill:'network-api-debugging', effect:'Diagnoses CORS, auth tokens, rate limiting, redirect chains, WebSocket drops, and HTTP mismatches.', reason:'Network failures are often multi-layered. This skill maps the full chain and finds the breaking link.', alt:'native-data-fetching — for data fetching patterns in React Native or Expo apps' },
@@ -360,7 +360,7 @@ export const WIZARD_DATA = [
     ]
   },
   {
-    id:'output-quality', label:'✨ Output Quality & Verification',
+    id:'output-quality', label:'Output Quality & Verification',
     desc:"Improving, verifying, or stress-testing output",
     situations:[
       { id:'revision', label:'Need to improve a first draft or answer', desc:'Initial output is improvable', skill:'bounded-self-revision', effect:'Revises output with bounded iterations. Prevents infinite revision loops.', reason:'Unbounded revision is a trap — this enforces discipline so revision improves output rather than chasing diminishing returns.', alt:'self-verify-pipeline — for escalating verification: internal critique → claim decomposition → tool verification' },
@@ -370,7 +370,7 @@ export const WIZARD_DATA = [
     ]
   },
   {
-    id:'collaboration', label:'🤝 Agent Collaboration & Memory',
+    id:'collaboration', label:'Agent Collaboration & Memory',
     desc:"Working with multiple agents or shared context",
     situations:[
       { id:'memory', label:'What to remember across sessions', desc:'Context, decisions, what to store', skill:'agent-memory-hygiene', effect:'Decides what to remember, what to forget, how long to trust stored context, and when to treat cached knowledge as stale.', reason:'Unstructured memory degrades over time. This skill enforces the discipline of memory hygiene.', alt:'coppermind — for three-layer memory architecture with working memory, retrieval tracking, and evolution' },
@@ -379,7 +379,7 @@ export const WIZARD_DATA = [
     ]
   },
   {
-    id:'cognition', label:'◈ Cognitive Load & Metacognition',
+    id:'cognition', label:'Cognitive Load & Metacognition',
     desc:"Managing thinking, attention, and reasoning quality",
     situations:[
       { id:'attention', label:'Managing finite attention and focus', desc:'Keep the agent (or self) on track', skill:'cognitive-load-operator-state-machine', effect:'Makes information easier to understand, retain, and act on. Manages extraneous load, intrinsic complexity, and germane (productive) load.', reason:'Cognitive overload degrades reasoning quality. This skill provides the systematic fix.', alt:'context-budget-operator — for managing finite context windows with explicit token budgets' },
@@ -388,7 +388,7 @@ export const WIZARD_DATA = [
     ]
   },
   {
-    id:'other', label:'📦 Other & Edge Cases',
+    id:'other', label:'Other & Edge Cases',
     desc:"Edge cases, general utility, or uncategorized",
     situations:[
       { id:'uncertain', label:"I'm not sure what I need", desc:'Vague, unclear, or underspecified problem', skill:'task-intake-protocol', effect:'Universal preflight gate: classify the problem (Cynefin), set the evidence bar (ETTO), take the first action (Recognition-Primed Triage).', reason:'Underspecified problems need classification before they need solutions. This protocol does that.', alt:'socratic-clarification — for surfacing critical assumptions before acting on an ambiguous request' },

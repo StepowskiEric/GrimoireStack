@@ -1,6 +1,9 @@
 import { useEffect, useRef, useState, useMemo } from 'react';
 import { matchProblemToSpells, suggestExampleProblems } from '../utils/problemMatch.js';
 import { spellCatalog } from '../data/spellCatalogInstance.js';
+import ModalEye from './ModalEye.tsx';
+import SchoolSigil from './SchoolSigil.tsx';
+import Icon from './Icon.jsx';
 
 export default function ProblemIntakeModal({ onClose, onSelectSpell }) {
   const modalRef = useRef(null);
@@ -46,8 +49,10 @@ export default function ProblemIntakeModal({ onClose, onSelectSpell }) {
   return (
     <div className="modal-overlay open" onClick={(e) => { if (e.target === e.currentTarget) onClose(); }} role="button" tabIndex={0} onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); onClose(); } }}>
       <div className="modal intake-modal" ref={modalRef} role="dialog" aria-modal="true" aria-label="Describe your problem">
-        <button className="modal-close" onClick={onClose} aria-label="Close intake" type="button">✕</button>
-        <span className="modal-symbol" aria-hidden="true">🜲</span>
+        <button className="modal-close" onClick={onClose} aria-label="Close intake" type="button">
+          <Icon name="close" size={18} />
+        </button>
+        <span className="modal-symbol"><ModalEye size={36} /></span>
         <div className="modal-title">What Ails You?</div>
         <div className="modal-school">Describe your problem in plain language — the orb will suggest incantations.</div>
 
@@ -68,7 +73,7 @@ export default function ProblemIntakeModal({ onClose, onSelectSpell }) {
             className="intake-submit"
             disabled={!query.trim() || matches.length === 0}
           >
-            ✦ Reveal Suggestions
+            Reveal Suggestions
           </button>
         </form>
 
@@ -92,7 +97,7 @@ export default function ProblemIntakeModal({ onClose, onSelectSpell }) {
                       onClick={() => handleOpenSpell(m.spell)}
                     >
                       <span className="intake-result-rank">#{i + 1}</span>
-                      <span className="intake-result-symbol" aria-hidden="true">{m.school.symbol}</span>
+                      <span className="intake-result-symbol" aria-hidden="true"><SchoolSigil schoolId={m.school.id} size={20} /></span>
                       <span className="intake-result-body">
                         <span className="intake-result-name">{m.spell.name}</span>
                         <span className="intake-result-effect">{m.spell.effect}</span>

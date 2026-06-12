@@ -1,5 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import ModalEye from './ModalEye.tsx';
+import Icon from './Icon.jsx';
 
 const STORAGE_KEY = 'grimoire-welcome-dismissed';
 
@@ -64,7 +66,9 @@ export default function ApprenticeWelcome({ onClose }) {
         exit={{ opacity: 0, y: 18, scale: 0.97 }}
         transition={transition}
       >
-        <button className="modal-close" onClick={onClose} aria-label="Close welcome" type="button">✕</button>
+        <button className="modal-close" onClick={onClose} aria-label="Close welcome" type="button">
+          <Icon name="close" size={18} />
+        </button>
 
         <AnimatePresence mode="wait">
           <motion.div
@@ -74,7 +78,7 @@ export default function ApprenticeWelcome({ onClose }) {
             exit={{ opacity: 0, x: -22 }}
             transition={transition}
           >
-            <div className="welcome-symbol" aria-hidden="true">⛧</div>
+            <div className="welcome-symbol"><ModalEye size={36} /></div>
             <h2 className="welcome-title">{current.title}</h2>
             <p className="welcome-body">{current.body}</p>
             <p className="welcome-accent">{current.accent}</p>

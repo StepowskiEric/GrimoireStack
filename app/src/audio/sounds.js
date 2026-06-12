@@ -159,7 +159,6 @@ function startAmbience() {
   } catch {}
 }
 
-export { witchLaugh, pageCreak, pageTurn, startAmbience, castTear, castBoom, castScratch, castThud };
 
 // ── Lidless Eye Cast SFX ─────────────────────────────
 // Four short synthesized cues for the Bloodborne / Cthulhu cast effect.
@@ -292,3 +291,69 @@ function castThud() {
     src.stop(now + dur + 0.02);
   } catch {}
 }
+
+// ── Spine Interaction SFX ─────────────────────────────
+// Faint, unsettling sounds for the cosmic horror Archives experience.
+
+function hoverWhisper() {
+  try {
+    const ctx = ensureCtx();
+    const now = ctx.currentTime;
+    const master = ctx.createGain();
+    master.gain.value = 0.06;
+    master.connect(ctx.destination);
+    // Breathy whisper: filtered noise with fast attack/decay
+    const dur = 0.15;
+    const len = Math.floor(dur * ctx.sampleRate);
+    const buf = ctx.createBuffer(1, len, ctx.sampleRate);
+    const ch = buf.getChannelData(0);
+    for (let i = 0; i < len; i++) {
+      const env = Math.sin(Math.PI * i / len);
+      ch[i] = (Math.random() * 2 - 1) * env;
+    }
+    const src = ctx.createBufferSource();
+    src.buffer = buf;
+    const bp = ctx.createBiquadFilter();
+    bp.type = 'bandpass';
+    bp.frequency.value = 800 + Math.random() * 400;
+    bp.Q.value = 1.5;
+    const g = ctx.createGain();
+    g.gain.value = 0.4;
+    src.connect(bp); bp.connect(g); g.connect(master);
+    src.start(now);
+  } catch {}
+}
+
+function wetTendril() {
+  try {
+    const ctx = ensureCtx();
+    const now = ctx.currentTime;
+    const master = ctx.createGain();
+    master.gain.value = 0.08;
+    master.connect(ctx.destination);
+    // Wet squelch: two filtered noise bursts with pitch sweep
+    for (let i = 0; i < 2; i++) {
+      const t = now + i * 0.06;
+      const dur = 0.08;
+      const len = Math.floor(dur * ctx.sampleRate);
+      const buf = ctx.createBuffer(1, len, ctx.sampleRate);
+      const ch = buf.getChannelData(0);
+      for (let j = 0; j < len; j++) {
+        const env = Math.exp(-j / (len * 0.3));
+        ch[j] = (Math.random() * 2 - 1) * env;
+      }
+      const src = ctx.createBufferSource();
+      src.buffer = buf;
+      const lp = ctx.createBiquadFilter();
+      lp.type = 'lowpass';
+      lp.frequency.setValueAtTime(600, t);
+      lp.frequency.exponentialRampToValueAtTime(200, t + dur);
+      const g = ctx.createGain();
+      g.gain.value = 0.5;
+      src.connect(lp); lp.connect(g); g.connect(master);
+      src.start(t);
+    }
+  } catch {}
+}
+
+export { witchLaugh, pageCreak, pageTurn, startAmbience, castTear, castBoom, castScratch, castThud, hoverWhisper, wetTendril };

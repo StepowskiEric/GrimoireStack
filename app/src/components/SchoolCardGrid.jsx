@@ -1,33 +1,47 @@
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useCallback } from 'react';
+import { schoolColors } from '../utils/schoolColors.js';
+import { getSpellTier, TIER_META } from '../data/tiers.js';
+import AllSchoolsView from './AllSchoolsView.jsx';
+import SchoolSigil from './SchoolSigil.tsx';
+import { pageCreak, hoverWhisper } from '../audio/sounds.js';
 
-// Default featured schools if none specified
 const DEFAULT_FEATURED = ['debugging', 'reasoning', 'process', 'architecture', 'testing', 'creativity'];
+
+function getDominantTier(spells) {
+  const counts = {};
+  for (const sp of spells) {
+    const t = getSpellTier(sp);
+    counts[t] = (counts[t] || 0) + 1;
+  }
+  let best = 'faded';
+  let bestCount = 0;
+  for (const [t, c] of Object.entries(counts)) {
+    if (c > bestCount) { best = t; bestCount = c; }
+  }
+  return best;
+}
 
 export default function SchoolCardGrid({
   schools,
   featuredSchools = DEFAULT_FEATURED,
   onSchoolSelect,
-  onViewAll,
   onFeaturedSchoolsChange,
 }) {
   const [isEditing, setIsEditing] = useState(false);
   const [tempFeatured, setTempFeatured] = useState(featuredSchools);
+  const [viewMode, setViewMode] = useState('featured');
 
-  // Get featured school objects
   const featuredSchoolObjects = useMemo(() => {
     return featuredSchools
       .map(id => schools.find(s => s.id === id))
       .filter(Boolean)
-      .slice(0, 6); // Max 6 featured
+      .slice(0, 6);
   }, [featuredSchools, schools]);
 
   const handleToggleFeatured = (schoolId) => {
     setTempFeatured(prev => {
-      if (prev.includes(schoolId)) {
-        return prev.filter(id => id !== schoolId);
-      } else if (prev.length < 6) {
-        return [...prev, schoolId];
-      }
+      if (prev.includes(schoolId)) return prev.filter(id => id !== schoolId);
+      if (prev.length < 6) return [...prev, schoolId];
       return prev;
     });
   };
@@ -38,18 +52,84 @@ export default function SchoolCardGrid({
     setIsEditing(false);
   };
 
+  const handleSchoolClick = useCallback((school) => {
+    pageCreak();
+    onSchoolSelect(school.id);
+  }, [onSchoolSelect]);
+
   return (
-    <div className="school-card-grid">
-      <h2 className="school-card-grid__title">Wardens of the Abyss</h2>
-      
+    <div className="spine-view">
+      {/* Watching Eye Header */}
+      <div className="spine-header">
+        <div className="spine-eye" aria-hidden="true">
+          <svg viewBox="0 0 200 120" className="spine-eye__svg">
+            <ellipse cx="100" cy="60" rx="90" ry="50" fill="none" stroke="rgba(138,154,106,0.12)" strokeWidth="1" />
+            <ellipse cx="100" cy="60" rx="75" ry="40" fill="none" stroke="rgba(138,154,106,0.08)" strokeWidth="0.6" strokeDasharray="4 5" />
+            <ellipse cx="100" cy="60" rx="65" ry="34" fill="rgba(8,8,6,0.95)" stroke="rgba(196,184,152,0.2)" strokeWidth="0.8" />
+            <ellipse cx="100" cy="60" rx="38" ry="22" fill="rgba(138,154,106,0.15)" className="spine-eye__iris" />
+            <ellipse cx="100" cy="60" rx="14" ry="10" fill="#020203" className="spine-eye__pupil" />
+            <ellipse cx="95" cy="55" rx="4" ry="2.5" fill="rgba(196,184,152,0.35)" />
+            <path d="M 100 26 L 97 18 L 94 12" stroke="#5a0a0a" strokeWidth="0.8" fill="none" opacity="0.7" />
+            <path d="M 100 94 L 103 102 L 106 108" stroke="#5a0a0a" strokeWidth="0.8" fill="none" opacity="0.7" />
+            <path d="M 35 60 L 25 57 L 18 58" stroke="#5a0a0a" strokeWidth="0.6" fill="none" opacity="0.5" />
+            <path d="M 165 60 L 175 63 L 182 62" stroke="#5a0a0a" strokeWidth="0.6" fill="none" opacity="0.5" />
+          </svg>
+        </div>
+        <h1 className="spine-title">The Spine</h1>
+        <p className="spine-subtitle">A catalogue of every entity bound within this grimoire</p>
+        <div className="spine-stats">
+          <div className="spine-stat">
+            <span className="spine-stat__num">{schools.length}</span>
+            <span className="spine-stat__label">Wardens</span>
+          </div>
+          <div className="spine-stat">
+            <span className="spine-stat__num">{schools.reduce((s, sc) => s + sc.spells.length, 0)}</span>
+            <span className="spine-stat__label">Entities</span>
+          </div>
+        </div>
+      </div>
+
+      {/* Pill Switcher */}
+      {!isEditing && (
+        <div className="spine-pills" role="tablist" aria-label="Archive view">
+          <button
+            role="tab"
+            aria-selected={viewMode === 'featured'}
+            className={`spine-pill ${viewMode === 'featured' ? 'spine-pill--active' : ''}`}
+            onClick={() => setViewMode('featured')}
+            type="button"
+          >
+            Featured
+          </button>
+          <button
+            role="tab"
+            aria-selected={viewMode === 'all'}
+            className={`spine-pill ${viewMode === 'all' ? 'spine-pill--active' : ''}`}
+            onClick={() => setViewMode('all')}
+            type="button"
+          >
+            All Schools
+          </button>
+          <button
+            className="spine-customize-btn"
+            onClick={() => setIsEditing(true)}
+            type="button"
+            title="Customize featured schools"
+          >
+            &#x2699;
+          </button>
+        </div>
+      )}
+
+      {/* Content */}
       {isEditing ? (
-        <>
-          <p className="school-card-grid__subtitle">Select up to 6 featured schools:</p>
-          <div className="school-card-grid__edit-list">
+        <div className="spine-edit">
+          <p className="spine-edit__subtitle">Select up to 6 featured schools:</p>
+          <div className="spine-edit__list">
             {schools.map(school => (
               <label
                 key={school.id}
-                className={`school-card-grid__edit-item ${tempFeatured.includes(school.id) ? 'school-card-grid__edit-item--selected' : ''}`}
+                className={`spine-edit__item ${tempFeatured.includes(school.id) ? 'spine-edit__item--selected' : ''}`}
               >
                 <input
                   type="checkbox"
@@ -57,65 +137,67 @@ export default function SchoolCardGrid({
                   onChange={() => handleToggleFeatured(school.id)}
                   disabled={!tempFeatured.includes(school.id) && tempFeatured.length >= 6}
                 />
-                <span className="school-card-grid__edit-symbol">{school.symbol}</span>
-                <span className="school-card-grid__edit-name">{school.name}</span>
+                <span className="spine-edit__symbol"><SchoolSigil schoolId={school.id} size={20} /></span>
+                <span className="spine-edit__name">{school.real}</span>
               </label>
             ))}
           </div>
-          <div className="school-card-grid__edit-actions">
-            <button
-              className="school-card-grid__edit-save"
-              onClick={handleSaveFeatured}
-              type="button"
-            >
-              Save Selection
+          <div className="spine-edit__actions">
+            <button className="spine-edit__save" onClick={handleSaveFeatured} type="button">
+              Bind Selection
             </button>
             <button
-              className="school-card-grid__edit-cancel"
-              onClick={() => {
-                setTempFeatured(featuredSchools);
-                setIsEditing(false);
-              }}
+              className="spine-edit__cancel"
+              onClick={() => { setTempFeatured(featuredSchools); setIsEditing(false); }}
               type="button"
             >
-              Cancel
+              Dispel
             </button>
           </div>
-        </>
-      ) : (
-        <>
-          <div className="school-card-grid__cards">
-            {featuredSchoolObjects.map(school => (
+        </div>
+      ) : viewMode === 'featured' ? (
+        <div className="spine-featured">
+          {featuredSchoolObjects.map(school => {
+            const colors = schoolColors(school.id);
+            const tier = getDominantTier(school.spells);
+            const tierMeta = TIER_META[tier];
+            return (
               <button
                 key={school.id}
-                className="school-card"
-                onClick={() => onSchoolSelect(school.id)}
+                className="spine-card"
+                style={colors.cssVars}
+                onClick={() => handleSchoolClick(school)}
+                onMouseEnter={() => hoverWhisper()}
                 type="button"
               >
-                <div className="school-card__symbol">{school.symbol}</div>
-                <div className="school-card__name">{school.real}</div>
-                <div className="school-card__spell-count">{school.spells.length} spells</div>
+                <div className="spine-card__drip-top" aria-hidden="true" />
+                <div className="spine-card__glow" aria-hidden="true" />
+                <div className="spine-card__eye" aria-hidden="true">
+                  <div className="spine-card__pupil" />
+                </div>
+                <div className="spine-card__content">
+                  <div className="spine-card__symbol"><SchoolSigil schoolId={school.id} size={36} /></div>
+                  <div className="spine-card__name">{school.real}</div>
+                  <div className="spine-card__desc">{school.desc}</div>
+                  <div className="spine-card__footer">
+                    <span className="spine-card__count">{school.spells.length} spells</span>
+                    {tierMeta && (
+                      <span className={`spine-card__tier spine-card__tier--${tier}`}>
+                        {tierMeta.label}
+                      </span>
+                    )}
+                  </div>
+                </div>
+                <div className="spine-card__drip-bottom" aria-hidden="true" />
               </button>
-            ))}
-          </div>
-          
-          <div className="school-card-grid__actions">
-            <button
-              className="school-card-grid__view-all"
-              onClick={onViewAll}
-              type="button"
-            >
-              View All Schools
-            </button>
-            <button
-              className="school-card-grid__customize"
-              onClick={() => setIsEditing(true)}
-              type="button"
-            >
-              Customize
-            </button>
-          </div>
-        </>
+            );
+          })}
+        </div>
+      ) : (
+        <AllSchoolsView
+          schools={schools}
+          onSchoolSelect={onSchoolSelect}
+        />
       )}
     </div>
   );

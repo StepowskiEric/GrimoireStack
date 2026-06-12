@@ -12,7 +12,8 @@ describe('schools data', () => {
     for (const school of schools) {
       expect(school).toHaveProperty('id');
       expect(school).toHaveProperty('name');
-      expect(school).toHaveProperty('symbol');
+      expect(school).toHaveProperty('real');
+      expect(school).toHaveProperty('desc');
       expect(school).toHaveProperty('spells');
       expect(Array.isArray(school.spells)).toBe(true);
     }

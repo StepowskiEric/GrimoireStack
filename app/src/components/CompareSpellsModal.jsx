@@ -1,6 +1,9 @@
 import { useEffect, useRef, useState, useCallback, useMemo } from 'react';
 import { getAllFlat } from '../data/spellMetadata.js';
 import { compareSpells } from '../utils/markdownExport.js';
+import ModalEye from './ModalEye.tsx';
+import SchoolSigil from './SchoolSigil.tsx';
+import Icon from './Icon.jsx';
 
 export default function CompareSpellsModal({ left, right, onClose, onSelect, onPickSlot }) {
   const modalRef = useRef(null);
@@ -57,8 +60,10 @@ export default function CompareSpellsModal({ left, right, onClose, onSelect, onP
       }
     }}>
       <div className="modal compare-modal" ref={modalRef} role="dialog" aria-modal="true" aria-label="Compare spells">
-        <button className="modal-close" onClick={onClose} aria-label="Close compare" type="button">✕</button>
-        <span className="modal-symbol" aria-hidden="true">⚖</span>
+        <button className="modal-close" onClick={onClose} aria-label="Close compare" type="button">
+          <Icon name="close" size={18} />
+        </button>
+        <span className="modal-symbol"><ModalEye size={36} /></span>
         <div className="modal-title">Compare Incantations</div>
         <div className="modal-school">Side-by-side comparison of two spells</div>
 
@@ -73,13 +78,13 @@ export default function CompareSpellsModal({ left, right, onClose, onSelect, onP
                 >
                   {left ? (
                     <>
-                      <div className="compare-slot-symbol">{left.school?.symbol || '✦'}</div>
+                      <div className="compare-slot-symbol">{left.school ? <SchoolSigil schoolId={left.school.id} size={32} /> : null}</div>
                       <div className="compare-slot-name">{left.name}</div>
                       <div className="compare-slot-skill">〈 {left.skill} 〉</div>
                       <div className="compare-slot-hint">Click to replace</div>
                     </>
                   ) : (
-                    <div className="compare-slot-empty">✦ Summon the first incantation</div>
+                    <div className="compare-slot-empty">Summon the first incantation</div>
                   )}
                 </button>
               </div>
@@ -92,13 +97,13 @@ export default function CompareSpellsModal({ left, right, onClose, onSelect, onP
                 >
                   {right ? (
                     <>
-                      <div className="compare-slot-symbol">{right.school?.symbol || '✦'}</div>
+                      <div className="compare-slot-symbol">{right.school ? <SchoolSigil schoolId={right.school.id} size={32} /> : null}</div>
                       <div className="compare-slot-name">{right.name}</div>
                       <div className="compare-slot-skill">〈 {right.skill} 〉</div>
                       <div className="compare-slot-hint">Click to replace</div>
                     </>
                   ) : (
-                    <div className="compare-slot-empty">✦ Summon the second</div>
+                    <div className="compare-slot-empty">Summon the second</div>
                   )}
                 </button>
               </div>
@@ -180,7 +185,7 @@ export default function CompareSpellsModal({ left, right, onClose, onSelect, onP
                       onClick={() => pickSpell(spell, school)}
                       disabled={isThis}
                     >
-                      <span className="compare-picker-symbol" aria-hidden="true">{school.symbol}</span>
+                      <span className="compare-picker-symbol" aria-hidden="true"><SchoolSigil schoolId={school.id} size={20} /></span>
                       <span className="compare-picker-name">{spell.name}</span>
                       <span className="compare-picker-skill">〈 {spell.skill} 〉</span>
                     </button>

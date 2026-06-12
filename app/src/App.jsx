@@ -1,4 +1,5 @@
 import { useState, useEffect, useCallback, useRef, useMemo, lazy, Suspense } from 'react';
+import { BrowserRouter } from 'react-router-dom';
 import schools from './data/schools.js';
 import { searchSpells, filterSpells } from './search.js';
 import { witchLaugh, pageCreak, startAmbience } from './audio/sounds.js';
@@ -27,11 +28,13 @@ const ShortcutsModal = lazy(() => import('./components/ShortcutsModal.jsx'));
 
 export default function App() {
   return (
-    <LanguageProvider>
-      <ErrorBoundary>
-        <AppInner />
-      </ErrorBoundary>
-    </LanguageProvider>
+    <BrowserRouter>
+      <LanguageProvider>
+        <ErrorBoundary>
+          <AppInner />
+        </ErrorBoundary>
+      </LanguageProvider>
+    </BrowserRouter>
   );
 }
 
