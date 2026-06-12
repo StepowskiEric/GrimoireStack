@@ -232,6 +232,98 @@ export function createGrimoireIndex(schools) {
     return { nodes, edges, schoolOfSkill };
   };
 
+  // ── Spell Web (Hierarchical Tree) ─────────────────────
+  // Builds a hierarchical tree: schools as branches, spells as leaves.
+  // Includes combo edges for tentacle connections between spells.
+  const buildSpellWeb = ({ skillFilter = null } = {}) => {
+    const schoolNodes = [];
+    const schoolMap = new Map();
+    const spellNodes = [];
+    const comboEdges = [];
+    
+    // First pass: create school branches
+    for (const { spell, school } of iterate()) {
+      if (skillFilter && !skillFilter.has(school.id)) continue;
+      
+      if (!schoolMap.has(school.id)) {
+        const schoolNode = {
+          id: school.id,
+          type: 'school',
+          label: school.real,
+          name: school.name,
+          spellCount: 0,
+          children: [],
+          // Position will be calculated later
+          x: 0,
+          y: 0,
+        };
+        schoolMap.set(school.id, schoolNode);
+        schoolNodes.push(schoolNode);
+      }
+      
+      const schoolNode = schoolMap.get(school.id);
+      schoolNode.spellCount++;
+      
+      // Create spell leaf node
+      const spellNode = {
+        id: spell.skill,
+        type: 'spell',
+        label: spell.name,
+        schoolId: school.id,
+        schoolName: school.real,
+        tier: spell.status || 'Common',
+        comboCount: Array.isArray(spell.combos) ? spell.combos.length : 0,
+        effect: spell.effect,
+        // Position will be calculated later
+        x: 0,
+        y: 0,
+      };
+      
+      schoolNode.children.push(spellNode);
+      spellNodes.push(spellNode);
+    }
+    
+    // Second pass: create combo edges (tentacle connections)
+    const edgeKey = (a, b) => (a < b ? `${a}|${b}` : `${b}|${a}`);
+    const edgeMap = new Map();
+    
+    for (const { spell } of iterate()) {
+      if (!Array.isArray(spell.combos)) continue;
+      if (skillFilter && !skillFilter.has(spell.skill)) continue;
+      
+      for (const comboName of spell.combos) {
+        const target = resolveByName(comboName);
+        if (!target) continue;
+        if (target.spell.skill === spell.skill) continue;
+        
+        const key = edgeKey(spell.skill, target.spell.skill);
+        const cur = edgeMap.get(key) || {
+          source: spell.skill,
+          target: target.spell.skill,
+          weight: 0,
+          // Store school info for theming
+          sourceSchool: spell.skill,
+          targetSchool: target.spell.skill,
+        };
+        cur.weight += 1;
+        edgeMap.set(key, cur);
+      }
+    }
+    
+    for (const e of edgeMap.values()) comboEdges.push(e);
+    
+    return {
+      schools: schoolNodes,
+      spellNodes,
+      comboEdges,
+      schoolMap,
+      // Utility to find spell node by skill id
+      findSpellNode: (skillId) => spellNodes.find(n => n.id === skillId) || null,
+      // Utility to find school node by id
+      findSchoolNode: (schoolId) => schoolMap.get(schoolId) || null,
+    };
+  };
+
   const getNodeBySkill = (graph, skill) => {
     return graph.nodes.find((n) => n.id === skill) || null;
   };
@@ -254,6 +346,8 @@ export function createGrimoireIndex(schools) {
     // Graph
     buildGraph,
     getNodeBySkill,
+    // Spell Web (Hierarchical Tree)
+    buildSpellWeb,
     // Iterable protocol — `for (const e of index)` delegates to iterate()
     [Symbol.iterator]: iterate,
   };

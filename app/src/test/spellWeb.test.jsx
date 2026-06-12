@@ -1,0 +1,110 @@
+import { render, screen } from '@testing-library/react';
+import SpellWeb from '../components/SpellWeb.jsx';
+
+// Mock the grimoireIndex module
+const mockSchools = [
+  {
+    id: 'debugging',
+    real: 'Debugging',
+    name: 'School of Remediation',
+    desc: 'Incantations to banish bugs.',
+    spells: [
+      { name: 'Trace Sight', skill: 'log-trace-correlation', effect: 'Maps stack traces.', status: 'Proven' },
+      { name: 'Bisect Divination', skill: 'bisect-debugging', effect: 'Binary searches.', status: 'Proven' },
+    ],
+  },
+  {
+    id: 'reasoning',
+    real: 'Reasoning',
+    name: 'School of Cognition',
+    desc: 'Mental models.',
+    spells: [
+      { name: 'Razor of Parsimony', skill: 'occams-razor', effect: 'Favors simplest.', status: 'New' },
+    ],
+  },
+];
+
+const mockWeb = {
+  schools: [
+    {
+      id: 'debugging',
+      type: 'school',
+      label: 'Debugging',
+      name: 'School of Remediation',
+      spellCount: 2,
+      children: [
+        { id: 'log-trace-correlation', type: 'spell', label: 'Trace Sight', schoolId: 'debugging', schoolName: 'Debugging', tier: 'Proven', comboCount: 0, effect: 'Maps stack traces.' },
+        { id: 'bisect-debugging', type: 'spell', label: 'Bisect Divination', schoolId: 'debugging', schoolName: 'Debugging', tier: 'Proven', comboCount: 0, effect: 'Binary searches.' },
+      ],
+    },
+    {
+      id: 'reasoning',
+      type: 'school',
+      label: 'Reasoning',
+      name: 'School of Cognition',
+      spellCount: 1,
+      children: [
+        { id: 'occams-razor', type: 'spell', label: 'Razor of Parsimony', schoolId: 'reasoning', schoolName: 'Reasoning', tier: 'New', comboCount: 0, effect: 'Favors simplest.' },
+      ],
+    },
+  ],
+  spellNodes: [
+    { id: 'log-trace-correlation', type: 'spell', label: 'Trace Sight', schoolId: 'debugging', schoolName: 'Debugging', tier: 'Proven', comboCount: 0, effect: 'Maps stack traces.' },
+    { id: 'bisect-debugging', type: 'spell', label: 'Bisect Divination', schoolId: 'debugging', schoolName: 'Debugging', tier: 'Proven', comboCount: 0, effect: 'Binary searches.' },
+    { id: 'occams-razor', type: 'spell', label: 'Razor of Parsimony', schoolId: 'reasoning', schoolName: 'Reasoning', tier: 'New', comboCount: 0, effect: 'Favors simplest.' },
+  ],
+  comboEdges: [],
+  schoolMap: new Map(),
+  findSpellNode: (skillId) => null,
+  findSchoolNode: (schoolId) => null,
+};
+
+vi.mock('../data/grimoireIndexInstance.js', () => ({
+  grimoireIndex: {
+    buildSpellWeb: () => mockWeb,
+    resolveBySkill: (skillId) => {
+      const spell = mockWeb.spellNodes.find(s => s.id === skillId);
+      if (!spell) return null;
+      const school = mockSchools.find(s => s.id === spell.schoolId);
+      return { spell: { name: spell.label, skill: spell.id, effect: spell.effect, status: spell.tier }, school };
+    },
+  },
+}));
+
+describe('SpellWeb', () => {
+  it('renders without crashing', () => {
+    render(<SpellWeb schools={mockSchools} onSpellClick={() => {}} />);
+    expect(screen.getByText('The Spell Web')).toBeInTheDocument();
+  });
+
+  it('displays school count', () => {
+    render(<SpellWeb schools={mockSchools} onSpellClick={() => {}} />);
+    const elements = screen.getAllByText('2');
+    expect(elements.length).toBeGreaterThan(0);
+  });
+
+  it('displays spell count', () => {
+    render(<SpellWeb schools={mockSchools} onSpellClick={() => {}} />);
+    expect(screen.getByText('3')).toBeInTheDocument();
+  });
+
+  it('displays connection count', () => {
+    render(<SpellWeb schools={mockSchools} onSpellClick={() => {}} />);
+    expect(screen.getByText('0')).toBeInTheDocument();
+  });
+
+  it('renders school names', () => {
+    render(<SpellWeb schools={mockSchools} onSpellClick={() => {}} />);
+    const debuggingElements = screen.getAllByText('Debugging');
+    expect(debuggingElements.length).toBeGreaterThanOrEqual(1);
+    const reasoningElements = screen.getAllByText('Reasoning');
+    expect(reasoningElements.length).toBeGreaterThanOrEqual(1);
+  });
+
+  it('renders spell names', () => {
+    render(<SpellWeb schools={mockSchools} onSpellClick={() => {}} />);
+    expect(screen.getByText('Trace Sight')).toBeInTheDocument();
+    expect(screen.getByText('Bisect Divination')).toBeInTheDocument();
+    expect(screen.getByText('Razor of Parsimony')).toBeInTheDocument();
+  });
+});

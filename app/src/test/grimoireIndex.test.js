@@ -309,3 +309,107 @@ describe('grimoireIndex — getNodeBySkill', () => {
     expect(node).toBeNull();
   });
 });
+
+describe('grimoireIndex — buildSpellWeb', () => {
+  it('returns schools, spellNodes, comboEdges, and schoolMap', () => {
+    const web = grimoireIndex.buildSpellWeb();
+    expect(web).toHaveProperty('schools');
+    expect(web).toHaveProperty('spellNodes');
+    expect(web).toHaveProperty('comboEdges');
+    expect(web).toHaveProperty('schoolMap');
+    expect(Array.isArray(web.schools)).toBe(true);
+    expect(Array.isArray(web.spellNodes)).toBe(true);
+    expect(Array.isArray(web.comboEdges)).toBe(true);
+    expect(web.schoolMap).toBeInstanceOf(Map);
+  });
+
+  it('schools have correct structure', () => {
+    const web = grimoireIndex.buildSpellWeb();
+    for (const school of web.schools) {
+      expect(school).toHaveProperty('id');
+      expect(school).toHaveProperty('type', 'school');
+      expect(school).toHaveProperty('label');
+      expect(school).toHaveProperty('name');
+      expect(school).toHaveProperty('spellCount');
+      expect(school).toHaveProperty('children');
+      expect(Array.isArray(school.children)).toBe(true);
+      expect(school.spellCount).toBe(school.children.length);
+    }
+  });
+
+  it('spellNodes have correct structure', () => {
+    const web = grimoireIndex.buildSpellWeb();
+    for (const spell of web.spellNodes) {
+      expect(spell).toHaveProperty('id');
+      expect(spell).toHaveProperty('type', 'spell');
+      expect(spell).toHaveProperty('label');
+      expect(spell).toHaveProperty('schoolId');
+      expect(spell).toHaveProperty('schoolName');
+      expect(spell).toHaveProperty('tier');
+      expect(spell).toHaveProperty('comboCount');
+      expect(spell).toHaveProperty('effect');
+    }
+  });
+
+  it('comboEdges have correct structure', () => {
+    const web = grimoireIndex.buildSpellWeb();
+    for (const edge of web.comboEdges) {
+      expect(edge).toHaveProperty('source');
+      expect(edge).toHaveProperty('target');
+      expect(edge).toHaveProperty('weight');
+      expect(typeof edge.weight).toBe('number');
+      expect(edge.weight).toBeGreaterThan(0);
+    }
+  });
+
+  it('schools contain their spells as children', () => {
+    const web = grimoireIndex.buildSpellWeb();
+    for (const school of web.schools) {
+      for (const child of school.children) {
+        expect(child.schoolId).toBe(school.id);
+        expect(child.type).toBe('spell');
+      }
+    }
+  });
+
+  it('findSpellNode returns correct spell', () => {
+    const web = grimoireIndex.buildSpellWeb();
+    const spell = web.findSpellNode('log-trace-correlation');
+    expect(spell).not.toBeNull();
+    expect(spell.label).toBe('Trace Sight');
+    expect(spell.schoolId).toBe('debugging');
+  });
+
+  it('findSpellNode returns null for invalid skill', () => {
+    const web = grimoireIndex.buildSpellWeb();
+    expect(web.findSpellNode('nonexistent-skill')).toBeNull();
+  });
+
+  it('findSchoolNode returns correct school', () => {
+    const web = grimoireIndex.buildSpellWeb();
+    const school = web.findSchoolNode('debugging');
+    expect(school).not.toBeNull();
+    expect(school.label).toBe('Debugging');
+    expect(school.type).toBe('school');
+  });
+
+  it('findSchoolNode returns null for invalid school', () => {
+    const web = grimoireIndex.buildSpellWeb();
+    expect(web.findSchoolNode('nonexistent-school')).toBeNull();
+  });
+
+  it('respects skillFilter parameter', () => {
+    const web = grimoireIndex.buildSpellWeb({ skillFilter: new Set(['debugging']) });
+    expect(web.schools.length).toBe(1);
+    expect(web.schools[0].id).toBe('debugging');
+    for (const spell of web.spellNodes) {
+      expect(spell.schoolId).toBe('debugging');
+    }
+  });
+
+  it('total spells across schools equals spellNodes length', () => {
+    const web = grimoireIndex.buildSpellWeb();
+    const totalFromSchools = web.schools.reduce((sum, s) => sum + s.spellCount, 0);
+    expect(totalFromSchools).toBe(web.spellNodes.length);
+  });
+});

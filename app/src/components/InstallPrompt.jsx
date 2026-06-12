@@ -21,7 +21,9 @@ export default function InstallPrompt() {
   const handleInstall = async () => {
     if (!deferredPrompt) return;
     deferredPrompt.prompt();
-    try { await deferredPrompt.userChoice; } catch {}
+    try { await deferredPrompt.userChoice; } catch (error) {
+      console.warn('Install prompt failed:', error);
+    }
     setVisible(false);
     setDeferredPrompt(null);
   };

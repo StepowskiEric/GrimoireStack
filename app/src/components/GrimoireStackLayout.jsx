@@ -6,6 +6,8 @@ import SpellCard from './SpellCard.jsx';
 import FavoritesView from './FavoritesView.jsx';
 import RecipeLabView from './RecipeLabView.jsx';
 import BestiaryCodex from './BestiaryCodex.jsx';
+import SpellWeb from './SpellWeb.jsx';
+import ChangelogView from './ChangelogView.jsx';
 import SettingsView from './SettingsView.jsx';
 import AllSchoolsView from './AllSchoolsView.jsx';
 import GrimoireEye from './GrimoireEye.jsx';
@@ -18,6 +20,8 @@ const TABS = {
   SPELLBOOK: 'spellbook',
   RECIPE_LAB: 'rituals',
   ARCANE_TOOLS: 'bestiary',
+  SPELL_WEB: 'spellweb',
+  CHANGELOG: 'changelog',
   SETTINGS: 'settings',
 };
 
@@ -26,6 +30,8 @@ const TAB_ROUTES = {
   [TABS.SPELLBOOK]: '/vault',
   [TABS.RECIPE_LAB]: '/rituals',
   [TABS.ARCANE_TOOLS]: '/bestiary',
+  [TABS.SPELL_WEB]: '/spellweb',
+  [TABS.CHANGELOG]: '/changelog',
   [TABS.SETTINGS]: '/settings',
 };
 
@@ -34,6 +40,8 @@ const TAB_LABELS = {
   [TABS.SPELLBOOK]: { name: 'The Vault', icon: 'vault' },
   [TABS.RECIPE_LAB]: { name: 'The Crucible', icon: 'alembic' },
   [TABS.ARCANE_TOOLS]: { name: 'The Bestiary', icon: 'tools' },
+  [TABS.SPELL_WEB]: { name: 'Spell Web', icon: 'graph' },
+  [TABS.CHANGELOG]: { name: 'Changelog', icon: 'changelog' },
   [TABS.SETTINGS]: { name: 'Settings', icon: 'sigil' },
 };
 
@@ -96,6 +104,8 @@ export default function GrimoireStackLayout({
     if (path === '/vault') return TABS.SPELLBOOK;
     if (path === '/rituals') return TABS.RECIPE_LAB;
     if (path === '/bestiary') return TABS.ARCANE_TOOLS;
+    if (path === '/spellweb') return TABS.SPELL_WEB;
+    if (path === '/changelog') return TABS.CHANGELOG;
     if (path === '/settings') return TABS.SETTINGS;
     return TABS.LIBRARY;
   })();
@@ -242,6 +252,16 @@ export default function GrimoireStackLayout({
             isFavorited={isFavorited}
             hasNote={hasNote}
           />
+        );
+      case TABS.SPELL_WEB:
+        return (
+          <SpellWeb
+            onSpellClick={handleSpellCardClick}
+          />
+        );
+      case TABS.CHANGELOG:
+        return (
+          <ChangelogView />
         );
       case TABS.SETTINGS:
         return (

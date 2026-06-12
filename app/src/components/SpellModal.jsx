@@ -186,6 +186,36 @@ function escapeHtml(text) {
     .replace(/"/g, '&quot;');
 }
 
+function sanitizeHtml(html) {
+  // Allow only safe HTML tags and attributes
+  const allowedTags = new Set([
+    'p', 'br', 'hr', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6',
+    'strong', 'em', 'del', 'code', 'pre', 'blockquote',
+    'ul', 'ol', 'li', 'a', 'table', 'thead', 'tbody', 'tr', 'th', 'td',
+    'span', 'div', 'input', 'label'
+  ]);
+  
+  const allowedAttributes = new Set([
+    'class', 'href', 'target', 'rel', 'type', 'checked', 'disabled',
+    'data-depth', 'aria-hidden', 'aria-label', 'aria-checked',
+    'role', 'tabindex', 'value', 'placeholder'
+  ]);
+  
+  // Simple sanitizer: remove script tags and event handlers
+  let sanitized = html
+    .replace(/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi, '')
+    .replace(/<iframe\b[^<]*(?:(?!<\/iframe>)<[^<]*)*<\/iframe>/gi, '')
+    .replace(/<object\b[^<]*(?:(?!<\/object>)<[^<]*)*<\/object>/gi, '')
+    .replace(/<embed\b[^<]*(?:(?!<\/embed>)<[^<]*)*<\/embed>/gi, '')
+    .replace(/<form\b[^<]*(?:(?!<\/form>)<[^<]*)*<\/form>/gi, '')
+    .replace(/on\w+="[^"]*"/gi, '')
+    .replace(/on\w+='[^']*'/gi, '')
+    .replace(/javascript:/gi, '')
+    .replace(/data:/gi, '');
+  
+  return sanitized;
+}
+
 const INSCRIBE_AGENTS = [
   { id: 'claude', label: 'Claude Code', prefix: 'npx jerry-skills install --agent claude' },
   { id: 'codex', label: 'OpenAI Codex', prefix: 'npx jerry-skills install --agent codex' },
@@ -222,7 +252,7 @@ export default function SpellModal({ spell, school, onClose, marginalia, getVote
     const text = await fetchSkillMd(spell.skill);
     if (text) {
       const html = await simpleMarkdownToHtml(text);
-      setMdContent(html);
+      setMdContent(sanitizeHtml(html));
     } else {
       setMdContent('');
     }
@@ -249,6 +279,9 @@ export default function SpellModal({ spell, school, onClose, marginalia, getVote
       } else {
         setViewMode('plain');
       }
+    }).catch(error => {
+      console.warn('Failed to fetch skill map:', error);
+      setViewMode('plain');
     });
   }, [spell, spell?.skill, marginalia]);
 
@@ -300,6 +333,8 @@ export default function SpellModal({ spell, school, onClose, marginalia, getVote
     if (!spell) return;
     fetchSkillMap().then(map => {
       hasFullEntry.current = !!map[spell.skill];
+    }).catch(() => {
+      hasFullEntry.current = false;
     });
   }, [spell, spell?.skill]);
 
@@ -612,7 +647,17 @@ export default function SpellModal({ spell, school, onClose, marginalia, getVote
             const restore = () => { btn.innerHTML = btn.dataset.originalHtml; };
             if (!btn.dataset.originalHtml) btn.dataset.originalHtml = btn.innerHTML;
             if (navigator.share) {
-              navigator.share({ title: spell.name, text: spell.effect, url }).catch(() => {});
+              navigator.share({ title: spell.name, text: spell.effect, url }).catch(() => {
+                // Fallback to clipboard if share fails
+                navigator.clipboard.writeText(url).then(() => {
+                  btn.innerHTML = 'Link Copied!';
+                  btn.classList.add('modal-goo-btn--broken');
+                  setTimeout(restore, 2000);
+                }).catch(() => {
+                  btn.innerHTML = 'Copy failed';
+                  setTimeout(restore, 2000);
+                });
+              });
             } else if (navigator.clipboard) {
               navigator.clipboard.writeText(url).then(() => {
                 btn.innerHTML = 'Link Copied!';
