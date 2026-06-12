@@ -22,6 +22,7 @@ import CompareSpellsModal from './components/CompareSpellsModal.jsx';
 import ProblemIntakeModal from './components/ProblemIntakeModal.jsx';
 import SpellModal from './components/SpellModal.jsx';
 import StaleLinkBanner from './components/StaleLinkBanner.jsx';
+import InstallPrompt from './components/InstallPrompt.jsx';
 
 const ShortcutsModal = lazy(() => import('./components/ShortcutsModal.jsx'));
 
