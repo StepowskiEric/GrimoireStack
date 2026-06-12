@@ -1,5 +1,5 @@
 {
   "version": 1,
   "include": ["/*"],
-  "exclude": ["/assets/*", "/favicon.png", "/book-cover.mp4", "/witch_doctor.png", "/witch_doctor_voice_*.mp3", "/turning-the-page.mp3"]
+  "exclude": ["/assets/*", "/favicon.png", "/witch_doctor.png", "/witch_doctor_voice_*.mp3", "/turning-the-page.mp3"]
 }

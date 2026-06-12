@@ -3,7 +3,6 @@ import schools from './data/schools.js';
 import { searchSpells, filterSpells } from './search.js';
 import { witchLaugh, pageCreak, startAmbience } from './audio/sounds.js';
 import Embers from './components/Embers.jsx';
-import BookSplash from './components/BookSplash.tsx';
 import LidlessEyeCast from './components/LidlessEyeCast.tsx';
 import './components/LidlessEyeCast.css';
 import ApprenticeWelcome, { STORAGE_KEY as WELCOME_STORAGE_KEY } from './components/ApprenticeWelcome.jsx';
@@ -39,7 +38,6 @@ export default function App() {
 
 function AppInner() {
   const { t } = useLanguage();
-  const [loaded, setLoaded] = useState(false);
   const [currentSchool, setCurrentSchool] = useState(schools[0].id);
   const [searchQuery, setSearchQuery] = useState('');
   const [castEnabled, setCastEnabled] = useState(() => localStorage.getItem('grimoire-cast') !== 'off');
@@ -194,7 +192,7 @@ function AppInner() {
   // eslint-disable-next-line react-hooks/exhaustive-deps -- handleWelcomeCloseRef is a stable ref to the latest handleWelcomeClose
   }), [shortcutsOpen, tomeOpen, witchDoctorOpen, compareOpen, intakeOpen, modal, handleModalClose, welcomeOpen, setWitchDoctorOpen]);
 
-  useKeyboardShortcuts(keyboardHandlers, loaded);
+  useKeyboardShortcuts(keyboardHandlers);
 
   useEffect(() => {
     const handler = () => {
@@ -301,8 +299,6 @@ function AppInner() {
           <feDisplacementMap in="SourceGraphic" scale="6" />
         </filter>
       </svg>
-      <BookSplash onFinish={() => setLoaded(true)} />
-      {loaded && <>
       <Embers />
       {welcomeOpen && <ApprenticeWelcome onClose={handleWelcomeClose} />}
       
@@ -417,7 +413,6 @@ function AppInner() {
         </div>
       )}
       <InstallPrompt />
-      </>}
     </>
   );
 }

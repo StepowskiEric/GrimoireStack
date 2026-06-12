@@ -15,7 +15,11 @@ export default function AllSchoolsView({
     return schools.filter(school => 
       school.name.toLowerCase().includes(query) ||
       school.real.toLowerCase().includes(query) ||
-      school.desc.toLowerCase().includes(query)
+      school.desc.toLowerCase().includes(query) ||
+      school.spells.some(spell => {
+        const searchable = `${spell.name} ${spell.skill} ${spell.effect}`.toLowerCase();
+        return searchable.includes(query);
+      })
     );
   }, [schools, searchQuery]);
 

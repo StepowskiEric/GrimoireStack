@@ -14,6 +14,7 @@ export default function CompareSpellsModal({ left, right, onClose, onSelect, onP
     if (!modal) return;
     const focusable = modal.querySelectorAll('button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])');
     const first = focusable[0];
+    const last = focusable[focusable.length - 1];
     first?.focus();
     const handler = (e) => {
       if (e.key === 'Escape') {
@@ -22,10 +23,9 @@ export default function CompareSpellsModal({ left, right, onClose, onSelect, onP
         return;
       }
       if (e.key !== 'Tab' || !focusable.length) return;
-      if (e.shiftKey && document.activeElement === first) { e.preventDefault(); focusable[focusable.length - 1]?.focus(); }
+      if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last?.focus(); }
       else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first?.focus(); }
     };
-    const last = focusable[focusable.length - 1];
     modal.addEventListener('keydown', handler);
     return () => modal.removeEventListener('keydown', handler);
   }, [onClose, pickerSlot]);

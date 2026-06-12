@@ -13,6 +13,13 @@ import SummoningCircle from '../components/SummoningCircle.jsx';
 import TomeOfAilments from '../components/TomeOfAilments.jsx';
 import RecipeLabExplainer from '../components/RecipeLabExplainer.jsx';
 import RecipeLab from '../components/RecipeLab.jsx';
+import GrimoireStackLayout from '../components/GrimoireStackLayout.jsx';
+import BookLayout from '../components/BookLayout.jsx';
+import BottomNav from '../components/BottomNav.jsx';
+import FilterChips from '../components/FilterChips.jsx';
+import InstallPrompt from '../components/InstallPrompt.jsx';
+import ApprenticeWelcome from '../components/ApprenticeWelcome.jsx';
+import { searchSpells } from '../search.js';
 
 const sampleSpell = {
   name: 'Trace Sight',
@@ -29,6 +36,18 @@ const sampleSchool = {
   desc: 'Incantations to banish bugs.',
   spells: [sampleSpell],
 };
+
+const multiSchool = [
+  sampleSchool,
+  {
+    id: 'testing',
+    name: 'School of Validation',
+    symbol: '🛡',
+    real: 'Testing',
+    desc: 'Incantations to prove correctness.',
+    spells: [{ name: 'Jest Invocation', skill: 'jest-testing', effect: 'Write correct Jest tests.', status: 'New' }],
+  },
+];
 
 // ── SpellCard ────────────────────────────────────────
 describe('SpellCard', () => {
@@ -170,6 +189,55 @@ describe('ScryingOrb', () => {
     render(<ScryingOrb searchQuery="" onSearchChange={() => {}} totalMatches={0} />);
     expect(screen.getByText('bug')).toBeInTheDocument();
     expect(screen.getByText('test')).toBeInTheDocument();
+  });
+});
+
+// ── GrimoireStackLayout search results ────────────────
+describe('GrimoireStackLayout search results', () => {
+  const renderWithLang = (ui, lang = 'grimoire') => render(<LanguageProvider>{ui}</LanguageProvider>);
+
+  it('shows matching spells in the library view when searchQuery is set', () => {
+    const { container } = renderWithLang(
+      <GrimoireStackLayout
+        schools={multiSchool}
+        currentSchool="debugging"
+        onSchoolSelect={() => {}}
+        searchQuery="jest"
+        onSearchChange={() => {}}
+        totalMatches={searchSpells(multiSchool, 'jest').total}
+        onSpellClick={() => {}}
+        isFavorited={() => false}
+        onToggleFavorite={() => {}}
+        favorites={[]}
+        recent={[]}
+        marginalia={{}}
+        getVote={() => null}
+        castVote={() => {}}
+        aggregateFor={() => null}
+        castEnabled={false}
+        onToggleCast={() => {}}
+        onWizardOpen={() => {}}
+        onIntakeOpen={() => {}}
+        onCompareOpen={() => {}}
+        onCastBones={() => {}}
+        onExportJson={() => {}}
+        onExportMarkdown={() => {}}
+        onShowShortcuts={() => {}}
+        schoolFilter={new Set()}
+        tierFilter={new Set()}
+        favoritesOnly={false}
+        onToggleSchool={() => {}}
+        onToggleTier={() => {}}
+        onToggleFavorites={() => {}}
+        onClearFilters={() => {}}
+        filterResults={{ bySchool: {}, total: 0 }}
+        featuredSchools={['debugging', 'reasoning', 'process', 'architecture', 'testing', 'creativity']}
+        onFeaturedSchoolsChange={() => {}}
+      />
+    );
+
+    expect(screen.getByText('School of Validation')).toBeInTheDocument();
+    expect(container.querySelector('.all-schools-view__card')).not.toBeNull();
   });
 });
 

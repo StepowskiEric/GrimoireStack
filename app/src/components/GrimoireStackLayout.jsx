@@ -175,7 +175,15 @@ export default function GrimoireStackLayout({
     }
     switch (activeTab) {
       case TABS.LIBRARY:
-        return (
+        return searchQuery ? (
+          <AllSchoolsView
+            schools={schools}
+            onSchoolSelect={handleSchoolCardClick}
+            isFavorited={isFavorited}
+            onToggleFavorite={onToggleFavorite}
+            searchQuery={searchQuery}
+          />
+        ) : (
           <SchoolCardGrid
             schools={schools}
             featuredSchools={featuredSchools}
