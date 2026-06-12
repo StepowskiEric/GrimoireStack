@@ -6558,8 +6558,8 @@ header .header-sigil-text{display:none}
 }
 
 @keyframes filamentFloat {
-  0%, 100% { transform: translate(calc(-50% + var(--tx, 0)), calc(-50% + var(--ty, 0))) translateY(0); }
-  50% { transform: translate(calc(-50% + var(--tx, 0)), calc(-50% + var(--ty, 0))) translateY(-4px); }
+  0%, 100% { transform: translate(calc(-50% + var(--tx, 0)), calc(-50% + var(--ty, 0))) translateY(0) scale(1); }
+  50% { transform: translate(calc(-50% + var(--tx, 0)), calc(-50% + var(--ty, 0))) translateY(-4px) scale(1.02); }
 }
 
 .eye-filament-btn__glow {
@@ -6750,6 +6750,23 @@ header .header-sigil-text{display:none}
 @keyframes ringRotate2 {
   from { transform: rotate(360deg); }
   to { transform: rotate(0deg); }
+}
+
+/* Tendril writhing animation for iris */
+@keyframes tendrilWrithe {
+  0% { transform: translate(0, 0) rotate(0deg); }
+  25% { transform: translate(0.5px, -0.5px) rotate(0.5deg); }
+  50% { transform: translate(-0.5px, 0.5px) rotate(-0.5deg); }
+  75% { transform: translate(0.3px, 0.3px) rotate(0.3deg); }
+  100% { transform: translate(-0.3px, -0.3px) rotate(-0.3deg); }
+}
+
+/* Tear falling animation */
+@keyframes tearFall {
+  0% { transform: translateY(0) scale(1); opacity: 0; }
+  10% { opacity: 1; }
+  90% { opacity: 0.8; }
+  100% { transform: translateY(80px) scale(0.6); opacity: 0; }
 }
 
 /* Mobile eye sizing */
