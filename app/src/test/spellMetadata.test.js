@@ -90,6 +90,31 @@ describe('spellMetadata', () => {
     });
   });
 
+  describe('coverage', () => {
+    // These guard against the bug where a new skill was added to
+    // spellMetadata.js but the schools[] entry was missing, making the
+    // skill invisible to the changelog (which iterates schools[]).
+    it('every explicit spellMetadata entry has a matching schools[] spell', async () => {
+      const { default: schools } = await import('../data/schools.js');
+      const catalogSkills = new Set(schools.flatMap(s => s.spells.map(sp => sp.skill)));
+      // Extract just the skill keys from EXPLICIT (we re-read the file to avoid
+      // a circular import that would require restructuring the module).
+      const fs = await import('node:fs');
+      const path = await import('node:path');
+      const url = await import('node:url');
+      const here = path.dirname(url.fileURLToPath(import.meta.url));
+      const src = fs.readFileSync(
+        path.resolve(here, '..', 'data', 'spellMetadata.js'),
+        'utf8',
+      );
+      const explicitKeys = new Set(
+        Array.from(src.matchAll(/'([a-z0-9-]+)':\s*\{\s*lastUpdated:/g)).map(m => m[1])
+      );
+      const orphans = [...explicitKeys].filter(k => !catalogSkills.has(k));
+      expect(orphans).toEqual([]);
+    });
+  });
+
   describe('getAlphabeticalIndex', () => {
     it('returns all spells sorted by name', () => {
       const items = getAlphabeticalIndex();

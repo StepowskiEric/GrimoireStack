@@ -105,15 +105,8 @@ const schools = [
       {name:'TypeScript Vigil',skill:'super-review-typescript',effect:'Targets five specific failure modes in LLM-authored TypeScript: security vulnerabilities, hallucinated APIs, logic errors, type-safety violations, architectural decay.',status:'New'},
       {name:'Review Mastery',skill:'code-review-excellence',effect:'Structured review practices: constructive feedback, early bug detection, knowledge sharing, and team morale. Covers the full review lifecycle.',status:'New'},
       {name:'Adversarial Trial',skill:'adversarial-review',effect:'Stress-tests proposals against a separate adversarial sub-agent with no prior investment. Tool-mediated review, not self-critique.',status:'New'},
-    
-
-
-
-
-
-
-
-]
+      {name:'Critical System Interrogation',skill:'critical-system-interrogation',effect:'Deep-dive investigation of critical system components combining relentless questioning with extreme code quality standards. For auth pipelines, payment flows, and security-critical paths.',status:'New'},
+    ]
   },
   {
     id:'architecture',real:'Architecture & Design',
