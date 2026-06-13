@@ -28,6 +28,7 @@ export default function SigilPicker({ onPick }) {
               <SchoolSigil schoolId={sigil.schoolId} size={42} animated />
             </span>
             <span className="seance-sigil-card__name">{sigil.crypticName}</span>
+            <span className="seance-sigil-card__label">{sigil.plainLabel}</span>
             <span className="seance-sigil-card__line">{sigil.crypticLine}</span>
           </button>
         ))}

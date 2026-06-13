@@ -21,7 +21,16 @@ async function main() {
     throw new Error(`[sitemap] dist/ not found at ${distDir}. Run \`vite build\` first.`);
   });
 
-  const paths = schools.flatMap((s) => s.spells.map((sp) => `/s/${sp.skill}`));
+  const spellPaths = schools.flatMap((s) => s.spells.map((sp) => `/s/${sp.skill}`));
+  const appPaths = [
+    '/about',
+    '/rituals',
+    '/bestiary',
+    '/spellweb',
+    '/changelog',
+    '/commune',
+  ];
+  const paths = [...spellPaths, ...appPaths];
   const xml = buildSitemapXml({ origin: ORIGIN, paths });
   await writeFile(join(distDir, 'sitemap.xml'), xml, 'utf8');
   console.log(`[sitemap] wrote ${paths.length + 1} URLs to ${join(distDir, 'sitemap.xml')}`);

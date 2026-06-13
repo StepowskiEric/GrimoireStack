@@ -53,7 +53,6 @@ export default function ResultCard({ result, onRevealSpell, onReset }) {
         {result.beasthood ? 'The Forbidden Sigil Reveals' : 'The Oracle Reveals'}
       </div>
       <h2 className="seance-result__name">{spell.name}</h2>
-      <div className="seance-result__skill">\u27e8 {spell.skill} \u27e9</div>
       <p className="seance-result__effect">{spell.effect}</p>
       {result.reason && (
         <blockquote className={`seance-result__reason ${result.beasthood ? 'seance-result__reason--echo' : ''}`}>
@@ -64,7 +63,7 @@ export default function ResultCard({ result, onRevealSpell, onReset }) {
         <div className="seance-result__alt">
           <div className="seance-result__alt-label">Or, if the wound resists:</div>
           <div className="seance-result__alt-name">{alt.name}</div>
-          <div className="seance-result__alt-skill">\u27e8 {alt.skill} \u27e9 \u00b7 {altSchool.real}</div>
+          <div className="seance-result__alt-school">{altSchool.real}</div>
         </div>
       )}
       <div className="seance-result__actions">

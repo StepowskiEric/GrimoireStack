@@ -3,7 +3,6 @@ import { BrowserRouter } from 'react-router-dom';
 import schools from './data/schools.js';
 import { searchSpells, filterSpells } from './search.js';
 import { witchLaugh, pageCreak, startAmbience, startWhispers, setAudioEnabled as setSiteAudioEnabled } from './audio/sounds.js';
-import Embers from './components/Embers.jsx';
 import LidlessEyeCast from './components/LidlessEyeCast.tsx';
 import './components/LidlessEyeCast.css';
 import ApprenticeWelcome, { STORAGE_KEY as WELCOME_STORAGE_KEY } from './components/ApprenticeWelcome.jsx';
@@ -41,6 +40,8 @@ export default function App() {
 function AppInner() {
   const [currentSchool, setCurrentSchool] = useState(schools[0].id);
   const [searchQuery, setSearchQuery] = useState('');
+  const [debouncedSearch, setDebouncedSearch] = useState('');
+  const searchTimerRef = useRef(null);
   const [castEnabled, setCastEnabled] = useState(() => localStorage.getItem('grimoire-cast') !== 'off');
   const [audioEnabled, setAudioEnabled] = useState(() => localStorage.getItem('grimoire-audio') !== 'off');
   const [welcomeOpen, setWelcomeOpen] = useState(() => localStorage.getItem(WELCOME_STORAGE_KEY) !== 'true');
@@ -90,18 +91,18 @@ function AppInner() {
   const { getVote, vote: castVote, aggregateFor } = useSignals();
 
   const searchResults = useMemo(
-    () => searchSpells(schools, searchQuery),
-    [searchQuery]
+    () => searchSpells(schools, debouncedSearch),
+    [debouncedSearch]
   );
   const filterResults = useMemo(
     () => filterSpells(schools, {
-      query: searchQuery,
+      query: debouncedSearch,
       schoolFilter: schoolFilter.size > 0 ? schoolFilter : null,
       tierFilter: tierFilter.size > 0 ? tierFilter : null,
       favoritesOnly,
       isFavorited,
     }),
-    [searchQuery, schoolFilter, tierFilter, favoritesOnly, isFavorited]
+    [debouncedSearch, schoolFilter, tierFilter, favoritesOnly, isFavorited]
   );
 
   const {
@@ -255,6 +256,10 @@ function AppInner() {
 
   const handleSearch = useCallback((q) => {
     setSearchQuery(q);
+    if (searchTimerRef.current) clearTimeout(searchTimerRef.current);
+    searchTimerRef.current = setTimeout(() => {
+      setDebouncedSearch(q);
+    }, 120);
   }, []);
 
   const toggleCast = useCallback(() => {
@@ -328,7 +333,6 @@ function AppInner() {
           <feDisplacementMap in="SourceGraphic" scale="6" />
         </filter>
       </svg>
-      <Embers />
       {welcomeOpen && <ApprenticeWelcome onClose={handleWelcomeClose} />}
       {notFoundSkill && (
         <StaleLinkBanner

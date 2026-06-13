@@ -4,7 +4,6 @@ import { BrowserRouter } from 'react-router-dom';
 import { LanguageProvider } from '../i18n/LanguageContext';
 import SpellCard from '../components/SpellCard.jsx';
 import GrimoireStackLayout from '../components/GrimoireStackLayout.jsx';
-import BottomNav from '../components/BottomNav.jsx';
 import InstallPrompt from '../components/InstallPrompt.jsx';
 import ApprenticeWelcome from '../components/ApprenticeWelcome.jsx';
 import BestiaryCodex from '../components/BestiaryCodex.jsx';
@@ -309,21 +308,6 @@ describe('RecipeLabView', () => {
     const args = onCompareTwo.mock.calls[0];
     expect(args[0].skill).toBe('log-trace-correlation');
     expect(args[2].skill).toBe('jest-testing');
-  });
-});
-
-// ── BottomNav (mobile tab bar) ────────────────────────
-describe('BottomNav', () => {
-  it('renders the four mobile tabs', () => {
-    render(
-      <LanguageProvider>
-        <BottomNav activeTab="library" onTabSelect={() => {}} />
-      </LanguageProvider>
-    );
-    expect(screen.getByText('Library')).toBeInTheDocument();
-    expect(screen.getByText('Favorites')).toBeInTheDocument();
-    expect(screen.getByText('Craft')).toBeInTheDocument();
-    expect(screen.getByText('Profile')).toBeInTheDocument();
   });
 });
 

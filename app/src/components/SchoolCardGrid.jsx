@@ -80,11 +80,11 @@ export default function SchoolCardGrid({
         <div className="spine-stats">
           <div className="spine-stat">
             <span className="spine-stat__num">{schools.length}</span>
-            <span className="spine-stat__label">Wardens</span>
+            <span className="spine-stat__label">Schools</span>
           </div>
           <div className="spine-stat">
             <span className="spine-stat__num">{schools.reduce((s, sc) => s + sc.spells.length, 0)}</span>
-            <span className="spine-stat__label">Entities</span>
+            <span className="spine-stat__label">Spells</span>
           </div>
         </div>
       </div>

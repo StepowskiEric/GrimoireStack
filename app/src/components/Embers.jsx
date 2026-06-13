@@ -6,7 +6,7 @@ export default function Embers() {
     const el = ref.current;
     if (!el) return;
     const types = ['ember-amber', 'ember-gold', 'ember-rune'];
-    for (let i = 0; i < 40; i++) {
+    for (let i = 0; i < 20; i++) {
       const e = document.createElement('div');
       e.className = 'ember ' + types[i % 3];
       e.style.left = Math.random() * 100 + '%';
@@ -15,7 +15,7 @@ export default function Embers() {
       e.style.animationDelay = (Math.random() * 20) + 's';
       el.appendChild(e);
     }
-    for (let i = 0; i < 15; i++) {
+    for (let i = 0; i < 10; i++) {
       const e = document.createElement('div');
       e.className = 'ember ' + (i % 2 === 0 ? 'ember-amber' : 'ember-gold');
       e.style.left = Math.random() * 100 + '%';

@@ -13,11 +13,14 @@ import AllSchoolsView from './AllSchoolsView.jsx';
 import GrimoireEye from './GrimoireEye.jsx';
 import SchoolSigil from './SchoolSigil.tsx';
 import Icon from './Icon.jsx';
+import AboutView from './AboutView.jsx';
+import LanguageToggle from './LanguageToggle.jsx';
 import { pageTurn } from '../audio/sounds.js';
 
 const CommuneView = lazy(() => import('./CommuneView.jsx'));
 
 const TABS = {
+  ABOUT: 'about',
   LIBRARY: 'library',
   SPELLBOOK: 'spellbook',
   RECIPE_LAB: 'rituals',
@@ -29,6 +32,7 @@ const TABS = {
 };
 
 const TAB_ROUTES = {
+  [TABS.ABOUT]: '/about',
   [TABS.LIBRARY]: '/',
   [TABS.SPELLBOOK]: '/vault',
   [TABS.RECIPE_LAB]: '/rituals',
@@ -40,12 +44,11 @@ const TAB_ROUTES = {
 };
 
 const TAB_LABELS = {
+  [TABS.ABOUT]: { name: 'The Tome', icon: 'index' },
   [TABS.LIBRARY]: { name: 'The Spine', icon: 'archive' },
   [TABS.SPELLBOOK]: { name: 'The Vault', icon: 'vault' },
   [TABS.RECIPE_LAB]: { name: 'The Crucible', icon: 'alembic' },
   [TABS.ARCANE_TOOLS]: { name: 'The Bestiary', icon: 'tools' },
-  [TABS.SPELL_WEB]: { name: 'Spell Web', icon: 'graph' },
-  [TABS.CHANGELOG]: { name: 'Changelog', icon: 'changelog' },
   [TABS.SETTINGS]: { name: 'Settings', icon: 'sigil' },
   [TABS.SEANCE]: { name: 'The Séance', icon: 'oracle' },
 };
@@ -105,6 +108,7 @@ export default function GrimoireStackLayout({
   // Derive active tab from URL
   const activeTab = (() => {
     const path = location.pathname;
+    if (path === '/about') return TABS.ABOUT;
     if (path === '/') return TABS.LIBRARY;
     if (path === '/vault') return TABS.SPELLBOOK;
     if (path === '/rituals') return TABS.RECIPE_LAB;
@@ -215,6 +219,8 @@ export default function GrimoireStackLayout({
 
     // Main tab content
     switch (activeTab) {
+      case TABS.ABOUT:
+        return <AboutView />;
       case TABS.LIBRARY:
         return searchQuery ? (
           <AllSchoolsView
@@ -331,27 +337,6 @@ export default function GrimoireStackLayout({
           fill="none" stroke="rgba(122,58,90,0.04)" strokeWidth="1" strokeLinecap="round" />
       </svg>
 
-      {/* Top nav tabs */}
-      {!isMobile && (
-        <nav className="eye-top-nav" aria-label="Main navigation">
-          {[
-            { id: TABS.LIBRARY, label: 'SPINE' },
-            { id: TABS.SPELLBOOK, label: 'THE VAULT' },
-            { id: TABS.RECIPE_LAB, label: 'RITUALS' },
-          ].map((tab) => (
-            <button
-              key={tab.id}
-              className={`eye-top-tab ${activeTab === tab.id ? 'eye-top-tab--active' : ''}`}
-              onClick={() => handleTabSelect(tab.id)}
-              type="button"
-              aria-current={activeTab === tab.id ? 'page' : undefined}
-            >
-              {tab.label}
-            </button>
-          ))}
-        </nav>
-      )}
-
       <div className="eye-main">
         {/* Left sidebar */}
         <aside className="eye-sidebar">
@@ -363,11 +348,11 @@ export default function GrimoireStackLayout({
             <div className="eye-stats">
               <div className="eye-stat">
                 <span className="eye-stat__num">{totalSchools}</span>
-                <span className="eye-stat__label">Wardens</span>
+                <span className="eye-stat__label">Schools</span>
               </div>
               <div className="eye-stat">
                 <span className="eye-stat__num">{totalSpells}</span>
-                <span className="eye-stat__label">Entities</span>
+                <span className="eye-stat__label">Spells</span>
               </div>
             </div>
 
@@ -402,6 +387,15 @@ export default function GrimoireStackLayout({
           </nav>
 
           <div className="eye-sidebar__footer">
+            <LanguageToggle />
+            <div className="eye-sidebar__footer-divider" />
+            <button className="eye-footer-link" onClick={() => handleTabSelect(TABS.SPELL_WEB)} type="button">
+              <Icon name="graph" size={14} /> Spell Web
+            </button>
+            <button className="eye-footer-link" onClick={() => handleTabSelect(TABS.CHANGELOG)} type="button">
+              <Icon name="changelog" size={14} /> Changelog
+            </button>
+            <div className="eye-sidebar__footer-divider" />
             <button className="eye-footer-link" onClick={onShowShortcuts} type="button">
               <Icon name="sigil" size={14} /> Shortcuts
             </button>

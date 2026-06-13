@@ -49,7 +49,7 @@ export default function AllSchoolsView({
       {!searchQuery && (
         <div className="bestiary-index__header">
           <p className="bestiary-index__desc">
-            Browse all {schools.length} wardens and their {schools.reduce((sum, s) => sum + s.spells.length, 0)} incantations.
+            Browse all {schools.length} schools and their {schools.reduce((sum, s) => sum + s.spells.length, 0)} incantations.
           </p>
         </div>
       )}

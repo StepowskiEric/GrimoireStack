@@ -28,36 +28,42 @@ export const SEANCE_SIGILS = [
     schoolId: 'debugging',
     crypticName: 'The Beckoning Bell',
     crypticLine: 'It tolls for what is broken in the dark.',
+    plainLabel: 'Fix bugs and diagnose failures',
   },
   {
     id: 'sigil-cognition',
     schoolId: 'reasoning',
     crypticName: 'The Cartomancer\u2019s Lantern',
     crypticLine: 'A light cast by the turning of cards.',
+    plainLabel: 'Think through complex problems',
   },
   {
     id: 'sigil-crafting',
     schoolId: 'software-development',
     crypticName: 'The Forge\u2019s Anvil',
     crypticLine: 'Where the next spell is hammered into being.',
+    plainLabel: 'Write, ship, and review code',
   },
   {
     id: 'sigil-architecture',
     schoolId: 'systems-and-architecture',
     crypticName: 'The Architect\u2019s Compass',
     crypticLine: 'The first drawing of lines across an empty world.',
+    plainLabel: 'Design systems and make tradeoffs',
   },
   {
     id: 'sigil-measurement',
     schoolId: 'testing',
     crypticName: 'The Crucible\u2019s Eye',
     crypticLine: 'The all-seeing test that does not blink.',
+    plainLabel: 'Write tests and verify quality',
   },
   {
     id: 'sigil-refinement',
     schoolId: 'output-quality',
     crypticName: 'The Mirror\u2019s Veil',
     crypticLine: 'The reflection truth demands before it speaks.',
+    plainLabel: 'Polish docs, output, and communication',
   },
 ];
 
@@ -74,6 +80,7 @@ export const SEANCE_QUESTIONS = {
       {
         id: 'dbg-n1',
         question: 'When the wound is first found, what shape does it wear?',
+        clarification: 'What do your symptoms look like?',
         options: [
           { id: 'dbg-n1-a', label: 'A clear trace, like a sigil in the dark',        sigilGlyph: '\u2741', primary: 'log-trace-correlation',      alt: 'purify-test-output',       reason: 'The trace itself is the data to act on.' },
           { id: 'dbg-n1-b', label: 'A silence, where sound should be',               sigilGlyph: '\u25c7', primary: 'specter',                   alt: 'occam-root-cause',         reason: 'A ghost-hunt for what is missing.' },
@@ -84,6 +91,7 @@ export const SEANCE_QUESTIONS = {
       {
         id: 'dbg-n2',
         question: 'What does the test-oracle whisper?',
+        clarification: 'What does your test output tell you?',
         options: [
           { id: 'dbg-n2-a', label: 'A failing test, plain to see',                   sigilGlyph: '\u2716', primary: 'minimal-reproduction',      alt: 'iterative-patch-repair',  reason: 'The smallest test that fails is the truth.' },
           { id: 'dbg-n2-b', label: 'A test that fails only in distant CI',           sigilGlyph: '\u2697', primary: 'environment-recovery',      alt: 'network-api-debugging',   reason: 'The wound lives between the local and the far.' },
@@ -94,6 +102,7 @@ export const SEANCE_QUESTIONS = {
       {
         id: 'dbg-n3',
         question: 'How does the wound mend?',
+        clarification: 'How do you prefer to fix bugs?',
         options: [
           { id: 'dbg-n3-a', label: 'By iteration, slow and patient',                 sigilGlyph: '\u221e', primary: 'iterative-patch-repair',    alt: 'simulate-instrumentation', reason: 'Single-pass patching is unreliable.' },
           { id: 'dbg-n3-b', label: 'By binary search through the histories',         sigilGlyph: '\u2693', primary: 'bisect-debugging',          alt: 'time-traveling-debugger', reason: 'O(log n) finds the change that broke it.' },
@@ -104,6 +113,7 @@ export const SEANCE_QUESTIONS = {
       {
         id: 'dbg-n4',
         question: 'What power does the wound drink from?',
+        clarification: 'What is the underlying cause?',
         options: [
           { id: 'dbg-n4-a', label: 'A missing dependency, gone to shadow',           sigilGlyph: '\u2620', primary: 'environment-recovery',      alt: 'api-surface-anchoring',   reason: 'The spell cannot find what it summons.' },
           { id: 'dbg-n4-b', label: 'A web of CORS, tokens, and the unseen gate',     sigilGlyph: '\u26d4', primary: 'network-api-debugging',     alt: 'environment-recovery',   reason: 'Everything between the code and the server.' },
@@ -116,6 +126,7 @@ export const SEANCE_QUESTIONS = {
       {
         id: 'dbg-d1',
         question: 'When you stare into the wound, what stares back?',
+        clarification: 'What is the deeper pattern?',
         options: [
           { id: 'dbg-d1-a', label: 'The first commit, still bleeding',              sigilGlyph: '\u2620', primary: 'bisect-debugging',          alt: 'time-traveling-debugger', reason: 'The wound has a birthday.' },
           { id: 'dbg-d1-b', label: 'A recursive nightmare of causes',                sigilGlyph: '\u221e', primary: 'root-cause-analysis',        alt: 'occam-root-cause',         reason: 'Each cause has a cause.' },
@@ -126,6 +137,7 @@ export const SEANCE_QUESTIONS = {
       {
         id: 'dbg-d2',
         question: 'What does the wound demand of you?',
+        clarification: 'What approach does the situation need?',
         options: [
           { id: 'dbg-d2-a', label: 'Patience beyond reason',                        sigilGlyph: '\u29d6', primary: 'iterative-patch-repair',    alt: 'simulate-instrumentation', reason: 'Many rounds of refinement.' },
           { id: 'dbg-d2-b', label: 'Surrender, and start the environment anew',     sigilGlyph: '\u2625', primary: 'environment-recovery',      alt: 'minimal-reproduction',    reason: 'Sometimes the ground itself is corrupt.' },
@@ -141,6 +153,7 @@ export const SEANCE_QUESTIONS = {
       {
         id: 'rsn-n1',
         question: 'When the problem first appears, what does it wear?',
+        clarification: 'What kind of confusion are you dealing with?',
         options: [
           { id: 'rsn-n1-a', label: 'A mask of complexity',                          sigilGlyph: '\u2042', primary: 'occams-razor',              alt: 'first-principles',        reason: 'Simple explanations are more often right.' },
           { id: 'rsn-n1-b', label: 'A mask of received wisdom',                      sigilGlyph: '\u269c', primary: 'first-principles',          alt: 'socratic-clarification',  reason: 'Strip convention to the bare thing.' },
@@ -151,6 +164,7 @@ export const SEANCE_QUESTIONS = {
       {
         id: 'rsn-n2',
         question: 'What is the shape of your confusion?',
+        clarification: 'What is blocking clear thinking?',
         options: [
           { id: 'rsn-n2-a', label: 'Many paths, none chosen',                        sigilGlyph: '\u2042', primary: 'monte-carlo-tree-search',    alt: 'tree-of-thoughts',        reason: 'Allocate effort to branches that earn it.' },
           { id: 'rsn-n2-b', label: 'A wall of contradictions',                       sigilGlyph: '\u2756', primary: 'self-contradiction-trap',   alt: 'self-consistency',        reason: 'Surface the contradictions first.' },
@@ -161,6 +175,7 @@ export const SEANCE_QUESTIONS = {
       {
         id: 'rsn-n3',
         question: 'How do you test your own thinking?',
+        clarification: 'How do you verify your reasoning?',
         options: [
           { id: 'rsn-n3-a', label: 'By compressing it to its essence',               sigilGlyph: '\u25ce', primary: 'compression-as-understanding', alt: 'feynman-technique',     reason: 'If you cannot compress it, you do not know it.' },
           { id: 'rsn-n3-b', label: 'By explaining it to a child',                    sigilGlyph: '\u2042', primary: 'feynman-technique',          alt: 'compression-as-understanding', reason: 'Simple language is the acid test.' },
@@ -171,6 +186,7 @@ export const SEANCE_QUESTIONS = {
       {
         id: 'rsn-n4',
         question: 'What truth are you seeking?',
+        clarification: 'What outcome are you after?',
         options: [
           { id: 'rsn-n4-a', label: 'The simplest sufficient one',                    sigilGlyph: '\u25c7', primary: 'occams-razor',              alt: 'first-principles',        reason: 'Simplicity is a reliability bet.' },
           { id: 'rsn-n4-b', label: 'The one stripped of assumption',                 sigilGlyph: '\u269c', primary: 'first-principles',          alt: 'occams-razor',           reason: 'From the ground up, not from received wisdom.' },
@@ -183,6 +199,7 @@ export const SEANCE_QUESTIONS = {
       {
         id: 'rsn-d1',
         question: 'When the recursion closes, what remains?',
+        clarification: 'What have you learned?',
         options: [
           { id: 'rsn-d1-a', label: 'A whisper, calling your name',                   sigilGlyph: '\u2042', primary: 'stakeholder-communication', alt: 'feynman-technique',       reason: 'Confidence calibrated to the audience.' },
           { id: 'rsn-d1-b', label: 'A silence, deeper than thought',                sigilGlyph: '\u25c7', primary: 'feynman-technique',          alt: 'compression-as-understanding', reason: 'The child did not understand.' },
@@ -193,6 +210,7 @@ export const SEANCE_QUESTIONS = {
       {
         id: 'rsn-d2',
         question: 'What would you burn to understand?',
+        clarification: 'What are you willing to question?',
         options: [
           { id: 'rsn-d2-a', label: 'All that came before',                          sigilGlyph: '\u2620', primary: 'first-principles',          alt: 'occams-razor',            reason: 'Convention is the fuel.' },
           { id: 'rsn-d2-b', label: 'The sacred assumptions',                        sigilGlyph: '\u2042', primary: 'inversion-mental-model',    alt: 'pre-mortem',              reason: 'What if the opposite were true?' },
@@ -208,6 +226,7 @@ export const SEANCE_QUESTIONS = {
       {
         id: 'sde-n1',
         question: 'When the code is written, what is asked of it?',
+        clarification: "What is the main concern for your code?",
         options: [
           { id: 'sde-n1-a', label: 'To integrate without breaking what was before',  sigilGlyph: '\u26d4', primary: 'api-design-backward-compatibility', alt: 'coordinated-change', reason: 'Additive only is the contract.' },
           { id: 'sde-n1-b', label: 'To call on powers not yet known',                 sigilGlyph: '\u269c', primary: 'api-surface-anchoring',     alt: 'verified-api-workflow',  reason: 'Verify the API before you cast.' },
@@ -218,6 +237,7 @@ export const SEANCE_QUESTIONS = {
       {
         id: 'sde-n2',
         question: 'What form does the code wear?',
+        clarification: 'What state is your codebase in?',
         options: [
           { id: 'sde-n2-a', label: 'A contract, sealed in types',                     sigilGlyph: '\u2756', primary: 'super-review-typescript',   alt: 'verified-synthesize',    reason: 'Types that lie are louder than bugs.' },
           { id: 'sde-n2-b', label: 'A spell book, written in haste',                  sigilGlyph: '\u2042', primary: 'llm-pre-push-review',       alt: 'super-review-typescript', reason: 'LLM-authored code has known failure modes.' },
@@ -228,6 +248,7 @@ export const SEANCE_QUESTIONS = {
       {
         id: 'sde-n3',
         question: 'Who shall judge the code?',
+        clarification: 'How strict should the review process be?',
         options: [
           { id: 'sde-n3-a', label: 'A single vigilant eye, before commit',            sigilGlyph: '\u25ce', primary: 'verify-before-integrate',   alt: 'llm-pre-push-review',     reason: 'Gate the boundary.' },
           { id: 'sde-n3-b', label: 'A chorus of critics, in layers',                  sigilGlyph: '\u2756', primary: 'review-ladder-plus',        alt: 'super-review-typescript', reason: 'Forced test generation and "why is it safe".' },
@@ -238,6 +259,7 @@ export const SEANCE_QUESTIONS = {
       {
         id: 'sde-n4',
         question: 'What corruption lurks in the spell?',
+        clarification: 'What kind of issues are you worried about?',
         options: [
           { id: 'sde-n4-a', label: 'A forgotten API, now a phantom',                  sigilGlyph: '\u2620', primary: 'api-surface-anchoring',     alt: 'verified-api-workflow',  reason: 'The signature moved; the call did not.' },
           { id: 'sde-n4-b', label: 'A type that lies to the compiler',                sigilGlyph: '\u2756', primary: 'super-review-typescript',   alt: 'llm-pre-push-review',    reason: 'Type-safety violations are silent until production.' },
@@ -250,6 +272,7 @@ export const SEANCE_QUESTIONS = {
       {
         id: 'sde-d1',
         question: 'When the code ships at last, who mourns?',
+        clarification: 'What suffers when code ships?',
         options: [
           { id: 'sde-d1-a', label: 'The versions that came before',                   sigilGlyph: '\u26d4', primary: 'api-design-backward-compatibility', alt: 'coordinated-change', reason: 'Backward-compat is the promise.' },
           { id: 'sde-d1-b', label: 'The linter, in vain',                            sigilGlyph: '\u2756', primary: 'lint-battalion',             alt: 'dev-diagnostics-mcp',   reason: 'Many trivial errors, one auto-fix.' },
@@ -260,6 +283,7 @@ export const SEANCE_QUESTIONS = {
       {
         id: 'sde-d2',
         question: 'What does the production altar demand?',
+        clarification: 'What does deploying to production require?',
         options: [
           { id: 'sde-d2-a', label: 'Verification, end to end',                       sigilGlyph: '\u26d4', primary: 'pre-deployment-gate',       alt: 'verify-before-integrate', reason: 'Seven passes, one threshold.' },
           { id: 'sde-d2-b', label: 'Vigilance against the dark',                     sigilGlyph: '\u2620', primary: 'security-review-protocol',  alt: 'vibe-coding-security-hardening', reason: 'Three security lenses merged.' },
@@ -275,6 +299,7 @@ export const SEANCE_QUESTIONS = {
       {
         id: 'arc-n1',
         question: 'When you first draw the lines, what guides your hand?',
+        clarification: "What is driving the design?",
         options: [
           { id: 'arc-n1-a', label: 'A principle older than the code',               sigilGlyph: '\u269c', primary: 'domain-driven-design',      alt: 'system-architecture-audit', reason: 'The language shapes the design.' },
           { id: 'arc-n1-b', label: 'A study of the data\u2019s nature',               sigilGlyph: '\u25ce', primary: 'designing-data-intensive-applications-ai', alt: 'system-architecture-audit', reason: 'Storage, scaling, and tradeoffs.' },
@@ -285,6 +310,7 @@ export const SEANCE_QUESTIONS = {
       {
         id: 'arc-n2',
         question: 'What is the system\u2019s first breath?',
+        clarification: "What is the primary goal of the system?",
         options: [
           { id: 'arc-n2-a', label: 'Speed of change',                               sigilGlyph: '\u23f2', primary: 'accelerate-ai',             alt: 'everything-as-code-conceptualizer', reason: 'Throughput is a design constraint.' },
           { id: 'arc-n2-b', label: 'Stability under stress',                         sigilGlyph: '\u2693', primary: 'sre-error-budget',          alt: 'release-it-stability',    reason: 'The error budget is the heartbeat.' },
@@ -295,6 +321,7 @@ export const SEANCE_QUESTIONS = {
       {
         id: 'arc-n3',
         question: 'Where do the lines blur?',
+        clarification: 'What boundaries are unclear?',
         options: [
           { id: 'arc-n3-a', label: 'Between teams',                                 sigilGlyph: '\u2042', primary: 'team-topologies-ai',        alt: 'domain-driven-design',    reason: 'Ownership is the seam.' },
           { id: 'arc-n3-b', label: 'Between data and time',                          sigilGlyph: '\u23f2', primary: 'thinking-in-systems-state-machine', alt: 'designing-data-intensive-applications-ai', reason: 'Feedback loops and delayed effects.' },
@@ -305,6 +332,7 @@ export const SEANCE_QUESTIONS = {
       {
         id: 'arc-n4',
         question: 'What unseen weight does the system bear?',
+        clarification: 'What hidden challenges exist?',
         options: [
           { id: 'arc-n4-a', label: 'A bottleneck, hidden in the flow',               sigilGlyph: '\u2693', primary: 'the-goal-theory-of-constraints-ai', alt: 'system-architecture-audit', reason: 'Find the one constraint, not the many.' },
           { id: 'arc-n4-b', label: 'A coupling, binding too tight',                  sigilGlyph: '\u2756', primary: 'domain-driven-design',      alt: 'team-topologies-ai',       reason: 'Bounded contexts limit coupling.' },
@@ -317,6 +345,7 @@ export const SEANCE_QUESTIONS = {
       {
         id: 'arc-d1',
         question: 'When the system fails, what shape does the failure take?',
+        clarification: 'How does failure manifest?',
         options: [
           { id: 'arc-d1-a', label: 'A cascade, of cascading cascades',               sigilGlyph: '\u26d4', primary: 'system-architecture-audit', alt: 'thinking-in-systems-state-machine', reason: 'Map the full chain, then judge stability.' },
           { id: 'arc-d1-b', label: 'A single point, finally breaking',               sigilGlyph: '\u2693', primary: 'the-goal-theory-of-constraints-ai', alt: 'system-architecture-audit', reason: 'One constraint, finally hit.' },
@@ -327,6 +356,7 @@ export const SEANCE_QUESTIONS = {
       {
         id: 'arc-d2',
         question: 'What does the system\u2019s silence mean?',
+        clarification: "What is missing or stalled?",
         options: [
           { id: 'arc-d2-a', label: 'The bottleneck, at last revealed',               sigilGlyph: '\u2693', primary: 'the-goal-theory-of-constraints-ai', alt: 'system-architecture-audit', reason: 'When nothing moves, the constraint is loudest.' },
           { id: 'arc-d2-b', label: 'The assumption, finally cracked',                sigilGlyph: '\u2756', primary: 'pre-mortem',                alt: 'inversion-mental-model',   reason: 'Imagined failure becomes observed.' },
@@ -342,6 +372,7 @@ export const SEANCE_QUESTIONS = {
       {
         id: 'tst-n1',
         question: 'When the test is run, what does it prove?',
+        clarification: 'What do your tests tell you?',
         options: [
           { id: 'tst-n1-a', label: 'The skill itself is worth using',                sigilGlyph: '\u2042', primary: 'skill-ab-evaluation',       alt: 'verify-before-integrate', reason: 'Empirical A/B vs. baseline.' },
           { id: 'tst-n1-b', label: 'The gate opens, and the gate is honest',          sigilGlyph: '\u26d4', primary: 'pre-deployment-gate',       alt: 'review-ladder-plus',       reason: 'Seven passes, one threshold.' },
@@ -352,6 +383,7 @@ export const SEANCE_QUESTIONS = {
       {
         id: 'tst-n2',
         question: 'How is the verdict forged?',
+        clarification: 'How do you validate quality?',
         options: [
           { id: 'tst-n2-a', label: 'With isolated subagents, in trials',              sigilGlyph: '\u2042', primary: 'skill-ab-evaluation',       alt: 'review-ladder-plus',      reason: '5 trials, isolated subagents, a rubric.' },
           { id: 'tst-n2-b', label: 'With a vigilant eye, before the commit',         sigilGlyph: '\u25ce', primary: 'verify-before-integrate',   alt: 'review-ladder-plus',      reason: 'Gate the boundary.' },
@@ -362,6 +394,7 @@ export const SEANCE_QUESTIONS = {
       {
         id: 'tst-n3',
         question: 'What does the verdict measure?',
+        clarification: 'What are you measuring?',
         options: [
           { id: 'tst-n3-a', label: 'Whether the skill improves outcomes',             sigilGlyph: '\u2042', primary: 'skill-ab-evaluation',       alt: 'pre-deployment-gate',    reason: 'Does it actually improve outcomes?' },
           { id: 'tst-n3-b', label: 'Whether the code survives review',                sigilGlyph: '\u2756', primary: 'review-ladder-plus',        alt: 'llm-pre-push-review',     reason: 'Catches what the author missed.' },
@@ -372,6 +405,7 @@ export const SEANCE_QUESTIONS = {
       {
         id: 'tst-n4',
         question: 'When the verdict comes back, what then?',
+        clarification: 'What do you do with test results?',
         options: [
           { id: 'tst-n4-a', label: 'The output is purified, line by line',           sigilGlyph: '\u23f2', primary: 'purify-test-output',        alt: 'iterative-patch-repair', reason: 'Slice noise; keep signal.' },
           { id: 'tst-n4-b', label: 'The test is re-read, slowly',                    sigilGlyph: '\u25ce', primary: 'review-ladder-plus',        alt: 'verify-before-integrate', reason: 'Trace, assert, retry.' },
@@ -384,6 +418,7 @@ export const SEANCE_QUESTIONS = {
       {
         id: 'tst-d1',
         question: 'When the verdict is silent, what does that mean?',
+        clarification: 'What does a passing test actually mean?',
         options: [
           { id: 'tst-d1-a', label: 'The code passed, but the user did not',          sigilGlyph: '\u26d4', primary: 'pre-deployment-gate',       alt: 'skill-ab-evaluation',    reason: 'Gate-passed is not user-passed.' },
           { id: 'tst-d1-b', label: 'The test runner is broken',                      sigilGlyph: '\u23f2', primary: 'verify-before-integrate',   alt: 'llm-pre-push-review',    reason: 'Diagnose the verifier first.' },
@@ -394,6 +429,7 @@ export const SEANCE_QUESTIONS = {
       {
         id: 'tst-d2',
         question: 'What does a green verdict promise?',
+        clarification: 'How reliable are green tests?',
         options: [
           { id: 'tst-d2-a', label: 'Nothing, alone',                                 sigilGlyph: '\u2620', primary: 'skill-ab-evaluation',       alt: 'pre-deployment-gate',    reason: 'Green is a sample, not a proof.' },
           { id: 'tst-d2-b', label: 'Only what was asked',                            sigilGlyph: '\u2756', primary: 'llm-pre-push-review',       alt: 'review-ladder-plus',     reason: 'Coverage of assertions, not behavior.' },
@@ -409,6 +445,7 @@ export const SEANCE_QUESTIONS = {
       {
         id: 'out-n1',
         question: 'When the output is born, what does it lack?',
+        clarification: "What is missing from your output?",
         options: [
           { id: 'out-n1-a', label: 'Polished prose, fit for the user',               sigilGlyph: '\u269c', primary: 'documentation-craft',       alt: 'stakeholder-communication', reason: 'Documentation is a deliverable.' },
           { id: 'out-n1-b', label: 'A second opinion, willing to wound',              sigilGlyph: '\u2756', primary: 'tool-interactive-critic',   alt: 'self-verify-pipeline',     reason: 'Internal critique, then external tool.' },
@@ -419,6 +456,7 @@ export const SEANCE_QUESTIONS = {
       {
         id: 'out-n2',
         question: 'How is the output tested?',
+        clarification: 'How do you review your output?',
         options: [
           { id: 'out-n2-a', label: 'By explaining it simply',                         sigilGlyph: '\u2042', primary: 'feynman-technique',          alt: 'compression-as-understanding', reason: 'The simplest explanation survives.' },
           { id: 'out-n2-b', label: 'By compression to the core',                      sigilGlyph: '\u25ce', primary: 'compression-as-understanding', alt: 'feynman-technique',     reason: 'If it can be compressed, it is understood.' },
@@ -429,6 +467,7 @@ export const SEANCE_QUESTIONS = {
       {
         id: 'out-n3',
         question: 'What weighs the output down?',
+        clarification: 'What makes your output hard to follow?',
         options: [
           { id: 'out-n3-a', label: 'A flood of stale context',                       sigilGlyph: '\u2601', primary: 'cognitive-load-operator-state-machine', alt: 'bounded-self-revision', reason: 'Compress aggressively, on schedule.' },
           { id: 'out-n3-b', label: 'A surplus of words, where few would do',          sigilGlyph: '\u2042', primary: 'bounded-self-revision',     alt: 'mece-pyramid-principle',   reason: 'Revision is bounded, not endless.' },
@@ -439,6 +478,7 @@ export const SEANCE_QUESTIONS = {
       {
         id: 'out-n4',
         question: 'What truth does the output serve?',
+        clarification: 'Who or what is the output for?',
         options: [
           { id: 'out-n4-a', label: 'The user\u2019s understanding',                    sigilGlyph: '\u269c', primary: 'documentation-craft',       alt: 'large-documentation-navigation', reason: 'Writers serve readers, not themselves.' },
           { id: 'out-n4-b', label: 'The structure of the problem',                   sigilGlyph: '\u2042', primary: 'mece-pyramid-principle',    alt: 'tree-of-thoughts',         reason: 'Structure reveals the whole.' },
@@ -451,6 +491,7 @@ export const SEANCE_QUESTIONS = {
       {
         id: 'out-d1',
         question: 'When the output is read, who understands?',
+        clarification: 'How clear is your output to others?',
         options: [
           { id: 'out-d1-a', label: 'The one who wrote it',                           sigilGlyph: '\u269c', primary: 'documentation-craft',       alt: 'stakeholder-communication', reason: 'The curse of knowledge.' },
           { id: 'out-d1-b', label: 'No one, fully',                                  sigilGlyph: '\u2620', primary: 'large-documentation-navigation', alt: 'documentation-craft', reason: 'Navigation reveals what prose cannot.' },
@@ -461,6 +502,7 @@ export const SEANCE_QUESTIONS = {
       {
         id: 'out-d2',
         question: 'When the output is judged, what shall be found?',
+        clarification: 'What will reviewers notice?',
         options: [
           { id: 'out-d2-a', label: 'The author\u2019s doubts, unstated',                sigilGlyph: '\u2756', primary: 'stakeholder-communication', alt: 'prism',                   reason: 'Calibrated confidence is honest.' },
           { id: 'out-d2-b', label: 'The unrevised parts, still rough',               sigilGlyph: '\u2042', primary: 'bounded-self-revision',     alt: 'tool-interactive-critic', reason: 'Revision is bounded, not endless.' },

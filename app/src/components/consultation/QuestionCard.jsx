@@ -11,6 +11,9 @@ export default function QuestionCard({ question, pool, onTap, disabled }) {
   return (
     <div className="seance-question" data-pool={pool}>
       <h2 className="seance-question__text">{question.question}</h2>
+      {question.clarification && (
+        <p className="seance-question__clarification">{question.clarification}</p>
+      )}
       <div className="seance-question__options" role="list">
         {question.options.map((option) => (
           <OptionButton

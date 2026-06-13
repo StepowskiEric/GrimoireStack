@@ -9,7 +9,7 @@ export default function LanguageToggle() {
   return (
     <button
       type="button"
-      className={`language-toggle${isGrimoire ? ' is-grimoire' : ' is-plain'}`}
+      className={`language-toggle eye-footer-link${isGrimoire ? ' is-grimoire' : ' is-plain'}`}
       onClick={() => setLang(isGrimoire ? 'plain' : 'grimoire')}
       aria-label={isGrimoire ? 'Switch to plain English' : 'Switch to themed (grimoire) language'}
       title={isGrimoire ? 'Switch to plain English' : 'Switch to themed (grimoire) language'}
