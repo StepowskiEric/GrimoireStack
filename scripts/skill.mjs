@@ -1,32 +1,50 @@
 #!/usr/bin/env node
 
 /**
- * skill.mjs — Add or remove skills from GrimoireStack
+ * skill.mjs — Add or remove skills from GrimoireStack.
+ *
+ * The filesystem is the single source of truth for which skills exist.
+ * Adding a skill creates a SKILL.md in the right topic directory; the
+ * registry generator picks it up automatically and writes the
+ * schools/spellMetadata entries. No string surgery on data files.
  *
  * Usage:
- *   node scripts/skill.mjs add <skill-id> <topic> <display-name> [description]
+ *   node scripts/skill.mjs add <skill-id> <topic> "<Display Name>" "[description]"
  *   node scripts/skill.mjs remove <skill-id>
  *
  * Examples:
- *   node scripts/skill.mjs add critical-system-interrogation software-development "Critical System Interrogation" "Deep-dive investigation"
+ *   node scripts/skill.mjs add auth-pipeline-audit software-development "Auth Pipeline Audit" "Deep review of authentication flows"
  *   node scripts/skill.mjs remove test-automation
  */
 
 import { promises as fs } from 'fs';
 import path from 'path';
-import { fileURLToPath } from 'url';
-import { REPO_ROOT, PUBLIC_SKILLS } from './lib/constants.mjs';
-import {
-  discoverSkills, getExistingSkillIds, findSkillDir, rebuildSkillMap,
-  addSpellToSchools, removeSpellFromSchools,
-  addToSpellMetadata, removeFromSpellMetadata, removeFromPublic,
-} from './lib/helpers.mjs';
+import { execSync } from 'child_process';
+import { REPO_ROOT, APP_DIR, PUBLIC_SKILLS } from './lib/constants.mjs';
 
 const VALID_TOPICS = [
   'debugging', 'execution', 'judgment-and-routing', 'mcp-servers',
   'mlops', 'orchestration', 'output-quality', 'reasoning',
   'software-development', 'systems-and-architecture', 'testing', 'development',
 ];
+
+// ─────────────────────────────────────────────
+//  HELPERS
+// ─────────────────────────────────────────────
+
+function runRegistryGenerator() {
+  execSync('node scripts/generate-registry.mjs', {
+    cwd: APP_DIR,
+    stdio: 'inherit',
+  });
+}
+
+function runSkillMapBuilder() {
+  execSync('node scripts/build-skill-map.mjs', {
+    cwd: APP_DIR,
+    stdio: 'inherit',
+  });
+}
 
 // ─────────────────────────────────────────────
 //  ARGS
@@ -37,7 +55,7 @@ const [subcommand, ...rest] = process.argv.slice(2);
 if (!subcommand || !['add', 'remove'].includes(subcommand)) {
   console.log(`
 Usage:
-  node scripts/skill.mjs add <skill-id> <topic> <display-name> [description]
+  node scripts/skill.mjs add <skill-id> <topic> "<Display Name>" "[description]"
   node scripts/skill.mjs remove <skill-id>
 
 Add example:
@@ -54,7 +72,6 @@ Remove example:
 // ─────────────────────────────────────────────
 
 async function addSkill(skillId, topic, displayName, description = '') {
-  // Validate
   if (!/^[a-z0-9-]+$/.test(skillId)) {
     console.error('Error: skill-id must be lowercase letters, numbers, and hyphens only');
     process.exit(1);
@@ -78,6 +95,7 @@ async function addSkill(skillId, topic, displayName, description = '') {
   const content = `---
 name: ${skillId}
 description: ${description || displayName}
+display-name: ${displayName}
 ---
 
 # ${displayName}
@@ -97,33 +115,25 @@ ${description ? `## Purpose\n\n${description}\n\n` : ''}## When to Use
 
   const skillFile = path.join(skillDir, 'SKILL.md');
   await fs.writeFile(skillFile, content, 'utf8');
-  console.log(`Created: ${topic}/${skillId}/SKILL.md`);
-  console.log();
+  console.log(`Created: ${topic}/${skillId}/SKILL.md\n`);
 
-  // 2. Update schools.js
-  console.log('2. Updating schools.js...');
-  await addSpellToSchools(skillId, displayName, description);
-  console.log();
-
-  // 3. Update spellMetadata.js
-  console.log('3. Updating spellMetadata.js...');
-  await addToSpellMetadata(skillId, displayName);
-  console.log();
-
-  // 4. Copy to public
-  console.log('4. Copying to public/skills/...');
+  // 2. Copy to public/skills/ (so the URL works without a rebuild)
+  console.log('2. Copying to public/skills/...');
   const destDir = path.join(PUBLIC_SKILLS, topic, skillId);
   await fs.mkdir(destDir, { recursive: true });
   await fs.copyFile(skillFile, path.join(destDir, 'SKILL.md'));
-  console.log(`Copied: public/skills/${topic}/${skillId}/`);
+  console.log(`Copied: public/skills/${topic}/${skillId}/\n`);
+
+  // 3. Generate registry (auto-populates schools[] + spellMetadata)
+  console.log('3. Generating registry...');
+  runRegistryGenerator();
   console.log();
 
-  // 5. Rebuild skill map
-  console.log('5. Rebuilding skill map...');
-  await rebuildSkillMap();
+  // 4. Rebuild skill URL map
+  console.log('4. Rebuilding skill URL map...');
+  runSkillMapBuilder();
   console.log();
 
-  // Done
   console.log('═══════════════════════════════════════');
   console.log('  Done! Skill added successfully.');
   console.log('═══════════════════════════════════════\n');
@@ -140,43 +150,54 @@ ${description ? `## Purpose\n\n${description}\n\n` : ''}## When to Use
 // ─────────────────────────────────────────────
 
 async function removeSkill(skillId) {
+  if (!/^[a-z0-9-]+$/.test(skillId)) {
+    console.error('Error: skill-id must be lowercase letters, numbers, and hyphens only');
+    process.exit(1);
+  }
+
   console.log('═══════════════════════════════════════');
   console.log(`  Removing skill: ${skillId}`);
   console.log('═══════════════════════════════════════\n');
 
-  // 1. Find and delete skill directory
-  console.log('1. Finding skill directory...');
-  const skillDir = await findSkillDir(skillId);
-  if (skillDir) {
-    await fs.rm(skillDir, { recursive: true, force: true });
-    const rel = path.relative(REPO_ROOT, skillDir);
-    console.log(`Deleted: ${rel}/`);
-  } else {
-    console.log(`  Skill directory for ${skillId} not found in repo`);
+  // 1. Find and delete skill directory in the repo
+  let found = false;
+  for (const topic of VALID_TOPICS) {
+    const skillDir = path.join(REPO_ROOT, topic, skillId);
+    try {
+      const stat = await fs.stat(skillDir);
+      if (stat.isDirectory()) {
+        await fs.rm(skillDir, { recursive: true, force: true });
+        console.log(`Deleted: ${topic}/${skillId}/`);
+        found = true;
+        break;
+      }
+    } catch {}
   }
+  if (!found) console.log(`  Skill directory for ${skillId} not found in repo\n`);
+
+  // 2. Remove from public/skills/ (try all topics)
+  let publicRemoved = false;
+  for (const topic of VALID_TOPICS) {
+    const publicDir = path.join(PUBLIC_SKILLS, topic, skillId);
+    try {
+      await fs.rm(publicDir, { recursive: true, force: true });
+      console.log(`Deleted: public/skills/${topic}/${skillId}/`);
+      publicRemoved = true;
+    } catch {}
+  }
+  if (!publicRemoved) console.log('  No public copy found');
   console.log();
 
-  // 2. Remove from schools.js
-  console.log('2. Removing from schools.js...');
-  await removeSpellFromSchools(skillId);
+  // 3. Regenerate registry (auto-removes the skill from schools + spellMetadata)
+  console.log('3. Regenerating registry...');
+  runRegistryGenerator();
   console.log();
 
-  // 3. Remove from spellMetadata.js
-  console.log('3. Removing from spellMetadata.js...');
-  await removeFromSpellMetadata(skillId);
+  // 4. Rebuild skill URL map
+  console.log('4. Rebuilding skill URL map...');
+  runSkillMapBuilder();
   console.log();
 
-  // 4. Remove from public/skills/
-  console.log('4. Removing from public/skills/...');
-  await removeFromPublic(skillId);
-  console.log();
-
-  // 5. Rebuild skill map
-  console.log('5. Rebuilding skill map...');
-  await rebuildSkillMap();
-  console.log();
-
-  // Done
   console.log('═══════════════════════════════════════');
   console.log(`  Done! ${skillId} removed.`);
   console.log('═══════════════════════════════════════\n');

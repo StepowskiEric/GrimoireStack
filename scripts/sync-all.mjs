@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
 /**
- * sync-all.mjs — One command to sync everything
+ * sync-all.mjs — One command to sync the repo's skills to the app.
  *
  * Usage:
  *   node scripts/sync-all.mjs          # sync everything
@@ -9,22 +9,31 @@
  *
  * What it does:
  *   1. Discovers all skills in the repo
- *   2. Copies new skills to app/public/skills/
- *   3. Updates the changelog (spellMetadata.js)
- *   4. Updates the README skill count
- *   5. Updates docs/skill-catalog.md
- *   6. Regenerates the skill map
+ *   2. Copies new skills to app/public/skills/ (for URL routing)
+ *   3. Updates the README skill count
+ *   4. Updates docs/skill-catalog.md
+ *   5. Regenerates the registry (auto-populates schools + spellMetadata)
+ *   6. Rebuilds the skill URL map (_map.json)
  */
 
 import { promises as fs } from 'fs';
 import path from 'path';
-import { REPO_ROOT, APP_DIR, PUBLIC_SKILLS, SPELL_METADATA, README, SKILL_CATALOG } from './lib/constants.mjs';
-import { discoverSkills, getExistingSkillIds, rebuildSkillMap, addToSpellMetadata } from './lib/helpers.mjs';
+import { execSync } from 'child_process';
+import { REPO_ROOT, APP_DIR, PUBLIC_SKILLS, README, SKILL_CATALOG } from './lib/constants.mjs';
+import { discoverSkills, getExistingSkillIds } from './lib/helpers.mjs';
 
 const DRY_RUN = process.argv.includes('--dry');
 
+function runInApp(scriptPath) {
+  if (DRY_RUN) {
+    console.log(`  [dry] Would run: node ${scriptPath}`);
+    return;
+  }
+  execSync(`node ${scriptPath}`, { cwd: APP_DIR, stdio: 'inherit' });
+}
+
 // ─────────────────────────────────────────────
-//  2. COPY NEW SKILLS
+//  1. COPY NEW SKILLS
 // ─────────────────────────────────────────────
 
 async function copyNewSkills(newSkills) {
@@ -42,115 +51,83 @@ async function copyNewSkills(newSkills) {
 }
 
 // ─────────────────────────────────────────────
-//  3. UPDATE CHANGELOG
-// ─────────────────────────────────────────────
-
-async function updateChangelog(newSkills) {
-  if (newSkills.length === 0) return 0;
-
-  let added = 0;
-  for (const skill of newSkills) {
-    if (!DRY_RUN) {
-      const readableName = skill.skillId
-        .replace(/-/g, ' ')
-        .replace(/\b\w/g, l => l.toUpperCase());
-      await addToSpellMetadata(skill.skillId, readableName);
-    }
-    added++;
-  }
-
-  console.log(`  ${DRY_RUN ? '[dry] ' : ''}Added ${added} entries to changelog`);
-  return added;
-}
-
-// ─────────────────────────────────────────────
-//  4. UPDATE README
+//  2. UPDATE README
 // ─────────────────────────────────────────────
 
 async function updateReadme(allSkills) {
   const content = await fs.readFile(README, 'utf8');
   const totalSkills = allSkills.length;
 
-  // Update the skill count if there's a line like "## Skills (150)"
-  const updated = content.replace(
-    /^# Jerry's Agent Skills\n/,
-    `# Jerry's Agent Skills\n`
-  );
-
   // Find and update any "X skills" count in the intro
-  const countMatch = updated.match(/(\d+)\s+skills/i);
-  if (countMatch) {
-    const newContent = updated.replace(
+  const countMatch = content.match(/(\d+)\s+skills/i);
+  if (!countMatch) return 0;
+
+  if (!DRY_RUN) {
+    const newContent = content.replace(
       new RegExp(`${countMatch[1]}\\s+skills`, 'i'),
       `${totalSkills} skills`
     );
-    if (!DRY_RUN) {
-      await fs.writeFile(README, newContent, 'utf8');
-    }
-    console.log(`  ${DRY_RUN ? '[dry] ' : ''}Updated README skill count → ${totalSkills}`);
+    await fs.writeFile(README, newContent, 'utf8');
   }
-
+  console.log(`  ${DRY_RUN ? '[dry] ' : ''}Updated README skill count → ${totalSkills}`);
   return 1;
 }
 
 // ─────────────────────────────────────────────
-//  5. UPDATE SKILL CATALOG
+//  3. UPDATE SKILL CATALOG
 // ─────────────────────────────────────────────
 
 async function updateSkillCatalog(newSkills) {
   if (newSkills.length === 0) return 0;
 
+  let content;
   try {
-    const content = await fs.readFile(SKILL_CATALOG, 'utf8');
-
-    // Group new skills by topic
-    const byTopic = {};
-    for (const skill of newSkills) {
-      if (!byTopic[skill.topic]) byTopic[skill.topic] = [];
-      byTopic[skill.topic].push(skill);
-    }
-
-    let updatedContent = content;
-    let added = 0;
-
-    for (const [topic, skills] of Object.entries(byTopic)) {
-      // Find the topic section in the catalog
-      const topicRegex = new RegExp(`## ${topic.replace(/-/g, '[- ]')}\\b`, 'i');
-      const topicMatch = updatedContent.match(topicRegex);
-
-      if (topicMatch) {
-        // Find the end of this topic section (next ## or end of file)
-        const topicStart = updatedContent.indexOf(topicMatch[0]);
-        const nextTopic = updatedContent.indexOf('\n## ', topicStart + topicMatch[0].length);
-        const insertPos = nextTopic === -1 ? updatedContent.length : nextTopic;
-
-        // Build new entries
-        const newEntries = skills.map(skill => {
-          const readableName = skill.skillId
-            .replace(/-/g, ' ')
-            .replace(/\b\w/g, l => l.toUpperCase());
-          return `- **${readableName}** — \`skill:'${skill.skillId}'\``;
-        }).join('\n');
-
-        if (!DRY_RUN) {
-          updatedContent = updatedContent.slice(0, insertPos) +
-            '\n' + newEntries + '\n' +
-            updatedContent.slice(insertPos);
-        }
-        added += skills.length;
-        console.log(`  ${DRY_RUN ? '[dry] ' : ''}Added ${skills.length} skills to catalog under "${topic}"`);
-      }
-    }
-
-    if (!DRY_RUN && added > 0) {
-      await fs.writeFile(SKILL_CATALOG, updatedContent, 'utf8');
-    }
-
-    return added;
+    content = await fs.readFile(SKILL_CATALOG, 'utf8');
   } catch {
     console.log('  skill-catalog.md not found, skipping');
     return 0;
   }
+
+  // Group new skills by topic
+  const byTopic = {};
+  for (const skill of newSkills) {
+    if (!byTopic[skill.topic]) byTopic[skill.topic] = [];
+    byTopic[skill.topic].push(skill);
+  }
+
+  let updatedContent = content;
+  let added = 0;
+
+  for (const [topic, skills] of Object.entries(byTopic)) {
+    const topicRegex = new RegExp(`## ${topic.replace(/-/g, '[- ]')}\\b`, 'i');
+    const topicMatch = updatedContent.match(topicRegex);
+
+    if (topicMatch) {
+      const topicStart = updatedContent.indexOf(topicMatch[0]);
+      const nextTopic = updatedContent.indexOf('\n## ', topicStart + topicMatch[0].length);
+      const insertPos = nextTopic === -1 ? updatedContent.length : nextTopic;
+
+      const newEntries = skills.map(skill => {
+        const readableName = skill.skillId
+          .replace(/-/g, ' ')
+          .replace(/\b\w/g, l => l.toUpperCase());
+        return `- **${readableName}** — \`skill:'${skill.skillId}'\``;
+      }).join('\n');
+
+      if (!DRY_RUN) {
+        updatedContent = updatedContent.slice(0, insertPos) +
+          '\n' + newEntries + '\n' +
+          updatedContent.slice(insertPos);
+      }
+      added += skills.length;
+      console.log(`  ${DRY_RUN ? '[dry] ' : ''}Added ${skills.length} skills to catalog under "${topic}"`);
+    }
+  }
+
+  if (!DRY_RUN && added > 0) {
+    await fs.writeFile(SKILL_CATALOG, updatedContent, 'utf8');
+  }
+  return added;
 }
 
 // ─────────────────────────────────────────────
@@ -174,38 +151,35 @@ async function main() {
   const newSkills = allSkills.filter(s => !existingIds.includes(s.skillId));
 
   if (newSkills.length === 0) {
-    console.log('   No new skills — everything is up to date.\n');
-    return;
+    console.log('   No new skills — proceeding to registry regen.\n');
+  } else {
+    console.log(`   Found ${newSkills.length} new skills: ${newSkills.map(s => s.skillId).join(', ')}\n`);
+
+    // 3. Copy new skills to public/
+    console.log('3. Copying new skills...');
+    await copyNewSkills(newSkills);
+    console.log();
   }
-  console.log(`   Found ${newSkills.length} new skills: ${newSkills.map(s => s.skillId).join(', ')}\n`);
 
-  // 3. Copy
-  console.log('3. Copying new skills...');
-  await copyNewSkills(newSkills);
-  console.log();
-
-  // 4. Changelog
-  console.log('4. Updating changelog...');
-  await updateChangelog(newSkills);
-  console.log();
-
-  // 5. README
-  console.log('5. Updating README...');
+  // 4. README
+  console.log(`${newSkills.length > 0 ? 4 : 3}. Updating README...`);
   await updateReadme(allSkills);
   console.log();
 
-  // 6. Catalog
-  console.log('6. Updating skill catalog...');
+  // 5. Catalog
+  console.log(`${newSkills.length > 0 ? 5 : 4}. Updating skill catalog...`);
   await updateSkillCatalog(newSkills);
   console.log();
 
-  // 7. Rebuild skill map
-  console.log('7. Rebuilding skill map...');
-  if (!DRY_RUN) {
-    await rebuildSkillMap();
-  } else {
-    console.log('  [dry] Would rebuild skill map');
-  }
+  // 6. Regenerate registry (auto-populates schools[] + spellMetadata)
+  const stepN = newSkills.length > 0 ? 6 : 5;
+  console.log(`${stepN}. Regenerating registry...`);
+  runInApp('scripts/generate-registry.mjs');
+  console.log();
+
+  // 7. Rebuild skill URL map
+  console.log(`${stepN + 1}. Rebuilding skill URL map...`);
+  runInApp('scripts/build-skill-map.mjs');
 
   console.log('\n═══════════════════════════════════════');
   console.log('  Done! All files synced.');

@@ -1,5 +1,3 @@
-#!/usr/bin/env node
-
 /**
  * tests for skill.mjs (add/remove) and sync-all.mjs
  *
@@ -143,7 +141,66 @@ describe('skill.mjs remove', () => {
 
 describe('sync-all.mjs', () => {
   it('reports up to date when no changes', async () => {
-    const out = run(`node scripts/sync-all.mjs`);
-    expect(out).toContain('up to date');
+    // Use --dry to avoid mutating production files
+    const out = run(`node scripts/sync-all.mjs --dry`);
+    // Should say "No new skills" when nothing has changed
+    expect(out).toContain('No new skills');
+  });
+});
+
+// ─────────────────────────────────────────────
+//  TESTS — generate-registry.mjs
+// ─────────────────────────────────────────────
+
+describe('generate-registry.mjs', () => {
+  it('emits a valid schoolsRegistry.js with all skills', async () => {
+    // Run the generator against the real repo
+    run(`node ${path.join(APP_DIR, 'scripts', 'generate-registry.mjs')}`);
+
+    // Import the freshly-generated registry
+    const regPath = path.join(APP_DIR, 'src', 'data', 'schoolsRegistry.js');
+    const url = new URL(`file://${regPath}`);
+    const mod = await import(url.href);
+    const schools = mod.default;
+
+    expect(Array.isArray(schools)).toBe(true);
+    expect(schools.length).toBeGreaterThan(5);  // 12 schools today
+
+    // Total spell count should be substantial
+    const totalSpells = schools.reduce((n, s) => n + s.spells.length, 0);
+    expect(totalSpells).toBeGreaterThan(50);
+
+    // Every school should have id, name, real, desc, spells
+    for (const school of schools) {
+      expect(typeof school.id).toBe('string');
+      expect(typeof school.name).toBe('string');
+      expect(typeof school.real).toBe('string');
+      expect(typeof school.desc).toBe('string');
+      expect(Array.isArray(school.spells)).toBe(true);
+      for (const spell of school.spells) {
+        expect(typeof spell.skill).toBe('string');
+        expect(typeof spell.name).toBe('string');
+        expect(typeof spell.effect).toBe('string');
+        expect(typeof spell.status).toBe('string');
+      }
+    }
+  });
+
+  it('emits a spellMetadata.js with a date for every known skill', async () => {
+    const metaPath = path.join(APP_DIR, 'src', 'data', 'spellMetadata.js');
+    const url = new URL(`file://${metaPath}`);
+    const mod = await import(url.href);
+    const { getSpellLastUpdated } = mod;
+
+    // Every skill in the registry should have a non-null lastUpdated
+    const regPath = path.join(APP_DIR, 'src', 'data', 'schoolsRegistry.js');
+    const regUrl = new URL(`file://${regPath}`);
+    const reg = await import(regUrl.href);
+    for (const school of reg.default) {
+      for (const spell of school.spells) {
+        const date = getSpellLastUpdated(spell.skill);
+        expect(date).toMatch(/^\d{4}-\d{2}-\d{2}$/);
+      }
+    }
   });
 });
