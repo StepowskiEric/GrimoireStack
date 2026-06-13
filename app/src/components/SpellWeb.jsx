@@ -194,7 +194,7 @@ export default function SpellWeb({ onSpellClick }) {
           <rect width={WIDTH} height={HEIGHT} fill="url(#webBgGradient)" />
 
           {/* Combo edges (tentacle connections) */}
-          {visibleEdges.map((e, i) => {
+          {visibleEdges.map((e) => {
             const a = spellBySkill.get(e.source);
             const b = spellBySkill.get(e.target);
             if (!a || !b) return null;
@@ -217,7 +217,7 @@ export default function SpellWeb({ onSpellClick }) {
             const cy = midY + ny * curve * 0.25;
             
             return (
-              <g key={`${e.source}-${e.target}-${i}`}>
+              <g key={`${e.source}-${e.target}`}>
                 {/* Main tentacle */}
                 <path
                   d={`M ${a.x} ${a.y} Q ${cx} ${cy} ${b.x} ${b.y}`}

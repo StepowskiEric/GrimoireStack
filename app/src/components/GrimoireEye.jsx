@@ -1,3 +1,5 @@
+/* eslint-disable react/no-array-index-key -- decorative procedural arrays; index is stable for the lifetime of the mount */
+
 import { useRef, useEffect, useState } from 'react';
 import SchoolSigil from './SchoolSigil.tsx';
 

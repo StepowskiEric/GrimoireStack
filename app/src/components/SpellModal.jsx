@@ -1,3 +1,5 @@
+/* eslint-disable react/no-array-index-key -- fixed-size decorative modal background eyes */
+
 import { useEffect, useRef, useState, useCallback, useMemo } from 'react';
 import { TIER_META, getSpellTier } from '../data/tiers.js';
 import { grimoireIndex } from '../data/grimoireIndexInstance.js';
@@ -187,22 +189,10 @@ function escapeHtml(text) {
 }
 
 function sanitizeHtml(html) {
-  // Allow only safe HTML tags and attributes
-  const allowedTags = new Set([
-    'p', 'br', 'hr', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6',
-    'strong', 'em', 'del', 'code', 'pre', 'blockquote',
-    'ul', 'ol', 'li', 'a', 'table', 'thead', 'tbody', 'tr', 'th', 'td',
-    'span', 'div', 'input', 'label'
-  ]);
-  
-  const allowedAttributes = new Set([
-    'class', 'href', 'target', 'rel', 'type', 'checked', 'disabled',
-    'data-depth', 'aria-hidden', 'aria-label', 'aria-checked',
-    'role', 'tabindex', 'value', 'placeholder'
-  ]);
-  
-  // Simple sanitizer: remove script tags and event handlers
-  let sanitized = html
+  // Simple regex-based sanitizer: strip dangerous tags, event handlers,
+  // and javascript: / data: URLs. The allowlist Sets that once lived here
+  // were never wired up; the regex chain below is the actual contract.
+  const sanitized = html
     .replace(/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi, '')
     .replace(/<iframe\b[^<]*(?:(?!<\/iframe>)<[^<]*)*<\/iframe>/gi, '')
     .replace(/<object\b[^<]*(?:(?!<\/object>)<[^<]*)*<\/object>/gi, '')
@@ -212,7 +202,7 @@ function sanitizeHtml(html) {
     .replace(/on\w+='[^']*'/gi, '')
     .replace(/javascript:/gi, '')
     .replace(/data:/gi, '');
-  
+
   return sanitized;
 }
 
@@ -344,7 +334,6 @@ export default function SpellModal({ spell, school, onClose, marginalia, getVote
     // eslint-disable-next-line jsx-a11y/click-events-have-key-events, jsx-a11y/no-static-element-interactions
     <div className="modal-overlay open" onClick={(e) => { if (e.target === e.currentTarget) onClose(); }}>
       {/* Background peering eyes — drift + occasional blink, decorative */}
-      {/* eslint-disable-next-line react/no-array-index-key */}
       <div className="modal-bg-eyes" aria-hidden="true">
         {Array.from({ length: 7 }).map((_, i) => (
           <span key={i} className={`modal-bg-eye modal-bg-eye--${i + 1}`}>

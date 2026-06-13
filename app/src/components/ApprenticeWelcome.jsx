@@ -1,3 +1,5 @@
+/* eslint-disable react/no-array-index-key -- static decorative arrays; index is stable */
+
 import { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import ModalEye from './ModalEye.tsx';

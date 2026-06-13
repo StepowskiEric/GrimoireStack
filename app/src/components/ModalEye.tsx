@@ -1,3 +1,5 @@
+/* eslint-disable react/no-array-index-key -- fixed-size decorative iris detail lines */
+
 import { useEffect, useRef, useState } from 'react';
 
 interface Props {
