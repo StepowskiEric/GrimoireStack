@@ -103,6 +103,7 @@ const EXPLICIT = {
   'inspect-first-modeling': { lastUpdated: '2026-05-19' },
   'dspy-signature-optimizer': { lastUpdated: '2026-05-19' },
   'user-onboarding-flow-validator': { lastUpdated: '2026-05-19' },
+  'critical-system-interrogation': { lastUpdated: '2026-06-12', note: 'New entry — deep-dive investigation of critical system components combining relentless questioning with extreme code quality standards.' },
 };
 
 export function getSpellLastUpdated(skill) {
