@@ -163,6 +163,17 @@ export default function Icon({ name, size, className, style }) {
         </svg>
       );
 
+    case 'oracle':
+      // Scrying orb atop a ritual triangle — for the Séance tab
+      return (
+        <svg {...props}>
+          <path d="M 4 19 L 20 19" />
+          <path d="M 12 3 L 18 14 L 6 14 Z" />
+          <circle cx="12" cy="9" r="3" />
+          <path d="M 12 6.5 L 12 11.5 M 9.5 9 L 14.5 9" opacity="0.6" />
+        </svg>
+      );
+
     default:
       return null;
   }

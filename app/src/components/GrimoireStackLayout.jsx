@@ -1,4 +1,4 @@
-import { useState, useCallback, useEffect } from 'react';
+import { useState, useCallback, useEffect, lazy, Suspense } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import SchoolCardGrid from './SchoolCardGrid.jsx';
 import SpellDetailView from './SpellDetailView.jsx';
@@ -15,6 +15,8 @@ import SchoolSigil from './SchoolSigil.tsx';
 import Icon from './Icon.jsx';
 import { pageTurn } from '../audio/sounds.js';
 
+const CommuneView = lazy(() => import('./CommuneView.jsx'));
+
 const TABS = {
   LIBRARY: 'library',
   SPELLBOOK: 'spellbook',
@@ -23,6 +25,7 @@ const TABS = {
   SPELL_WEB: 'spellweb',
   CHANGELOG: 'changelog',
   SETTINGS: 'settings',
+  SEANCE: 'seance',
 };
 
 const TAB_ROUTES = {
@@ -33,6 +36,7 @@ const TAB_ROUTES = {
   [TABS.SPELL_WEB]: '/spellweb',
   [TABS.CHANGELOG]: '/changelog',
   [TABS.SETTINGS]: '/settings',
+  [TABS.SEANCE]: '/commune',
 };
 
 const TAB_LABELS = {
@@ -43,6 +47,7 @@ const TAB_LABELS = {
   [TABS.SPELL_WEB]: { name: 'Spell Web', icon: 'graph' },
   [TABS.CHANGELOG]: { name: 'Changelog', icon: 'changelog' },
   [TABS.SETTINGS]: { name: 'Settings', icon: 'sigil' },
+  [TABS.SEANCE]: { name: 'The Séance', icon: 'oracle' },
 };
 
 export default function GrimoireStackLayout({
@@ -107,6 +112,7 @@ export default function GrimoireStackLayout({
     if (path === '/spellweb') return TABS.SPELL_WEB;
     if (path === '/changelog') return TABS.CHANGELOG;
     if (path === '/settings') return TABS.SETTINGS;
+    if (path === '/commune') return TABS.SEANCE;
     return TABS.LIBRARY;
   })();
 
@@ -274,6 +280,12 @@ export default function GrimoireStackLayout({
             onExportJson={onExportJson}
             onExportMarkdown={onExportMarkdown}
           />
+        );
+      case TABS.SEANCE:
+        return (
+          <Suspense fallback={<div className="modal-suspense-fallback">Summoning...</div>}>
+            <CommuneView onSpellClick={onSpellClick} audioEnabled={audioEnabled} />
+          </Suspense>
         );
       default:
         return (
