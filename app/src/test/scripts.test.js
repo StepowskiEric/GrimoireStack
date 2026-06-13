@@ -149,13 +149,13 @@ describe('sync-all.mjs', () => {
 });
 
 // ─────────────────────────────────────────────
-//  TESTS — generate-registry.mjs
+//  TESTS — registry/index.mjs
 // ─────────────────────────────────────────────
 
-describe('generate-registry.mjs', () => {
+describe('registry/index.mjs', () => {
   it('emits a valid schoolsRegistry.js with all skills', async () => {
     // Run the generator against the real repo
-    run(`node ${path.join(APP_DIR, 'scripts', 'generate-registry.mjs')}`);
+    run(`node ${path.join(APP_DIR, 'scripts', 'registry', 'index.mjs')}`);
 
     // Import the freshly-generated registry
     const regPath = path.join(APP_DIR, 'src', 'data', 'schoolsRegistry.js');
@@ -187,10 +187,9 @@ describe('generate-registry.mjs', () => {
   });
 
   it('emits a spellMetadata.js with a date for every known skill', async () => {
-    const metaPath = path.join(APP_DIR, 'src', 'data', 'spellMetadata.js');
-    const url = new URL(`file://${metaPath}`);
-    const mod = await import(url.href);
-    const { getSpellLastUpdated } = mod;
+    const { getSpellLastUpdated } = await import(
+      path.join(APP_DIR, 'src', 'data', 'changeFeed.js')
+    );
 
     // Every skill in the registry should have a non-null lastUpdated
     const regPath = path.join(APP_DIR, 'src', 'data', 'schoolsRegistry.js');

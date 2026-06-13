@@ -32,7 +32,7 @@ const mockRecentlyUpdated = [
   },
 ];
 
-vi.mock('../data/spellMetadata.js', () => ({
+vi.mock('../data/changeFeed.js', () => ({
   getRecentlyUpdated: (limit) => mockRecentlyUpdated.slice(0, limit || mockRecentlyUpdated.length),
   getSpellLastUpdated: (skill) => {
     const item = mockRecentlyUpdated.find(i => i.skill === skill);

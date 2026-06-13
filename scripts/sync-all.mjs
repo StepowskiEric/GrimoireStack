@@ -33,7 +33,7 @@ function runInApp(scriptPath) {
 }
 
 // ─────────────────────────────────────────────
-//  1. COPY NEW SKILLS
+//  COPY NEW SKILLS
 // ─────────────────────────────────────────────
 
 async function copyNewSkills(newSkills) {
@@ -51,7 +51,7 @@ async function copyNewSkills(newSkills) {
 }
 
 // ─────────────────────────────────────────────
-//  2. UPDATE README
+//  UPDATE README
 // ─────────────────────────────────────────────
 
 async function updateReadme(allSkills) {
@@ -74,7 +74,7 @@ async function updateReadme(allSkills) {
 }
 
 // ─────────────────────────────────────────────
-//  3. UPDATE SKILL CATALOG
+//  UPDATE SKILL CATALOG
 // ─────────────────────────────────────────────
 
 async function updateSkillCatalog(newSkills) {
@@ -140,45 +140,36 @@ async function main() {
   console.log(DRY_RUN ? '  (dry run — no files written)' : '');
   console.log('═══════════════════════════════════════\n');
 
-  // 1. Discover
-  console.log('1. Discovering skills...');
+  console.log('Discovering skills...');
   const allSkills = await discoverSkills();
-  console.log(`   Found ${allSkills.length} skills in repo\n`);
+  console.log(`  Found ${allSkills.length} skills in repo\n`);
 
-  // 2. Find new (skills in repo but not in public/skills/)
-  console.log('2. Checking for new skills...');
   const existingIds = await getExistingSkillIds();
   const newSkills = allSkills.filter(s => !existingIds.includes(s.skillId));
 
   if (newSkills.length === 0) {
-    console.log('   No new skills — proceeding to registry regen.\n');
+    console.log('No new skills — proceeding to registry regen.\n');
   } else {
-    console.log(`   Found ${newSkills.length} new skills: ${newSkills.map(s => s.skillId).join(', ')}\n`);
+    console.log(`Found ${newSkills.length} new skills: ${newSkills.map(s => s.skillId).join(', ')}\n`);
 
-    // 3. Copy new skills to public/
-    console.log('3. Copying new skills...');
+    console.log('Copying new skills to public/...');
     await copyNewSkills(newSkills);
     console.log();
   }
 
-  // 4. README
-  console.log(`${newSkills.length > 0 ? 4 : 3}. Updating README...`);
+  console.log('Updating README skill count...');
   await updateReadme(allSkills);
   console.log();
 
-  // 5. Catalog
-  console.log(`${newSkills.length > 0 ? 5 : 4}. Updating skill catalog...`);
+  console.log('Updating skill catalog...');
   await updateSkillCatalog(newSkills);
   console.log();
 
-  // 6. Regenerate registry (auto-populates schools[] + spellMetadata)
-  const stepN = newSkills.length > 0 ? 6 : 5;
-  console.log(`${stepN}. Regenerating registry...`);
-  runInApp('scripts/generate-registry.mjs');
+  console.log('Regenerating registry...');
+  runInApp('scripts/registry/index.mjs');
   console.log();
 
-  // 7. Rebuild skill URL map
-  console.log(`${stepN + 1}. Rebuilding skill URL map...`);
+  console.log('Rebuilding skill URL map...');
   runInApp('scripts/build-skill-map.mjs');
 
   console.log('\n═══════════════════════════════════════');

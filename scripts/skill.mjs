@@ -20,20 +20,14 @@
 import { promises as fs } from 'fs';
 import path from 'path';
 import { execSync } from 'child_process';
-import { REPO_ROOT, APP_DIR, PUBLIC_SKILLS } from './lib/constants.mjs';
-
-const VALID_TOPICS = [
-  'debugging', 'execution', 'judgment-and-routing', 'mcp-servers',
-  'mlops', 'orchestration', 'output-quality', 'reasoning',
-  'software-development', 'systems-and-architecture', 'testing', 'development',
-];
+import { REPO_ROOT, APP_DIR, PUBLIC_SKILLS, SCAN_DIRS } from './lib/constants.mjs';
 
 // ─────────────────────────────────────────────
 //  HELPERS
 // ─────────────────────────────────────────────
 
 function runRegistryGenerator() {
-  execSync('node scripts/generate-registry.mjs', {
+  execSync('node scripts/registry/index.mjs', {
     cwd: APP_DIR,
     stdio: 'inherit',
   });
@@ -76,8 +70,8 @@ async function addSkill(skillId, topic, displayName, description = '') {
     console.error('Error: skill-id must be lowercase letters, numbers, and hyphens only');
     process.exit(1);
   }
-  if (!VALID_TOPICS.includes(topic)) {
-    console.error(`Error: topic must be one of: ${VALID_TOPICS.join(', ')}`);
+  if (!SCAN_DIRS.includes(topic)) {
+    console.error(`Error: topic must be one of: ${SCAN_DIRS.join(', ')}`);
     process.exit(1);
   }
 
@@ -161,7 +155,7 @@ async function removeSkill(skillId) {
 
   // 1. Find and delete skill directory in the repo
   let found = false;
-  for (const topic of VALID_TOPICS) {
+  for (const topic of SCAN_DIRS) {
     const skillDir = path.join(REPO_ROOT, topic, skillId);
     try {
       const stat = await fs.stat(skillDir);
@@ -177,7 +171,7 @@ async function removeSkill(skillId) {
 
   // 2. Remove from public/skills/ (try all topics)
   let publicRemoved = false;
-  for (const topic of VALID_TOPICS) {
+  for (const topic of SCAN_DIRS) {
     const publicDir = path.join(PUBLIC_SKILLS, topic, skillId);
     try {
       await fs.rm(publicDir, { recursive: true, force: true });

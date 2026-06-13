@@ -1,6 +1,6 @@
 import { useState, useMemo, useCallback } from 'react';
 import { TIER_META, getSpellTier } from '../data/tiers.js';
-import { getSpellLastUpdated } from '../data/spellMetadata.js';
+import { getSpellLastUpdated } from '../data/changeFeed.js';
 import { grimoireIndex } from '../data/grimoireIndexInstance.js';
 import SchoolSigil from './SchoolSigil.tsx';
 

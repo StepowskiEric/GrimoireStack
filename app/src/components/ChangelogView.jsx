@@ -1,5 +1,5 @@
 import { useState, useMemo } from 'react';
-import { getRecentlyUpdated } from '../data/spellMetadata.js';
+import { getRecentlyUpdated } from '../data/changeFeed.js';
 import SchoolSigil from './SchoolSigil.tsx';
 
 const SCHOOLS = [

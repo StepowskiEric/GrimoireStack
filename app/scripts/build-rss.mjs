@@ -8,7 +8,7 @@ import { dirname, join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 import schools from '../src/data/schools.js';
-import { getRecentlyUpdated } from '../src/data/spellMetadata.js';
+import { getRecentlyUpdated } from '../src/data/changeFeed.js';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const APP_ROOT = resolve(__dirname, '..');

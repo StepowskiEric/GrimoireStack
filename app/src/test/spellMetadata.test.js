@@ -6,7 +6,7 @@ import {
   getRecentlyUpdated,
   getChangeFeed,
   getAlphabeticalIndex,
-} from '../data/spellMetadata.js';
+} from '../data/changeFeed.js';
 
 describe('spellMetadata', () => {
   describe('getSpellLastUpdated', () => {
@@ -42,7 +42,8 @@ describe('spellMetadata', () => {
     });
 
     it('returns null for spells without a note', () => {
-      expect(getSpellNote('bisect-debugging')).toBeNull();
+      // accelerate-ai has no note in the curated overlay
+      expect(getSpellNote('accelerate-ai')).toBeNull();
     });
   });
 
