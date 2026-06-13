@@ -3,10 +3,8 @@ name: log-trace-correlation
 category: debugging
 description: Correlate error logs and stack traces to source code to identify root cause and suggest fixes.
 version: 1.0
-...
-
-
-
+last-updated: 2026-05-22
+note: Polished effect description; tier unchanged.
 ---
 
 # Log-Trace Correlation Skill

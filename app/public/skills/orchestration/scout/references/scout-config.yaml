@@ -1,0 +1,48 @@
+# Scout Configuration
+
+# Default mode: "lite" | "full" | "hybrid"
+default_mode: hybrid
+
+# Model selection for Scout-Full
+models:
+  # Fast tier (default for Scout-Full)
+  fast:
+    provider: anthropic
+    model: claude-haiku-3-20250514
+    max_tokens: 2048
+    timeout_seconds: 30
+
+  # Balanced tier
+  balanced:
+    provider: openai
+    model: gpt-4o-mini
+    max_tokens: 4096
+    timeout_seconds: 60
+
+  # Local tier (no API cost)
+  local:
+    provider: ollama
+    model: llama3.2-3b
+    url: http://localhost:11434
+    max_tokens: 2048
+    timeout_seconds: 30
+
+# Scope limits
+scope:
+  max_files_scout_lite: 50       # Lite: stop after N files
+  max_files_scout_full: 10       # Full: max files to read deeply
+  max_files_scout_hybrid: 20      # Hybrid: Lite narrows to N, Full reads top M
+  max_tokens_per_file: 5000       # Truncate individual files
+  max_total_tokens: 15000        # Hard cap on Scout output
+
+# Token budget for Scout-Full output (main model sees this)
+output_budget:
+  max_tokens: 3000               # Max distilled output to return
+  include_file_list: true         # Include which files were scouted
+  include_gaps: true              # Include "what's missing" section
+
+# Timeout defaults (seconds)
+timeouts:
+  lite: 5
+  full: 60
+  hybrid: 45

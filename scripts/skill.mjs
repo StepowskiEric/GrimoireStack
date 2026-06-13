@@ -115,7 +115,21 @@ ${description ? `## Purpose\n\n${description}\n\n` : ''}## When to Use
   console.log('2. Copying to public/skills/...');
   const destDir = path.join(PUBLIC_SKILLS, topic, skillId);
   await fs.mkdir(destDir, { recursive: true });
-  await fs.copyFile(skillFile, path.join(destDir, 'SKILL.md'));
+  const srcDir = path.dirname(skillFile);
+  const entries = await fs.readdir(srcDir, { withFileTypes: true });
+  for (const ent of entries) {
+    const srcPath = path.join(srcDir, ent.name);
+    const destPath = path.join(destDir, ent.name);
+    if (ent.isDirectory()) {
+      await fs.mkdir(destPath, { recursive: true });
+      const subEntries = await fs.readdir(srcPath, { withFileTypes: true });
+      for (const sub of subEntries) {
+        await fs.copyFile(path.join(srcPath, sub.name), path.join(destPath, sub.name));
+      }
+    } else {
+      await fs.copyFile(srcPath, destPath);
+    }
+  }
   console.log(`Copied: public/skills/${topic}/${skillId}/\n`);
 
   // 3. Generate registry (auto-populates schools[] + spellMetadata)

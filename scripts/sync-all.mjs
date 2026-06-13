@@ -39,15 +39,74 @@ function runInApp(scriptPath) {
 async function copyNewSkills(newSkills) {
   let copied = 0;
   for (const skill of newSkills) {
+    const srcDir = path.dirname(skill.src);
     const destDir = path.join(PUBLIC_SKILLS, skill.relDir);
     if (!DRY_RUN) {
       await fs.mkdir(destDir, { recursive: true });
-      await fs.copyFile(skill.src, path.join(destDir, 'SKILL.md'));
+      const entries = await fs.readdir(srcDir, { withFileTypes: true });
+      for (const ent of entries) {
+        const srcPath = path.join(srcDir, ent.name);
+        const destPath = path.join(destDir, ent.name);
+        if (ent.isDirectory()) {
+          await fs.mkdir(destPath, { recursive: true });
+          const subEntries = await fs.readdir(srcPath, { withFileTypes: true });
+          for (const sub of subEntries) {
+            await fs.copyFile(
+              path.join(srcPath, sub.name),
+              path.join(destPath, sub.name),
+            );
+          }
+        } else {
+          await fs.copyFile(srcPath, destPath);
+        }
+      }
     }
     console.log(`  ${DRY_RUN ? '[dry] ' : ''}Copied ${skill.skillId} → public/skills/${skill.relDir}/`);
     copied++;
   }
   return copied;
+}
+
+async function syncSkillReferences(allSkills) {
+  let synced = 0;
+  for (const skill of allSkills) {
+    const srcDir = path.dirname(skill.src);
+    const destDir = path.join(PUBLIC_SKILLS, skill.relDir);
+    const entries = await fs.readdir(srcDir, { withFileTypes: true }).catch(() => []);
+    for (const ent of entries) {
+      if (ent.isDirectory()) {
+        const srcSubDir = path.join(srcDir, ent.name);
+        const destSubDir = path.join(destDir, ent.name);
+        if (!DRY_RUN) {
+          await fs.mkdir(destSubDir, { recursive: true });
+          const subEntries = await fs.readdir(srcSubDir, { withFileTypes: true });
+          for (const sub of subEntries) {
+            const srcPath = path.join(srcSubDir, sub.name);
+            const destPath = path.join(destSubDir, sub.name);
+            try {
+              if (sub.isDirectory()) {
+                await fs.mkdir(destPath, { recursive: true });
+                const nestedEntries = await fs.readdir(srcPath, { withFileTypes: true });
+                for (const nested of nestedEntries) {
+                  await fs.copyFile(
+                    path.join(srcPath, nested.name),
+                    path.join(destPath, nested.name),
+                  );
+                }
+              } else {
+                await fs.copyFile(srcPath, destPath);
+              }
+            } catch (e) {
+              console.warn(`  Warning: skipped ${path.relative(REPO_ROOT, srcPath)}: ${e.message}`);
+            }
+          }
+        }
+        synced++;
+        console.log(`  ${DRY_RUN ? '[dry] ' : ''}Synced references ${skill.relDir}/${ent.name}/`);
+      }
+    }
+  }
+  return synced;
 }
 
 // ─────────────────────────────────────────────
@@ -163,6 +222,10 @@ async function main() {
 
   console.log('Updating skill catalog...');
   await updateSkillCatalog(newSkills);
+  console.log();
+
+  console.log('Syncing skill references...');
+  await syncSkillReferences(allSkills);
   console.log();
 
   console.log('Regenerating registry...');

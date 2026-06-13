@@ -136,7 +136,7 @@ export const EXPLICIT = {
   'step-level-verification-protocol': { lastUpdated: '2026-05-08' },
   'structured-feature-planning': { lastUpdated: '2026-05-08' },
   'summarize': { lastUpdated: '2026-05-08' },
-  'super-review-typescript': { lastUpdated: '2026-05-14' },
+  'super-review-typescript': { lastUpdated: '2026-06-13' },
   'surrealdb': { lastUpdated: '2026-05-13' },
   'surrealdb-js-sdk': { lastUpdated: '2026-05-06' },
   'surrealdb-optimization': { lastUpdated: '2026-05-07' },
