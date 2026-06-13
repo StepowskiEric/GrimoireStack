@@ -1,6 +1,7 @@
 import { useMemo } from 'react';
 import SchoolSigil from './SchoolSigil.tsx';
 import Icon from './Icon.jsx';
+import { grimoireIndex } from '../data/grimoireIndexInstance.js';
 
 export default function FavoritesView({
   schools,
@@ -11,21 +12,26 @@ export default function FavoritesView({
   isFavorited,
   onToggleFavorite,
 }) {
+  const allSpells = useMemo(() => {
+    if (Array.isArray(schools) && schools.length > 0) {
+      return schools.flatMap(s => s.spells.map(sp => ({ spell: sp, school: s })));
+    }
+    return grimoireIndex.flatEntries();
+  }, [schools]);
+
   // Get all favorite spells
   const favoriteSpells = useMemo(() => {
-    const allSpells = schools.flatMap(s => s.spells.map(sp => ({ spell: sp, school: s })));
     return allSpells.filter(({ spell }) => favorites.includes(spell.name));
-  }, [schools, favorites]);
+  }, [allSpells, favorites]);
 
   // Get recently viewed spells
   const recentSpells = useMemo(() => {
-    const allSpells = schools.flatMap(s => s.spells.map(sp => ({ spell: sp, school: s })));
     const recentNames = recent.map(r => r.name);
     return recentNames
       .map(name => allSpells.find(({ spell }) => spell.name === name))
       .filter(Boolean)
       .slice(0, 10);
-  }, [schools, recent]);
+  }, [allSpells, recent]);
 
   return (
     <div className="favorites-view">

@@ -27,6 +27,38 @@ export function createGrimoireIndex(schools) {
     }
   }
 
+  // ── Pre-computed derived views ────────────────────────
+  const schoolMap = new Map();
+  let totalSpells = 0;
+  for (const school of validated) {
+    schoolMap.set(school.id, school);
+    totalSpells += school.spells.length;
+  }
+
+  const flatEntriesArray = (() => {
+    const out = [];
+    for (const school of validated) {
+      for (const spell of school.spells) {
+        out.push({
+          spell,
+          school,
+          _key: `${school.id}::${spell.skill}`,
+        });
+      }
+    }
+    out.sort((a, b) => a.spell.name.localeCompare(b.spell.name));
+    return out;
+  })();
+
+  const flatEntries = () => flatEntriesArray;
+
+  const getStats = () => ({
+    totalSchools: validated.length,
+    totalSpells,
+  });
+
+  const getSchoolMap = () => schoolMap;
+
   // ── Lookup ────────────────────────────────────────────
   // Every lookup returns a fresh {spell, school} object so callers can
   // not mutate the internal indexes. (Belt and braces; no current caller
@@ -237,7 +269,7 @@ export function createGrimoireIndex(schools) {
   // Includes combo edges for tentacle connections between spells.
   const buildSpellWeb = ({ skillFilter = null } = {}) => {
     const schoolNodes = [];
-    const schoolMap = new Map();
+    const webSchoolMap = new Map();
     const spellNodes = [];
     const comboEdges = [];
     
@@ -245,7 +277,7 @@ export function createGrimoireIndex(schools) {
     for (const { spell, school } of iterate()) {
       if (skillFilter && !skillFilter.has(school.id)) continue;
       
-      if (!schoolMap.has(school.id)) {
+      if (!webSchoolMap.has(school.id)) {
         const schoolNode = {
           id: school.id,
           type: 'school',
@@ -257,11 +289,11 @@ export function createGrimoireIndex(schools) {
           x: 0,
           y: 0,
         };
-        schoolMap.set(school.id, schoolNode);
+        webSchoolMap.set(school.id, schoolNode);
         schoolNodes.push(schoolNode);
       }
       
-      const schoolNode = schoolMap.get(school.id);
+      const schoolNode = webSchoolMap.get(school.id);
       schoolNode.spellCount++;
       
       // Create spell leaf node
@@ -316,11 +348,11 @@ export function createGrimoireIndex(schools) {
       schools: schoolNodes,
       spellNodes,
       comboEdges,
-      schoolMap,
+      schoolMap: webSchoolMap,
       // Utility to find spell node by skill id
       findSpellNode: (skillId) => spellNodes.find(n => n.id === skillId) || null,
       // Utility to find school node by id
-      findSchoolNode: (schoolId) => schoolMap.get(schoolId) || null,
+      findSchoolNode: (schoolId) => webSchoolMap.get(schoolId) || null,
     };
   };
 
@@ -348,6 +380,10 @@ export function createGrimoireIndex(schools) {
     getNodeBySkill,
     // Spell Web (Hierarchical Tree)
     buildSpellWeb,
+    // Derived views
+    flatEntries,
+    getStats,
+    getSchoolMap,
     // Iterable protocol — `for (const e of index)` delegates to iterate()
     [Symbol.iterator]: iterate,
   };

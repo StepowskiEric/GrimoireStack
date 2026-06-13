@@ -56,7 +56,7 @@ export default function BestiaryCodex({
 
   const all = useMemo(() => {
     // Prefer the `schools` prop (so tests can inject custom data); fall back
-    // to the grimoireIndex alphabetical sort for the production runtime.
+    // to the grimoireIndex derived view for the production runtime.
     if (Array.isArray(schools) && schools.length > 0) {
       const list = [];
       for (const school of schools) {
@@ -67,17 +67,16 @@ export default function BestiaryCodex({
       list.sort((a, b) => a.spell.name.localeCompare(b.spell.name));
       return list;
     }
-    return grimoireIndex
-      .allEntries()
-      .slice()
-      .sort((a, b) => a.spell.name.localeCompare(b.spell.name))
-      .map((e) => ({ ...e, _key: `${e.school.id}::${e.spell.skill}` }));
+    return grimoireIndex.flatEntries();
   }, [schools]);
 
-  const _schoolById = useMemo(() => {
-    const m = new Map();
-    for (const s of schools) m.set(s.id, s);
-    return m;
+  const schoolMap = useMemo(() => {
+    if (Array.isArray(schools) && schools.length > 0) {
+      const m = new Map();
+      for (const s of schools) m.set(s.id, s);
+      return m;
+    }
+    return grimoireIndex.getSchoolMap();
   }, [schools]);
 
   const filtered = useMemo(() => {
@@ -245,7 +244,7 @@ export default function BestiaryCodex({
             <div className="bestiary-codex__filter-row">
               <span className="bestiary-codex__filter-label" aria-hidden="true">School</span>
               <div className="bestiary-codex__chips">
-                {schools.map((s) => {
+                {Array.from(schoolMap.values()).map((s) => {
                   const active = schoolFilter.has(s.id);
                   return (
                     <button

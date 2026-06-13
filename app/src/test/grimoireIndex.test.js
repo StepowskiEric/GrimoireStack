@@ -413,3 +413,47 @@ describe('grimoireIndex — buildSpellWeb', () => {
     expect(totalFromSchools).toBe(web.spellNodes.length);
   });
 });
+
+describe('grimoireIndex — derived views', () => {
+  it('flatEntries() returns a stable sorted array reference', () => {
+    const a = grimoireIndex.flatEntries();
+    const b = grimoireIndex.flatEntries();
+    expect(a).toBe(b);
+    expect(Array.isArray(a)).toBe(true);
+    expect(a.length).toBeGreaterThan(20);
+    for (const e of a) {
+      expect(e).toHaveProperty('spell');
+      expect(e).toHaveProperty('school');
+      expect(e).toHaveProperty('_key');
+    }
+    expect(a[0].spell.name <= a[a.length - 1].spell.name).toBe(true);
+  });
+
+  it('flatEntries() _key is stable and unique', () => {
+    const keys = new Set(grimoireIndex.flatEntries().map((e) => e._key));
+    expect(keys.size).toBe(grimoireIndex.flatEntries().length);
+  });
+
+  it('getStats() returns totalSchools and totalSpells', () => {
+    const stats = grimoireIndex.getStats();
+    expect(stats).toEqual({ totalSchools: expect.any(Number), totalSpells: expect.any(Number) });
+    expect(stats.totalSchools).toBeGreaterThan(0);
+    expect(stats.totalSpells).toBeGreaterThan(20);
+  });
+
+  it('getStats() totalSpells matches flatEntries length', () => {
+    expect(grimoireIndex.getStats().totalSpells).toBe(grimoireIndex.flatEntries().length);
+  });
+
+  it('getSchoolMap() returns a stable Map reference', () => {
+    const a = grimoireIndex.getSchoolMap();
+    const b = grimoireIndex.getSchoolMap();
+    expect(a).toBe(b);
+    expect(a).toBeInstanceOf(Map);
+    expect(a.size).toBe(grimoireIndex.getStats().totalSchools);
+    expect(a.has('debugging')).toBe(true);
+    const school = a.get('debugging');
+    expect(school.id).toBe('debugging');
+    expect(school.real).toBe('Debugging');
+  });
+});

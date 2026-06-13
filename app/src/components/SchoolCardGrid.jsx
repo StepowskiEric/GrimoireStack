@@ -4,8 +4,10 @@ import { getSpellTier, TIER_META } from '../data/tiers.js';
 import AllSchoolsView from './AllSchoolsView.jsx';
 import SchoolSigil from './SchoolSigil.tsx';
 import { pageCreak, hoverWhisper } from '../audio/sounds.js';
+import { grimoireIndex } from '../data/grimoireIndexInstance.js';
 
 const DEFAULT_FEATURED = ['debugging', 'reasoning', 'process', 'architecture', 'testing', 'creativity'];
+const SCHOOL_MAP = grimoireIndex.getSchoolMap();
 
 function getDominantTier(spells) {
   const counts = {};
@@ -33,7 +35,7 @@ export default function SchoolCardGrid({
 
   const featuredSchoolObjects = useMemo(() => {
     return featuredSchools
-      .map(id => schools.find(s => s.id === id))
+      .map(id => schools.find(s => s.id === id) || SCHOOL_MAP.get(id))
       .filter(Boolean)
       .slice(0, 6);
   }, [featuredSchools, schools]);
@@ -79,11 +81,11 @@ export default function SchoolCardGrid({
         <p className="spine-subtitle">A catalogue of every entity bound within this grimoire</p>
         <div className="spine-stats">
           <div className="spine-stat">
-            <span className="spine-stat__num">{schools.length}</span>
+            <span className="spine-stat__num">{grimoireIndex.getStats().totalSchools}</span>
             <span className="spine-stat__label">Schools</span>
           </div>
           <div className="spine-stat">
-            <span className="spine-stat__num">{schools.reduce((s, sc) => s + sc.spells.length, 0)}</span>
+            <span className="spine-stat__num">{grimoireIndex.getStats().totalSpells}</span>
             <span className="spine-stat__label">Spells</span>
           </div>
         </div>

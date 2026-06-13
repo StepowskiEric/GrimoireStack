@@ -3,6 +3,7 @@ import { schoolColors } from '../utils/schoolColors.js';
 import { getSpellTier, TIER_META } from '../data/tiers.js';
 import SchoolSigil from './SchoolSigil.tsx';
 import { pageCreak, wetTendril } from '../audio/sounds.js';
+import { grimoireIndex } from '../data/grimoireIndexInstance.js';
 
 function getDominantTier(spells) {
   const counts = {};
@@ -49,7 +50,7 @@ export default function AllSchoolsView({
       {!searchQuery && (
         <div className="bestiary-index__header">
           <p className="bestiary-index__desc">
-            Browse all {schools.length} schools and their {schools.reduce((sum, s) => sum + s.spells.length, 0)} incantations.
+            Browse all {grimoireIndex.getStats().totalSchools} schools and their {grimoireIndex.getStats().totalSpells} incantations.
           </p>
         </div>
       )}

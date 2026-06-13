@@ -1,5 +1,6 @@
 import { useState, useMemo, useCallback } from 'react';
 import SchoolSigil from './SchoolSigil.tsx';
+import { grimoireIndex } from '../data/grimoireIndexInstance.js';
 
 export default function RecipeLabView({
   schools,
@@ -13,7 +14,10 @@ export default function RecipeLabView({
   const PAGE_SIZE = 60;
 
   const allSpells = useMemo(() => {
-    return schools.flatMap(s => s.spells.map(sp => ({ spell: sp, school: s })));
+    if (Array.isArray(schools) && schools.length > 0) {
+      return schools.flatMap(s => s.spells.map(sp => ({ spell: sp, school: s })));
+    }
+    return grimoireIndex.flatEntries();
   }, [schools]);
 
   const filteredSpells = useMemo(() => {

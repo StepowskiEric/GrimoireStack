@@ -16,6 +16,9 @@ import Icon from './Icon.jsx';
 import AboutView from './AboutView.jsx';
 import LanguageToggle from './LanguageToggle.jsx';
 import { pageTurn } from '../audio/sounds.js';
+import { grimoireIndex } from '../data/grimoireIndexInstance.js';
+
+const SCHOOL_MAP = grimoireIndex.getSchoolMap();
 
 const CommuneView = lazy(() => import('./CommuneView.jsx'));
 
@@ -150,12 +153,11 @@ export default function GrimoireStackLayout({
     setPageKey('spell-detail');
   }, [onSpellClick]);
 
-  const totalSchools = schools.length;
-  const totalSpells = schools.reduce((sum, s) => sum + s.spells.length, 0);
+  const { totalSchools, totalSpells } = grimoireIndex.getStats();
 
   // Position featured schools around the eye
   const featured = featuredSchools
-    .map(id => schools.find(s => s.id === id))
+    .map(id => SCHOOL_MAP.get(id))
     .filter(Boolean)
     .slice(0, 6);
 
@@ -163,7 +165,7 @@ export default function GrimoireStackLayout({
 
   // Resolve the current school object from the id prop
   const activeSchool = currentSchool && currentSchool !== 'all'
-    ? schools.find(s => s.id === currentSchool)
+    ? SCHOOL_MAP.get(currentSchool)
     : null;
 
   // Render the active content panel
