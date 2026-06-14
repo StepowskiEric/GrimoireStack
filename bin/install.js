@@ -263,6 +263,155 @@ function installSkills(skills, dest, flat, agent, withScripts, withMCP) {
   return installed;
 }
 
+/**
+ * Find all skills previously installed from jerry-skills in a destination directory.
+ * Returns an array of { name, installedPath, source } objects.
+ */
+function findInstalledSkills(dest) {
+  const installed = [];
+
+  function scanDir(dir) {
+    try {
+      const entries = fs.readdirSync(dir, { withFileTypes: true });
+      for (const entry of entries) {
+        const fullPath = path.join(dir, entry.name);
+        if (entry.isDirectory()) {
+          const skillFile = path.join(fullPath, 'SKILL.md');
+          if (fs.existsSync(skillFile)) {
+            try {
+              const content = fs.readFileSync(skillFile, 'utf8');
+              if (content.includes('source: "jerry-skills"') || content.includes("source: 'jerry-skills'")) {
+                installed.push({
+                  name: entry.name,
+                  installedPath: skillFile,
+                  content,
+                });
+              }
+            } catch {
+              // skip unreadable files
+            }
+          } else {
+            scanDir(fullPath);
+          }
+        }
+      }
+    } catch {
+      // skip inaccessible directories
+    }
+  }
+
+  scanDir(dest);
+  return installed;
+}
+
+/**
+ * Check if an installed skill differs from the source.
+ * Returns { changed: boolean, reason: string }
+ */
+function checkSkillChanged(installedContent, sourceContent) {
+  // Normalize both for comparison (strip source field since we add it during install)
+  const normalize = (c) => c
+    .replace(/^source:\s*["']jerry-skills["']\s*$/m, '')
+    .replace(/\r\n/g, '\n')
+    .trim();
+
+  const normInstalled = normalize(installedContent);
+  const normSource = normalize(sourceContent);
+
+  if (normInstalled === normSource) {
+    return { changed: false, reason: 'identical' };
+  }
+
+  // Check if only whitespace/line endings differ
+  const stripWs = (c) => c.replace(/\s+/g, ' ').trim();
+  if (stripWs(normInstalled) === stripWs(normSource)) {
+    return { changed: false, reason: 'whitespace only' };
+  }
+
+  return { changed: true, reason: 'content differs' };
+}
+
+/**
+ * Update previously installed skills from jerry-skills.
+ * Only updates skills that have changed in the source.
+ */
+function updateSkills(dest, allSkills, withScripts, withMCP, flat, agent) {
+  const installed = findInstalledSkills(dest);
+
+  if (installed.length === 0) {
+    console.log(`  No jerry-skills found in ${dest}`);
+    console.log('  Run "npx jerry-skills install" first to install skills.');
+    return 0;
+  }
+
+  console.log(`  Found ${installed.length} installed skill(s) in ${dest}\n`);
+
+  let updated = 0;
+  let skipped = 0;
+  let notFound = 0;
+  let scriptsUpdated = 0;
+
+  for (const inst of installed) {
+    // Try to find matching source skill
+    const sourceFile = allSkills.find((f) => {
+      const sourceName = extractSkillName(f);
+      return sourceName === inst.name;
+    });
+
+    if (!sourceFile) {
+      console.log(`  - ${inst.name}  [not in source — skipping]`);
+      notFound++;
+      continue;
+    }
+
+    const src = path.join(SKILLS_DIR, sourceFile);
+    const sourceContent = fs.readFileSync(src, 'utf8');
+    const result = checkSkillChanged(inst.content, sourceContent);
+
+    if (!result.changed) {
+      console.log(`  ✓ ${inst.name}  [${result.reason}]`);
+      skipped++;
+      continue;
+    }
+
+    // Update the skill
+    const bundle = buildSkillBundle(sourceContent, sourceFile, agent || null);
+    fs.writeFileSync(inst.installedPath, bundle);
+    console.log(`  ↑ ${inst.name}  [updated]`);
+    updated++;
+
+    // Update companion scripts if requested
+    if (withScripts) {
+      const scriptsDir = path.join(path.dirname(src), 'scripts');
+      const dstDir = path.dirname(inst.installedPath);
+      try {
+        for (const entry of fs.readdirSync(scriptsDir, { withFileTypes: true })) {
+          if (entry.isFile() && !entry.name.startsWith('.')) {
+            const srcFile = path.join(scriptsDir, entry.name);
+            const dstFile = path.join(dstDir, entry.name);
+            fs.copyFileSync(srcFile, dstFile);
+            console.log(`  ↑ ${entry.name}  [companion]`);
+            scriptsUpdated++;
+          }
+        }
+      } catch {
+        // no scripts directory
+      }
+    }
+  }
+
+  // Update MCP servers if requested
+  if (withMCP) {
+    installMCPServers(dest);
+  }
+
+  console.log(`\nUpdate complete: ${updated} updated, ${skipped} unchanged, ${notFound} not in source`);
+  if (withScripts && scriptsUpdated > 0) {
+    console.log(`  + ${scriptsUpdated} companion script(s) updated`);
+  }
+  return updated;
+}
+
 function installTo(agent, skills, destOverride, withScripts, withMCP) {
   const dest = destOverride || agentConfig(agent).defaultDest;
   if (!dest) {
@@ -343,17 +492,19 @@ Usage:
   npx jerry-skills install [options]
   npx jerry-skills install --agent <name> [--skill <name>] [--skill <name2>]
   npx jerry-skills install --all
+  npx jerry-skills update [options]
   npx jerry-skills list
   npx jerry-skills help
 
 Commands:
   install   Copy skill bundles to the agent's skills directory
+  update    Update previously installed skills that have changed in the source
   list      List all available skill files
   help      Show this help message
 
 Options:
   --agent         Target agent: ${supported.join(', ')}
-  --all           Install to all supported agents
+  --all           Install/update to all supported agents
   --skill         Install a specific skill (repeatable). Accepts full path or name.
   --dest          Override the destination directory
   --with-scripts  Also copy companion scripts bundled with skills (e.g. .py files)
@@ -374,6 +525,8 @@ Examples:
   npx jerry-skills install --agent claude --skill purify-test-output --with-scripts
   npx jerry-skills install --all                      # install all to all agents
   npx jerry-skills install --agent hermes --with-mcp  # install all skills + MCP servers to hermes
+  npx jerry-skills update --agent hermes              # update installed skills for hermes
+  npx jerry-skills update --all                       # update all agents
   npx jerry-skills list
 `);
 }
@@ -513,6 +666,58 @@ function main() {
   if (command === 'list') {
     const all = discoverSkills(SKILLS_DIR);
     listSkillsCLI(SKILLS_DIR, all);
+    return;
+  }
+
+  if (command === 'update') {
+    // Parse flags for update
+    const allFlag = args.includes('--all');
+    const withScripts = args.includes('--with-scripts');
+    const withMCP = args.includes('--with-mcp');
+    const agentIdx = args.indexOf('--agent');
+    const destIdx = args.indexOf('--dest');
+    const destOverride = destIdx !== -1 ? args[destIdx + 1] : null;
+
+    const hasAgent = agentIdx !== -1 && args[agentIdx + 1];
+    const all = discoverSkills(SKILLS_DIR);
+
+    if (allFlag) {
+      console.log("Updating installed skills for all supported agents...\n");
+      for (const agent of SUPPORTED_AGENTS) {
+        const dest = agentConfig(agent).defaultDest;
+        console.log(`[${agent}]`);
+        updateSkills(dest, all, withScripts, withMCP, agentConfig(agent).flat, agent);
+        console.log('');
+      }
+      return;
+    }
+
+    if (hasAgent) {
+      const agent = args[agentIdx + 1];
+      if (!SUPPORTED_AGENTS.includes(agent)) {
+        console.error(`Unknown agent "${agent}". Supported: ${SUPPORTED_AGENTS.join(', ')}`);
+        process.exit(1);
+      }
+      const dest = destOverride || agentConfig(agent).defaultDest;
+      console.log(`Updating installed skills for ${agent}...\n`);
+      updateSkills(dest, all, withScripts, withMCP, agentConfig(agent).flat, agent);
+      return;
+    }
+
+    if (destOverride) {
+      console.log(`Updating installed skills in ${destOverride}...\n`);
+      updateSkills(destOverride, all, withScripts, withMCP, false, null);
+      return;
+    }
+
+    // Default: update for all agents
+    console.log("Updating installed skills for all supported agents...\n");
+    for (const agent of SUPPORTED_AGENTS) {
+      const dest = agentConfig(agent).defaultDest;
+      console.log(`[${agent}]`);
+      updateSkills(dest, all, withScripts, withMCP, agentConfig(agent).flat, agent);
+      console.log('');
+    }
     return;
   }
 
