@@ -57,7 +57,7 @@ export const EXPLICIT = {
   'feynman-technique': { lastUpdated: '2026-04-23' },
   'first-principles': { lastUpdated: '2026-04-23' },
   'git-surgery': { lastUpdated: '2026-05-08' },
-  'hallucination-anchor-chain': { lastUpdated: '2026-05-08' },
+  'hallucination-anchor-chain': { lastUpdated: '2026-06-14' },
   'how-to-solve-it-analogy': { lastUpdated: '2026-04-23' },
   'how-to-solve-it-state-machine': { lastUpdated: '2026-04-23' },
   'intent-specification-protocol': { lastUpdated: '2026-05-08' },
