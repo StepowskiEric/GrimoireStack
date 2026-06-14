@@ -9,6 +9,7 @@
   "agent-memory-hygiene": "/skills/orchestration/agent-memory-hygiene.md",
   "agentic-design-patterns-orchestrator": "/skills/orchestration/agentic-design-patterns-orchestrator.md",
   "agentic-design-patterns-orchestrator-state-machine": "/skills/orchestration/agentic-design-patterns-orchestrator-state-machine.md",
+  "ai-agent-hazards": "/skills/judgment-and-routing/unsafe-control-actions-hazard-analysis/references/ai-agent-hazards.md",
   "ambiguity-checklist": "/skills/execution/requirement-crystallization-protocol/references/ambiguity-checklist.md",
   "ambiguity-patterns": "/skills/execution/intent-specification-protocol/references/ambiguity-patterns.md",
   "api-design-backward-compatibility": "/skills/software-development/api-design-backward-compatibility.md",
@@ -235,6 +236,7 @@
   "vibe-coding-security-hardening": "/skills/systems-and-architecture/vibe-coding-security-hardening.md",
   "vitest": "/skills/testing/vitest/SKILL.md",
   "weak-link-detection-multi-agent": "/skills/orchestration/weak-link-detection-multi-agent/SKILL.md",
+  "worked-example": "/skills/judgment-and-routing/unsafe-control-actions-hazard-analysis/references/worked-example.md",
   "working-effectively-with-legacy-code-state-machine": "/skills/execution/working-effectively-with-legacy-code-state-machine.md",
   "zero-defect-protocol": "/skills/execution/zero-defect-protocol/SKILL.md"
 }

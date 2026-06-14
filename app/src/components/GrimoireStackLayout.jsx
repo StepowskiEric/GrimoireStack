@@ -79,20 +79,11 @@ export default function GrimoireStackLayout({
   _onIntakeOpen,
   onCompareOpen,
   onCompareTwo,
-  _onCastBones,
   onExportJson,
   onExportMarkdown,
   onShowShortcuts,
-  _schoolFilter,
-  _tierFilter,
-  _favoritesOnly,
-  _onToggleSchool,
-  _onToggleTier,
-  _onToggleFavorites,
-  _onClearFilters,
-  _filterResults,
+  filterResults: _filterResults,
   featuredSchools,
-  _onFeaturedSchoolsChange,
 }) {
   // hasNote lookup for the Bestiary Codex "Annotated" filter
   const hasNote = useCallback(

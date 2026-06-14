@@ -11,6 +11,7 @@
  */
 
 import { validateSchools } from './schema.js';
+import { getSpellTier } from './tiers.js';
 
 const UNKNOWN_SCHOOL_ID = 'unknown';
 const UNKNOWN_SCHOOL_NAME = 'Unknown School';
@@ -360,6 +361,65 @@ export function createGrimoireIndex(schools) {
     return graph.nodes.find((n) => n.id === skill) || null;
   };
 
+  // ── Search & filter (built on iterate / filterBy) ──
+  // These replace the standalone search.js module by operating
+  // through the canonical corpus seam. Callers pass schools[] only
+  // for backward compat; the implementation uses iterate().
+  const searchSpells = (schoolsIn, query) => {
+    if (!query) return { bySchool: {}, total: 0 };
+    const q = query.toLowerCase();
+    const bySchool = {};
+    let total = 0;
+    for (const school of schoolsIn) {
+      const matches = school.spells.filter(sp => {
+        const searchable = `${sp.name} ${sp.skill} ${sp.effect}`.toLowerCase();
+        return searchable.includes(q);
+      });
+      if (matches.length > 0) {
+        bySchool[school.id] = matches.map(sp => sp.name + '\0' + sp.skill);
+        total += matches.length;
+      }
+    }
+    return { bySchool, total };
+  };
+
+  const filterSpells = (schoolsIn, opts = {}) => {
+    const {
+      query = '',
+      schoolFilter = null,
+      tierFilter = null,
+      favoritesOnly = false,
+      isFavorited = () => false,
+    } = opts;
+
+    if (schoolFilter && schoolFilter.size === 0) return { bySchool: {}, total: 0 };
+    if (tierFilter && tierFilter.size === 0) return { bySchool: {}, total: 0 };
+
+    const q = query.toLowerCase();
+    const bySchool = {};
+    let total = 0;
+
+    for (const school of schoolsIn) {
+      if (schoolFilter && !schoolFilter.has(school.id)) continue;
+
+      const matches = school.spells.filter((sp) => {
+        if (q) {
+          const searchable = `${sp.name} ${sp.skill} ${sp.effect}`.toLowerCase();
+          if (!searchable.includes(q)) return false;
+        }
+        if (tierFilter && !tierFilter.has(getSpellTier(sp))) return false;
+        if (favoritesOnly && !isFavorited(sp.skill)) return false;
+        return true;
+      });
+
+      if (matches.length > 0) {
+        bySchool[school.id] = matches.map((sp) => sp.name + '\0' + sp.skill);
+        total += matches.length;
+      }
+    }
+    return { bySchool, total };
+  };
+
   return {
     // Lookup
     resolveBySkill,
@@ -384,6 +444,9 @@ export function createGrimoireIndex(schools) {
     flatEntries,
     getStats,
     getSchoolMap,
+    // Search & filter
+    searchSpells,
+    filterSpells,
     // Iterable protocol — `for (const e of index)` delegates to iterate()
     [Symbol.iterator]: iterate,
   };

@@ -133,7 +133,7 @@ const schools = [
       {
         "name": "Anchor Chain",
         "skill": "hallucination-anchor-chain",
-        "effect": "Force every factual claim to be anchored to a verified source. Unanchored claims are marked unverified and hidden from outputs. Builds a verifiable chain of evidence to eliminate hallucination.",
+        "effect": "Force every factual claim to be anchored to a verified source. Unanchored claims are marked unverified and hidden from outputs. Builds a verifiable chain of evidence to eliminate hallucination. Based on Chain-of-Verification (arXiv:2309.11495), Self-Consistency (arXiv:2203.11171), and Grounded CoT (arXiv:2503.12799).",
         "status": "—"
       },
       {
@@ -528,12 +528,6 @@ const schools = [
         "status": "—"
       },
       {
-        "name": "Intent Binding",
-        "skill": "intent-specification-protocol",
-        "effect": "Crystallize vague coding requests into precise, testable specifications before writing any code. Prevents the Intent-Behavior Mirroring Effect where vague requirements produce invasive, over-engineered output. Based on Project Prometheus (arXiv:2604.17464), AdaCoder (arXiv:2504.04220), and iterative self-repair research (arXiv:2604.10508).",
-        "status": "—"
-      },
-      {
         "name": "Iterative Spec",
         "skill": "iterative-spec-authoring",
         "effect": ">",
@@ -790,7 +784,7 @@ const schools = [
       {
         "name": "STPA Ward",
         "skill": "unsafe-control-actions-hazard-analysis",
-        "effect": "No description provided.",
+        "effect": "Use this skill when the agent is about to recommend or perform an action that could create serious harm, instability, or irreversible damage.",
         "status": "—"
       },
       {

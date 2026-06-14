@@ -157,7 +157,7 @@ export const EXPLICIT = {
   'trajectory-guard': { lastUpdated: '2026-05-14' },
   'tree-of-thoughts': { lastUpdated: '2026-04-23' },
   'tree-of-thoughts-plus-monte-carlo-tree-search': { lastUpdated: '2026-05-14' },
-  'unsafe-control-actions-hazard-analysis': { lastUpdated: '2026-04-23' },
+  'unsafe-control-actions-hazard-analysis': { lastUpdated: '2026-06-14' },
   'verified-api-workflow': { lastUpdated: '2026-05-08' },
   'verified-synthesize': { lastUpdated: '2026-05-08' },
   'verify-before-integrate': { lastUpdated: '2026-04-23' },

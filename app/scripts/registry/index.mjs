@@ -31,12 +31,30 @@ async function main() {
     loadOverlay(),
   ]);
   const records = await parseAll(discovered, overlay);
+  const deduped = dedupRecords(records);
 
   await Promise.all([
-    writeSchools(records, overlay),
-    writeMetadata(records),
+    writeSchools(deduped, overlay),
+    writeMetadata(deduped),
   ]);
-  console.log(`[registry] wrote ${records.length} skills across ${new Set(records.map(r => r.topic)).size} topics`);
+  console.log(`[registry] wrote ${deduped.length} skills across ${new Set(deduped.map(r => r.topic)).size} topics`);
+}
+
+/**
+ * Deduplicate records by skill id, keeping the entry with the
+ * most recent lastUpdated timestamp. This handles the case where
+ * a skill exists in multiple locations (e.g., both a flat .md
+ * file and a directory-based SKILL.md after a partial migration).
+ */
+function dedupRecords(records) {
+  const bySkill = new Map();
+  for (const r of records) {
+    const existing = bySkill.get(r.skill);
+    if (!existing || r.lastUpdated > existing.lastUpdated) {
+      bySkill.set(r.skill, r);
+    }
+  }
+  return [...bySkill.values()];
 }
 
 async function loadOverlay() {

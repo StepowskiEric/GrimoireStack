@@ -1,7 +1,6 @@
 import { useState, useEffect, useCallback, useRef, useMemo, lazy, Suspense } from 'react';
 import { BrowserRouter } from 'react-router-dom';
 import schools from './data/schools.js';
-import { searchSpells, filterSpells } from './search.js';
 import { witchLaugh, pageCreak, startAmbience, startWhispers, setAudioEnabled as setSiteAudioEnabled } from './audio/sounds.js';
 import LidlessEyeCast from './components/LidlessEyeCast.tsx';
 import './components/LidlessEyeCast.css';
@@ -12,6 +11,7 @@ import { useFavorites } from './hooks/useFavorites.js';
 import { useRecentlyViewed } from './hooks/useRecentlyViewed.js';
 import { useMarginalia } from './hooks/useMarginalia.js';
 import { useKeyboardShortcuts } from './hooks/useKeyboardShortcuts.js';
+import { useFilterState } from './hooks/useFilterState.js';
 import { grimoireIndex } from './data/grimoireIndexInstance.js';
 import { LanguageProvider } from './i18n/LanguageContext';
 import { useSignals } from './hooks/useSignals.js';
@@ -39,16 +39,10 @@ export default function App() {
 
 function AppInner() {
   const [currentSchool, setCurrentSchool] = useState(schools[0].id);
-  const [searchQuery, setSearchQuery] = useState('');
-  const [debouncedSearch, setDebouncedSearch] = useState('');
-  const searchTimerRef = useRef(null);
   const [castEnabled, setCastEnabled] = useState(() => localStorage.getItem('grimoire-cast') !== 'off');
   const [audioEnabled, setAudioEnabled] = useState(() => localStorage.getItem('grimoire-audio') !== 'off');
   const [welcomeOpen, setWelcomeOpen] = useState(() => localStorage.getItem(WELCOME_STORAGE_KEY) !== 'true');
   const [shortcutsOpen, setShortcutsOpen] = useState(false);
-  const [schoolFilter, setSchoolFilter] = useState(new Set());
-  const [tierFilter, setTierFilter] = useState(new Set());
-  const [favoritesOnly, setFavoritesOnly] = useState(false);
   const laughPlayedRef = useRef(false);
   const ambienceStartedRef = useRef(false);
   const whispersStartedRef = useRef(false);
@@ -90,20 +84,7 @@ function AppInner() {
   const marginalia = useMarginalia();
   const { getVote, vote: castVote, aggregateFor } = useSignals();
 
-  const searchResults = useMemo(
-    () => searchSpells(schools, debouncedSearch),
-    [debouncedSearch]
-  );
-  const filterResults = useMemo(
-    () => filterSpells(schools, {
-      query: debouncedSearch,
-      schoolFilter: schoolFilter.size > 0 ? schoolFilter : null,
-      tierFilter: tierFilter.size > 0 ? tierFilter : null,
-      favoritesOnly,
-      isFavorited,
-    }),
-    [debouncedSearch, schoolFilter, tierFilter, favoritesOnly, isFavorited]
-  );
+  const filter = useFilterState(schools, isFavorited);
 
   const {
     modal,
@@ -119,30 +100,6 @@ function AppInner() {
   useEffect(() => {
     if (modal) recordRecent(modal.spell.name, modal.spell.skill);
   }, [modal?.spell.skill, modal, recordRecent]);
-
-  const toggleSchool = useCallback((id) => {
-    setSchoolFilter((prev) => {
-      const next = new Set(prev);
-      if (next.has(id)) next.delete(id); else next.add(id);
-      return next;
-    });
-  }, []);
-
-  const toggleTier = useCallback((key) => {
-    setTierFilter((prev) => {
-      const next = new Set(prev);
-      if (next.has(key)) next.delete(key); else next.add(key);
-      return next;
-    });
-  }, []);
-
-  const toggleFavorites = useCallback(() => setFavoritesOnly((v) => !v), []);
-
-  const clearAllFilters = useCallback(() => {
-    setSchoolFilter(new Set());
-    setTierFilter(new Set());
-    setFavoritesOnly(false);
-  }, []);
 
   const handleCastBones = useCallback(() => {
     const all = schools.flatMap((s) => s.spells.map((sp) => ({ spell: sp, school: s })));
@@ -241,26 +198,21 @@ function AppInner() {
   }, [audioEnabled]);
 
   useEffect(() => {
-    if (searchResults.total > 0 && !laughPlayedRef.current) {
+    if (filter.searchResults.total > 0 && !laughPlayedRef.current) {
       const t = setTimeout(() => { witchLaugh(); laughPlayedRef.current = true; }, 400);
       return () => clearTimeout(t);
     }
-    if (searchResults.total === 0) laughPlayedRef.current = false;
-  }, [searchResults.total]);
+    if (filter.searchResults.total === 0) laughPlayedRef.current = false;
+  }, [filter.searchResults.total]);
 
   const handleSchoolSelect = useCallback((id) => {
     setCurrentSchool(id);
-    setSearchQuery('');
     setTimeout(pageCreak, 50);
   }, []);
 
   const handleSearch = useCallback((q) => {
-    setSearchQuery(q);
-    if (searchTimerRef.current) clearTimeout(searchTimerRef.current);
-    searchTimerRef.current = setTimeout(() => {
-      setDebouncedSearch(q);
-    }, 120);
-  }, []);
+    filter.setQuery(q);
+  }, [filter]);
 
   const toggleCast = useCallback(() => {
     setCastEnabled((prev) => {
@@ -355,9 +307,9 @@ function AppInner() {
             handleSchoolSelect(id);
           }
         }}
-        searchQuery={searchQuery}
+        searchQuery={filter.query}
         onSearchChange={handleSearch}
-        totalMatches={searchResults.total}
+        totalMatches={filter.searchResults.total}
         onSpellClick={handleSpellClick}
         isFavorited={isFavorited}
         onToggleFavorite={toggleFavorite}
@@ -378,14 +330,7 @@ function AppInner() {
         onExportJson={handleExportJson}
         onExportMarkdown={handleExportMarkdown}
         onShowShortcuts={() => setShortcutsOpen(true)}
-        schoolFilter={schoolFilter}
-        tierFilter={tierFilter}
-        favoritesOnly={favoritesOnly}
-        onToggleSchool={toggleSchool}
-        onToggleTier={toggleTier}
-        onToggleFavorites={toggleFavorites}
-        onClearFilters={clearAllFilters}
-        filterResults={filterResults}
+        filterResults={filter.results}
         featuredSchools={featuredSchools}
         onFeaturedSchoolsChange={setFeaturedSchools}
       />
