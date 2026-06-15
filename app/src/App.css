@@ -31,9 +31,9 @@
   --moonlight-mute:#5a5040;
   --blood:#8a1a1a;
   --blood-dim:#4a0e0e;
-  --silver:#6a6a72;
-  --silver-dim:#4a4a52;
-  --silver-mute:#3a3a42;
+  --silver:#a89880;
+  --silver-dim:#8a7e68;
+  --silver-mute:#6a6258;
   --eye-glow:rgba(138,154,106,.06);
   --purple:#7c3aed;
   --purple-dim:#5b21b6;
@@ -3662,7 +3662,7 @@ header .header-sigil-text{display:none}
   font-family: 'Cormorant Garamond', serif;
   font-style: italic;
   font-size: 0.92rem;
-  color: #948870;
+  color: #b8a888;
   margin: 0 0 14px;
   letter-spacing: 0.02em;
 }
@@ -3682,14 +3682,14 @@ header .header-sigil-text{display:none}
 .spine-stat__num {
   font-family: 'Cinzel', serif;
   font-size: 1.3rem;
-  color: #c47a7a;
+  color: #d4b8a0;
   text-shadow: 0 0 8px rgba(196,71,71,0.2);
   line-height: 1;
 }
 .spine-stat__label {
   font-family: 'Cinzel', serif;
   font-size: 0.6rem;
-  color: #948870;
+  color: #b8a888;
   text-transform: uppercase;
   letter-spacing: 0.14em;
   margin-top: 3px;
@@ -3713,7 +3713,7 @@ header .header-sigil-text{display:none}
   background: rgba(8,10,16,0.6);
   border: 1px solid rgba(138,154,106,0.12);
   border-radius: 3px;
-  color: #8a7e68;
+  color: #c4b8a0;
   cursor: pointer;
   transition: all 0.25s ease;
 }
@@ -3737,7 +3737,7 @@ header .header-sigil-text{display:none}
   background: rgba(8,10,16,0.6);
   border: 1px solid rgba(138,154,106,0.12);
   border-radius: 3px;
-  color: #8a7e68;
+  color: #c4b8a0;
   font-size: 1rem;
   cursor: pointer;
   transition: all 0.25s ease;

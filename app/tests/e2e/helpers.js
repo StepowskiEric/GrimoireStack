@@ -21,3 +21,8 @@ export async function checkA11y(page) {
     .analyze();
   expect(results.violations).toEqual([]);
 }
+
+export async function closeModal(page, modalSelector) {
+  await page.keyboard.press('Escape');
+  await expect(page.locator(modalSelector)).toBeHidden({ timeout: 10_000 });
+}

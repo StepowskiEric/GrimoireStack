@@ -53,6 +53,19 @@ Test stack:
 - @testing-library/react
 - jsdom environment
 
+## Playwright E2E Tests
+
+```bash
+cd app
+npx playwright test
+```
+
+- Uses Brave browser (not Chromium) for all desktop E2E runs.
+- Mobile device projects still use Playwright's built-in device emulation.
+- Config: `app/playwright.config.js`
+- Tests: `app/tests/e2e/**`
+- Helper utilities: `app/tests/e2e/helpers.js`
+
 ## Deploy
 
 Deploy from the React app, not `site/`.

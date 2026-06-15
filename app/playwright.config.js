@@ -1,6 +1,8 @@
 import { defineConfig, devices } from '@playwright/test';
 import { MOBILE_DEVICES } from './tests/e2e/helpers.js';
 
+const BRAVE_PATH = '/Applications/Brave Browser.app/Contents/MacOS/Brave Browser';
+
 export default defineConfig({
   testDir: './tests/e2e',
   timeout: 60_000,
@@ -21,7 +23,16 @@ export default defineConfig({
     navigationTimeout: 15_000,
   },
   projects: [
-    { name: 'chromium', use: { ...devices['Desktop Chrome'] } },
+    {
+      name: 'brave',
+      use: {
+        ...devices['Desktop Chrome'],
+        launchOptions: {
+          executablePath: BRAVE_PATH,
+          args: ['--no-sandbox', '--disable-dev-shm-usage'],
+        },
+      },
+    },
     ...Object.entries(MOBILE_DEVICES).map(([name, device]) => ({
       name,
       use: device,

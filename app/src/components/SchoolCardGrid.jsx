@@ -93,25 +93,27 @@ export default function SchoolCardGrid({
 
       {/* Pill Switcher */}
       {!isEditing && (
-        <div className="spine-pills" role="tablist" aria-label="Archive view">
-          <button
-            role="tab"
-            aria-selected={viewMode === 'featured'}
-            className={`spine-pill ${viewMode === 'featured' ? 'spine-pill--active' : ''}`}
-            onClick={() => setViewMode('featured')}
-            type="button"
-          >
-            Featured
-          </button>
-          <button
-            role="tab"
-            aria-selected={viewMode === 'all'}
-            className={`spine-pill ${viewMode === 'all' ? 'spine-pill--active' : ''}`}
-            onClick={() => setViewMode('all')}
-            type="button"
-          >
-            All Schools
-          </button>
+        <div className="spine-pills-wrap">
+          <div className="spine-pills" role="tablist" aria-label="Archive view">
+            <button
+              role="tab"
+              aria-selected={viewMode === 'featured'}
+              className={`spine-pill ${viewMode === 'featured' ? 'spine-pill--active' : ''}`}
+              onClick={() => setViewMode('featured')}
+              type="button"
+            >
+              Featured
+            </button>
+            <button
+              role="tab"
+              aria-selected={viewMode === 'all'}
+              className={`spine-pill ${viewMode === 'all' ? 'spine-pill--active' : ''}`}
+              onClick={() => setViewMode('all')}
+              type="button"
+            >
+              All Schools
+            </button>
+          </div>
           <button
             className="spine-customize-btn"
             onClick={() => setIsEditing(true)}

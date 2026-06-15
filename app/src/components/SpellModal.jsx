@@ -605,7 +605,7 @@ export default function SpellModal({ spell, school, onClose, marginalia, getVote
             })() : null}
           </>
         ) : (
-          <div className="modal-full-entry">
+          <div className="modal-full-entry" role="region" aria-label="Spell description">
             {mdLoading ? (
               <div className="modal-md-loading">
                 <span className="md-loading-rune">⟐</span>

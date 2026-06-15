@@ -332,7 +332,7 @@ export default function GrimoireStackLayout({
 
       <div className="eye-main">
         {/* Left sidebar */}
-        <aside className="eye-sidebar">
+        <aside className="eye-sidebar" aria-label="Sidebar">
           <div className="eye-sidebar__header">
             <div className="eye-brand">
               <span className="eye-brand__icon"><Icon name="archive" size="20" /></span>
@@ -415,8 +415,8 @@ export default function GrimoireStackLayout({
         </main>
 
         {/* Right panel - content */}
-        <aside className="eye-panel">
-          <div className="eye-panel__content" key={`${activeTab}-${pageKey}-${searchQuery || ''}`}>
+        <aside className="eye-panel" aria-label="Main content">
+          <div className="eye-panel__content" id="main-content" key={`${activeTab}-${pageKey}-${searchQuery || ''}`}>
             <div className="spine-transition">
               {renderContent()}
             </div>
