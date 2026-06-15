@@ -8,7 +8,6 @@ import { SEANCE_QUESTIONS } from '../data/consultationData.js';
 // Stub the audio module so the dynamic import inside CommuneView's
 // effect does not actually try to schedule audio during tests.
 vi.mock('../audio/sounds.js', () => ({
-  pageTurn: vi.fn(),
   startWhispers: vi.fn(),
   setAudioEnabled: vi.fn(),
 }));

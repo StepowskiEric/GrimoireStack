@@ -1,14 +1,9 @@
 /**
  * GrimoireStack — Export helpers
  *
- * Pure functions for serializing user state (favorites, marginalia,
- * recent spells) as Markdown and JSON. Kept side-effect free so
- * they can be unit-tested.
+ * Browser-side adapter. Serialization is pure (in serializeConfig.js);
+ * this module owns the localStorage reads and clipboard writes.
  */
-
-function escapeMd(s) {
-  return String(s ?? '').replace(/\|/g, '\\|').replace(/\n/g, ' ');
-}
 
 function safeParse(raw, fallback) {
   try {
@@ -42,69 +37,41 @@ export function loadRecent() {
   return loadArray('grimoire-recent');
 }
 
+import { serializeConfig, serializeMarkdown } from './serializeConfig.js';
+
+/**
+ * Serialize user state as JSON. Pass hook state directly for purity;
+ * omit arguments to fall back to localStorage (legacy behavior).
+ *
+ * @param {Object} opts
+ * @param {Array}  [opts.favorites]
+ * @param {Object} [opts.marginalia]
+ * @param {Array}  [opts.recent]
+ * @param {Object} [opts.meta]
+ * @returns {string}
+ */
 export function exportAsJson({ favorites, marginalia, recent, meta } = {}) {
   const favs = favorites ?? loadFavorites();
   const marg = marginalia ?? loadMarginalia();
   const rec = recent ?? loadRecent();
-  const payload = {
-    schema: 'grimoirestack.config.v1',
-    exportedAt: new Date().toISOString(),
-    meta: meta || { source: 'GrimoireStack' },
-    favorites: favs,
-    recent: rec,
-    marginalia: marg,
-  };
-  return JSON.stringify(payload, null, 2);
+  return serializeConfig({ favorites: favs, marginalia: marg, recent: rec, meta });
 }
 
+/**
+ * Serialize user state as Markdown. Pass hook state directly for purity;
+ * omit arguments to fall back to localStorage (legacy behavior).
+ *
+ * @param {Object} opts
+ * @param {Array}  [opts.favorites]
+ * @param {Object} [opts.marginalia]
+ * @param {Array}  [opts.recent]
+ * @returns {string}
+ */
 export function exportAsMarkdown({ favorites, marginalia, recent } = {}) {
   const favs = favorites ?? loadFavorites();
   const marg = marginalia ?? loadMarginalia();
   const rec = recent ?? loadRecent();
-  const lines = [];
-  lines.push('# GrimoireStack — Personal Config');
-  lines.push('');
-  lines.push(`Exported ${new Date().toISOString().slice(0, 10)}`);
-  lines.push('');
-
-  lines.push('## Favorites');
-  if (!favs.length) {
-    lines.push('_None yet — star spells to bind them here._');
-  } else {
-    for (const f of favs) {
-      const note = marg[f.skill];
-      lines.push(`- **${f.name}** (\`${f.skill}\`)`);
-      if (note) lines.push(`  - Note: ${escapeMd(note)}`);
-    }
-  }
-  lines.push('');
-
-  lines.push('## Recently viewed');
-  if (!rec.length) {
-    lines.push('_Empty._');
-  } else {
-    for (const r of rec) {
-      const note = marg[r.skill];
-      lines.push(`- ${r.name} (\`${r.skill}\`)`);
-      if (note) lines.push(`  - Note: ${escapeMd(note)}`);
-    }
-  }
-  lines.push('');
-
-  lines.push('## Marginalia');
-  const margKeys = Object.keys(marg);
-  if (!margKeys.length) {
-    lines.push('_No notes scribbled yet._');
-  } else {
-    for (const skill of margKeys) {
-      lines.push(`### \`${skill}\``);
-      lines.push('');
-      lines.push(marg[skill]);
-      lines.push('');
-    }
-  }
-
-  return lines.join('\n');
+  return serializeMarkdown({ favorites: favs, marginalia: marg, recent: rec });
 }
 
 export async function copyToClipboard(text) {

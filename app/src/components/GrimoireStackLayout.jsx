@@ -15,7 +15,6 @@ import SchoolSigil from './SchoolSigil.tsx';
 import Icon from './Icon.jsx';
 import AboutView from './AboutView.jsx';
 import LanguageToggle from './LanguageToggle.jsx';
-import { pageTurn } from '../audio/sounds.js';
 import { grimoireIndex } from '../data/grimoireIndexInstance.js';
 
 const SCHOOL_MAP = grimoireIndex.getSchoolMap();
@@ -131,7 +130,6 @@ export default function GrimoireStackLayout({
     const route = TAB_ROUTES[tab] || '/';
     setPageKey('home');
     navigate(route);
-    pageTurn();
   }, [navigate]);
 
   const handleSchoolCardClick = useCallback((schoolId) => {

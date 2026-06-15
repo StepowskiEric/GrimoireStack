@@ -2,7 +2,7 @@ import { useMemo, useState } from 'react';
 import { schoolColors } from '../utils/schoolColors.js';
 import { getSpellTier, TIER_META } from '../data/tiers.js';
 import SchoolSigil from './SchoolSigil.tsx';
-import { pageCreak, wetTendril } from '../audio/sounds.js';
+import { pageCreak } from '../audio/sounds.js';
 import { grimoireIndex } from '../data/grimoireIndexInstance.js';
 
 function getDominantTier(spells) {
@@ -71,7 +71,7 @@ export default function AllSchoolsView({
               className={`bestiary-index__row ${isNear ? 'bestiary-index__row--near' : ''} ${hoveredIdx === idx ? 'bestiary-index__row--hover' : ''}`}
               style={colors.cssVars}
               onClick={() => handleClick(school)}
-              onMouseEnter={() => { setHoveredIdx(idx); wetTendril(); }}
+              onMouseEnter={() => setHoveredIdx(idx)}
               onMouseLeave={() => setHoveredIdx(-1)}
               type="button"
             >

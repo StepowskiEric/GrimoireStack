@@ -3,7 +3,7 @@ import { schoolColors } from '../utils/schoolColors.js';
 import { getSpellTier, TIER_META } from '../data/tiers.js';
 import AllSchoolsView from './AllSchoolsView.jsx';
 import SchoolSigil from './SchoolSigil.tsx';
-import { pageCreak, hoverWhisper } from '../audio/sounds.js';
+import { pageCreak } from '../audio/sounds.js';
 import { grimoireIndex } from '../data/grimoireIndexInstance.js';
 
 const DEFAULT_FEATURED = ['debugging', 'reasoning', 'process', 'architecture', 'testing', 'creativity'];
@@ -171,7 +171,7 @@ export default function SchoolCardGrid({
                 className="spine-card"
                 style={colors.cssVars}
                 onClick={() => handleSchoolClick(school)}
-                onMouseEnter={() => hoverWhisper()}
+                
                 type="button"
               >
                 <div className="spine-card__drip-top" aria-hidden="true" />

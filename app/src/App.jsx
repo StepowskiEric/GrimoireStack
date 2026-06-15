@@ -1,7 +1,8 @@
 import { useState, useEffect, useCallback, useRef, useMemo, lazy, Suspense } from 'react';
 import { BrowserRouter } from 'react-router-dom';
 import schools from './data/schools.js';
-import { witchLaugh, pageCreak, startAmbience, startWhispers, setAudioEnabled as setSiteAudioEnabled } from './audio/sounds.js';
+import { pageCreak } from './audio/sounds.js';
+import { useAudioState } from './hooks/useAudioState.js';
 import LidlessEyeCast from './components/LidlessEyeCast.tsx';
 import './components/LidlessEyeCast.css';
 import ApprenticeWelcome, { STORAGE_KEY as WELCOME_STORAGE_KEY } from './components/ApprenticeWelcome.jsx';
@@ -39,39 +40,11 @@ export default function App() {
 
 function AppInner() {
   const [currentSchool, setCurrentSchool] = useState(schools[0].id);
+  const { audioEnabled, toggleAudio } = useAudioState();
   const [castEnabled, setCastEnabled] = useState(() => localStorage.getItem('grimoire-cast') !== 'off');
-  const [audioEnabled, setAudioEnabled] = useState(() => localStorage.getItem('grimoire-audio') !== 'off');
   const [welcomeOpen, setWelcomeOpen] = useState(() => localStorage.getItem(WELCOME_STORAGE_KEY) !== 'true');
   const [shortcutsOpen, setShortcutsOpen] = useState(false);
-  const laughPlayedRef = useRef(false);
-  const ambienceStartedRef = useRef(false);
-  const whispersStartedRef = useRef(false);
   const initializedRef = useRef(false);
-
-  // Render-side sync: the sounds.js module owns a master audio flag
-  // that every audio function checks. When the React state changes
-  // (initial mount, or a Settings toggle), we mirror it to the module
-  // in the same render — no useEffect, no deferred cycle, so toggling
-  // off stops the running ambience / whisper scheduler immediately.
-  // The sentinel `null` initial value forces a sync on the first render
-  // so the module flag reflects localStorage before any audio fires.
-  const prevAudioEnabledRef = useRef(null);
-  if (prevAudioEnabledRef.current !== audioEnabled) {
-    const wasEnabled = prevAudioEnabledRef.current;
-    prevAudioEnabledRef.current = audioEnabled;
-    setSiteAudioEnabled(audioEnabled);
-    if (wasEnabled === true && audioEnabled === false) {
-      whispersStartedRef.current = false;
-    } else if (wasEnabled === false && audioEnabled === true) {
-      // Re-enable after the first gesture: kick the whisper scheduler
-      // back off immediately. If the first gesture hasn't happened
-      // yet, the first-gesture handler below will start it.
-      if (ambienceStartedRef.current) {
-        whispersStartedRef.current = true;
-        startWhispers();
-      }
-    }
-  }
 
   // Modal state
   const [compareOpen, setCompareOpen] = useState(false);
@@ -173,38 +146,6 @@ function AppInner() {
 
   useKeyboardShortcuts(keyboardHandlers);
 
-  useEffect(() => {
-    const handler = () => {
-      if (!ambienceStartedRef.current) {
-        ambienceStartedRef.current = true;
-        startAmbience();
-      }
-      if (audioEnabled && !whispersStartedRef.current) {
-        whispersStartedRef.current = true;
-        startWhispers();
-      }
-      document.removeEventListener('click', handler);
-      document.removeEventListener('keydown', handler);
-      document.removeEventListener('touchstart', handler);
-    };
-    document.addEventListener('click', handler);
-    document.addEventListener('keydown', handler);
-    document.addEventListener('touchstart', handler);
-    return () => {
-      document.removeEventListener('click', handler);
-      document.removeEventListener('keydown', handler);
-      document.removeEventListener('touchstart', handler);
-    };
-  }, [audioEnabled]);
-
-  useEffect(() => {
-    if (filter.searchResults.total > 0 && !laughPlayedRef.current) {
-      const t = setTimeout(() => { witchLaugh(); laughPlayedRef.current = true; }, 400);
-      return () => clearTimeout(t);
-    }
-    if (filter.searchResults.total === 0) laughPlayedRef.current = false;
-  }, [filter.searchResults.total]);
-
   const handleSchoolSelect = useCallback((id) => {
     setCurrentSchool(id);
     setTimeout(pageCreak, 50);
@@ -218,14 +159,6 @@ function AppInner() {
     setCastEnabled((prev) => {
       const next = !prev;
       localStorage.setItem('grimoire-cast', next ? 'on' : 'off');
-      return next;
-    });
-  }, []);
-
-  const toggleAudio = useCallback(() => {
-    setAudioEnabled((prev) => {
-      const next = !prev;
-      localStorage.setItem('grimoire-audio', next ? 'on' : 'off');
       return next;
     });
   }, []);
