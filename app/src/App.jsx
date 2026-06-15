@@ -57,7 +57,7 @@ function AppInner() {
   const marginalia = useMarginalia();
   const { getVote, vote: castVote, aggregateFor } = useSignals();
 
-  const filter = useFilterState(isFavorited);
+  const filter = useFilterState();
 
   const {
     modal,

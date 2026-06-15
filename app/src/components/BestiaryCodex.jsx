@@ -2,6 +2,7 @@ import { useState, useMemo, useCallback } from 'react';
 import { TIER_META, getSpellTier } from '../data/tiers.js';
 import { getSpellLastUpdated } from '../data/changeFeed.js';
 import { grimoireIndex } from '../data/grimoireIndexInstance.js';
+import { toFlatEntries } from '../data/spellCore.js';
 import SchoolSigil from './SchoolSigil.tsx';
 
 const TIER_ORDER = ['archmage', 'master', 'adept', 'apprentice', 'faded'];
@@ -58,12 +59,7 @@ export default function BestiaryCodex({
     // Prefer the `schools` prop (so tests can inject custom data); fall back
     // to the grimoireIndex derived view for the production runtime.
     if (Array.isArray(schools) && schools.length > 0) {
-      const list = [];
-      for (const school of schools) {
-        for (const sp of school.spells) {
-          list.push({ spell: sp, school, _key: `${school.id}::${sp.skill}` });
-        }
-      }
+      const list = toFlatEntries(schools);
       list.sort((a, b) => a.spell.name.localeCompare(b.spell.name));
       return list;
     }
@@ -384,7 +380,7 @@ export default function BestiaryCodex({
               </tr>
             </thead>
             <tbody>
-              {visible.map(({ spell, school, _key }) => {
+              {visible.map(({ spell, school }) => {
                 const tier = getSpellTier(spell);
                 const tierMeta = TIER_META[tier];
                 const statusStr = spell.status && spell.status !== '—' ? spell.status : 'Common';
@@ -392,7 +388,7 @@ export default function BestiaryCodex({
                 const compactLabel = tierMeta.label.split(' ')[0];
                 return (
                   <tr
-                    key={_key || spell.skill}
+                    key={school.id + '::' + spell.skill}
                     className={`bestiary-codex__tr bestiary-codex__tr--${tier}`}
                     onClick={() => onSpellClick?.(spell, school)}
                     role="button"

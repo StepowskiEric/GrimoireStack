@@ -62,8 +62,7 @@ import { useFilterState } from '../hooks/useFilterState.js';
 
 describe('useFilterState', () => {
   it('starts with empty filters and all spells visible', () => {
-    const isFavorited = vi.fn(() => false);
-    const { result } = renderHook(() => useFilterState(isFavorited));
+    const { result } = renderHook(() => useFilterState());
     expect(result.current.query).toBe('');
     expect(result.current.debounced).toBe('');
     expect(result.current.results.total).toBe(3);
@@ -74,8 +73,7 @@ describe('useFilterState', () => {
   });
 
   it('toggles school filter without debounce', () => {
-    const isFavorited = vi.fn(() => false);
-    const { result } = renderHook(() => useFilterState(isFavorited));
+    const { result } = renderHook(() => useFilterState());
     expect(result.current.schoolFilter.has('debugging')).toBe(false);
 
     act(() => { result.current.toggleSchool('debugging'); });
@@ -88,8 +86,7 @@ describe('useFilterState', () => {
   });
 
   it('toggles tier filter without debounce', () => {
-    const isFavorited = vi.fn(() => false);
-    const { result } = renderHook(() => useFilterState(isFavorited));
+    const { result } = renderHook(() => useFilterState());
 
     act(() => { result.current.toggleTier('adept'); });
     expect(result.current.tierFilter.has('adept')).toBe(true);
@@ -97,8 +94,7 @@ describe('useFilterState', () => {
   });
 
   it('toggles favorites-only without debounce', () => {
-    const isFavorited = vi.fn(() => false);
-    const { result } = renderHook(() => useFilterState(isFavorited));
+    const { result } = renderHook(() => useFilterState());
     expect(result.current.favoritesOnly).toBe(false);
 
     act(() => { result.current.toggleFavorites(); });
@@ -107,8 +103,7 @@ describe('useFilterState', () => {
   });
 
   it('clearAll resets filters without touching query', () => {
-    const isFavorited = vi.fn(() => false);
-    const { result } = renderHook(() => useFilterState(isFavorited));
+    const { result } = renderHook(() => useFilterState());
 
     act(() => {
       result.current.toggleSchool('debugging');
@@ -127,18 +122,8 @@ describe('useFilterState', () => {
     expect(result.current.results.total).toBe(3);
   });
 
-  it('passes isFavorited through to filterSpells', () => {
-    const isFavorited = vi.fn((skill) => skill === 'trace');
-    const { result } = renderHook(() => useFilterState(isFavorited));
-
-    act(() => { result.current.toggleFavorites(); });
-    expect(result.current.results.total).toBe(1);
-    expect(result.current.results.bySchool.debugging[0]).toContain('trace');
-  });
-
   it('setQuery updates the live query state', () => {
-    const isFavorited = vi.fn(() => false);
-    const { result } = renderHook(() => useFilterState(isFavorited));
+    const { result } = renderHook(() => useFilterState());
 
     act(() => { result.current.setQuery('trace'); });
     expect(result.current.query).toBe('trace');

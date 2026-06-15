@@ -1,4 +1,5 @@
 import { getSpellTier } from './data/tiers.js';
+import { toFlatEntries } from './data/spellCore.js';
 
 /**
  * spellSearch — text search and filter over the spell catalog.
@@ -9,19 +10,6 @@ import { getSpellTier } from './data/tiers.js';
  * flat entries and delegate. This eliminates the previous duplication
  * between the schools[] and entries[] code paths.
  */
-
-/**
- * Normalize raw schools[] into flat {spell, school} entries.
- */
-function toFlatEntries(schools) {
-  const out = [];
-  for (const school of schools) {
-    for (const spell of school.spells) {
-      out.push({ spell, school });
-    }
-  }
-  return out;
-}
 
 /**
  * Search spells by text query across all schools (adapter).

@@ -1,32 +1,30 @@
 import { useState, useMemo, useCallback } from 'react';
 import { grimoireIndex } from '../data/grimoireIndexInstance.js';
 import { useDebouncedValue } from './useDebouncedValue.js';
+import { useFavorites } from './useFavorites.js';
 
 const DEBOUNCE_MS = 120;
 
 /**
  * useFilterState — owns all filter UI state for the grimoire.
  *
+ * Self-contained: reads favorites internally, hardcodes debounce.
+ * No parameters.
+ *
  * Interface:
- *   query       — current live search string (what the user typed)
+ *   query       — current live search string
  *   results     — { bySchool, total } derived from debounced query + filters
  *   schoolFilter, tierFilter — Set instances the UI toggles
  *   favoritesOnly — boolean
- *   toggleSchool(id)  — add/remove a school from the filter set
- *   toggleTier(key)   — add/remove a tier from the filter set
- *   toggleFavorites() — flip favorites-only mode
- *   clearAll()        — reset every filter to empty
- *   isFavorited(skill) — lookup helper passed through to filterSpells
- *
- * The 120ms debounce is internal; callers only see `query` update on
- * every keystroke and `results` update after debounce settles.
- *
- * No schools parameter — grimoireIndex owns its own validated data.
+ *   toggleSchool(id) / toggleTier(key) / toggleFavorites() / clearAll()
+ *   isFavorited(skill) — convenience passthrough
  */
 
-export function useFilterState(getFavorited, debounceMs = DEBOUNCE_MS) {
+export function useFilterState() {
+  const { isFavorited } = useFavorites();
+
   const [query, setQuery] = useState('');
-  const debounced = useDebouncedValue(query, debounceMs);
+  const debounced = useDebouncedValue(query, DEBOUNCE_MS);
   const [schoolFilter, setSchoolFilter] = useState(() => new Set());
   const [tierFilter, setTierFilter] = useState(() => new Set());
   const [favoritesOnly, setFavoritesOnly] = useState(false);
@@ -44,9 +42,9 @@ export function useFilterState(getFavorited, debounceMs = DEBOUNCE_MS) {
       schoolFilter: schoolFilter.size > 0 ? schoolFilter : null,
       tierFilter: tierFilter.size > 0 ? tierFilter : null,
       favoritesOnly,
-      isFavorited: getFavorited,
+      isFavorited,
     }),
-    [debounced, schoolFilter, tierFilter, favoritesOnly, getFavorited]
+    [debounced, schoolFilter, tierFilter, favoritesOnly, isFavorited]
   );
 
   const toggleSchool = useCallback((id) => {
@@ -88,7 +86,6 @@ export function useFilterState(getFavorited, debounceMs = DEBOUNCE_MS) {
     toggleTier,
     toggleFavorites,
     clearAll,
-    // Convenience: the layout and App both need this for SpellCard etc.
-    isFavorited: getFavorited,
+    isFavorited,
   };
 }

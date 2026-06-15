@@ -10,6 +10,17 @@
 
 import { validateSchools } from './schema.js';
 
+/** Normalize raw schools[] into flat { spell, school } entries. */
+export function toFlatEntries(schools) {
+  const out = [];
+  for (const school of schools) {
+    for (const spell of school.spells) {
+      out.push({ spell, school });
+    }
+  }
+  return out;
+}
+
 export function createSpellCore(schools) {
   const validated = validateSchools(schools);
 
@@ -21,18 +32,9 @@ export function createSpellCore(schools) {
   }
 
   const flatEntriesArray = (() => {
-    const out = [];
-    for (const school of validated) {
-      for (const spell of school.spells) {
-        out.push({
-          spell,
-          school,
-          _key: `${school.id}::${spell.skill}`,
-        });
-      }
-    }
-    out.sort((a, b) => a.spell.name.localeCompare(b.spell.name));
-    return out;
+    const entries = toFlatEntries(validated);
+    entries.sort((a, b) => a.spell.name.localeCompare(b.spell.name));
+    return entries.map((e) => ({ ...e, _key: `${e.school.id}::${e.spell.skill}` }));
   })();
 
   function* iterate() {
