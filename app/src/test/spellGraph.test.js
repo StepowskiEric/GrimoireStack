@@ -19,6 +19,7 @@ const GRAPH_SCHOOLS = [
       { name: 'Bisect Divination', skill: 'bisect', effect: 'Binary search.', status: 'Proven', combos: ['Trace Sight', 'Commit Scry'] },
       { name: 'Commit Scry', skill: 'commit', effect: 'Read commits.', combos: ['Bisect Divination'] },
       { name: 'Log Reader', skill: 'logs', effect: 'Parse logs.', combos: ['Trace Sight'] },
+      { name: 'Watcher', skill: 'watcher', effect: 'Watches.', combos: ['Trace Sight'] },
     ],
   },
   {
@@ -43,14 +44,14 @@ describe('buildGraph', () => {
   it('includes all spells as nodes by default', () => {
     const idx = makeIndex();
     const graph = idx.buildGraph();
-    expect(graph.nodes.length).toBe(6); // 4 debugging + 2 testing
+    expect(graph.nodes.length).toBe(7); // 5 debugging + 2 testing
   });
 
   it('returns one edge per unique combo reference pair', () => {
     const idx = makeIndex();
     const graph = idx.buildGraph();
-    // Combo pairs: trace↔bisect, trace↔logs, bisect↔commit, jest↔mock = 4 unique undirected pairs
-    expect(graph.edges.length).toBe(4);
+    // Combo pairs: trace↔bisect, trace↔logs, bisect↔commit, jest↔mock, watcher↔trace = 5 unique undirected pairs
+    expect(graph.edges.length).toBe(5);
   });
 
   it('weights edges by combo reference count', () => {
@@ -96,7 +97,7 @@ describe('buildGraph', () => {
   it('filters nodes by skillFilter', () => {
     const idx = makeIndex();
     const graph = idx.buildGraph({ skillFilter: new Set(['debugging']) });
-    expect(graph.nodes.length).toBe(4);
+    expect(graph.nodes.length).toBe(5);
     for (const node of graph.nodes) {
       expect(node.schoolId).toBe('debugging');
     }
@@ -137,6 +138,9 @@ describe('buildGraph', () => {
     const commit = graph.nodes.find(n => n.id === 'commit');
     expect(commit).toBeDefined();
     expect(commit.comboCount).toBe(1);
+    const watcher = graph.nodes.find(n => n.id === 'watcher');
+    expect(watcher).toBeDefined();
+    expect(watcher.comboCount).toBe(1);
   });
 
   it('derives tier from spell.status', () => {

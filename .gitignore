@@ -35,3 +35,4 @@ refactor-target.md
 # Playwright / test artifacts
 app/test-results/
 app/playwright-report/
+.pi/

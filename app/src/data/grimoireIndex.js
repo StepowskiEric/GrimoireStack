@@ -10,11 +10,11 @@
  *   spellMatcher — similarTo, matchProblem
  *   spellGraph   — buildGraph, getNodeBySkill
  *   spellWeb     — buildSpellWeb
- *   spellSearch  — searchSpells, filterSpells
+ *   spellSearch  — searchSpellsOnEntries, filterSpellsOnEntries
  *
- * The factory still takes a schools array so tests can build small
- * indexes. The singleton (in grimoireIndexInstance.js) is built
- * from the canonical schools.js.
+ * Search and filter operate on the internal flatEntries array — callers
+ * do not need to pass raw schools data. The public schools[]-based API
+ * lives in spellSearch.js and search.js for the static site and tests.
  */
 
 import { createSpellCore } from './spellCore.js';
@@ -22,7 +22,7 @@ import { createSpellLookup } from './spellLookup.js';
 import { createSpellMatcher } from './spellMatcher.js';
 import { createSpellGraph } from './spellGraph.js';
 import { createSpellWeb } from './spellWeb.js';
-import { searchSpells, filterSpells } from '../spellSearch.js';
+import { searchSpellsOnEntries, filterSpellsOnEntries } from '../spellSearch.js';
 
 export function createGrimoireIndex(schools) {
   const core = createSpellCore(schools);
@@ -30,6 +30,8 @@ export function createGrimoireIndex(schools) {
   const matcher = createSpellMatcher(core);
   const graph = createSpellGraph(core, lookup);
   const web = createSpellWeb(core, lookup);
+
+  const entries = core.flatEntries();
 
   return {
     // Lookup
@@ -55,9 +57,9 @@ export function createGrimoireIndex(schools) {
     flatEntries: core.flatEntries,
     getStats: core.getStats,
     getSchoolMap: core.getSchoolMap,
-    // Search & filter (delegated to the shared pure module)
-    searchSpells,
-    filterSpells,
+    // Search & filter — operate on internal flatEntries, no schools param needed
+    searchSpells: (query) => searchSpellsOnEntries(entries, query),
+    filterSpells: (opts) => filterSpellsOnEntries(entries, opts),
     // Iterable protocol — `for (const e of index)` delegates to iterate()
     [Symbol.iterator]: core.iterate,
   };

@@ -3,23 +3,24 @@
  *
  * Produces a tree: schools as branches, spells as leaves, with
  * combo edges as tentacle connections between spells.
+ *
+ * Edge accumulation is delegated to the shared comboEdgeBuilder
+ * so deduplication and filter semantics live in one place.
  */
+
+import { buildComboEdges } from './comboEdgeBuilder.js';
 
 export function createSpellWeb(core, lookup) {
   const { iterate } = core;
-  const { resolveByName } = lookup;
 
   const buildSpellWeb = ({ skillFilter = null } = {}) => {
     const schoolNodes = [];
     const webSchoolMap = new Map();
     const spellNodes = [];
-    const comboEdges = [];
-    const includedSkills = new Set();
+    const { edges: comboEdges } = buildComboEdges(core, lookup, { skillFilter });
 
-    // First pass: create school branches and collect included spell skills
     for (const { spell, school } of iterate()) {
       if (skillFilter && !skillFilter.has(school.id)) continue;
-      includedSkills.add(spell.skill);
 
       if (!webSchoolMap.has(school.id)) {
         const schoolNode = {
@@ -55,35 +56,6 @@ export function createSpellWeb(core, lookup) {
       schoolNode.children.push(spellNode);
       spellNodes.push(spellNode);
     }
-
-    // Second pass: create combo edges (tentacle connections)
-    const edgeKey = (a, b) => (a < b ? `${a}|${b}` : `${b}|${a}`);
-    const edgeMap = new Map();
-
-    for (const { spell } of iterate()) {
-      if (!Array.isArray(spell.combos)) continue;
-      if (skillFilter && !includedSkills.has(spell.skill)) continue;
-
-      for (const comboName of spell.combos) {
-        const target = resolveByName(comboName);
-        if (!target) continue;
-        if (target.spell.skill === spell.skill) continue;
-        if (skillFilter && !includedSkills.has(target.spell.skill)) continue;
-
-        const key = edgeKey(spell.skill, target.spell.skill);
-        const cur = edgeMap.get(key) || {
-          source: spell.skill,
-          target: target.spell.skill,
-          weight: 0,
-          sourceSchool: spell.skill,
-          targetSchool: target.spell.skill,
-        };
-        cur.weight += 1;
-        edgeMap.set(key, cur);
-      }
-    }
-
-    for (const e of edgeMap.values()) comboEdges.push(e);
 
     return {
       schools: schoolNodes,

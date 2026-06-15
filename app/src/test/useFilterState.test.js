@@ -1,34 +1,71 @@
 import { describe, it, expect, vi } from 'vitest';
 import { renderHook, act } from '@testing-library/react';
-import { useFilterState } from '../hooks/useFilterState.js';
 
-const sampleSchools = [
-  {
-    id: 'debugging',
-    name: 'School of Remediation',
-    real: 'Debugging',
-    spells: [
-      { name: 'Trace Sight', skill: 'log-trace-correlation', effect: 'Maps stack traces.', status: 'Proven' },
-      { name: 'Bisect Divination', skill: 'bisect-debugging', effect: 'Binary searches commits.', status: 'MCP' },
-    ],
-  },
-  {
-    id: 'testing',
-    name: 'School of Validation',
-    real: 'Testing',
-    spells: [
-      { name: 'Jest Invocation', skill: 'jest-testing', effect: 'Write correct Jest tests.', status: 'New' },
-    ],
-  },
-];
+vi.mock('../data/grimoireIndexInstance.js', () => {
+  const entries = [
+    { spell: { name: 'Trace Sight', skill: 'trace', effect: 'Stack traces.', status: 'Proven' }, school: { id: 'debugging', real: 'Debugging' } },
+    { spell: { name: 'Bisect Divination', skill: 'bisect', effect: 'Binary search.', status: 'MCP' }, school: { id: 'debugging', real: 'Debugging' } },
+    { spell: { name: 'Jest Invocation', skill: 'jest', effect: 'Write tests.', status: 'New' }, school: { id: 'testing', real: 'Testing' } },
+  ];
+
+  const searchSpells = vi.fn((query) => {
+    if (!query) return { bySchool: {}, total: 0 };
+    const q = query.toLowerCase();
+    const bySchool = {};
+    let total = 0;
+    for (const { spell, school } of entries) {
+      const searchable = `${spell.name} ${spell.skill} ${spell.effect}`.toLowerCase();
+      if (searchable.includes(q)) {
+        const list = bySchool[school.id] || [];
+        list.push(spell.name + '\0' + spell.skill);
+        bySchool[school.id] = list;
+        total++;
+      }
+    }
+    return { bySchool, total };
+  });
+
+  const filterSpells = vi.fn((opts = {}) => {
+    const { query = '', schoolFilter = null, tierFilter = null, favoritesOnly = false, isFavorited = () => false } = opts;
+    if (schoolFilter && schoolFilter.size === 0) return { bySchool: {}, total: 0 };
+    if (tierFilter && tierFilter.size === 0) return { bySchool: {}, total: 0 };
+
+    const q = query.toLowerCase();
+    const bySchool = {};
+    let total = 0;
+    const tierMap = { 'Proven': 'adept', 'MCP': 'master', 'New': 'apprentice' };
+
+    for (const { spell, school } of entries) {
+      if (schoolFilter && !schoolFilter.has(school.id)) continue;
+      if (q) {
+        const searchable = `${spell.name} ${spell.skill} ${spell.effect}`.toLowerCase();
+        if (!searchable.includes(q)) continue;
+      }
+      const tier = tierMap[spell.status] || 'faded';
+      if (tierFilter && !tierFilter.has(tier)) continue;
+      if (favoritesOnly && !isFavorited(spell.skill)) continue;
+
+      const list = bySchool[school.id] || [];
+      list.push(spell.name + '\0' + spell.skill);
+      bySchool[school.id] = list;
+      total++;
+    }
+    return { bySchool, total };
+  });
+
+  return {
+    grimoireIndex: { searchSpells, filterSpells },
+  };
+});
+
+import { useFilterState } from '../hooks/useFilterState.js';
 
 describe('useFilterState', () => {
   it('starts with empty filters and all spells visible', () => {
     const isFavorited = vi.fn(() => false);
-    const { result } = renderHook(() => useFilterState(sampleSchools, isFavorited));
+    const { result } = renderHook(() => useFilterState(isFavorited));
     expect(result.current.query).toBe('');
     expect(result.current.debounced).toBe('');
-    // Empty query + no filters = all spells (per filterSpells semantics)
     expect(result.current.results.total).toBe(3);
     expect(result.current.searchResults.total).toBe(0);
     expect(result.current.schoolFilter.size).toBe(0);
@@ -38,7 +75,7 @@ describe('useFilterState', () => {
 
   it('toggles school filter without debounce', () => {
     const isFavorited = vi.fn(() => false);
-    const { result } = renderHook(() => useFilterState(sampleSchools, isFavorited));
+    const { result } = renderHook(() => useFilterState(isFavorited));
     expect(result.current.schoolFilter.has('debugging')).toBe(false);
 
     act(() => { result.current.toggleSchool('debugging'); });
@@ -47,33 +84,31 @@ describe('useFilterState', () => {
 
     act(() => { result.current.toggleSchool('debugging'); });
     expect(result.current.schoolFilter.has('debugging')).toBe(false);
-    // Empty set is passed directly to filterSpells (no filter) so all 3 show
     expect(result.current.results.total).toBe(3);
   });
 
   it('toggles tier filter without debounce', () => {
     const isFavorited = vi.fn(() => false);
-    const { result } = renderHook(() => useFilterState(sampleSchools, isFavorited));
+    const { result } = renderHook(() => useFilterState(isFavorited));
 
     act(() => { result.current.toggleTier('adept'); });
     expect(result.current.tierFilter.has('adept')).toBe(true);
-    // 'Proven' -> adept, 'MCP' -> master, 'New' -> apprentice
     expect(result.current.results.total).toBe(1);
   });
 
   it('toggles favorites-only without debounce', () => {
     const isFavorited = vi.fn(() => false);
-    const { result } = renderHook(() => useFilterState(sampleSchools, isFavorited));
+    const { result } = renderHook(() => useFilterState(isFavorited));
     expect(result.current.favoritesOnly).toBe(false);
 
     act(() => { result.current.toggleFavorites(); });
     expect(result.current.favoritesOnly).toBe(true);
-    expect(result.current.results.total).toBe(0); // nothing favorited
+    expect(result.current.results.total).toBe(0);
   });
 
   it('clearAll resets filters without touching query', () => {
     const isFavorited = vi.fn(() => false);
-    const { result } = renderHook(() => useFilterState(sampleSchools, isFavorited));
+    const { result } = renderHook(() => useFilterState(isFavorited));
 
     act(() => {
       result.current.toggleSchool('debugging');
@@ -82,33 +117,31 @@ describe('useFilterState', () => {
       result.current.setQuery('jest');
     });
 
-    // School + tier + favoritesOnly: 0 matches
     expect(result.current.results.total).toBe(0);
 
     act(() => { result.current.clearAll(); });
     expect(result.current.schoolFilter.size).toBe(0);
     expect(result.current.tierFilter.size).toBe(0);
     expect(result.current.favoritesOnly).toBe(false);
-    expect(result.current.query).toBe('jest'); // query NOT cleared
-    // After clearAll, no filters active => all 3 spells match
+    expect(result.current.query).toBe('jest');
     expect(result.current.results.total).toBe(3);
   });
 
   it('passes isFavorited through to filterSpells', () => {
-    const isFavorited = vi.fn((skill) => skill === 'log-trace-correlation');
-    const { result } = renderHook(() => useFilterState(sampleSchools, isFavorited));
+    const isFavorited = vi.fn((skill) => skill === 'trace');
+    const { result } = renderHook(() => useFilterState(isFavorited));
 
     act(() => { result.current.toggleFavorites(); });
     expect(result.current.results.total).toBe(1);
-    expect(result.current.results.bySchool.debugging[0]).toContain('log-trace-correlation');
+    expect(result.current.results.bySchool.debugging[0]).toContain('trace');
   });
 
   it('setQuery updates the live query state', () => {
     const isFavorited = vi.fn(() => false);
-    const { result } = renderHook(() => useFilterState(sampleSchools, isFavorited));
+    const { result } = renderHook(() => useFilterState(isFavorited));
 
     act(() => { result.current.setQuery('trace'); });
     expect(result.current.query).toBe('trace');
-    expect(result.current.debounced).toBe(''); // not yet debounced
+    expect(result.current.debounced).toBe('');
   });
 });

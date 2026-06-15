@@ -20,9 +20,11 @@ const DEBOUNCE_MS = 120;
  *
  * The 120ms debounce is internal; callers only see `query` update on
  * every keystroke and `results` update after debounce settles.
+ *
+ * No schools parameter — grimoireIndex owns its own validated data.
  */
 
-export function useFilterState(schools, getFavorited, debounceMs = DEBOUNCE_MS) {
+export function useFilterState(getFavorited, debounceMs = DEBOUNCE_MS) {
   const [query, setQuery] = useState('');
   const debounced = useDebouncedValue(query, debounceMs);
   const [schoolFilter, setSchoolFilter] = useState(() => new Set());
@@ -31,20 +33,20 @@ export function useFilterState(schools, getFavorited, debounceMs = DEBOUNCE_MS) 
 
   // Search results (text only, no filters) — used for the total-match count.
   const searchResults = useMemo(
-    () => grimoireIndex.searchSpells(schools, debounced),
-    [schools, debounced]
+    () => grimoireIndex.searchSpells(debounced),
+    [debounced]
   );
 
   // Filtered results — text + school + tier + favorites.
   const results = useMemo(
-    () => grimoireIndex.filterSpells(schools, {
+    () => grimoireIndex.filterSpells({
       query: debounced,
       schoolFilter: schoolFilter.size > 0 ? schoolFilter : null,
       tierFilter: tierFilter.size > 0 ? tierFilter : null,
       favoritesOnly,
       isFavorited: getFavorited,
     }),
-    [schools, debounced, schoolFilter, tierFilter, favoritesOnly, getFavorited]
+    [debounced, schoolFilter, tierFilter, favoritesOnly, getFavorited]
   );
 
   const toggleSchool = useCallback((id) => {
