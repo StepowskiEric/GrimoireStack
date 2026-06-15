@@ -1,7 +1,6 @@
 /* eslint-disable react/no-array-index-key -- static decorative arrays; index is stable */
 
-import { useState, useEffect, useRef } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { useState, useEffect, useRef, useCallback } from 'react';
 import ModalEye from './ModalEye.tsx';
 import Icon from './Icon.jsx';
 import { useLanguage } from '../i18n/LanguageContext';
@@ -14,15 +13,15 @@ const PANELS = [
   { titleKey: 'welcomeTitle', bodyKey: 'welcomeBody3', accentKey: 'welcomeAccent3' },
 ];
 
-const transition = {
-  duration: 0.28,
-  ease: [0.4, 0, 0.2, 1],
-};
-
 export default function ApprenticeWelcome({ onClose }) {
   const { t } = useLanguage();
   const [index, setIndex] = useState(0);
+  const [visible, setVisible] = useState(false);
   const modalRef = useRef(null);
+
+  useEffect(() => {
+    setVisible(true);
+  }, []);
 
   useEffect(() => {
     if (!modalRef.current) return;
@@ -45,38 +44,31 @@ export default function ApprenticeWelcome({ onClose }) {
   const current = PANELS[index];
   const last = index === PANELS.length - 1;
 
+  const next = useCallback(() => {
+    if (last) onClose();
+    else setIndex((prev) => prev + 1);
+  }, [last, onClose]);
+
   return (
     // eslint-disable-next-line jsx-a11y/click-events-have-key-events, jsx-a11y/no-static-element-interactions
-    <div className="modal-overlay open" onClick={(event) => { if (event.target === event.currentTarget) onClose(); }}>
-      <motion.div
-        className="modal welcome-modal"
+    <div className="modal-overlay open is-visible" onClick={(event) => { if (event.target === event.currentTarget) onClose(); }}>
+      <div
+        className={`modal welcome-modal${visible ? ' welcome-modal--visible' : ''}`}
         ref={modalRef}
         role="dialog"
         aria-modal="true"
         aria-label={t('welcomeTitle')}
-        initial={{ opacity: 0, y: 18, scale: 0.97 }}
-        animate={{ opacity: 1, y: 0, scale: 1 }}
-        exit={{ opacity: 0, y: 18, scale: 0.97 }}
-        transition={transition}
       >
         <button className="modal-close" onClick={onClose} aria-label="Close welcome" type="button">
           <Icon name="close" size={18} />
         </button>
 
-        <AnimatePresence mode="wait">
-          <motion.div
-            key={current.titleKey + index}
-            initial={{ opacity: 0, x: 22 }}
-            animate={{ opacity: 1, x: 0 }}
-            exit={{ opacity: 0, x: -22 }}
-            transition={transition}
-          >
-            <div className="welcome-symbol"><ModalEye size={36} /></div>
-            <h2 className="welcome-title">{t(current.titleKey)}</h2>
-            <p className="welcome-body">{t(current.bodyKey)}</p>
-            <p className="welcome-accent">{t(current.accentKey)}</p>
-          </motion.div>
-        </AnimatePresence>
+        <div className="welcome-panel" key={current.titleKey + index}>
+          <div className="welcome-symbol"><ModalEye size={36} /></div>
+          <h2 className="welcome-title">{t(current.titleKey)}</h2>
+          <p className="welcome-body">{t(current.bodyKey)}</p>
+          <p className="welcome-accent">{t(current.accentKey)}</p>
+        </div>
 
         <div className="welcome-progress" aria-hidden="true">
           {PANELS.map((_, i) => (
@@ -100,17 +92,14 @@ export default function ApprenticeWelcome({ onClose }) {
             ) : null}
             <button
               className="welcome-next"
-              onClick={() => {
-                if (last) onClose();
-                else setIndex((prev) => prev + 1);
-              }}
+              onClick={next}
               type="button"
             >
               {last ? t('welcomeEnter') : t('welcomeNext')}
             </button>
           </div>
         </div>
-      </motion.div>
+      </div>
     </div>
   );
 }

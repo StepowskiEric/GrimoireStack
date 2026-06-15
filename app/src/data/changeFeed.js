@@ -2,9 +2,7 @@
  * changeFeed.js — Spell changelog / feed helpers.
  *
  * Reads the auto-generated EXPLICIT map from spellMetadata.js and
- * computes changelog views (recently updated, alphabetical index,
- * per-spell date/note lookups).
- *
+ * computes changelog views (recently updated, per-spell date/note lookups).
  * Hand-edited. The auto-generator only writes the data file
  * (spellMetadata.js); this file owns the read-side behavior.
  */

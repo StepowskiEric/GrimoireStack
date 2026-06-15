@@ -1,31 +1,23 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useCallback } from 'react';
+import { useLocalStorageState } from './useLocalStorageState.js';
 
 const STORAGE_KEY = 'grimoire-recent';
 const MAX_ENTRIES = 20;
 
-function load() {
-  try {
-    const raw = localStorage.getItem(STORAGE_KEY);
-    if (!raw) return [];
-    const parsed = JSON.parse(raw);
-    return Array.isArray(parsed) ? parsed : [];
-  } catch {
-    return [];
-  }
-}
-
-function save(entries) {
-  try {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(entries));
-  } catch {}
-}
-
 export function useRecentlyViewed() {
-  const [recent, setRecent] = useState(load);
-
-  useEffect(() => {
-    save(recent);
-  }, [recent]);
+  const { value: recent, setValue: setRecent } = useLocalStorageState({
+    key: STORAGE_KEY,
+    initial: () => [],
+    parse: (raw) => {
+      if (!raw) return [];
+      try {
+        const v = JSON.parse(raw);
+        return Array.isArray(v) ? v : [];
+      } catch {
+        return [];
+      }
+    },
+  });
 
   const record = useCallback((name, skill) => {
     setRecent((prev) => {
@@ -33,11 +25,11 @@ export function useRecentlyViewed() {
       const next = [{ name, skill, viewedAt: Date.now() }, ...filtered];
       return next.slice(0, MAX_ENTRIES);
     });
-  }, []);
+  }, [setRecent]);
 
   const clear = useCallback(() => {
     setRecent([]);
-  }, []);
+  }, [setRecent]);
 
   return { recent, record, clear, setRecent };
 }

@@ -1,36 +1,19 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useCallback } from 'react';
+import { useLocalStorageState } from './useLocalStorageState.js';
 
 const STORAGE_KEY = 'grimoire-marginalia';
 
-function load() {
-  try {
-    const raw = localStorage.getItem(STORAGE_KEY);
-    if (!raw) return {};
-    const parsed = JSON.parse(raw);
-    return parsed && typeof parsed === 'object' && !Array.isArray(parsed) ? parsed : {};
-  } catch {
-    return {};
-  }
-}
-
-function save(notes) {
-  try {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(notes));
-  } catch {}
-}
-
 export function useMarginalia() {
-  const [notes, setNotes] = useState(load);
-
-  useEffect(() => {
-    save(notes);
-  }, [notes]);
+  const { value: notes, setValue: setNotes } = useLocalStorageState({
+    key: STORAGE_KEY,
+    initial: () => ({}),
+  });
 
   const getNote = useCallback((skill) => notes[skill] || '', [notes]);
 
   const setNote = useCallback((skill, text) => {
     setNotes((prev) => ({ ...prev, [skill]: text }));
-  }, []);
+  }, [setNotes]);
 
   const clear = useCallback((skill) => {
     setNotes((prev) => {
@@ -38,7 +21,7 @@ export function useMarginalia() {
       delete next[skill];
       return next;
     });
-  }, []);
+  }, [setNotes]);
 
   return { getNote, setNote, clear, notes, setNotes };
 }

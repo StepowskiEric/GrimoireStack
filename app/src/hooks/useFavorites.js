@@ -1,29 +1,24 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useCallback } from 'react';
 import { grimoireIndex } from '../data/grimoireIndexInstance.js';
+import { useLocalStorageState } from './useLocalStorageState.js';
 
 const STORAGE_KEY = 'grimoire-favorites';
-
-function load() {
-  try {
-    const raw = localStorage.getItem(STORAGE_KEY);
-    return raw ? JSON.parse(raw) : [];
-  } catch {
-    return [];
-  }
-}
-
-function save(favs) {
-  try {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(favs));
-  } catch {}
-}
+const MAX_FAVORITES = 12;
 
 export function useFavorites() {
-  const [favorites, setFavorites] = useState(load);
-
-  useEffect(() => {
-    save(favorites);
-  }, [favorites]);
+  const { value: favorites, setValue: setFavorites } = useLocalStorageState({
+    key: STORAGE_KEY,
+    initial: () => [],
+    parse: (raw) => {
+      if (!raw) return [];
+      try {
+        const v = JSON.parse(raw);
+        return Array.isArray(v) ? v : [];
+      } catch {
+        return [];
+      }
+    },
+  });
 
   const isFavorited = useCallback(
     (skill) => favorites.some((f) => f.skill === skill),
@@ -31,19 +26,18 @@ export function useFavorites() {
   );
 
   const toggleFavorite = useCallback((spellName, skill) => {
-    let added = false;
+    let capped = false;
     setFavorites((prev) => {
       const exists = prev.some((f) => f.skill === skill);
       if (exists) return prev.filter((f) => f.skill !== skill);
-      if (prev.length >= 12) return prev;
-      added = true;
+      if (prev.length >= MAX_FAVORITES) {
+        capped = true;
+        return prev;
+      }
       return [...prev, { name: spellName, skill, addedAt: Date.now() }];
     });
-    // Return false if at cap, true if added/removed
-    const alreadyFav = favorites.some((f) => f.skill === skill);
-    if (alreadyFav) return true; // removed successfully
-    return added; // true if added, false if capped
-  }, [favorites]);
+    return !capped; // true if added or removed, false if capped
+  }, [setFavorites]);
 
   const findFavoriteSpell = useCallback((skill) => {
     const entry = grimoireIndex.resolveBySkill(skill);
