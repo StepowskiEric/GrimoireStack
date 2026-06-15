@@ -1,51 +1,39 @@
-/**
- * spellSearch — text search and filter over the spell catalog.
- *
- * Contains two families of functions:
- *
- * 1. Public API (operates on raw schools[]):
- *    searchSpells(schools, query), filterSpells(schools, opts)
- *    Used by the static site, tests, and any caller that has raw data.
- *
- * 2. Internal API (operates on flat {spell, school} entries):
- *    searchSpellsOnEntries(entries, query), filterSpellsOnEntries(entries, opts)
- *    Used by grimoireIndex, which already holds a validated flatEntries array.
- */
-
 import { getSpellTier } from './data/tiers.js';
 
 /**
- * Search spells by text query across all schools.
- * Returns which spells match and how many, grouped by school.
+ * spellSearch — text search and filter over the spell catalog.
  *
- * @param {Array} schools - Array of school objects with spells arrays
- * @param {string} query  - Lowercase, trimmed search string
- * @returns {{ bySchool: Object<string, string[]>, total: number }}
+ * Canonical implementation: searchSpellsOnEntries / filterSpellsOnEntries
+ * operate on flat {spell, school} entries. The public searchSpells /
+ * filterSpells are thin adapters that normalize raw schools[] into
+ * flat entries and delegate. This eliminates the previous duplication
+ * between the schools[] and entries[] code paths.
  */
-export function searchSpells(schools, query) {
-  if (!query) return { bySchool: {}, total: 0 };
 
-  const bySchool = {};
-  let total = 0;
-
+/**
+ * Normalize raw schools[] into flat {spell, school} entries.
+ */
+function toFlatEntries(schools) {
+  const out = [];
   for (const school of schools) {
-    const q = query.toLowerCase();
-    const matches = school.spells.filter(sp => {
-      const searchable = `${sp.name} ${sp.skill} ${sp.effect}`.toLowerCase();
-      return searchable.includes(q);
-    });
-
-    if (matches.length > 0) {
-      bySchool[school.id] = matches.map(sp => sp.name + '\0' + sp.skill);
-      total += matches.length;
+    for (const spell of school.spells) {
+      out.push({ spell, school });
     }
   }
-
-  return { bySchool, total };
+  return out;
 }
 
 /**
- * Search over flat {spell, school} entries (used by grimoireIndex).
+ * Search spells by text query across all schools (adapter).
+ * Normalizes raw schools[] to flat entries, then delegates to
+ * searchSpellsOnEntries.
+ */
+export function searchSpells(schools, query) {
+  return searchSpellsOnEntries(toFlatEntries(schools), query);
+}
+
+/**
+ * Search over flat {spell, school} entries (canonical).
  */
 export function searchSpellsOnEntries(entries, query) {
   if (!query) return { bySchool: {}, total: 0 };
@@ -67,69 +55,16 @@ export function searchSpellsOnEntries(entries, query) {
 }
 
 /**
- * Re-export tier lookup for use in filter logic and tests.
- */
-export function getSpellTierForFilter(spell) {
-  return getSpellTier(spell);
-}
-
-/**
- * Filter spells by an optional text query plus optional school / tier / favorites filters.
- *
- * @param {Array} schools
- * @param {{
- *   query?: string,
- *   schoolFilter?: Set<string>,
- *   tierFilter?: Set<string>,
- *   favoritesOnly?: boolean,
- *   isFavorited?: (skill: string) => boolean,
- * }} opts
- * @returns {{ bySchool: Object<string, string[]>, total: number }}
+ * Filter spells by an optional text query plus optional school / tier / favorites filters (adapter).
+ * Normalizes raw schools[] to flat entries, then delegates to
+ * filterSpellsOnEntries.
  */
 export function filterSpells(schools, opts = {}) {
-  const {
-    query = '',
-    schoolFilter = null,
-    tierFilter = null,
-    favoritesOnly = false,
-    isFavorited = () => false,
-  } = opts;
-
-  if (schoolFilter && schoolFilter.size === 0) {
-    return { bySchool: {}, total: 0 };
-  }
-  if (tierFilter && tierFilter.size === 0) {
-    return { bySchool: {}, total: 0 };
-  }
-
-  const q = query.toLowerCase();
-  const bySchool = {};
-  let total = 0;
-
-  for (const school of schools) {
-    if (schoolFilter && !schoolFilter.has(school.id)) continue;
-
-    const matches = school.spells.filter((sp) => {
-      if (q) {
-        const searchable = `${sp.name} ${sp.skill} ${sp.effect}`.toLowerCase();
-        if (!searchable.includes(q)) return false;
-      }
-      if (tierFilter && !tierFilter.has(getSpellTier(sp))) return false;
-      if (favoritesOnly && !isFavorited(sp.skill)) return false;
-      return true;
-    });
-
-    if (matches.length > 0) {
-      bySchool[school.id] = matches.map((sp) => sp.name + '\0' + sp.skill);
-      total += matches.length;
-    }
-  }
-
-  return { bySchool, total };
+  return filterSpellsOnEntries(toFlatEntries(schools), opts);
 }
 
 /**
- * Filter over flat {spell, school} entries (used by grimoireIndex).
+ * Filter over flat {spell, school} entries (canonical).
  */
 export function filterSpellsOnEntries(entries, opts = {}) {
   const {

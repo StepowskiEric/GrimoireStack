@@ -4,4 +4,4 @@
    can import from a single source of truth.
    ══════════════════════════════════════════════════════════════ */
 
-export { searchSpells, filterSpells, getSpellTierForFilter } from './spellSearch.js';
+export { searchSpells, filterSpells, searchSpellsOnEntries, filterSpellsOnEntries } from './spellSearch.js';

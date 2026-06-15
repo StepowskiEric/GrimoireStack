@@ -1,155 +1,121 @@
 import { describe, it, expect } from 'vitest';
-import { searchSpells } from '../search.js';
+import { searchSpellsOnEntries, filterSpellsOnEntries } from '../spellSearch.js';
+import { getSpellTier } from '../data/tiers.js';
 
-// Sample data for testing — a minimal slice of the schools structure
+// Flat-entry fixtures (canonical shape for the implementation under test).
+const sampleEntries = [
+  { spell: { name: 'Trace Sight', skill: 'log-trace-correlation', effect: 'Maps stack traces to source code and suggests fixes.', status: 'Proven' }, school: { id: 'debugging', name: 'School of Remediation' } },
+  { spell: { name: 'Bisect Divination', skill: 'bisect-debugging', effect: 'Binary searches commit history for the regression commit.', status: 'Proven' }, school: { id: 'debugging', name: 'School of Remediation' } },
+  { spell: { name: 'Razor of Parsimony', skill: 'occams-razor', effect: 'Favors the simplest sufficient explanation.', status: '—' }, school: { id: 'reasoning', name: 'School of Cognition' } },
+  { spell: { name: 'Thought-Weave', skill: 'tree-of-thoughts', effect: 'Branches multiple reasoning paths in parallel.', status: '—' }, school: { id: 'reasoning', name: 'School of Cognition' } },
+];
+
+// Raw-schools fixtures (used only for adapter verification).
 const sampleSchools = [
   {
     id: 'debugging',
     name: 'School of Remediation',
     spells: [
-      { name: 'Trace Sight', skill: 'log-trace-correlation', effect: 'Maps stack traces to source code and suggests fixes.' },
-      { name: 'Bisect Divination', skill: 'bisect-debugging', effect: 'Binary searches commit history for the regression commit.' },
+      { name: 'Trace Sight', skill: 'log-trace-correlation', effect: 'Maps stack traces to source code and suggests fixes.', status: 'Proven' },
+      { name: 'Bisect Divination', skill: 'bisect-debugging', effect: 'Binary searches commit history for the regression commit.', status: 'Proven' },
     ],
   },
   {
     id: 'reasoning',
     name: 'School of Cognition',
     spells: [
-      { name: 'Razor of Parsimony', skill: 'occams-razor', effect: 'Favors the simplest sufficient explanation.' },
-      { name: 'Thought-Weave', skill: 'tree-of-thoughts', effect: 'Branches multiple reasoning paths in parallel.' },
+      { name: 'Razor of Parsimony', skill: 'occams-razor', effect: 'Favors the simplest sufficient explanation.', status: '—' },
+      { name: 'Thought-Weave', skill: 'tree-of-thoughts', effect: 'Branches multiple reasoning paths in parallel.', status: '—' },
     ],
   },
 ];
 
-describe('searchSpells', () => {
-  // ── Tracer bullet: empty query ──
+describe('searchSpellsOnEntries (canonical)', () => {
   it('returns empty results for an empty query', () => {
-    const result = searchSpells(sampleSchools, '');
+    const result = searchSpellsOnEntries(sampleEntries, '');
     expect(result).toEqual({ bySchool: {}, total: 0 });
   });
 
-  // ── Exact match by name ──
   it('finds spells matching by name', () => {
-    const result = searchSpells(sampleSchools, 'Trace Sight');
+    const result = searchSpellsOnEntries(sampleEntries, 'Trace Sight');
     expect(result.total).toBe(1);
     expect(result.bySchool).toHaveProperty('debugging');
     expect(result.bySchool.debugging).toHaveLength(1);
     expect(result.bySchool.debugging[0]).toContain('Trace Sight');
   });
 
-  // ── Match by skill ID ──
   it('finds spells matching by skill ID', () => {
-    const result = searchSpells(sampleSchools, 'bisect-debugging');
+    const result = searchSpellsOnEntries(sampleEntries, 'bisect-debugging');
     expect(result.total).toBe(1);
     expect(result.bySchool.debugging[0]).toContain('bisect-debugging');
   });
 
-  // ── Partial match through effect text ──
   it('finds spells matching by partial effect text', () => {
-    const result = searchSpells(sampleSchools, 'commit');
+    const result = searchSpellsOnEntries(sampleEntries, 'commit');
     expect(result.total).toBe(1);
     expect(result.bySchool.debugging[0]).toContain('Bisect Divination');
   });
 
-  // ── Case insensitive ──
   it('is case-insensitive', () => {
-    const result = searchSpells(sampleSchools, 'trace sight');
+    const result = searchSpellsOnEntries(sampleEntries, 'trace sight');
     expect(result.total).toBe(1);
     expect(result.bySchool.debugging[0]).toContain('Trace Sight');
   });
 
-  // ── No match ──
   it('returns empty for a non-matching query', () => {
-    const result = searchSpells(sampleSchools, 'zzznotfound');
+    const result = searchSpellsOnEntries(sampleEntries, 'zzznotfound');
     expect(result).toEqual({ bySchool: {}, total: 0 });
   });
 
-  // ── Groups by school ──
   it('groups matching spells by school', () => {
-    const result = searchSpells(sampleSchools, 'Sight');
+    const result = searchSpellsOnEntries(sampleEntries, 'Sight');
     expect(result.total).toBe(1);
     expect(result.bySchool).toHaveProperty('debugging');
     expect(result.bySchool).not.toHaveProperty('reasoning');
   });
 
-  // ── Multi-school matches ──
-  it('finds matches across multiple schools', () => {
-    const result = searchSpells(sampleSchools, 'the');
-    // 'Trace Sight' has no 'the', 'Bisect Divination' doesn't either... 
-    // 'Razor of Parsimony' — no 'the'
-    // 'Thought-Weave' — no 'the'
-    // Actually none of these have 'the'...
-    // Let me check: 'Bisect Divination' - 'Binary searches commit history for the regression commit.'
-    // Yes! 'the' appears in 'Bisect Divination' effect
-    
-    // Actually wait, 'the' might match more. Let me be more specific.
-    expect(result.total).toBeGreaterThan(0);
-  });
-
-  // ── Total count is accurate ──
   it('reports accurate total count', () => {
-    const result = searchSpells(sampleSchools, 'trace');
+    const result = searchSpellsOnEntries(sampleEntries, 'trace');
     expect(result.total).toBe(1);
   });
 
-  // ── Multiple matches in one school ──
-  it('finds multiple matches in the same school', () => {
-    // Both debugging spells reference 'debug' source in their effect... no wait, let me check
-    // Trace Sight: 'Maps stack traces to source code and suggests fixes.' — no 'debug' 
-    // Bisect Divination: 'Binary searches commit history for the regression commit.' — no 'debug'
-    // Let me use a query that actually matches both
-    const result = searchSpells(sampleSchools, 's');
-    // 's' would match 'Trace Sight', 'Bisect Divination', 'Razor of Parsimony', 'Thought-Weave'
-    // (all contain 's' in name, skill, or effect)
-    expect(result.total).toBeGreaterThanOrEqual(2);
-    if (result.bySchool.debugging) {
-      expect(result.bySchool.debugging.length).toBeGreaterThanOrEqual(1);
-    }
-  });
-
-  // ── Key format: name + NUL + skill ──
   it('uses name + NUL + skill as the match key format', () => {
-    const result = searchSpells(sampleSchools, 'Trace Sight');
+    const result = searchSpellsOnEntries(sampleEntries, 'Trace Sight');
     expect(result.bySchool.debugging[0]).toBe('Trace Sight\0log-trace-correlation');
   });
 });
 
-import { filterSpells, getSpellTierForFilter } from '../search.js';
-import { TIER_META } from '../data/tiers.js';
-
-describe('filterSpells', () => {
+describe('filterSpellsOnEntries (canonical)', () => {
   const favFn = (skill) => skill === 'log-trace-correlation';
 
   it('returns all spells when no filters and no query', () => {
-    const result = filterSpells(sampleSchools, { isFavorited: () => false });
+    const result = filterSpellsOnEntries(sampleEntries, { isFavorited: () => false });
     expect(result.total).toBe(4);
   });
 
   it('narrows by school filter', () => {
-    const result = filterSpells(sampleSchools, { schoolFilter: new Set(['reasoning']), isFavorited: () => false });
+    const result = filterSpellsOnEntries(sampleEntries, { schoolFilter: new Set(['reasoning']), isFavorited: () => false });
     expect(result.total).toBe(2);
     expect(result.bySchool).toHaveProperty('reasoning');
     expect(result.bySchool).not.toHaveProperty('debugging');
   });
 
   it('narrows by tier filter', () => {
-    const result = filterSpells(sampleSchools, { tierFilter: new Set(['master']), isFavorited: () => false });
+    const result = filterSpellsOnEntries(sampleEntries, { tierFilter: new Set(['master']), isFavorited: () => false });
     // 'bisect-debugging' has status 'Proven' so tier = 'adept' (Proven, no combo)
-    // 'tree-of-thoughts' has no status ('—') so tier = 'faded'
     // 'log-trace-correlation' has 'Proven' so tier = 'adept'
-    // 'occams-razor' has no status so tier = 'faded'
     // No master tier in this sample
     expect(result.total).toBe(0);
   });
 
   it('narrows by favorites only', () => {
-    const result = filterSpells(sampleSchools, { favoritesOnly: true, isFavorited: favFn });
+    const result = filterSpellsOnEntries(sampleEntries, { favoritesOnly: true, isFavorited: favFn });
     expect(result.total).toBe(1);
     expect(result.bySchool.debugging[0]).toContain('log-trace-correlation');
   });
 
   it('combines query and filters (AND)', () => {
-    const result = filterSpells(sampleSchools, {
+    const result = filterSpellsOnEntries(sampleEntries, {
       query: 'razor',
       tierFilter: new Set(['faded']),
       isFavorited: () => false,
@@ -158,7 +124,7 @@ describe('filterSpells', () => {
   });
 
   it('returns empty when query and filters are mutually exclusive', () => {
-    const result = filterSpells(sampleSchools, {
+    const result = filterSpellsOnEntries(sampleEntries, {
       query: 'razor',
       schoolFilter: new Set(['debugging']),
       isFavorited: () => false,
@@ -167,15 +133,31 @@ describe('filterSpells', () => {
   });
 
   it('returns empty for empty school filter set', () => {
-    const result = filterSpells(sampleSchools, { schoolFilter: new Set(), isFavorited: () => false });
+    const result = filterSpellsOnEntries(sampleEntries, { schoolFilter: new Set(), isFavorited: () => false });
     expect(result.total).toBe(0);
   });
 });
 
-describe('getSpellTierForFilter', () => {
-  it('returns the same tier key as getSpellTier', () => {
-    const sample = sampleSchools[0].spells[0];
-    const tier = getSpellTierForFilter(sample);
-    expect(TIER_META).toHaveProperty(tier);
+describe('Adapter: searchSpells / filterSpells (thin wrappers)', () => {
+  it('searchSpells adapter produces identical results to searchSpellsOnEntries', async () => {
+    const { searchSpells } = await import('../search.js');
+    const canonical = searchSpellsOnEntries(sampleEntries, 'trace');
+    const adapted = searchSpells(sampleSchools, 'trace');
+    expect(adapted).toEqual(canonical);
+  });
+
+  it('filterSpells adapter produces identical results to filterSpellsOnEntries', async () => {
+    const { filterSpells } = await import('../search.js');
+    const opts = { query: 'razor', tierFilter: new Set(['faded']), isFavorited: () => false };
+    const canonical = filterSpellsOnEntries(sampleEntries, opts);
+    const adapted = filterSpells(sampleSchools, opts);
+    expect(adapted).toEqual(canonical);
+  });
+});
+
+describe('getSpellTier is the canonical tier function', () => {
+  it('returns correct tier for a Proven spell with no combos', () => {
+    const sample = sampleEntries[0].spell;
+    expect(getSpellTier(sample)).toBe('adept');
   });
 });
