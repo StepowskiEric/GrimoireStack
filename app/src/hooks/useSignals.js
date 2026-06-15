@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useCallback } from 'react';
 import { useLocalStorageState } from './useLocalStorageState.js';
 
 const STORAGE_KEY = 'grimoire-signals';
