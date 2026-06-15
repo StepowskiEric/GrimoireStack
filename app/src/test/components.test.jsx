@@ -339,7 +339,7 @@ describe('ApprenticeWelcome', () => {
         <ApprenticeWelcome onClose={() => {}} />
       </LanguageProvider>
     );
-    expect(screen.getByText('Welcome to the Grimoire')).toBeInTheDocument();
+    expect(screen.getByText(/Welcome/i)).toBeInTheDocument();
     expect(screen.getByText(/Continue/i)).toBeInTheDocument();
   });
 
@@ -362,7 +362,7 @@ describe('ApprenticeWelcome', () => {
         <ApprenticeWelcome onClose={onClose} />
       </LanguageProvider>
     );
-    fireEvent.click(screen.getByText(/Skip Rite/i));
+    fireEvent.click(screen.getByText(/Skip/i));
     expect(onClose).toHaveBeenCalledTimes(1);
   });
 });
@@ -490,7 +490,7 @@ describe('SettingsView', () => {
     expect(screen.getByText('Ritual Chamber')).toBeInTheDocument();
     const select = screen.getByLabelText(/Language/i);
     expect(select).toBeInTheDocument();
-    expect(select.value).toBe('grimoire');
+    expect(select.value).toBe('plain');
   });
 
   it('points the GitHub link at the real repository', () => {
@@ -550,7 +550,7 @@ describe('SettingsView', () => {
     expect(screen.getByText(/Machine-readable backup/i)).toBeInTheDocument();
     expect(screen.getByText(/Human-readable summary/i)).toBeInTheDocument();
     // Import UI
-    expect(screen.getByText('Restore from config')).toBeInTheDocument();
+    expect(screen.getByText(/Restore from config/i)).toBeInTheDocument();
     expect(screen.getByPlaceholderText(/Paste a previously exported/i)).toBeInTheDocument();
     expect(screen.getByText('Restore Config')).toBeInTheDocument();
   });

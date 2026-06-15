@@ -4,25 +4,14 @@ import { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import ModalEye from './ModalEye.tsx';
 import Icon from './Icon.jsx';
+import { useLanguage } from '../i18n/LanguageContext';
 
 const STORAGE_KEY = 'grimoire-welcome-dismissed';
 
-const panels = [
-  {
-    title: 'Welcome to the Grimoire',
-    body: 'This is a living collection of agent skills, organized as schools and spells. You do not need prior knowledge to use it.',
-    accent: 'Schools are skill families; spells are individual skills you can inspect or combine.',
-  },
-  {
-    title: 'Find What Ails You',
-    body: 'Use the orb to search by name, topic, or symptom. If you are unsure, the wizard can guide you to a likely incantation.',
-    accent: 'Search works across every school at once, so you do not need to know where a skill lives.',
-  },
-  {
-    title: 'Brew and Iterate',
-    body: 'Combine spells in the recipe lab, open them for details, and reuse them in your own workflows.',
-    accent: 'Your progress is not tracked. This is a reference tome, not a lesson plan.',
-  },
+const PANELS = [
+  { titleKey: 'welcomeTitle', bodyKey: 'welcomeBody1', accentKey: 'welcomeAccent1' },
+  { titleKey: 'welcomeTitle', bodyKey: 'welcomeBody2', accentKey: 'welcomeAccent2' },
+  { titleKey: 'welcomeTitle', bodyKey: 'welcomeBody3', accentKey: 'welcomeAccent3' },
 ];
 
 const transition = {
@@ -31,6 +20,7 @@ const transition = {
 };
 
 export default function ApprenticeWelcome({ onClose }) {
+  const { t } = useLanguage();
   const [index, setIndex] = useState(0);
   const modalRef = useRef(null);
 
@@ -52,7 +42,8 @@ export default function ApprenticeWelcome({ onClose }) {
     return () => modal.removeEventListener('keydown', handler);
   }, [index, onClose]);
 
-  const current = panels[index];
+  const current = PANELS[index];
+  const last = index === PANELS.length - 1;
 
   return (
     // eslint-disable-next-line jsx-a11y/click-events-have-key-events, jsx-a11y/no-static-element-interactions
@@ -62,7 +53,7 @@ export default function ApprenticeWelcome({ onClose }) {
         ref={modalRef}
         role="dialog"
         aria-modal="true"
-        aria-label="Apprentice welcome"
+        aria-label={t('welcomeTitle')}
         initial={{ opacity: 0, y: 18, scale: 0.97 }}
         animate={{ opacity: 1, y: 0, scale: 1 }}
         exit={{ opacity: 0, y: 18, scale: 0.97 }}
@@ -74,21 +65,21 @@ export default function ApprenticeWelcome({ onClose }) {
 
         <AnimatePresence mode="wait">
           <motion.div
-            key={current.title}
+            key={current.titleKey + index}
             initial={{ opacity: 0, x: 22 }}
             animate={{ opacity: 1, x: 0 }}
             exit={{ opacity: 0, x: -22 }}
             transition={transition}
           >
             <div className="welcome-symbol"><ModalEye size={36} /></div>
-            <h2 className="welcome-title">{current.title}</h2>
-            <p className="welcome-body">{current.body}</p>
-            <p className="welcome-accent">{current.accent}</p>
+            <h2 className="welcome-title">{t(current.titleKey)}</h2>
+            <p className="welcome-body">{t(current.bodyKey)}</p>
+            <p className="welcome-accent">{t(current.accentKey)}</p>
           </motion.div>
         </AnimatePresence>
 
         <div className="welcome-progress" aria-hidden="true">
-          {panels.map((_, i) => (
+          {PANELS.map((_, i) => (
             <div key={i} className={`welcome-pip${i === index ? ' active' : ''}${i < index ? ' done' : ''}`} />
           ))}
         </div>
@@ -99,23 +90,23 @@ export default function ApprenticeWelcome({ onClose }) {
             onClick={onClose}
             type="button"
           >
-            Skip Rite
+            {t('welcomeSkip')}
           </button>
           <div className="welcome-actions">
             {index > 0 ? (
               <button className="welcome-back" onClick={() => setIndex((prev) => prev - 1)} type="button">
-                ← Back
+                {t('welcomeBack')}
               </button>
             ) : null}
             <button
               className="welcome-next"
               onClick={() => {
-                if (index === panels.length - 1) onClose();
+                if (last) onClose();
                 else setIndex((prev) => prev + 1);
               }}
               type="button"
             >
-              {index === panels.length - 1 ? 'Enter the Grimoire' : 'Continue →'}
+              {last ? t('welcomeEnter') : t('welcomeNext')}
             </button>
           </div>
         </div>

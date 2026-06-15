@@ -414,7 +414,7 @@ export default function GrimoireEye({ searchQuery, onSearchChange, totalMatches,
             className="pupil-search__input"
           />
           {!searchQuery && (
-            <span className="pupil-search__placeholder">Search the abyss...</span>
+            <span className="pupil-search__placeholder">Search skills...</span>
           )}
           {searchQuery && totalMatches > 0 && (
             <span className="pupil-search__matches">{totalMatches} found</span>

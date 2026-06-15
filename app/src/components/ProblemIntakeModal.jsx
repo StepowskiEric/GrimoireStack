@@ -4,6 +4,7 @@ import { WIZARD_DATA } from '../data/schools.js';
 import ModalEye from './ModalEye.tsx';
 import SchoolSigil from './SchoolSigil.tsx';
 import Icon from './Icon.jsx';
+import { useLanguage } from '../i18n/LanguageContext';
 
 const CATEGORY_ICONS = {
   'bug': 'search',
@@ -19,18 +20,13 @@ const CATEGORY_ICONS = {
   'other': 'index',
 };
 
-const SUGGEST_EXAMPLE_PROBLEMS = [
-  'My tests are failing in CI but pass locally',
-  'I have a production bug with no clear repro',
-  'Need to refactor a 2000-line legacy module safely',
-  'Designing a new microservice and worried about coupling',
-  'My code review is taking forever, want to focus on real issues',
-  'The agent keeps hallucinating APIs that do not exist',
-  'Need to coordinate three subagents without losing context',
-  'Want to verify an answer before I commit to it',
+const EXAMPLE_KEYS = [
+  'intakeExample1', 'intakeExample2', 'intakeExample3', 'intakeExample4',
+  'intakeExample5', 'intakeExample6', 'intakeExample7', 'intakeExample8',
 ];
 
 export default function ProblemIntakeModal({ onClose, onSelectSpell }) {
+  const { t } = useLanguage();
   const modalRef = useRef(null);
   const [query, setQuery] = useState('');
   const [activeCategory, setActiveCategory] = useState(null);
@@ -40,8 +36,8 @@ export default function ProblemIntakeModal({ onClose, onSelectSpell }) {
     if (!modal) return;
     const focusable = modal.querySelectorAll('button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])');
     const first = focusable[0];
-    first?.focus();
     const last = focusable[focusable.length - 1];
+    first?.focus();
     const handler = (e) => {
       if (e.key === 'Escape') { onClose(); return; }
       if (e.key !== 'Tab' || !focusable.length) return;
@@ -52,7 +48,6 @@ export default function ProblemIntakeModal({ onClose, onSelectSpell }) {
     return () => modal.removeEventListener('keydown', handler);
   }, [onClose]);
 
-  // Build skill-id set for the active category
   const categorySkillIds = useMemo(() => {
     if (!activeCategory) return null;
     const cat = WIZARD_DATA.find(c => c.id === activeCategory);
@@ -60,42 +55,34 @@ export default function ProblemIntakeModal({ onClose, onSelectSpell }) {
     return new Set(cat.situations.map(s => s.skill));
   }, [activeCategory]);
 
-  // Combined scoring: text match + optional category boost
   const matches = useMemo(() => {
-    // Always get text-based matches (even if query is empty, we still need something)
     const textResults = query.trim()
       ? grimoireIndex.matchProblem(query, { limit: 12 })
       : [];
 
-    // If no category active, return pure text results (limited to 6)
     if (!categorySkillIds) {
       return textResults.slice(0, 6);
     }
 
-    // With category: merge text results with category members not in text results
     const textMap = new Map();
     for (const r of textResults) {
       textMap.set(r.spell.skill, { ...r, score: r.score });
     }
 
-    // Add category skills not already covered by text, with boost score
     const boosted = [];
     for (const skillId of categorySkillIds) {
       const entry = grimoireIndex.resolveBySkill(skillId);
       if (!entry) continue;
       const existing = textMap.get(skillId);
       if (existing) {
-        // Boost existing text match
         existing.score += 3;
         boosted.push(existing);
         textMap.delete(skillId);
       } else {
-        // Add category skill with base boost score
         boosted.push({ spell: entry.spell, school: entry.school, score: 3 });
       }
     }
 
-    // Add remaining non-category text matches
     for (const r of textMap.values()) {
       boosted.push(r);
     }
@@ -104,7 +91,7 @@ export default function ProblemIntakeModal({ onClose, onSelectSpell }) {
     return boosted.slice(0, 6);
   }, [query, categorySkillIds]);
 
-  const examples = useMemo(() => SUGGEST_EXAMPLE_PROBLEMS, []);
+  const examples = useMemo(() => EXAMPLE_KEYS, []);
 
   const handleSubmit = (e) => {
     e?.preventDefault?.();
@@ -124,18 +111,26 @@ export default function ProblemIntakeModal({ onClose, onSelectSpell }) {
     setActiveCategory(prev => prev === catId ? null : catId);
   };
 
+  const categoryLabel = activeCategory
+    ? t(`wizard_${activeCategory}`)
+    : '';
+
+  const suggestedNoun = matches.length === 1
+    ? t('intakeSuggestedSingular')
+    : t('intakeSuggestedPlural');
+
   return (
     <div className="modal-overlay open" onClick={(e) => { if (e.target === e.currentTarget) onClose(); }} role="button" tabIndex={0} onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); onClose(); } }}>
-      <div className="modal intake-modal" ref={modalRef} role="dialog" aria-modal="true" aria-label="Describe your problem">
-        <button className="modal-close" onClick={onClose} aria-label="Close intake" type="button">
+      <div className="modal intake-modal" ref={modalRef} role="dialog" aria-modal="true" aria-label={t('intakeAriaLabel')}>
+        <button className="modal-close" onClick={onClose} aria-label={t('intakeClose')} type="button">
           <Icon name="close" size={18} />
         </button>
         <span className="modal-symbol"><ModalEye size={36} /></span>
-        <div className="modal-title">What Ails You?</div>
-        <div className="modal-school">Pick a category or describe your problem — the orb will suggest incantations.</div>
+        <div className="modal-title">{t('intakeTitle')}</div>
+        <div className="modal-school">{t('intakeSubtitle')}</div>
 
         {/* Category chips */}
-        <div className="intake-chips" role="group" aria-label="Problem categories">
+        <div className="intake-chips" role="group" aria-label={t('intakeCategoriesLabel')}>
           {WIZARD_DATA.map(cat => (
             <button
               key={cat.id}
@@ -145,7 +140,7 @@ export default function ProblemIntakeModal({ onClose, onSelectSpell }) {
               aria-pressed={activeCategory === cat.id}
             >
               <Icon name={CATEGORY_ICONS[cat.id] || 'help-circle'} size={13} />
-              <span>{cat.label}</span>
+              <span>{t(`wizard_${cat.id}`)}</span>
             </button>
           ))}
         </div>
@@ -155,8 +150,8 @@ export default function ProblemIntakeModal({ onClose, onSelectSpell }) {
             className="intake-textarea"
             value={query}
             onChange={(e) => setQuery(e.target.value)}
-            placeholder="e.g. 'I have a flaky test that only fails in CI' or 'I need to coordinate three agents'…"
-            aria-label="Describe your problem"
+            placeholder={t('intakePlaceholder')}
+            aria-label={t('intakeTextareaLabel')}
             rows={2}
           />
 
@@ -167,7 +162,7 @@ export default function ProblemIntakeModal({ onClose, onSelectSpell }) {
                 className="intake-clear-filter"
                 onClick={() => { setActiveCategory(null); setQuery(''); }}
               >
-                Clear filter
+                {t('intakeClearFilter')}
               </button>
             )}
             <button
@@ -175,7 +170,7 @@ export default function ProblemIntakeModal({ onClose, onSelectSpell }) {
               className="intake-submit"
               disabled={matches.length === 0}
             >
-              {activeCategory ? 'Find Spell' : 'Reveal Suggestions'}
+              {activeCategory ? t('intakeFindSpell') : t('intakeSubmit')}
             </button>
           </div>
         </form>
@@ -184,14 +179,14 @@ export default function ProblemIntakeModal({ onClose, onSelectSpell }) {
           {matches.length === 0 ? (
             <div className="intake-empty">
               {activeCategory
-                ? `No spells found in ${WIZARD_DATA.find(c => c.id === activeCategory)?.label}. Try a different category or add more detail.`
-                : 'The orb sees no clear match. Try broader terms, or browse by school.'}
+                ? t('intakeEmptyCategory', { category: categoryLabel })
+                : t('intakeNoMatch')}
             </div>
           ) : (
             <>
               <div className="intake-results-title">
-                {matches.length} suggested incantation{matches.length !== 1 ? 's' : ''}
-                {activeCategory ? ` in ${WIZARD_DATA.find(c => c.id === activeCategory)?.label}` : ''}
+                {matches.length} {suggestedNoun}
+                {activeCategory ? ` ${t('intakeInCategory', { category: categoryLabel })}` : ''}
               </div>
               <div className="intake-results-list">
                 {matches.map((m, i) => (
@@ -217,16 +212,16 @@ export default function ProblemIntakeModal({ onClose, onSelectSpell }) {
 
         {!matches.length && !activeCategory && (
           <div className="intake-examples">
-            <div className="intake-examples-title">Or try a sample problem:</div>
+            <div className="intake-examples-title">{t('intakeExamples')}</div>
             <div className="intake-examples-list">
-              {examples.map((ex) => (
+              {examples.map((key) => (
                 <button
-                  key={ex}
+                  key={key}
                   type="button"
                   className="intake-example"
-                  onClick={() => setQuery(ex)}
+                  onClick={() => setQuery(t(key))}
                 >
-                  {ex}
+                  {t(key)}
                 </button>
               ))}
             </div>

@@ -29,7 +29,7 @@ describe('ProblemIntakeModal', () => {
   it('renders the modal with title and textarea', () => {
     renderModal(<ProblemIntakeModal {...defaultProps} />);
     const modal = getModal();
-    expect(within(modal).getByText('What Ails You?')).toBeVisible();
+    expect(within(modal).getByText('Skill Finder')).toBeVisible();
     expect(within(modal).getByRole('textbox')).toBeVisible();
   });
 
@@ -51,7 +51,7 @@ describe('ProblemIntakeModal', () => {
 
     await waitFor(() => {
       const refreshed = getModal();
-      expect(within(refreshed).getByText(/suggested incantation/i)).toBeVisible();
+      expect(within(refreshed).getByText(/suggested skill/i)).toBeVisible();
     });
   });
 
@@ -106,7 +106,7 @@ describe('ProblemIntakeModal', () => {
 
     await waitFor(() => {
       const refreshed = getModal();
-      expect(within(refreshed).getByText(/suggested incantation/i)).toBeVisible();
+      expect(within(refreshed).getByText(/suggested skill/i)).toBeVisible();
     });
   });
 
@@ -120,7 +120,7 @@ describe('ProblemIntakeModal', () => {
 
     await waitFor(() => {
       const refreshed = getModal();
-      expect(within(refreshed).getByRole('button', { name: /Find Spell/i })).toBeVisible();
+      expect(within(refreshed).getByRole('button', { name: /Find Skill/i })).toBeVisible();
     });
   });
 
@@ -178,7 +178,7 @@ describe('ProblemIntakeModal', () => {
 
     await waitFor(() => {
       const refreshed = getModal();
-      const submitBtn = within(refreshed).getByRole('button', { name: /Find Spell/i });
+      const submitBtn = within(refreshed).getByRole('button', { name: /Find Skill/i });
       expect(submitBtn.disabled).toBe(false);
     });
   });

@@ -2,8 +2,8 @@ const STORAGE_KEY = 'grimoire-lang';
 import { useState } from 'react';
 
 export function getLanguage() {
-  if (typeof window === 'undefined') return 'grimoire';
-  return localStorage.getItem(STORAGE_KEY) || 'grimoire';
+  if (typeof window === 'undefined') return 'plain';
+  return localStorage.getItem(STORAGE_KEY) || 'plain';
 }
 
 export function setLanguage(lang) {
@@ -12,13 +12,11 @@ export function setLanguage(lang) {
 
 export const messages = {
   grimoire: {
-    // App shell
     appTitle: 'GrimoireStack',
     appSubtitle: "The Warlock's Tome of Agent Incantations",
     castToggleLabel: 'Cast animation',
-    browseHint: 'Browse by school, scry by affliction in the orb below, or brew your own recipe combinations.',
+    browseHint: 'Browse by school, search by keyword or problem, or combine skills in the recipe lab.',
 
-    // Modal actions
     share: 'Share',
     shareCopied: 'Link Copied!',
     shareFailed: 'Copy failed',
@@ -29,7 +27,6 @@ export const messages = {
     viewPlain: 'Plain English',
     viewFull: 'Full Grimoire Entry',
 
-    // Ritual section
     ritualTitle: 'Ritual of Summoning',
     ritualSub: 'To bind these incantations to your own workshop, inscribe them into your agent\'s grimoire. The following rites summon the full collection or any single spell.',
     primaryIncantation: 'The Primary Incantation',
@@ -44,7 +41,6 @@ export const messages = {
     companionDesc: 'Two optional companions ship alongside the incantations:',
     inscribedToast: 'The incantation has been inscribed. Paste it into your terminal to summon.',
 
-    // Recipe Lab (themed versions)
     recipeTitle: 'Recipe Lab',
     recipeSub: 'Select 2–5 incantations below and brew a custom ritual',
     cauldronLabel: 'Cauldron',
@@ -54,11 +50,9 @@ export const messages = {
     incantationsLabel: 'Incantations',
     removeChipTitle: 'Click to remove',
 
-    // Tome of Ailments
     tomeTitle: '⟐ Tome of Common Ailments',
     tomeSubtitle: 'Describe your affliction to find the right incantation',
 
-    // Summoning Circle
     summoningOpen: 'Open Summoning Circle',
     summoningClose: 'Close Summoning Circle',
     circleTitle: 'The Summoning Circle',
@@ -66,27 +60,22 @@ export const messages = {
     bind: 'Bind to Summoning Circle',
     unbindLabel: 'Unbind from Summoning Circle',
 
-    // Scrying Orb
     orbLabel: 'Click to search',
     orbTry: 'Try:',
-    orbConsult: 'Not sure what you need? Consult the Witch Doctor →',
+    orbConsult: 'Not sure what you need? Try the Skill Finder →',
 
-    // Footer
     footerTagline: 'Forge your own incantations',
     footerInstall: 'To summon:',
     footerRitualTab: 'visit the Ritual tab above',
 
-    // Spell Card
     clickToReveal: 'click to reveal',
     revealHint: 'click to reveal',
 
-    // Misc
     skillPath: 'Skill Path',
     noFullEntry: 'No full grimoire entry found for this incantation.',
     noFullEntryHint: 'The scroll may still be in the scribe\'s hands.',
     mdLoading: 'Unfurling the scroll...',
 
-    // Marginalia
     marginaliaTitle: 'Apprentice Marginalia',
     marginaliaPlaceholder: "Scribe your own notes here. They stay on this device.",
     marginaliaErase: 'Erase',
@@ -95,43 +84,36 @@ export const messages = {
     marginaliaSaved: 'saved',
     marginaliaCleared: 'cleared',
 
-    // Stale-link banner
     notFoundTitle: 'The incantation has been unbound',
     notFoundMessage: 'No spell named {skill} is inscribed in the current grimoire.',
     notFoundSuggestionsLead: 'Did you mean…',
     notFoundDismiss: 'Dismiss',
+    notFoundAria: 'Unknown incantation {skill}. Suggestion banner.',
 
-    // Cast the bones
     castBones: 'Cast the bones',
     castBonesTitle: 'Open a random incantation',
 
-    // Shortcuts modal
     shortcutsTitle: 'Runes of Power',
     shortcutsSubtitle: 'Keyboard shortcuts for the warlock on the go',
     shortcutsFootnote: 'Shortcuts are inert when typing in the search or a note.',
     shortcutsClose: 'Close cheatsheet',
 
-    // Install prompt
     installTitle: 'Summon GrimoireStack to your device',
     installAction: 'Install',
     installDismiss: 'Dismiss install',
 
-    // Footer
     shortcutsLink: 'keyboard shortcuts',
 
-    // Filters
     filterSchoolLabel: 'School:',
     filterTierLabel: 'Tier:',
     filterFavorites: 'Favorites',
     filterClear: 'Clear',
     filterFavoritesTitle: 'Show only favorited incantations',
 
-    // Summoning Circle
     recentTab: 'Recently Cast ({count})',
     favoritesTab: 'Favorites ({count})',
     recentEmpty: 'No spells cast yet. Open one to begin your trail.',
 
-    // New tabs
     indexTab: 'Index',
     graphTab: 'Graph',
     changelogTab: 'Changelog',
@@ -139,7 +121,6 @@ export const messages = {
     graphSub: 'The grimoire as a graph — spells are nodes, synergies are edges.',
     changelogSub: 'Recently inscribed and revised incantations.',
 
-    // Compare
     compareTitle: 'Compare Incantations',
     compareSubtitle: 'Side-by-side comparison of two spells',
     comparePickFirst: '+ Pick first spell',
@@ -149,36 +130,99 @@ export const messages = {
     compareDiff: 'Different',
     compareSame: 'Same',
 
-    // Problem intake
-    intakeTitle: 'What Ails You?',
-    intakeSubtitle: 'Describe your problem in plain language — the orb will suggest incantations.',
+    intakeTitle: 'Skill Finder',
+    intakeSubtitle: 'Pick a category or describe your problem — the orb will suggest incantations.',
     intakePlaceholder: "e.g. 'I have a flaky test that only fails in CI' or 'I need to coordinate three agents'…",
     intakeSubmit: 'Reveal Suggestions',
     intakeExamples: 'Or try a sample problem:',
     intakeNoMatch: 'The orb sees no clear match. Try broader terms, or browse by school.',
-    intakeSuggested: '{count} suggested incantation{plural}',
+    intakeSuggestedSingular: 'suggested incantation',
+    intakeSuggestedPlural: 'suggested incantations',
+    intakeClearFilter: 'Clear filter',
+    intakeFindSpell: 'Find Spell',
+    intakeEmptyCategory: 'No spells found in {category}. Try a different category or add more detail.',
+    intakeInCategory: 'in {category}',
+    intakeAriaLabel: 'Describe your problem',
+    intakeClose: 'Close intake',
+    intakeCategoriesLabel: 'Problem categories',
+    intakeTextareaLabel: 'Describe your problem',
+    intakeExample1: 'My tests are failing in CI but pass locally',
+    intakeExample2: 'I have a production bug with no clear repro',
+    intakeExample3: 'Need to refactor a 2000-line legacy module safely',
+    intakeExample4: 'Designing a new microservice and worried about coupling',
+    intakeExample5: 'My code review is taking forever, want to focus on real issues',
+    intakeExample6: 'The agent keeps hallucinating APIs that do not exist',
+    intakeExample7: 'Need to coordinate three subagents without losing context',
+    intakeExample8: 'Want to verify an answer before I commit to it',
 
-    // Export
+    'wizard_bug': 'Bug / Failure / Regression',
+    'wizard_reasoning': 'Planning & Decisions',
+    'wizard_code-review': 'Code Review & Quality',
+    'wizard_architecture': 'Architecture & Design',
+    'wizard_refactoring': 'Refactoring & Code Improvement',
+    'wizard_testing-skill': 'Testing & Evaluation',
+    'wizard_api-data': 'API, Network & Data Fetching',
+    'wizard_output-quality': 'Output Quality & Verification',
+    'wizard_collaboration': 'Agent Collaboration & Memory',
+    'wizard_cognition': 'Cognitive Load & Metacognition',
+    'wizard_other': 'Other & Edge Cases',
+
+    welcomeTitle: 'Welcome to the Grimoire',
+    welcomeBody1: 'This is a living collection of agent skills, organized as schools and spells. You do not need prior knowledge to use it.',
+    welcomeAccent1: 'Schools are skill families; spells are individual skills you can inspect or combine.',
+    welcomeBody2: 'Use the orb to search by name, topic, or symptom. If you are unsure, the wizard can guide you to a likely incantation.',
+    welcomeAccent2: 'Search works across every school at once, so you do not need to know where a skill lives.',
+    welcomeBody3: 'Combine spells in the recipe lab, open them for details, and reuse them in your own workflows.',
+    welcomeAccent3: 'Your progress is not tracked. This is a reference tome, not a lesson plan.',
+    welcomeSkip: 'Skip Rite',
+    welcomeBack: '← Back',
+    welcomeNext: 'Continue →',
+    welcomeEnter: 'Enter the Grimoire',
+
+    languageGrimoire: 'Grimoire',
+    languagePlain: 'Plain',
+    switchToPlain: 'Switch to plain English',
+    switchToGrimoire: 'Switch to themed (grimoire) language',
+
+    settingsTitle: 'Ritual Chamber',
+    settingsSub: 'Configure how the incantations speak to you.',
+    settingsLanguage: 'Language',
+    settingsData: 'Data',
+    settingsDisplay: 'Display',
+    settingsAbout: 'About',
+    settingsThemed: 'Themed',
+    settingsVoiceTitle: 'Voice of the Tome',
+    settingsVoiceSub: 'Switch between the grimoire\'s high tongue and mortal speech. The grimoire language calls the catalog by its true names; plain language speaks in workshop terms.',
+    settingsLanguageLabel: 'Language',
+    settingsVaultTitle: 'Vault Inscription',
+    settingsVaultSub: 'Copy your binding circle — favorites, marginalia, and the trail of recently bound spells — to clipboard. The orb preserves nothing in the cloud; this is the only path between devices.',
+    settingsImportHint: 'Paste a previously exported JSON config to restore your data.',
+    settingsSightTitle: 'Sight of the Eye',
+    settingsSightSub: 'The Lidless Eye opens whenever a spell is summoned. The lid falls; the pupil dilates; the incantation reveals itself. Turn this off for those who prefer the quick reveal.',
+    settingsEnableSounds: 'Enable sounds',
+    settingsSoundsHint: 'Silences the ambient drone, page creaks, cackles, and the distant background whispers. Mute the incantation if the workshop demands silence.',
+    settingsAboutTitle: 'Of This Tome',
+    settingsAboutBody: 'GrimoireStack is a living codex of agentic incantations — skills for debugging, reasoning, code review, architecture, and the darker arts of collaboration. These incantations were not meant for mortal eyes, but the wardens are weakening.',
+    settingsSourceRepo: 'Source Repository',
+
     exportJson: 'JSON',
     exportMarkdown: 'Markdown',
     exportLabel: 'Export your config:',
     exportJsonDesc: 'Inscribe your binding circle in runic script. Use this to restore favorites, notes, and history later.',
     exportMdDesc: 'A mortal-readable scroll. Good for sharing or reference.',
-    importLabel: 'Restore from config:',
     importPlaceholder: 'Paste a previously exported config here…',
+    importHeading: 'Restore from config',
     importBtn: 'Restore Config',
     importSuccess: 'Config restored.',
     importFailed: 'Invalid runic format.',
     importNoData: 'No data found in pasted config.',
   },
   plain: {
-    // App shell
     appTitle: 'Agent Skills Catalog',
     appSubtitle: 'A collection of reusable AI agent skills',
     castToggleLabel: 'Cast animation',
     browseHint: 'Browse by category, search by keyword or problem description, or combine skills in the recipe lab.',
 
-    // Modal actions
     share: 'Share',
     shareCopied: 'Link Copied!',
     shareFailed: 'Copy failed',
@@ -189,7 +233,6 @@ export const messages = {
     viewPlain: 'Plain Description',
     viewFull: 'Full Documentation',
 
-    // Ritual section
     ritualTitle: 'Installation Guide',
     ritualSub: 'Install these skills into your agent\'s configuration folder. Below are commands for the full collection or individual skills.',
     primaryIncantation: 'Install All Skills',
@@ -204,7 +247,6 @@ export const messages = {
     companionDesc: 'Two optional companions ship alongside the skills:',
     inscribedToast: 'Copied to clipboard. Paste it into your terminal to install.',
 
-    // Recipe Lab
     recipeTitle: 'Recipe Lab',
     recipeSub: 'Select 2–5 skills below and create a custom combination',
     cauldronLabel: 'Selected Skills',
@@ -214,11 +256,9 @@ export const messages = {
     incantationsLabel: 'Skills',
     removeChipTitle: 'Click to remove',
 
-    // Tome of Ailments
     tomeTitle: '⟐ Common Problems',
     tomeSubtitle: 'Describe your problem to find the right skill',
 
-    // Summoning Circle
     summoningOpen: 'Open Favorites',
     summoningClose: 'Close Favorites',
     circleTitle: 'Favorites',
@@ -226,27 +266,22 @@ export const messages = {
     bind: 'Add to Favorites',
     unbindLabel: 'Remove from Favorites',
 
-    // Scrying Orb
     orbLabel: 'Click to search',
     orbTry: 'Try:',
-    orbConsult: 'Not sure what you need? Consult the Skill Recommender →',
+    orbConsult: 'Not sure what you need? Try the Skill Finder →',
 
-    // Footer
     footerTagline: 'Build your own skill combinations',
     footerInstall: 'To install:',
     footerRitualTab: 'visit the Installation tab above',
 
-    // Spell Card
     clickToReveal: 'click to view details',
     revealHint: 'click to view details',
 
-    // Misc
     skillPath: 'Skill ID',
     noFullEntry: 'No full documentation found for this skill.',
     noFullEntryHint: 'Documentation may still be in progress.',
     mdLoading: 'Loading documentation...',
 
-    // Marginalia
     marginaliaTitle: 'Personal Notes',
     marginaliaPlaceholder: 'Write your own notes here. They stay on this device.',
     marginaliaErase: 'Erase',
@@ -255,43 +290,36 @@ export const messages = {
     marginaliaSaved: 'saved',
     marginaliaCleared: 'cleared',
 
-    // Stale-link banner
     notFoundTitle: 'Skill not found',
     notFoundMessage: 'No skill named {skill} exists in the current catalog.',
     notFoundSuggestionsLead: 'Did you mean…',
     notFoundDismiss: 'Dismiss',
+    notFoundAria: 'Unknown skill {skill}. Suggestion banner.',
 
-    // Cast the bones
     castBones: 'Cast the bones',
     castBonesTitle: 'Open a random skill',
 
-    // Shortcuts modal
     shortcutsTitle: 'Keyboard Shortcuts',
     shortcutsSubtitle: 'Quick reference for power users',
     shortcutsFootnote: 'Shortcuts are inert when typing in the search or a note.',
     shortcutsClose: 'Close cheatsheet',
 
-    // Install prompt
     installTitle: 'Install GrimoireStack',
     installAction: 'Install',
     installDismiss: 'Dismiss install',
 
-    // Footer
     shortcutsLink: 'keyboard shortcuts',
 
-    // Filters
     filterSchoolLabel: 'Category:',
     filterTierLabel: 'Tier:',
     filterFavorites: 'Favorites',
     filterClear: 'Clear',
     filterFavoritesTitle: 'Show only favorited skills',
 
-    // Summoning Circle
     recentTab: 'Recently Viewed ({count})',
     favoritesTab: 'Favorites ({count})',
     recentEmpty: 'No skills viewed yet. Open one to start your trail.',
 
-    // New tabs
     indexTab: 'Index',
     graphTab: 'Graph',
     changelogTab: 'Changelog',
@@ -299,7 +327,6 @@ export const messages = {
     graphSub: 'The catalog as a graph — skills are nodes, connections are edges.',
     changelogSub: 'Recently added and updated skills.',
 
-    // Compare
     compareTitle: 'Compare Skills',
     compareSubtitle: 'Side-by-side comparison of two skills',
     comparePickFirst: '+ Pick first skill',
@@ -309,23 +336,88 @@ export const messages = {
     compareDiff: 'Different',
     compareSame: 'Same',
 
-    // Problem intake
-    intakeTitle: 'What Ails You?',
+    intakeTitle: 'Skill Finder',
     intakeSubtitle: 'Describe your problem in plain language to get skill suggestions.',
     intakePlaceholder: "e.g. 'I have a flaky test that only fails in CI' or 'I need to coordinate three agents'…",
     intakeSubmit: 'Reveal Suggestions',
     intakeExamples: 'Or try a sample problem:',
     intakeNoMatch: 'No clear match found. Try broader terms, or browse by category.',
-    intakeSuggested: '{count} suggested skill{plural}',
+    intakeSuggestedSingular: 'suggested skill',
+    intakeSuggestedPlural: 'suggested skills',
+    intakeClearFilter: 'Clear filter',
+    intakeFindSpell: 'Find Skill',
+    intakeEmptyCategory: 'No skills found in {category}. Try a different category or add more detail.',
+    intakeInCategory: 'in {category}',
+    intakeAriaLabel: 'Describe your problem',
+    intakeClose: 'Close intake',
+    intakeCategoriesLabel: 'Problem categories',
+    intakeTextareaLabel: 'Describe your problem',
+    intakeExample1: 'My tests are failing in CI but pass locally',
+    intakeExample2: 'I have a production bug with no clear repro',
+    intakeExample3: 'Need to refactor a 2000-line legacy module safely',
+    intakeExample4: 'Designing a new microservice and worried about coupling',
+    intakeExample5: 'My code review is taking forever, want to focus on real issues',
+    intakeExample6: 'The agent keeps hallucinating APIs that do not exist',
+    intakeExample7: 'Need to coordinate three subagents without losing context',
+    intakeExample8: 'Want to verify an answer before I commit to it',
 
-    // Export
+    'wizard_bug': 'Bug / Failure / Regression',
+    'wizard_reasoning': 'Planning & Decisions',
+    'wizard_code-review': 'Code Review & Quality',
+    'wizard_architecture': 'Architecture & Design',
+    'wizard_refactoring': 'Refactoring & Code Improvement',
+    'wizard_testing-skill': 'Testing & Evaluation',
+    'wizard_api-data': 'API, Network & Data Fetching',
+    'wizard_output-quality': 'Output Quality & Verification',
+    'wizard_collaboration': 'Agent Collaboration & Memory',
+    'wizard_cognition': 'Cognitive Load & Metacognition',
+    'wizard_other': 'Other & Edge Cases',
+
+    welcomeTitle: 'Welcome',
+    welcomeBody1: 'This is a living collection of agent skills, organized as categories and spells. You do not need prior knowledge to use it.',
+    welcomeAccent1: 'Categories are skill families; spells are individual skills you can inspect or combine.',
+    welcomeBody2: 'Use the search to find skills by name, topic, or symptom. If you are unsure, the wizard can guide you.',
+    welcomeAccent2: 'Search works across every category at once, so you do not need to know where a skill lives.',
+    welcomeBody3: 'Combine skills in the recipe lab, open them for details, and reuse them in your own workflows.',
+    welcomeAccent3: 'Your progress is not tracked. This is a reference catalog, not a lesson plan.',
+    welcomeSkip: 'Skip',
+    welcomeBack: '← Back',
+    welcomeNext: 'Continue →',
+    welcomeEnter: 'Enter the Catalog',
+
+    languageGrimoire: 'Grimoire',
+    languagePlain: 'Plain',
+    switchToPlain: 'Switch to plain English',
+    switchToGrimoire: 'Switch to themed (grimoire) language',
+
+    settingsTitle: 'Ritual Chamber',
+    settingsSub: 'Configure how the incantations speak to you.',
+    settingsLanguage: 'Language',
+    settingsData: 'Data',
+    settingsDisplay: 'Display',
+    settingsAbout: 'About',
+    settingsThemed: 'Themed',
+    settingsVoiceTitle: 'Voice of the Tome',
+    settingsVoiceSub: 'Switch between the grimoire\'s high tongue and mortal speech. The grimoire language calls the catalog by its true names; plain language speaks in workshop terms.',
+    settingsLanguageLabel: 'Language',
+    settingsVaultTitle: 'Vault Inscription',
+    settingsVaultSub: 'Copy your binding circle — favorites, marginalia, and the trail of recently bound spells — to clipboard. The orb preserves nothing in the cloud; this is the only path between devices.',
+    settingsImportHint: 'Paste a previously exported JSON config to restore your data.',
+    settingsSightTitle: 'Sight of the Eye',
+    settingsSightSub: 'The Lidless Eye opens whenever a spell is summoned. The lid falls; the pupil dilates; the incantation reveals itself. Turn this off for those who prefer the quick reveal.',
+    settingsEnableSounds: 'Enable sounds',
+    settingsSoundsHint: 'Silences the ambient drone, page creaks, cackles, and the distant background whispers. Mute the incantation if the workshop demands silence.',
+    settingsAboutTitle: 'Of This Tome',
+    settingsAboutBody: 'GrimoireStack is a living codex of agentic incantations — skills for debugging, reasoning, code review, architecture, and the darker arts of collaboration. These incantations were not meant for mortal eyes, but the wardens are weakening.',
+    settingsSourceRepo: 'Source Repository',
+
     exportJson: 'JSON',
     exportMarkdown: 'Markdown',
     exportLabel: 'Export your config:',
     exportJsonDesc: 'Machine-readable backup. Use this to restore favorites, notes, and history later.',
     exportMdDesc: 'Human-readable summary. Good for sharing or reference.',
-    importLabel: 'Restore from config:',
     importPlaceholder: 'Paste a previously exported JSON config here…',
+    importHeading: 'Restore from config',
     importBtn: 'Restore Config',
     importSuccess: 'Config restored.',
     importFailed: 'Invalid config format.',
@@ -339,9 +431,13 @@ export function useMessages() {
     setLanguage(value);
     setLang(value);
   };
-  const t = (key) => {
+  const t = (key, params = {}) => {
     const msgs = messages[lang] || messages.grimoire;
-    return msgs[key] || messages.grimoire[key] || key;
+    let str = msgs[key] || messages.grimoire[key] || key;
+    if (params && typeof str === 'string') {
+      str = str.replace(/\{(\w+)\}/g, (_, k) => params[k] ?? '');
+    }
+    return str;
   };
   return { lang, setLang: updateLang, t };
 }
