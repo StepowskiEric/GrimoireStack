@@ -784,7 +784,7 @@ const schools = [
       {
         "name": "STPA Ward",
         "skill": "unsafe-control-actions-hazard-analysis",
-        "effect": "Use this skill when the agent is about to recommend or perform an action that could create serious harm, instability, or irreversible damage.",
+        "effect": "No description provided.",
         "status": "—"
       },
       {

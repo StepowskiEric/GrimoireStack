@@ -82,6 +82,7 @@ npx wrangler pages deploy dist --project-name grimoirestack
 - Keep theme text and UX copy in place; avoid redesigning unrelated surfaces.
 - Prefer minimal, reversible edits in `App.jsx` and `App.css`.
 - Match existing CSS patterns for modals, cards, and navigation.
+- Do not use useEffect(), check out the agent skill no-use-effect if needed for alternatives to useEffect
 
 ## Useful Paths
 

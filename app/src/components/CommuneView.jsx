@@ -6,6 +6,7 @@ import SanityMeter from './consultation/SanityMeter.jsx';
 import InsightMeter from './consultation/InsightMeter.jsx';
 import ResultCard from './consultation/ResultCard.jsx';
 import SigilSvg from './consultation/SigilSvg.jsx';
+import TentacleSvg from './consultation/TentacleSvg.jsx';
 import Icon from './Icon.jsx';
 
 /**
@@ -65,6 +66,7 @@ export default function CommuneView({ onSpellClick, audioEnabled = false }) {
       {/* Atmospheric backdrops — re-used from the app's visual primitives */}
       <div className="seance__backdrop" aria-hidden="true" />
       <SigilSvg sanity={sanity} />
+      <TentacleSvg sanity={sanity} />
 
       <header className="seance__header">
         <h1 className="seance__title">The Séance</h1>
