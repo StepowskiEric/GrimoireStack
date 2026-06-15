@@ -3,8 +3,6 @@ import SchoolSigil from './SchoolSigil.tsx';
 import { grimoireIndex } from '../data/grimoireIndexInstance.js';
 
 export default function RecipeLabView({
-  schools,
-  _onSpellClick,
   onCompareOpen,
   onCompareTwo,
 }) {
@@ -13,12 +11,7 @@ export default function RecipeLabView({
   const [page, setPage] = useState(0);
   const PAGE_SIZE = 60;
 
-  const allSpells = useMemo(() => {
-    if (Array.isArray(schools) && schools.length > 0) {
-      return schools.flatMap(s => s.spells.map(sp => ({ spell: sp, school: s })));
-    }
-    return grimoireIndex.flatEntries();
-  }, [schools]);
+  const allSpells = useMemo(() => grimoireIndex.flatEntries(), []);
 
   const filteredSpells = useMemo(() => {
     const q = query.trim().toLowerCase();

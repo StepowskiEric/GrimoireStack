@@ -23,13 +23,34 @@ const sampleSchools = [
   },
 ];
 
+// Test school with many spells for the recent-limit test
+const manyTestSchool = {
+  id: 'test',
+  name: 'Test School',
+  spells: Array.from({ length: 15 }, (_, i) => ({
+    name: `Spell ${i}`,
+    skill: `skill-${i}`,
+    effect: `effect ${i}`,
+  })),
+};
+
+const flatEntries = [
+  ...sampleSchools.flatMap(s => s.spells.map(sp => ({ spell: sp, school: s }))),
+  ...manyTestSchool.spells.map(sp => ({ spell: sp, school: manyTestSchool })),
+];
+
+vi.mock('../data/grimoireIndexInstance.js', () => ({
+  grimoireIndex: {
+    flatEntries: () => flatEntries,
+  },
+}));
+
 const renderWithLang = (ui) => render(<LanguageProvider>{ui}</LanguageProvider>);
 
 describe('FavoritesView', () => {
   it('renders the Vault title', () => {
     renderWithLang(
       <FavoritesView
-        schools={sampleSchools}
         favorites={[]}
         recent={[]}
         marginalia={{}}
@@ -44,7 +65,6 @@ describe('FavoritesView', () => {
   it('shows empty state for favorites when none are bound', () => {
     renderWithLang(
       <FavoritesView
-        schools={sampleSchools}
         favorites={[]}
         recent={[]}
         marginalia={{}}
@@ -59,7 +79,6 @@ describe('FavoritesView', () => {
   it('shows empty state for recent when none viewed', () => {
     renderWithLang(
       <FavoritesView
-        schools={sampleSchools}
         favorites={[]}
         recent={[]}
         marginalia={{}}
@@ -74,7 +93,6 @@ describe('FavoritesView', () => {
   it('shows empty state for marginalia when none exist', () => {
     renderWithLang(
       <FavoritesView
-        schools={sampleSchools}
         favorites={[]}
         recent={[]}
         marginalia={{}}
@@ -89,7 +107,6 @@ describe('FavoritesView', () => {
   it('renders favorite spells by name', () => {
     renderWithLang(
       <FavoritesView
-        schools={sampleSchools}
         favorites={['Trace Sight']}
         recent={[]}
         marginalia={{}}
@@ -104,7 +121,6 @@ describe('FavoritesView', () => {
   it('shows the count of bound incantations', () => {
     renderWithLang(
       <FavoritesView
-        schools={sampleSchools}
         favorites={['Trace Sight', 'Bisect Divination']}
         recent={[]}
         marginalia={{}}
@@ -120,7 +136,6 @@ describe('FavoritesView', () => {
     const onSpellClick = vi.fn();
     renderWithLang(
       <FavoritesView
-        schools={sampleSchools}
         favorites={['Trace Sight']}
         recent={[]}
         marginalia={{}}
@@ -138,7 +153,6 @@ describe('FavoritesView', () => {
     const onToggleFavorite = vi.fn();
     renderWithLang(
       <FavoritesView
-        schools={sampleSchools}
         favorites={['Trace Sight']}
         recent={[]}
         marginalia={{}}
@@ -155,7 +169,6 @@ describe('FavoritesView', () => {
   it('renders recently viewed spells', () => {
     renderWithLang(
       <FavoritesView
-        schools={sampleSchools}
         favorites={[]}
         recent={[{ name: 'Razor of Parsimony' }]}
         marginalia={{}}
@@ -170,7 +183,6 @@ describe('FavoritesView', () => {
   it('shows the school name under each spell', () => {
     renderWithLang(
       <FavoritesView
-        schools={sampleSchools}
         favorites={['Trace Sight']}
         recent={[]}
         marginalia={{}}
@@ -185,7 +197,6 @@ describe('FavoritesView', () => {
   it('renders marginalia notes', () => {
     renderWithLang(
       <FavoritesView
-        schools={sampleSchools}
         favorites={[]}
         recent={[]}
         marginalia={{ 'Trace Sight': 'Very useful for prod incidents' }}
@@ -201,7 +212,6 @@ describe('FavoritesView', () => {
   it('handles marginalia from hook object with notes property', () => {
     renderWithLang(
       <FavoritesView
-        schools={sampleSchools}
         favorites={[]}
         recent={[]}
         marginalia={{ notes: { 'Trace Sight': 'My note' } }}
@@ -216,20 +226,8 @@ describe('FavoritesView', () => {
 
   it('limits recent spells to 10', () => {
     const manyRecent = Array.from({ length: 15 }, (_, i) => ({ name: `Spell ${i}` }));
-    const manySchools = [
-      {
-        id: 'test',
-        name: 'Test School',
-        spells: Array.from({ length: 15 }, (_, i) => ({
-          name: `Spell ${i}`,
-          skill: `skill-${i}`,
-          effect: `effect ${i}`,
-        })),
-      },
-    ];
     renderWithLang(
       <FavoritesView
-        schools={manySchools}
         favorites={[]}
         recent={manyRecent}
         marginalia={{}}
@@ -246,7 +244,6 @@ describe('FavoritesView', () => {
   it('favorites section uses role="button" for keyboard accessibility', () => {
     renderWithLang(
       <FavoritesView
-        schools={sampleSchools}
         favorites={['Trace Sight']}
         recent={[]}
         marginalia={{}}
@@ -264,7 +261,6 @@ describe('FavoritesView', () => {
     const onSpellClick = vi.fn();
     renderWithLang(
       <FavoritesView
-        schools={sampleSchools}
         favorites={['Trace Sight']}
         recent={[]}
         marginalia={{}}
@@ -281,7 +277,6 @@ describe('FavoritesView', () => {
   it('does not crash when marginalia has non-string values', () => {
     renderWithLang(
       <FavoritesView
-        schools={sampleSchools}
         favorites={[]}
         recent={[]}
         marginalia={{ 'Trace Sight': 12345 }}

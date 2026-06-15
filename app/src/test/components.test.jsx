@@ -38,6 +38,37 @@ const multiSchool = [
   },
 ];
 
+vi.mock('../data/grimoireIndexInstance.js', () => {
+  const trace = { name: 'Trace Sight', skill: 'log-trace-correlation', effect: 'Maps stack traces to source code and suggests fixes.', status: 'Proven' };
+  const jest = { name: 'Jest Invocation', skill: 'jest-testing', effect: 'Write correct Jest tests.', status: 'New' };
+  const debugging = { id: 'debugging', name: 'School of Remediation', real: 'Debugging', desc: 'Incantations to banish bugs.', spells: [trace] };
+  const testing = { id: 'testing', name: 'School of Validation', real: 'Testing', desc: 'Incantations to prove correctness.', spells: [jest] };
+  const manySchool = { id: 'many', name: 'School of Many', real: 'Many', desc: '', spells: [] };
+  for (let i = 0; i < 40; i++) manySchool.spells.push({ name: `Spell ${i}`, skill: `skill-${i}`, effect: `effect ${i}` });
+
+  const mockSchools = [debugging, testing, manySchool];
+  const mockFlat = [];
+  for (const s of mockSchools) for (const sp of s.spells) mockFlat.push({ spell: sp, school: s });
+  const mockMap = new Map();
+  for (const s of mockSchools) mockMap.set(s.id, s);
+
+  return {
+    grimoireIndex: {
+      flatEntries: () => mockFlat,
+      getSchoolMap: () => mockMap,
+      getStats: () => ({ totalSchools: mockSchools.length, totalSpells: mockFlat.length }),
+      getSchoolForSkill: () => null,
+      resolveBySkill: (skill) => mockFlat.find(e => e.spell.skill === skill) || null,
+      similarTo: (query) => {
+        const q = query.toLowerCase();
+        return mockFlat
+          .filter(e => e.spell.skill.toLowerCase().includes(q) || e.spell.name.toLowerCase().includes(q))
+          .map(e => ({ spell: e.spell, school: e.school }));
+      },
+    },
+  };
+});
+
 // ── SpellCard ────────────────────────────────────────
 describe('SpellCard', () => {
   it('renders the spell name and incantation', () => {
@@ -107,7 +138,6 @@ describe('GrimoireStackLayout search results', () => {
   it('shows matching spells in the library view when searchQuery is set', () => {
     const { container } = renderWithLang(
       <GrimoireStackLayout
-        schools={multiSchool}
         currentSchool="debugging"
         onSchoolSelect={() => {}}
         searchQuery="jest"
@@ -156,7 +186,6 @@ describe('BestiaryCodex', () => {
   it('renders the codex title and stats', () => {
     renderWithLang(
       <BestiaryCodex
-        schools={multiSchool}
         onSpellClick={() => {}}
         isFavorited={() => false}
         hasNote={() => false}
@@ -170,7 +199,6 @@ describe('BestiaryCodex', () => {
   it('lists every spell from the provided schools', () => {
     renderWithLang(
       <BestiaryCodex
-        schools={multiSchool}
         onSpellClick={() => {}}
         isFavorited={() => false}
         hasNote={() => false}
@@ -183,7 +211,6 @@ describe('BestiaryCodex', () => {
   it('filters by search query', () => {
     renderWithLang(
       <BestiaryCodex
-        schools={multiSchool}
         onSpellClick={() => {}}
         isFavorited={() => false}
         hasNote={() => false}
@@ -198,7 +225,6 @@ describe('BestiaryCodex', () => {
   it('shows the empty state when filters return nothing', () => {
     renderWithLang(
       <BestiaryCodex
-        schools={multiSchool}
         onSpellClick={() => {}}
         isFavorited={() => false}
         hasNote={() => false}
@@ -213,7 +239,6 @@ describe('BestiaryCodex', () => {
     const onClick = vi.fn();
     renderWithLang(
       <BestiaryCodex
-        schools={multiSchool}
         onSpellClick={onClick}
         isFavorited={() => false}
         hasNote={() => false}
@@ -227,7 +252,6 @@ describe('BestiaryCodex', () => {
   it('renders a Clear button when filters are active', () => {
     renderWithLang(
       <BestiaryCodex
-        schools={multiSchool}
         onSpellClick={() => {}}
         isFavorited={() => false}
         hasNote={() => false}
@@ -241,7 +265,6 @@ describe('BestiaryCodex', () => {
   it('shows tier badges', () => {
     renderWithLang(
       <BestiaryCodex
-        schools={multiSchool}
         onSpellClick={() => {}}
         isFavorited={() => false}
         hasNote={() => false}
@@ -258,7 +281,7 @@ describe('RecipeLabView', () => {
   it('renders the rituals title and a search input', () => {
     render(
       <LanguageProvider>
-        <RecipeLabView schools={multiSchool} onSpellClick={() => {}} />
+        <RecipeLabView onSpellClick={() => {}} />
       </LanguageProvider>
     );
     expect(screen.getByText('Rituals')).toBeInTheDocument();
@@ -266,20 +289,9 @@ describe('RecipeLabView', () => {
   });
 
   it('shows all spells, not just the first 20', () => {
-    const many = {
-      id: 'many',
-      name: 'School of Many',
-      real: 'Many',
-      desc: '',
-      spells: Array.from({ length: 40 }, (_, i) => ({
-        name: `Spell ${i}`,
-        skill: `skill-${i}`,
-        effect: `effect ${i}`,
-      })),
-    };
     render(
       <LanguageProvider>
-        <RecipeLabView schools={[many]} onSpellClick={() => {}} />
+        <RecipeLabView onSpellClick={() => {}} />
       </LanguageProvider>
     );
     // First page is 60, so all 40 should be visible
@@ -292,7 +304,6 @@ describe('RecipeLabView', () => {
     render(
       <LanguageProvider>
         <RecipeLabView
-          schools={multiSchool}
           onSpellClick={() => {}}
           onCompareTwo={onCompareTwo}
         />

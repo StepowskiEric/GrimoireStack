@@ -4,7 +4,6 @@ import Icon from './Icon.jsx';
 import { grimoireIndex } from '../data/grimoireIndexInstance.js';
 
 export default function FavoritesView({
-  schools,
   favorites,
   recent,
   marginalia,
@@ -12,12 +11,7 @@ export default function FavoritesView({
   isFavorited,
   onToggleFavorite,
 }) {
-  const allSpells = useMemo(() => {
-    if (Array.isArray(schools) && schools.length > 0) {
-      return schools.flatMap(s => s.spells.map(sp => ({ spell: sp, school: s })));
-    }
-    return grimoireIndex.flatEntries();
-  }, [schools]);
+  const allSpells = useMemo(() => grimoireIndex.flatEntries(), []);
 
   // Get all favorite spells
   const favoriteSpells = useMemo(() => {

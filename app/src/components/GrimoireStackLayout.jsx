@@ -56,7 +56,6 @@ const TAB_LABELS = {
 };
 
 export default function GrimoireStackLayout({
-  schools,
   currentSchool,
   onSchoolSelect,
   searchQuery,
@@ -215,13 +214,11 @@ export default function GrimoireStackLayout({
       case TABS.LIBRARY:
         return searchQuery ? (
           <AllSchoolsView
-            schools={schools}
             onSchoolSelect={handleSchoolCardClick}
             searchQuery={searchQuery}
           />
         ) : (
           <SchoolCardGrid
-            schools={schools}
             featuredSchools={featuredSchools}
             onSchoolSelect={handleSchoolCardClick}
           />
@@ -229,7 +226,6 @@ export default function GrimoireStackLayout({
       case TABS.SPELLBOOK:
         return (
           <FavoritesView
-            schools={schools}
             favorites={favorites}
             recent={recent}
             marginalia={marginalia}
@@ -241,7 +237,6 @@ export default function GrimoireStackLayout({
       case TABS.RECIPE_LAB:
         return (
           <RecipeLabView
-            schools={schools}
             onSpellClick={handleSpellCardClick}
             onCompareOpen={onCompareOpen}
             onCompareTwo={onCompareTwo}
@@ -250,7 +245,6 @@ export default function GrimoireStackLayout({
       case TABS.ARCANE_TOOLS:
         return (
           <BestiaryCodex
-            schools={schools}
             onSpellClick={handleSpellCardClick}
             isFavorited={isFavorited}
             hasNote={hasNote}
@@ -287,7 +281,6 @@ export default function GrimoireStackLayout({
       default:
         return (
           <SchoolCardGrid
-            schools={schools}
             featuredSchools={featuredSchools}
             onSchoolSelect={handleSchoolCardClick}
           />
@@ -346,21 +339,6 @@ export default function GrimoireStackLayout({
                 <span className="eye-stat__label">Spells</span>
               </div>
             </div>
-
-            {/* Warden Badge */}
-            <div className="warden-badge">
-              <div className="warden-badge__title">The Great Eye</div>
-              <div className="warden-badge__status">
-                <span className="warden-badge__status-dot" />
-                Weakened
-              </div>
-              <div className="warden-badge__progress">
-                <div className="warden-badge__progress-bar">
-                  <div className="warden-badge__progress-fill" style={{ width: '100%' }} />
-                </div>
-                <span className="warden-badge__progress-text">6 of 6 Schools Researched</span>
-              </div>
-            </div>
           </div>
 
           <nav className="eye-sidebar__nav" aria-label="Sidebar navigation">
@@ -379,13 +357,6 @@ export default function GrimoireStackLayout({
 
           <div className="eye-sidebar__footer">
             <LanguageToggle />
-            <div className="eye-sidebar__footer-divider" />
-            <button className="eye-footer-link" onClick={() => handleTabSelect(TABS.SPELL_WEB)} type="button">
-              <Icon name="graph" size={14} /> Spell Web
-            </button>
-            <button className="eye-footer-link" onClick={() => handleTabSelect(TABS.CHANGELOG)} type="button">
-              <Icon name="changelog" size={14} /> Changelog
-            </button>
             <div className="eye-sidebar__footer-divider" />
             <button className="eye-footer-link" onClick={onShowShortcuts} type="button">
               <Icon name="sigil" size={14} /> Shortcuts

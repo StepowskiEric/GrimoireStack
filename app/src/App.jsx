@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback, useRef, useMemo, lazy, Suspense } from 'react';
 import { BrowserRouter } from 'react-router-dom';
-import schools from './data/schools.js';
+import { grimoireIndex } from './data/grimoireIndexInstance.js';
 import { pageCreak } from './audio/sounds.js';
 import { useAudioState } from './hooks/useAudioState.js';
 import LidlessEyeCast from './components/LidlessEyeCast.tsx';
@@ -13,7 +13,6 @@ import { useRecentlyViewed } from './hooks/useRecentlyViewed.js';
 import { useMarginalia } from './hooks/useMarginalia.js';
 import { useKeyboardShortcuts } from './hooks/useKeyboardShortcuts.js';
 import { useFilterState } from './hooks/useFilterState.js';
-import { grimoireIndex } from './data/grimoireIndexInstance.js';
 import { LanguageProvider } from './i18n/LanguageContext';
 import { useSignals } from './hooks/useSignals.js';
 import { exportAsJson, exportAsMarkdown, copyToClipboard } from './utils/exporter.js';
@@ -39,7 +38,10 @@ export default function App() {
 }
 
 function AppInner() {
-  const [currentSchool, setCurrentSchool] = useState(schools[0].id);
+  const [currentSchool, setCurrentSchool] = useState(() => {
+    const schools = Array.from(grimoireIndex.getSchoolMap().values());
+    return schools[0]?.id || 'debugging';
+  });
   const { audioEnabled, toggleAudio } = useAudioState();
   const [castEnabled, setCastEnabled] = useState(() => localStorage.getItem('grimoire-cast') !== 'off');
   const [welcomeOpen, setWelcomeOpen] = useState(() => localStorage.getItem(WELCOME_STORAGE_KEY) !== 'true');
@@ -75,7 +77,7 @@ function AppInner() {
   }, [modal?.spell.skill, modal, recordRecent]);
 
   const handleCastBones = useCallback(() => {
-    const all = schools.flatMap((s) => s.spells.map((sp) => ({ spell: sp, school: s })));
+    const all = grimoireIndex.flatEntries();
     if (!all.length) return;
     const pick = all[Math.floor(Math.random() * all.length)];
     handleSpellClick(pick.spell, pick.school);
@@ -229,7 +231,6 @@ function AppInner() {
       
       {/* GrimoireStack Layout */}
       <GrimoireStackLayout
-        schools={schools}
         currentSchool={currentSchool}
         onSchoolSelect={(id) => {
           if (id === null) {

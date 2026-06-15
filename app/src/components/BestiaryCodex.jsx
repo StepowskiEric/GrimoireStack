@@ -2,7 +2,6 @@ import { useState, useMemo, useCallback } from 'react';
 import { TIER_META, getSpellTier } from '../data/tiers.js';
 import { getSpellLastUpdated } from '../data/changeFeed.js';
 import { grimoireIndex } from '../data/grimoireIndexInstance.js';
-import { toFlatEntries } from '../data/spellCore.js';
 import SchoolSigil from './SchoolSigil.tsx';
 
 const TIER_ORDER = ['archmage', 'master', 'adept', 'apprentice', 'faded'];
@@ -39,7 +38,6 @@ function _formatDate(iso) {
 }
 
 export default function BestiaryCodex({
-  schools,
   onSpellClick,
   isFavorited,
   hasNote,
@@ -55,25 +53,8 @@ export default function BestiaryCodex({
   const [page, setPage] = useState(0);
   const PAGE_SIZE = 50;
 
-  const all = useMemo(() => {
-    // Prefer the `schools` prop (so tests can inject custom data); fall back
-    // to the grimoireIndex derived view for the production runtime.
-    if (Array.isArray(schools) && schools.length > 0) {
-      const list = toFlatEntries(schools);
-      list.sort((a, b) => a.spell.name.localeCompare(b.spell.name));
-      return list;
-    }
-    return grimoireIndex.flatEntries();
-  }, [schools]);
-
-  const schoolMap = useMemo(() => {
-    if (Array.isArray(schools) && schools.length > 0) {
-      const m = new Map();
-      for (const s of schools) m.set(s.id, s);
-      return m;
-    }
-    return grimoireIndex.getSchoolMap();
-  }, [schools]);
+  const all = useMemo(() => grimoireIndex.flatEntries(), []);
+  const schoolMap = useMemo(() => grimoireIndex.getSchoolMap(), []);
 
   const filtered = useMemo(() => {
     const q = query.trim().toLowerCase();

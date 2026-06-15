@@ -24,6 +24,27 @@ const sampleSchools = [
   },
 ];
 
+vi.mock('../data/grimoireIndexInstance.js', () => {
+  const trace = { name: 'Trace Sight', skill: 'log-trace-correlation', effect: 'x', status: 'Proven' };
+  const razor = { name: 'Razor', skill: 'occams-razor', effect: 'y', status: 'New' };
+  const debugging = { id: 'debugging', real: 'Debugging', name: 'School of Remediation', desc: '', spells: [trace] };
+  const reasoning = { id: 'reasoning', real: 'Reasoning', name: 'School of Cognition', desc: '', spells: [razor] };
+  const mockSchools = [debugging, reasoning];
+  const mockFlat = [];
+  for (const s of mockSchools) for (const sp of s.spells) mockFlat.push({ spell: sp, school: s });
+  const mockMap = new Map();
+  for (const s of mockSchools) mockMap.set(s.id, s);
+
+  return {
+    grimoireIndex: {
+      flatEntries: () => mockFlat,
+      getSchoolMap: () => mockMap,
+      getStats: () => ({ totalSchools: mockSchools.length, totalSpells: mockFlat.length }),
+      similarTo: () => [],
+    },
+  };
+});
+
 const renderWithLang = (ui) => render(<LanguageProvider>{ui}</LanguageProvider>);
 
 describe('a11y', () => {
@@ -42,7 +63,6 @@ describe('a11y', () => {
   it('BestiaryCodex has no axe violations', async () => {
     const { container } = renderWithLang(
       <BestiaryCodex
-        schools={sampleSchools}
         onSpellClick={() => {}}
         isFavorited={() => false}
         hasNote={() => false}

@@ -73,28 +73,28 @@ vi.mock('../data/grimoireIndexInstance.js', () => ({
 
 describe('SpellWeb', () => {
   it('renders without crashing', () => {
-    render(<SpellWeb schools={mockSchools} onSpellClick={() => {}} />);
+    render(<SpellWeb onSpellClick={() => {}} />);
     expect(screen.getByText('The Spell Web')).toBeInTheDocument();
   });
 
   it('displays school count', () => {
-    render(<SpellWeb schools={mockSchools} onSpellClick={() => {}} />);
+    render(<SpellWeb onSpellClick={() => {}} />);
     const elements = screen.getAllByText('2');
     expect(elements.length).toBeGreaterThan(0);
   });
 
   it('displays spell count', () => {
-    render(<SpellWeb schools={mockSchools} onSpellClick={() => {}} />);
+    render(<SpellWeb onSpellClick={() => {}} />);
     expect(screen.getByText('3')).toBeInTheDocument();
   });
 
   it('displays connection count', () => {
-    render(<SpellWeb schools={mockSchools} onSpellClick={() => {}} />);
+    render(<SpellWeb onSpellClick={() => {}} />);
     expect(screen.getByText('0')).toBeInTheDocument();
   });
 
   it('renders school names', () => {
-    render(<SpellWeb schools={mockSchools} onSpellClick={() => {}} />);
+    render(<SpellWeb onSpellClick={() => {}} />);
     const debuggingElements = screen.getAllByText('Debugging');
     expect(debuggingElements.length).toBeGreaterThanOrEqual(1);
     const reasoningElements = screen.getAllByText('Reasoning');
@@ -102,7 +102,7 @@ describe('SpellWeb', () => {
   });
 
   it('renders spell names', () => {
-    render(<SpellWeb schools={mockSchools} onSpellClick={() => {}} />);
+    render(<SpellWeb onSpellClick={() => {}} />);
     expect(screen.getByText('Trace Sight')).toBeInTheDocument();
     expect(screen.getByText('Bisect Divination')).toBeInTheDocument();
     expect(screen.getByText('Razor of Parsimony')).toBeInTheDocument();

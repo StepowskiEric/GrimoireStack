@@ -20,16 +20,17 @@ function getDominantTier(spells) {
 }
 
 export default function AllSchoolsView({
-  schools,
   onSchoolSelect,
   searchQuery,
 }) {
   const [hoveredIdx, setHoveredIdx] = useState(-1);
 
+  const allSchools = useMemo(() => Array.from(grimoireIndex.getSchoolMap().values()), []);
+
   const filteredSchools = useMemo(() => {
-    if (!searchQuery) return schools;
+    if (!searchQuery) return allSchools;
     const query = searchQuery.toLowerCase();
-    return schools.filter(school =>
+    return allSchools.filter(school =>
       school.name.toLowerCase().includes(query) ||
       school.real.toLowerCase().includes(query) ||
       school.desc.toLowerCase().includes(query) ||
@@ -38,7 +39,7 @@ export default function AllSchoolsView({
         return searchable.includes(query);
       })
     );
-  }, [schools, searchQuery]);
+  }, [allSchools, searchQuery]);
 
   const handleClick = (school) => {
     pageCreak();

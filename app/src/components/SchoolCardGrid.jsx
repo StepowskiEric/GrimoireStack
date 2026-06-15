@@ -24,7 +24,6 @@ function getDominantTier(spells) {
 }
 
 export default function SchoolCardGrid({
-  schools,
   featuredSchools = DEFAULT_FEATURED,
   onSchoolSelect,
   onFeaturedSchoolsChange,
@@ -35,10 +34,10 @@ export default function SchoolCardGrid({
 
   const featuredSchoolObjects = useMemo(() => {
     return featuredSchools
-      .map(id => schools.find(s => s.id === id) || SCHOOL_MAP.get(id))
+      .map(id => SCHOOL_MAP.get(id))
       .filter(Boolean)
       .slice(0, 6);
-  }, [featuredSchools, schools]);
+  }, [featuredSchools]);
 
   const handleToggleFeatured = (schoolId) => {
     setTempFeatured(prev => {
@@ -79,16 +78,6 @@ export default function SchoolCardGrid({
         </div>
         <h1 className="spine-title">The Spine</h1>
         <p className="spine-subtitle">A catalogue of every entity bound within this grimoire</p>
-        <div className="spine-stats">
-          <div className="spine-stat">
-            <span className="spine-stat__num">{grimoireIndex.getStats().totalSchools}</span>
-            <span className="spine-stat__label">Schools</span>
-          </div>
-          <div className="spine-stat">
-            <span className="spine-stat__num">{grimoireIndex.getStats().totalSpells}</span>
-            <span className="spine-stat__label">Spells</span>
-          </div>
-        </div>
       </div>
 
       {/* Pill Switcher */}
@@ -130,7 +119,7 @@ export default function SchoolCardGrid({
         <div className="spine-edit">
           <p className="spine-edit__subtitle">Select up to 6 featured schools:</p>
           <div className="spine-edit__list">
-            {schools.map(school => (
+            {Array.from(SCHOOL_MAP.values()).map(school => (
               <label
                 key={school.id}
                 className={`spine-edit__item ${tempFeatured.includes(school.id) ? 'spine-edit__item--selected' : ''}`}
@@ -199,7 +188,6 @@ export default function SchoolCardGrid({
         </div>
       ) : (
         <AllSchoolsView
-          schools={schools}
           onSchoolSelect={onSchoolSelect}
         />
       )}

@@ -50,12 +50,16 @@ refactors should extend, not bypass, these seams.
   `app/src/data/grimoireIndexInstance.js`) — **the only spell
   adapter.** Owns lookup (`resolveBySkill`, `resolveByName`,
   `resolveComboSpells`, `getSchoolForSkill`, `getSpellNameBySkill`),
-  iteration (`iterate`, `allEntries`, `entriesBySchool`, `filterBy`),
-  matchers (`similarTo`, `matchProblem`), and graph
-  (`buildGraph`, `getNodeBySkill`). Every spell query goes through
-  this seam. Factory `createGrimoireIndex(schools)` builds from any
-  schools array; the singleton is built from the canonical
-  `schools.js`. No module walks `schools[]` directly except
+  iteration (`flatEntries`, `iterate`, `allEntries`, `entriesBySchool`,
+  `filterBy`), derived views (`getSchoolMap`, `getStats`), matchers
+  (`similarTo`, `matchProblem`), and graph
+  (`buildGraph`, `getNodeBySkill`, `buildSpellWeb`). **Every spell
+  query goes through this seam.** No component accepts a `schools`
+  prop — all views consume `grimoireIndex` directly. Tests use
+  `vi.mock` on `grimoireIndexInstance.js` to supply custom data.
+  Factory `createGrimoireIndex(schools)` builds from any schools
+  array; the singleton is built from the canonical `schools.js`.
+  No module walks `schools[]` directly except
   `grimoireIndexInstance.js` itself.
 
 - **`schoolSigils`** (`app/src/data/schoolSigils.jsx`) — visual
@@ -88,7 +92,9 @@ refactors should extend, not bypass, these seams.
   callbacks. It does not own audio, storage, or spell lookup — those
   are modules.
 - **Components do not walk `schools[]` directly.** They consume
-  `grimoireIndex` for any spell query.
+  `grimoireIndex` for any spell query. No component accepts a
+  `schools` prop for local iteration — the sole seam is
+  `grimoireIndex`.
 - **Hooks own their own storage.** Each persisted hook
   (`useFavorites`, `useRecentlyViewed`, `useMarginalia`,
   `useSignals`) reads and writes its own localStorage key; the
