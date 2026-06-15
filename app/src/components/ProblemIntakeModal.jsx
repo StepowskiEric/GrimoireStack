@@ -1,8 +1,23 @@
 import { useEffect, useRef, useState, useMemo } from 'react';
 import { grimoireIndex } from '../data/grimoireIndexInstance.js';
+import { WIZARD_DATA } from '../data/schools.js';
 import ModalEye from './ModalEye.tsx';
 import SchoolSigil from './SchoolSigil.tsx';
 import Icon from './Icon.jsx';
+
+const CATEGORY_ICONS = {
+  'bug': 'search',
+  'reasoning': 'oracle',
+  'code-review': 'warded-seal',
+  'architecture': 'graph',
+  'refactoring': 'tools',
+  'testing-skill': 'search',
+  'api-data': 'graph',
+  'output-quality': 'warded-seal',
+  'collaboration': 'profile',
+  'cognition': 'oracle',
+  'other': 'index',
+};
 
 const SUGGEST_EXAMPLE_PROBLEMS = [
   'My tests are failing in CI but pass locally',
@@ -18,6 +33,7 @@ const SUGGEST_EXAMPLE_PROBLEMS = [
 export default function ProblemIntakeModal({ onClose, onSelectSpell }) {
   const modalRef = useRef(null);
   const [query, setQuery] = useState('');
+  const [activeCategory, setActiveCategory] = useState(null);
 
   useEffect(() => {
     const modal = modalRef.current;
@@ -36,9 +52,57 @@ export default function ProblemIntakeModal({ onClose, onSelectSpell }) {
     return () => modal.removeEventListener('keydown', handler);
   }, [onClose]);
 
+  // Build skill-id set for the active category
+  const categorySkillIds = useMemo(() => {
+    if (!activeCategory) return null;
+    const cat = WIZARD_DATA.find(c => c.id === activeCategory);
+    if (!cat) return null;
+    return new Set(cat.situations.map(s => s.skill));
+  }, [activeCategory]);
+
+  // Combined scoring: text match + optional category boost
   const matches = useMemo(() => {
-    return grimoireIndex.matchProblem(query, { limit: 6 });
-  }, [query]);
+    // Always get text-based matches (even if query is empty, we still need something)
+    const textResults = query.trim()
+      ? grimoireIndex.matchProblem(query, { limit: 12 })
+      : [];
+
+    // If no category active, return pure text results (limited to 6)
+    if (!categorySkillIds) {
+      return textResults.slice(0, 6);
+    }
+
+    // With category: merge text results with category members not in text results
+    const textMap = new Map();
+    for (const r of textResults) {
+      textMap.set(r.spell.skill, { ...r, score: r.score });
+    }
+
+    // Add category skills not already covered by text, with boost score
+    const boosted = [];
+    for (const skillId of categorySkillIds) {
+      const entry = grimoireIndex.resolveBySkill(skillId);
+      if (!entry) continue;
+      const existing = textMap.get(skillId);
+      if (existing) {
+        // Boost existing text match
+        existing.score += 3;
+        boosted.push(existing);
+        textMap.delete(skillId);
+      } else {
+        // Add category skill with base boost score
+        boosted.push({ spell: entry.spell, school: entry.school, score: 3 });
+      }
+    }
+
+    // Add remaining non-category text matches
+    for (const r of textMap.values()) {
+      boosted.push(r);
+    }
+
+    boosted.sort((a, b) => b.score - a.score);
+    return boosted.slice(0, 6);
+  }, [query, categorySkillIds]);
 
   const examples = useMemo(() => SUGGEST_EXAMPLE_PROBLEMS, []);
 
@@ -56,6 +120,10 @@ export default function ProblemIntakeModal({ onClose, onSelectSpell }) {
     else onClose?.();
   };
 
+  const handleChipClick = (catId) => {
+    setActiveCategory(prev => prev === catId ? null : catId);
+  };
+
   return (
     <div className="modal-overlay open" onClick={(e) => { if (e.target === e.currentTarget) onClose(); }} role="button" tabIndex={0} onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); onClose(); } }}>
       <div className="modal intake-modal" ref={modalRef} role="dialog" aria-modal="true" aria-label="Describe your problem">
@@ -64,62 +132,90 @@ export default function ProblemIntakeModal({ onClose, onSelectSpell }) {
         </button>
         <span className="modal-symbol"><ModalEye size={36} /></span>
         <div className="modal-title">What Ails You?</div>
-        <div className="modal-school">Describe your problem in plain language — the orb will suggest incantations.</div>
+        <div className="modal-school">Pick a category or describe your problem — the orb will suggest incantations.</div>
+
+        {/* Category chips */}
+        <div className="intake-chips" role="group" aria-label="Problem categories">
+          {WIZARD_DATA.map(cat => (
+            <button
+              key={cat.id}
+              type="button"
+              className={`intake-chip${activeCategory === cat.id ? ' active' : ''}`}
+              onClick={() => handleChipClick(cat.id)}
+              aria-pressed={activeCategory === cat.id}
+            >
+              <Icon name={CATEGORY_ICONS[cat.id] || 'help-circle'} size={13} />
+              <span>{cat.label}</span>
+            </button>
+          ))}
+        </div>
 
         <form className="intake-form" onSubmit={handleSubmit}>
-          {/* eslint-disable jsx-a11y/no-autofocus */}
           <textarea
             className="intake-textarea"
             value={query}
             onChange={(e) => setQuery(e.target.value)}
             placeholder="e.g. 'I have a flaky test that only fails in CI' or 'I need to coordinate three agents'…"
             aria-label="Describe your problem"
-            rows={3}
-            autoFocus
+            rows={2}
           />
-          {/* eslint-enable jsx-a11y/no-autofocus */}
-          <button
-            type="submit"
-            className="intake-submit"
-            disabled={!query.trim() || matches.length === 0}
-          >
-            Reveal Suggestions
-          </button>
+
+          <div className="intake-actions">
+            {activeCategory && (
+              <button
+                type="button"
+                className="intake-clear-filter"
+                onClick={() => { setActiveCategory(null); setQuery(''); }}
+              >
+                Clear filter
+              </button>
+            )}
+            <button
+              type="submit"
+              className="intake-submit"
+              disabled={matches.length === 0}
+            >
+              {activeCategory ? 'Find Spell' : 'Reveal Suggestions'}
+            </button>
+          </div>
         </form>
 
-        {query.trim() ? (
-          <div className="intake-results">
-            {matches.length === 0 ? (
-              <div className="intake-empty">
-                The orb sees no clear match. Try broader terms, or browse by school.
+        <div className="intake-results">
+          {matches.length === 0 ? (
+            <div className="intake-empty">
+              {activeCategory
+                ? `No spells found in ${WIZARD_DATA.find(c => c.id === activeCategory)?.label}. Try a different category or add more detail.`
+                : 'The orb sees no clear match. Try broader terms, or browse by school.'}
+            </div>
+          ) : (
+            <>
+              <div className="intake-results-title">
+                {matches.length} suggested incantation{matches.length !== 1 ? 's' : ''}
+                {activeCategory ? ` in ${WIZARD_DATA.find(c => c.id === activeCategory)?.label}` : ''}
               </div>
-            ) : (
-              <>
-                <div className="intake-results-title">
-                  {matches.length} suggested incantation{matches.length !== 1 ? 's' : ''}
-                </div>
-                <div className="intake-results-list">
-                  {matches.map((m, i) => (
-                    <button
-                      key={m.spell.skill}
-                      type="button"
-                      className="intake-result"
-                      onClick={() => handleOpenSpell(m.spell)}
-                    >
-                      <span className="intake-result-rank">#{i + 1}</span>
-                      <span className="intake-result-symbol" aria-hidden="true"><SchoolSigil schoolId={m.school.id} size={20} /></span>
-                      <span className="intake-result-body">
-                        <span className="intake-result-name">{m.spell.name}</span>
-                        <span className="intake-result-effect">{m.spell.effect}</span>
-                        <span className="intake-result-school">{m.school.name}</span>
-                      </span>
-                    </button>
-                  ))}
-                </div>
-              </>
-            )}
-          </div>
-        ) : (
+              <div className="intake-results-list">
+                {matches.map((m, i) => (
+                  <button
+                    key={m.spell.skill}
+                    type="button"
+                    className="intake-result"
+                    onClick={() => handleOpenSpell(m.spell)}
+                  >
+                    <span className="intake-result-rank">#{i + 1}</span>
+                    <span className="intake-result-symbol" aria-hidden="true"><SchoolSigil schoolId={m.school.id} size={20} /></span>
+                    <span className="intake-result-body">
+                      <span className="intake-result-name">{m.spell.name}</span>
+                      <span className="intake-result-effect">{m.spell.effect}</span>
+                      <span className="intake-result-school">{m.school.name}</span>
+                    </span>
+                  </button>
+                ))}
+              </div>
+            </>
+          )}
+        </div>
+
+        {!matches.length && !activeCategory && (
           <div className="intake-examples">
             <div className="intake-examples-title">Or try a sample problem:</div>
             <div className="intake-examples-list">

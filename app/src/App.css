@@ -3053,8 +3053,15 @@ header .header-sigil-text{display:none}
 .compare-picker-skill{font-size:.45rem;color:rgba(168,152,120,.4);font-family:'Special Elite',monospace}
 
 /* ── Problem Intake ──────────────────────────────── */
-.intake-modal{max-width:560px}
-.intake-form{display:flex;flex-direction:column;gap:10px;margin-bottom:16px}
+.intake-modal{max-width:600px}
+.intake-chips{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:14px}
+.intake-chip{display:inline-flex;align-items:center;gap:5px;background:rgba(26,20,10,.4);border:1px solid rgba(180,140,80,.12);border-radius:4px;padding:5px 10px;cursor:pointer;transition:all .2s ease;font-family:'Cormorant Garamond',serif;font-size:.66rem;color:#8a7a5a}
+.intake-chip:hover{border-color:rgba(212,175,55,.25);color:#a89878}
+.intake-chip.active{background:rgba(42,28,14,.7);border-color:rgba(212,175,55,.4);color:#d4af37;box-shadow:0 0 8px rgba(212,175,55,.08)}
+.intake-actions{display:flex;align-items:center;gap:10px}
+.intake-clear-filter{background:none;border:none;font-family:'Cormorant Garamond',serif;font-size:.62rem;color:#5a4a3a;cursor:pointer;padding:4px 0;text-decoration:underline;text-underline-offset:2px}
+.intake-clear-filter:hover{color:#a89878}
+.intake-form{display:flex;flex-direction:column;gap:10px;margin-bottom:14px}
 .intake-textarea{background:rgba(26,20,10,.6);border:1px solid rgba(180,140,80,.15);border-radius:6px;padding:10px 12px;color:#d8ccb5;font-family:'Cormorant Garamond',serif;font-size:.82rem;line-height:1.55;width:100%;resize:vertical;min-height:60px;outline:none}
 .intake-textarea::placeholder{color:rgba(168,152,120,.35)}
 .intake-textarea:focus{border-color:rgba(212,175,55,.35)}
@@ -8117,30 +8124,101 @@ header .header-sigil-text{display:none}
   --seance-edge:rgba(212,175,55,0);
   --seance-text-color:var(--parchment);
   --seance-glow:rgba(212,175,55,0.08);
+  --seance-sick:rgba(120,160,100,0);
+  --seance-void:rgba(60,20,80,0);
+  --seance-bone:rgba(220,210,190,0);
+  --seance-pattern-opacity:0;
+  --seance-skew-x:0deg;
+  --seance-skew-y:0deg;
+}
+
+.seance::before,
+.seance::after{
+  content:'';
+  position:absolute;
+  inset:0;
+  pointer-events:none;
+  z-index:-1;
+  opacity:var(--seance-pattern-opacity);
+  transition:opacity .6s ease;
+}
+
+/* Oppressive concentric ring pattern — like staring into a void */
+.seance::before{
+  background:
+    repeating-radial-gradient(
+      circle at center,
+      transparent 0px,
+      transparent 18px,
+      rgba(80,20,60,0.15) 19px,
+      transparent 20px
+    ),
+    repeating-radial-gradient(
+      circle at 30% 40%,
+      transparent 0px,
+      transparent 40px,
+      rgba(40,80,60,0.08) 41px,
+      transparent 42px
+    );
+  mix-blend-mode:overlay;
+}
+
+/* Tessellating angular pattern — wrong geometry bleeding through */
+.seance::after{
+  background:
+    repeating-conic-gradient(
+      from 0deg at 50% 50%,
+      transparent 0deg,
+      transparent 14deg,
+      rgba(60,20,40,0.12) 15deg,
+      transparent 30deg
+    );
+  mix-blend-mode:color-dodge;
+}
+
+@media (prefers-reduced-motion: no-preference){
+  .seance::before{
+    animation:seance-pattern-breathe 8s ease-in-out infinite;
+  }
+  .seance::after{
+    animation:seance-pattern-drift 12s linear infinite;
+  }
+}
+
+@keyframes seance-pattern-breathe{
+  0%,100%{ transform:scale(1); opacity:var(--seance-pattern-opacity); }
+  50%{ transform:scale(1.03); opacity:calc(var(--seance-pattern-opacity) * 1.3); }
+}
+
+@keyframes seance-pattern-drift{
+  from{ transform:rotate(0deg); }
+  to{ transform:rotate(360deg); }
 }
 
 /* Per-sanity visual decay. The displacement and vignette are
    applied via CSS custom properties so the SVG filter and box-shadow
    in the descendants pick them up automatically. */
-.seance--sanity-5{ --seance-vignette:0; --seance-desat:0; --seance-disp:0; --seance-edge:transparent; --seance-glow:rgba(212,175,55,0.06); }
-.seance--sanity-4{ --seance-vignette:.04; --seance-desat:.05; --seance-disp:0; --seance-edge:rgba(20,8,8,.18); --seance-glow:rgba(212,175,55,0.08); }
-.seance--sanity-3{ --seance-vignette:.10; --seance-desat:.15; --seance-disp:1px; --seance-edge:rgba(20,8,8,.32); --seance-glow:rgba(180,90,40,0.10); }
-.seance--sanity-2{ --seance-vignette:.22; --seance-desat:.30; --seance-disp:2px; --seance-edge:rgba(20,8,8,.48); --seance-glow:rgba(160,60,40,0.16); }
-.seance--sanity-1{ --seance-vignette:.40; --seance-desat:.55; --seance-disp:3px; --seance-edge:rgba(10,4,4,.70); --seance-glow:rgba(196,68,68,0.22); }
-.seance--sanity-0{ --seance-vignette:.62; --seance-desat:.80; --seance-disp:4px; --seance-edge:rgba(8,2,2,.88); --seance-glow:rgba(196,68,68,0.32); }
-.seance--beasthood{ --seance-text-color:#e8a8a8; --seance-glow:rgba(196,68,68,0.40); }
+.seance--sanity-5{ --seance-vignette:0; --seance-desat:0; --seance-disp:0; --seance-edge:transparent; --seance-glow:rgba(212,175,55,0.06); --seance-sick:rgba(120,160,100,0.02); --seance-void:rgba(60,20,80,0.02); --seance-pattern-opacity:0; --seance-skew-x:0deg; --seance-skew-y:0deg; }
+.seance--sanity-4{ --seance-vignette:.04; --seance-desat:.05; --seance-disp:0; --seance-edge:rgba(20,8,8,.18); --seance-glow:rgba(212,175,55,0.08); --seance-sick:rgba(120,160,100,0.05); --seance-void:rgba(60,20,80,0.04); --seance-pattern-opacity:0.15; --seance-skew-x:0deg; --seance-skew-y:0deg; }
+.seance--sanity-3{ --seance-vignette:.10; --seance-desat:.15; --seance-disp:1px; --seance-edge:rgba(20,8,8,.32); --seance-glow:rgba(180,90,40,0.10); --seance-sick:rgba(120,160,100,0.10); --seance-void:rgba(60,20,80,0.08); --seance-pattern-opacity:0.30; --seance-skew-x:0.3deg; --seance-skew-y:0.15deg; }
+.seance--sanity-2{ --seance-vignette:.22; --seance-desat:.30; --seance-disp:2px; --seance-edge:rgba(20,8,8,.48); --seance-glow:rgba(160,60,40,0.16); --seance-sick:rgba(120,160,100,0.16); --seance-void:rgba(60,20,80,0.14); --seance-pattern-opacity:0.50; --seance-skew-x:0.8deg; --seance-skew-y:0.4deg; }
+.seance--sanity-1{ --seance-vignette:.40; --seance-desat:.55; --seance-disp:3px; --seance-edge:rgba(10,4,4,.70); --seance-glow:rgba(196,68,68,0.22); --seance-sick:rgba(120,160,100,0.24); --seance-void:rgba(60,20,80,0.22); --seance-pattern-opacity:0.70; --seance-skew-x:1.5deg; --seance-skew-y:0.8deg; }
+.seance--sanity-0{ --seance-vignette:.62; --seance-desat:.80; --seance-disp:4px; --seance-edge:rgba(8,2,2,.88); --seance-glow:rgba(196,68,68,0.32); --seance-sick:rgba(120,160,100,0.35); --seance-void:rgba(60,20,80,0.32); --seance-pattern-opacity:0.90; --seance-skew-x:2.5deg; --seance-skew-y:1.2deg; }
+.seance--beasthood{ --seance-text-color:#d4a0a0; --seance-glow:rgba(196,68,68,0.45); --seance-sick:rgba(120,160,100,0.40); --seance-void:rgba(60,20,80,0.40); --seance-pattern-opacity:1; --seance-skew-x:3deg; --seance-skew-y:1.5deg; }
 
 /* Backdrop vignette using a radial gradient */
 .seance__backdrop{
   position:absolute;
   inset:0;
-  z-index:-1;
+  z-index:-2;
   pointer-events:none;
   background:
     radial-gradient(ellipse at center, transparent 30%, rgba(0,0,0,calc(var(--seance-vignette))) 100%),
-    radial-gradient(ellipse at center, var(--seance-glow) 0%, transparent 60%);
+    radial-gradient(ellipse at center, var(--seance-glow) 0%, transparent 60%),
+    radial-gradient(ellipse at 25% 30%, var(--seance-sick) 0%, transparent 50%),
+    radial-gradient(ellipse at 75% 70%, var(--seance-void) 0%, transparent 50%);
   filter:saturate(calc(1 - var(--seance-desat)));
-  transition:background .4s ease, filter .4s ease;
+  transition:background .5s ease, filter .5s ease;
 }
 
 /* Decorative corrupting sigil */
@@ -8154,16 +8232,40 @@ header .header-sigil-text{display:none}
   z-index:-1;
   opacity:.55;
   pointer-events:none;
-  filter:drop-shadow(0 0 18px var(--seance-glow));
-  transition:opacity .4s ease, filter .4s ease;
+  filter:drop-shadow(0 0 18px var(--seance-glow)) drop-shadow(0 0 40px var(--seance-void));
+  transition:opacity .5s ease, filter .5s ease;
 }
 .seance--beasthood .seance-sigil-svg{ opacity:.85; }
+
+@media (prefers-reduced-motion: no-preference){
+  .seance--sanity-2 .seance-sigil-svg,
+  .seance--sanity-1 .seance-sigil-svg,
+  .seance--sanity-0 .seance-sigil-svg,
+  .seance--beasthood .seance-sigil-svg{
+    animation:seance-sigil-breathe 4s ease-in-out infinite;
+  }
+}
+
+@keyframes seance-sigil-breathe{
+  0%,100%{ transform:translate(-50%, -52%) scale(1); }
+  50%{ transform:translate(-50%, -52%) scale(1.04); }
+}
+
+/* Container warp — reality feels slightly wrong at low sanity */
+@media (prefers-reduced-motion: no-preference){
+  .seance{
+    transform:perspective(1200px) rotateX(var(--seance-skew-y)) rotateY(var(--seance-skew-x));
+    transition:transform .6s ease;
+  }
+}
 
 /* Header */
 .seance__header{
   text-align:center;
   max-width:520px;
   margin-top:8px;
+  position:relative;
+  z-index:2;
 }
 .seance__title{
   font-family:'Cinzel',serif;
@@ -8172,9 +8274,43 @@ header .header-sigil-text{display:none}
   text-transform:uppercase;
   color:var(--seance-text-color);
   margin:0 0 6px;
-  text-shadow:0 0 14px var(--seance-glow);
-  transition:color .4s ease, text-shadow .4s ease;
+  text-shadow:
+    0 0 14px var(--seance-glow),
+    0 0 28px var(--seance-void),
+    2px 2px 0 rgba(0,0,0,0.5);
+  transition:color .5s ease, text-shadow .5s ease;
 }
+.seance--sanity-2 .seance__title{
+  text-shadow:
+    0 0 14px var(--seance-glow),
+    0 0 28px var(--seance-void),
+    0 0 40px var(--seance-sick),
+    2px 2px 0 rgba(0,0,0,0.6),
+    -1px -1px 0 rgba(60,20,80,0.3);
+}
+.seance--sanity-1 .seance__title,
+.seance--sanity-0 .seance__title,
+.seance--beasthood .seance__title{
+  text-shadow:
+    0 0 18px var(--seance-glow),
+    0 0 35px var(--seance-void),
+    0 0 50px var(--seance-sick),
+    0 0 70px var(--seance-glow),
+    3px 3px 0 rgba(0,0,0,0.7),
+    -2px -2px 0 rgba(196,68,68,0.25);
+  animation:seance-title-glitch 3s ease-in-out infinite;
+}
+
+@keyframes seance-title-glitch{
+  0%,100%{ transform:translateX(0); }
+  92%{ transform:translateX(0); }
+  93%{ transform:translateX(-2px) skewX(-1deg); }
+  94%{ transform:translateX(2px) skewX(1deg); }
+  95%{ transform:translateX(0); }
+  97%{ transform:translateX(1px); }
+  98%{ transform:translateX(-1px); }
+}
+
 .seance__subtitle{
   font-family:'Cormorant Garamond',serif;
   font-size:.95rem;
