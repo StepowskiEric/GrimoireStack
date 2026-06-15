@@ -98,3 +98,25 @@ export async function copyToClipboard(text) {
     return false;
   }
 }
+
+/**
+ * Parse a previously-exported JSON config string.
+ * Returns { favorites, marginalia, recent } on success,
+ * or null on failure.
+ */
+export function importConfig(raw) {
+  let parsed;
+  try {
+    parsed = JSON.parse(raw);
+  } catch {
+    return null;
+  }
+  if (!parsed || typeof parsed !== 'object' || Array.isArray(parsed)) return null;
+  if (parsed.schema !== 'grimoirestack.config.v1') return null;
+  const favorites = Array.isArray(parsed.favorites) ? parsed.favorites : [];
+  const marginalia = parsed.marginalia && typeof parsed.marginalia === 'object' && !Array.isArray(parsed.marginalia)
+    ? parsed.marginalia
+    : {};
+  const recent = Array.isArray(parsed.recent) ? parsed.recent : [];
+  return { favorites, marginalia, recent };
+}

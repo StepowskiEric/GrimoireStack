@@ -483,6 +483,7 @@ describe('SettingsView', () => {
           onShowShortcuts={() => {}}
           onExportJson={() => {}}
           onExportMarkdown={() => {}}
+
         />
       </LanguageProvider>
     );
@@ -501,6 +502,7 @@ describe('SettingsView', () => {
           onShowShortcuts={() => {}}
           onExportJson={() => {}}
           onExportMarkdown={() => {}}
+
         />
       </LanguageProvider>
     );
@@ -519,11 +521,37 @@ describe('SettingsView', () => {
           onShowShortcuts={() => {}}
           onExportJson={() => {}}
           onExportMarkdown={() => {}}
+
         />
       </LanguageProvider>
     );
     const select = screen.getByLabelText(/Language/i);
     fireEvent.change(select, { target: { value: 'plain' } });
     expect(select.value).toBe('plain');
+  });
+
+  it('shows the export descriptions and import UI in the Data section', () => {
+    render(
+      <LanguageProvider>
+        <SettingsView
+          castEnabled
+          onToggleCast={() => {}}
+          onShowShortcuts={() => {}}
+          onExportJson={() => {}}
+          onExportMarkdown={() => {}}
+
+        />
+      </LanguageProvider>
+    );
+    // The Data section should be active by default? No — language is default.
+    // Click Data tab.
+    fireEvent.click(screen.getByText('Data'));
+    // Export descriptions
+    expect(screen.getByText(/Machine-readable backup/i)).toBeInTheDocument();
+    expect(screen.getByText(/Human-readable summary/i)).toBeInTheDocument();
+    // Import UI
+    expect(screen.getByText('Restore from config')).toBeInTheDocument();
+    expect(screen.getByPlaceholderText(/Paste a previously exported/i)).toBeInTheDocument();
+    expect(screen.getByText('Restore Config')).toBeInTheDocument();
   });
 });

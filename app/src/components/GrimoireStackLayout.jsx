@@ -394,7 +394,7 @@ export default function GrimoireStackLayout({
               <Icon name="archive" size={14} /> Export JSON
             </button>
             <button className="eye-footer-link" onClick={onExportMarkdown} type="button">
-              <Icon name="changelog" size={14} /> Export MD
+              <Icon name="clipboard" size={14} /> Export Markdown
             </button>
           </div>
         </aside>

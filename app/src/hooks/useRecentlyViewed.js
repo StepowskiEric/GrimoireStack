@@ -39,5 +39,5 @@ export function useRecentlyViewed() {
     setRecent([]);
   }, []);
 
-  return { recent, record, clear };
+  return { recent, record, clear, setRecent };
 }

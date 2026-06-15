@@ -1,5 +1,9 @@
 import { useState } from 'react';
 import { useLanguage } from '../i18n/LanguageContext';
+import { useFavorites } from '../hooks/useFavorites.js';
+import { useRecentlyViewed } from '../hooks/useRecentlyViewed.js';
+import { useMarginalia } from '../hooks/useMarginalia.js';
+import { importConfig } from '../utils/exporter.js';
 import Icon from './Icon.jsx';
 
 const GITHUB_REPO_URL = 'https://github.com/StepowskiEric/GrimoireStack';
@@ -14,7 +18,11 @@ export default function SettingsView({
   onExportMarkdown,
 }) {
   const [activeSection, setActiveSection] = useState('language');
+  const [importText, setImportText] = useState('');
   const { lang, setLang } = useLanguage();
+  const { setFavorites } = useFavorites();
+  const { setRecent } = useRecentlyViewed();
+  const { setNotes } = useMarginalia();
 
   const sections = [
     { id: 'language', name: 'Language', icon: 'warded-seal' },
@@ -77,12 +85,63 @@ export default function SettingsView({
               of recently bound spells — to clipboard. The orb preserves
               nothing in the cloud; this is the only path between devices.
             </p>
-            <div className="settings-view__actions">
-              <button className="settings-view__action-btn" onClick={onExportJson} type="button">
-                Export as JSON
-              </button>
-              <button className="settings-view__action-btn" onClick={onExportMarkdown} type="button">
-                Export as Markdown
+
+            <div className="settings-view__export-group">
+              <div className="settings-view__export-row">
+                <button
+                  className="settings-view__action-btn"
+                  onClick={onExportJson}
+                  type="button"
+                  title="Machine-readable backup for restoring later"
+                >
+                  <Icon name="clipboard" size={16} /> Export as JSON
+                </button>
+                <p className="settings-view__option-hint">
+                  Machine-readable backup. Use this to restore favorites, notes, and history later.
+                </p>
+              </div>
+              <div className="settings-view__export-row">
+                <button
+                  className="settings-view__action-btn"
+                  onClick={onExportMarkdown}
+                  type="button"
+                  title="Human-readable summary for sharing or reference"
+                >
+                  <Icon name="clipboard" size={16} /> Export as Markdown
+                </button>
+                <p className="settings-view__option-hint">
+                  Human-readable summary. Good for sharing or reference.
+                </p>
+              </div>
+            </div>
+
+            <div className="settings-view__import-group">
+              <h4>Restore from config</h4>
+              <p className="settings-view__option-hint">
+                Paste a previously exported JSON config to restore your data.
+              </p>
+              <textarea
+                className="settings-view__import-textarea"
+                placeholder="Paste a previously exported JSON config here…"
+                rows={4}
+                value={importText}
+                onChange={(e) => setImportText(e.target.value)}
+              />
+              <button
+                className="settings-view__action-btn settings-view__action-btn--restore"
+                type="button"
+                onClick={() => {
+                  if (!importText.trim()) return;
+                  const result = importConfig(importText);
+                  if (result) {
+                    setFavorites(result.favorites);
+                    setRecent(result.recent);
+                    setNotes(result.marginalia);
+                    setImportText('');
+                  }
+                }}
+              >
+                <Icon name="file-import" size={16} /> Restore Config
               </button>
             </div>
           </div>

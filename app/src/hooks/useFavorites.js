@@ -51,5 +51,5 @@ export function useFavorites() {
     return { spell: entry.spell, school: entry.school };
   }, []);
 
-  return { favorites, isFavorited, toggleFavorite, findFavoriteSpell };
+  return { favorites, isFavorited, toggleFavorite, findFavoriteSpell, setFavorites };
 }

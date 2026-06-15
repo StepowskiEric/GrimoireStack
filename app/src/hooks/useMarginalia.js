@@ -40,5 +40,5 @@ export function useMarginalia() {
     });
   }, []);
 
-  return { getNote, setNote, clear, notes };
+  return { getNote, setNote, clear, notes, setNotes };
 }

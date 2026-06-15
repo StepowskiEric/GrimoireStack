@@ -162,6 +162,14 @@ export const messages = {
     exportJson: 'JSON',
     exportMarkdown: 'Markdown',
     exportLabel: 'Export your config:',
+    exportJsonDesc: 'Inscribe your binding circle in runic script. Use this to restore favorites, notes, and history later.',
+    exportMdDesc: 'A mortal-readable scroll. Good for sharing or reference.',
+    importLabel: 'Restore from config:',
+    importPlaceholder: 'Paste a previously exported config here…',
+    importBtn: 'Restore Config',
+    importSuccess: 'Config restored.',
+    importFailed: 'Invalid runic format.',
+    importNoData: 'No data found in pasted config.',
   },
   plain: {
     // App shell
@@ -314,6 +322,14 @@ export const messages = {
     exportJson: 'JSON',
     exportMarkdown: 'Markdown',
     exportLabel: 'Export your config:',
+    exportJsonDesc: 'Machine-readable backup. Use this to restore favorites, notes, and history later.',
+    exportMdDesc: 'Human-readable summary. Good for sharing or reference.',
+    importLabel: 'Restore from config:',
+    importPlaceholder: 'Paste a previously exported JSON config here…',
+    importBtn: 'Restore Config',
+    importSuccess: 'Config restored.',
+    importFailed: 'Invalid config format.',
+    importNoData: 'No data found in pasted config.',
   },
 };
 
