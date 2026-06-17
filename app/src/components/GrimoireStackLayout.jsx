@@ -82,6 +82,8 @@ export default function GrimoireStackLayout({
   onShowShortcuts,
   filterResults: _filterResults,
   featuredSchools,
+  eyeMood = 'neutral',
+  onSpellView,
 }) {
   // hasNote lookup for the Bestiary Codex "Annotated" filter
   const hasNote = useCallback(
@@ -139,7 +141,8 @@ export default function GrimoireStackLayout({
   const handleSpellCardClick = useCallback((spell, school) => {
     onSpellClick(spell, school);
     setPageKey('spell-detail');
-  }, [onSpellClick]);
+    onSpellView?.(spell.skill);
+  }, [onSpellClick, onSpellView]);
 
   const { totalSchools, totalSpells } = grimoireIndex.getStats();
 
@@ -380,6 +383,7 @@ export default function GrimoireStackLayout({
             onSchoolSelect={handleSchoolCardClick}
             isSearching={isSearching}
             eyeRadius={eyeRadius}
+            mood={eyeMood}
           />
         </main>
 

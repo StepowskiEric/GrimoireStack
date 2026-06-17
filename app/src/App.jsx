@@ -13,6 +13,7 @@ import { useRecentlyViewed } from './hooks/useRecentlyViewed.js';
 import { useMarginalia } from './hooks/useMarginalia.js';
 import { useKeyboardShortcuts } from './hooks/useKeyboardShortcuts.js';
 import { useFilterState } from './hooks/useFilterState.js';
+import { useEyeMood } from './hooks/useEyeMood.js';
 import { LanguageProvider } from './i18n/LanguageContext';
 import { useSignals } from './hooks/useSignals.js';
 import { exportAsJson, exportAsMarkdown, copyToClipboard } from './utils/exporter.js';
@@ -56,6 +57,7 @@ function AppInner() {
 
   const { favorites, isFavorited, toggleFavorite } = useFavorites();
   const { recent, record: recordRecent } = useRecentlyViewed();
+  const { mood, recordView } = useEyeMood();
   const marginalia = useMarginalia();
   const { getVote, vote: castVote, aggregateFor } = useSignals();
 
@@ -264,6 +266,8 @@ function AppInner() {
         onExportJson={handleExportJson}
         onExportMarkdown={handleExportMarkdown}
         onShowShortcuts={() => setShortcutsOpen(true)}
+        eyeMood={mood}
+        onSpellView={recordView}
         filterResults={filter.results}
         featuredSchools={featuredSchools}
         onFeaturedSchoolsChange={setFeaturedSchools}

@@ -3,11 +3,22 @@
 import { useRef, useEffect } from 'react';
 import SchoolSigil from './SchoolSigil.tsx';
 
-export default function GrimoireEye({ searchQuery, onSearchChange, totalMatches, featuredSchools, onSchoolSelect, isSearching, eyeRadius = 220 }) {
+export default function GrimoireEye({ searchQuery, onSearchChange, totalMatches, featuredSchools, onSchoolSelect, isSearching, eyeRadius = 220, mood = 'neutral' }) {
   const wrapperRef = useRef(null);
   const containerRef = useRef(null);
   const pupilRef = useRef(null);
   const mouseRef = useRef({ x: 0.5, y: 0.5 });
+  const moodRef = useRef(mood);
+
+  // Keep a ref in sync with the prop so the rAF loop (which closes over the ref)
+  // always reads the latest mood without triggering re-renders.
+  useEffect(() => {
+    moodRef.current = mood;
+    const wrapper = wrapperRef.current;
+    if (wrapper) {
+      wrapper.setAttribute('data-mood', mood);
+    }
+  }, [mood]);
 
   // Single rAF loop — writes ALL animated properties directly to DOM.
   // No React state involved, so zero React re-renders from animation frames.
@@ -39,18 +50,27 @@ export default function GrimoireEye({ searchQuery, onSearchChange, totalMatches,
       if (!svgEl) { queryElements(); }
 
       const t = Date.now() / 1000;
+      const currentMood = moodRef.current;
+
+      const isNeglectful = currentMood === 'neglectful';
+      const isOverwhelmed = currentMood === 'overwhelmed';
+      const isCurious = currentMood === 'curious';
+
+      const baseBreath = isNeglectful ? 0.005 : 0.02;
+      const glowBoost = isOverwhelmed ? 0.5 : isCurious ? 0.15 : 0;
+      const vesselBoost = isOverwhelmed ? 0.4 : isNeglectful ? -0.2 : 0;
 
       // Container breathing scale
       if (containerEl) {
-        const breathScale = 1 + Math.sin(t * Math.PI) * 0.02;
+        const breathScale = 1 + Math.sin(t * Math.PI) * baseBreath;
         containerEl.style.transform = `scale(${breathScale})`;
       }
 
       // SVG glow pulse
       if (svgEl) {
-        const glow = 40 + Math.sin(t * Math.PI * 1.5) * 15;
-        const glow2 = 80 + Math.sin(t * Math.PI) * 20;
-        svgEl.style.filter = `drop-shadow(0 0 ${glow}px rgba(138,154,106,0.12)) drop-shadow(0 0 ${glow2}px rgba(138,154,106,0.06))`;
+        const glow = 40 + Math.sin(t * Math.PI * 1.5) * (15 + glowBoost * 20);
+        const glow2 = 80 + Math.sin(t * Math.PI) * (20 + glowBoost * 25);
+        svgEl.style.filter = `drop-shadow(0 0 ${glow}px rgba(138,154,106,${0.12 + glowBoost * 0.08})) drop-shadow(0 0 ${glow2}px rgba(138,154,106,${0.06 + glowBoost * 0.04}))`;
       }
 
       // Iris ring pulse
@@ -69,8 +89,9 @@ export default function GrimoireEye({ searchQuery, onSearchChange, totalMatches,
       for (let i = 0; i < vesselEls.length; i++) {
         const v = vesselEls[i];
         if (v) {
-          const opacity = 0.5 + Math.sin(t * Math.PI * 0.8 + i * 0.5) * 0.3;
-          v.style.opacity = Math.min(1, Math.max(0.2, opacity));
+          const baseOpacity = 0.5 + Math.sin(t * Math.PI * 0.8 + i * 0.5) * 0.3;
+          const opacity = Math.min(1, Math.max(0.1, baseOpacity + vesselBoost));
+          v.style.opacity = String(opacity);
         }
       }
 

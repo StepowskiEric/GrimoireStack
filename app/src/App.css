@@ -6748,6 +6748,38 @@ header .header-sigil-text{display:none}
   overflow: hidden;
 }
 
+/* ── Eye mood classes (driven by data-mood on the wrapper) ─── */
+.grimoire-eye-wrapper[data-mood="neutral"] { /* baseline, no overrides */ }
+.grimoire-eye-wrapper[data-mood="curious"] .great-eye-svg {
+  filter: drop-shadow(0 0 55px rgba(138,154,106,0.18)) drop-shadow(0 0 100px rgba(138,154,106,0.08));
+}
+.grimoire-eye-wrapper[data-mood="overwhelmed"] .great-eye-svg {
+  filter:
+    drop-shadow(0 0 70px rgba(138,154,106,0.28))
+    drop-shadow(0 0 130px rgba(122,58,90,0.18));
+}
+.grimoire-eye-wrapper[data-mood="overwhelmed"] .eye-blink-overlay {
+  background: linear-gradient(
+    180deg,
+    rgba(122,58,90,0.15) 0%,
+    transparent 30%,
+    transparent 70%,
+    rgba(122,58,90,0.15) 100%
+  );
+}
+.grimoire-eye-wrapper[data-mood="neglectful"] .great-eye-svg {
+  filter: drop-shadow(0 0 30px rgba(138,154,106,0.08));
+}
+.grimoire-eye-wrapper[data-mood="neglectful"] .eye-blink-overlay {
+  background: linear-gradient(
+    180deg,
+    rgba(5,5,8,0.95) 0%,
+    transparent 35%,
+    transparent 65%,
+    rgba(5,5,8,0.95) 100%
+  );
+}
+
 /* Background eyes canvas */
 .bg-eyes-canvas {
   position: absolute;
