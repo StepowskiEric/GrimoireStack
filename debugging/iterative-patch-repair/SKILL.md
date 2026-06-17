@@ -38,48 +38,31 @@ Research shows patch augmentation (generating variants) alone provides a **+19.9
 
 ## Core protocol
 
-### Outer loop: Instrumentation management
+Iterate with bounded refinement.
 
 For each iteration:
-1. Decide if runtime state is needed (use `simulate-instrumentation`)
-2. Run the test with instrumentation
-3. Collect purified output (use `purify-test-output`)
+1. Use `simulate-instrumentation` only when runtime state is needed.
+2. Run the test and capture purified output with `purify-test-output`.
+3. Generate the next patch from that concrete failure state.
 
-### Inner loop: Patch refinement
-
-```
-Iteration 1:
-  Generate patch A based on failure symptoms
-  Run tests → FAIL (or PASS with caveats)
-  Collect runtime state
-
-Iteration 2:
-  Generate patch B based on runtime state from iteration 1
-  Run tests → FAIL (different error? same error?)
-  Collect updated runtime state
-
-Iteration 3:
-  Generate patch C — try different approach or file
-  Run tests → PASS
-  Done.
-```
-
-### Patch augmentation
-
-When a patch is "close" (fixes some tests but not all, or looks plausible), generate **variants**:
+If the patch is close but not complete, generate **variants** for the next attempt:
 - Same root cause, different fix location
 - Same location, different implementation approach
-- Add null-check vs change default value vs refactor data flow
+- Add null-check, change default, or refactor data flow
 
-Pick the variant that passes ALL tests with the smallest diff.
+Pick the variant that passes all tests with the smallest diff.
 
-## Iteration budget
+### Iteration budget
 
 | Complexity | Max iterations | Typical tokens |
 |------------|---------------|----------------|
 | Simple (single file, obvious fix) | 2 | +20% vs baseline |
 | Medium (multi-file, unclear root cause) | 3-4 | +50% vs baseline |
 | Complex (subtle logic, edge cases) | 5 | +100% vs baseline |
+
+### Exhaustion
+
+If the budget is exhausted without a confirmed fix, stop patching and escalate. Use `debug-subagent`, `unit-test-debugging`, or hand the issue back to the user with the evidence gathered so far.
 
 ## State tracking
 
@@ -114,21 +97,15 @@ Maintain a running log across iterations:
 
 ## Example
 
-**Bug:** Loyalty discounts not applied for numeric customer IDs.
-
-**Iteration 1:** Agent patches `pricingService.js` to accept string IDs too.
-- Tests pass for numeric IDs, but string IDs now incorrectly get discounts.
-- Runtime state shows `customerId` is `"500"` (string) when it should be `500` (number).
-
-**Iteration 2:** Agent traces upstream to `validators.js`, sees `String(raw.customerId)`.
-- Removes stringification, preserves original type.
-- All tests pass. Numeric IDs get discounts, string IDs don't.
-
-**Iteration 3 (verification):** Runs full test suite to check for regressions.
-- No regressions. Fix confirmed.
+```
+Iteration 1: patch symptom → tests still fail, but error moved
+Iteration 2: use runtime state → patch root cause → tests pass
+Iteration 3: run broader suite → confirm no regressions
+```
 
 ## Integration
 
 - Use with `simulate-instrumentation` to capture runtime state per iteration
 - Use with `purify-test-output` to keep feedback focused
 - Use with `debug-subagent` to offload diagnosis when the agent is stuck
+- If unsure whether test or code is wrong, run `unit-test-debugging` first, then resume this skill

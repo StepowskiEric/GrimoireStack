@@ -18,6 +18,7 @@ const SCAN_DIRS = [
   'systems-and-architecture',
   'testing',
   'development',
+  'research',
 ];
 
 async function findSkillFiles(dir) {

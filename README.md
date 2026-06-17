@@ -6,17 +6,17 @@ A catalog of agent skills for making AI systems more reliable, disciplined, and 
 
 ```bash
 # Interactive picker — choose agent and skills
-npx GrimoireStack install
+npx grimoirestack install
 
 # Install all skills to a specific agent
-npx GrimoireStack install --agent copilot
-npx GrimoireStack install --agent codex
-npx GrimoireStack install --agent hermes --with-mcp # includes MCP servers
-npx GrimoireStack install --agent claude
-npx GrimoireStack install --agent antigravity
+npx grimoirestack install --agent copilot
+npx grimoirestack install --agent codex
+npx grimoirestack install --agent hermes --with-mcp # includes MCP servers
+npx grimoirestack install --agent claude
+npx grimoirestack install --agent antigravity
 
 # List available skills without installing
-npx GrimoireStack list
+npx grimoirestack list
 ```
 
 See [docs/installation.md](docs/installation.md) for full details including all agents, custom destinations, and VS Code Copilot setup.
@@ -47,7 +47,7 @@ This repository ships with two kinds of tooling alongside skills:
 
 | Type | What | How to get it |
 |------|------|---------------|
-| **Companion Python scripts** | `*.py` files shipped with specific skills (e.g. `lint_battalion.py`, `git_surgery.py`). Each is pure stdlib — no `pip install`. | `npx GrimoireStack install --with-scripts --with-mcp` |
+| **Companion Python scripts** | `*.py` files shipped with specific skills (e.g. `lint_battalion.py`, `git_surgery.py`). Each is pure stdlib — no `pip install`. | `npx grimoirestack install --with-scripts --with-mcp` |
 | **MCP Servers** | Raw stdio MCP servers in `mcp-servers/` — zero external deps, JSON-RPC over stdio with `Content-Length` framing. | Copy `mcp-servers/` into your project; add to Hermes `config.yaml` |
 
 ### MCP Servers included

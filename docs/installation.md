@@ -6,27 +6,27 @@ Install skills directly to your agent's configuration directory using `npx`:
 
 ```bash
 # Interactive picker — select agent and skills from a menu
-npx GrimoireStack install
+npx grimoirestack install
 
 # Install all skills to a specific agent
-npx GrimoireStack install --agent copilot
-npx GrimoireStack install --agent codex
-npx GrimoireStack install --agent hermes
-npx GrimoireStack install --agent claude
-npx GrimoireStack install --agent antigravity
+npx grimoirestack install --agent copilot
+npx grimoirestack install --agent codex
+npx grimoirestack install --agent hermes
+npx grimoirestack install --agent claude
+npx grimoirestack install --agent antigravity
 
 # Install only specific skills (repeat --skill for multiple)
-npx GrimoireStack install --agent copilot --skill checklist-manifesto
-npx GrimoireStack install --agent codex --skill how-to-solve-it-state-machine --skill ooda-loop-state-machine
+npx grimoirestack install --agent copilot --skill checklist-manifesto
+npx grimoirestack install --agent codex --skill how-to-solve-it-state-machine --skill ooda-loop-state-machine
 
 # Partial name matching works too
-npx GrimoireStack install --agent claude --skill "six-thinking"
+npx grimoirestack install --agent claude --skill "six-thinking"
 
 # Install to all supported agents
-npx GrimoireStack install --all
+npx grimoirestack install --all
 
 # List available skills without installing
-npx GrimoireStack list
+npx grimoirestack list
 ```
 
 ## Default Install Paths

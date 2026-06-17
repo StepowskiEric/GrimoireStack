@@ -1,9 +1,9 @@
 {
-  "name": "GrimoireStack",
+  "name": "grimoirestack",
   "version": "1.17.0",
   "description": "A catalog of agent skills for making AI systems more reliable, disciplined, and useful in real work. Includes protocol and framework skills, companion Python scripts, and MCP servers.",
   "bin": {
-    "GrimoireStack": "bin/install.js"
+    "grimoirestack": "bin/install.js"
   },
   "files": [
     "bin/",
@@ -39,7 +39,7 @@
     "test": "vitest run"
   },
   "dependencies": {
-    "GrimoireStack": "^1.10.0",
+    "grimoirestack": "^1.10.0",
     "playwright": "^1.58.0",
     "prompts": "^2.4.2"
   },

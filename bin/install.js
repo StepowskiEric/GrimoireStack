@@ -486,15 +486,15 @@ function printHelp() {
     return `  ${a.padEnd(12)} ${dest}`;
   });
 
-  console.log(`\nGrimoireStack — install agent skill files into your AI agent
+  console.log(`\ngrimoirestack — install agent skill files into your AI agent
 
 Usage:
-  npx GrimoireStack install [options]
-  npx GrimoireStack install --agent <name> [--skill <name>] [--skill <name2>]
-  npx GrimoireStack install --all
-  npx GrimoireStack update [options]
-  npx GrimoireStack list
-  npx GrimoireStack help
+  npx grimoirestack install [options]
+  npx grimoirestack install --agent <name> [--skill <name>] [--skill <name2>]
+  npx grimoirestack install --all
+  npx grimoirestack update [options]
+  npx grimoirestack list
+  npx grimoirestack help
 
 Commands:
   install   Copy skill bundles to the agent's skills directory
@@ -519,15 +519,15 @@ Skill format (Agent Skills open standard):
   Codex uses grouped layout (topic/skill-name/SKILL.md).
 
 Examples:
-  npx GrimoireStack install                            # interactive picker
-  npx GrimoireStack install --agent copilot            # install all skills to copilot
-  npx GrimoireStack install --agent codex --skill how-to-solve-it-state-machine
-  npx GrimoireStack install --agent claude --skill purify-test-output --with-scripts
-  npx GrimoireStack install --all                      # install all to all agents
-  npx GrimoireStack install --agent hermes --with-mcp  # install all skills + MCP servers to hermes
-  npx GrimoireStack update --agent hermes              # update installed skills for hermes
-  npx GrimoireStack update --all                       # update all agents
-  npx GrimoireStack list
+  npx grimoirestack install                            # interactive picker
+  npx grimoirestack install --agent copilot            # install all skills to copilot
+  npx grimoirestack install --agent codex --skill how-to-solve-it-state-machine
+  npx grimoirestack install --agent claude --skill purify-test-output --with-scripts
+  npx grimoirestack install --all                      # install all to all agents
+  npx grimoirestack install --agent hermes --with-mcp  # install all skills + MCP servers to hermes
+  npx grimoirestack update --agent hermes              # update installed skills for hermes
+  npx grimoirestack update --all                       # update all agents
+  npx grimoirestack list
 `);
 }
 
@@ -542,7 +542,7 @@ async function interactivePicker(allSkills) {
   } catch (e) {
     console.error('Interactive mode requires the "prompts" package.');
     console.error('Either install it: npm install prompts');
-    console.error('Or use flags: npx GrimoireStack install --agent copilot --skill <name>');
+    console.error('Or use flags: npx grimoirestack install --agent copilot --skill <name>');
     printHelp();
     process.exit(1);
   }

@@ -65,7 +65,7 @@ export const EXPLICIT = {
   'inversion-mental-model': { lastUpdated: '2026-04-23' },
   'inversion-mental-model-state-machine': { lastUpdated: '2026-04-23' },
   'iterative-improvement-cycle': { lastUpdated: '2026-04-27' },
-  'iterative-patch-repair': { lastUpdated: '2026-05-08' },
+  'iterative-patch-repair': { lastUpdated: '2026-06-17' },
   'iterative-spec-authoring': { lastUpdated: '2026-06-17' },
   'jury': { lastUpdated: '2026-05-12' },
   'kahneman-thinking-fast-slow-software-agent': { lastUpdated: '2026-04-23' },
