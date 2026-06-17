@@ -1,5 +1,5 @@
 ---
-source: "jerry-skills"
+source: "GrimoireStack"
 name: stakeholder-communication
 description: Use this skill when presenting conclusions, estimates, recommendations, or technical explanations to humans. Prevents overpromising, hiding uncertainty, stating speculative fixes as certainties, or communicating in ways that create false confidence or unnecessary alarm. Calibrates confidence and structures communication by audience and decision urgency.
 category: output-quality

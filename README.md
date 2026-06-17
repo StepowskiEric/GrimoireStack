@@ -1,4 +1,4 @@
-# Jerry's Agent Skills
+# GrimoireStack
 
 A catalog of agent skills for making AI systems more reliable, disciplined, and useful in real work.
 
@@ -6,17 +6,17 @@ A catalog of agent skills for making AI systems more reliable, disciplined, and 
 
 ```bash
 # Interactive picker — choose agent and skills
-npx jerry-skills install
+npx GrimoireStack install
 
 # Install all skills to a specific agent
-npx jerry-skills install --agent copilot
-npx jerry-skills install --agent codex
-npx jerry-skills install --agent hermes --with-mcp # includes MCP servers
-npx jerry-skills install --agent claude
-npx jerry-skills install --agent antigravity
+npx GrimoireStack install --agent copilot
+npx GrimoireStack install --agent codex
+npx GrimoireStack install --agent hermes --with-mcp # includes MCP servers
+npx GrimoireStack install --agent claude
+npx GrimoireStack install --agent antigravity
 
 # List available skills without installing
-npx jerry-skills list
+npx GrimoireStack list
 ```
 
 See [docs/installation.md](docs/installation.md) for full details including all agents, custom destinations, and VS Code Copilot setup.
@@ -47,7 +47,7 @@ This repository ships with two kinds of tooling alongside skills:
 
 | Type | What | How to get it |
 |------|------|---------------|
-| **Companion Python scripts** | `*.py` files shipped with specific skills (e.g. `lint_battalion.py`, `git_surgery.py`). Each is pure stdlib — no `pip install`. | `npx jerry-skills install --with-scripts --with-mcp` |
+| **Companion Python scripts** | `*.py` files shipped with specific skills (e.g. `lint_battalion.py`, `git_surgery.py`). Each is pure stdlib — no `pip install`. | `npx GrimoireStack install --with-scripts --with-mcp` |
 | **MCP Servers** | Raw stdio MCP servers in `mcp-servers/` — zero external deps, JSON-RPC over stdio with `Content-Length` framing. | Copy `mcp-servers/` into your project; add to Hermes `config.yaml` |
 
 ### MCP Servers included
@@ -62,10 +62,10 @@ Hermes config example:
 mcp_servers:
   code-graph:
     command: python3
-    args: ["/full/path/to/jerrys-agent-skills/mcp-servers/code-graph/server.py"]
+    args: ["/full/path/to/GrimoireStack/mcp-servers/code-graph/server.py"]
   dev-diagnostics:
     command: python3
-    args: ["/full/path/to/jerrys-agent-skills/mcp-servers/dev-diagnostics/server.py"]
+    args: ["/full/path/to/GrimoireStack/mcp-servers/dev-diagnostics/server.py"]
 ```
 
 ## Documentation

@@ -1,5 +1,5 @@
 ---
-source: "jerry-skills"
+source: "GrimoireStack"
 name: hallucination-anchor-chain
 category: reasoning
 description: Force every factual claim to be anchored to a verified source. Unanchored claims are marked unverified and hidden from outputs. Builds a verifiable chain of evidence to eliminate hallucination. Based on Chain-of-Verification (arXiv:2309.11495), Self-Consistency (arXiv:2203.11171), and Grounded CoT (arXiv:2503.12799).

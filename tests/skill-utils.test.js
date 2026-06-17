@@ -146,13 +146,13 @@ describe('skill-utils', () => {
 describe('CLI contract', () => {
   it('prints help for help command', async () => {
     const { stdout } = await execFileAsync('node', ['bin/install.js', 'help'], { cwd: repoRoot });
-    expect(stdout).toContain("jerry-skills — install Jerry's agent skill files");
+    expect(stdout).toContain("GrimoireStack — install agent skill files");
     expect(stdout).toContain('--agent');
   });
 
   it('lists skills for list command', async () => {
     const { stdout } = await execFileAsync('node', ['bin/install.js', 'list'], { cwd: repoRoot });
-    expect(stdout).toContain("Jerry's Agent Skills (");
+    expect(stdout).toContain("GrimoireStack (");
     expect(stdout).toContain('Execution — how-to-do-the-work protocols');
   });
 

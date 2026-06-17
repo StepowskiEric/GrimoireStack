@@ -1,5 +1,5 @@
 ---
-source: "jerry-skills"
+source: "GrimoireStack"
 name: bulk-rename-and-update-references
 description: Use this skill when renaming many files or directories in a git repository where the old names appear in content. Prevents broken links, stale references, and silent partial replacements.
 category: development

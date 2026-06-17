@@ -46,8 +46,8 @@ function buildSkillBundle(content, file, agent) {
 
   if (content.trimStart().startsWith('---')) {
     let result = content;
-    if (!result.includes('source: "jerry-skills"') && !result.includes("source: 'jerry-skills'")) {
-      result = result.replace(/^---\r?\n/, `---\nsource: "jerry-skills"\n`);
+    if (!result.includes('source: "GrimoireStack"') && !result.includes("source: 'GrimoireStack'")) {
+      result = result.replace(/^---\r?\n/, `---\nsource: "GrimoireStack"\n`);
     }
     if (agent === 'copilot') {
       result = result.replace(/^name:.*$/m, `name: ${JSON.stringify(name)}`);
@@ -56,7 +56,7 @@ function buildSkillBundle(content, file, agent) {
   }
 
   const description = extractSkillDescription(content);
-  return `---\nname: ${JSON.stringify(name)}\ndescription: ${JSON.stringify(description)}\nsource: "jerry-skills"\n---\n\n${content}`;
+  return `---\nname: ${JSON.stringify(name)}\ndescription: ${JSON.stringify(description)}\nsource: "GrimoireStack"\n---\n\n${content}`;
 }
 
 function extractSkillDescription(content) {
@@ -143,7 +143,7 @@ function cleanStaleSkills(dest) {
         if (fs.existsSync(skillFile)) {
           try {
             const content = fs.readFileSync(skillFile, 'utf8');
-            if (content.includes('source: "jerry-skills"') || content.includes("source: 'jerry-skills'")) {
+            if (content.includes('source: "GrimoireStack"') || content.includes("source: 'GrimoireStack'")) {
               fs.rmSync(fullPath, { recursive: true, force: true });
               localCleaned++;
               continue;
@@ -264,7 +264,7 @@ function installSkills(skills, dest, flat, agent, withScripts, withMCP) {
 }
 
 /**
- * Find all skills previously installed from jerry-skills in a destination directory.
+ * Find all skills previously installed from GrimoireStack in a destination directory.
  * Returns an array of { name, installedPath, source } objects.
  */
 function findInstalledSkills(dest) {
@@ -280,7 +280,7 @@ function findInstalledSkills(dest) {
           if (fs.existsSync(skillFile)) {
             try {
               const content = fs.readFileSync(skillFile, 'utf8');
-              if (content.includes('source: "jerry-skills"') || content.includes("source: 'jerry-skills'")) {
+              if (content.includes('source: "GrimoireStack"') || content.includes("source: 'GrimoireStack'")) {
                 installed.push({
                   name: entry.name,
                   installedPath: skillFile,
@@ -311,7 +311,7 @@ function findInstalledSkills(dest) {
 function checkSkillChanged(installedContent, sourceContent) {
   // Normalize both for comparison (strip source field since we add it during install)
   const normalize = (c) => c
-    .replace(/^source:\s*["']jerry-skills["']\s*$/m, '')
+    .replace(/^source:\s*["']GrimoireStack["']\s*$/m, '')
     .replace(/\r\n/g, '\n')
     .trim();
 
@@ -332,15 +332,15 @@ function checkSkillChanged(installedContent, sourceContent) {
 }
 
 /**
- * Update previously installed skills from jerry-skills.
+ * Update previously installed skills from GrimoireStack.
  * Only updates skills that have changed in the source.
  */
 function updateSkills(dest, allSkills, withScripts, withMCP, flat, agent) {
   const installed = findInstalledSkills(dest);
 
   if (installed.length === 0) {
-    console.log(`  No jerry-skills found in ${dest}`);
-    console.log('  Run "npx jerry-skills install" first to install skills.');
+    console.log(`  No GrimoireStack found in ${dest}`);
+    console.log('  Run "npx GrimoireStack install" first to install skills.');
     return 0;
   }
 
@@ -452,7 +452,7 @@ function matchSkill(query, allSkills) {
 }
 
 function listSkillsCLI(skillsDir, allSkills) {
-  console.log(`\nJerry's Agent Skills (${allSkills.length} total)\n`);
+  console.log(`\nGrimoireStack (${allSkills.length} total)\n`);
 
   for (const topic of topicOrder()) {
     const files = allSkills.filter((f) => f.startsWith(topic + '/') || f.startsWith(topic + path.sep));
@@ -486,15 +486,15 @@ function printHelp() {
     return `  ${a.padEnd(12)} ${dest}`;
   });
 
-  console.log(`\njerry-skills — install Jerry's agent skill files into your AI agent
+  console.log(`\nGrimoireStack — install agent skill files into your AI agent
 
 Usage:
-  npx jerry-skills install [options]
-  npx jerry-skills install --agent <name> [--skill <name>] [--skill <name2>]
-  npx jerry-skills install --all
-  npx jerry-skills update [options]
-  npx jerry-skills list
-  npx jerry-skills help
+  npx GrimoireStack install [options]
+  npx GrimoireStack install --agent <name> [--skill <name>] [--skill <name2>]
+  npx GrimoireStack install --all
+  npx GrimoireStack update [options]
+  npx GrimoireStack list
+  npx GrimoireStack help
 
 Commands:
   install   Copy skill bundles to the agent's skills directory
@@ -519,15 +519,15 @@ Skill format (Agent Skills open standard):
   Codex uses grouped layout (topic/skill-name/SKILL.md).
 
 Examples:
-  npx jerry-skills install                            # interactive picker
-  npx jerry-skills install --agent copilot            # install all skills to copilot
-  npx jerry-skills install --agent codex --skill how-to-solve-it-state-machine
-  npx jerry-skills install --agent claude --skill purify-test-output --with-scripts
-  npx jerry-skills install --all                      # install all to all agents
-  npx jerry-skills install --agent hermes --with-mcp  # install all skills + MCP servers to hermes
-  npx jerry-skills update --agent hermes              # update installed skills for hermes
-  npx jerry-skills update --all                       # update all agents
-  npx jerry-skills list
+  npx GrimoireStack install                            # interactive picker
+  npx GrimoireStack install --agent copilot            # install all skills to copilot
+  npx GrimoireStack install --agent codex --skill how-to-solve-it-state-machine
+  npx GrimoireStack install --agent claude --skill purify-test-output --with-scripts
+  npx GrimoireStack install --all                      # install all to all agents
+  npx GrimoireStack install --agent hermes --with-mcp  # install all skills + MCP servers to hermes
+  npx GrimoireStack update --agent hermes              # update installed skills for hermes
+  npx GrimoireStack update --all                       # update all agents
+  npx GrimoireStack list
 `);
 }
 
@@ -542,7 +542,7 @@ async function interactivePicker(allSkills) {
   } catch (e) {
     console.error('Interactive mode requires the "prompts" package.');
     console.error('Either install it: npm install prompts');
-    console.error('Or use flags: npx jerry-skills install --agent copilot --skill <name>');
+    console.error('Or use flags: npx GrimoireStack install --agent copilot --skill <name>');
     printHelp();
     process.exit(1);
   }

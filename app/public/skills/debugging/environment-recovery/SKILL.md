@@ -1,5 +1,5 @@
 ---
-source: "jerry-skills"
+source: "GrimoireStack"
 name: environment-recovery
 description: "Diagnose and fix broken development environments — missing tools, wrong versions, corrupted caches, full disks, permission drift, and dependency hell. The skill every other debugging skill assumes."
 triggers:

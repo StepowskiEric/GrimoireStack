@@ -20,7 +20,7 @@ A companion script generates hierarchical summaries and ranks candidates by sema
 **Quick Setup:**
 ```bash
 # 1. Install the skill (gets the .md file)
-npx jerry-skills install --agent copilot --skill codebase-divide-conquer-search
+npx GrimoireStack install --agent copilot --skill codebase-divide-conquer-search
 
 # 2. Copy the script (manual step — npx install does not copy scripts)
 mkdir -p ~/.copilot/skills/scripts

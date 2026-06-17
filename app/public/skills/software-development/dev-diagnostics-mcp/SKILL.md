@@ -51,7 +51,7 @@ ___
 mcp_servers:
   devdiag:
     command: "python3"
-    args: ["~/Documents/Jerrys-agent-skills/mcp-servers/dev-diagnostics/server.py"]
+    args: ["~/Documents/GrimoireStack/mcp-servers/dev-diagnostics/server.py"]
     timeout: 180
     connect_timeout: 30
 ```

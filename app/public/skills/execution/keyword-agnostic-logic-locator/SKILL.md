@@ -2,14 +2,14 @@
 
 ## ⚠️ Manual Setup Required
 
-**This skill requires Python scripts that are NOT automatically installed by `npx jerry-skills install`.**
+**This skill requires Python scripts that are NOT automatically installed by `npx GrimoireStack install`.**
 
 The skill references two Python scripts (`extract_code_facts.py` and `query_code_facts.py`) that must be manually copied to work. Without them, the skill provides conceptual guidance only — you cannot execute the Datalog queries.
 
 **Quick Setup:**
 ```bash
 # 1. Install the skill (gets the .md file)
-npx jerry-skills install --agent copilot --skill keyword-agnostic-logic-locator
+npx GrimoireStack install --agent copilot --skill keyword-agnostic-logic-locator
 
 # 2. Copy the required scripts (manual step)
 mkdir -p ~/.copilot/skills/scripts
@@ -496,27 +496,27 @@ See script headers for usage details.
 
 ### Why Manual Setup is Required
 
-The `npx jerry-skills install` command only copies `.md` skill files, not supporting scripts. This skill requires two Python scripts that must be manually copied after installation.
+The `npx GrimoireStack install` command only copies `.md` skill files, not supporting scripts. This skill requires two Python scripts that must be manually copied after installation.
 
 ### Step-by-Step Setup
 
 **Step 1: Install the skill**
 ```bash
-npx jerry-skills install --agent copilot --skill keyword-agnostic-logic-locator
+npx GrimoireStack install --agent copilot --skill keyword-agnostic-logic-locator
 ```
 
 **Step 2: Get the scripts**
 
 Option A — Clone the repo:
 ```bash
-git clone https://github.com/StepowskiEric/Jerrys-agent-skills.git
-cd Jerrys-agent-skills
+git clone https://github.com/StepowskiEric/GrimoireStack.git
+cd GrimoireStack
 ```
 
 Option B — Download just the scripts:
 ```bash
-curl -O https://raw.githubusercontent.com/StepowskiEric/Jerrys-agent-skills/main/scripts/extract_code_facts.py
-curl -O https://raw.githubusercontent.com/StepowskiEric/Jerrys-agent-skills/main/scripts/query_code_facts.py
+curl -O https://raw.githubusercontent.com/StepowskiEric/GrimoireStack/main/scripts/extract_code_facts.py
+curl -O https://raw.githubusercontent.com/StepowskiEric/GrimoireStack/main/scripts/query_code_facts.py
 ```
 
 **Step 3: Copy scripts to skills directory**
@@ -576,14 +576,14 @@ echo "Setting up Keyword-Agnostic Logic Locator..."
 
 # Install skill
 echo "Installing skill..."
-npx jerry-skills install --agent copilot --skill keyword-agnostic-logic-locator
+npx GrimoireStack install --agent copilot --skill keyword-agnostic-logic-locator
 
 # Download scripts
 echo "Downloading scripts..."
 mkdir -p ~/.copilot/skills/scripts
 cd ~/.copilot/skills/scripts
-curl -sO https://raw.githubusercontent.com/StepowskiEric/Jerrys-agent-skills/main/scripts/extract_code_facts.py
-curl -sO https://raw.githubusercontent.com/StepowskiEric/Jerrys-agent-skills/main/scripts/query_code_facts.py
+curl -sO https://raw.githubusercontent.com/StepowskiEric/GrimoireStack/main/scripts/extract_code_facts.py
+curl -sO https://raw.githubusercontent.com/StepowskiEric/GrimoireStack/main/scripts/query_code_facts.py
 
 # Install dependencies
 echo "Installing Python dependencies..."

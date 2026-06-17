@@ -1,5 +1,5 @@
 ---
-source: "jerry-skills"
+source: "GrimoireStack"
 name: iterative-spec-authoring
 description: >
   Author a detailed technical spec grounded in research, then refine it through

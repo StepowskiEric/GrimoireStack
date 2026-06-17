@@ -48,7 +48,7 @@ Edge cases: empty sequence returns 0
 ### Step 2: Generate + Verify
 
 ```bash
-python ~/Documents/Jerrys-agent-skills/software-development/verified-synthesize/scripts/dafny_verify.py \
+python ~/Documents/GrimoireStack/software-development/verified-synthesize/scripts/dafny_verify.py \
   --spec "function sum(a: seq<int>): int ensures sum(a) >= 0" \
   --language python \
   --output /tmp/verified_sum.py
@@ -129,7 +129,7 @@ dafny --version
 ### Quick Test
 
 ```bash
-python ~/Documents/Jerrys-agent-skills/software-development/verified-synthesize/scripts/dafny_verify.py \
+python ~/Documents/GrimoireStack/software-development/verified-synthesize/scripts/dafny_verify.py \
   --spec "function abs(x: int): int ensures abs(x) >= 0 && (x >= 0 ==> abs(x) == x)" \
   --language python \
   --verbose

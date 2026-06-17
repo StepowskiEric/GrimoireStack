@@ -1,8 +1,8 @@
 # Super Review TypeScript — Report
-## Jerry’s Agent Skills (`app/`)
+## GrimoireStack (`app/`)
 
 ## Super-Review Summary
-- **Review surface:** `/Users/mini/Documents/Jerrys-agent-skills/app/src`, `/Users/mini/Documents/Jerrys-agent-skills/app/scripts`
+- **Review surface:** `/Users/mini/Documents/GrimoireStack/app/src`, `/Users/mini/Documents/GrimoireStack/app/scripts`
 - **Extensions included:** `.js`, `.jsx`
 - **Extensions excluded:** `.ts`, `.tsx` (none present in review surface)
 - **Excluded dirs:** `node_modules/`, `dist/`, `build/`

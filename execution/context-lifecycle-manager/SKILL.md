@@ -1,5 +1,5 @@
 ---
-source: "jerry-skills"
+source: "GrimoireStack"
 name: context-lifecycle-manager
 category: execution
 description: >

@@ -27,7 +27,7 @@ The previous layout had a top `TabBar` that exposed five utility "schools" along
 - **Reimplement** — The data and layout engine are intact. Gate it behind an opt-in "Relationship Web" toggle in the Bestiary Codex; lazily import the graph component; consider a `<canvas>` backend for >100 nodes.
 
 ### Ritual of Summoning
-- **What** — A page listing install commands for every supported agent (`npx jerry-skills install`, `--agent codex`, `--skill foo`) with one-click copy buttons and a "GitHub source" seal.
+- **What** — A page listing install commands for every supported agent (`npx GrimoireStack install`, `--agent codex`, `--skill foo`) with one-click copy buttons and a "GitHub source" seal.
 - **Where it lived** — `app/src/components/RitualSection.jsx`.
 - **Why cut** — Functionality still works via the install commands shown in the spell modal's "Inscribe to your Workshop" button. A full ritual page was overkill for what is mostly a clipboard copy.
 - **Reimplement** — Re-mount `RitualSection` as a sub-section of the Bestiary Codex or a dedicated "Rituals" page. Drop the GitHub seal into a Settings page link.

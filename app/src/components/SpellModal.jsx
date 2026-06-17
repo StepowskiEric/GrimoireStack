@@ -207,11 +207,11 @@ function sanitizeHtml(html) {
 }
 
 const INSCRIBE_AGENTS = [
-  { id: 'claude', label: 'Claude Code', prefix: 'npx jerry-skills install --agent claude' },
-  { id: 'codex', label: 'OpenAI Codex', prefix: 'npx jerry-skills install --agent codex' },
-  { id: 'copilot', label: 'VS Code Copilot', prefix: 'npx jerry-skills install --agent copilot' },
-  { id: 'hermes', label: 'Hermes', prefix: 'npx jerry-skills install --agent hermes' },
-  { id: 'antigravity', label: 'Antigravity', prefix: 'npx jerry-skills install --agent antigravity' },
+  { id: 'claude', label: 'Claude Code', prefix: 'npx GrimoireStack install --agent claude' },
+  { id: 'codex', label: 'OpenAI Codex', prefix: 'npx GrimoireStack install --agent codex' },
+  { id: 'copilot', label: 'VS Code Copilot', prefix: 'npx GrimoireStack install --agent copilot' },
+  { id: 'hermes', label: 'Hermes', prefix: 'npx GrimoireStack install --agent hermes' },
+  { id: 'antigravity', label: 'Antigravity', prefix: 'npx GrimoireStack install --agent antigravity' },
   { id: 'factory-droid', label: 'Factory Droid', prefix: 'Copy skill to ~/.factory/skills/' },
 ];
 

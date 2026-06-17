@@ -1,5 +1,5 @@
 ---
-source: "jerry-skills"
+source: "GrimoireStack"
 name: coordinated-change
 description: "Plan and execute changes across multiple related files as a coordinated atomic unit. For when a fix or feature requires touching 2+ files that must stay consistent — types, implementation, tests, schema, config."
 triggers:

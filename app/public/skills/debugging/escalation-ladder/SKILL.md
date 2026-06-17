@@ -1,5 +1,5 @@
 ---
-source: "jerry-skills"
+source: "GrimoireStack"
 name: escalation-ladder
 description: "Structured protocol for when an agent is stuck — escalating from self-recovery to user collaboration to full retreat. Fills the gap between trajectory-guard (detects stuck) and summarize (bails out)."
 triggers:

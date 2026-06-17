@@ -1,5 +1,5 @@
 ---
-source: "jerry-skills"
+source: "GrimoireStack"
 name: time-traveling-debugger
 category: debugging
 description: When a bug occurs, record a deterministic execution trace forward, then replay it in reverse from the crash point to find the exact line where state first diverged. Spawns 'past self' and 'future self' that meet at the divergence.

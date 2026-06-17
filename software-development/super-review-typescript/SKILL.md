@@ -1,7 +1,7 @@
 ---
 name: Super Review TypeScript
 description: AI‑generated TypeScript code reviewer targeting the five specific failure modes of LLM‑authored TypeScript: security vulnerabilities, hallucinated APIs, logic errors, type‑safety violations, and architectural decay. Based on arXiv research on LLM coding failures.
-source: "jerry-skills"
+source: "GrimoireStack"
 ---
 
 # Super Review TypeScript

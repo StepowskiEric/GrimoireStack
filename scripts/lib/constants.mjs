@@ -19,4 +19,5 @@ export const SCAN_DIRS = [
   'debugging', 'execution', 'judgment-and-routing', 'mcp-servers',
   'mlops', 'orchestration', 'output-quality', 'reasoning',
   'software-development', 'systems-and-architecture', 'testing', 'development',
+  'research',
 ];

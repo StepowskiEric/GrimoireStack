@@ -1,7 +1,7 @@
 ---
-source: "jerry-skills"
+source: "GrimoireStack"
 name: skill-ab-evaluation
-description: A/B evaluate any jerrysagentskill against a baseline using isolated subagents, 5 trials each, and an objective rubric. Measures real % improvement without touching current projects.
+description: A/B evaluate any GrimoireStack skill against a baseline using isolated subagents, 5 trials each, and an objective rubric. Measures real % improvement without touching current projects.
 category: testing
 priority: high
 tags: [evaluation, ab-test, subagent, skill-quality, benchmarking]
@@ -12,7 +12,7 @@ tags: [evaluation, ab-test, subagent, skill-quality, benchmarking]
 ---
 
 ## Overview
-Run paired A/B trials to measure whether loading a specific jerrysagentskill actually improves outcomes vs. general knowledge. Uses isolated git worktrees or temp directories so zero risk to current projects. Minimum 5 trials per condition for statistical relevance.
+Run paired A/B trials to measure whether loading a specific GrimoireStack skill actually improves outcomes vs. general knowledge. Uses isolated git worktrees or temp directories so zero risk to current projects. Minimum 5 trials per condition for statistical relevance.
 
 ## When to use
 - You want to know if a skill is worth keeping / promoting

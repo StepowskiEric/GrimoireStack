@@ -1,6 +1,6 @@
 # New Skills Overview
 
-This document provides detailed information about the four skills recently added to Jerry's Agent Skills repository:
+This document provides detailed information about the four skills recently added to GrimoireStack repository:
 
 ## 1. log-trace-correlation (debugging)
 

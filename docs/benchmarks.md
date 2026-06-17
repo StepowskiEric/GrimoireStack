@@ -1,6 +1,6 @@
 # Skill Benchmarks
 
-Reproducible A/B evaluation results for jerrysagentskills. All benchmarks use isolated environments — zero risk to active projects.
+Reproducible A/B evaluation results for GrimoireStack skills. All benchmarks use isolated environments — zero risk to active projects.
 
 ## Benchmark Methodology
 

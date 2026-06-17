@@ -39,7 +39,7 @@ describe('SpellModal action buttons', () => {
     await act(async () => { fireEvent.click(inscribeBtn); });
     expect(inscribeBtn.textContent).toBe('Incantation Inscribed');
     expect(navigator.clipboard.writeText).toHaveBeenCalledWith(
-      'npx jerry-skills install --agent claude --skill log-trace-correlation'
+      'npx GrimoireStack install --agent claude --skill log-trace-correlation'
     );
     // After the timeout, the original text must be restored
     await act(() => new Promise(r => setTimeout(r, 2100)));

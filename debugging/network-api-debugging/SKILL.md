@@ -1,5 +1,5 @@
 ---
-source: "jerry-skills"
+source: "GrimoireStack"
 name: network-api-debugging
 description: "Diagnose and fix network and API failures — CORS, auth token issues, rate limiting, redirect chains, WebSocket drops, and HTTP request/response mismatches. The skill that handles everything between 'the code is right' and 'the server is right' but it still doesn't work."
 triggers:

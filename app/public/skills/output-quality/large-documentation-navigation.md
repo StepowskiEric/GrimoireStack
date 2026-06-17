@@ -4,7 +4,7 @@
 
 Transform an unwieldy, large documentation repository into a navigable, user-centered knowledge base. Build multi-layered navigation systems that help users find exactly what they need based on their situation, not just alphabetical or categorical listings.
 
-Based on the Jerry's Agent Skills README reorganization (April 2025) where a 900+ line README with 70+ items was transformed into a discoverable, use-case-driven navigation system.
+Based on the GrimoireStack README reorganization (April 2025) where a 900+ line README with 70+ items was transformed into a discoverable, use-case-driven navigation system.
 
 ---
 
@@ -410,4 +410,4 @@ assembly:
 - Information architecture principles
 - User-centered design
 - Cognitive load theory (5±2 items)
-- This skill was developed during the Jerry's Agent Skills README reorganization (April 2025)
+- This skill was developed during the GrimoireStack README reorganization (April 2025)

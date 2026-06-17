@@ -1,7 +1,7 @@
 ---
 name: add-new-skill-to-repository
 category: development
-description: Process for adding a new skill to Jerry's agent skills repository with proper documentation, installation support, and cross-platform verification.
+description: Process for adding a new skill to GrimoireStack repository with proper documentation, installation support, and cross-platform verification.
 version: 1.0
 ...
 
@@ -9,10 +9,10 @@ version: 1.0
 
 ---
 
-# Add New Skill to Jerry's Agent Skills Repository
+# Add New Skill to GrimoireStack Repository
 
 ## Purpose
-Standardized process for contributing a new skill to the Jerry's agent skills repository that ensures:
+Standardized process for contributing a new skill to the GrimoireStack repository that ensures:
 - Proper skill structure and documentation
 - Correct installation support across all target agents
 - Clear separation of concise README info vs detailed documentation
@@ -20,7 +20,7 @@ Standardized process for contributing a new skill to the Jerry's agent skills re
 
 ## When to Use
 - You have created a new skill that you want to contribute to the repository
-- You need to ensure the skill will be properly installed by npx jerry-skills
+- You need to ensure the skill will be properly installed by npx GrimoireStack
 - You want to maintain repository quality and consistency
 
 ## Steps
@@ -156,7 +156,7 @@ Standardized process for contributing a new skill to the Jerry's agent skills re
 
 ## Outputs
 - Updated repository with new skill properly integrated
-- Skill installable via npx jerry-skills for all supported agents
+- Skill installable via npx GrimoireStack for all supported agents
 - Updated documentation (both concise in README and detailed if created)
 - Version bumped and tagged
 - Ready for npm publishing

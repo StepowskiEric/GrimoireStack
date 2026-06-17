@@ -1,5 +1,5 @@
 ---
-source: "jerry-skills"
+source: "GrimoireStack"
 name: minimal-reproduction
 description: "Write the smallest possible test that demonstrates the bug, then use it as ammunition for debugging. Bridges the gap when no failing test exists — every other debugging skill assumes you have one."
 triggers:

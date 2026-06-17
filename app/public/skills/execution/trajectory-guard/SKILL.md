@@ -1,5 +1,5 @@
 ---
-source: "jerry-skills"
+source: "GrimoireStack"
 name: trajectory-guard
 description: Runtime meta-monitoring protocol that detects agent failure spirals — repetitive loops, specification drift, and stuck trajectories — and forcibly redirects strategy. Based on Wink (2602.17037) misbehavior taxonomy and PALADIN (2509.25238) recovery patterns.
 category: execution

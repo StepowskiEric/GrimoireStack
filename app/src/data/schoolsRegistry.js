@@ -822,7 +822,7 @@ const schools = [
       {
         "name": "A/B Scry",
         "skill": "skill-ab-evaluation",
-        "effect": "A/B evaluate any jerrysagentskill against a baseline using isolated subagents, 5 trials each, and an objective rubric. Measures real % improvement without touching current projects.",
+        "effect": "A/B evaluate any GrimoireStack skill against a baseline using isolated subagents, 5 trials each, and an objective rubric. Measures real % improvement without touching current projects.",
         "status": "—"
       }
     ]
@@ -1060,6 +1060,20 @@ const schools = [
     ]
   },
   {
+    "id": "research",
+    "real": "Research",
+    "name": "School of Research",
+    "desc": "Skills related to research.",
+    "spells": [
+      {
+        "name": "Effective Web Search",
+        "skill": "effective-web-search",
+        "effect": "Web search discipline for technical research. Use when an agent needs to look up an error, library behavior, framework quirk, or bug. Enforces official-docs-first, version-aware research, and full GitHub issue follow-through. Prevents the failure mode where the agent latches onto the first outdated GitHub issue and treats it as truth.",
+        "status": "—"
+      }
+    ]
+  },
+  {
     "id": "development",
     "real": "Development & Tooling",
     "name": "School of Tools",
@@ -1068,7 +1082,7 @@ const schools = [
       {
         "name": "New Skill Rite",
         "skill": "add-new-skill-to-repository",
-        "effect": "Process for adding a new skill to Jerry's agent skills repository with proper documentation, installation support, and cross-platform verification.",
+        "effect": "Process for adding a new skill to GrimoireStack repository with proper documentation, installation support, and cross-platform verification.",
         "status": "—"
       },
       {

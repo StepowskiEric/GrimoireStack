@@ -1,5 +1,5 @@
 ---
-source: "jerry-skills"
+source: "GrimoireStack"
 name: assumption-grounding
 description: Prevent hallucinated facts from compounding into costly errors. State every assumption explicitly, verify with the cheapest possible check, and only proceed on confirmation. Based on Chain-of-Verification research.
 category: execution

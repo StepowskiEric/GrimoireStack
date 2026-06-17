@@ -1,5 +1,5 @@
 ---
-source: "jerry-skills"
+source: "GrimoireStack"
 name: plan-with-judge
 description: Create an implementation plan in JSONL format, then iteratively improve it using a stronger user-specified model as a judge until the plan is approved.
 category: execution

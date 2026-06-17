@@ -5,7 +5,7 @@ description: Rigorous multi-layer code review process with dual specialized revi
 version: 1.0.0
 priority: high
 tags: [code-review, multi-agent, testing, security, quality-gate, production-ready]
-author: jerrys-agent-skills
+author: GrimoireStack
 created: 2026-05-09
 ...
 

@@ -1,5 +1,5 @@
 ---
-source: "jerry-skills"
+source: "GrimoireStack"
 name: active-inference-agent
 category: mcp-servers
 description: >

@@ -35,7 +35,7 @@ ___
 When installing with `--with-scripts`, the script is copied alongside `SKILL.md` automatically.
 
 ```bash
-npx jerry-skills install --agent pi --skill git-surgery --with-scripts
+npx GrimoireStack install --agent pi --skill git-surgery --with-scripts
 ```
 
 If installing manually, copy `git_surgery.py` to the same directory as `SKILL.md`.

@@ -6,37 +6,37 @@ Install skills directly to your agent's configuration directory using `npx`:
 
 ```bash
 # Interactive picker — select agent and skills from a menu
-npx jerry-skills install
+npx GrimoireStack install
 
 # Install all skills to a specific agent
-npx jerry-skills install --agent copilot
-npx jerry-skills install --agent codex
-npx jerry-skills install --agent hermes
-npx jerry-skills install --agent claude
-npx jerry-skills install --agent antigravity
+npx GrimoireStack install --agent copilot
+npx GrimoireStack install --agent codex
+npx GrimoireStack install --agent hermes
+npx GrimoireStack install --agent claude
+npx GrimoireStack install --agent antigravity
 
 # Install only specific skills (repeat --skill for multiple)
-npx jerry-skills install --agent copilot --skill checklist-manifesto
-npx jerry-skills install --agent codex --skill how-to-solve-it-state-machine --skill ooda-loop-state-machine
+npx GrimoireStack install --agent copilot --skill checklist-manifesto
+npx GrimoireStack install --agent codex --skill how-to-solve-it-state-machine --skill ooda-loop-state-machine
 
 # Partial name matching works too
-npx jerry-skills install --agent claude --skill "six-thinking"
+npx GrimoireStack install --agent claude --skill "six-thinking"
 
 # Install to all supported agents
-npx jerry-skills install --all
+npx GrimoireStack install --all
 
 # List available skills without installing
-npx jerry-skills list
+npx GrimoireStack list
 ```
 
 ## Default Install Paths
 
 ```bash
-npx jerry-skills install --agent codex       # → ~/.agents/skills/
-npx jerry-skills install --agent hermes      # → ~/.hermes/skills/
-npx jerry-skills install --agent claude      # → ~/.claude/skills/
-npx jerry-skills install --agent antigravity # → ~/.antigravity/skills/
-npx jerry-skills install --agent copilot     # → ~/.copilot/skills/ (VS Code Copilot)
+npx GrimoireStack install --agent codex       # → ~/.agents/skills/
+npx GrimoireStack install --agent hermes      # → ~/.hermes/skills/
+npx GrimoireStack install --agent claude      # → ~/.claude/skills/
+npx GrimoireStack install --agent antigravity # → ~/.antigravity/skills/
+npx GrimoireStack install --agent copilot     # → ~/.copilot/skills/ (VS Code Copilot)
 ```
 
 ## Custom Destinations
@@ -44,18 +44,18 @@ npx jerry-skills install --agent copilot     # → ~/.copilot/skills/ (VS Code C
 To make skills show up in a Codex repository workspace, install them into the repo-local Team Config path:
 
 ```bash
-npx jerry-skills install --agent codex --dest .agents/skills
+npx GrimoireStack install --agent codex --dest .agents/skills
 ```
 
 Use any custom destination:
 
 ```bash
-npx jerry-skills install --agent codex --dest /path/to/custom/dir
+npx GrimoireStack install --agent codex --dest /path/to/custom/dir
 ```
 
 ## How It Works
 
-Each command copies every skill into a folder bundle with a `SKILL.md` file. Each bundle includes `name`, `description`, and `source: "jerry-skills"` frontmatter so skills are discoverable and identifiable in the skills picker.
+Each command copies every skill into a folder bundle with a `SKILL.md` file. Each bundle includes `name`, `description`, and `source: "GrimoireStack"` frontmatter so skills are discoverable and identifiable in the skills picker.
 
 For example, `execution/how-to-solve-it-state-machine` installs to `execution/how-to-solve-it-state-machine/SKILL.md` under the target directory.
 
@@ -65,10 +65,10 @@ These skills use the [Agent Skills open standard](https://agentskills.io), which
 
 ```bash
 # Install all skills for VS Code Copilot
-npx jerry-skills install --agent copilot
+npx GrimoireStack install --agent copilot
 
 # Or pick specific skills
-npx jerry-skills install --agent copilot --skill checklist-manifesto --skill first-principles
+npx GrimoireStack install --agent copilot --skill checklist-manifesto --skill first-principles
 
 # Then in VS Code, type /skills in chat to verify they appear
 ```

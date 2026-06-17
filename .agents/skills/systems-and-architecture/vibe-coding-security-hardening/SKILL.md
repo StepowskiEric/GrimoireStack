@@ -1,5 +1,5 @@
 ---
-source: "jerry-skills"
+source: "GrimoireStack"
 name: vibe-coding-security-hardening
 description: Use this skill before deploying any AI-generated ("vibe-coded") application to production. Provides a systematic hardening checklist targeting the vulnerabilities AI tools reliably introduce — exposed secrets, missing database access controls, broken authentication, injection flaws, and insecure defaults. Studies show 45%+ of AI-generated code contains OWASP Top 10 vulnerabilities.
 category: systems-and-architecture

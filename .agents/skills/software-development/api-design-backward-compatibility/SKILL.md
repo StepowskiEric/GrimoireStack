@@ -1,5 +1,5 @@
 ---
-source: "jerry-skills"
+source: "GrimoireStack"
 name: api-design-backward-compatibility
 description: Use this skill when designing, modifying, or versioning APIs, interfaces, contracts, or data schemas. Prevents shipping breaking changes, creating ambiguous contracts, or designing endpoints that cannot evolve without pain. Forces contract-first design and additive-only evolution by default.
 category: software-development

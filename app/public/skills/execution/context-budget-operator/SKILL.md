@@ -1,5 +1,5 @@
 ---
-source: "jerry-skills"
+source: "GrimoireStack"
 name: context-budget-operator
 description: Manage finite context windows explicitly. Track token budget, classify information needs, compress aggressively, and decide breadth-vs-depth based on remaining runway. Prevents silent context overflow and instruction dropout.
 category: execution

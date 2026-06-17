@@ -1,5 +1,5 @@
 ---
-source: "jerry-skills"
+source: "GrimoireStack"
 name: empirical-justification
 description: Gather empirical evidence — usage telemetry, A/B results, regression counts — to justify retiring, refining, or promoting a skill. Use when a skill change is contested or high-stakes.
 category: testing

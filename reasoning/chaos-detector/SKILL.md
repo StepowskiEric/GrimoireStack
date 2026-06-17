@@ -49,7 +49,7 @@ trajectory = [
 ### Step 2: Run lyapunov.py
 
 ```bash
-python ~/Documents/Jerrys-agent-skills/reasoning/chaos-detector/scripts/lyapunov.py \
+python ~/Documents/GrimoireStack/reasoning/chaos-detector/scripts/lyapunov.py \
   --tokens "tokenized_conversation.json" \
   --embedding-model text-embedding-3-small \
   --window-size 20 \
@@ -58,7 +58,7 @@ python ~/Documents/Jerrys-agent-skills/reasoning/chaos-detector/scripts/lyapunov
 
 Or inline:
 ```bash
-python ~/Documents/Jerrys-agent-skills/reasoning/chaos-detector/scripts/lyapunov.py \
+python ~/Documents/GrimoireStack/reasoning/chaos-detector/scripts/lyapunov.py \
   --text "Let me think about this bug... The issue is in the loop... I need to check..."
 ```
 
@@ -89,7 +89,7 @@ If `divergence_alert: true`:
 Use perplexity of a simple n-gram model as a proxy for divergence. No API calls.
 
 ```bash
-python ~/Documents/Jerrys-agent-skills/reasoning/chaos-detector/scripts/lyapunov.py \
+python ~/Documents/GrimoireStack/reasoning/chaos-detector/scripts/lyapunov.py \
   --text "conversation text here" \
   --method perplexity
 ```
@@ -98,7 +98,7 @@ python ~/Documents/Jerrys-agent-skills/reasoning/chaos-detector/scripts/lyapunov
 Uses OpenAI `text-embedding-3-small` (or configurable). Computes true Lyapunov exponent over embedding trajectories.
 
 ```bash
-python ~/Documents/Jerrys-agent-skills/reasoning/chaos-detector/scripts/lyapunov.py \
+python ~/Documents/GrimoireStack/reasoning/chaos-detector/scripts/lyapunov.py \
   --text "conversation text here" \
   --embedding-model text-embedding-3-small
 ```
@@ -107,7 +107,7 @@ python ~/Documents/Jerrys-agent-skills/reasoning/chaos-detector/scripts/lyapunov
 For multi-agent systems. Computes Lyapunov exponent across multiple agent reasoning traces simultaneously to detect cross-agent divergence.
 
 ```bash
-python ~/Documents/Jerrys-agent-skills/reasoning/chaos-detector/scripts/lyapunov.py \
+python ~/Documents/GrimoireStack/reasoning/chaos-detector/scripts/lyapunov.py \
   --multi-agent "agent_a_trajectory.json" "agent_b_trajectory.json" \
   --embedding-model text-embedding-3-small
 ```
@@ -145,7 +145,7 @@ export OPENAI_API_KEY=sk-...
 
 ```bash
 # Test with known chaotic text
-python ~/Documents/Jerrys-agent-skills/reasoning/chaos-detector/scripts/lyapunov.py \
+python ~/Documents/GrimoireStack/reasoning/chaos-detector/scripts/lyapunov.py \
   --text "The bug is in the code. No wait, the bug is in my analysis. Actually the bug is in the code. Let me reconsider. The bug is definitely in the code. But maybe my analysis is wrong. Actually I think the bug is in my understanding of the code." \
   --method perplexity
 ```

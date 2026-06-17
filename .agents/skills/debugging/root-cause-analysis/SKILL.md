@@ -1,5 +1,5 @@
 ---
-source: "jerry-skills"
+source: "GrimoireStack"
 name: root-cause-analysis
 description: Use this skill when diagnosing failures, bugs, regressions, or anomalous behavior. Prevents the agent from patching symptoms, creating workaround hacks, or treating correlated effects as causes. Forces distinction between symptoms and causes, verifies causal chains, and fixes underlying defects.
 category: debugging

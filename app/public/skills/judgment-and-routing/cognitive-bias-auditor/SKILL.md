@@ -1,5 +1,5 @@
 ---
-source: "jerry-skills"
+source: "GrimoireStack"
 name: cognitive-bias-auditor
 category: judgment-and-routing
 description: >

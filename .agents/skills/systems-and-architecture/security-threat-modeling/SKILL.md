@@ -1,5 +1,5 @@
 ---
-source: "jerry-skills"
+source: "GrimoireStack"
 name: security-threat-modeling
 description: Use this skill when writing, reviewing, or operating code that handles authentication, authorization, user input, secrets, or sensitive data. Prevents shipping common vulnerabilities, leaking credentials in logs, or designing APIs that invite abuse. Forces attacker-perspective analysis of assets, trust boundaries, and entry points.
 category: systems-and-architecture

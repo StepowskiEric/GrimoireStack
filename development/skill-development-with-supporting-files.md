@@ -10,10 +10,10 @@ Based on the experience of developing the `keyword-agnostic-logic-locator` skill
 
 ## The Problem
 
-The `npx jerry-skills install` command has a specific behavior:
+The `npx GrimoireStack install` command has a specific behavior:
 
 ```bash
-npx jerry-skills install --agent copilot --skill my-skill
+npx GrimoireStack install --agent copilot --skill my-skill
 ```
 
 **What it does:**
@@ -109,7 +109,7 @@ Add this section to your skill's `.md` file:
 ```markdown
 ## Installation Notes
 
-This skill requires supporting scripts that are **not** automatically installed by `npx jerry-skills`.
+This skill requires supporting scripts that are **not** automatically installed by `npx GrimoireStack`.
 
 After installing the skill:
 
@@ -142,7 +142,7 @@ git push origin main
 
 ```bash
 # 8. Install skill (only gets .md file)
-npx jerry-skills install --agent copilot --skill my-skill
+npx GrimoireStack install --agent copilot --skill my-skill
 
 # 9. Manually copy supporting files
 mkdir -p ~/.copilot/skills/scripts
@@ -217,7 +217,7 @@ This skill demonstrates the full pattern:
 **Installation:**
 ```bash
 # Step 1: Install skill (gets .md only)
-npx jerry-skills install --agent copilot --skill keyword-agnostic-logic-locator
+npx GrimoireStack install --agent copilot --skill keyword-agnostic-logic-locator
 
 # Step 2: Manual script copy
 mkdir -p ~/.copilot/skills/scripts
@@ -232,7 +232,7 @@ python ~/.copilot/skills/scripts/extract_code_facts.py --help
 ## Anti-Patterns
 
 **Don't:**
-- Assume `npx jerry-skills install` copies everything
+- Assume `npx GrimoireStack install` copies everything
 - Put scripts in skill subdirectory (they won't be found)
 - Use relative paths like `./script.py` in skill docs (breaks after install)
 - Forget to document the manual copy step
@@ -249,7 +249,7 @@ python ~/.copilot/skills/scripts/extract_code_facts.py --help
 
 | Task | Command |
 |------|---------|
-| Install skill (gets .md) | `npx jerry-skills install --agent copilot --skill my-skill` |
+| Install skill (gets .md) | `npx GrimoireStack install --agent copilot --skill my-skill` |
 | Copy supporting scripts | `cp scripts/*.py ~/.copilot/skills/scripts/` |
 | Verify skill installed | `ls ~/.copilot/skills/my-skill/` |
 | Verify scripts present | `ls ~/.copilot/skills/scripts/` |

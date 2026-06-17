@@ -1,5 +1,5 @@
 ---
-source: "jerry-skills"
+source: "GrimoireStack"
 name: api-surface-anchoring
 category: software-development
 description: Before writing code that calls any external library or API, verify its current API surface from authoritative docs. Prevents hallucinated signatures, wrong imports, and outdated parameters. Tracks verified surfaces in a durable artifact.
@@ -157,10 +157,10 @@ Each line is one verified API surface:
 
 ### Installation
 
-The script is included with the skill. When using `npx jerry-skills install --with-scripts`, it's copied alongside SKILL.md automatically:
+The script is included with the skill. When using `npx GrimoireStack install --with-scripts`, it's copied alongside SKILL.md automatically:
 
 ```bash
-npx jerry-skills install --agent hermes --skill api-surface-anchoring --with-scripts
+npx GrimoireStack install --agent hermes --skill api-surface-anchoring --with-scripts
 ```
 
 For manual setup, copy `api_surface.py` alongside `SKILL.md` in the skill directory.

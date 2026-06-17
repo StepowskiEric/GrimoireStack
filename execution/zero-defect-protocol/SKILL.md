@@ -1,5 +1,5 @@
 ---
-source: "jerry-skills"
+source: "GrimoireStack"
 name: zero-defect-protocol
 category: execution
 description: >

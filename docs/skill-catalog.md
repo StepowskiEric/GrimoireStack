@@ -1299,7 +1299,7 @@ Still as references:
 
 ### `development/skill-development-with-supporting-files.md` · [framework]
 
-**What it is:** A workflow guide for developing skills that require supporting files beyond the main `.md` file — such as Python scripts, templates, or reference documents. Documents the manual steps required because `npx jerry-skills install` only copies `.md` files.
+**What it is:** A workflow guide for developing skills that require supporting files beyond the main `.md` file — such as Python scripts, templates, or reference documents. Documents the manual steps required because `npx GrimoireStack install` only copies `.md` files.
 
 **Use it when:** Your skill needs external scripts, tools, or data files that must be installed alongside the skill document.
 
@@ -1309,7 +1309,7 @@ Still as references:
 
 ### `development/add-new-skill-to-repository/SKILL.md` · [framework]
 
-**What it is:** A process guide for adding new skills to Jerry's Agent Skills repository with proper documentation, installation support, and cross-platform verification.
+**What it is:** A process guide for adding new skills to GrimoireStack repository with proper documentation, installation support, and cross-platform verification.
 
 **Use it when:** You want to contribute a new skill to this repository.
 
@@ -1613,7 +1613,7 @@ Skills for creating skills, integrating external systems, and development workfl
 
 ### `testing/skill-ab-evaluation/SKILL.md` · [protocol]
 
-**What it is:** A/B evaluate any jerrysagentskill against a baseline using isolated subagents, 5 trials each, and an objective rubric.
+**What it is:** A/B evaluate any GrimoireStack skill against a baseline using isolated subagents, 5 trials each, and an objective rubric.
 
 **Use it when:** You want empirical proof that a skill actually improves outcomes vs. general knowledge.
 

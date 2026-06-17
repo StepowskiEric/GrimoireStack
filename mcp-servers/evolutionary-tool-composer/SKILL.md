@@ -1,5 +1,5 @@
 ---
-source: "jerry-skills"
+source: "GrimoireStack"
 name: evolutionary-tool-composer
 category: mcp-servers
 description: >

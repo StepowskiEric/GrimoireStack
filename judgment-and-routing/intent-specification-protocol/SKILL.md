@@ -1,5 +1,5 @@
 ---
-source: "jerry-skills"
+source: "GrimoireStack"
 name: intent-specification-protocol
 category: judgment-and-routing
 description: Crystallize vague user requests into precise, testable intent specifications. Replace vague words (fast, good, optimized) with measurable criteria. Now includes MCP server + companion script.

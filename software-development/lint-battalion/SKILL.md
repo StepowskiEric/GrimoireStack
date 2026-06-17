@@ -51,7 +51,7 @@ ___
 When installing with `--with-scripts`, the script is copied alongside `SKILL.md` automatically.
 
 ```bash
-npx jerry-skills install --agent pi --skill lint-battalion --with-scripts
+npx GrimoireStack install --agent pi --skill lint-battalion --with-scripts
 ```
 
 **Pi Agent (flat layout):**
