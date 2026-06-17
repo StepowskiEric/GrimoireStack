@@ -1,68 +1,65 @@
-import { describe, it, expect, vi } from 'vitest';
+import { describe, it, expect } from 'vitest';
 import { renderHook, act } from '@testing-library/react';
 
-vi.mock('../data/grimoireIndexInstance.js', () => {
-  const entries = [
-    { spell: { name: 'Trace Sight', skill: 'trace', effect: 'Stack traces.', status: 'Proven' }, school: { id: 'debugging', real: 'Debugging' } },
-    { spell: { name: 'Bisect Divination', skill: 'bisect', effect: 'Binary search.', status: 'MCP' }, school: { id: 'debugging', real: 'Debugging' } },
-    { spell: { name: 'Jest Invocation', skill: 'jest', effect: 'Write tests.', status: 'New' }, school: { id: 'testing', real: 'Testing' } },
-  ];
+const entries = [
+  { spell: { name: 'Trace Sight', skill: 'trace', effect: 'Stack traces.', status: 'Proven' }, school: { id: 'debugging', real: 'Debugging' } },
+  { spell: { name: 'Bisect Divination', skill: 'bisect', effect: 'Binary search.', status: 'MCP' }, school: { id: 'debugging', real: 'Debugging' } },
+  { spell: { name: 'Jest Invocation', skill: 'jest', effect: 'Write tests.', status: 'New' }, school: { id: 'testing', real: 'Testing' } },
+];
 
-  const searchSpells = vi.fn((query) => {
-    if (!query) return { bySchool: {}, total: 0 };
-    const q = query.toLowerCase();
-    const bySchool = {};
-    let total = 0;
-    for (const { spell, school } of entries) {
-      const searchable = `${spell.name} ${spell.skill} ${spell.effect}`.toLowerCase();
-      if (searchable.includes(q)) {
+const tierMap = { 'Proven': 'adept', 'MCP': 'master', 'New': 'apprentice' };
+
+function makeIndex() {
+  return {
+    searchSpells(query) {
+      if (!query) return { bySchool: {}, total: 0 };
+      const q = query.toLowerCase();
+      const bySchool = {};
+      let total = 0;
+      for (const { spell, school } of entries) {
+        const searchable = `${spell.name} ${spell.skill} ${spell.effect}`.toLowerCase();
+        if (searchable.includes(q)) {
+          const list = bySchool[school.id] || [];
+          list.push(spell.name + '\0' + spell.skill);
+          bySchool[school.id] = list;
+          total++;
+        }
+      }
+      return { bySchool, total };
+    },
+    filterSpells(opts = {}) {
+      const { query = '', schoolFilter = null, tierFilter = null, favoritesOnly = false, isFavorited = () => false } = opts;
+      if (schoolFilter && schoolFilter.size === 0) return { bySchool: {}, total: 0 };
+      if (tierFilter && tierFilter.size === 0) return { bySchool: {}, total: 0 };
+      const q = query.toLowerCase();
+      const bySchool = {};
+      let total = 0;
+      for (const { spell, school } of entries) {
+        if (schoolFilter && !schoolFilter.has(school.id)) continue;
+        if (q) {
+          const searchable = `${spell.name} ${spell.skill} ${spell.effect}`.toLowerCase();
+          if (!searchable.includes(q)) continue;
+        }
+        const tier = tierMap[spell.status] || 'faded';
+        if (tierFilter && !tierFilter.has(tier)) continue;
+        if (favoritesOnly && !isFavorited(spell.skill)) continue;
         const list = bySchool[school.id] || [];
         list.push(spell.name + '\0' + spell.skill);
         bySchool[school.id] = list;
         total++;
       }
-    }
-    return { bySchool, total };
-  });
-
-  const filterSpells = vi.fn((opts = {}) => {
-    const { query = '', schoolFilter = null, tierFilter = null, favoritesOnly = false, isFavorited = () => false } = opts;
-    if (schoolFilter && schoolFilter.size === 0) return { bySchool: {}, total: 0 };
-    if (tierFilter && tierFilter.size === 0) return { bySchool: {}, total: 0 };
-
-    const q = query.toLowerCase();
-    const bySchool = {};
-    let total = 0;
-    const tierMap = { 'Proven': 'adept', 'MCP': 'master', 'New': 'apprentice' };
-
-    for (const { spell, school } of entries) {
-      if (schoolFilter && !schoolFilter.has(school.id)) continue;
-      if (q) {
-        const searchable = `${spell.name} ${spell.skill} ${spell.effect}`.toLowerCase();
-        if (!searchable.includes(q)) continue;
-      }
-      const tier = tierMap[spell.status] || 'faded';
-      if (tierFilter && !tierFilter.has(tier)) continue;
-      if (favoritesOnly && !isFavorited(spell.skill)) continue;
-
-      const list = bySchool[school.id] || [];
-      list.push(spell.name + '\0' + spell.skill);
-      bySchool[school.id] = list;
-      total++;
-    }
-    return { bySchool, total };
-  });
-
-  return {
-    grimoireIndex: { searchSpells, filterSpells },
+      return { bySchool, total };
+    },
   };
-});
+}
 
 import { useFilterState } from '../hooks/useFilterState.js';
 
+const mockIndex = makeIndex();
+
 describe('useFilterState', () => {
   it('starts with empty filters and all spells visible', () => {
-    const { result } = renderHook(() => useFilterState());
+    const { result } = renderHook(() => useFilterState({ grimoireIndex: mockIndex }));
     expect(result.current.query).toBe('');
     expect(result.current.debounced).toBe('');
     expect(result.current.results.total).toBe(3);
@@ -73,7 +70,7 @@ describe('useFilterState', () => {
   });
 
   it('toggles school filter without debounce', () => {
-    const { result } = renderHook(() => useFilterState());
+    const { result } = renderHook(() => useFilterState({ grimoireIndex: mockIndex }));
     expect(result.current.schoolFilter.has('debugging')).toBe(false);
 
     act(() => { result.current.toggleSchool('debugging'); });
@@ -86,7 +83,7 @@ describe('useFilterState', () => {
   });
 
   it('toggles tier filter without debounce', () => {
-    const { result } = renderHook(() => useFilterState());
+    const { result } = renderHook(() => useFilterState({ grimoireIndex: mockIndex }));
 
     act(() => { result.current.toggleTier('adept'); });
     expect(result.current.tierFilter.has('adept')).toBe(true);
@@ -94,7 +91,7 @@ describe('useFilterState', () => {
   });
 
   it('toggles favorites-only without debounce', () => {
-    const { result } = renderHook(() => useFilterState());
+    const { result } = renderHook(() => useFilterState({ grimoireIndex: mockIndex }));
     expect(result.current.favoritesOnly).toBe(false);
 
     act(() => { result.current.toggleFavorites(); });
@@ -103,7 +100,7 @@ describe('useFilterState', () => {
   });
 
   it('clearAll resets filters without touching query', () => {
-    const { result } = renderHook(() => useFilterState());
+    const { result } = renderHook(() => useFilterState({ grimoireIndex: mockIndex }));
 
     act(() => {
       result.current.toggleSchool('debugging');
@@ -123,7 +120,7 @@ describe('useFilterState', () => {
   });
 
   it('setQuery updates the live query state', () => {
-    const { result } = renderHook(() => useFilterState());
+    const { result } = renderHook(() => useFilterState({ grimoireIndex: mockIndex }));
 
     act(() => { result.current.setQuery('trace'); });
     expect(result.current.query).toBe('trace');

@@ -8,8 +8,8 @@ const DEBOUNCE_MS = 120;
 /**
  * useFilterState — owns all filter UI state for the grimoire.
  *
- * Self-contained: reads favorites internally, hardcodes debounce.
- * No parameters.
+ * @param {{ searchSpells?: Function, filterSpells?: Function }} opts
+ * @param {Function} [opts.grimoireIndex] — index to query; defaults to the singleton.
  *
  * Interface:
  *   query       — current live search string
@@ -20,7 +20,7 @@ const DEBOUNCE_MS = 120;
  *   isFavorited(skill) — convenience passthrough
  */
 
-export function useFilterState() {
+export function useFilterState({ grimoireIndex: index = grimoireIndex } = {}) {
   const { isFavorited } = useFavorites();
 
   const [query, setQuery] = useState('');
@@ -31,20 +31,20 @@ export function useFilterState() {
 
   // Search results (text only, no filters) — used for the total-match count.
   const searchResults = useMemo(
-    () => grimoireIndex.searchSpells(debounced),
-    [debounced]
+    () => index.searchSpells(debounced),
+    [debounced, index]
   );
 
   // Filtered results — text + school + tier + favorites.
   const results = useMemo(
-    () => grimoireIndex.filterSpells({
+    () => index.filterSpells({
       query: debounced,
       schoolFilter: schoolFilter.size > 0 ? schoolFilter : null,
       tierFilter: tierFilter.size > 0 ? tierFilter : null,
       favoritesOnly,
       isFavorited,
     }),
-    [debounced, schoolFilter, tierFilter, favoritesOnly, isFavorited]
+    [debounced, schoolFilter, tierFilter, favoritesOnly, isFavorited, index]
   );
 
   const toggleSchool = useCallback((id) => {
