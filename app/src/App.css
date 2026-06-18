@@ -8068,6 +8068,58 @@ header .header-sigil-text{display:none}
   padding:20px;
   margin-bottom:32px;
 }
+.changelog-view__filter-toggle{
+  margin-bottom:12px;
+}
+.changelog-view__new-toggle{
+  background:rgba(138,154,106,0.12);
+  border:1px solid rgba(138,154,106,0.25);
+  border-radius:6px;
+  padding:8px 14px;
+  font-family:'Cinzel',serif;
+  font-size:0.85rem;
+  color:var(--moonlight-dim);
+  cursor:pointer;
+  transition:all 0.2s ease;
+}
+.changelog-view__new-toggle:hover{
+  border-color:rgba(138,154,106,0.45);
+  color:var(--moonlight);
+}
+.changelog-view__new-toggle--active{
+  background:rgba(138,154,106,0.28);
+  border-color:var(--sickly);
+  color:var(--gold-bright);
+}
+.changelog-view__entry-header{
+  display:flex;
+  align-items:center;
+  gap:12px;
+  margin-bottom:4px;
+}
+.changelog-view__entry-name{
+  font-family:'Cinzel',serif;
+  font-size:1.1rem;
+  color:var(--gold-bright);
+}
+.changelog-view__entry-school{
+  font-size:0.85rem;
+  color:var(--moonlight-dim);
+  background:rgba(138,154,106,0.1);
+  padding:2px 8px;
+  border-radius:4px;
+}
+.changelog-view__entry-badge{
+  font-family:'Cinzel',serif;
+  font-size:0.75rem;
+  color:var(--gold-bright);
+  background:rgba(212,175,55,0.12);
+  border:1px solid rgba(212,175,55,0.25);
+  border-radius:4px;
+  padding:2px 8px;
+  text-transform:uppercase;
+  letter-spacing:.08em;
+}
 .changelog-view__search{
   margin-bottom:16px;
 }
@@ -8182,10 +8234,6 @@ header .header-sigil-text{display:none}
 .changelog-view__entry:hover{
   background:rgba(20,15,10,0.6);
   border-color:rgba(138,154,106,0.2);
-}
-.changelog-view__entry-sigil{
-  flex-shrink:0;
-  color:var(--gold);
 }
 .changelog-view__entry-content{
   flex:1;

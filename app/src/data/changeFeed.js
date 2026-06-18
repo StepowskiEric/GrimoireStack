@@ -55,6 +55,7 @@ export function getRecentlyUpdated(limit = 12) {
       lastUpdated: getSpellLastUpdated(spell.skill),
       isExplicit: isExplicitlyUpdated(spell.skill),
       note: getSpellNote(spell.skill),
+      status: spell.status,
     }))
     .sort((a, b) => b.lastUpdated.localeCompare(a.lastUpdated))
     .slice(0, limit);
@@ -62,6 +63,12 @@ export function getRecentlyUpdated(limit = 12) {
 
 export function getChangeFeed(limit = 30) {
   return getRecentlyUpdated(limit);
+}
+
+export function getNewlyAdded(limit = 30) {
+  return getRecentlyUpdated(limit)
+    .filter((item) => item.status === 'New')
+    .slice(0, limit);
 }
 
 export function getAlphabeticalIndex() {

@@ -51,6 +51,8 @@ const TAB_LABELS = {
   [TABS.SPELLBOOK]: { name: 'The Vault', icon: 'vault' },
   [TABS.RECIPE_LAB]: { name: 'The Crucible', icon: 'alembic' },
   [TABS.ARCANE_TOOLS]: { name: 'The Bestiary', icon: 'tools' },
+  [TABS.SPELL_WEB]: { name: 'Spell Web', icon: 'graph' },
+  [TABS.CHANGELOG]: { name: 'Changelog', icon: 'changelog' },
   [TABS.SETTINGS]: { name: 'Settings', icon: 'sigil' },
   [TABS.SEANCE]: { name: 'The Séance', icon: 'oracle' },
 };

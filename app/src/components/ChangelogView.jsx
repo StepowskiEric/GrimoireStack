@@ -1,6 +1,25 @@
 import { useState, useMemo } from 'react';
-import { getRecentlyUpdated } from '../data/changeFeed.js';
-import SchoolSigil from './SchoolSigil.tsx';
+import { getRecentlyUpdated, getNewlyAdded } from '../data/changeFeed.js';
+
+function ChangelogEntry({ item }) {
+  return (
+    <div key={item.skill} className="changelog-view__entry">
+      <div className="changelog-view__entry-content">
+        <div className="changelog-view__entry-header">
+          <span className="changelog-view__entry-name">{item.name}</span>
+          <span className="changelog-view__entry-school">{item.school.real}</span>
+          {item.status === 'New' && (
+            <span className="changelog-view__entry-badge" aria-hidden="true">New</span>
+          )}
+        </div>
+        <div className="changelog-view__entry-date">{item.lastUpdated}</div>
+        {item.note && (
+          <div className="changelog-view__entry-note">{item.note}</div>
+        )}
+      </div>
+    </div>
+  );
+}
 
 const SCHOOLS = [
   { id: 'all', label: 'All Schools' },
@@ -51,11 +70,12 @@ function groupByDate(items) {
 }
 
 export default function ChangelogView() {
+  const [showNewOnly, setShowNewOnly] = useState(false);
   const [query, setQuery] = useState('');
   const [schoolFilter, setSchoolFilter] = useState('all');
   const [dateRange, setDateRange] = useState({ from: '', to: '' });
   
-  const allUpdates = useMemo(() => getRecentlyUpdated(50), []);
+  const allUpdates = useMemo(() => showNewOnly ? getNewlyAdded(50) : getRecentlyUpdated(50), [showNewOnly]);
   
   const filtered = useMemo(() => {
     let items = allUpdates;
@@ -119,6 +139,16 @@ export default function ChangelogView() {
       </div>
 
       <div className="changelog-view__filters">
+        <div className="changelog-view__filter-toggle">
+          <button
+            type="button"
+            className={`changelog-view__new-toggle ${showNewOnly ? 'changelog-view__new-toggle--active' : ''}`}
+            onClick={() => setShowNewOnly((prev) => !prev)}
+          >
+            {showNewOnly ? 'Showing new only' : 'Show new only'}
+          </button>
+        </div>
+        
         <div className="changelog-view__search">
           <input
             type="text"
@@ -183,21 +213,7 @@ export default function ChangelogView() {
               <div className="changelog-view__group">
                 <h3 className="changelog-view__group-title">Today</h3>
                 {grouped.today.map(item => (
-                  <div key={item.skill} className="changelog-view__entry">
-                    <div className="changelog-view__entry-sigil">
-                      <SchoolSigil schoolId={item.school.id} size={24} />
-                    </div>
-                    <div className="changelog-view__entry-content">
-                      <div className="changelog-view__entry-header">
-                        <span className="changelog-view__entry-name">{item.name}</span>
-                        <span className="changelog-view__entry-school">{item.school.real}</span>
-                      </div>
-                      <div className="changelog-view__entry-date">{item.lastUpdated}</div>
-                      {item.note && (
-                        <div className="changelog-view__entry-note">{item.note}</div>
-                      )}
-                    </div>
-                  </div>
+                  <ChangelogEntry key={item.skill} item={item} />
                 ))}
               </div>
             )}
@@ -206,21 +222,7 @@ export default function ChangelogView() {
               <div className="changelog-view__group">
                 <h3 className="changelog-view__group-title">This Week</h3>
                 {grouped.thisWeek.map(item => (
-                  <div key={item.skill} className="changelog-view__entry">
-                    <div className="changelog-view__entry-sigil">
-                      <SchoolSigil schoolId={item.school.id} size={24} />
-                    </div>
-                    <div className="changelog-view__entry-content">
-                      <div className="changelog-view__entry-header">
-                        <span className="changelog-view__entry-name">{item.name}</span>
-                        <span className="changelog-view__entry-school">{item.school.real}</span>
-                      </div>
-                      <div className="changelog-view__entry-date">{item.lastUpdated}</div>
-                      {item.note && (
-                        <div className="changelog-view__entry-note">{item.note}</div>
-                      )}
-                    </div>
-                  </div>
+                  <ChangelogEntry key={item.skill} item={item} />
                 ))}
               </div>
             )}
@@ -229,21 +231,7 @@ export default function ChangelogView() {
               <div className="changelog-view__group">
                 <h3 className="changelog-view__group-title">This Month</h3>
                 {grouped.thisMonth.map(item => (
-                  <div key={item.skill} className="changelog-view__entry">
-                    <div className="changelog-view__entry-sigil">
-                      <SchoolSigil schoolId={item.school.id} size={24} />
-                    </div>
-                    <div className="changelog-view__entry-content">
-                      <div className="changelog-view__entry-header">
-                        <span className="changelog-view__entry-name">{item.name}</span>
-                        <span className="changelog-view__entry-school">{item.school.real}</span>
-                      </div>
-                      <div className="changelog-view__entry-date">{item.lastUpdated}</div>
-                      {item.note && (
-                        <div className="changelog-view__entry-note">{item.note}</div>
-                      )}
-                    </div>
-                  </div>
+                  <ChangelogEntry key={item.skill} item={item} />
                 ))}
               </div>
             )}
@@ -252,21 +240,7 @@ export default function ChangelogView() {
               <div className="changelog-view__group">
                 <h3 className="changelog-view__group-title">Older</h3>
                 {grouped.older.map(item => (
-                  <div key={item.skill} className="changelog-view__entry">
-                    <div className="changelog-view__entry-sigil">
-                      <SchoolSigil schoolId={item.school.id} size={24} />
-                    </div>
-                    <div className="changelog-view__entry-content">
-                      <div className="changelog-view__entry-header">
-                        <span className="changelog-view__entry-name">{item.name}</span>
-                        <span className="changelog-view__entry-school">{item.school.real}</span>
-                      </div>
-                      <div className="changelog-view__entry-date">{item.lastUpdated}</div>
-                      {item.note && (
-                        <div className="changelog-view__entry-note">{item.note}</div>
-                      )}
-                    </div>
-                  </div>
+                  <ChangelogEntry key={item.skill} item={item} />
                 ))}
               </div>
             )}
