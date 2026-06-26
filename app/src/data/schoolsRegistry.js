@@ -755,7 +755,13 @@ const schools = [
         "name": "Razor of Parsimony",
         "skill": "occams-razor",
         "effect": "Apply Occam's Razor to favor the simplest sufficient explanation or solution. Forces the agent to try the simplest thing that fits the evidence before escalating to more complex alternatives. Prevents over-engineering, premature abstraction, and scope creep.",
-        "status": "New"
+        "status": "New",
+        "trueName": "The Razor of Parsimony",
+        "kins": [
+          "root-cause-analysis",
+          "first-principles",
+          "specter"
+        ]
       },
       {
         "name": "Recognition Triage",
@@ -937,6 +943,13 @@ const schools = [
           "Trace Sight",
           "Iterative Mend",
           "Root Cause Revelation"
+        ],
+        "trueName": "The Halving Rite",
+        "kins": [
+          "log-trace-correlation",
+          "root-cause-analysis",
+          "iterative-patch-repair",
+          "time-traveling-debugger"
         ]
       },
       {
@@ -948,6 +961,13 @@ const schools = [
           "Instrumentation Charm",
           "Spectral Analysis",
           "Scout Protocol"
+        ],
+        "trueName": "Familiar of the Debug",
+        "kins": [
+          "log-trace-correlation",
+          "root-cause-analysis",
+          "simulate-instrumentation",
+          "specter"
         ]
       },
       {
@@ -966,13 +986,27 @@ const schools = [
         "name": "Instrumentation Charm",
         "skill": "simulate-instrumentation",
         "effect": "Auto-insert temporary print/logging statements at key points in the code, run the failing test, and feed the captured runtime state to the LLM. Hybrid LLM + rule-based approach. Based on DebugRepair research (+26.3% when removed in ablation).",
-        "status": "Proven"
+        "status": "Proven",
+        "trueName": "The Wards of Observation",
+        "kins": [
+          "log-trace-correlation",
+          "purify-test-output",
+          "iterative-patch-repair",
+          "debug-subagent"
+        ]
       },
       {
         "name": "Iterative Mend",
         "skill": "iterative-patch-repair",
         "effect": "Loop of generate patch → run test → capture runtime state → refine patch. Max N iterations with patch augmentation to avoid overfitting. Based on DebugRepair research (+19.9% from patch augmentation alone).",
-        "status": "Proven"
+        "status": "Proven",
+        "trueName": "The Mend That Mends Itself",
+        "kins": [
+          "simulate-instrumentation",
+          "purify-test-output",
+          "root-cause-analysis",
+          "minimal-reproduction"
+        ]
       },
       {
         "name": "Minimal Summoning",
@@ -1009,6 +1043,14 @@ const schools = [
           "Instrumentation Charm",
           "Purify Vision",
           "Iterative Mend"
+        ],
+        "trueName": "The Six-Phase Restoration",
+        "kins": [
+          "log-trace-correlation",
+          "root-cause-analysis",
+          "simulate-instrumentation",
+          "iterative-patch-repair",
+          "debug-subagent"
         ]
       },
       {
@@ -1020,6 +1062,13 @@ const schools = [
           "Instrumentation Charm",
           "Test Oracle",
           "Iterative Mend"
+        ],
+        "trueName": "The Sight Unclouded",
+        "kins": [
+          "simulate-instrumentation",
+          "iterative-patch-repair",
+          "minimal-reproduction",
+          "time-traveling-debugger"
         ]
       },
       {
@@ -1031,19 +1080,40 @@ const schools = [
           "Occam\\'s Verdict",
           "Trace Sight",
           "Bisect Divination"
+        ],
+        "trueName": "The Severing of Cause",
+        "kins": [
+          "log-trace-correlation",
+          "bisect-debugging",
+          "debug-subagent",
+          "occams-razor",
+          "specter"
         ]
       },
       {
         "name": "Spectral Reasoning",
         "skill": "specter",
         "effect": "Debug by generating competing hypotheses (abductive reasoning), then locate code structurally — no keyword grepping, no root-cause guessing. Feels like a ghost hunting the real bug.",
-        "status": "—"
+        "status": "—",
+        "trueName": "The Ghost That Hunts",
+        "kins": [
+          "log-trace-correlation",
+          "debug-subagent",
+          "codebase-divide-conquer-search",
+          "minimal-reproduction"
+        ]
       },
       {
         "name": "Temporal Rewind",
         "skill": "time-traveling-debugger",
         "effect": "When a bug occurs, record a deterministic execution trace forward, then replay it in reverse from the crash point to find the exact line where state first diverged. Spawns 'past self' and 'future self' that meet at the divergence.",
-        "status": "MCP"
+        "status": "MCP",
+        "trueName": "The Temporal Rewind",
+        "kins": [
+          "bisect-debugging",
+          "log-trace-correlation",
+          "iterative-patch-repair"
+        ]
       },
       {
         "name": "Trace Sight",
@@ -1055,6 +1125,13 @@ const schools = [
           "Bisect Divination",
           "Root Cause Revelation",
           "Spectral Analysis"
+        ],
+        "trueName": "The Eye That Reads the Trace",
+        "kins": [
+          "bisect-debugging",
+          "root-cause-analysis",
+          "debug-subagent",
+          "simulate-instrumentation"
         ]
       }
     ]

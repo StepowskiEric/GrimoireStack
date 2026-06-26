@@ -40,6 +40,7 @@ export function createGrimoireIndex(schools) {
     resolveComboSpells: lookup.resolveComboSpells,
     getSchoolForSkill: lookup.getSchoolForSkill,
     getSpellNameBySkill: lookup.getSpellNameBySkill,
+    resolveKinsForSpell: lookup.resolveKinsForSpell,
     // Iteration
     iterate: core.iterate,
     allEntries: core.allEntries,

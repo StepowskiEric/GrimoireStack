@@ -161,3 +161,41 @@ describe('getSpellTier is the canonical tier function', () => {
     expect(getSpellTier(sample)).toBe('adept');
   });
 });
+
+describe('search matches trueName', () => {
+  const trueNamedEntries = [
+    {
+      spell: {
+        name: 'Trace Sight',
+        skill: 'log-trace-correlation',
+        effect: 'Maps stack traces to source code and suggests fixes.',
+        status: 'Proven',
+        trueName: 'The Eye That Reads the Trace',
+      },
+      school: { id: 'debugging', name: 'School of Remediation' },
+    },
+    {
+      spell: { name: 'Razor of Parsimony', skill: 'occams-razor', effect: 'Plain.' },
+      school: { id: 'reasoning', name: 'School of Cognition' },
+    },
+  ];
+
+  it('matches by the curated trueName when present', () => {
+    const result = searchSpellsOnEntries(trueNamedEntries, 'Eye That Reads');
+    expect(result.total).toBe(1);
+    expect(result.bySchool.debugging[0]).toContain('log-trace-correlation');
+  });
+
+  it('still matches by name when trueName is present', () => {
+    const result = searchSpellsOnEntries(trueNamedEntries, 'Trace Sight');
+    expect(result.total).toBe(1);
+  });
+
+  it('filter narrows by trueName text', () => {
+    const result = filterSpellsOnEntries(trueNamedEntries, {
+      query: 'Reads the Trace',
+      isFavorited: () => false,
+    });
+    expect(result.total).toBe(1);
+  });
+});

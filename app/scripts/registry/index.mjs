@@ -18,7 +18,7 @@ import { REPO_ROOT, APP_DIR } from '../../../scripts/lib/constants.mjs';
 import { discoverSkills } from '../../../scripts/lib/helpers.mjs';
 import { parseFrontmatter } from './frontmatter.mjs';
 import { deriveDisplayName, deriveEffect, fileMtime, isoDate } from './derive.mjs';
-import { buildSchools, renderSchoolsSource } from './emit-schools.mjs';
+import { buildSchools, renderSchoolsSource, validateRecords } from './emit-schools.mjs';
 import { buildExplicit, renderMetadataSource } from './emit-metadata.mjs';
 
 const SCHOOLS_REGISTRY = path.join(APP_DIR, 'src', 'data', 'schoolsRegistry.js');
@@ -32,6 +32,12 @@ async function main() {
   ]);
   const records = await parseAll(discovered, overlay);
   const deduped = dedupRecords(records);
+
+  // Loud validation: catch curatedOverlay typos and over-eager kin lists
+  // before they become silent runtime skips. Warnings only — does not fail
+  // the build, since resolveKinsForSpell filters unresolved ids at runtime.
+  const allSkillIds = new Set(deduped.map(r => r.skill));
+  validateRecords(deduped, allSkillIds);
 
   await Promise.all([
     writeSchools(deduped, overlay),
@@ -90,6 +96,8 @@ async function parseOne(s, overlay) {
     status: curated.status || meta.status || '—',
     note: curated.note || meta.note || null,
     combos: curated.combos || (Array.isArray(meta.combos) ? meta.combos : null),
+    trueName: typeof curated.trueName === 'string' && curated.trueName.trim() ? curated.trueName.trim() : null,
+    kins: Array.isArray(curated.kins) && curated.kins.length > 0 ? curated.kins.filter(k => typeof k === 'string' && k.trim()) : null,
     lastUpdated: meta['last-updated'] || isoDate(mtime),
   };
 }

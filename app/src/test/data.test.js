@@ -30,6 +30,43 @@ describe('schools data', () => {
     }
   });
 
+  it('trueName is optional and only a string when present', () => {
+    for (const school of schools) {
+      for (const spell of school.spells) {
+        if (spell.trueName !== undefined) {
+          expect(typeof spell.trueName).toBe('string');
+          expect(spell.trueName.length).toBeGreaterThan(0);
+        }
+      }
+    }
+  });
+
+  it('kins is optional and only an array of non-empty strings when present', () => {
+    for (const school of schools) {
+      for (const spell of school.spells) {
+        if (spell.kins !== undefined) {
+          expect(Array.isArray(spell.kins)).toBe(true);
+          for (const k of spell.kins) {
+            expect(typeof k).toBe('string');
+            expect(k.length).toBeGreaterThan(0);
+          }
+        }
+      }
+    }
+  });
+
+  it('every kins entry resolves to an existing skill', () => {
+    for (const school of schools) {
+      for (const spell of school.spells) {
+        if (!Array.isArray(spell.kins)) continue;
+        for (const k of spell.kins) {
+          const found = schools.some(s => s.spells.some(sp => sp.skill === k));
+          expect(found, `kin "${k}" on spell "${spell.skill}" must exist in the catalog`).toBe(true);
+        }
+      }
+    }
+  });
+
   it('has unique school IDs', () => {
     const ids = schools.map(s => s.id);
     expect(new Set(ids).size).toBe(ids.length);

@@ -1,4 +1,5 @@
 import { getSpellTier, TIER_META } from '../data/tiers.js';
+import { hasDistinctTrueName } from '../data/spellDisplay.js';
 import Icon from './Icon.jsx';
 
 export default function SpellCard({ spell, onClick, matched, children, isFavorited, onToggleFavorite }) {
@@ -29,14 +30,17 @@ export default function SpellCard({ spell, onClick, matched, children, isFavorit
     }
   };
 
+  const hasTrueName = hasDistinctTrueName(spell);
+  const cardTitle = hasTrueName ? `${spell.trueName} (${spell.name})` : spell.name;
+
   return (
     <div
-      className={`spell-card${matched === true ? ' glow' : ''}${matched === false ? ' dim' : ''}`}
+      className={`spell-card${matched === true ? ' glow' : ''}${matched === false ? ' dim' : ''}${hasTrueName ? ' has-true-name' : ''}`}
       onClick={onClick}
       onKeyDown={handleKeyDown}
       role="button"
       tabIndex={0}
-      aria-label={`${spell.name} — ${tierInfo.label} — ${spell.effect}`}
+      aria-label={`${cardTitle} — ${tierInfo.label} — ${spell.effect}`}
       title={tierInfo.title}
       style={{ cursor: 'pointer', display: matched === false ? 'none' : '' }}
     >
@@ -62,7 +66,14 @@ export default function SpellCard({ spell, onClick, matched, children, isFavorit
           </button>
         )}
       </div>
-      <div className="spell-name">{spell.name}</div>
+      {hasTrueName ? (
+        <>
+          <div className="spell-true-name">{spell.trueName}</div>
+          <div className="spell-name spell-name--secondary">{spell.name}</div>
+        </>
+      ) : (
+        <div className="spell-name">{spell.name}</div>
+      )}
       <div className="spell-incantation">〈 {spell.skill} 〉</div>
       <div className="spell-effect">{spell.effect}</div>
       <div className="spell-footer">

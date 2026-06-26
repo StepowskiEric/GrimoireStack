@@ -1,6 +1,7 @@
 import { useMemo, useState } from 'react';
 import { schoolColors } from '../utils/schoolColors.js';
 import { getSpellTier, TIER_META } from '../data/tiers.js';
+import { getSpellSearchableText } from '../data/spellDisplay.js';
 import SchoolSigil from './SchoolSigil.tsx';
 import { pageCreak } from '../audio/sounds.js';
 import { grimoireIndex } from '../data/grimoireIndexInstance.js';
@@ -34,10 +35,7 @@ export default function AllSchoolsView({
       school.name.toLowerCase().includes(query) ||
       school.real.toLowerCase().includes(query) ||
       school.desc.toLowerCase().includes(query) ||
-      school.spells.some(spell => {
-        const searchable = `${spell.name} ${spell.skill} ${spell.effect}`.toLowerCase();
-        return searchable.includes(query);
-      })
+      school.spells.some(spell => getSpellSearchableText(spell).includes(query))
     );
   }, [allSchools, searchQuery]);
 

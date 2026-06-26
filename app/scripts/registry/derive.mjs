@@ -41,3 +41,14 @@ export function fileMtime(filePath) {
 export function isoDate(d) {
   return d.toISOString().slice(0, 10);
 }
+
+/**
+ * Maximum number of kins rendered in the FamiliarWhisper UI per spell.
+ * Curators may list more in the overlay; anything beyond this is warned
+ * about at registry build time so the truncation is loud, not silent.
+ *
+ * Keep in sync with `MAX_WHISPERS` in `app/src/data/spellLookup.js` —
+ * the registry build uses this constant to warn, the runtime cap uses
+ * its own to enforce.
+ */
+export const MAX_KINS_PER_SPELL = 3;

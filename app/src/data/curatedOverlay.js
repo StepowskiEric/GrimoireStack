@@ -14,7 +14,14 @@
 export const CURATED_OVERLAY = {
   "log-trace-correlation": {
     "displayName": "Trace Sight",
+    "trueName": "The Eye That Reads the Trace",
     "status": "Proven",
+    "kins": [
+      "bisect-debugging",
+      "root-cause-analysis",
+      "debug-subagent",
+      "simulate-instrumentation"
+    ],
     "combos": [
       "Bisect Divination",
       "Root Cause Revelation",
@@ -23,8 +30,15 @@ export const CURATED_OVERLAY = {
   },
   "bisect-debugging": {
     "displayName": "Bisect Divination",
+    "trueName": "The Halving Rite",
     "status": "Proven",
     "note": "+9.9% speed",
+    "kins": [
+      "log-trace-correlation",
+      "root-cause-analysis",
+      "iterative-patch-repair",
+      "time-traveling-debugger"
+    ],
     "combos": [
       "Trace Sight",
       "Iterative Mend",
@@ -33,7 +47,14 @@ export const CURATED_OVERLAY = {
   },
   "debug-subagent": {
     "displayName": "Debug Familiar",
+    "trueName": "Familiar of the Debug",
     "status": "Proven",
+    "kins": [
+      "log-trace-correlation",
+      "root-cause-analysis",
+      "simulate-instrumentation",
+      "specter"
+    ],
     "combos": [
       "Instrumentation Charm",
       "Spectral Analysis",
@@ -42,7 +63,14 @@ export const CURATED_OVERLAY = {
   },
   "purify-test-output": {
     "displayName": "Purify Vision",
+    "trueName": "The Sight Unclouded",
     "status": "Proven",
+    "kins": [
+      "simulate-instrumentation",
+      "iterative-patch-repair",
+      "minimal-reproduction",
+      "time-traveling-debugger"
+    ],
     "combos": [
       "Instrumentation Charm",
       "Test Oracle",
@@ -51,15 +79,37 @@ export const CURATED_OVERLAY = {
   },
   "simulate-instrumentation": {
     "displayName": "Instrumentation Charm",
-    "status": "Proven"
+    "trueName": "The Wards of Observation",
+    "status": "Proven",
+    "kins": [
+      "log-trace-correlation",
+      "purify-test-output",
+      "iterative-patch-repair",
+      "debug-subagent"
+    ]
   },
   "iterative-patch-repair": {
     "displayName": "Iterative Mend",
-    "status": "Proven"
+    "trueName": "The Mend That Mends Itself",
+    "status": "Proven",
+    "kins": [
+      "simulate-instrumentation",
+      "purify-test-output",
+      "root-cause-analysis",
+      "minimal-reproduction"
+    ]
   },
   "root-cause-analysis": {
     "displayName": "Root Cause Revelation",
+    "trueName": "The Severing of Cause",
     "status": "Framework",
+    "kins": [
+      "log-trace-correlation",
+      "bisect-debugging",
+      "debug-subagent",
+      "occams-razor",
+      "specter"
+    ],
     "combos": [
       "Occam\\'s Verdict",
       "Trace Sight",
@@ -72,7 +122,15 @@ export const CURATED_OVERLAY = {
   },
   "debug-to-fix-pipeline": {
     "displayName": "Pipeline of Restoration",
+    "trueName": "The Six-Phase Restoration",
     "status": "Hybrid",
+    "kins": [
+      "log-trace-correlation",
+      "root-cause-analysis",
+      "simulate-instrumentation",
+      "iterative-patch-repair",
+      "debug-subagent"
+    ],
     "combos": [
       "Spectral Analysis",
       "Debug Familiar",
@@ -99,7 +157,14 @@ export const CURATED_OVERLAY = {
   },
   "specter": {
     "displayName": "Spectral Reasoning",
-    "status": "—"
+    "trueName": "The Ghost That Hunts",
+    "status": "—",
+    "kins": [
+      "log-trace-correlation",
+      "debug-subagent",
+      "codebase-divide-conquer-search",
+      "minimal-reproduction"
+    ]
   },
   "long-task-survival-kit": {
     "displayName": "Endurance Ward",
@@ -112,7 +177,13 @@ export const CURATED_OVERLAY = {
   },
   "time-traveling-debugger": {
     "displayName": "Temporal Rewind",
-    "status": "MCP"
+    "trueName": "The Temporal Rewind",
+    "status": "MCP",
+    "kins": [
+      "bisect-debugging",
+      "log-trace-correlation",
+      "iterative-patch-repair"
+    ]
   },
   "environment-recovery": {
     "displayName": "Environment Exorcism",
@@ -144,7 +215,13 @@ export const CURATED_OVERLAY = {
   },
   "occams-razor": {
     "displayName": "Razor of Parsimony",
-    "status": "New"
+    "trueName": "The Razor of Parsimony",
+    "status": "New",
+    "kins": [
+      "root-cause-analysis",
+      "first-principles",
+      "specter"
+    ]
   },
   "keyword-agnostic-logic-locator": {
     "displayName": "Structural Seeker",

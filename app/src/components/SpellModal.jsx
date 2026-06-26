@@ -3,9 +3,11 @@
 import { useEffect, useRef, useState, useCallback, useMemo } from 'react';
 import { TIER_META, getSpellTier } from '../data/tiers.js';
 import { grimoireIndex } from '../data/grimoireIndexInstance.js';
+import { hasDistinctTrueName } from '../data/spellDisplay.js';
 import { buildShareUrl } from '../utils/urlSpellSync.js';
 import Icon from './Icon.jsx';
 import SchoolSigil from './SchoolSigil.tsx';
+import FamiliarWhisper from './FamiliarWhisper.jsx';
 
 function findSpell(name) {
   const entry = grimoireIndex.resolveByName(name);
@@ -472,7 +474,14 @@ export default function SpellModal({ spell, school, onClose, marginalia, getVote
         <div className="modal-school">
           {school.name} <span className="modal-school-real">({school.real})</span>
         </div>
-        <div className="modal-title">{spell.name}</div>
+        {hasDistinctTrueName(spell) ? (
+          <>
+            <div className="modal-true-name">{spell.trueName}</div>
+            <div className="modal-title modal-title--secondary">{spell.name}</div>
+          </>
+        ) : (
+          <div className="modal-title">{spell.name}</div>
+        )}
         <div className="modal-incantation">〈 {spell.skill} 〉</div>
         <div className="modal-metadata">
           Inscribed by the Scribe of the Unseen · First seen in the depths on {firstSeen}
@@ -622,6 +631,8 @@ export default function SpellModal({ spell, school, onClose, marginalia, getVote
             )}
           </div>
         )}
+
+        <FamiliarWhisper spell={spell} onNavigate={onClose} />
 
         <div className="modal-grimoire-ref">
           <code>〈 grimoirestack:{school.id}/{spell.skill} 〉</code>
