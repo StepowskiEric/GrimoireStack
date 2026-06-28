@@ -20,12 +20,12 @@ function computeMood(viewedCount, idleMs) {
 }
 
 export function useEyeMood() {
-  const [mood, setMood] = useLocalStorageState({
+  const { value: mood, setValue: setMood } = useLocalStorageState({
     key: 'grimoire-eye-mood',
     initial: () => EYE_MOODS.NEUTRAL,
   });
 
-  const [lastInteraction, setLastInteraction] = useLocalStorageState({
+  const { value: lastInteraction, setValue: setLastInteraction } = useLocalStorageState({
     key: 'grimoire-eye-last-interaction',
     initial: () => Date.now(),
   });
