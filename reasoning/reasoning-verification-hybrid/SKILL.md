@@ -200,3 +200,6 @@
    200|3. cot-pruning-reasoning (compress verified output)
    201|```
    202|
+## References
+
+- `references/verification-techniques.md` — Expanded verification technique catalog with step-by-step templates for each of the four verification phases (claim decomposition, direct verification, backward entailment, selective halting).

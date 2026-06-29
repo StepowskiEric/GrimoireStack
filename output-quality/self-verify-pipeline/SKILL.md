@@ -110,4 +110,8 @@
    110|- Verifying every claim instead of flagged ones (waste of tokens)
    111|- Revising verified-correct claims (second-system effect)
    112|- Skipping Phase 4 because "Phase 2 looked good" (the Mental-Reality Gap)
+
+## References
+
+- `references/verification-templates.md` — Verification template catalog with per-claim-type strategies, evidence recording format, and confidence scoring rubric.
    113|

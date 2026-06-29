@@ -1,10 +1,10 @@
 # Abductive Reasoning for Debugging — Extended Reference
 
-This reference preserves the detailed state machine, coherence scoring rubric, and pitfalls from the abductive-first-debugging skill, now absorbed into specter.
+Disclosed reference for [`specter`](../SKILL.md). Load this when the 4-phase loop converges but you need stronger evidence before committing a fix — adds the 6-state protocol with explicit coherence scoring, Inference to Best Explanation (IBE), discriminatory-test design, and two critical pitfalls around silent server-side failures.
 
 ## The 6-State Abductive Protocol (Detailed)
 
-For cases where specter's 4-phase approach needs more rigor, this detailed 6-state protocol provides explicit state transitions and scoring.
+Replaces the 4 phases in SKILL.md with explicit state transitions and scoring for cases that need it.
 
 ### State 0: Symptom Collection
 
@@ -84,16 +84,6 @@ discriminatory_tests:
 ### State 5: Execute and Update
 
 Run discriminatory tests, update confidence. If test contradicts best hypothesis, re-evaluate all hypotheses.
-
-## When NOT to Use Abductive Debugging
-
-Empirically validated findings (from skill evaluations):
-
-- **Deterministic code bugs with reproducible failing test** — abduction burns tool-call budget on hypothesis generation without fixing the bug. A FastAPI router bug trial consumed 20 tool calls and failed to produce a fix, while a baseline agent fixed it in 5 calls.
-- **Tight tool-call budget (≤25 calls)** — the 6-state protocol requires ~10-15 calls before any code change.
-- **Silent logic error in a single module** — abduction is designed for multi-system novel failures, not localized type mismatches or initialization order bugs.
-
-For these cases, use `debug-subagent` (clear bugs) or `debug-to-fix-pipeline` (structured pipeline with abductive Phase 1 but more efficient overall).
 
 ## Reasoning Modes Quick Reference
 

@@ -219,3 +219,7 @@ git commit -m "Update test for avatarUrl"  # broken without implementation
 - **After `specter`:** Specter finds the root cause. This skill helps when the fix for that root cause spans multiple files.
 - **With `minimal-reproduction`:** Write the reproduction test first (minimal-reproduction), then plan the change set (this skill), then implement.
 - **With `git-surgery`:** If you've already made partial changes and need to reorganize them into coherent change sets, use git-surgery to split or combine commits.
+
+## References
+
+- `references/common-patterns.md` — Expanded change set pattern catalog: new field, rename, feature flag, migration, refactor, and deprecation patterns with file-level dependency order.

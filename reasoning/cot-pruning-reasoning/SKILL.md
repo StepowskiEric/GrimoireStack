@@ -116,6 +116,10 @@ If no, restore the minimally necessary steps.
 4. **Keep quantitative evidence** — specific numbers, line numbers, test names
 5. **When in doubt, keep** — slightly verbose correct reasoning beats concise wrong reasoning
 
+## References
+
+- `references/pruning-patterns.md` — Pruning pattern catalog with coarse-to-fine strategies, token-level compression examples, and domain-specific pruning guidance.
+
 ## Research Basis
 
 - **CoT-Influx** (arXiv:2312.08901): Reinforced context pruning for CoT. Coarse-to-fine pruner maximizes effective and concise CoT examples. Up to 4.55% absolute improvement on math reasoning by fitting more examples.

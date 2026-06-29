@@ -366,6 +366,10 @@ Combine with:
 - `step-level-verification-protocol`: Verify each candidate step-by-step
 - `cognitive-friction-governor`: Budget exploration vs exploitation
 
+## References
+
+- `references/verification-checklist.md` — Verification checklists per candidate type (code, config, architecture, data schema).
+
 ## Research Basis
 
 - From Tokens to Steps: Verification-Aware Speculative Decoding (arXiv:2604.15244)

@@ -183,3 +183,7 @@ ___
 | SGCR | Spec-grounded review improves reliability | 2512.17540 |
 | RovoDev (Atlassian) | Enterprise code review at scale — context is everything | 2601.01129 |
 | Triage | Code health metrics predict which model tier is needed | 2604.07494 |
+
+## References
+
+- `references/review-patterns.md` — Review pattern catalog with per-pass checklists, code smell detection templates, and anti-pattern identification guides for each LLM failure mode.

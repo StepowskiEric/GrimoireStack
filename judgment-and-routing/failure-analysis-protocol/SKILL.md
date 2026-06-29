@@ -100,3 +100,7 @@ After all 4 phases, give one of:
 - Only tracing one level of consequences — the danger is in the second and third order
 - Skipping GUARD and just listing risks — risks without guardrails are useless
 - Doing this for low-stakes reversible decisions (overkill)
+
+## References
+
+- `references/failure-taxonomy.md` — Failure mode taxonomy with severity × impact rankings, cascading consequence templates, and guard condition patterns for each category.

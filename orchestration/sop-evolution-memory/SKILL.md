@@ -15,13 +15,20 @@ version: 1.0.0
 
 # SOP Evolution Memory
 
+Distill successful trajectories into reusable Standard Operating Procedures (SOPs). Future similar tasks load the SOP instead of the full history — saving context and avoiding re-learning from scratch.
+
 ## When to Use
 
-Use this skill when:
-- You repeatedly solve similar tasks (e.g., debugging Convex auth, adding API routes)
+- You repeatedly solve similar tasks (e.g., debugging the same module, adding the same kind of API route)
 - Previous task trajectories are long but contain reusable patterns
-- You want to improve over time without re-learning from scratch
 - Context budget is tight and you can't load full historical trajectories
+- You want to improve over time across many sessions
+
+## When NOT to Use
+
+- **One-off task.** No point distilling a pattern you won't hit again.
+- **Failed trajectory.** Only successful, verified tasks become SOPs — distill from success, not failure.
+- **Highly variable tasks with no shared pattern.** SOPs need structure to compress; unstructured variety yields no SOP.
 
 ## The Problem
 
@@ -167,3 +174,9 @@ As SOPs accumulate, the agent should:
 - **SOP staleness**: Codebases evolve. An SOP from 3 months ago may reference renamed functions or deprecated APIs. Version and validate.
 - **False positive matches**: A loosely related task may load the wrong SOP, leading the agent astray. Require trigger term overlap > 60%.
 - **SOP index bloat**: Too many SOPs make retrieval noisy. Archive low-success-count SOPs. Merge duplicates.
+
+## References
+
+For the full SOP template (metadata schema, step format, verification checklist, version history):
+
+- [`references/sop-template.md`](references/sop-template.md)

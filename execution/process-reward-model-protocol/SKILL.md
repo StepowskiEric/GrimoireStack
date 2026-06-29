@@ -502,6 +502,10 @@ Combine with:
 - `tree-of-thoughts`: Track rewards per branch, prune low-reward branches
 - `cognitive-friction-governor`: Budget total reasoning effort
 
+## References
+
+- `references/reward-patterns.md` — Reward pattern catalog with criteria templates, score breakdown formulas, and reward trajectory profiles for common task types.
+
 ## Research Basis
 
 - Process Reward Models for LLM Reasoning (arXiv:2504.18429)

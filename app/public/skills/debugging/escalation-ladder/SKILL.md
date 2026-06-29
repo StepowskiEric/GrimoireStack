@@ -15,8 +15,6 @@ triggers:
 
 # Escalation Ladder
 
-**Biological analog:** A submarine emergency procedure — you don't surface immediately, you follow depth-based protocols at each level before deciding to go higher.
-
 ## The Problem This Solves
 
 `trajectory-guard` detects you're stuck. `summarize` bails out entirely. But between "stuck" and "give up" there are productive middle steps that most agents skip — or waste time on approaches that don't escalate properly.
@@ -191,3 +189,7 @@ After 40 minutes of active debugging without resolution, the cost of continuing 
 - **`bisect-debugging`** → use at Level 1 if the bug was recently introduced
 - **`debug-to-fix-pipeline`** → use at Level 1 as alternative strategy
 - **`summarize`** → use at Level 4 for handoff document
+
+## References
+
+- `references/escalation-decision-tree.md` — Visual decision tree for escalation levels when you're unsure which level you're at or what to do next.

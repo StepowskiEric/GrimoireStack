@@ -1,17 +1,16 @@
 ---
 name: blueprint
-description: Codify messy human problems to reveal hidden assumptions and structure. When you can state the problem in code, the contradictions and gaps become impossible to ignore.
+description: Type the problem — codify messy situations into schema so contradictions, gaps, and silent assumptions become impossible to ignore. Use when vague problems keep being redefined or stakeholders talk past each other.
 triggers:
   - Vague problem that keeps being redefined
-  - People use same words but mean different things
-  - Messy situation with no clear structure
-  - Multi-party decisions with silent disagreements
-  - Problem scope keeps expanding
+  - Stakeholders use the same words but mean different things
+  - Problem scope keeps expanding mid-discussion
+  - Hidden disagreement masked by vague language
 ---
 
 # Blueprint
 
-**Biological analog:** Before you can build, you need a blueprint. Blueprint forces you to turn vague problems into concrete specifications — and in doing so, reveals what's missing, contradictory, or assumed.
+Force the messy problem into types, operations, events, and constraints. What you can't represent in schema, you don't understand yet.
 
 ## When to Use
 
@@ -21,39 +20,41 @@ triggers:
 - Need to convert informal requirements into precise specifications
 - Hidden disagreement masked by vague language
 
-## How It Works
+## When NOT to Use
 
-### Phase 1 — Transcription
+- **Pure exploration with no commitment.** Blueprint locks structure; use it when you're ready to commit.
+- **Already-typed domains.** If the schema exists, jump to gap analysis.
 
-Take the messy problem and transcribe it into formal structure:
+## Phase 1 — Transcribe
+
+Force the messy problem into formal structure:
 
 ```
 Types / Schema:
-  - Entity: what are the nouns? (user, order, payment, report)
-  - Relationships: how do entities relate? (1:1, 1:N, N:N)
-  - State: what states can entities be in? (pending, active, completed, failed)
-  - Constraints: what rules must always hold? (A must happen before B, X cannot happen with Y)
+  Entity:        <nouns — user, order, payment, report>
+  Relationship:  <1:1, 1:N, N:N>
+  State:         <pending, active, completed, failed>
+  Constraint:    <A must happen before B; X cannot happen with Y>
 
 Operations:
-  - Create: what can be created?
-  - Read: what can be read?
-  - Update: what can be changed?
-  - Delete: what can be removed?
+  Create / Read / Update / Delete — what can be created, read, changed, removed
 
 Events:
-  - What happens and in what order?
-  - What triggers what?
-  - What are the failure modes?
+  Order:   <what happens and in what order>
+  Triggers: <what triggers what>
+  Failures: <what are the failure modes>
 ```
 
 Rules:
 - If you can't represent it as data or types, you don't understand it yet
 - Contradictions in the spec are bugs — expose them, don't hide them
-- Silent assumptions become explicit [ASSUMPTION] comments
+- Silent assumptions become explicit `[ASSUMPTION]` comments
 
-### Phase 2 — Gap Detection
+**Done when** every noun is typed, every operation references a defined entity, and every constraint names the entities it binds.
 
-After transcription, look for:
+## Phase 2 — Detect Gaps
+
+After transcription, scan for:
 
 ```
 Gaps:
@@ -67,86 +68,53 @@ Contradictions:
 - State transitions that imply contradictory knowledge
 - Entities with conflicting definitions
 
-Assumptions:
-- [ASSUMPTION]: users are authenticated (but how? by what?)
-- [ASSUMPTION]: "active" means the same thing across all systems
-- [ASSUMPTION]: operations are atomic (but are they?)
+Assumptions (call them out as `[ASSUMPTION]: <claim>`):
+- What was assumed without stating
 ```
 
-### Phase 3 — Resolution
+**Done when** every gap, contradiction, and assumption has an explicit entry — silence here is hiding work.
 
-For each gap/contradiction/assumption, resolve it:
+## Phase 3 — Resolve
 
-```
-Resolution options:
-1. Define: Make it explicit (add to the spec)
-2. Question: Flag it as unknown — requires user input
-3. Choose: Pick one (document why)
-4. Defer: Acknowledge but delay (with risk noted)
-
-Output format:
-- [RESOLVED] Entity X now has state Y
-- [QUESTION] What does "active" mean? Requires clarification
-- [ASSUMED] Operations are atomic unless explicitly stated otherwise
-```
-
-### Phase 4 — Blueprint Document
-
-Produce the final artifact:
+For each gap / contradiction / assumption, pick exactly one:
 
 ```
-# Blueprint: [Problem Name]
+1. Define:   make it explicit (add to the spec)
+2. Question: flag as unknown — requires user input
+3. Choose:   pick one (document why)
+4. Defer:    acknowledge but delay (note the risk)
+```
+
+Output markers:
+- `[RESOLVED] <what was changed>`
+- `[QUESTION] <what requires clarification>`
+- `[ASSUMED] <what was defaulted and why>`
+
+**Done when** every Phase 2 entry has exactly one resolution type, and `Choose` and `Defer` resolutions document their reasoning.
+
+## Phase 4 — Blueprint Document
+
+```
+# Blueprint: <Problem Name>
 
 ## Entities & Relationships
-[as typed/structured above]
-
 ## Operations
-[as typed/structured above]
-
 ## State Machine
-[entities + valid transitions]
-
 ## Constraints
-[explicit rules]
-
 ## Assumptions (explicit)
-[what was assumed and why]
-
 ## Open Questions
-[what's still unknown]
-
 ## Resolved
-[what was resolved by transcription]
 ```
 
-## Anti-Patterns (what Blueprint prevents)
+**Done when** every section is filled, `Open Questions` is empty (or every entry has a documented deferral), and `Assumptions` lists every assumption from Phase 2.
 
-- **Scope creep:** problems get defined before work starts, not during
+## Anti-Patterns
+
+- **Scope creep:** problems get redefined mid-implementation
 - **Silent misalignment:** everyone nods but means different things
 - **Assumption amnesia:** forgetting what was assumed when implementing
-- **Requirements rot:** problem definition changes mid-implementation
-
-## Sub-Agent Contracts
-
-### Transcriptionist
-- **Inputs:** messy problem description (meeting notes, slack thread, vague request)
-- **Outputs:** typed spec with entities, operations, constraints, gaps
-- **Limits:** Must represent everything as types or schema; no prose descriptions of processes
-
-### Gap Analyst
-- **Inputs:** typed spec from Transcriptionist
-- **Outputs:** gap list, contradiction list, assumption list
-- **Limits:** Cannot resolve gaps — only identify them
-
-### Resolver
-- **Inputs:** gap/contradiction/assumption lists
-- **Outputs:** resolved blueprint with explicit choices
-- **Limits:** Must choose resolution type (define/question/choose/defer) for each item
+- **Requirements rot:** problem definition changes without re-running Blueprint
 
 ## Integration
 
 Use before `intent-specification-protocol` when the problem is too messy for intent spec. Use after `requirement-crystallization-protocol` to formalize crystallized requirements. Use with `jury` when gaps involve competing values needing structured decisions.
-
-## Fallback Mode
-
-If no sub-agents available: take the messy problem and write it as TypeScript interfaces or Python dataclasses. Every time you hit "I don't know what this is," that's a gap. Write it as a question. The act of typing forces precision.

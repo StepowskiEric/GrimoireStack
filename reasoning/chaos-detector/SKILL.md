@@ -155,6 +155,10 @@ Should return `lyapunov_exponent > 0` (diverging).
 ___
 
 
+## References
+
+- `references/how-it-works.md` — Technical deep-dive on the Lyapunov exponent calculation, embedding strategies, and trajectory divergence analysis used by the chaos detector.
+
 ## Limitations
 
 - **Embedding quality**: Low-quality embeddings degrade Lyapunov estimates. Use `text-embedding-3-small` or better.

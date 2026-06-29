@@ -11,17 +11,27 @@ version: 1.0
 
 # Scout
 
-A fast auxiliary agent that pre-reads files and distills only the context the main model actually needs.
+A fast auxiliary agent that pre-reads files and distills only the context the main model actually needs. The main model wastes context and attention searching through files or gets distracted by irrelevant code; Scout intercepts file-reading tasks and returns only what's relevant.
 
-**Core problem:** The main model wastes context and attention searching through files, or gets distracted by irrelevant code. Scout intercepts file-reading tasks, does the scouting work fast, and returns only what's relevant.
+## When to Use
 
-**Three Scout modes:**
+- The main task needs file context you don't already have
+- The codebase is large enough that direct reading wastes attention
+- You want scoped, distilled findings rather than raw file dumps
+
+## When NOT to Use
+
+- **The main model already knows the file location.** Scout is for discovery, not retrieval.
+- **A single file or trivial lookup.** Reading the file directly is faster.
+- **You're about to read every file anyway.** If the scope is "the whole repo," Scout adds overhead without saving context.
+
+## Three Scout Modes
 
 | Mode | Speed | LLM Cost | Best For |
 |------|-------|----------|----------|
-| **Lite** | Instant | $0 | You know the filenames or patterns. Fast pre-filter. |
-| **Full** | ~10-30s | ~$0.01-0.10 | You need comprehension, summarization, or cross-file synthesis. |
-| **Hybrid** | Medium | ~$0.01 | Narrow down with Lite, deepen with Full. |
+| **Lite** | Instant | $0 | Known filenames or patterns. Fast pre-filter. |
+| **Full** | ~10-30s | ~$0.01-0.10 | Comprehension, summarization, cross-file synthesis. |
+| **Hybrid** | Medium | ~$0.01 | Narrow with Lite, deepen with Full. |
 
 ___
 
@@ -182,12 +192,11 @@ Scout reduces main model context waste:
 ___
 
 
-## Companion Scripts
+## References
 
-The `references/` directory contains:
-- `scout-config.yaml` — configurable model selection, timeouts, and scope limits
-- `model-comparison.md` — benchmark data for Scout-Full model selection
-- `scouting-patterns.md` — common scouting scenarios with mode selection
+- [`references/scout-config.yaml`](references/scout-config.yaml) — configurable model selection, timeouts, and scope limits
+- [`references/model-comparison.md`](references/model-comparison.md) — benchmark data for Scout-Full model selection
+- [`references/scouting-patterns.md`](references/scouting-patterns.md) — common scouting scenarios with mode selection
 
 ___
 

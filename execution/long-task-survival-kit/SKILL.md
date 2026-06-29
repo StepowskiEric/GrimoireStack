@@ -119,3 +119,7 @@ CHECKPOINT ──→ CHECK 1 (Context) ──→ CHECK 2 (Trajectory) ──→ 
 - Checking context but ignoring trajectory (the most common form of agent decay)
 - Verifying assumptions by reading old tool output instead of re-running (state may have changed)
 - Treating the checkpoint as optional on "easy" tasks (easy tasks become hard when they go wrong)
+
+## References
+
+- `references/checkpoint-template.md` — A reusable checkpoint template to copy-paste into your session for quick 3-part health checks.

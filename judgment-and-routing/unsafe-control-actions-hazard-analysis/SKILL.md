@@ -190,3 +190,8 @@ Name the losses.
 Map the hazards.  
 Analyze unsafe control actions.  
 Define constraints and safeguards before acting.
+
+## References
+
+- `references/ai-agent-hazards.md` — AI-agent-specific hazard catalog: prompt injection, tool misuse, credential exposure, agent-to-agent delegation risks, and their unsafe control action mappings.
+- `references/worked-example.md` — Full worked example of the UCA hazard analysis protocol applied to a production deployment scenario.

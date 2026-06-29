@@ -187,7 +187,7 @@ const schools = [
       {
         "name": "Prism of Understanding",
         "skill": "prism",
-        "effect": "Force explicit confidence calibration (metacognitive monitoring), then verify your understanding by compressing it to its essence. If you can't compress it, you don't understand it.",
+        "effect": "Calibrate, compress, verify — force numeric confidence on each claim, compress to its essence, then verify the compression reconstructs the original. If it doesn't, you don't understand it.",
         "status": "—"
       },
       {
@@ -251,7 +251,7 @@ const schools = [
       {
         "name": "Court of Minds",
         "skill": "jury",
-        "effect": "Spawn parallel perspectives with conflicting goals, let them argue, surface the conflict graph as the explanation.",
+        "effect": "Argue, then structure the disagreement — spawn parallel perspectives with conflicting goals, force them to engage, output a conflict graph that reveals what actually matters. Use when reasonable options exist and the choice isn't obvious.",
         "status": "—"
       },
       {
@@ -263,13 +263,13 @@ const schools = [
       {
         "name": "Navigator",
         "skill": "navigator",
-        "effect": "Scout reads and distills context; Thought-Retriever stores the distilled reasoning as retrievable traces. Navigate complex codebases by building a living trail of what was explored and why.",
+        "effect": "Map, distill, retrieve — Scout reads code, Thought-Retriever stores the reasoning trail so future sessions resume from where you stopped. Use when the codebase is large, unfamiliar, or the agent keeps re-asking the same questions.",
         "status": "—"
       },
       {
         "name": "Octopus Coordination",
         "skill": "octopus",
-        "effect": "Distributed multi-agent coordination pattern inspired by octopus biology — contract-driven decomposition, parallel delegation, shared workspace, inter-arm coordination, autotomy/regeneration on failure.",
+        "effect": "Coordinate parallel sub-agents with bounded concurrency — define shared contracts, delegate with auto-healing arms, retract on failure. Use when 3+ workstreams share a contract and parallel speedup beats coordination overhead.",
         "status": "—"
       },
       {
@@ -317,19 +317,19 @@ const schools = [
       {
         "name": "Thought-Weave & Search",
         "skill": "tree-of-thoughts-plus-monte-carlo-tree-search",
-        "effect": "Power combo — Tree of Thoughts generates diverse reasoning branches, Monte Carlo Tree Search allocates deeper effort to the branches that earn it through evidence.",
+        "effect": "Branch, prune, commit — decide among competing strategies by evidence using Tree of Thoughts and Monte Carlo Tree Search. Use when the answer isn't obvious and probing cost differs by path.",
         "status": "—"
       },
       {
         "name": "Triad Perspective",
         "skill": "rashomon-triad-hybrid",
-        "effect": "No description provided.",
+        "effect": "Surface genuine disagreement — parallel perspectives with conflicting goals run independent abductive-deductive-inductive cycles, then argue via attack graph. Returns selection, composition, or conflict-surfacing output. Use for high-stakes trade-offs without a single correct answer.",
         "status": "—"
       },
       {
         "name": "Weak Link Detection",
         "skill": "weak-link-detection-multi-agent",
-        "effect": "No description provided.",
+        "effect": "Identify and isolate the weakest reasoning chain in multi-agent outputs before aggregation. Prevents error amplification when one agent fails. Use when aggregating outputs and one bad agent could poison the collective result.",
         "status": "—"
       }
     ]
@@ -453,7 +453,7 @@ const schools = [
       {
         "name": "Blueprint Codification",
         "skill": "blueprint",
-        "effect": "Codify messy human problems to reveal hidden assumptions and structure. When you can state the problem in code, the contradictions and gaps become impossible to ignore.",
+        "effect": "Type the problem — codify messy situations into schema so contradictions, gaps, and silent assumptions become impossible to ignore. Use when vague problems keep being redefined or stakeholders talk past each other.",
         "status": "—"
       },
       {
@@ -790,7 +790,7 @@ const schools = [
       {
         "name": "STPA Ward",
         "skill": "unsafe-control-actions-hazard-analysis",
-        "effect": "No description provided.",
+        "effect": "Use this skill when the agent is about to recommend or perform an action that could create serious harm, instability, or irreversible damage.",
         "status": "—"
       },
       {
@@ -1093,7 +1093,7 @@ const schools = [
       {
         "name": "Spectral Reasoning",
         "skill": "specter",
-        "effect": "Debug by generating competing hypotheses (abductive reasoning), then locate code structurally — no keyword grepping, no root-cause guessing. Feels like a ghost hunting the real bug.",
+        "effect": "Abduce the bug — generate competing hypotheses, locate code by structural relationship, then disconfirm until one survivor remains. Use when the crash site is not the cause, the bug is \"weird,\" or your first instinct is suspect.",
         "status": "—",
         "trueName": "The Ghost That Hunts",
         "kins": [

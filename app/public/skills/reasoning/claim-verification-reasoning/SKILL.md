@@ -203,3 +203,7 @@
    203|| `cot-pruning-reasoning` | Redundant reasoning steps | Falsifiable claims before pruning |
    204|
    205|**Best used together:** Run `claim-verification` to ensure claims are solid, then `faithfulness-aware` to check entailment, then `cot-pruning` to compress.
+
+## References
+
+- `references/verification-tiers.md` — Verification tier definitions with tool mappings for each confidence label (CERTAIN, LIKELY, UNCERTAIN), by claim type (code, environment, API, etc.).

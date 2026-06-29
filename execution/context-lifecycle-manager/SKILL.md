@@ -132,3 +132,7 @@ Turn 30: Check health
 ## Rule of Thumb
 
 Messages are born → they live → they decay → they die (get pruned). Respect the lifecycle.
+
+## References
+
+- `references/budget-and-rot-details.md` — Detailed token estimation heuristics, decay formulas, and compression strategies preserved from the absorbed context-budget-operator and context-rot-pruner skills.

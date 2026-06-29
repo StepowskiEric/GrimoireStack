@@ -597,6 +597,10 @@ Run: `chmod +x setup-logic-locator.sh && ./setup-logic-locator.sh`
 
 ---
 
+## References
+
+- `references/search-patterns.md` — Datalog query pattern reference: call graph, data flow, type hierarchy, dependency, and structural queries with examples.
+
 ## See Also
 
 - Paper: "Neurosymbolic Repo-level Code Localization" (arXiv:2604.16021)

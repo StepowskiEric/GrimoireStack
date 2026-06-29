@@ -127,6 +127,10 @@ Test passes. Fix confirmed working.
 4. **Always force action after 3 no-changes** — don't reason in circles
 5. **Halt immediately if fix is verified and no regressions** — don't polish
 
+## References
+
+- `references/halt-signals.md` — Halt signal catalog: convergence stop signals with detection patterns, edge case handling, and confidence calibration for each.
+
 ## Research Basis
 
 - **DASH** (arXiv:2604.18103): Delta Attention Selective Halting. Monitors layer-wise update dynamics to halt stabilized tokens. Training-free, generalizes across language and vision. Significant speedups while preserving accuracy.

@@ -91,3 +91,7 @@ Set a maximum scope before starting:
 - Refactoring code you didn't write
 - Fixing bugs in unfamiliar code
 - Migrating legacy systems
+
+## References
+
+- `references/characterization-checklist.md` — Characterization test checklist and patterns for capturing current behavior before making changes.

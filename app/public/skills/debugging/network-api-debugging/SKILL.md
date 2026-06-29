@@ -17,8 +17,6 @@ triggers:
 
 # Network / API Debugging
 
-**Biological analog:** A neurologist diagnosing nerve signal failures — the brain (code) sends a signal, the muscle (server) should respond, but something in the nerve pathway is blocking, distorting, or dropping the signal.
-
 ## Why This Skill Exists
 
 Code-level debugging skills (specter, debug-to-fix-pipeline) assume the code is the problem. But network/API failures exist in a gray zone:
@@ -376,3 +374,7 @@ Phase 2: DIAGNOSE BY STATUS CODE → 2xx/3xx/4xx/5xx decision tree
 Phase 3: FIX BY FAILURE TYPE → CORS/auth/rate-limit/redirect/body
 Phase 4: SPECIAL CASES → WebSocket/SSL/RN-specific
 ```
+
+## References
+
+- `references/http-status-quick-reference.md` — Full HTTP status code reference table for 4xx and 5xx responses with first-check actions for each.

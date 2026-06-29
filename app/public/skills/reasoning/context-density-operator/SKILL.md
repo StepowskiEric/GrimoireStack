@@ -156,6 +156,10 @@ Ref: #full-routing-py (expand if needed)
 Reasoning: Root cause identified → Starlette overwrites. Fix: assign after super().__init__.
 ```
 
+## References
+
+- `references/density-techniques.md` — Expanded compression technique catalog with per-tier examples, density score calculation, and information bottleneck trade-off analysis.
+
 ## Research Basis
 
 - **GenericAgent** (arXiv:2604.17091): Contextual Information Density Maximization. Hierarchical on-demand memory + context truncation. Outperforms leading agents with significantly fewer tokens.

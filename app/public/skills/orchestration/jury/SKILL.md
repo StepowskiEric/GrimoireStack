@@ -1,118 +1,110 @@
 ---
 name: jury
-description: Spawn parallel perspectives with conflicting goals, let them argue, surface the conflict graph as the explanation.
+description: Argue, then structure the disagreement — spawn parallel perspectives with conflicting goals, force them to engage, output a conflict graph that reveals what actually matters. Use when reasonable options exist and the choice isn't obvious.
 triggers:
-  - Decision with multiple plausible options
-  - Trade-off between competing values
-  - Need to understand why different people see the same situation differently
-  - Want to find blind spots systematically
+  - Multiple reasonable options, choice not obvious
+  - Stakeholders would prioritize different things
+  - Suspected hidden assumption causing disagreement
+  - Want to pressure-test a decision before committing
 ---
 
 # Jury
 
-**Biological analog:** A jury deliberates not by averaging opinions but by exposing conflict — the structure of disagreement reveals what matters most.
+Perspectives don't vote — they **argue**, and the conflict graph is the output. Disagreement reveals what matters most.
 
 ## When to Use
 
 - Two or more reasonable options exist and the choice isn't obvious
 - Different stakeholders would prioritize different things
-- You suspect there's a hidden assumption causing disagreement but can't name it
+- You suspect a hidden assumption causing disagreement but can't name it
 - You need to make a decision but want to pressure-test it first
 
-## How It Works
+## When NOT to Use
 
-### Phase 1 — Jury Assembly
+- **Single-option decisions.** There's nothing to argue.
+- **Pure fact-finding.** Jury is for value conflict, not information gathering.
+- **Time pressure with a clear default.** Argument costs time; skip when the default is good enough.
 
-Assign each "juror" a distinct perspective with explicit goals and constraints:
+## Phase 1 — Assemble the Jury
+
+Assign each juror a distinct perspective with explicit goals and constraints:
 
 ```
-Juror 1 — "Speed": Prioritize time-to-market. Argue for the fastest path.
-  - Assumptions: Ship now, fix later is acceptable; technical debt is cheap
-  - Stress: What are we losing by waiting?
+Juror 1 — "Speed": Prioritize time-to-market.
+  Assumptions: ship now, fix later; technical debt is cheap.
+  Stress: what are we losing by waiting?
 
-Juror 2 — "Correctness": Prioritize correctness and robustness.
-  - Assumptions: Bugs are expensive; edge cases matter
-  - Stress: What could go wrong if we go fast?
+Juror 2 — "Correctness": Prioritize robustness.
+  Assumptions: bugs are expensive; edge cases matter.
+  Stress: what could go wrong if we go fast?
 
 Juror 3 — "Scope": Prioritize minimal scope and clarity.
-  - Assumptions: Simpler is safer; fewer features means fewer bugs
-  - Stress: What is actually required?
+  Assumptions: simpler is safer; fewer features = fewer bugs.
+  Stress: what is actually required?
 
 Juror 4 — "Growth": Prioritize long-term maintainability.
-  - Assumptions: Code quality compounds; today's debt is tomorrow's crisis
-  - Stress: What will we regret in 6 months?
+  Assumptions: code quality compounds; today's debt is tomorrow's crisis.
+  Stress: what will we regret in 6 months?
 ```
 
 Rules:
-- Each juror must argue FOR their position, not neutrally describe it
+- Each juror argues FOR their position, never neutrally
 - Jurors must engage with each other's arguments, not just state their own
-- Jurors must identify the specific assumption that drives their disagreement
+- Each juror must name the specific assumption driving their disagreement
 
-### Phase 2 — Deliberation
+**Done when** at least 3 jurors exist with distinct goals, and each has stated one load-bearing assumption.
 
-Each round, jurors present:
+## Phase 2 — Deliberate
+
+Each round:
 
 ```
 Round N:
-- Juror X claims: [specific claim]
-- Juror Y responds: [specific counter or concession]
-- Conflict identified: [what they actually disagree about]
+- Juror X claims:    <specific claim>
+- Juror Y responds:  <specific counter or concession>
+- Conflict:          <what they actually disagree about>
 ```
 
-The conflict graph is the real output — not a vote.
+**Done when** at least 2 rounds of explicit claim-and-response have occurred, and at least one disagreement is named with its underlying assumption.
 
-### Phase 3 — Conflict Graph
-
-Structure the disagreements:
+## Phase 3 — Build the Conflict Graph
 
 ```
 Nodes: [claims or positions]
 Edges: [disagreements between jurors]
 
 Example:
-[Ship v2] --disagree:risk-- [Wait for v2.1]
-           --disagree:scope-- [Only ship auth, defer UI]
-           --disagree:techdebt-- [Accept debt] --vs-- [No debt]
+[Ship v2]   --disagree:risk--     [Wait for v2.1]
+            --disagree:scope--    [Only ship auth, defer UI]
+            --disagree:techdebt-- [Accept debt] --vs-- [No debt]
 ```
 
-The graph structure reveals:
+The graph reveals:
 - Which disagreements are fundamental (different values) vs tactical (different facts)
 - Whether concession is possible (shared nodes)
 - What evidence would resolve each edge
 
-### Phase 4 — Verdict
+**Done when** the graph has ≥3 edges, each edge names its disagreement type, and at least one fundamental-value edge is identified.
+
+## Phase 4 — Verdict
 
 ```
-Decision: [what the main agent decides, informed by but not bound by jury]
-Confidence: [0-100%]
-Disagreement resolved: [which edges collapsed and why]
-Remaining conflict: [which edges persist and why they don't matter for this decision]
-What was most useful: [which juror's argument changed the thinking most]
+Decision:                 <what the main agent decides>
+Confidence:               <0-100%>
+Disagreement resolved:    <which edges collapsed and why>
+Remaining conflict:       <which edges persist and why they don't matter here>
+Most-useful argument:     <which juror changed the thinking most>
 ```
 
-## Anti-Patterns (what Jury prevents)
+**Done when** a decision is named with confidence, resolved and persistent edges are listed separately, and one juror's specific argument is credited as the thinking-changer.
+
+## Anti-Patterns
 
 - **False consensus:** everyone agrees but no one examined alternatives
 - **Debate theater:** loud arguments with no resolution
 - **Average judgment:** taking the mean of all perspectives
 - **Authority capture:** one juror dominates and others concede
 
-## Sub-Agent Contracts
-
-### Juror
-- **Inputs:** the decision question, their assigned perspective, competing arguments
-- **Outputs:** structured claims with evidence, responses to other jurors, identified assumptions
-- **Limits:** Must argue for their assigned position; cannot be neutral
-
-### Conflict Synthesizer
-- **Inputs:** all juror outputs
-- **Outputs:** conflict graph (nodes + edges), structured verdict
-- **Limits:** If all jurors agree, flag it as suspicious — maybe assumptions weren't challenged
-
 ## Integration
 
-Use before `counterfactual-policy-testing` to ensure alternatives explored from different angles. Use after `pre-mortem` to stress-test from competing risk perspectives. Use with `prism` to compress the conflict graph into a decision rationale.
-
-## Fallback Mode
-
-If no sub-agents available, simulate the jury manually: spend 5 minutes writing arguments for each perspective. Structure the disagreements explicitly. Force yourself to identify the specific assumption behind each disagreement.
+Pair with `counterfactual-policy-testing` after the verdict to ensure alternatives are tested. Pair with `pre-mortem` to stress-test from competing risk perspectives. Pair with `prism` to compress the conflict graph into a decision rationale.

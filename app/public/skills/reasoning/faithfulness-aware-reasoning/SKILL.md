@@ -440,6 +440,10 @@ Combine with:
 - `self-consistency`: Cross-check entailment across multiple reasoning paths
 - `bounded-self-revision`: Limit revision attempts on unfaithful steps
 
+## References
+
+- `references/hallucination-vectors.md` — Catalog of known faithfulness hallucination vectors with detection heuristics and repair strategies for each.
+
 ## Research Basis
 
 - Stop Rewarding Hallucinated Steps (arXiv:2602.05897)

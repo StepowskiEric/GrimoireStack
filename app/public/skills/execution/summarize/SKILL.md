@@ -132,3 +132,7 @@ ___
 3. Stop. Do nothing else. Wait for the user or the next agent.
 
 The session is over. The report is the deliverable.
+
+## References
+
+- `references/handoff-template.md` — The full handoff report template with all section placeholders for copying into a handoff file.

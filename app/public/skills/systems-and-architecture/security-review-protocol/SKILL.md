@@ -101,3 +101,7 @@ After all 4 phases, rate each finding:
 - Marking items as "secure" without tool verification (assumption, not evidence)
 - Only checking new code (changes can break security of existing code)
 - Skipping Phase 4 because Phases 1-3 "looked fine" (verification is the point)
+
+## References
+
+- `references/threat-catalog.md` — Curated threat catalog with STRIDE × attack-vector matrix, OWASP Top 10 mapping, and concrete exploit scenarios per entry.

@@ -76,3 +76,7 @@ Stop condition: [when to pause]
 - Classifying everything as Obvious (indicates you aren't thinking)
 - Setting high rigor for low-stakes work (wastes time)
 - Setting low rigor for irreversible changes (causes damage)
+
+## References
+
+- `references/task-intake-checklist.md` — Printable checklist for running the full 3-phase intake protocol, with calibration tables and decision gates per phase.

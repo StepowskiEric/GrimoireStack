@@ -474,3 +474,7 @@ python codebase_summarize.py /path/to/repo \
 - `--chunk-size`: Max tokens per summary chunk (default: 256)
 
 See script header for full usage.
+
+## References
+
+- `references/search-strategies.md` — Search strategy patterns: semantic similarity queries, zone partitioning heuristics, confidence scoring calibration, and cross-zone evidence correlation.

@@ -1,111 +1,93 @@
 ---
 name: specter
-description: Debug by generating competing hypotheses (abductive reasoning), then locate code structurally — no keyword grepping, no root-cause guessing. Feels like a ghost hunting the real bug.
+description: Abduce the bug — generate competing hypotheses, locate code by structural relationship, then disconfirm until one survivor remains. Use when the crash site is not the cause, the bug is "weird," or your first instinct is suspect.
 triggers:
-  - Multiple possible causes, unknown root cause
-  - Bug crashes at location X but causation is elsewhere
-  - Classic "find the bug by reasoning backwards"
-  - First instinct is always wrong
+  - Multiple plausible causes and your first guess is suspect
+  - Crash site is not the root cause (deferred execution, async, state machine)
+  - Debugging by reasoning from symptom back to cause
 ---
 
 # Specter
 
-**Biological analog:** A bloodhound that doesn't follow scent — it follows structural proximity. It knows where the bug should logically live before you show it evidence.
+Abduction, not deduction. Given a symptom, infer the best explanation, then **disconfirm** until one **survivor** remains. Locate code by structural relationship — never by keyword.
 
 ## When to Use
 
-- Bug has multiple plausible causes and you don't know which is right
+- Bug has multiple plausible causes and your first instinct is suspect
 - The crash site is not the root cause (deferred execution, async, state machine)
-- You've already tried the obvious fixes and they're not working
+- You've tried the obvious fixes and they're not working
 - The bug is "weird" — behavior doesn't match what the code should do
 
-## How It Works
+## When NOT to Use
 
-### Phase 1 — Abductive Hypothesis Generation
+- **Deterministic bug with a reproducing test.** Abduction burns tool-call budget on hypothesis generation without fixing localized logic errors. Use `debug-subagent` instead.
+- **Tight tool-call budget (≤25 calls).** The probe loop needs ~10-15 calls before any code change.
+- **Silent logic error in a single module** (type mismatch, init order). Abduction is built for multi-system novel failures, not local bugs.
 
-Generate 3-5 competing hypotheses for why the bug occurs. Don't guess — structurally analyze:
+## Phase 1 — Hypothesize
 
-```
-Hypothesis format:
-{
-  "label": "H1: State desync",
-  "premise": "If X was true when Y executed, then Z should be visible",
-  "prediction": "If this is the cause, we should see [observable symptom A]",
-  "confidence": 0.7,
-  "disconfirming_evidence": "Only fails when [condition], not when [condition]"
-}
-```
+Generate 3-5 competing hypotheses. For each:
+
+- **Premise:** "If X was true when Y executed, then Z should follow"
+- **Prediction:** observable symptom that distinguishes this from the others
+- **Disconfirming condition:** the specific observation that would kill this hypothesis
 
 Rules:
-- Never propose a hypothesis that matches "what you want to be true"
-- Include at least one "obvious" hypothesis and at least one "weird" hypothesis
-- Each hypothesis must have a falsifiable prediction
+- Include at least one **obvious** and at least one **weird** hypothesis
+- Never propose what you *want* to be true
+- If all hypotheses look similar, inject a wildcard
 
-### Phase 2 — Structural Code Location (Logic Locator)
+**Done when** you have 3-5 hypotheses, each with premise + falsifiable prediction + disconfirming condition, including at least one obvious and one weird.
 
-For each hypothesis, locate code by **structural relationship** not keyword:
+## Phase 2 — Locate by Structure
 
-```
-Pattern types:
-- Control flow: what precedes the bug site?
-- Data flow: what's the last write to variable X before crash?
-- Call graph: what functions call this and who calls them?
-- State machine: what state transitions could produce this?
-- Temporal: what runs before/after in event loop?
-```
+For each surviving hypothesis, locate code by **structural relationship**, not keyword:
 
-Logic Locator finds code by asking "what structural relationship would produce this symptom?" not "grep for this string."
+- **Control flow:** what precedes the bug site?
+- **Data flow:** what's the last write to variable X before crash?
+- **Call graph:** what calls this, and what does it call?
+- **State machine:** what transitions could produce this state?
+- **Temporal:** what runs before/after in the event loop?
 
-### Phase 3 — Probe & Disconfirm
+Ask "what structurally precedes the crash?" — never "grep for this string."
+
+**Done when** each hypothesis points to a specific `file:function` candidate reachable through one of the structural relationships above.
+
+## Phase 3 — Probe & Disconfirm
 
 For each hypothesis:
-1. Write a minimal probe (log, assertion, flag) that distinguishes H1 from H2
-2. Run the probe
-3. If result disconfirms: eliminate and update other hypothesis confidences
-4. If result confirms: elevate confidence, use Logic Locator to trace forward from the confirmed cause
+1. Design a minimal probe (log, assertion, flag) whose predictions for the leading hypotheses diverge under it
+2. Run it
+3. On contradiction: **disconfirm** — eliminate and update other confidences
+4. On confirmation: elevate confidence, then trace forward from the confirmed cause using the structural lens
 
-Stop when one hypothesis has confidence > 0.85 or all are below 0.3 (means the model of the bug is wrong — restart).
+**Stop when** one hypothesis reaches confidence > 0.85, or all drop below 0.3 (model of the bug is wrong — restart with fresh symptom data).
 
-### Phase 4 — Synthesize
+## Phase 4 — Synthesize
 
-Write a one-paragraph root cause summary:
+Write the root cause:
 
 ```
-Root cause: [concise description]
-Location: [file:line or file:function]
-Mechanism: [how the bug manifests]
-Fix: [what needs to change and why it will work]
-Confidence: [0-100%]
-Alternative: [if I'm wrong, what should we check?]
+Root cause:    [concise description]
+Location:      [file:line or file:function]
+Mechanism:     [how the bug manifests]
+Fix:           [what changes and why it works]
+Confidence:    [0-100%]
+Alternative:   [if I'm wrong, what to check next]
 ```
 
-## Anti-Patterns (what Specter prevents)
+**Done when** every field is filled, and `Alternative` names the next hypothesis to test if this fix doesn't land.
 
-- **First-branch lock-in:** "I know what caused it" → ignoring disconfirming evidence
-- **Keyword-only grep:** Finding code that looks right but isn't the real cause
-- **Flat reasoning:** Treating all hypotheses as equally likely instead of updating
+## Anti-Patterns
 
-## Sub-Agent Contracts
-
-### Abductive Generator
-- **Inputs:** bug description, crash site, observed behavior
-- **Outputs:** 3-5 structured hypotheses with falsifiable predictions
-- **Limits:** If all hypotheses are similar (same shape), inject a "weird" one intentionally
-
-### Logic Locator
-- **Inputs:** hypothesis premise, codebase structure
-- **Outputs:** file:function locations that fit the structural pattern
-- **Limits:** Never grep for keywords; only follow control/data/temporal relationships
-
-### Synthesizer
-- **Inputs:** surviving hypothesis + evidence, eliminated hypotheses + why
-- **Outputs:** root cause report in Phase 4 format
-- **Limits:** If confidence < 0.5, flag as "unknown" rather than guessing
+- **First-branch lock-in:** declaring cause before probes have run — ignoring disconfirming evidence
+- **Keyword grep:** finding code that looks right but isn't structurally upstream of the symptom
+- **Flat reasoning:** treating hypotheses as equally likely instead of updating confidence from evidence
 
 ## Integration
 
-Use with `trajectory-guard` to detect when you've been hypothesis-hopping without progress (signal: >5 hypothesis cycles). Use with `pre-mortem` before fixing to validate the proposed fix addresses the real cause.
+Pair with `trajectory-guard` if you've cycled through >5 hypotheses without convergence (signal: hypothesis-hopping without progress). Pair with `pre-mortem` before committing the fix to confirm it addresses the confirmed cause, not a correlated symptom.
 
-## Fallback Mode
+## Rigor — 6-State Protocol
 
-If no sub-agents available: do the hypothesis generation manually in a scratch file, then use `keyword-agnostic-logic-locator` principles by asking "what structurally precedes the crash?" rather than grepping for keywords.
+For hard cases where the 4-phase loop converges but you need stronger evidence before committing a fix, load [`references/abductive-reasoning-extended.md`](references/abductive-reasoning-extended.md). It adds the 6-state abductive protocol with explicit coherence scoring, Inference to Best Explanation (IBE), and discriminatory-test design, plus two critical pitfalls around silent server-side failures in auth flows and `browser_console` eval context mismatches.

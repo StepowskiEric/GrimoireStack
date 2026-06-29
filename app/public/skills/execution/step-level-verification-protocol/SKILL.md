@@ -305,6 +305,10 @@ Combine with:
 - `cognitive-friction-governor`: Budget verification effort
 - `how-to-solve-it-state-machine`: For problem decomposition before stepping
 
+## References
+
+- `references/verification-checklist.md` — Verification checklist templates for different step types (computation, lookup, transformation, etc.).
+
 ## Research Basis
 
 - Verified Critical Step Optimization (arXiv:2602.03412)

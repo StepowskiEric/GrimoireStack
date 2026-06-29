@@ -83,3 +83,7 @@ tests:
 - When the request is ambiguous or could be interpreted multiple ways
 - Before refactoring when the target behavior isn't clear
 - As a pre-coding step in agent workflows
+
+## References
+
+- `references/ambiguity-checklist.md` — Exhaustive ambiguity checklist for surfacing hidden assumptions in vague requirements.

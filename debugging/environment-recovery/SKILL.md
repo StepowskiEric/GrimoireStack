@@ -18,7 +18,7 @@ triggers:
 
 # Environment Recovery
 
-**Biological analog:** A paramedic checking vitals before diagnosing the disease. Every other debugging skill assumes the patient is breathing.
+Every other debugging skill assumes the environment is healthy. This one runs first.
 
 ## When to Use
 

@@ -115,3 +115,8 @@ git diff main
 # 5. Secret scan
 git diff main | grep -iE '(api_key|secret|token|password|credential|private_key)' || echo "clean"
 ```
+
+## References
+
+- `references/gate-checklist.md` — Printable deployment gate checklist with per-pass verification items, threshold tables, and execution order.
+```

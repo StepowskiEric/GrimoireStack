@@ -13,8 +13,6 @@ triggers:
 
 # Minimal Reproduction
 
-**Biological analog:** A pathologist growing a culture — isolate the organism so you can study it in controlled conditions. You can't fight what you can't grow.
-
 ## Why This Skill Exists
 
 Every structured debugging skill (debug-to-fix-pipeline, iterative-patch-repair, specter) assumes you have a failing test to work with. But the most common debugging scenario is:
@@ -228,3 +226,7 @@ it("displays server error message when API returns 400", async () => {
 - **Before `specter`:** The reproduction test gives specter's hypotheses something concrete to falsify.
 - **After `environment-recovery`:** If the env was broken, fix it first, then create a reproduction test before debugging.
 - **With `escalation-ladder`:** If you can't create a minimal reproduction after Step 2, you're stuck at Level 1 — escalate to strategy change.
+
+## References
+
+- `references/test-templates.md` — Reproduction test templates by framework (Jest, Convex, React Native, Playwright, etc.) with boilerplate for each environment.
