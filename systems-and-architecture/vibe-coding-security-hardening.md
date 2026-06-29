@@ -1,10 +1,13 @@
-# Skill: Vibe Coding Security Hardening
+---
+name: vibe-coding-security-hardening
+description: "Use before deploying AI-generated apps — systematic checklist for the vulnerabilities LLMs reliably introduce: exposed secrets, missing RLS, broken auth, injection flaws, insecure defaults."
+---
+
+# Vibe Coding Security Hardening
 
 ## Purpose
 
 Use this skill before deploying any AI-generated ("vibe-coded") application to production. AI coding tools optimize for functionality, not security — studies consistently show 45%+ of AI-generated code contains OWASP Top 10 vulnerabilities, with a 1.5–2.74× higher vulnerability rate than human-written code.
-
-This skill provides a systematic hardening checklist and remediation pattern specifically targeting the vulnerabilities AI tools reliably introduce: exposed secrets, missing database access controls, broken authentication, injection flaws, and insecure defaults.
 
 ---
 

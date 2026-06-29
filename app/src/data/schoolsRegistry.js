@@ -11,43 +11,43 @@ const schools = [
       {
         "name": "Acceleration Rite",
         "skill": "accelerate-ai",
-        "effect": "No description provided.",
+        "effect": "Use when delivery is slow or risky — improve engineering throughput and reliability by strengthening feedback, lowering batch risk, and shortening recovery time. Covers CI/CD, release engineering, platform work, and incident recovery.",
         "status": "—"
       },
       {
         "name": "Analogy Bridge",
         "skill": "cross-domain-analogy-generator",
-        "effect": "No description provided.",
+        "effect": "Use when stuck on a problem — break fixation by mapping the structure to biology, music, traffic, or another foreign domain and transferring insights. Generates novel solutions when standard approaches fail.",
         "status": "—"
       },
       {
         "name": "Bottleneck Sight",
         "skill": "the-goal-theory-of-constraints-ai",
-        "effect": "No description provided.",
+        "effect": "Use when throughput is capped or work piles up — find the one constraint, ignore non-constraints, exploit then elevate it, repeat when it moves. Stops micro-optimization that does not move total throughput.",
         "status": "—"
       },
       {
         "name": "Code Vision",
         "skill": "everything-as-code-conceptualizer",
-        "effect": "No description provided.",
+        "effect": "Use when messy human problems resist analysis — codify the system as pseudocode to reveal hidden assumptions, missing decisions, and edge cases that natural-language descriptions obscure.",
         "status": "—"
       },
       {
         "name": "Data System Principles",
         "skill": "designing-data-intensive-applications-ai",
-        "effect": "No description provided.",
+        "effect": "Use when reasoning about data systems — storage choices, replication, consistency, partitioning, queues, failure modes, and operational tradeoffs. Covers backend architecture, event systems, schema changes, distributed debugging.",
         "status": "—"
       },
       {
         "name": "Error Budget Divination",
         "skill": "sre-error-budget",
-        "effect": "No description provided.",
+        "effect": "Use when reasoning about reliability vs velocity — SLOs, error budgets, toil budgets, and change-velocity governance. Spend the budget on speed when healthy; freeze changes when depleted.",
         "status": "—"
       },
       {
         "name": "Full Architecture Audit",
         "skill": "system-architecture-audit",
-        "effect": "No description provided.",
+        "effect": "Use when auditing an existing system for architectural weaknesses — 4-phase audit fusing Thinking in Systems, DDD, DDIA, and Release It. Reveals structural problems before they cascade.",
         "status": "—"
       },
       {
@@ -59,13 +59,13 @@ const schools = [
       {
         "name": "Stability Warding",
         "skill": "release-it-stability",
-        "effect": "No description provided.",
+        "effect": "Use when reasoning about distributed-system resilience — circuit breakers, bulkheads, timeouts, load shedding, steady-state hygiene for production failure modes. Stops cascading failures before they spread.",
         "status": "—"
       },
       {
         "name": "STRIDE Analysis",
         "skill": "security-threat-modeling",
-        "effect": "No description provided.",
+        "effect": "Use when handling auth, secrets, user input, or sensitive data — STRIDE threat analysis, attack-surface mapping, trust-boundary reasoning, and attacker-perspective review before shipping security-relevant changes.",
         "status": "—"
       },
       {
@@ -101,25 +101,25 @@ const schools = [
       {
         "name": "System Dynamics",
         "skill": "thinking-in-systems-state-machine",
-        "effect": "No description provided.",
+        "effect": "Use when tasks involve feedback loops, delayed effects, or multi-step cascades — model stocks, flows, delays, leverage points, and blast radius before touching the system. State-machine protocol, not a mindset.",
         "status": "—"
       },
       {
         "name": "Team Topology Sight",
         "skill": "team-topologies-ai",
-        "effect": "No description provided.",
+        "effect": "Use when organizing work across multiple agents or teams — stream-aligned, platform, enabling, and complicated-subsystem boundaries with explicit interaction modes. Prevents God Agents and platform empires.",
         "status": "—"
       },
       {
         "name": "Ubiquitous Language",
         "skill": "domain-driven-design",
-        "effect": "No description provided.",
+        "effect": "Use when architecture must reflect the business domain — bounded contexts, ubiquitous language, aggregates, context maps, domain events, anti-corruption layers. Forces separation of concerns at the right seams.",
         "status": "—"
       },
       {
         "name": "Vibe Hardening",
         "skill": "vibe-coding-security-hardening",
-        "effect": "No description provided.",
+        "effect": "Use before deploying AI-generated apps — systematic checklist for the vulnerabilities LLMs reliably introduce: exposed secrets, missing RLS, broken auth, injection flaws, insecure defaults.",
         "status": "—"
       }
     ]
@@ -985,7 +985,7 @@ const schools = [
       {
         "name": "Instrumentation Charm",
         "skill": "simulate-instrumentation",
-        "effect": "Auto-insert temporary print/logging statements at key points in the code, run the failing test, and feed the captured runtime state to the LLM. Hybrid LLM + rule-based approach. Based on DebugRepair research (+26.3% when removed in ablation).",
+        "effect": "Auto-insert temporary print/logging statements at key points in the code, run the failing test, and feed the captured runtime state to the LLM.",
         "status": "Proven",
         "trueName": "The Wards of Observation",
         "kins": [
@@ -998,7 +998,7 @@ const schools = [
       {
         "name": "Iterative Mend",
         "skill": "iterative-patch-repair",
-        "effect": "Loop of generate patch → run test → capture runtime state → refine patch. Max N iterations with patch augmentation to avoid overfitting. Based on DebugRepair research (+19.9% from patch augmentation alone).",
+        "effect": "Loop of generate patch → run test → capture runtime state → refine patch. Max N iterations with patch augmentation to avoid overfitting.",
         "status": "Proven",
         "trueName": "The Mend That Mends Itself",
         "kins": [
@@ -1011,13 +1011,13 @@ const schools = [
       {
         "name": "Minimal Summoning",
         "skill": "minimal-reproduction",
-        "effect": "Write the smallest possible test that demonstrates the bug, then use it as ammunition for debugging. Bridges the gap when no failing test exists — every other debugging skill assumes you have one.",
+        "effect": "Write the smallest possible test that demonstrates the bug, then use it as ammunition for debugging.",
         "status": "New"
       },
       {
         "name": "Network Divination",
         "skill": "network-api-debugging",
-        "effect": "Diagnose and fix network and API failures — CORS, auth token issues, rate limiting, redirect chains, WebSocket drops, and HTTP request/response mismatches. The skill that handles everything between 'the code is right' and 'the server is right' but it still doesn't work.",
+        "effect": "Diagnose and fix network and API failures — CORS, auth token issues, rate limiting, redirect chains, WebSocket drops, and HTTP request/response mismatches.",
         "status": "New"
       },
       {
@@ -1056,7 +1056,7 @@ const schools = [
       {
         "name": "Purify Vision",
         "skill": "purify-test-output",
-        "effect": "Slice failing test output to only failure-relevant lines before showing to the LLM. Removes noise, reduces tokens by ~18.6%, and focuses attention on the actual bug. Based on DebugRepair research.",
+        "effect": "Slice failing test output to only failure-relevant lines before showing to the LLM. Removes noise and focuses attention on the actual bug.",
         "status": "Proven",
         "combos": [
           "Instrumentation Charm",
@@ -1118,7 +1118,7 @@ const schools = [
       {
         "name": "Trace Sight",
         "skill": "log-trace-correlation",
-        "effect": "Correlate error logs and stack traces to source code to identify root cause and suggest fixes.",
+        "effect": "Map error logs and stack traces to source code to identify root cause and suggest fixes.",
         "status": "Proven",
         "note": "Polished effect description; tier unchanged.",
         "combos": [

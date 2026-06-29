@@ -1,4 +1,9 @@
-# Skill: Cross-Domain Analogy Generator
+---
+name: cross-domain-analogy-generator
+description: "Use when stuck on a problem — break fixation by mapping the structure to biology, music, traffic, or another foreign domain and transferring insights. Generates novel solutions when standard approaches fail."
+---
+
+# Cross-Domain Analogy Generator
 
 ## Purpose
 

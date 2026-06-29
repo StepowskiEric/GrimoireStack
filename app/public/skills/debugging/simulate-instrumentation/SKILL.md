@@ -1,6 +1,6 @@
 ---
 name: simulate-instrumentation
-description: Auto-insert temporary print/logging statements at key points in the code, run the failing test, and feed the captured runtime state to the LLM. Hybrid LLM + rule-based approach. Based on DebugRepair research (+26.3% when removed in ablation).
+description: Auto-insert temporary print/logging statements at key points in the code, run the failing test, and feed the captured runtime state to the LLM.
 category: debugging
 priority: high
 tags: [debugging, instrumentation, runtime-state, logging, program-repair]
@@ -44,6 +44,8 @@ Target categories:
 - Branch conditions (which path was taken)
 - Object attributes before/after mutation
 
+**Done when:** 3-5 specific instrumentation targets are identified, each tied to a variable or expression that would confirm or falsify the current hypothesis.
+
 ### Step 2 — Inject temporary prints
 
 Use a clear prefix so prints are easy to find and remove later.
@@ -57,11 +59,15 @@ def charge_customer(customer, amount):
     return {"status": "success", "amount": amount}
 ```
 
+**Done when:** temporary prints are injected at all identified targets, prefixed with `DEBUG:` (or language-appropriate equivalent), and no more than 5 print statements were added.
+
 ### Step 3 — Run the test and capture output
 
 ```bash
 python -m pytest test_order.py -x -s 2>&1 | grep "^DEBUG:"
 ```
+
+**Done when:** test has run and `DEBUG:` lines were captured. If no `DEBUG:` lines appeared, the code path didn't execute — the hypothesis about control flow is wrong.
 
 ### Step 4 — Feed runtime state to diagnosis
 
@@ -72,9 +78,13 @@ Runtime state captured:
 - Hypothesis confirmed: `customer` dict has key 'customer_id', not 'id'
 ```
 
+**Done when:** captured state is compared against hypothesis predictions, and the hypothesis is either confirmed (evidence matches) or falsified (evidence contradicts) — with the conclusion recorded in the diagnosis.
+
 ### Step 5 — Remove instrumentation
 
 After fix is applied, strip all `DEBUG:` print statements.
+
+**Done when:** all `DEBUG:` lines have been removed from source files (verified via grep or equivalent), and instrumentation artifacts leave no trace in the code.
 
 ## Hybrid strategy
 

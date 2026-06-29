@@ -1,4 +1,9 @@
-# Skill: Everything-as-Code Conceptualizer
+---
+name: everything-as-code-conceptualizer
+description: "Use when messy human problems resist analysis — codify the system as pseudocode to reveal hidden assumptions, missing decisions, and edge cases that natural-language descriptions obscure."
+---
+
+# Everything-as-Code Conceptualizer
 
 ## Purpose
 

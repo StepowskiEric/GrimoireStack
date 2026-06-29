@@ -1,4 +1,9 @@
-# Skill: Thinking in Systems — State Machine Protocol for AI Agents
+---
+name: thinking-in-systems-state-machine
+description: "Use when tasks involve feedback loops, delayed effects, or multi-step cascades — model stocks, flows, delays, leverage points, and blast radius before touching the system. State-machine protocol, not a mindset."
+---
+
+# Thinking in Systems — State Machine Protocol for AI Agents
 
 ## Purpose
 

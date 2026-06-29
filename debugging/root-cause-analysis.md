@@ -2,9 +2,7 @@
 
 ## Purpose
 
-Use this skill when diagnosing failures, bugs, regressions, or anomalous behavior. Prevents the agent from patching symptoms, creating workaround hacks, or treating correlated effects as causes.
-
-Root Cause Analysis (RCA) forces the agent to distinguish symptoms from causes, verify causal chains, and fix the underlying defect rather than its visible manifestation.
+Use this skill when diagnosing failures, bugs, regressions, or anomalous behavior. Distinguishes symptoms from causes — fixes the underlying defect, not its visible manifestation.
 
 ---
 

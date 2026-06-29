@@ -229,6 +229,7 @@ describe('admission pipeline — real SurrealDB', () => {
 - **External weight files (.onnx.data) referenced but not present** — model loading paths are untested
 - **Coverage is high but bugs still reach production** — coverage measures lines hit, not correctness
 - **SDK-level `inserted`/`deleted` counts return 0** — the SDK or wrapper may swallow the true result (for example, only counting rows as "inserted" when a specific status flag is returned, while the DB write succeeded under a different status). Always assert on actual DB state with a follow-up query in integration tests. Details: `references/integration-count-pitfalls.md` and `references/hybrid-pipeline-integration-pitfalls.md`.
+- **Mock backends hide parse errors and type mismatches** — a pure mock layer accepts the request shape and never executes SurrealQL, so queries that would fail at parse or type-check time pass silently. Use `mem://` even for "unit" tests so the real parser runs. Details: `references/mock-backend-traps.md`.
 
 ### Bridging mock and real testing: tiered test strategy
 
@@ -451,3 +452,12 @@ At minimum, test these per table:
 4. Test both success paths and the specific error thrown on failure paths
 5. Use transactions with `THROW` to verify groups of statements succeed atomically
 6. Validate `.surql` files in CI before applying them to any environment
+
+---
+
+## Support files
+
+- `references/jest-vitest-patterns.md` — Full Jest/Vitest setup patterns: per-test schema isolation, transaction-based assertions, graph-relation tests, auth tests, CI configuration.
+- `references/integration-count-pitfalls.md` — Why `inserted`/`deleted` counts return 0 from the SDK, and how to detect it.
+- `references/mock-backend-traps.md` — Why pure mock backends hide parse errors and type mismatches that real `mem://` catches.
+- `references/hybrid-pipeline-integration-pitfalls.md` — Pipeline-shaped tests where mock + real layers alternate; how to assert across the seams.

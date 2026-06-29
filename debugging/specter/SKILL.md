@@ -90,4 +90,8 @@ Pair with `trajectory-guard` if you've cycled through >5 hypotheses without conv
 
 ## Rigor — 6-State Protocol
 
-For hard cases where the 4-phase loop converges but you need stronger evidence before committing a fix, load [`references/abductive-reasoning-extended.md`](references/abductive-reasoning-extended.md). It adds the 6-state abductive protocol with explicit coherence scoring, Inference to Best Explanation (IBE), and discriminatory-test design, plus two critical pitfalls around silent server-side failures in auth flows and `browser_console` eval context mismatches.
+For hard cases where the 4-phase loop converges but you need stronger evidence before committing a fix, load the extended reference. It adds the 6-state abductive protocol with explicit coherence scoring, Inference to Best Explanation (IBE), and discriminatory-test design, plus two critical pitfalls around silent server-side failures in auth flows and `browser_console` eval context mismatches.
+
+## References
+
+- [`references/abductive-reasoning-extended.md`](references/abductive-reasoning-extended.md) — extended 6-state abductive protocol with explanatory coherence scoring, IBE selection logic, discriminatory-test design, and auth/browser-console pitfalls.

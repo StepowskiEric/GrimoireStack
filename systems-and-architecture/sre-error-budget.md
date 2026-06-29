@@ -1,4 +1,9 @@
-# Skill: SRE / Error Budget Thinking for AI Agents
+---
+name: sre-error-budget
+description: "Use when reasoning about reliability vs velocity — SLOs, error budgets, toil budgets, and change-velocity governance. Spend the budget on speed when healthy; freeze changes when depleted."
+---
+
+# SRE / Error Budget Thinking for AI Agents
 
 ## Purpose
 
@@ -7,8 +12,6 @@ Use this skill when the agent must reason about the tradeoff between reliability
 This skill is based on Google's *Site Reliability Engineering* book and the concept of Service Level Objectives (SLOs) and error budgets.
 
 The core insight: reliability is not free and it is not infinite. Every service has an appropriate reliability target. When the service is above target, the remaining margin (the "error budget") should be spent on velocity — new features, experiments, deployments. When the service is below target, the budget is gone and changes should stop until reliability is restored.
-
-This converts the eternal tension between "ship faster" and "keep it stable" into an explicit, measurable, governable policy.
 
 ---
 

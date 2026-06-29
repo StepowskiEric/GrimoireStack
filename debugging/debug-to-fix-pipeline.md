@@ -2,7 +2,7 @@
 
 ## Purpose
 
-A structured 6-phase debugging pipeline that fuses five research-backed skills into a single sequential workflow. Each phase increases evidence quality while reducing token waste.
+A structured 6-phase debugging pipeline that increases evidence quality each phase while cutting token waste.
 
 Fuses Abductive-First Debugging (competing hypotheses), Debug Subagent (debug-before-edit gate), Simulate Instrumentation (runtime state capture), Purify Test Output (failure-relevant slicing), and Iterative Patch Repair (generate -> test -> refine loop).
 
@@ -10,15 +10,14 @@ Fuses Abductive-First Debugging (competing hypotheses), Debug Subagent (debug-be
 
 - Bug where fix is not immediately obvious from error message
 - Multi-file bugs requiring runtime state inspection
-- Silent logic errors (no crash, just wrong output)
-- Failures where static analysis hasn't revealed root cause
+- Silent logic errors where static analysis hasn't revealed the root cause
 - First patch attempt failed or only partially fixed the issue
 
 ## When NOT to Use
 
 - Trivial syntax errors or clear one-line fixes
 - Token budget severely constrained (< 30 calls available)
-- The code is compiled (C/C++) without debug build
+- Compiled code (C/C++) without debug build
 - Test output is already minimal (< 20 lines, no framework noise)
 
 ---

@@ -1,10 +1,13 @@
-# Skill: Security Threat Modeling for AI Agents
+---
+name: security-threat-modeling
+description: "Use when handling auth, secrets, user input, or sensitive data — STRIDE threat analysis, attack-surface mapping, trust-boundary reasoning, and attacker-perspective review before shipping security-relevant changes."
+---
+
+# Security Threat Modeling for AI Agents
 
 ## Purpose
 
 Use this skill when writing, reviewing, or operating code that handles authentication, authorization, user input, secrets, or sensitive data. Prevents the agent from shipping common vulnerabilities, leaking credentials in logs, or designing APIs that invite abuse.
-
-Security threat modeling forces the agent to think like an attacker: identify assets, trust boundaries, and entry points before an adversary does.
 
 ---
 

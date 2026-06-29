@@ -1,4 +1,9 @@
-# Skill: Team Topologies for Multi-Agent Software Systems
+---
+name: team-topologies-ai
+description: "Use when organizing work across multiple agents or teams — stream-aligned, platform, enabling, and complicated-subsystem boundaries with explicit interaction modes. Prevents God Agents and platform empires."
+---
+
+# Team Topologies for Multi-Agent Software Systems
 
 ## Purpose
 
@@ -10,8 +15,6 @@ This skill adapts Team Topologies into an AI agent operating model:
 - cognitive load control
 - stream-aligned delivery
 - platform support without platform sprawl
-
-It is especially useful when designing sub-agent systems for engineering work: refactors, feature delivery, migrations, platform tasks, incident handling, and repo governance.
 
 ---
 
@@ -33,10 +36,10 @@ Use this skill when:
 Optimize for fast flow by keeping each agent or team responsible for a bounded area with manageable cognitive load.
 
 The question is not:
-“How many agents can we add?”
+"How many agents can we add?"
 
 The question is:
-“How should responsibilities, interfaces, and interaction modes be shaped so work flows cleanly?”
+"How should responsibilities, interfaces, and interaction modes be shaped so work flows cleanly?"
 
 ---
 

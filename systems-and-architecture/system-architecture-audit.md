@@ -1,4 +1,9 @@
-# Skill: System Architecture Audit for AI Agents
+---
+name: system-architecture-audit
+description: "Use when auditing an existing system for architectural weaknesses — 4-phase audit fusing Thinking in Systems, DDD, DDIA, and Release It. Reveals structural problems before they cascade."
+---
+
+# System Architecture Audit for AI Agents
 
 ## Purpose
 

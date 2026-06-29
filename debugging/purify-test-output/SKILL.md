@@ -1,6 +1,6 @@
 ---
 name: purify-test-output
-description: Slice failing test output to only failure-relevant lines before showing to the LLM. Removes noise, reduces tokens by ~18.6%, and focuses attention on the actual bug. Based on DebugRepair research.
+description: Slice failing test output to only failure-relevant lines before showing to the LLM. Removes noise and focuses attention on the actual bug.
 category: debugging
 priority: high
 tags: [testing, token-efficiency, debugging, test-output]
@@ -45,6 +45,8 @@ Research shows this reduces token count by **18.6%** on average and improves rep
 pytest test_foo.py -x --tb=long 2>&1 | tee /tmp/raw_output.txt
 ```
 
+**Done when:** raw output is saved to a file or variable. If output contains >50% framework frames, purification is warranted. If output is already <20 lines with user-code only, skip to Step 3.
+
 ### Step 2 — Extract the failure signature
 
 ```python
@@ -77,6 +79,8 @@ def purify_test_output(raw_output):
     return '\n'.join(purified)
 ```
 
+**Done when:** purified output contains only: assertion message, user-code stack frames, exception type/message, variable diffs, and last 3 lines of stderr. Framework internal frames, setup/teardown logs, and passing-test output are removed. Token count is reduced by at least ~18% vs raw output.
+
 ### Step 3 — Present purified output to LLM
 
 ```markdown
@@ -89,6 +93,8 @@ AssertionError: Expected 85.0 but got 100
 KeyError: 'id'
 ```
 ```
+
+**Done when:** purified output is presented to the LLM inline, not dumped as raw text. The diagnosis can focus on the failure signal rather than parsing framework noise.
 
 ## Rules for purification
 

@@ -87,6 +87,8 @@ If all vitals pass clean → the environment is healthy. The bug is in the code.
 
 Apply the fix matching your Phase 1 finding. Do NOT run fixes for problems you don't have.
 
+**Done when:** exactly one fix was applied that corresponds to a Phase 1 finding. If no Phase 1 finding matched, the environment is healthy — do not run any fixes.
+
 ### Fix #1: Disk Full (ENOSPC)
 
 ```bash
@@ -240,6 +242,8 @@ which npm && npm --version
 npm run check  # or project-specific check command
 ```
 
+**Done when:** the original failing command now passes, or it still fails (meaning the environment was healthy and the bug is in the code — switch to a code-level debugging skill).
+
 **If the original command still fails after environment fix:**
 - The environment was healthy; the bug is in the code
 - Switch to a code-level debugging skill (specter, debug-to-fix-pipeline, root-cause-analysis)
@@ -276,3 +280,7 @@ Phase 3: VERIFY → re-run failing command
 ```
 
 If Phase 1 is clean, the environment is NOT the problem. Stop fixing env and start debugging code.
+
+## References
+
+- [`references/common-failure-signatures.md`](references/common-failure-signatures.md) — fuller descriptions of ENOSPC, version resolution conflicts, permission drift, Expo/iOS-specific issues, and dependency hell patterns, with expanded debugging commands and hidden causes.

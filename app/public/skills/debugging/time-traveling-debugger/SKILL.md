@@ -106,6 +106,8 @@ The script:
 4. Captures stderr for error messages
 5. Saves the trace as JSONL
 
+**Done when:** a trace file exists and the crash site (line number, error type, error message) is known from the captured stderr or trace anomalies.
+
 ### Step 2: Spawn Past Self and Future Self
 
 **Past Self** inspects the trace forward — looking for anomalies in variable values as they were set:
@@ -131,6 +133,8 @@ The `rewind` command outputs:
 - **chain**: The propagation path from divergence to crash
 - **suspected_cause**: What went wrong and why
 
+**Done when:** the divergence analysis has been read and the root cause is identified — a specific variable at a specific line that first took an unexpected value.
+
 ### Step 4: Fix and Verify
 
 Read `divergence.json`, understand the root cause, write the fix, then re-run:
@@ -140,6 +144,8 @@ python time_travel.py trace buggy_script.py --args "test_input" --output verify_
 python time_travel.py inspect verify_trace.jsonl --anomalies
 # Confirm no anomalies
 ```
+
+**Done when:** the fix is applied and a re-trace shows no anomalies — the divergence no longer occurs.
 
 ## trace.jsonl Format
 

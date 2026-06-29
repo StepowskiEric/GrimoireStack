@@ -1,7 +1,7 @@
 ---
 source: "GrimoireStack"
 name: minimal-reproduction
-description: "Write the smallest possible test that demonstrates the bug, then use it as ammunition for debugging. Bridges the gap when no failing test exists — every other debugging skill assumes you have one."
+description: "Write the smallest possible test that demonstrates the bug, then use it as ammunition for debugging."
 triggers:
   - Bug manifests at runtime but no test covers the buggy path
   - Agent is debugging by repeatedly running the full app instead of a targeted test
@@ -40,6 +40,8 @@ Scope: [files/functions likely involved]
 **Bad:** "The login button doesn't work"
 **Good:** "Tapping the login button on the auth screen shows no visual feedback and does not navigate to the home screen. Console shows no errors. The button's onPress handler fires but `signInAsync` promise never resolves."
 
+**Done when:** the bug description is specific enough that someone else could confirm whether the bug is present without seeing what you see.
+
 ### Step 2: Find the Minimal Trigger
 
 Reduce the trigger to the smallest possible input/condition:
@@ -54,6 +56,8 @@ Reduce the trigger to the smallest possible input/condition:
 - Does it happen with the simplest possible input?
 - Does it happen on the first attempt or only after specific actions?
 - Does it happen in isolation or only combined with other features?
+
+**Done when:** the trigger is reduced to the simplest input/condition that you believe produces the bug. If multiple triggers are possible, start with the simplest one.
 
 ### Step 3: Write the Reproduction Test
 
@@ -86,6 +90,8 @@ describe("Bug: [one-line description]", () => {
 - No setup that isn't directly required to trigger the bug
 - One assertion that directly tests the buggy behavior
 
+**Done when:** the test file exists, follows the rules above, and asserts the expected (not current buggy) behavior.
+
 ### Step 4: Verify the Test Fails
 
 Run the test in isolation:
@@ -98,6 +104,8 @@ npx jest test/minimal-reproduction.test.ts --no-coverage
 # If it PASSES → you haven't reproduced the bug, go back to Step 2
 # If it FAILS for a DIFFERENT reason → fix the test setup, not the bug
 ```
+
+**Done when:** the test fails with the expected error. If it passes, you haven't reproduced the bug — go back to Step 2. If it fails for a different reason, the test setup is wrong — fix the test, not the code.
 
 **Critical:** If the test passes, you haven't reproduced the bug. This means one of:
 - Your hypothesis about which code path triggers it is wrong
@@ -118,6 +126,8 @@ Hand off to the appropriate debugging skill:
 | Bug was introduced recently | `bisect-debugging` then this skill |
 | Bug is in runtime behavior (async, state) | `simulate-instrumentation` |
 
+**Done when:** the bug-fix skill has been selected and invoked with the failing test as input.
+
 ### Step 6: Verify the Fix
 
 After applying a fix:
@@ -132,6 +142,8 @@ npm run check
 # 3. The test should remain as a regression test
 # (don't delete it — it prevents the bug from returning)
 ```
+
+**Done when:** the reproduction test passes AND the full test suite passes with no regressions. If either fails, the fix is incomplete.
 
 **Anti-pattern:** Removing the reproduction test after fixing the bug. This test is now a permanent regression guard.
 

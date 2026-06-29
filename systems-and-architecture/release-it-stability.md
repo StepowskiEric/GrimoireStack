@@ -1,4 +1,9 @@
-# Skill: Release It! Stability Patterns for AI Agents
+---
+name: release-it-stability
+description: "Use when reasoning about distributed-system resilience — circuit breakers, bulkheads, timeouts, load shedding, steady-state hygiene for production failure modes. Stops cascading failures before they spread."
+---
+
+# Release It! Stability Patterns for AI Agents
 
 ## Purpose
 
@@ -7,8 +12,6 @@ Use this skill when the agent must reason about whether a distributed system des
 This skill is based on Michael Nygard's *Release It! Design and Deploy Production-Ready Software*.
 
 The core insight: systems that work perfectly in development still fail in production because production has failure modes that development never exercises — cascading failures, resource exhaustion, slow dependencies, and death spirals that no amount of feature correctness prevents.
-
-The patterns in this skill are the defensive structures that keep a failure in one component from becoming a failure of the whole system.
 
 ---
 

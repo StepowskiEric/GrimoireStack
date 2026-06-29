@@ -1,4 +1,9 @@
-# Skill: Accelerate for AI Delivery and Reliability Agents
+---
+name: accelerate-ai
+description: "Use when delivery is slow or risky — improve engineering throughput and reliability by strengthening feedback, lowering batch risk, and shortening recovery time. Covers CI/CD, release engineering, platform work, and incident recovery."
+---
+
+# Accelerate for AI Delivery and Reliability Agents
 
 ## Purpose
 
@@ -10,21 +15,6 @@ This skill adapts research-oriented DevOps and software delivery ideas into an A
 - prefer capability improvements over vanity activity
 - reduce batch size and recovery time
 - avoid cargo-cult process changes
-
-This skill is useful for CI/CD, release engineering, quality strategy, platform work, incident response, and engineering productivity analysis.
-
----
-
-## When to Use
-
-Use this skill when:
-- delivery is slow or painful
-- deployments are risky
-- incidents take too long to recover from
-- teams argue about process without evidence
-- the repo has weak feedback loops
-- platform or DevEx work needs prioritization
-- engineering leadership wants concrete improvement recommendations
 
 ---
 

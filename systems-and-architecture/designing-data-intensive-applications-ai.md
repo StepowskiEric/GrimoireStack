@@ -1,4 +1,9 @@
-# Skill: Designing Data-Intensive Applications for AI Agents
+---
+name: designing-data-intensive-applications-ai
+description: "Use when reasoning about data systems — storage choices, replication, consistency, partitioning, queues, failure modes, and operational tradeoffs. Covers backend architecture, event systems, schema changes, distributed debugging."
+---
+
+# Designing Data-Intensive Applications for AI Agents
 
 ## Purpose
 
@@ -10,8 +15,6 @@ This skill adapts DDIA-style engineering thinking into an AI operating model:
 - design data flow consciously
 - choose storage and messaging patterns for the workload
 - respect operational complexity
-
-This skill is essential for backend architecture, event systems, queues, database changes, data pipelines, and distributed service design.
 
 ---
 
@@ -30,7 +33,7 @@ Use this skill when:
 
 ## Core Rule
 
-Do not ask only “Can this work?”
+Do not ask only "Can this work?"
 Ask:
 - What are the tradeoffs?
 - What fails under load or partial outage?

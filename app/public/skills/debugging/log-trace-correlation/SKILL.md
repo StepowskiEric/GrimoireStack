@@ -1,7 +1,7 @@
 ---
 name: log-trace-correlation
 category: debugging
-description: Correlate error logs and stack traces to source code to identify root cause and suggest fixes.
+description: Map error logs and stack traces to source code to identify root cause and suggest fixes.
 version: 1.0
 last-updated: 2026-05-22
 note: Polished effect description; tier unchanged.
@@ -19,37 +19,43 @@ When an error occurs, quickly map the logged stack trace to the exact location i
 
 ## Steps
 
-1. Collect the trace
+1. **Collect the trace**
    - Copy the full error output (including timestamps, error message, and stack trace) into a temporary file or variable.
    - Example: error_log.txt.
+   - **Done when:** the full error output is stored verbatim, not paraphrased.
 
-2. Normalize file paths
+2. **Normalize file paths**
    - Strip base directories, resolve ../ segments, and convert to repo-relative paths.
    - If the trace contains absolute paths, map them to the repo root using the current working directory.
+   - **Done when:** every file mentioned in the trace has a repo-relative path, confirmed by searching for the file name.
 
-3. Locate each frame
+3. **Locate each frame**
    - For each frame (file, line, function):
      - Use search_files with target="files" to find the file if the path is not exact.
      - Use read_file with offset and limit to view the surrounding lines (e.g., +/- 5 lines).
    - Record the exact snippet and any relevant variable names.
+   - **Done when:** every user-code frame is mapped to a real file:line in the repo, and the surrounding context has been read for each.
 
-4. Inspect the surrounding code
+4. **Inspect the surrounding code**
    - Look for:
      - Null-dereference candidates.
      - Type mismatches.
      - Recent changes (use git log -p -S "<snippet>" via terminal if needed).
    - If the frame points to a library file, check whether the call originates from your own code (look at the previous frame).
+   - **Done when:** at least one candidate defect is identified per frame, or the frame is ruled out as library code with no originating call in your codebase.
 
-5. Formulate a hypothesis
+5. **Formulate a hypothesis**
    - Based on the snippet and error message, write a one-sentence hypothesis of what went wrong.
+   - **Done when:** a single falsifiable hypothesis is written that explains the error message and the candidate defect.
 
-6. Propose a fix
+6. **Propose a fix**
    - Write the minimal change (e.g., add a null check, correct a parameter order, handle an edge case).
-   - Use patch to apply the change in a safe, reversible way (first run with dry_run:true if supported, or copy the file to a backup).
+   - **Done when:** the fix is written as a concrete code change, not a description of what to change.
 
-7. Verify
+7. **Verify**
    - If there is a reproducing test or a way to trigger the error locally, run it to confirm the fix resolves the issue.
    - If no test exists, add a minimal test case that asserts the expected behavior.
+   - **Done when:** the fix is confirmed (test passes) or the verification test documents the expected behavior.
 
 ## Outputs
 - A list of frames with file, line, and surrounding code.

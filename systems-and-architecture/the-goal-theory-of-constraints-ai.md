@@ -1,4 +1,9 @@
-# Skill: The Goal for AI Engineering Agents
+---
+name: the-goal-theory-of-constraints-ai
+description: "Use when throughput is capped or work piles up — find the one constraint, ignore non-constraints, exploit then elevate it, repeat when it moves. Stops micro-optimization that does not move total throughput."
+---
+
+# The Goal for AI Engineering Agents
 
 ## Purpose
 
@@ -9,8 +14,6 @@ This skill adapts the Theory of Constraints into an engineering operating model:
 - local optimization outside the constraint often does little
 - the job is to identify, exploit, and elevate the constraint
 - once a constraint moves, repeat the process
-
-This skill is ideal for performance work, CI/CD pain, incident recovery, deployment pipelines, queue systems, overloaded services, and developer workflow bottlenecks.
 
 ---
 

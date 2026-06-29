@@ -1,7 +1,7 @@
 ---
 source: "GrimoireStack"
 name: network-api-debugging
-description: "Diagnose and fix network and API failures — CORS, auth token issues, rate limiting, redirect chains, WebSocket drops, and HTTP request/response mismatches. The skill that handles everything between 'the code is right' and 'the server is right' but it still doesn't work."
+description: "Diagnose and fix network and API failures — CORS, auth token issues, rate limiting, redirect chains, WebSocket drops, and HTTP request/response mismatches."
 triggers:
   - CORS errors in browser or mobile app
   - Auth token expiry, refresh loops, or missing auth headers
@@ -32,6 +32,8 @@ These failures are invisible in source code and require a different debugging ap
 ## Phase 1: CAPTURE THE ACTUAL TRAFFIC
 
 Before hypothesizing, see exactly what's going over the wire.
+
+**Done when:** at least one complete request-response pair has been captured and the request method, URL, headers, and response status are known. If no traffic could be captured, the issue is before the network layer (syntax error, build failure, environment).
 
 ### Browser
 
@@ -103,6 +105,8 @@ NODE_DEBUG=http,https node server.js
 
 ## Phase 2: DIAGNOSE BY STATUS CODE
 
+**Done when:** the status code category is identified (2xx, 3xx, 4xx, or 5xx) and the corresponding diagnosis section has been read. If 5xx, the bug is server-side — switch to server debugging. If 4xx, the bug is in what the client sent — proceed to Phase 3 for the specific fix.
+
 ### 2xx — Everything OK but Wrong Data
 
 **The request succeeded but the response doesn't match expectations.**
@@ -157,6 +161,8 @@ Check:
 ---
 
 ## Phase 3: FIX BY FAILURE TYPE
+
+**Done when:** the specific fix matching the diagnosis has been applied and the original request now works (or the fix is confirmed to address the root cause).
 
 ### Fix #1: CORS
 
@@ -304,6 +310,8 @@ console.log('Content-Type:', headers['Content-Type']);
 ---
 
 ## Phase 4: SPECIAL CASES
+
+**Done when:** the special case (WebSocket, SSL, or RN-specific) has been diagnosed and either fixed or confirmed to be outside the current scope.
 
 ### WebSocket Issues
 

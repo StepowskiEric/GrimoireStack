@@ -1,4 +1,9 @@
-# Skill: Domain-Driven Design for AI Agents
+---
+name: domain-driven-design
+description: "Use when architecture must reflect the business domain — bounded contexts, ubiquitous language, aggregates, context maps, domain events, anti-corruption layers. Forces separation of concerns at the right seams."
+---
+
+# Domain-Driven Design for AI Agents
 
 ## Purpose
 
@@ -7,11 +12,6 @@ Use this skill when the agent must reason about software architecture, system de
 This skill is based on Eric Evans' *Domain-Driven Design* (DDD).
 
 The core insight: software complexity is best managed by building a model of the domain that the software serves, keeping that model explicit in the code, and organizing the system around bounded contexts that match how the domain actually works.
-
-An agent reasoning about architecture without DDD concepts tends to produce:
-- technically clean structures that do not match how the business thinks
-- modules that mix multiple domains, creating coupling that is hard to change
-- integration patterns that spread a single domain concept across many places without a clear owner
 
 ---
 

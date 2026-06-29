@@ -1,6 +1,6 @@
 ---
 name: iterative-patch-repair
-description: Loop of generate patch → run test → capture runtime state → refine patch. Max N iterations with patch augmentation to avoid overfitting. Based on DebugRepair research (+19.9% from patch augmentation alone).
+description: Loop of generate patch → run test → capture runtime state → refine patch. Max N iterations with patch augmentation to avoid overfitting.
 category: debugging
 priority: high
 tags: [debugging, iterative-repair, patch-augmentation, program-repair]
@@ -45,12 +45,16 @@ For each iteration:
 2. Run the test and capture purified output with `purify-test-output`.
 3. Generate the next patch from that concrete failure state.
 
+**Done when:** the current iteration's patch has been generated and tested. If it passes, the loop is done. If it fails, advance to the next iteration.
+
 If the patch is close but not complete, generate **variants** for the next attempt:
 - Same root cause, different fix location
 - Same location, different implementation approach
 - Add null-check, change default, or refactor data flow
 
 Pick the variant that passes all tests with the smallest diff.
+
+**Done when:** either a variant passes all tests, or all variants are exhausted and the iteration budget is consumed.
 
 ### Iteration budget
 
@@ -62,7 +66,9 @@ Pick the variant that passes all tests with the smallest diff.
 
 ### Exhaustion
 
-If the budget is exhausted without a confirmed fix, stop patching and escalate. Use `debug-subagent`, `unit-test-debugging`, or hand the issue back to the user with the evidence gathered so far.
+If the budget is exhausted without a confirmed fix, stop patching and escalate.
+
+**Done when:** the escalation path has been chosen and the evidence log has been transferred to the next skill or user.
 
 ## State tracking
 

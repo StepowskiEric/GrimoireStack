@@ -12,9 +12,9 @@ tags: [debugging, subagent, interactive-debugging, program-repair]
 
 ## Overview
 
-Instead of exposing raw debugger tools to the main agent, spawn a **specialized Debug Subagent** that handles all debugging complexity. The main agent can only ask it natural-language questions like "Why does this test fail?" or "What is the value of `customerId` at line 45?"
+Instead of exposing raw debugger tools to the main agent, the **gate** pattern inserts a specialized Debug Subagent that handles all debugging complexity. The main agent can only ask it natural-language questions like "Why does this test fail?" or "What is the value of `customerId` at line 45?" — the gate enforces a **debug-before-edit** workflow.
 
-Research shows this subagent architecture achieves **>98% debug tool call rate** vs ~60% when tools are exposed directly. Models with a debug subagent **outperform stronger models without one**.
+Research shows this gate architecture achieves **>98% debug tool call rate** vs ~60% when tools are exposed directly. Models with a debug subagent **outperform stronger models without one**.
 
 ## When to use
 
@@ -33,6 +33,8 @@ Research shows this subagent architecture achieves **>98% debug tool call rate**
 
 Before ANY code edit is made, the main agent MUST consult the Debug Subagent at least once. If the bug is obvious (e.g., typo), this step can be a no-op confirmation.
 
+**Done when:** either the subagent was consulted and returned findings, or the bug was trivial enough that the no-op confirmation stands.
+
 ### Step 1 — Spawn Debug Subagent
 
 Give the subagent:
@@ -50,6 +52,8 @@ Report back with:
 3. Confidence (high/medium/low)
 ```
 
+**Done when:** subagent has returned a diagnosis with root cause, proposed fix, and confidence rating.
+
 ### Step 2 — Main agent reviews findings
 
 The main agent evaluates the subagent's report:
@@ -57,11 +61,17 @@ The main agent evaluates the subagent's report:
 - Is the proposed fix minimal and safe?
 - What files would be touched?
 
-### Step 3 — Apply fix or iterate
+**Done when:** each question above is answered yes/no, and the review outcome (proceed with confidence H/M/L) is recorded.
 
-If confidence is high: apply the fix and verify.
-If confidence is medium: ask the subagent for a second opinion or run additional tests.
-If confidence is low: spawn a fresh subagent with a different angle.
+### Step 3 — Apply fix or iterate with confidence routing
+
+Route by the confidence rating from Step 2:
+
+- **High confidence** — apply the fix and verify. The gate has confirmed the root cause.
+- **Medium confidence** — ask the subagent for a second opinion or run additional tests before applying.
+- **Low confidence** — spawn a fresh subagent with a different investigative angle.
+
+**Done when:** the fix is applied and verified (high), or additional evidence was collected (medium), or a fresh investigation was launched (low).
 
 ## Subagent prompt template
 
