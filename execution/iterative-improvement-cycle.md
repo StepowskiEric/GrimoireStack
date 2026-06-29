@@ -1,4 +1,9 @@
-# Skill: Iterative Improvement Cycle for AI Agents
+---
+name: iterative-improvement-cycle
+description: "Use when system is underperforming — fuse Toyota Kata target framing, PDCA measurement discipline, and Philosophy of Software Design quality gates. Define target, measure gap, experiment, evaluate, incorporate or revert."
+---
+
+# Iterative Improvement Cycle for AI Agents
 
 ## Purpose
 
@@ -8,11 +13,7 @@ Fuses Toyota Kata, PDCA/Deming, and Philosophy of Software Design into one seque
 - PDCA provides: measurement discipline, prediction-before-action, check-against-prediction (not just baseline), standardize/escalate decisions
 - Philosophy of Software Design provides: design quality gates — deep modules, information hiding, complexity reduction, consumer discovery, blast-radius awareness
 
-Without this fusion, agents either iterate blindly (Kata without measurement), measure without design quality (PDCA without depth), or refactor without iteration discipline (PoSD without Kata/PDCA structure).
-
-This skill makes the agent: define a target → measure the gap → experiment → evaluate against design quality criteria → incorporate or revert.
-
-* * *
+---
 
 ## When to Use
 

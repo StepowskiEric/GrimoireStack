@@ -447,7 +447,7 @@ const schools = [
       {
         "name": "Analogy Solver",
         "skill": "how-to-solve-it-analogy",
-        "effect": "No description provided.",
+        "effect": "Use when the problem resembles one solved before — deliberately search for the best-matching analog, verify the structural mapping holds, then transfer the prior solution. Companion to first-principles thinking.",
         "status": "—"
       },
       {
@@ -459,19 +459,19 @@ const schools = [
       {
         "name": "Checkman Rite",
         "skill": "checklist-manifesto",
-        "effect": "No description provided.",
+        "effect": "Use when a high-stakes procedure demands more than expertise — build the smallest useful checklist, gate execution on checklist completion, stop cleanly and escalate if it cannot be cleared.",
         "status": "—"
       },
       {
         "name": "Complexity Audit",
         "skill": "philosophy-of-software-design-state-machine",
-        "effect": "No description provided.",
+        "effect": "Use when managing complexity or designing modules — design deeper modules, avoid shallow abstraction sprawl, declare unknowns and blast radius, bound change scope, stop explicitly.",
         "status": "—"
       },
       {
         "name": "Context Lifecycle + Budget",
         "skill": "context-lifecycle-manager",
-        "effect": ">",
+        "effect": "Use when context is decaying — full lifecycle of context messages: tracked by budget operator → decayed/pruned by rot-pruner → optimized by token-budget-operator. Shares one context_state.jsonl artifact.",
         "status": "—"
       },
       {
@@ -483,7 +483,7 @@ const schools = [
       {
         "name": "Deming Cycle",
         "skill": "pdca-deming",
-        "effect": "No description provided.",
+        "effect": "Use when improving a process through a measurement-anchored cycle — plan with a measurable prediction, do, check actual vs predicted, then standardize or escalate. Do not standardize what was not measured.",
         "status": "—"
       },
       {
@@ -506,19 +506,19 @@ const schools = [
       {
         "name": "Final Word",
         "skill": "summarize",
-        "effect": ">",
+        "effect": "Use when session quality is degraded, you need to hand off mid-work, or you must preserve context before a /new. Emergency stop + perfect handoff report so the next agent loses nothing.",
         "status": "New"
       },
       {
         "name": "First Step Oracle",
         "skill": "how-to-solve-it-state-machine",
-        "effect": "No description provided.",
+        "effect": "Use when solving a hard problem under uncertainty — frame the problem, gather evidence, explore via hypothesis, plan, reflect. Designed to prevent premature coding.",
         "status": "—"
       },
       {
         "name": "Friction Governor",
         "skill": "cognitive-friction-governor",
-        "effect": "No description provided.",
+        "effect": "Use when deliberation is miscalibrated — over-thinking trivial problems, under-thinking complex ones, or paralyzed by analysis. Assign deliberation budgets; step costs friction; budget exhausted forces decision.",
         "status": "—"
       },
       {
@@ -530,19 +530,19 @@ const schools = [
       {
         "name": "Iterative Spec",
         "skill": "iterative-spec-authoring",
-        "effect": ">",
+        "effect": "Use when a spec must be defensible — author a detailed technical spec grounded in research, refine through up to 3 judge-LLM review cycles, then present to the user for final approval.",
         "status": "—"
       },
       {
         "name": "Kata + Deming Synthesis",
         "skill": "iterative-improvement-cycle",
-        "effect": "No description provided.",
+        "effect": "Use when system is underperforming — fuse Toyota Kata target framing, PDCA measurement discipline, and Philosophy of Software Design quality gates. Define target, measure gap, experiment, evaluate, incorporate or revert.",
         "status": "—"
       },
       {
         "name": "Kata Practice",
         "skill": "toyota-kata-state-machine",
-        "effect": "No description provided.",
+        "effect": "Use when improving a system through disciplined iteration instead of one large speculative change — frame target, analyze current, attack one obstacle at a time, run a PDCA experiment, learn, repeat.",
         "status": "—"
       },
       {
@@ -554,13 +554,13 @@ const schools = [
       {
         "name": "Legacy Seam Working",
         "skill": "working-effectively-with-legacy-code-state-machine",
-        "effect": "No description provided.",
+        "effect": "Use when changing brittle code with weak tests or unclear behavior — characterize legacy behavior, create seams, transform in bounded slices with anti-loop protection.",
         "status": "—"
       },
       {
         "name": "OODA Loop",
         "skill": "ooda-loop-state-machine",
-        "effect": "No description provided.",
+        "effect": "Use when conditions are changing rapidly, adversarially, or unpredictably — Observe, Orient, Decide, Act, Loop. Maintains decision tempo against an environment that shifts between every move.",
         "status": "—"
       },
       {
@@ -578,19 +578,19 @@ const schools = [
       {
         "name": "Safe Refactor",
         "skill": "refactoring-state-machine",
-        "effect": "No description provided.",
+        "effect": "Use when improving structure without drifting into endless cleanup — characterize behavior, transform in bounded slices, re-test. Stops refactor loops.",
         "status": "—"
       },
       {
         "name": "Speculative Drafting",
         "skill": "speculative-drafting-verification",
-        "effect": "No description provided.",
+        "effect": "Generate multiple candidate solution branches in parallel, verify each against constraints, and select the best. Prevents local minima traps in complex problem solving. Based on verification-aware speculative decoding research (arXiv:2604.15244).",
         "status": "—"
       },
       {
         "name": "Speculative Exploration",
         "skill": "speculative-exploration-protocol",
-        "effect": "No description provided.",
+        "effect": "Use when the best reasoning path is unclear — branch into N candidates, score with process rewards, prune low-reward branches, then verify the best candidate against hard constraints. Prevents first-branch lock-in.",
         "status": "—"
       },
       {
@@ -602,19 +602,19 @@ const schools = [
       {
         "name": "Structural Seeker",
         "skill": "keyword-agnostic-logic-locator",
-        "effect": "No description provided.",
+        "effect": "Use when grep and naming-based search fail — find code by structural relationships and logical queries via a Datalog-style knowledge graph over call graphs, data flows, and type hierarchies.",
         "status": "—"
       },
       {
         "name": "Structured Feature Path",
         "skill": "structured-feature-planning",
-        "effect": ">",
+        "effect": "Use when implementing correctness-critical features — read files, search for patterns, self-review twice, then execute. Governing rule: never hallucinate when confused.",
         "status": "—"
       },
       {
         "name": "The Pragmatic Programmer — State Machine Protocol for AI Agents",
         "skill": "pragmatic-programmer-state-machine",
-        "effect": "No description provided.",
+        "effect": "Use when working pragmatically in a real system — bounded changes, reversible choices, automation over repeated toil, root-cause fixes over symptom patches, practical scope control.",
         "status": "—"
       },
       {
@@ -626,7 +626,7 @@ const schools = [
       {
         "name": "Zero Defect Ward",
         "skill": "zero-defect-protocol",
-        "effect": ">",
+        "effect": "Use for mission-critical features where a single bug, security flaw, or misalignment could cause catastrophic failure — 14-phase protocol: data contracting, invariant mapping, red-team critique, pre-mortem before any code is written.",
         "status": "—"
       }
     ]

@@ -1,4 +1,9 @@
-# Skill: Analogy and Transfer Reasoning for AI Agents
+---
+name: how-to-solve-it-analogy
+description: "Use when the problem resembles one solved before — deliberately search for the best-matching analog, verify the structural mapping holds, then transfer the prior solution. Companion to first-principles thinking."
+---
+
+# Analogy and Transfer Reasoning for AI Agents
 
 ## Purpose
 
@@ -7,14 +12,6 @@ Use this skill when the agent must solve a problem that resembles a problem alre
 This skill is a companion to the How to Solve It state machine, focused specifically on Polya's analogy technique: *Can you find a related problem that has been solved before?*
 
 Where First Principles Thinking strips away analogies to reason from axioms, this skill does the opposite: it deliberately searches for the best-matching analog and transfers the structural solution across domains.
-
-The two skills are the two poles of a reasoning routing decision:
-- **First Principles**: the current context is novel or the analogy does not hold; reason from the ground up
-- **Analogy and Transfer**: the current context structurally resembles a solved problem; import the structure
-
-Using the wrong pole is costly:
-- First Principles when a good analog exists: unnecessary work
-- Analogy when the context is not actually analogous: confident wrong direction
 
 Source: George Polya's *How to Solve It* (the four-question heuristic), structural mapping theory (Dedre Gentner), and cross-domain transfer in cognitive science.
 

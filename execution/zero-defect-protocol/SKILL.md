@@ -2,12 +2,7 @@
 source: "GrimoireStack"
 name: zero-defect-protocol
 category: execution
-description: >
-  Mission-Critical Zero-Defect planning and implementation workflow. 14-phase
-  protocol for features where a single bug, security flaw, or misalignment
-  could cause catastrophic failure. Forces mathematical soundness via data
-  contracting, invariant mapping, red-team critique, and pre-mortem before
-  any code is written.
+description: "Use for mission-critical features where a single bug, security flaw, or misalignment could cause catastrophic failure — 14-phase protocol: data contracting, invariant mapping, red-team critique, pre-mortem before any code is written."
 ---
 
 

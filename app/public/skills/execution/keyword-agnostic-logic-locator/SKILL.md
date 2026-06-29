@@ -1,4 +1,9 @@
-# Skill: Keyword-Agnostic Logic Locator
+---
+name: keyword-agnostic-logic-locator
+description: "Use when grep and naming-based search fail — find code by structural relationships and logical queries via a Datalog-style knowledge graph over call graphs, data flows, and type hierarchies."
+---
+
+# Keyword-Agnostic Logic Locator
 
 ## ⚠️ Manual Setup Required
 

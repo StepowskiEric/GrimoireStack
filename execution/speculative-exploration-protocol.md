@@ -1,12 +1,15 @@
-# Skill: Speculative Exploration Protocol for AI Agents
+---
+name: speculative-exploration-protocol
+description: "Use when the best reasoning path is unclear — branch into N candidates, score with process rewards, prune low-reward branches, then verify the best candidate against hard constraints. Prevents first-branch lock-in."
+---
+
+# Speculative Exploration Protocol for AI Agents
 
 ## Purpose
 
 Fuses Speculative Drafting and Verification, Tree of Thoughts (ToT), and Process Reward Model (PRM) into one sequential reasoning protocol. Branch into N candidate paths, score with PRM rewards, prune low-reward branches, then verify the best candidate against hard constraints. Prevents first-branch lock-in, silent reasoning degradation, and premature convergence simultaneously.
 
 The combined protocol works as follows: Branch into N candidate paths (ToT-style), score each path using PRM process rewards at intermediate checkpoints, prune low-reward branches early, then verify the surviving best candidate against hard constraints before committing.
-
-This prevents three failure modes simultaneously: first-branch lock-in (ToT), silent reasoning degradation (PRM), and premature convergence on suboptimal solutions (Speculative Drafting).
 
 ## When to Use
 

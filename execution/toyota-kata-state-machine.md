@@ -1,4 +1,10 @@
-# Skill: Toyota Kata — State Machine Protocol for Continuous-Improvement AI Agents
+---
+name: toyota-kata-state-machine
+description: "Use when improving a system through disciplined iteration instead of one large speculative change — frame target, analyze current, attack one obstacle at a time, run a PDCA experiment, learn, repeat."
+---
+
+# Toyota Kata — State Machine Protocol for Continuous-Improvement AI Agents
+
 ## Purpose
 
 Use this skill when the agent must improve a system through disciplined iteration instead of one large speculative change.

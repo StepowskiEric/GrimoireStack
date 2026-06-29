@@ -1,15 +1,9 @@
 ---
 name: summarize
-description: >
-  EMERGENCY STOP + HANDOFF REPORT. Use when you need to stop completely and give the
-  next agent a perfect handoff. The next agent has zero memory of this session.
-  Use when: session quality is degraded (multiple compressions), you need to hand off
-  mid-work, user says "summarize what we did", or you need to preserve context before
-  a /new. This skill is NOT for wrapping up cleanly — it's for abandoning ship with
-  full context preservation so the next agent doesn't lose anything.
+description: "Use when session quality is degraded, you need to hand off mid-work, or you must preserve context before a /new. Emergency stop + perfect handoff report so the next agent loses nothing."
 version: 1.0.0
 author: Eric
-...
+---
 
 
 

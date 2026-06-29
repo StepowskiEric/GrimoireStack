@@ -1,4 +1,9 @@
-# Skill: The Pragmatic Programmer — State Machine Protocol for AI Agents
+---
+name: pragmatic-programmer-state-machine
+description: "Use when working pragmatically in a real system — bounded changes, reversible choices, automation over repeated toil, root-cause fixes over symptom patches, practical scope control."
+---
+
+# The Pragmatic Programmer — State Machine Protocol for AI Agents
 
 ## Purpose
 

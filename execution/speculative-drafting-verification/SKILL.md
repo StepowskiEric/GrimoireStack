@@ -6,7 +6,7 @@ tags: [speculative, parallel-exploration, verification, candidate-generation, op
 author: Research synthesis
 date: 2026-04-20
 version: 1.0.0
-...
+---
 
 
 

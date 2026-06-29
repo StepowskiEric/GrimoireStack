@@ -1,4 +1,9 @@
-# Skill: Refactoring — State Machine Protocol for AI Agents
+---
+name: refactoring-state-machine
+description: "Use when improving structure without drifting into endless cleanup — characterize behavior, transform in bounded slices, re-test. Stops refactor loops."
+---
+
+# Refactoring — State Machine Protocol for AI Agents
 
 ## Purpose
 

@@ -1,14 +1,15 @@
-# Skill: PDCA / Shewhart Cycle — State Machine Protocol for AI Agents
+---
+name: pdca-deming
+description: "Use when improving a process through a measurement-anchored cycle — plan with a measurable prediction, do, check actual vs predicted, then standardize or escalate. Do not standardize what was not measured."
+---
+
+# PDCA / Shewhart Cycle — State Machine Protocol for AI Agents
 
 ## Purpose
 
 Use this skill when the agent must improve a process, system, or output through a measurement-anchored cycle of planning, execution, and verification before standardizing or escalating.
 
 This skill is based on the Plan-Do-Check-Act cycle introduced by Walter Shewhart and developed by W. Edwards Deming.
-
-PDCA is not the same as Toyota Kata.
-Toyota Kata focuses on one obstacle at a time and discovers the path through rapid experimentation.
-PDCA is more explicitly about measurement: the Check phase requires comparing actual results against a standard or prediction, and the Act phase standardizes the improvement or escalates the problem.
 
 The protocol enforces:
 - planning with a measurable prediction before doing

@@ -1,4 +1,9 @@
-# Skill: How to Solve It — State Machine Protocol for AI Agents
+---
+name: how-to-solve-it-state-machine
+description: "Use when solving a hard problem under uncertainty — frame the problem, gather evidence, explore via hypothesis, plan, reflect. Designed to prevent premature coding."
+---
+
+# How to Solve It — State Machine Protocol for AI Agents
 
 ## Purpose
 

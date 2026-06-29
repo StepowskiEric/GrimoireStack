@@ -2,12 +2,8 @@
 source: "GrimoireStack"
 name: structured-feature-planning
 category: execution
-description: >
-  Structured exploration + planning workflow for implementing new features — read files,
-  search for patterns, self-review twice, then execute. Designed for correctness-critical
-  features where quality matters more than speed. The governing rule: never hallucinate
-  when confused.
-...
+description: "Use when implementing correctness-critical features — read files, search for patterns, self-review twice, then execute. Governing rule: never hallucinate when confused."
+---
 
 
 

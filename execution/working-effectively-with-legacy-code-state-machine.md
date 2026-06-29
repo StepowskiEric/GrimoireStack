@@ -1,4 +1,9 @@
-# Skill: Working Effectively with Legacy Code — State Machine Protocol for AI Agents
+---
+name: working-effectively-with-legacy-code-state-machine
+description: "Use when changing brittle code with weak tests or unclear behavior — characterize legacy behavior, create seams, transform in bounded slices with anti-loop protection."
+---
+
+# Working Effectively with Legacy Code — State Machine Protocol for AI Agents
 
 ## Purpose
 

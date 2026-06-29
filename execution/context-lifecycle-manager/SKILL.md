@@ -2,11 +2,8 @@
 source: "GrimoireStack"
 name: context-lifecycle-manager
 category: execution
-description: >
-  Insane hybrid of context-rot-pruner + context-budget-operator + token-budget-operator.
-  Full lifecycle management: messages are born → tracked by budget operator → decayed/pruned by rot-pruner →
-  optimized by token-budget-operator. Shares one context_state.jsonl artifact.
-...
+description: "Use when context is decaying — full lifecycle of context messages: tracked by budget operator → decayed/pruned by rot-pruner → optimized by token-budget-operator. Shares one context_state.jsonl artifact."
+---
 
 
 

@@ -1,4 +1,9 @@
-# Skill: Cognitive Friction Governor
+---
+name: cognitive-friction-governor
+description: "Use when deliberation is miscalibrated — over-thinking trivial problems, under-thinking complex ones, or paralyzed by analysis. Assign deliberation budgets; step costs friction; budget exhausted forces decision."
+---
+
+# Cognitive Friction Governor
 
 ## Purpose
 

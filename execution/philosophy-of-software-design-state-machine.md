@@ -1,4 +1,9 @@
-# Skill: A Philosophy of Software Design — State Machine Protocol for AI Agents
+---
+name: philosophy-of-software-design-state-machine
+description: "Use when managing complexity or designing modules — design deeper modules, avoid shallow abstraction sprawl, declare unknowns and blast radius, bound change scope, stop explicitly."
+---
+
+# A Philosophy of Software Design — State Machine Protocol for AI Agents
 
 ## Purpose
 

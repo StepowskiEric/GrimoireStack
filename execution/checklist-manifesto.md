@@ -1,4 +1,9 @@
-# Skill: Checklist Manifesto — State Machine Protocol for AI Agents
+---
+name: checklist-manifesto
+description: "Use when a high-stakes procedure demands more than expertise — build the smallest useful checklist, gate execution on checklist completion, stop cleanly and escalate if it cannot be cleared."
+---
+
+# Checklist Manifesto — State Machine Protocol for AI Agents
 
 ## Purpose
 
@@ -9,13 +14,6 @@ This skill is based on Atul Gawande's *The Checklist Manifesto*.
 The core insight: in complex high-stakes domains, failure does not usually come from lack of expertise. It comes from experts skipping steps they know but fail to execute under pressure, time constraints, or cognitive overload.
 
 The solution is not more expertise. It is a minimal, purpose-built checklist that enforces the steps that matter.
-
-This skill converts that principle into an agent protocol:
-- distinguish routine tasks from exception-triggering events
-- build the smallest useful checklist before executing
-- walk the checklist explicitly before proceeding
-- gate execution on checklist completion, not on confidence
-- stop cleanly and escalate if the checklist cannot be cleared
 
 ---
 

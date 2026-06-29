@@ -1,14 +1,11 @@
 ---
 source: "GrimoireStack"
 name: iterative-spec-authoring
-description: >
-  Author a detailed technical spec grounded in research, then refine it through
-  up to 3 judge-LLM review cycles before presenting to the user for final approval.
+description: "Use when a spec must be defensible — author a detailed technical spec grounded in research, refine through up to 3 judge-LLM review cycles, then present to the user for final approval."
 category: execution
-tags: [spec, planning, iterative-review, judge, llm-review, acceptance-criteria,
-       implementation-plan, research]
+tags: [spec, planning, iterative-review, judge, llm-review, acceptance-criteria, implementation-plan, research]
 version: 2.0
-...
+---
 
 
 

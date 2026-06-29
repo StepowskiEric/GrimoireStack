@@ -1,4 +1,9 @@
-# Skill: OODA Loop — State Machine Protocol for AI Agents
+---
+name: ooda-loop-state-machine
+description: "Use when conditions are changing rapidly, adversarially, or unpredictably — Observe, Orient, Decide, Act, Loop. Maintains decision tempo against an environment that shifts between every move."
+---
+
+# OODA Loop — State Machine Protocol for AI Agents
 
 ## Purpose
 
@@ -10,10 +15,6 @@ This skill converts Boyd's OODA Loop into an enforced operating protocol:
 3. **Decide** — select a course of action from the oriented picture
 4. **Act** — execute the decision with bounded scope
 5. **Loop** — immediately re-observe after acting, because the environment has changed
-
-OODA is not the same as Toyota Kata.
-Toyota Kata is for iterative improvement in a stable-enough system.
-OODA is for maintaining decision tempo against an environment that shifts between every move.
 
 ---
 
