@@ -1,3 +1,8 @@
+---
+name: six-thinking-hats
+description: "Use when a decision risks collapsed thinking — separate fact, intuition, caution, optimism, creativity, and process into six discrete rounds."
+---
+
 # Skill: Six Thinking Hats for AI Agents
 
 ## Purpose

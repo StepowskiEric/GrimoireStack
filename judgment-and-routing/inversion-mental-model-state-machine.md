@@ -1,3 +1,8 @@
+---
+name: inversion-mental-model-state-machine
+description: "Use when risk reasoning needs defensive discipline — enforce failure-mode mapping and guardrail derivation before recommending success paths."
+---
+
 # Skill: Inversion — State Machine Protocol for AI Agents
 
 ## Purpose

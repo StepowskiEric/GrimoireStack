@@ -1,3 +1,8 @@
+---
+name: first-principles
+description: "Use when conventional solutions fail or framing is inherited — decompose to axiomatic foundations and reason upward from what must be true."
+---
+
 # Skill: First Principles Thinking for AI Agents
 
 ## Purpose

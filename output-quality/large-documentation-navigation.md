@@ -1,3 +1,8 @@
+---
+name: large-documentation-navigation
+description: "Use when a documentation corpus becomes unscannable — layered navigation driven by user situation rather than category labels."
+---
+
 # Skill: Large Documentation Navigation
 
 ## Purpose

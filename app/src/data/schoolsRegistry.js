@@ -133,25 +133,25 @@ const schools = [
       {
         "name": "Anchor Chain",
         "skill": "hallucination-anchor-chain",
-        "effect": "Force every factual claim to be anchored to a verified source. Unanchored claims are marked unverified and hidden from outputs. Builds a verifiable chain of evidence to eliminate hallucination. Based on Chain-of-Verification (arXiv:2309.11495), Self-Consistency (arXiv:2203.11171), and Grounded CoT (arXiv:2503.12799).",
+        "effect": "Use when factual claims risk hallucination — anchor every claim to a verified source. Unanchored claims are marked unverified and hidden. Builds a verifiable chain of evidence.",
         "status": "—"
       },
       {
         "name": "Chaos Detection",
         "skill": "chaos-detector",
-        "effect": "Detect when LLM agent reasoning is collapsing into chaos using Lyapunov exponent analysis over token trajectories. Based on \"Chaotic Dynamics in Multi-LLM Deliberation\" (arXiv:2603.09127).",
+        "effect": "Use when multi-agent or extended reasoning looks unstable — compute empirical Lyapunov exponents over token trajectories and flag when small perturbations are amplifying into divergent conclusions.",
         "status": "—"
       },
       {
         "name": "Claim Verification",
         "skill": "claim-verification-reasoning",
-        "effect": "No description provided.",
+        "effect": "Use when multi-step reasoning contains unverified claims — atomic decomposition with confidence labels and tool-grounded verification.",
         "status": "—"
       },
       {
         "name": "Context Density",
         "skill": "context-density-operator",
-        "effect": "Maximize decision-relevant information per token in the agent's working context. Hierarchical memory, on-demand detail expansion, and redundant-context pruning. Based on GenericAgent (arXiv:2604.17091) and information bottleneck principles.",
+        "effect": "Use when context is bloated with low-signal content — maximize decision-relevant information per token via hierarchical memory, on-demand detail expansion, and redundant-context pruning.",
         "status": "—"
       },
       {
@@ -169,19 +169,19 @@ const schools = [
       {
         "name": "CoT Pruning",
         "skill": "cot-pruning-reasoning",
-        "effect": "Compress chain-of-thought reasoning to retain only steps that change the conclusion. Two-pass prune: coarse step-level then fine token-level. Based on CoT-Influx (arXiv:2312.08901) and information bottleneck principles.",
+        "effect": "Use when chain-of-thought is consuming budget without changing conclusions — two-pass prune retains only the steps that move the answer (coarse step-level, then fine token-level).",
         "status": "—"
       },
       {
         "name": "Hallucination Ward",
         "skill": "faithfulness-aware-reasoning",
-        "effect": "Detect and prevent faithfulness hallucinations where reasoning sounds plausible but isn't logically entailed by premises. Based on arXiv:2602.05897 and 2604.03179.",
+        "effect": "Use when reasoning reads plausibly but should not be trusted — detect and prevent faithfulness hallucinations where claims aren't logically entailed by the premises.",
         "status": "—"
       },
       {
         "name": "Integrity Chain",
         "skill": "reasoning-integrity-chain",
-        "effect": "No description provided.",
+        "effect": "Use when multi-step reasoning risks hallucination — escalating 4-phase verification chain (faithfulness, claims, contradiction, selective halt).",
         "status": "—"
       },
       {
@@ -193,7 +193,7 @@ const schools = [
       {
         "name": "Selective Halt",
         "skill": "selective-halt-reasoning",
-        "effect": "Monitor reasoning output for semantic stabilization and halt early when consecutive steps converge on equivalent conclusions. Based on DASH (arXiv:2604.18103) delta-attention selective halting adapted for agent reasoning.",
+        "effect": "Use when reasoning is generating waste — monitor for semantic stabilization and halt early when consecutive steps converge on equivalent conclusions, instead of running to a fixed budget.",
         "status": "—"
       },
       {
@@ -205,7 +205,7 @@ const schools = [
       {
         "name": "Verification Hybrid",
         "skill": "reasoning-verification-hybrid",
-        "effect": "No description provided.",
+        "effect": "Use when reasoning conclusions must survive challenge — claim verification, backward contradiction, and calibrated confidence.",
         "status": "—"
       }
     ]
@@ -219,13 +219,13 @@ const schools = [
       {
         "name": "Evolutionary Forge",
         "skill": "evolutionary-tool-composer",
-        "effect": ">",
+        "effect": "Use when solutions can be evolved rather than generated — LLM-driven evolutionary search with automated fitness evaluation.",
         "status": "—"
       },
       {
         "name": "Free Energy Seeker",
         "skill": "active-inference-agent",
-        "effect": ">",
+        "effect": "Use when an agent needs a principled Bayesian decision theory — Active Inference via the Free Energy Principle for belief-based action selection.",
         "status": "—"
       }
     ]
@@ -239,13 +239,13 @@ const schools = [
       {
         "name": "Boundary Weaving",
         "skill": "separation-of-concerns",
-        "effect": "No description provided.",
+        "effect": "Use when a multi-step task risks concern contamination — keep planning, diagnosis, observation, and execution phases intellectually isolated.",
         "status": "—"
       },
       {
         "name": "Branch Allocation",
         "skill": "monte-carlo-tree-search",
-        "effect": "No description provided.",
+        "effect": "Use when several strategies compete for limited reasoning budget — allocate search effort to branches that earn it through probes and scoring.",
         "status": "—"
       },
       {
@@ -257,7 +257,7 @@ const schools = [
       {
         "name": "Memory Hygiene",
         "skill": "agent-memory-hygiene",
-        "effect": "No description provided.",
+        "effect": "Use when memory persists across sessions — control what is stored, retrieved, trusted, and discarded to avoid stale-context actions.",
         "status": "—"
       },
       {
@@ -275,13 +275,13 @@ const schools = [
       {
         "name": "Orchestrator Gate",
         "skill": "agentic-design-patterns-orchestrator-state-machine",
-        "effect": "No description provided.",
+        "effect": "Use when the task is non-trivial and one-shot replies are insufficient — enforce a phased workflow with explicit gates between classify, plan, execute, reflect, and verify.",
         "status": "—"
       },
       {
         "name": "Orchestrator Pattern",
         "skill": "agentic-design-patterns-orchestrator",
-        "effect": "No description provided.",
+        "effect": "Use when treating a task as a single-shot reply would lose reliability — adopt pattern-based orchestration with planning, routing, reflection, and recovery.",
         "status": "—"
       },
       {
@@ -299,19 +299,19 @@ const schools = [
       {
         "name": "Socratic Elicitation",
         "skill": "socratic-clarification",
-        "effect": "No description provided.",
+        "effect": "Use when a task is ambiguous or high-stakes — surface the most critical hidden assumption before committing to execution.",
         "status": "—"
       },
       {
         "name": "SOP Evolution",
         "skill": "sop-evolution-memory",
-        "effect": "Distill successful task trajectories into reusable Standard Operating Procedures (SOPs). Future similar tasks load the SOP instead of the full history. Based on GenericAgent self-evolution (arXiv:2604.17091).",
+        "effect": "Use after repeated successes on a class of tasks — distill trajectories into reusable Standard Operating Procedures (SOPs). Future similar tasks load the SOP instead of the full history.",
         "status": "—"
       },
       {
         "name": "Thought Retrieval",
         "skill": "thought-retriever-coppermind",
-        "effect": "No description provided.",
+        "effect": "Use when sub-agents must learn across sessions — store intermediate reasoning as retrievable thoughts in the Coppermind memory layers.",
         "status": "—"
       },
       {
@@ -349,7 +349,7 @@ const schools = [
       {
         "name": "Backward Compat Ward",
         "skill": "api-design-backward-compatibility",
-        "effect": "No description provided.",
+        "effect": "Use when APIs, schemas, or contracts must evolve without breaking clients — contract-first design and additive-only change discipline.",
         "status": "—"
       },
       {
@@ -403,13 +403,13 @@ const schools = [
       {
         "name": "LLM Pre-Push Ward",
         "skill": "llm-pre-push-review",
-        "effect": "Pre-push code review checklist and protocol for catching systematic LLM coding failures — overcorrection, hallucinated logic, silent vulnerabilities, missing edge cases, and context-ignorant reviews. Grounded in arXiv research on LLM code review failure modes.",
+        "effect": "Use before pushing AI-authored code — checklist and protocol for catching systematic LLM coding failures: overcorrection, hallucinated logic, silent vulnerabilities, missing edge cases, context-ignorant reviews.",
         "status": "—"
       },
       {
         "name": "Pre-Commit Vigil",
         "skill": "verify-before-integrate",
-        "effect": "No description provided.",
+        "effect": "Use when integrating research or external docs into code — verify the actual system behavior rather than matching abstract terminology.",
         "status": "—"
       },
       {
@@ -421,7 +421,7 @@ const schools = [
       {
         "name": "TypeScript Vigil",
         "skill": "super-review-typescript",
-        "effect": "AI‑generated TypeScript code reviewer targeting the five specific failure modes of LLM‑authored TypeScript: security vulnerabilities, hallucinated APIs, logic errors, type‑safety violations, and architectural decay. Based on arXiv research on LLM coding failures.",
+        "effect": "Use when reviewing AI-authored TypeScript — targets the five LLM-specific failure modes: security vulnerabilities, hallucinated APIs, logic errors, type-safety violations, architectural decay.",
         "status": "New"
       },
       {
@@ -433,7 +433,7 @@ const schools = [
       {
         "name": "Verified Synthesis",
         "skill": "verified-synthesize",
-        "effect": "Generate provably correct code from natural language specs using Dafny formal verification. LLM produces code + Dafny preconditions/postconditions; the script verifies correctness automatically. Based on \"From Natural Language to Verified Code\" (arXiv:2604.22601).",
+        "effect": "Use when code correctness must be proven, not tested — generate code + Dafny preconditions/postconditions from a natural language spec; companion script runs `dafny verify` for a machine-checkable proof.",
         "status": "—"
       }
     ]
@@ -572,7 +572,7 @@ const schools = [
       {
         "name": "Reward Path Backtrack",
         "skill": "process-reward-model-protocol",
-        "effect": "Self-assign process rewards to each reasoning step and backtrack when cumulative reward drops below threshold. Prevents committing to wrong reasoning paths. Based on PRM research (arXiv:2504.18429, 2603.29500).",
+        "effect": "Use when reasoning may have committed to a wrong path too early — self-assign process rewards per step and backtrack when cumulative reward drops below threshold.",
         "status": "—"
       },
       {
@@ -584,7 +584,7 @@ const schools = [
       {
         "name": "Speculative Drafting",
         "skill": "speculative-drafting-verification",
-        "effect": "Generate multiple candidate solution branches in parallel, verify each against constraints, and select the best. Prevents local minima traps in complex problem solving. Based on verification-aware speculative decoding research (arXiv:2604.15244).",
+        "effect": "Use when a single candidate risks a local minimum — generate multiple solution branches in parallel, verify each against hard constraints, select the best.",
         "status": "—"
       },
       {
@@ -596,7 +596,7 @@ const schools = [
       {
         "name": "Stepwise Verification",
         "skill": "step-level-verification-protocol",
-        "effect": "Verify each reasoning step before proceeding to prevent error propagation in multi-step tasks. Based on verified critical step optimization research (arXiv:2602.03412, 2507.15512).",
+        "effect": "Use when multi-step reasoning risks error propagation — verify each step before proceeding so a wrong step doesn't cascade into a chain of unjustified conclusions.",
         "status": "—"
       },
       {
@@ -640,61 +640,61 @@ const schools = [
       {
         "name": "Automated Bias Detection",
         "skill": "cognitive-bias-auditor",
-        "effect": ">",
+        "effect": "Use when slow-mode reasoning risks bias contamination — explicit audit framework covering the 9 most common cognitive biases in agents.",
         "status": "—"
       },
       {
         "name": "Base Rate Scry",
         "skill": "reference-class-forecasting",
-        "effect": "No description provided.",
+        "effect": "Use when estimating timelines or success probability — anchor to similar past projects before reasoning from the specifics.",
         "status": "—"
       },
       {
         "name": "Bayesian Update",
         "skill": "bayesian-updating",
-        "effect": "No description provided.",
+        "effect": "Use when beliefs must shift with evidence — explicit priors updated by likelihood, avoiding over- and under-reaction.",
         "status": "—"
       },
       {
         "name": "Bias Audit",
         "skill": "cognitive-bias-checklist",
-        "effect": "No description provided.",
+        "effect": "Use when slow-mode recommendations need bias audit — explicit checklist to catch contamination before finalizing.",
         "status": "—"
       },
       {
         "name": "Confidence Calibration",
         "skill": "metacognitive-monitoring",
-        "effect": "No description provided.",
+        "effect": "Use when confidence calibration matters more than raw accuracy — explicit KEEP/WITHDRAW decisions tied to measured withdrawal delta.",
         "status": "—"
       },
       {
         "name": "Counterfactual Design",
         "skill": "counterfactual-policy-testing",
-        "effect": "No description provided.",
+        "effect": "Use when a decision must beat its alternatives — compare against null, opposite, and partial counterfactuals before committing.",
         "status": "—"
       },
       {
         "name": "Cynefin Compass",
         "skill": "problem-mode-router-cynefin",
-        "effect": "No description provided.",
+        "effect": "Use when choosing the wrong reasoning mode is the dominant risk — Cynefin-based routing before solving the problem.",
         "status": "—"
       },
       {
         "name": "Cynefin Gate",
         "skill": "problem-mode-router-cynefin-state-machine",
-        "effect": "No description provided.",
+        "effect": "Use when response style depends on problem type — enforce Cynefin domain classification as a hard gate before any tool use or execution.",
         "status": "—"
       },
       {
         "name": "Explore-Exploit Compass",
         "skill": "explore-vs-exploit-state-machine",
-        "effect": "No description provided.",
+        "effect": "Use when the agent must choose between more searching and committing — explicit explore/exploit protocol with diminishing-returns stopping rule.",
         "status": "—"
       },
       {
         "name": "Explore-Exploit Lens",
         "skill": "explore-vs-exploit",
-        "effect": "No description provided.",
+        "effect": "Use when the agent must choose between more information and acting — deliberate explore/exploit choice instead of defaulting to either extreme.",
         "status": "—"
       },
       {
@@ -706,19 +706,19 @@ const schools = [
       {
         "name": "Failure Scrying",
         "skill": "pre-mortem",
-        "effect": "No description provided.",
+        "effect": "Use when a plan must surface real risks before commitment — assume failure has occurred and narrate backward to root causes.",
         "status": "—"
       },
       {
         "name": "Fast-Slow Lens",
         "skill": "kahneman-thinking-fast-slow-software-agent",
-        "effect": "No description provided.",
+        "effect": "Use when coding or debugging work needs calibrated reasoning — switch between fast pattern recognition and slow deliberation as stakes demand.",
         "status": "—"
       },
       {
         "name": "First Principles Forge",
         "skill": "first-principles",
-        "effect": "No description provided.",
+        "effect": "Use when conventional solutions fail or framing is inherited — decompose to axiomatic foundations and reason upward from what must be true.",
         "status": "—"
       },
       {
@@ -730,13 +730,13 @@ const schools = [
       {
         "name": "Inversion Lens",
         "skill": "inversion-mental-model",
-        "effect": "No description provided.",
+        "effect": "Use when forward reasoning keeps missing risks — model failure paths before recommending the success path.",
         "status": "—"
       },
       {
         "name": "Inversion Path",
         "skill": "inversion-mental-model-state-machine",
-        "effect": "No description provided.",
+        "effect": "Use when risk reasoning needs defensive discipline — enforce failure-mode mapping and guardrail derivation before recommending success paths.",
         "status": "—"
       },
       {
@@ -748,7 +748,7 @@ const schools = [
       {
         "name": "Pre-Mortem Gate",
         "skill": "pre-mortem-state-machine",
-        "effect": "No description provided.",
+        "effect": "Use when a plan needs validation before execution — pre-mortem protocol with artifact gating, narrative failure modeling, and risk-adjusted plan revision.",
         "status": "—"
       },
       {
@@ -766,25 +766,25 @@ const schools = [
       {
         "name": "Recognition Triage",
         "skill": "recognition-primed-triage",
-        "effect": "No description provided.",
+        "effect": "Use when fast judgment is required under incomplete information — pattern recognition, mental simulation, and immediate next move.",
         "status": "—"
       },
       {
         "name": "Second-Order Sight",
         "skill": "second-order-thinking",
-        "effect": "No description provided.",
+        "effect": "Use when a decision's downstream effects matter more than the obvious one — chain consequences past first-order until the system-level outcome is clear.",
         "status": "—"
       },
       {
         "name": "Six Hats",
         "skill": "six-thinking-hats",
-        "effect": "No description provided.",
+        "effect": "Use when a decision risks collapsed thinking — separate fact, intuition, caution, optimism, creativity, and process into six discrete rounds.",
         "status": "—"
       },
       {
         "name": "Steelman Argument",
         "skill": "steelmanning",
-        "effect": "No description provided.",
+        "effect": "Use when a recommendation needs stress-testing — construct the strongest opposing case before committing.",
         "status": "—"
       },
       {
@@ -796,13 +796,13 @@ const schools = [
       {
         "name": "Strict Thoroughness",
         "skill": "thoroughness-check-etto-state-machine",
-        "effect": "No description provided.",
+        "effect": "Use as universal preflight before meaningful tasks — gating ETTO classification into executable controls on rigor, evidence, and tools.",
         "status": "—"
       },
       {
         "name": "Structured RPD",
         "skill": "recognition-primed-triage-state-machine",
-        "effect": "No description provided.",
+        "effect": "Use when urgent triage demands speed without recklessness — gated incident-response protocol with simulation and bounded first action.",
         "status": "—"
       },
       {
@@ -814,7 +814,7 @@ const schools = [
       {
         "name": "Thoroughness Charm",
         "skill": "thoroughness-check-etto",
-        "effect": "No description provided.",
+        "effect": "Use when the agent must decide how much rigor a task deserves — classify the efficiency-vs-thoroughness balance before acting.",
         "status": "—"
       }
     ]
@@ -856,73 +856,73 @@ const schools = [
       {
         "name": "Bounded Revision",
         "skill": "bounded-self-revision",
-        "effect": "No description provided.",
+        "effect": "Use when an initial draft needs polish but not endless revision — capped self-critique passes that terminate on improvement or budget exhaustion.",
         "status": "—"
       },
       {
         "name": "Calibrated Communication",
         "skill": "stakeholder-communication",
-        "effect": "No description provided.",
+        "effect": "Use when a human must act on the agent's output — calibrate certainty, separate fact from inference, and avoid overpromising or undue alarm.",
         "status": "—"
       },
       {
         "name": "Compression Test",
         "skill": "compression-as-understanding",
-        "effect": "No description provided.",
+        "effect": "Use when depth of understanding must be verified, not assumed — compress to the shortest representation and test whether it reconstructs the original.",
         "status": "—"
       },
       {
         "name": "Doc Crafting",
         "skill": "documentation-craft",
-        "effect": "No description provided.",
+        "effect": "Use when writing technical documentation — multi-phase pipeline from outline to verified explanation, audience-driven and source-grounded.",
         "status": "—"
       },
       {
         "name": "Doc Navigation",
         "skill": "large-documentation-navigation",
-        "effect": "No description provided.",
+        "effect": "Use when a documentation corpus becomes unscannable — layered navigation driven by user situation rather than category labels.",
         "status": "—"
       },
       {
         "name": "Feynman Recitation",
         "skill": "feynman-technique",
-        "effect": "No description provided.",
+        "effect": "Use when explanation gaps reveal understanding gaps — explain from scratch in plain language and identify where the explanation breaks.",
         "status": "—"
       },
       {
         "name": "Interactive Critique",
         "skill": "tool-interactive-critic",
-        "effect": "No description provided.",
+        "effect": "Use when an initial draft needs post-generation verification — external tools critique the output before it is trusted.",
         "status": "—"
       },
       {
         "name": "Load Management",
         "skill": "cognitive-load-operator-state-machine",
-        "effect": "No description provided.",
+        "effect": "Use when an output risks dense overload — inspect complexity and replace high-load structures with lower-load equivalents.",
         "status": "—"
       },
       {
         "name": "MECE Structuring",
         "skill": "mece-pyramid-principle",
-        "effect": "No description provided.",
+        "effect": "Use when structuring a complex output — enforce mutually exclusive, collectively exhaustive categories under a single governing thought.",
         "status": "—"
       },
       {
         "name": "Self-Consistency Rite",
         "skill": "self-consistency",
-        "effect": "No description provided.",
+        "effect": "Use when a conclusion must be confirmed, not assumed — generate independent reasoning paths and check whether they converge.",
         "status": "—"
       },
       {
         "name": "Self-Verify Pipeline",
         "skill": "self-verify-pipeline",
-        "effect": "No description provided.",
+        "effect": "Use when outputs risk unverified confidence — escalating verification chain of bounded revision, claim decomposition, and tool-grounded critique.",
         "status": "—"
       },
       {
         "name": "Thought Tree",
         "skill": "tree-of-thoughts",
-        "effect": "No description provided.",
+        "effect": "Use when the first reasoning path may be wrong — branch, evaluate, and prune candidate solutions before committing.",
         "status": "—"
       }
     ]
@@ -1035,7 +1035,7 @@ const schools = [
       {
         "name": "Pipeline of Restoration",
         "skill": "debug-to-fix-pipeline",
-        "effect": "No description provided.",
+        "effect": "Use when debugging is stalling — 6-phase pipeline that increases evidence quality each phase while cutting token waste. Sequences data → hypothesis → isolation → exploitation → repair → verification.",
         "status": "Hybrid",
         "combos": [
           "Spectral Analysis",
@@ -1074,7 +1074,7 @@ const schools = [
       {
         "name": "Root Cause Revelation",
         "skill": "root-cause-analysis",
-        "effect": "No description provided.",
+        "effect": "Use when a bug must be fixed, not patched — distinguish symptoms from causes, verify causal chains, fix the underlying defect. Stops recurring regressions caused by workaround hacks.",
         "status": "Framework",
         "combos": [
           "Occam\\'s Verdict",
@@ -1165,13 +1165,13 @@ const schools = [
       {
         "name": "Rename & Recall",
         "skill": "bulk-rename-and-update-references",
-        "effect": "No description provided.",
+        "effect": "Use when renaming many files where old names appear in content — discover references first to avoid broken links and stale cross-references.",
         "status": "—"
       },
       {
         "name": "Supporting File Bind",
         "skill": "skill-development-with-supporting-files",
-        "effect": "No description provided.",
+        "effect": "Use when a skill depends on scripts, templates, or other supporting files — package them so installation copies the full set, not just SKILL.md.",
         "status": "—"
       }
     ]

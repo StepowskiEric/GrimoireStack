@@ -1,3 +1,8 @@
+---
+name: unsafe-control-actions-hazard-analysis
+description: "Use when a recommended action could create serious harm — analyze control, timing, and safeguards across inaction as well as action."
+---
+
 # Skill: Unsafe Control Actions / Hazard Analysis
 
 ## Purpose

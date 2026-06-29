@@ -1,6 +1,6 @@
 ---
 name: Pre-Push LLM Code Review
-description: Pre-push code review checklist and protocol for catching systematic LLM coding failures — overcorrection, hallucinated logic, silent vulnerabilities, missing edge cases, and context-ignorant reviews. Grounded in arXiv research on LLM code review failure modes.
+description: "Use before pushing AI-authored code — checklist and protocol for catching systematic LLM coding failures: overcorrection, hallucinated logic, silent vulnerabilities, missing edge cases, context-ignorant reviews."
 ...
 
 

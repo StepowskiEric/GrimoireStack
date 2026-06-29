@@ -1,3 +1,8 @@
+---
+name: inversion-mental-model
+description: "Use when forward reasoning keeps missing risks — model failure paths before recommending the success path."
+---
+
 # Skill: Inversion for AI Agents
 
 ## Purpose

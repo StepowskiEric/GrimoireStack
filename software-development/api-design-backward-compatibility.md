@@ -1,3 +1,8 @@
+---
+name: api-design-backward-compatibility
+description: "Use when APIs, schemas, or contracts must evolve without breaking clients — contract-first design and additive-only change discipline."
+---
+
 # Skill: API Design and Backward Compatibility
 
 ## Purpose

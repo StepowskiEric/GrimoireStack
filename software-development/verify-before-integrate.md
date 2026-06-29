@@ -1,3 +1,8 @@
+---
+name: verify-before-integrate
+description: "Use when integrating research or external docs into code — verify the actual system behavior rather than matching abstract terminology."
+---
+
 # Skill: Verify Before Integrate
 
 ## Purpose

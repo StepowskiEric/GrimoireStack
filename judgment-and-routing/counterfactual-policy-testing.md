@@ -1,3 +1,8 @@
+---
+name: counterfactual-policy-testing
+description: "Use when a decision must beat its alternatives — compare against null, opposite, and partial counterfactuals before committing."
+---
+
 # Skill: Counterfactual Policy Testing
 
 ## Purpose

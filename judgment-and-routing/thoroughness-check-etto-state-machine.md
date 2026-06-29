@@ -1,3 +1,8 @@
+---
+name: thoroughness-check-etto-state-machine
+description: "Use as universal preflight before meaningful tasks — gating ETTO classification into executable controls on rigor, evidence, and tools."
+---
+
 # Skill: Thoroughness Check (ETTO) — State Machine Protocol for AI Agents
 
 ## Purpose

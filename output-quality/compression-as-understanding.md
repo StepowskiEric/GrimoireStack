@@ -1,3 +1,8 @@
+---
+name: compression-as-understanding
+description: "Use when depth of understanding must be verified, not assumed — compress to the shortest representation and test whether it reconstructs the original."
+---
+
 # Skill: Compression-as-Understanding
 
 ## Purpose

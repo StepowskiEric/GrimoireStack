@@ -1,3 +1,8 @@
+---
+name: reasoning-integrity-chain
+description: "Use when multi-step reasoning risks hallucination — escalating 4-phase verification chain (faithfulness, claims, contradiction, selective halt)."
+---
+
 # Skill: Reasoning Integrity Chain for AI Agents
 
 An escalating 4-phase verification chain that catches all 4 PRISM hallucination types (missing knowledge, knowledge errors, reasoning errors, instruction drift) while converging efficiently. Fuses Faithfulness-Aware Reasoning (logical entailment), Claim Verification Reasoning (atomic decomposition + tool verification), Reasoning Verification Hybrid (backward contradiction + confidence calibration), and Selective Halt Reasoning (convergence detection).

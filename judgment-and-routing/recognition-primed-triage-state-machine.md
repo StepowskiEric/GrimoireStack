@@ -1,3 +1,8 @@
+---
+name: recognition-primed-triage-state-machine
+description: "Use when urgent triage demands speed without recklessness — gated incident-response protocol with simulation and bounded first action."
+---
+
 # Skill: Recognition-Primed Triage — State Machine Protocol for AI Agents
 
 ## Purpose

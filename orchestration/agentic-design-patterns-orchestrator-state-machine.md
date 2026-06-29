@@ -1,3 +1,8 @@
+---
+name: agentic-design-patterns-orchestrator-state-machine
+description: "Use when the task is non-trivial and one-shot replies are insufficient — enforce a phased workflow with explicit gates between classify, plan, execute, reflect, and verify."
+---
+
 # Skill: Agentic Patterns Orchestrator — State Machine Protocol for AI Agents
 
 ## Purpose

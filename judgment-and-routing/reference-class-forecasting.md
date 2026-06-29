@@ -1,3 +1,8 @@
+---
+name: reference-class-forecasting
+description: "Use when estimating timelines or success probability — anchor to similar past projects before reasoning from the specifics."
+---
+
 # Skill: Reference Class Forecasting for AI Agents
 
 ## Purpose

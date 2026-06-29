@@ -1,7 +1,7 @@
 ---
 name: chaos-detector
 category: reasoning
-description: Detect when LLM agent reasoning is collapsing into chaos using Lyapunov exponent analysis over token trajectories. Based on "Chaotic Dynamics in Multi-LLM Deliberation" (arXiv:2603.09127).
+description: "Use when multi-agent or extended reasoning looks unstable — compute empirical Lyapunov exponents over token trajectories and flag when small perturbations are amplifying into divergent conclusions."
 version: 1.0
 tags: [reasoning, chaos-theory, dynamical-systems, divergence-detection, Lyapunov]
 ...

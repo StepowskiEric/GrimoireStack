@@ -1,3 +1,8 @@
+---
+name: metacognitive-monitoring
+description: "Use when confidence calibration matters more than raw accuracy — explicit KEEP/WITHDRAW decisions tied to measured withdrawal delta."
+---
+
 # Skill: Metacognitive Monitoring — Know When You Don't Know
 
 ## Purpose

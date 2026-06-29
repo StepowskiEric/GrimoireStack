@@ -1,3 +1,8 @@
+---
+name: tree-of-thoughts
+description: "Use when the first reasoning path may be wrong — branch, evaluate, and prune candidate solutions before committing."
+---
+
 # Skill: Tree of Thoughts for AI Agents
 
 ## Purpose

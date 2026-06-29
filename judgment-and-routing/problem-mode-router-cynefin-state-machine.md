@@ -1,3 +1,8 @@
+---
+name: problem-mode-router-cynefin-state-machine
+description: "Use when response style depends on problem type — enforce Cynefin domain classification as a hard gate before any tool use or execution."
+---
+
 # Skill: Problem-Mode Router (Cynefin) — State Machine Protocol for AI Agents
 
 ## Purpose

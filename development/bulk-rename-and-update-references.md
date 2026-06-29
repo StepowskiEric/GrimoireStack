@@ -1,3 +1,8 @@
+---
+name: bulk-rename-and-update-references
+description: "Use when renaming many files where old names appear in content — discover references first to avoid broken links and stale cross-references."
+---
+
 # Skill: Bulk Rename Files and Update Cross-References
 
 ## Purpose

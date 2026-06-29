@@ -1,3 +1,8 @@
+---
+name: skill-development-with-supporting-files
+description: "Use when a skill depends on scripts, templates, or other supporting files — package them so installation copies the full set, not just SKILL.md."
+---
+
 # Skill: Developing Skills with Supporting Files
 
 ## Purpose

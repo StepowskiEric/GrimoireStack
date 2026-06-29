@@ -1,15 +1,6 @@
 ---
-source: "GrimoireStack"
 name: cognitive-bias-auditor
-category: judgment-and-routing
-description: >
-  Detect and mitigate cognitive biases in agent decision-making. Based on arXiv:2410.02820
-  which tested GPT-4o, Gemma 2, and Llama 3.1 on 9 established cognitive biases.
-  Includes companion script for automated bias auditing.
-...
-
-
-
+description: "Use when slow-mode reasoning risks bias contamination — explicit audit framework covering the 9 most common cognitive biases in agents."
 ---
 
 # Cognitive Bias Auditor

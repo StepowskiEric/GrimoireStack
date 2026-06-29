@@ -1,3 +1,8 @@
+---
+name: recognition-primed-triage
+description: "Use when fast judgment is required under incomplete information — pattern recognition, mental simulation, and immediate next move."
+---
+
 # Skill: Recognition-Primed Triage
 
 ## Purpose

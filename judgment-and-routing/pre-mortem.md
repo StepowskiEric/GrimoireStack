@@ -1,3 +1,8 @@
+---
+name: pre-mortem
+description: "Use when a plan must surface real risks before commitment — assume failure has occurred and narrate backward to root causes."
+---
+
 # Skill: Pre-Mortem for AI Agents
 
 ## Purpose

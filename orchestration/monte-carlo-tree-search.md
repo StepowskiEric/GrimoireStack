@@ -1,3 +1,8 @@
+---
+name: monte-carlo-tree-search
+description: "Use when several strategies compete for limited reasoning budget — allocate search effort to branches that earn it through probes and scoring."
+---
+
 # Skill: Monte Carlo Tree Search for AI Agents
 
 ## Purpose

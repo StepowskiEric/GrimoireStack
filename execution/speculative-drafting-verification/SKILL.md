@@ -1,6 +1,6 @@
 ---
 name: speculative-drafting-verification
-description: Generate multiple candidate solution branches in parallel, verify each against constraints, and select the best. Prevents local minima traps in complex problem solving. Based on verification-aware speculative decoding research (arXiv:2604.15244).
+description: "Use when a single candidate risks a local minimum — generate multiple solution branches in parallel, verify each against hard constraints, select the best."
 category: execution
 tags: [speculative, parallel-exploration, verification, candidate-generation, optimization]
 author: Research synthesis

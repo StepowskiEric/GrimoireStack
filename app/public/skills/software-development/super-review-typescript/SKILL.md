@@ -1,6 +1,6 @@
 ---
 name: Super Review TypeScript
-description: AI‑generated TypeScript code reviewer targeting the five specific failure modes of LLM‑authored TypeScript: security vulnerabilities, hallucinated APIs, logic errors, type‑safety violations, and architectural decay. Based on arXiv research on LLM coding failures.
+description: "Use when reviewing AI-authored TypeScript — targets the five LLM-specific failure modes: security vulnerabilities, hallucinated APIs, logic errors, type-safety violations, architectural decay."
 source: "GrimoireStack"
 ---
 
@@ -95,7 +95,7 @@ If any step fails, report. If all pass, do not report.
 
 ### Pass 3 – Logic & Correctness Bugs (Silent Failures, Off‑by‑One, N+1)
 
-Standard linters miss semantic bugs that cause runtime misbehavior. See `references/silent-failures.md` for the full checklist.
+Standard linters miss semantic bugs that cause runtime misbehavior. See `references/silent-failures.md` for the full silent-failure catalog, and `references/review-checklist.md` for the broader four-area actionable checklist (type safety, runtime correctness, architectural debt, security).
 
 1. **Silent error swallowing** — empty `catch(e) {}` or `.catch(() => null)` without handling the null case
 2. **Off‑by‑one / boundary errors** — `for (let i = 0; i <= array.length; i++)`, pagination off-by-one
@@ -209,6 +209,7 @@ For each finding, include:
 
 ## References
 
+- `references/review-checklist.md` — Concrete actionable checklist covering the four high-risk areas most commonly missed by both automated linters and AI-generated code (type safety, runtime correctness, architectural debt, security)
 - `references/verification-protocol.md` — Step‑by‑step hallucination verification
 - `references/common-hallucinations.md` — Catalog of known AI hallucinations
 - `references/eslint-rules.md` — ESLint rules to run before manual review

@@ -1,3 +1,8 @@
+---
+name: pre-mortem-state-machine
+description: "Use when a plan needs validation before execution — pre-mortem protocol with artifact gating, narrative failure modeling, and risk-adjusted plan revision."
+---
+
 # Skill: Pre-Mortem — State Machine Protocol for AI Agents
 
 ## Purpose

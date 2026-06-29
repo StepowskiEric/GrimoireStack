@@ -1,3 +1,8 @@
+---
+name: self-consistency
+description: "Use when a conclusion must be confirmed, not assumed — generate independent reasoning paths and check whether they converge."
+---
+
 # Skill: Self-Consistency Check for AI Agents
 
 ## Purpose

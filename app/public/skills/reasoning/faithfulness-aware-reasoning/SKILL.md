@@ -1,6 +1,6 @@
 ---
 name: faithfulness-aware-reasoning
-description: Detect and prevent faithfulness hallucinations where reasoning sounds plausible but isn't logically entailed by premises. Based on arXiv:2602.05897 and 2604.03179.
+description: "Use when reasoning reads plausibly but should not be trusted — detect and prevent faithfulness hallucinations where claims aren't logically entailed by the premises."
 category: reasoning
 tags: [faithfulness, hallucination-detection, logical-entailment, verification, reasoning-quality]
 author: Research synthesis

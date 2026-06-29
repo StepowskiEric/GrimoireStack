@@ -1,6 +1,6 @@
 ---
 name: step-level-verification-protocol
-description: Verify each reasoning step before proceeding to prevent error propagation in multi-step tasks. Based on verified critical step optimization research (arXiv:2602.03412, 2507.15512).
+description: "Use when multi-step reasoning risks error propagation — verify each step before proceeding so a wrong step doesn't cascade into a chain of unjustified conclusions."
 category: execution
 tags: [verification, reasoning, step-by-step, error-prevention, state-machine]
 author: Research synthesis

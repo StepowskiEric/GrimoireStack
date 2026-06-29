@@ -1,3 +1,8 @@
+---
+name: socratic-clarification
+description: "Use when a task is ambiguous or high-stakes — surface the most critical hidden assumption before committing to execution."
+---
+
 # Skill: Socratic Clarification Protocol for AI Agents
 
 ## Purpose

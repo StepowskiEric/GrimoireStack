@@ -1,3 +1,8 @@
+---
+name: cognitive-load-operator-state-machine
+description: "Use when an output risks dense overload — inspect complexity and replace high-load structures with lower-load equivalents."
+---
+
 # Skill: Cognitive Load Operator — State Machine Protocol for AI Agents
 
 ## Purpose

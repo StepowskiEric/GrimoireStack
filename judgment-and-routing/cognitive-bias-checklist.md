@@ -1,3 +1,8 @@
+---
+name: cognitive-bias-checklist
+description: "Use when slow-mode recommendations need bias audit — explicit checklist to catch contamination before finalizing."
+---
+
 # Skill: Cognitive Bias Checklist for AI Agents
 
 ## Purpose

@@ -1,6 +1,6 @@
 ---
 name: sop-evolution-memory
-description: Distill successful task trajectories into reusable Standard Operating Procedures (SOPs). Future similar tasks load the SOP instead of the full history. Based on GenericAgent self-evolution (arXiv:2604.17091).
+description: "Use after repeated successes on a class of tasks — distill trajectories into reusable Standard Operating Procedures (SOPs). Future similar tasks load the SOP instead of the full history."
 category: orchestration
 tags: [memory, self-evolution, SOP, trajectory-distillation, episodic-memory]
 author: Research synthesis

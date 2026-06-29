@@ -1,3 +1,8 @@
+---
+name: tool-interactive-critic
+description: "Use when an initial draft needs post-generation verification — external tools critique the output before it is trusted."
+---
+
 # Skill: Tool-Interactive Critic
 
 ## Purpose

@@ -1,3 +1,8 @@
+---
+name: root-cause-analysis
+description: "Use when a bug must be fixed, not patched — distinguish symptoms from causes, verify causal chains, fix the underlying defect. Stops recurring regressions caused by workaround hacks."
+---
+
 # Skill: Root Cause Analysis for AI Agents
 
 ## Purpose

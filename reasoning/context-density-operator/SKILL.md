@@ -1,6 +1,6 @@
 ---
 name: context-density-operator
-description: Maximize decision-relevant information per token in the agent's working context. Hierarchical memory, on-demand detail expansion, and redundant-context pruning. Based on GenericAgent (arXiv:2604.17091) and information bottleneck principles.
+description: "Use when context is bloated with low-signal content — maximize decision-relevant information per token via hierarchical memory, on-demand detail expansion, and redundant-context pruning."
 category: reasoning
 tags: [token-efficiency, context-management, memory, reasoning, information-density]
 author: Research synthesis

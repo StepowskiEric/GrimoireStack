@@ -1,3 +1,8 @@
+---
+name: steelmanning
+description: "Use when a recommendation needs stress-testing — construct the strongest opposing case before committing."
+---
+
 # Skill: Steelmanning for AI Agents
 
 ## Purpose

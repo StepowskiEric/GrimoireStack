@@ -1,3 +1,8 @@
+---
+name: problem-mode-router-cynefin
+description: "Use when choosing the wrong reasoning mode is the dominant risk — Cynefin-based routing before solving the problem."
+---
+
 # Skill: Problem-Mode Router (Cynefin)
 
 ## Purpose

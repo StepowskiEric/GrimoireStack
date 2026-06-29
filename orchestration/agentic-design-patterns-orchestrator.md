@@ -1,3 +1,8 @@
+---
+name: agentic-design-patterns-orchestrator
+description: "Use when treating a task as a single-shot reply would lose reliability — adopt pattern-based orchestration with planning, routing, reflection, and recovery."
+---
+
 # Skill: Agentic Patterns Orchestrator for AI Agents
 
 ## Purpose

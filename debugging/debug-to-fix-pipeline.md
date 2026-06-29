@@ -1,3 +1,8 @@
+---
+name: debug-to-fix-pipeline
+description: "Use when debugging is stalling — 6-phase pipeline that increases evidence quality each phase while cutting token waste. Sequences data → hypothesis → isolation → exploitation → repair → verification."
+---
+
 # Skill: Debug-to-Fix Pipeline for AI Agents
 
 ## Purpose

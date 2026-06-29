@@ -1,6 +1,6 @@
 ---
 name: selective-halt-reasoning
-description: Monitor reasoning output for semantic stabilization and halt early when consecutive steps converge on equivalent conclusions. Based on DASH (arXiv:2604.18103) delta-attention selective halting adapted for agent reasoning.
+description: "Use when reasoning is generating waste — monitor for semantic stabilization and halt early when consecutive steps converge on equivalent conclusions, instead of running to a fixed budget."
 category: reasoning
 tags: [reasoning, early-stopping, token-efficiency, convergence, selective-halting]
 author: Research synthesis

@@ -1,3 +1,8 @@
+---
+name: agent-memory-hygiene
+description: "Use when memory persists across sessions — control what is stored, retrieved, trusted, and discarded to avoid stale-context actions."
+---
+
 # Skill: Agent Memory Hygiene for AI Agents
 
 ## Purpose

@@ -1,3 +1,8 @@
+---
+name: separation-of-concerns
+description: "Use when a multi-step task risks concern contamination — keep planning, diagnosis, observation, and execution phases intellectually isolated."
+---
+
 # Skill: Separation of Concerns for AI Agent Orchestration
 
 ## Purpose

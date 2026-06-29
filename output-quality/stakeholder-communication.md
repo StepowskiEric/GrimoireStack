@@ -1,3 +1,8 @@
+---
+name: stakeholder-communication
+description: "Use when a human must act on the agent's output — calibrate certainty, separate fact from inference, and avoid overpromising or undue alarm."
+---
+
 # Skill: Stakeholder Communication and Uncertainty Calibration
 
 ## Purpose

@@ -1,3 +1,8 @@
+---
+name: bayesian-updating
+description: "Use when beliefs must shift with evidence — explicit priors updated by likelihood, avoiding over- and under-reaction."
+---
+
 # Skill: Bayesian Belief Updating for AI Agents
 
 ## Purpose
