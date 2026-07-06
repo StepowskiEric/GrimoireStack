@@ -4,6 +4,8 @@
 #   Pages > grimoirestack > Settings > Bindings > Add > Workers AI
 #   Variable name: AI
 
+name = "grimoirestack"
+
 pages_build_output_dir = "dist"
 
 [ai]

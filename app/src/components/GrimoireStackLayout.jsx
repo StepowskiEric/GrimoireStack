@@ -76,7 +76,7 @@ export default function GrimoireStackLayout({
   onToggleCast,
   audioEnabled,
   onToggleAudio,
-  _onIntakeOpen,
+  onIntakeOpen,
   onCompareOpen,
   onCompareTwo,
   onExportJson,
@@ -363,6 +363,9 @@ export default function GrimoireStackLayout({
           <div className="eye-sidebar__footer">
             <LanguageToggle />
             <div className="eye-sidebar__footer-divider" />
+            <button className="eye-footer-link" onClick={onIntakeOpen} type="button">
+              <Icon name="oracle" size={14} /> Skill Finder
+            </button>
             <button className="eye-footer-link" onClick={onShowShortcuts} type="button">
               <Icon name="sigil" size={14} /> Shortcuts
             </button>
