@@ -199,7 +199,7 @@ describe('GrimoireStackLayout search results', () => {
 describe('BestiaryCodex', () => {
   const renderWithLang = (ui) => render(<LanguageProvider>{ui}</LanguageProvider>);
 
-  it('renders the codex title and stats', () => {
+  it('renders the codex title and result count', () => {
     renderWithLang(
       <BestiaryCodex
         onSpellClick={() => {}}
@@ -208,8 +208,7 @@ describe('BestiaryCodex', () => {
       />
     );
     expect(screen.getByText('The Bestiary Codex')).toBeInTheDocument();
-    expect(screen.getByText('Entities')).toBeInTheDocument();
-    expect(screen.getByText('Schools')).toBeInTheDocument();
+    expect(screen.getByText(/entities/)).toBeInTheDocument();
   });
 
   it('lists every spell from the provided schools', () => {
@@ -275,7 +274,7 @@ describe('BestiaryCodex', () => {
     );
     const input = screen.getByPlaceholderText(/scry by name/i);
     fireEvent.change(input, { target: { value: 'jest' } });
-    expect(screen.getByText(/purge filters/i)).toBeInTheDocument();
+    expect(screen.getByText(/purge/i)).toBeInTheDocument();
   });
 
   it('shows tier badges', () => {

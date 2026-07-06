@@ -3,13 +3,12 @@
 import { useRef, useEffect } from 'react';
 import SchoolSigil from './SchoolSigil.tsx';
 
-export default function GrimoireEye({ searchQuery, onSearchChange, totalMatches, featuredSchools, onSchoolSelect, isSearching, eyeRadius = 220, mood = 'neutral', oracleState = 'idle' }) {
+export default function GrimoireEye({ searchQuery, onSearchChange, totalMatches, featuredSchools, onSchoolSelect, isSearching, eyeRadius = 220, mood = 'neutral' }) {
   const wrapperRef = useRef(null);
   const containerRef = useRef(null);
   const pupilRef = useRef(null);
   const mouseRef = useRef({ x: 0.5, y: 0.5 });
   const moodRef = useRef(mood);
-  const oracleStateRef = useRef(oracleState);
 
   // Keep a ref in sync with the prop so the rAF loop (which closes over the ref)
   // always reads the latest mood without triggering re-renders.
@@ -21,14 +20,6 @@ export default function GrimoireEye({ searchQuery, onSearchChange, totalMatches,
     }
   }, [mood]);
 
-  // Sync oracle state to ref + data attribute
-  useEffect(() => {
-    oracleStateRef.current = oracleState;
-    const wrapper = wrapperRef.current;
-    if (wrapper) {
-      wrapper.setAttribute('data-oracle', oracleState);
-    }
-  }, [oracleState]);
 
   // Single rAF loop — writes ALL animated properties directly to DOM.
   // No React state involved, so zero React re-renders from animation frames.
@@ -61,19 +52,15 @@ export default function GrimoireEye({ searchQuery, onSearchChange, totalMatches,
 
       const t = Date.now() / 1000;
       const currentMood = moodRef.current;
-      const currentOracle = oracleStateRef.current;
-
       const isNeglectful = currentMood === 'neglectful';
       const isOverwhelmed = currentMood === 'overwhelmed';
       const isCurious = currentMood === 'curious';
-      const isConsulting = currentOracle === 'consulting';
-      const isAnswering = currentOracle === 'answering';
-      const isError = currentOracle === 'error';
 
-      const baseBreath = isNeglectful ? 0.005 : isError ? 0.008 : isConsulting ? 0.04 : 0.02;
-      const glowBoost = isOverwhelmed ? 0.5 : isCurious ? 0.15 : isConsulting ? 0.4 : isAnswering ? 0.3 : isError ? -0.3 : 0;
-      const vesselBoost = isOverwhelmed ? 0.4 : isNeglectful ? -0.2 : isConsulting ? 0.3 : isError ? -0.3 : 0;
-      const breathFreq = isConsulting ? 2.5 : 1;
+      const baseBreath = isNeglectful ? 0.005 : 0.02;
+      const glowBoost = isOverwhelmed ? 0.5 : isCurious ? 0.15 : 0;
+      const vesselBoost = isOverwhelmed ? 0.4 : isNeglectful ? -0.2 : 0;
+      const breathFreq = 1;
+
 
       // Container breathing scale
       if (containerEl) {

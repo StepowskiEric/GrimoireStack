@@ -89,8 +89,6 @@ export default function GrimoireStackLayout({
   eyeMood = 'neutral',
   onSpellView,
 }) {
-  const { t } = useLanguage();
-  const oracle = useOracle();
   // hasNote lookup for the Bestiary Codex "Annotated" filter
   const hasNote = useCallback(
     (skill) => {
@@ -104,6 +102,9 @@ export default function GrimoireStackLayout({
   const location = useLocation();
   const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
   const [isSearching, setIsSearching] = useState(false);
+  const [oracleOpen, setOracleOpen] = useState(false);
+  const oracle = useOracle();
+  const { t } = useLanguage();
 
   // Derive active tab from URL
   const activeTab = (() => {
@@ -390,22 +391,42 @@ export default function GrimoireStackLayout({
             isSearching={isSearching}
             eyeRadius={eyeRadius}
             mood={eyeMood}
-            oracleState={oracle.oracleState}
           />
-          <OracleInlinePanel
-            query={oracle.query}
-            onQueryChange={oracle.setQuery}
-            onAskOracle={oracle.askOracle}
-            results={oracle.results}
-            loading={oracle.loading}
-            error={oracle.error}
-            onSelectSpell={onSpellClick}
-            source={oracle.source}
-            activeCategory={null}
-            onCategoryChange={() => {}}
-            onBrowseLibrary={() => handleTabSelect(TABS.LIBRARY)}
-            t={t}
-          />
+
+          {/* Collapsible Oracle — subtle bar, expands on click */}
+          <div className={`oracle-collapse ${oracleOpen ? 'oracle-collapse--open' : ''}`}>
+            <button
+              type="button"
+              className="oracle-collapse__bar"
+              onClick={() => setOracleOpen(prev => !prev)}
+              aria-expanded={oracleOpen}
+              aria-label="Toggle Oracle"
+            >
+              <span className="oracle-collapse__icon"><Icon name="oracle" size={14} /></span>
+              <span className="oracle-collapse__label">
+                {oracleOpen ? 'Close the Oracle' : 'Ask the Oracle...'}
+              </span>
+              <span className={`oracle-collapse__chevron ${oracleOpen ? 'oracle-collapse__chevron--open' : ''}`} />
+            </button>
+            {oracleOpen && (
+              <div className="oracle-collapse__body">
+                <OracleInlinePanel
+                  query={oracle.query}
+                  onQueryChange={oracle.setQuery}
+                  onAskOracle={oracle.askOracle}
+                  results={oracle.results}
+                  loading={oracle.loading}
+                  error={oracle.error}
+                  onSelectSpell={onSpellClick}
+                  source={oracle.source}
+                  activeCategory={null}
+                  onCategoryChange={() => {}}
+                  onBrowseLibrary={() => handleTabSelect(TABS.LIBRARY)}
+                  t={t}
+                />
+              </div>
+            )}
+          </div>
         </main>
 
         {/* Right panel - content */}

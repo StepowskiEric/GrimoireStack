@@ -144,6 +144,7 @@ export default function OracleInlinePanel({
             className="oracle-inline-ask-btn"
             onClick={onAskOracle}
             disabled={!query.trim() || loading}
+            aria-busy={loading}
           >
             {loading ? t('intakeOracleLoading') : t('intakeOracle')}
           </button>
@@ -187,10 +188,10 @@ export default function OracleInlinePanel({
 
       {/* Oracle results */}
       {error && (
-        <div className="oracle-inline-error">{t('intakeOracleError')} ({error})</div>
+        <div className="oracle-inline-error" role="alert">{t('intakeOracleError')} ({error})</div>
       )}
       {results.length > 0 && (
-        <div className="oracle-inline-results">
+        <div className="oracle-inline-results" aria-live="polite">
           <div className="oracle-inline-results-header">
             <span className="oracle-inline-results-title">
               {source === 'local' ? 'Local Reading' : t('intakeOracle')}

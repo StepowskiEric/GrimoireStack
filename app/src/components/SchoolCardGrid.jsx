@@ -60,22 +60,8 @@ export default function SchoolCardGrid({
 
   return (
     <div className="spine-view">
-      {/* Watching Eye Header */}
+      {/* Header */}
       <div className="spine-header">
-        <div className="spine-eye" aria-hidden="true">
-          <svg viewBox="0 0 200 120" className="spine-eye__svg">
-            <ellipse cx="100" cy="60" rx="90" ry="50" fill="none" stroke="rgba(138,154,106,0.12)" strokeWidth="1" />
-            <ellipse cx="100" cy="60" rx="75" ry="40" fill="none" stroke="rgba(138,154,106,0.08)" strokeWidth="0.6" strokeDasharray="4 5" />
-            <ellipse cx="100" cy="60" rx="65" ry="34" fill="rgba(8,8,6,0.95)" stroke="rgba(196,184,152,0.2)" strokeWidth="0.8" />
-            <ellipse cx="100" cy="60" rx="38" ry="22" fill="rgba(138,154,106,0.15)" className="spine-eye__iris" />
-            <ellipse cx="100" cy="60" rx="14" ry="10" fill="#020203" className="spine-eye__pupil" />
-            <ellipse cx="95" cy="55" rx="4" ry="2.5" fill="rgba(196,184,152,0.35)" />
-            <path d="M 100 26 L 97 18 L 94 12" stroke="#5a0a0a" strokeWidth="0.8" fill="none" opacity="0.7" />
-            <path d="M 100 94 L 103 102 L 106 108" stroke="#5a0a0a" strokeWidth="0.8" fill="none" opacity="0.7" />
-            <path d="M 35 60 L 25 57 L 18 58" stroke="#5a0a0a" strokeWidth="0.6" fill="none" opacity="0.5" />
-            <path d="M 165 60 L 175 63 L 182 62" stroke="#5a0a0a" strokeWidth="0.6" fill="none" opacity="0.5" />
-          </svg>
-        </div>
         <h1 className="spine-title">The Spine</h1>
         <p className="spine-subtitle">A catalogue of every entity bound within this grimoire</p>
       </div>

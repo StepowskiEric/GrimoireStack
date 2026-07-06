@@ -154,33 +154,11 @@ export default function BestiaryCodex({
 
   // Aggregate counts for the header
   const totalSpells = all.length;
-  const totalSchools = new Set(all.map(e => e.school.id)).size;
-  const tierCounts = useMemo(() => {
-    const c = Object.fromEntries(TIER_ORDER.map(k => [k, 0]));
-    for (const { spell } of all) c[getSpellTier(spell)] += 1;
-    return c;
-  }, [all]);
 
   return (
     <div className="bestiary-codex">
-      {/* Header — bloodborne / cosmic horror framing */}
+      {/* Header */}
       <header className="bestiary-codex__header">
-        <div className="bestiary-codex__crest" aria-hidden="true">
-          <svg viewBox="0 0 80 80">
-            <circle cx="40" cy="40" r="36" fill="none" stroke="rgba(138,154,106,0.18)" strokeWidth="0.8" />
-            <circle cx="40" cy="40" r="28" fill="none" stroke="rgba(138,154,106,0.12)" strokeWidth="0.6" strokeDasharray="3 4" />
-            {/* Eye */}
-            <ellipse cx="40" cy="40" rx="22" ry="13" fill="rgba(8,8,6,0.95)" stroke="rgba(196,184,152,0.3)" strokeWidth="0.6" />
-            <ellipse cx="40" cy="40" rx="13" ry="7" fill="rgba(138,154,106,0.25)" />
-            <ellipse cx="40" cy="40" rx="5" ry="3" fill="#020203" />
-            <ellipse cx="38" cy="38" rx="1.5" ry="1" fill="rgba(196,184,152,0.5)" />
-            {/* Blood cracks */}
-            <path d="M 40 27 L 38 22 L 36 19" stroke="#5a0a0a" strokeWidth="0.8" fill="none" opacity="0.85" />
-            <path d="M 40 53 L 42 58 L 44 61" stroke="#5a0a0a" strokeWidth="0.8" fill="none" opacity="0.85" />
-            <path d="M 22 40 L 17 38 L 14 39" stroke="#5a0a0a" strokeWidth="0.6" fill="none" opacity="0.7" />
-            <path d="M 58 40 L 63 42 L 66 41" stroke="#5a0a0a" strokeWidth="0.6" fill="none" opacity="0.7" />
-          </svg>
-        </div>
         <div className="bestiary-codex__heading">
           <h2 className="bestiary-codex__title">The Bestiary Codex</h2>
           <p className="bestiary-codex__sub">
@@ -188,22 +166,8 @@ export default function BestiaryCodex({
             Filter the abyss, mark what binds you, and read what you dare.
           </p>
         </div>
-        <div className="bestiary-codex__stats">
-          <div className="bestiary-codex__stat">
-            <span className="bestiary-codex__stat-num">{totalSpells}</span>
-            <span className="bestiary-codex__stat-label">Entities</span>
-          </div>
-          <div className="bestiary-codex__stat">
-            <span className="bestiary-codex__stat-num">{totalSchools}</span>
-            <span className="bestiary-codex__stat-label">Schools</span>
-          </div>
-          <div className="bestiary-codex__stat">
-            <span className="bestiary-codex__stat-num">{tierCounts.archmage + tierCounts.master}</span>
-            <span className="bestiary-codex__stat-label">Master-Tier</span>
-          </div>
-        </div>
 
-        {/* Filter rail — integrated into header */}
+        {/* Filter rail */}
         <div className="bestiary-codex__filters">
           <div className="bestiary-codex__search">
             <span className="bestiary-codex__search-rune" aria-hidden="true">⟐</span>
@@ -232,7 +196,7 @@ export default function BestiaryCodex({
                       aria-pressed={active}
                       title={s.real}
                     >
-                      <span className="bestiary-codex__chip-glyph" aria-hidden="true"><SchoolSigil schoolId={s.id} size={18} /></span>
+                      <span className="bestiary-codex__chip-glyph" aria-hidden="true"><SchoolSigil schoolId={s.id} size={14} /></span>
                       <span className="bestiary-codex__chip-text">{s.real}</span>
                     </button>
                   );
@@ -254,15 +218,15 @@ export default function BestiaryCodex({
                       className={`bestiary-codex__chip bestiary-codex__chip--${meta.className.split('-').pop()}${active ? ' is-active' : ''}`}
                       onClick={() => toggleTier(key)}
                       aria-pressed={active}
-                    title={meta.title}
-                  >
-                    <span className="bestiary-codex__chip-glyph" aria-hidden="true">⟐</span>
-                    <span className="bestiary-codex__chip-text">{meta.label}</span>
-                  </button>
-                );
-              })}
+                      title={meta.title}
+                    >
+                      <span className="bestiary-codex__chip-glyph" aria-hidden="true">⟐</span>
+                      <span className="bestiary-codex__chip-text">{meta.label}</span>
+                    </button>
+                  );
+                })}
+              </div>
             </div>
-          </div>
           </div>
 
           <div className="bestiary-codex__filter-rows">
@@ -300,7 +264,7 @@ export default function BestiaryCodex({
                   checked={combosOnly}
                   onChange={(e) => { setCombosOnly(e.target.checked); setPage(0); }}
                 />
-                <span>Synergies only</span>
+                <span>Synergies</span>
               </label>
               <label className="bestiary-codex__toggle">
                 <input
@@ -325,7 +289,7 @@ export default function BestiaryCodex({
                   onClick={clearAll}
                   title="Clear all filters"
                 >
-                  Purge filters
+                  Purge
                 </button>
               ) : null}
             </div>
