@@ -20,7 +20,7 @@ export function schoolColors(schoolId) {
   // Dark, desaturated range: sat 18-30%, light 8-18% for bg, 25-40% for accents
   const sat = 18 + (h % 13);
   const bgLight = 6 + (h % 8);
-  const accentLight = 26 + (h % 14);
+  const accentLight = 32 + (h % 14);
   const glowLight = 30 + (h % 12);
 
   return {
