@@ -226,7 +226,7 @@ export default function OracleInlinePanel({
                     <span className="intake-result-school">
                       {r.school || entry.school.name}
                       {r.score != null && (
-                        <span className="intake-result-score"> — {Math.round(r.score * 100)}% match</span>
+                        <span className="intake-result-score"> - {Math.round(r.score * 100)}% match</span>
                       )}
                     </span>
                   </span>
