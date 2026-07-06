@@ -16,6 +16,9 @@ import Icon from './Icon.jsx';
 import AboutView from './AboutView.jsx';
 import LanguageToggle from './LanguageToggle.jsx';
 import { grimoireIndex } from '../data/grimoireIndexInstance.js';
+import { useOracle } from '../hooks/useOracle.js';
+import OracleInlinePanel from './OracleInlinePanel.jsx';
+import { useLanguage } from '../i18n/LanguageContext';
 
 const SCHOOL_MAP = grimoireIndex.getSchoolMap();
 
@@ -76,7 +79,6 @@ export default function GrimoireStackLayout({
   onToggleCast,
   audioEnabled,
   onToggleAudio,
-  onIntakeOpen,
   onCompareOpen,
   onCompareTwo,
   onExportJson,
@@ -87,6 +89,8 @@ export default function GrimoireStackLayout({
   eyeMood = 'neutral',
   onSpellView,
 }) {
+  const { t } = useLanguage();
+  const oracle = useOracle();
   // hasNote lookup for the Bestiary Codex "Annotated" filter
   const hasNote = useCallback(
     (skill) => {
@@ -363,9 +367,6 @@ export default function GrimoireStackLayout({
           <div className="eye-sidebar__footer">
             <LanguageToggle />
             <div className="eye-sidebar__footer-divider" />
-            <button className="eye-footer-link" onClick={onIntakeOpen} type="button">
-              <Icon name="oracle" size={14} /> Skill Finder
-            </button>
             <button className="eye-footer-link" onClick={onShowShortcuts} type="button">
               <Icon name="sigil" size={14} /> Shortcuts
             </button>
@@ -389,6 +390,21 @@ export default function GrimoireStackLayout({
             isSearching={isSearching}
             eyeRadius={eyeRadius}
             mood={eyeMood}
+            oracleState={oracle.oracleState}
+          />
+          <OracleInlinePanel
+            query={oracle.query}
+            onQueryChange={oracle.setQuery}
+            onAskOracle={oracle.askOracle}
+            results={oracle.results}
+            loading={oracle.loading}
+            error={oracle.error}
+            onSelectSpell={onSpellClick}
+            source={oracle.source}
+            activeCategory={null}
+            onCategoryChange={() => {}}
+            onBrowseLibrary={() => handleTabSelect(TABS.LIBRARY)}
+            t={t}
           />
         </main>
 

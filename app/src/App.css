@@ -3151,6 +3151,31 @@ header .header-sigil-text{display:none}
 .intake-oracle-btn{background:rgba(60,30,80,.5);border:1px solid rgba(160,100,200,.2);border-radius:4px;padding:8px 16px;color:#b8a0d0;font-family:'Cinzel',serif;font-size:.6rem;cursor:pointer;transition:all .25s ease;align-self:center}
 .intake-oracle-btn:hover:not(:disabled){border-color:rgba(160,100,200,.4);background:rgba(70,40,90,.6)}
 .intake-oracle-btn:disabled{opacity:.4;cursor:default}
+
+/* ── Oracle Inline Panel (eye-stage) ────────────── */
+.oracle-inline-panel{width:100%;max-width:520px;display:flex;flex-direction:column;gap:10px}
+.oracle-inline-form{display:flex;flex-direction:column;gap:10px}
+.oracle-inline-textarea{background:rgba(26,20,10,.6);border:1px solid rgba(180,140,80,.15);border-radius:6px;padding:10px 12px;color:#d8ccb5;font-family:'Cormorant Garamond',serif;font-size:.82rem;line-height:1.55;width:100%;resize:vertical;min-height:60px;outline:none}
+.oracle-inline-textarea::placeholder{color:rgba(168,152,120,.35)}
+.oracle-inline-textarea:focus{border-color:rgba(212,175,55,.35)}
+.oracle-inline-actions{display:flex;align-items:center;gap:10px;justify-content:center}
+.oracle-inline-ask-btn{background:rgba(60,30,80,.5);border:1px solid rgba(160,100,200,.2);border-radius:4px;padding:8px 16px;color:#b8a0d0;font-family:'Cinzel',serif;font-size:.6rem;cursor:pointer;transition:all .25s ease}
+.oracle-inline-ask-btn:hover:not(:disabled){border-color:rgba(160,100,200,.4);background:rgba(70,40,90,.6)}
+.oracle-inline-ask-btn:disabled{opacity:.4;cursor:default}
+.oracle-inline-submit{background:rgba(42,28,14,.7);border:1px solid rgba(212,175,55,.2);border-radius:4px;padding:8px 16px;color:#d4af37;font-family:'Cinzel',serif;font-size:.6rem;cursor:pointer;transition:all .25s ease}
+.oracle-inline-submit:hover:not(:disabled){border-color:rgba(212,175,55,.4);background:rgba(54,38,18,.8)}
+.oracle-inline-submit:disabled{opacity:.4;cursor:default}
+.oracle-inline-matches{margin-top:4px}
+.oracle-inline-error{text-align:center;padding:12px;color:#a06060;font-style:italic;font-size:.72rem}
+.oracle-inline-results{border-top:1px solid rgba(160,100,200,.15);margin-top:8px;padding-top:10px}
+.oracle-inline-results-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px}
+.oracle-inline-results-title{font-family:'Cinzel',serif;font-size:.52rem;text-transform:uppercase;letter-spacing:.06em;color:#b8a0d0}
+.oracle-inline-library-btn{background:none;border:1px solid rgba(160,100,200,.2);border-radius:4px;padding:4px 8px;color:#b8a0d0;cursor:pointer;transition:all .2s ease;display:flex;align-items:center;gap:4px;font-family:'Cinzel',serif;font-size:.48rem}
+.oracle-inline-library-btn:hover{border-color:rgba(160,100,200,.4);background:rgba(70,40,90,.3)}
+
+/* Eye error state */
+.grimoire-eye-wrapper[data-oracle="error"] .great-eye-svg{filter:drop-shadow(0 0 20px rgba(160,60,60,0.15))}
+.grimoire-eye-wrapper[data-oracle="error"] .eye-blink-overlay{background:linear-gradient(180deg,rgba(60,10,10,0.3) 0%,transparent 30%,transparent 70%,rgba(60,10,10,0.3) 100%)}
 .intake-oracle-results{border-top:1px solid rgba(160,100,200,.15);margin-top:12px;padding-top:12px}
 .intake-oracle-results .intake-results-title{color:#b8a0d0}
 .intake-oracle-results .intake-result{border-color:rgba(160,100,200,.1)}
@@ -6085,10 +6110,14 @@ header .header-sigil-text{display:none}
 .eye-stage {
   flex: 1;
   display: flex;
+  flex-direction: column;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-start;
   position: relative;
   min-height: 500px;
+  overflow-y: auto;
+  gap: 12px;
+  padding: 16px 16px 32px;
 }
 
 .eye-container {

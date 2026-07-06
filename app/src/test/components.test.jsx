@@ -172,7 +172,6 @@ describe('GrimoireStackLayout search results', () => {
         castEnabled={false}
         onToggleCast={() => {}}
         onWizardOpen={() => {}}
-        onIntakeOpen={() => {}}
         onCompareOpen={() => {}}
         onCastBones={() => {}}
         onExportJson={() => {}}

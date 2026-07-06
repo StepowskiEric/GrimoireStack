@@ -19,7 +19,6 @@ import { useSignals } from './hooks/useSignals.js';
 import { exportAsJson, exportAsMarkdown, copyToClipboard } from './utils/exporter.js';
 import ErrorBoundary from './components/ErrorBoundary.jsx';
 import CompareSpellsModal from './components/CompareSpellsModal.jsx';
-import ProblemIntakeModal from './components/ProblemIntakeModal.jsx';
 import SpellModal from './components/SpellModal.jsx';
 import StaleLinkBanner from './components/StaleLinkBanner.jsx';
 import InstallPrompt from './components/InstallPrompt.jsx';
@@ -53,8 +52,6 @@ function AppInner() {
   const [compareOpen, setCompareOpen] = useState(false);
   const [compareLeft, setCompareLeft] = useState(null);  // { spell, school }
   const [compareRight, setCompareRight] = useState(null);  // { spell, school }
-  const [intakeOpen, setIntakeOpen] = useState(false);
-
   const { favorites, isFavorited, toggleFavorite } = useFavorites();
   const { recent, record: recordRecent } = useRecentlyViewed();
   const { mood, recordView } = useEyeMood();
@@ -141,12 +138,11 @@ function AppInner() {
       let handled = false;
       if (shortcutsOpen) { setShortcutsOpen(false); handled = true; }
       if (compareOpen) { setCompareOpen(false); handled = true; }
-      if (intakeOpen) { setIntakeOpen(false); handled = true; }
       if (modal) { handleModalClose(); handled = true; }
       if (welcomeOpen) { handleWelcomeCloseRef.current(); handled = true; }
       return handled;
     },
-  }), [shortcutsOpen, compareOpen, intakeOpen, modal, handleModalClose, welcomeOpen]);
+  }), [shortcutsOpen, compareOpen, modal, handleModalClose, welcomeOpen]);
 
   useKeyboardShortcuts(keyboardHandlers);
 
@@ -259,7 +255,6 @@ function AppInner() {
         onToggleCast={toggleCast}
         audioEnabled={audioEnabled}
         onToggleAudio={toggleAudio}
-        onIntakeOpen={() => setIntakeOpen(true)}
         onCompareOpen={() => setCompareOpen(true)}
         onCompareTwo={handleCompareTwo}
         onCastBones={handleCastBones}
@@ -294,17 +289,6 @@ function AppInner() {
               setCompareOpen(false);
               setCompareLeft(null);
               setCompareRight(null);
-              if (spell && school) handleSpellClick(spell, school);
-            }}
-          />
-        </Suspense>
-      )}
-      {intakeOpen && (
-        <Suspense fallback={<div className="modal-suspense-fallback">Summoning...</div>}>
-          <ProblemIntakeModal
-            onClose={() => setIntakeOpen(false)}
-            onSelectSpell={(spell, school) => {
-              setIntakeOpen(false);
               if (spell && school) handleSpellClick(spell, school);
             }}
           />
