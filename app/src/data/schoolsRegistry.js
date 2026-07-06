@@ -830,6 +830,30 @@ const schools = [
         "skill": "skill-ab-evaluation",
         "effect": "A/B evaluate any GrimoireStack skill against a baseline using isolated subagents, 5 trials each, and an objective rubric. Measures real % improvement without touching current projects.",
         "status": "—"
+      },
+      {
+        "name": "E2E Cross-Check Protocol",
+        "skill": "e2e-crosscheck",
+        "effect": "Bidirectional cross-reference between E2E test selectors/assertions and source code. Verifies every test identifier still matches the code, every text assertion still renders, every navigation route still resolves, and every UI state/error path has test coverage. Catches silent failures: dead identifiers, drifted UI text, stale routes, orphaned tests, and ambiguous selectors. Run after refactoring, UI text changes, navigation restructuring, or any time E2E tests may have diverged from the code they test.",
+        "status": "—"
+      },
+      {
+        "name": "E2E Testing Philosophy & Architecture — Reference",
+        "skill": "e2e-testing-philosophy-and-architecture",
+        "effect": "Comprehensive reference for E2E testing mindset, architecture, and strategy — nothing framework-specific. Covers testing epistemology, 3-layer BDR architecture, risk-based prioritization, data realism principles, anti-patterns, heuristics, and suite management.",
+        "status": "—"
+      },
+      {
+        "name": "Mobile E2E Testing: The Hunter's Mindset",
+        "skill": "mobile-e2e-testing-enterprise-guide",
+        "effect": "Hunter's mindset for mobile E2E testing — think like a professional tester: what to test, how to catch real bugs, verify flows work, and avoid traps. Use when planning tests, reviewing coverage, debugging flakiness, or needing adversarial/edge-case ideas.",
+        "status": "—"
+      },
+      {
+        "name": "Premortem: E2E Test Audit Protocol",
+        "skill": "e2e-test-premortem",
+        "effect": "Premortem for E2E test changes. Run after writing or modifying E2E tests to audit coverage gaps, data realism, failure-mode coverage, and assertion quality before declaring done. Also run before writing E2E tests to map the flow and identify blind spots first.",
+        "status": "—"
       }
     ]
   },

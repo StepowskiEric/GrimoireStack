@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState, useMemo } from 'react';
+import { useEffect, useRef, useState, useMemo, useCallback } from 'react';
 import { grimoireIndex } from '../data/grimoireIndexInstance.js';
 import { WIZARD_DATA } from '../data/schools.js';
 import ModalEye from './ModalEye.tsx';
@@ -30,6 +30,9 @@ export default function ProblemIntakeModal({ onClose, onSelectSpell }) {
   const modalRef = useRef(null);
   const [query, setQuery] = useState('');
   const [activeCategory, setActiveCategory] = useState(null);
+  const [oracleResults, setOracleResults] = useState(null);
+  const [oracleLoading, setOracleLoading] = useState(false);
+  const [oracleError, setOracleError] = useState(null);
 
   useEffect(() => {
     const modal = modalRef.current;
@@ -107,6 +110,31 @@ export default function ProblemIntakeModal({ onClose, onSelectSpell }) {
     else onClose?.();
   };
 
+
+  const handleAskOracle = useCallback(async () => {
+    const q = query.trim();
+    if (!q) return;
+    setOracleLoading(true);
+    setOracleError(null);
+    setOracleResults(null);
+    try {
+      const res = await fetch('/api/recommend', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ query: q }),
+      });
+      if (!res.ok) {
+        const err = await res.json().catch(() => ({}));
+        throw new Error(err.error || `Server error (${res.status})`);
+      }
+      const data = await res.json();
+      setOracleResults(data.results || []);
+    } catch (err) {
+      setOracleError(err.message);
+    } finally {
+      setOracleLoading(false);
+    }
+  }, [query]);
   const handleChipClick = (catId) => {
     setActiveCategory(prev => prev === catId ? null : catId);
   };
@@ -166,6 +194,15 @@ export default function ProblemIntakeModal({ onClose, onSelectSpell }) {
               </button>
             )}
             <button
+              type="button"
+              className="intake-oracle-btn"
+              onClick={handleAskOracle}
+              disabled={!query.trim() || oracleLoading}
+              title={t('intakeOracle')}
+            >
+              {oracleLoading ? t('intakeOracleLoading') : t('intakeOracle')}
+            </button>
+            <button
               type="submit"
               className="intake-submit"
               disabled={matches.length === 0}
@@ -209,6 +246,43 @@ export default function ProblemIntakeModal({ onClose, onSelectSpell }) {
             </>
           )}
         </div>
+
+        {/* Oracle results — shown below local matches */}
+        {oracleError && (
+          <div className="intake-oracle-error">{t('intakeOracleError')} ({oracleError})</div>
+        )}
+        {oracleResults && oracleResults.length > 0 && (
+          <div className="intake-oracle-results">
+            <div className="intake-results-title">{t('intakeOracle')}</div>
+            <div className="intake-results-list">
+              {oracleResults.map((r, i) => {
+                const entry = grimoireIndex.resolveBySkill(r.skill);
+                if (!entry) return null;
+                return (
+                  <button
+                    key={r.skill}
+                    type="button"
+                    className="intake-result"
+                    onClick={() => handleOpenSpell(entry.spell)}
+                  >
+                    <span className="intake-result-rank">#{i + 1}</span>
+                    <span className="intake-result-symbol" aria-hidden="true"><SchoolSigil schoolId={entry.school.id} size={20} /></span>
+                    <span className="intake-result-body">
+                      <span className="intake-result-name">{r.name || entry.spell.name}</span>
+                      <span className="intake-result-effect">{r.reason || entry.spell.effect}</span>
+                      <span className="intake-result-school">
+                        {r.school || entry.school.name}
+                        {r.score != null && (
+                          <span className="intake-result-score"> — {t('intakeOracleScore')} {Math.round(r.score * 100)}%</span>
+                        )}
+                      </span>
+                    </span>
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+        )}
 
         {!matches.length && !activeCategory && (
           <div className="intake-examples">

@@ -204,3 +204,98 @@ describe('ProblemIntakeModal', () => {
     expect(bugChip.getAttribute('aria-pressed')).toBe('false');
   });
 });
+
+describe('ProblemIntakeModal — Oracle', () => {
+  beforeEach(() => {
+    vi.clearAllMocks();
+    global.fetch = vi.fn();
+  });
+
+  function getModal() {
+    return screen.getByRole('dialog', { name: /Describe your problem/i });
+  }
+
+  it('renders Ask the Oracle button disabled when query is empty', () => {
+    renderModal(<ProblemIntakeModal {...defaultProps} />);
+    const modal = getModal();
+    const oracleBtn = within(modal).getByRole('button', { name: /Ask the Oracle/i });
+    expect(oracleBtn).toBeVisible();
+    expect(oracleBtn.disabled).toBe(true);
+  });
+
+  it('enables Ask the Oracle button when query is typed', () => {
+    renderModal(<ProblemIntakeModal {...defaultProps} />);
+    const modal = getModal();
+    const textarea = within(modal).getByRole('textbox');
+    fireEvent.change(textarea, { target: { value: 'agents keep drifting' } });
+
+    const oracleBtn = within(modal).getByRole('button', { name: /Ask the Oracle/i });
+    expect(oracleBtn.disabled).toBe(false);
+  });
+
+  it('clicking oracle button calls fetch with the query', async () => {
+    global.fetch.mockResolvedValue({
+      ok: true,
+      json: async () => ({ results: [] }),
+    });
+
+    renderModal(<ProblemIntakeModal {...defaultProps} />);
+    const modal = getModal();
+    const textarea = within(modal).getByRole('textbox');
+    fireEvent.change(textarea, { target: { value: 'agents keep drifting' } });
+
+    const oracleBtn = within(modal).getByRole('button', { name: /Ask the Oracle/i });
+    fireEvent.click(oracleBtn);
+
+    await waitFor(() => {
+      expect(global.fetch).toHaveBeenCalledWith('/api/recommend', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ query: 'agents keep drifting' }),
+      });
+    });
+  });
+
+  it('renders oracle results when fetch returns data', async () => {
+    const mockResults = [
+      { skill: 'cognitive-bias-checklist', name: 'Cognitive Bias Checklist', school: 'Reasoning & Problem Solving', score: 0.94, reason: 'Helps check for cognitive biases causing drift' },
+      { skill: 'occams-razor', name: "Occam's Razor", school: 'Reasoning & Problem Solving', score: 0.87, reason: 'Simplest explanation keeps agents focused' },
+    ];
+    global.fetch.mockResolvedValue({
+      ok: true,
+      json: async () => ({ results: mockResults }),
+    });
+
+    renderModal(<ProblemIntakeModal {...defaultProps} />);
+    const modal = getModal();
+    const textarea = within(modal).getByRole('textbox');
+    fireEvent.change(textarea, { target: { value: 'agents keep drifting' } });
+
+    const oracleBtn = within(modal).getByRole('button', { name: /Ask the Oracle/i });
+    fireEvent.click(oracleBtn);
+
+    await waitFor(() => {
+      const refreshed = getModal();
+      expect(within(refreshed).getByText('Cognitive Bias Checklist')).toBeVisible();
+      expect(within(refreshed).getByText(/Match: 94%/)).toBeVisible();
+      expect(within(refreshed).getByText(/Helps check for cognitive biases/)).toBeVisible();
+    });
+  });
+
+  it('shows oracle error when fetch fails', async () => {
+    global.fetch.mockRejectedValue(new Error('Network error'));
+
+    renderModal(<ProblemIntakeModal {...defaultProps} />);
+    const modal = getModal();
+    const textarea = within(modal).getByRole('textbox');
+    fireEvent.change(textarea, { target: { value: 'agents keep drifting' } });
+
+    const oracleBtn = within(modal).getByRole('button', { name: /Ask the Oracle/i });
+    fireEvent.click(oracleBtn);
+
+    await waitFor(() => {
+      const refreshed = getModal();
+      expect(within(refreshed).getByText(/The Oracle is silent/)).toBeVisible();
+    });
+  });
+});

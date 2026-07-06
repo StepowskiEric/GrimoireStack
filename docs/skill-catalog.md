@@ -1618,3 +1618,45 @@ Skills for creating skills, integrating external systems, and development workfl
 **Use it when:** You want empirical proof that a skill actually improves outcomes vs. general knowledge.
 
 **Best for:** Skill quality benchmarking, evidence-based skill curation, measuring ROI of structured prompts.
+
+---
+
+### `testing/e2e-crosscheck/SKILL.md` · [protocol]
+
+**What it is:** A bidirectional cross-reference between E2E tests and source code. Six-pass matrix: identifiers (dead/ambiguous), text drift, route staleness, UI state coverage, error path coverage, and structural integrity (unjustified waits, orphaned tests, annotation drift).
+
+**Use it when:** After refactoring, UI text changes, navigation restructuring, or any time E2E tests may have diverged from the code they test.
+
+**Best for:** Catching silent test drift — dead accessibility IDs, stale deep links, untested error states, unjustified waits, orphaned test files.
+
+---
+
+### `testing/e2e-test-premortem/SKILL.md` · [protocol]
+
+**What it is:** A premortem-based audit for E2E test changes. Assumes the tests are insufficient and works backward to find the blind spot. Two branches: Author (before writing) and Auditor (after writing).
+
+**Use it when:** You've just written or modified E2E tests and need to audit coverage gaps, data realism, failure-mode coverage, and assertion quality before declaring done.
+
+**Best for:** Pre-merge E2E test review, catching coverage gaps before they ship, ensuring every test guards a named blind spot.
+
+---
+
+### `testing/e2e-testing-philosophy-and-architecture/SKILL.md` · [framework]
+
+**What it is:** A comprehensive reference for E2E testing mindset, architecture, and strategy — nothing framework-specific. Covers testing epistemology, 3-layer BDR architecture (Spec → Flow → POM), risk-based prioritization, data realism principles, anti-patterns, heuristics toolbox, and suite management.
+
+**Use it when:** You need a principled foundation before writing or reviewing any E2E tests, or when asked about E2E testing strategy and architecture decisions.
+
+**Best for:** Foundational reference, test strategy design, onboarding new team members to E2E philosophy, pre-load before using e2e-test-premortem or e2e-crosscheck.
+
+---
+
+### `testing/mobile-e2e-testing-enterprise-guide/SKILL.md` · [framework]
+
+**What it is:** The hunter's mindset for mobile E2E testing — professional tester heuristics (HICCUPPS, SFDPOT), adversarial thinking, cognitive bias traps, priority tiers (revenue → core → resilience → device), and enterprise patterns. Includes a companion reference file with full tables.
+
+**Use it when:** Planning mobile E2E tests, reviewing coverage, debugging flakiness, or needing adversarial/edge-case ideas.
+
+**Best for:** Mobile E2E test planning, test design review, flakiness investigation, adversarial test case generation.
+
+**Includes:** `reference/ref.md` — full HICCUPPS/SFDPOT tables, abuse-case checklist, edge cases, anti-patterns, CI pipeline tiers, enterprise patterns.

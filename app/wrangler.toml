@@ -1,0 +1,10 @@
+# wrangler.toml — Pages Functions configuration
+# Used for local dev and binding configuration.
+# The AI binding must also be configured in the Cloudflare dashboard:
+#   Pages > grimoirestack > Settings > Bindings > Add > Workers AI
+#   Variable name: AI
+
+pages_build_output_dir = "dist"
+
+[ai]
+binding = "AI"

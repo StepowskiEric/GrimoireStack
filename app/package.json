@@ -5,10 +5,11 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "node ../scripts/sync-all.mjs && node scripts/registry/index.mjs && node scripts/build-skill-map.mjs && npm run typecheck && vite build && node scripts/prerender.mjs && node scripts/build-sitemap.mjs && node scripts/build-rss.mjs",
+    "build": "node ../scripts/sync-all.mjs && node scripts/registry/index.mjs && node scripts/build-skill-map.mjs && node scripts/build-ai-catalog.mjs && npm run typecheck && vite build && node scripts/prerender.mjs && node scripts/build-sitemap.mjs && node scripts/build-rss.mjs",
     "build:sync": "node ../scripts/sync-all.mjs",
     "build:registry": "node scripts/registry/index.mjs",
     "build:vite": "vite build",
+    "build:catalog": "node scripts/build-ai-catalog.mjs",
     "build:prerender": "node scripts/prerender.mjs",
     "build:sitemap": "node scripts/build-sitemap.mjs",
     "preview": "vite preview",
