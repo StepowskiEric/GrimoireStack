@@ -9,6 +9,7 @@ import ApprenticeWelcome, { STORAGE_KEY as WELCOME_STORAGE_KEY } from './compone
 import GrimoireStackLayout from './components/GrimoireStackLayout.jsx';
 import { useSpellInteraction } from './hooks/useSpellInteraction.js';
 import { useFavorites } from './hooks/useFavorites.js';
+import { useFavoritesSync } from './hooks/useFavoritesSync.js';
 import { useRecentlyViewed } from './hooks/useRecentlyViewed.js';
 import { useMarginalia } from './hooks/useMarginalia.js';
 import { useKeyboardShortcuts } from './hooks/useKeyboardShortcuts.js';
@@ -52,7 +53,11 @@ function AppInner() {
   const [compareOpen, setCompareOpen] = useState(false);
   const [compareLeft, setCompareLeft] = useState(null);  // { spell, school }
   const [compareRight, setCompareRight] = useState(null);  // { spell, school }
-  const { favorites, isFavorited, toggleFavorite } = useFavorites();
+  const { favorites, isFavorited, toggleFavorite, setFavorites } = useFavorites();
+  const sync = useFavoritesSync({
+    favorites,
+    onMerge: setFavorites,
+  });
   const { recent, record: recordRecent } = useRecentlyViewed();
   const { mood, recordView } = useEyeMood();
   const marginalia = useMarginalia();
@@ -261,6 +266,7 @@ function AppInner() {
         onExportJson={handleExportJson}
         onExportMarkdown={handleExportMarkdown}
         onShowShortcuts={() => setShortcutsOpen(true)}
+        sync={sync}
         eyeMood={mood}
         onSpellView={recordView}
         filterResults={filter.results}

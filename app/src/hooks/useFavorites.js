@@ -3,7 +3,6 @@ import { grimoireIndex } from '../data/grimoireIndexInstance.js';
 import { useLocalStorageState } from './useLocalStorageState.js';
 
 const STORAGE_KEY = 'grimoire-favorites';
-const MAX_FAVORITES = 12;
 
 export function useFavorites() {
   const { value: favorites, setValue: setFavorites } = useLocalStorageState({
@@ -26,17 +25,12 @@ export function useFavorites() {
   );
 
   const toggleFavorite = useCallback((spellName, skill) => {
-    let capped = false;
     setFavorites((prev) => {
       const exists = prev.some((f) => f.skill === skill);
       if (exists) return prev.filter((f) => f.skill !== skill);
-      if (prev.length >= MAX_FAVORITES) {
-        capped = true;
-        return prev;
-      }
       return [...prev, { name: spellName, skill, addedAt: Date.now() }];
     });
-    return !capped; // true if added or removed, false if capped
+    return true;
   }, [setFavorites]);
 
   const findFavoriteSpell = useCallback((skill) => {

@@ -56,14 +56,14 @@ describe('useFavorites', () => {
     expect(result.current.isFavorited('debug-subagent')).toBe(true);
   });
 
-  it('caps favorites at 12', () => {
+  it('has no cap on favorites', () => {
     const { result } = renderHook(() => useFavorites());
     for (let i = 0; i < 14; i++) {
       act(() => {
         result.current.toggleFavorite(`Spell ${i}`, `skill-${i}`);
       });
     }
-    expect(result.current.favorites).toHaveLength(12);
+    expect(result.current.favorites).toHaveLength(14);
   });
 
   it('finds a favorite spell across schools', () => {

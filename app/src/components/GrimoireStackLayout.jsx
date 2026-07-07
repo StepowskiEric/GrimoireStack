@@ -84,6 +84,7 @@ export default function GrimoireStackLayout({
   onExportJson,
   onExportMarkdown,
   onShowShortcuts,
+  sync,
   filterResults: _filterResults,
   featuredSchools,
   eyeMood = 'neutral',
@@ -280,6 +281,7 @@ export default function GrimoireStackLayout({
             onShowShortcuts={onShowShortcuts}
             onExportJson={onExportJson}
             onExportMarkdown={onExportMarkdown}
+            sync={sync}
           />
         );
       case TABS.SEANCE:

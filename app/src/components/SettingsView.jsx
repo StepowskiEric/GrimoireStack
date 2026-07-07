@@ -23,6 +23,7 @@ export default function SettingsView({
   onShowShortcuts,
   onExportJson,
   onExportMarkdown,
+  sync,
 }) {
   const [activeSection, setActiveSection] = useState('language');
   const [importText, setImportText] = useState('');
@@ -140,6 +141,42 @@ export default function SettingsView({
                 <Icon name="file-import" size={16} /> {t('importBtn')}
               </button>
             </div>
+
+            <div className="settings-view__sync-group">
+              <h4>Cross-device binding</h4>
+              <p className="settings-view__option-hint">
+                {sync?.code
+                  ? 'Your circle is bound. Enter the same code on another device to merge your incantations.'
+                  : 'Bind your circle to a short code so it follows you between devices. No account required.'}
+              </p>
+
+              {sync?.code ? (
+                <SyncStatus
+                  code={sync.code}
+                  status={sync.status}
+                  lastSyncedAt={sync.lastSyncedAt}
+                  error={sync.error}
+                  onSyncNow={sync.syncNow}
+                  onDisconnect={async () => {
+                    if (confirm('Disconnect cross-device sync? Your local circle stays; the cloud copy will remain until overwritten by another code.')) {
+                      sync.disableSync();
+                    }
+                  }}
+                />
+              ) : (
+                <button
+                  className="settings-view__action-btn"
+                  type="button"
+                  onClick={() => {
+                    const newCode = sync.enableSync();
+                    navigator.clipboard?.writeText(newCode).catch(() => {});
+                  }}
+                  title="Generate a 16-character sync code"
+                >
+                  <Icon name="warded-seal" size={16} /> Generate sync code
+                </button>
+              )}
+            </div>
           </div>
         )}
 
@@ -196,6 +233,81 @@ export default function SettingsView({
             </div>
           </div>
         )}
+      </div>
+    </div>
+  );
+}
+
+function SyncStatus({ code, status, lastSyncedAt, error, onSyncNow, onDisconnect }) {
+  const [revealed, setRevealed] = useState(false);
+  const [copied, setCopied] = useState(false);
+
+  const masked = `${code.slice(0, 4)}-****-****-${code.slice(-4)}`;
+  const display = revealed ? code : masked;
+
+  const handleCopy = async () => {
+    try {
+      await navigator.clipboard.writeText(code);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 1400);
+    } catch {
+      // Clipboard blocked; user can still read the code.
+    }
+  };
+
+  const statusLabel = (() => {
+    if (status === 'syncing') return 'Syncing…';
+    if (status === 'error') return `Error: ${error || 'unknown'}`;
+    if (status === 'synced' && lastSyncedAt) {
+      const ago = Math.max(1, Math.round((Date.now() - lastSyncedAt) / 1000));
+      return `Synced ${ago < 60 ? `${ago}s ago` : `${Math.round(ago / 60)}m ago`}`;
+    }
+    return 'Idle';
+  })();
+  return (
+    <div className="settings-view__sync-status">
+      <div className="settings-view__sync-code-row">
+        <code className="settings-view__sync-code" data-testid="sync-code">{display}</code>
+        <button
+          className="settings-view__action-btn settings-view__action-btn--small"
+          type="button"
+          onClick={() => setRevealed((v) => !v)}
+          title={revealed ? 'Hide code' : 'Show code'}
+        >
+          {revealed ? 'Hide' : 'Show'}
+        </button>
+        <button
+          className="settings-view__action-btn settings-view__action-btn--small"
+          type="button"
+          onClick={handleCopy}
+          title="Copy code"
+        >
+          <Icon name="clipboard" size={14} /> {copied ? 'Copied' : 'Copy'}
+        </button>
+      </div>
+      <p
+        className={`settings-view__sync-status-text settings-view__sync-status-text--${status}`}
+        role="status"
+        aria-live="polite"
+      >
+        {statusLabel}
+      </p>
+      <div className="settings-view__sync-actions">
+        <button
+          className="settings-view__action-btn"
+          type="button"
+          onClick={onSyncNow}
+          disabled={status === 'syncing'}
+        >
+          <Icon name="sigil" size={14} /> Sync now
+        </button>
+        <button
+          className="settings-view__action-btn settings-view__action-btn--restore"
+          type="button"
+          onClick={onDisconnect}
+        >
+          Disconnect
+        </button>
       </div>
     </div>
   );

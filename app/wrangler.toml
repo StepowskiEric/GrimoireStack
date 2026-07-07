@@ -10,3 +10,11 @@ pages_build_output_dir = "dist"
 
 [ai]
 binding = "AI"
+
+# Cross-device favorites sync — KV namespace id is provisioned
+# once via `npx wrangler kv namespace create FAVORITES`. The
+# binding below wires that namespace into the Pages Function
+# in functions/api/favorites-sync.js.
+[[kv_namespaces]]
+binding = "FAVORITES"
+id = "a453372cb3eb4ee1a2492eb193194d97"

@@ -16,6 +16,7 @@ export const CURATED_OVERLAY = {
     "displayName": "Trace Sight",
     "trueName": "The Eye That Reads the Trace",
     "status": "Proven",
+    "note": "Polished effect description; tier unchanged.",
     "kins": [
       "bisect-debugging",
       "root-cause-analysis",
