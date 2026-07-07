@@ -33,11 +33,17 @@ export function useOracle() {
     setSource(null);
 
     try {
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), 15000);
+
       const res = await fetch('/api/recommend', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ query: q }),
+        signal: controller.signal,
       });
+      clearTimeout(timeoutId);
+
       if (!res.ok) {
         const err = await res.json().catch(() => ({}));
         throw new Error(err.error || `Server error (${res.status})`);
@@ -47,6 +53,7 @@ export function useOracle() {
       setSource('ai');
       setOracleState('answering');
     } catch (fetchErr) {
+      console.error('[oracle] askOracle failed', fetchErr);
       // Try local fallback
       setOracleState('error');
       try {
@@ -63,10 +70,10 @@ export function useOracle() {
           setSource('local');
           setOracleState('answering');
         } else {
-          setError(fetchErr.message);
+          setError(fetchErr.message || 'Unknown error');
         }
       } catch {
-        setError(fetchErr.message);
+        setError(fetchErr.message || 'Unknown error');
       }
     } finally {
       setLoading(false);
