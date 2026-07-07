@@ -10,6 +10,9 @@
  * can read/write that key. This is anonymous pairing, not real auth, and
  * that's the point — see SPEC for the threat model and tradeoffs.
  *
+ * Sync code alphabet/length are imported from the shared `sync-codes.js`
+ * module so this validator and the frontend generator can never drift.
+ *
  * Setup:
  *   1. Create the namespace once:
  *        npx wrangler kv namespace create FAVORITES
@@ -34,8 +37,8 @@
  * Bound at runtime: env.FAVORITES (KVNamespace)
  */
 
-const ALPHABET = 'abcdefghijkmnpqrstuvwxyz23456789'; // 32 chars, no 0/o/1/i/l
-const CODE_LEN = 16;
+import { ALPHABET, CODE_LEN, isValidSyncCode } from '../../src/data/sync-codes.js';
+
 const MAX_FAVORITES = 5000;     // soft cap; KV limit is 25 MiB
 const MAX_NAME_LEN = 120;
 const MAX_SKILL_LEN = 120;
@@ -57,16 +60,10 @@ function json(data, status = 200) {
   });
 }
 
-function isValidCode(code) {
-  return typeof code === 'string'
-    && code.length === CODE_LEN
-    && code.split('').every(c => ALPHABET.includes(c));
-}
-
 function isValidFavoritesShape(data) {
   if (!Array.isArray(data)) return false;
   if (data.length > MAX_FAVORITES) return false;
-  return data.every(f =>
+  return data.every((f) =>
     f !== null
     && typeof f === 'object'
     && typeof f.name === 'string' && f.name.length > 0 && f.name.length <= MAX_NAME_LEN
@@ -100,8 +97,8 @@ export async function onRequest(context) {
 
   const { op, code, data } = body || {};
 
-  if (!isValidCode(code)) {
-    return json({ error: 'Invalid sync code (must be 16 chars from a-z2-9)' }, 400);
+  if (!isValidSyncCode(code)) {
+    return json({ error: `Invalid sync code (must be ${CODE_LEN} chars from ${ALPHABET})` }, 400);
   }
 
   // Rate limiting note: a SYNC_WRITES RateLimiter binding (10 puts/deletes

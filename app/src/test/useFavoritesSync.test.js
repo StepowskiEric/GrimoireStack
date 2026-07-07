@@ -23,50 +23,39 @@ describe('useFavoritesSync', () => {
 
   it('starts with no sync code and idle status', () => {
     mockSyncApi(() => ({ data: null }));
-    const { result } = renderHook(() =>
-      useFavoritesSync({ favorites: [], onMerge: () => {} })
-    );
-    expect(result.current.code).toBeNull();
-    expect(result.current.status).toBe('idle');
-    expect(result.current.lastSyncedAt).toBeNull();
+    const { result } = renderHook(() => useFavoritesSync());
+    expect(result.current.sync.code).toBeNull();
+    expect(result.current.sync.status).toBe('idle');
+    expect(result.current.sync.lastSyncedAt).toBeNull();
   });
+
 
   it('generates a 16-character sync code from a 32-char alphabet', () => {
     mockSyncApi(() => ({ data: null }));
-    const { result } = renderHook(() =>
-      useFavoritesSync({ favorites: [], onMerge: () => {} })
-    );
+    const { result } = renderHook(() => useFavoritesSync());
     let code;
-    act(() => { code = result.current.enableSync(); });
-    expect(code).toMatch(/^[a-z2-9]+$/);
+    act(() => { code = result.current.sync.enableSync(); });
+    expect(code).toHaveLength(16);
+    expect(code).toMatch(/^[a-hjkmnp-z2-9]+$/);
   });
 
   it('persists the sync code in localStorage (JSON-encoded)', () => {
     mockSyncApi(() => ({ data: null }));
-    const { result } = renderHook(() =>
-      useFavoritesSync({ favorites: [], onMerge: () => {} })
-    );
-    act(() => { result.current.enableSync(); });
+    const { result } = renderHook(() => useFavoritesSync());
+    act(() => { result.current.sync.enableSync(); });
     const stored = localStorage.getItem('grimoire-sync-code');
-    // useLocalStorageState JSON.stringifies on write, so the value is
-    // stored as a quoted string. Decode before asserting on the code.
     const decoded = JSON.parse(stored);
     expect(decoded).toHaveLength(16);
-    expect(decoded).toMatch(/^[a-z2-9]+$/);
+    expect(decoded).toMatch(/^[a-hjkmnp-z2-9]+$/);
   });
 
   it('disables sync and clears in-memory + localStorage state', () => {
     mockSyncApi(() => ({ data: null }));
-    const { result } = renderHook(() =>
-      useFavoritesSync({ favorites: [], onMerge: () => {} })
-    );
-    act(() => { result.current.enableSync(); });
-    expect(result.current.code).toHaveLength(16);
-    act(() => { result.current.disableSync(); });
-    // After disable, in-memory state is null. The localStorage key may
-    // have a JSON-encoded "null" written by useLocalStorageState's
-    // useEffect, but the parse layer treats it as null.
-    expect(result.current.code).toBeNull();
+    const { result } = renderHook(() => useFavoritesSync());
+    act(() => { result.current.sync.enableSync(); });
+    expect(result.current.sync.code).toHaveLength(16);
+    act(() => { result.current.sync.disableSync(); });
+    expect(result.current.sync.code).toBeNull();
     const stored = localStorage.getItem('grimoire-sync-code');
     if (stored !== null) {
       expect(JSON.parse(stored)).toBeNull();
@@ -74,9 +63,9 @@ describe('useFavoritesSync', () => {
   });
 
   it('on mount with a code, pulls from cloud and merges into local', async () => {
-    const local = [{ name: 'Local Spell', skill: 'local-skill', addedAt: 100 }];
-    const cloud = [{ name: 'Cloud Spell', skill: 'cloud-skill', addedAt: 200 }];
-    const onMerge = vi.fn();
+    const cloud = [
+      { name: 'Cloud Spell', skill: 'cloud-skill', addedAt: 200 },
+    ];
     let putCalled = false;
 
     mockSyncApi((body) => {
@@ -84,14 +73,13 @@ describe('useFavoritesSync', () => {
       if (body.op === 'put') { putCalled = true; return { ok: true, syncedAt: 999 }; }
     });
 
-    localStorage.setItem('grimoire-sync-code', 'abcdefghijkmnpqr');
-    renderHook(() => useFavoritesSync({ favorites: local, onMerge }));
+    localStorage.setItem('grimoire-sync-code', 'abcdefghjkmnpqrs');
+    const { result } = renderHook(() => useFavoritesSync());
 
-    await waitFor(() => expect(onMerge).toHaveBeenCalled());
-    const merged = onMerge.mock.calls[0][0];
-    expect(merged).toHaveLength(2);
-    expect(merged.map((f) => f.skill).sort()).toEqual(['cloud-skill', 'local-skill']);
-    await waitFor(() => expect(putCalled).toBe(true));
+    await waitFor(() => expect(result.current.sync.status).toBe('synced'), { timeout: 2000 });
+    expect(result.current.favorites).toHaveLength(1);
+    expect(result.current.favorites[0].skill).toBe('cloud-skill');
+    expect(putCalled).toBe(true);
   });
 
   it('on sync error, sets status to error and surfaces the message', async () => {
@@ -102,38 +90,78 @@ describe('useFavoritesSync', () => {
       })
     );
 
-    localStorage.setItem('grimoire-sync-code', 'abcdefghijkmnpqr');
-    const { result } = renderHook(() =>
-      useFavoritesSync({ favorites: [], onMerge: () => {} })
-    );
+    localStorage.setItem('grimoire-sync-code', 'abcdefghjkmnpqrs');
+    const { result } = renderHook(() => useFavoritesSync());
 
-    await waitFor(() => expect(result.current.status).toBe('error'));
-    expect(result.current.error).toMatch(/Invalid sync code/);
+    await waitFor(() => expect(result.current.sync.status).toBe('error'), { timeout: 2000 });
+    expect(result.current.sync.error).toMatch(/Invalid sync code/);
   });
 
-  it('syncNow pulls, merges, and pushes in one round-trip', async () => {
-    const local = [{ name: 'A', skill: 'skill-a', addedAt: 100 }];
-    const cloud = [{ name: 'B', skill: 'skill-b', addedAt: 200 }];
-    const onMerge = vi.fn();
-    const calls = [];
-
+  it('toggleFavorite marks the local state dirty and triggers a debounced push', async () => {
+    let putCount = 0;
+    let lastPutData = null;
     mockSyncApi((body) => {
-      calls.push(body.op);
-      if (body.op === 'get') return { data: cloud };
-      if (body.op === 'put') return { ok: true, syncedAt: 1234 };
+      if (body.op === 'get') return { data: [] };
+      if (body.op === 'put') { putCount++; lastPutData = body.data; return { ok: true, syncedAt: 1000 + putCount }; }
     });
 
-    localStorage.setItem('grimoire-sync-code', 'abcdefghijkmnpqr');
-    const { result } = renderHook(() =>
-      useFavoritesSync({ favorites: local, onMerge })
-    );
+    localStorage.setItem('grimoire-sync-code', 'abcdefghjkmnpqrs');
+    const { result } = renderHook(() => useFavoritesSync());
 
-    await act(async () => { await result.current.syncNow(); });
+    await waitFor(() => expect(result.current.sync.status).toBe('synced'), { timeout: 2000 });
+    const initialPutCount = putCount;
 
-    expect(calls).toContain('get');
-    expect(calls).toContain('put');
-    expect(onMerge).toHaveBeenCalled();
-    expect(result.current.status).toBe('synced');
-    expect(result.current.lastSyncedAt).toBe(1234);
+    act(() => {
+      result.current.toggleFavorite('A', 'a-skill');
+    });
+    expect(result.current.favorites).toHaveLength(1);
+
+    await waitFor(() => expect(putCount).toBeGreaterThan(initialPutCount), { timeout: 3000 });
+    expect(lastPutData).toHaveLength(1);
+    expect(lastPutData[0].skill).toBe('a-skill');
+  });
+
+  it('merge keeps earliest addedAt when both local and cloud have the same skill', async () => {
+    const cloud = [
+      { name: 'Older', skill: 'same-skill', addedAt: 100 },
+    ];
+    let putData = null;
+    mockSyncApi((body) => {
+      if (body.op === 'get') return { data: cloud };
+      if (body.op === 'put') { putData = body.data; return { ok: true, syncedAt: 999 }; }
+    });
+
+    localStorage.setItem('grimoire-favorites', JSON.stringify([
+      { name: 'Newer', skill: 'same-skill', addedAt: 200 },
+    ]));
+    localStorage.setItem('grimoire-sync-code', 'abcdefghjkmnpqrs');
+    const { result } = renderHook(() => useFavoritesSync());
+
+    await waitFor(() => expect(result.current.sync.status).toBe('synced'), { timeout: 2000 });
+    // sameBySkill guard skips setFavorites when skill set is unchanged;
+    // verify the merge result via the put payload instead
+    expect(putData).toHaveLength(1);
+    expect(putData[0].addedAt).toBe(100);
+    expect(putData[0].name).toBe('Older');
+  });
+
+  it('enableSync resets initialized so the next code change re-pulls', async () => {
+    let getCalls = 0;
+    mockSyncApi((body) => {
+      if (body.op === 'get') { getCalls++; return { data: [] }; }
+      if (body.op === 'put') return { ok: true, syncedAt: Date.now() };
+    });
+
+    localStorage.setItem('grimoire-sync-code', 'abcdefghjkmnpqrs');
+    const { result } = renderHook(() => useFavoritesSync());
+
+    await waitFor(() => expect(result.current.sync.status).toBe('synced'), { timeout: 2000 });
+    expect(getCalls).toBe(1);
+
+    act(() => { result.current.sync.enableSync(); });
+    const newCode = result.current.sync.code;
+    expect(newCode).toHaveLength(16);
+
+    await waitFor(() => expect(getCalls).toBe(2), { timeout: 2000 });
   });
 });
