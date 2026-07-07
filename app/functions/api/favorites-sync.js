@@ -12,15 +12,33 @@
  *
  * Setup:
  *   1. Create the namespace once:
- *        npx wrangler kv:namespace create FAVORITES
+ *        npx wrangler kv namespace create FAVORITES
  *      Paste the returned `id` into `wrangler.toml` under the
  *      `[[kv_namespaces]] binding = "FAVORITES"` block.
- *   2. No secret env vars. The KV binding is configured via dashboard or wrangler.
+ *   2. The rate-limit binding (SYNC_WRITES) is configured in wrangler.toml
+ *      with [[ratelimits]] — no dashboard step required.
+ *   3. No secret env vars. The KV binding is configured via dashboard or wrangler.
  *
  * Free tier (2026): 100K reads/day, 1K writes/day, 1 GB storage,
  * 25 MiB max value. Per https://developers.cloudflare.com/kv/platform/limits/
  *
- * Bound at runtime: env.FAVORITES (KVNamespace)
+ * Rate limit: 10 writes (put/delete) per minute per sync code. Reads are
+ * not rate-limited (legitimate device-pairing reads are continuous). The
+ * limit fails open if the rate limiter binding is unreachable — the KV
+ * 1K writes/day free tier is the natural backstop.
+ *
+ * Threat model & accepted risks:
+ *   - The 16-char sync code is the only auth. Anyone with the code owns
+ *     that key's data. This is anonymous pairing, not real auth.
+ *   - CORS is `*` because the API uses body-based auth (code in JSON),
+ *     not cookies — there's no CSRF surface.
+ *   - Validation runs before KV access. Malformed bodies return 400,
+ *     never 500.
+ *   - Read operations are not rate-limited to avoid blocking device
+ *     pairing; if code enumeration becomes a concern, add a second
+ *     [[ratelimits]] block keyed by client IP.
+ *
+ * Bound at runtime: env.FAVORITES (KVNamespace), env.SYNC_WRITES (RateLimiter)
  */
 
 const ALPHABET = 'abcdefghijkmnpqrstuvwxyz23456789'; // 32 chars, no 0/o/1/i/l
@@ -28,12 +46,13 @@ const CODE_LEN = 16;
 const MAX_FAVORITES = 5000;     // soft cap; KV limit is 25 MiB
 const MAX_NAME_LEN = 120;
 const MAX_SKILL_LEN = 120;
-const MAX_PAYLOAD = 1_000_000;  // 1 MB hard ceiling per request
-
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
   'Access-Control-Allow-Methods': 'POST, OPTIONS',
   'Access-Control-Allow-Headers': 'Content-Type',
+  // Defense in depth: prevent MIME-sniffing of the JSON response. CSP
+  // and HSTS are the responsibility of the static asset hosting layer.
+  'X-Content-Type-Options': 'nosniff',
 };
 
 function json(data, status = 200) {
@@ -90,6 +109,22 @@ export async function onRequest(context) {
     return json({ error: 'Invalid sync code (must be 16 chars from a-z2-9)' }, 400);
   }
 
+  // Rate limit writes (put/delete) per sync code. Reads are deliberately
+  // not rate-limited — device pairing fires a get on every mount. Fails
+  // open if the binding is unavailable; the KV 1K writes/day free tier
+  // is the natural ceiling below this.
+  if (op === 'put' || op === 'delete') {
+    if (env.SYNC_WRITES) {
+      try {
+        const { success } = await env.SYNC_WRITES.limit({ key: code });
+        if (!success) {
+          return json({ error: 'Rate limit exceeded. Try again in a minute.' }, 429);
+        }
+      } catch (e) {
+        console.warn('rate limiter unavailable, failing open:', e.message);
+      }
+    }
+  }
   try {
     if (op === 'get') {
       const raw = await env.FAVORITES.get(code);

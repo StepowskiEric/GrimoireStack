@@ -1,4 +1,7 @@
 .worktrees/
+.env
+.env.local
+.env.*.local
 node_modules/
 # App build/output artifacts
 app/dist/
