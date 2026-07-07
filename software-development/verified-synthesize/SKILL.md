@@ -1,13 +1,12 @@
 ---
-name: verified-synthesize
-category: software-development
-description: "Use when code correctness must be proven, not tested — generate code + Dafny preconditions/postconditions from a natural language spec; companion script runs `dafny verify` for a machine-checkable proof."
+description: "Use when code correctness must be proven, not tested — critical bugs, pre-refactor spec locking, or API contracts requiring formal verification."
 version: 1.0
 tags: [formal-verification, Dafny, code-synthesis, correctness, provable]
-...
-
-
-
+triggers:
+  - Critical bugs: security, memory safety, financial calculations
+  - Pre-refactor: before changing a function, generate its Dafny spec to lock down behavior
+  - Bug reports with no test: generate a Dafny specification from the bug description, verify the fix
+  - API contracts: enforce pre/postconditions across module boundaries
 ---
 
 # Verified Code Synthesizer
@@ -23,13 +22,6 @@ Dafny is a verification-friendly language that compiles to Python, C#, Go, Java,
 - Automatic loop invariant inference for simple cases
 - Machine-checkable proofs via Z3 SMT solver (bundled with Dafny)
 - Readable error messages pointing to exact failing assertions
-
-## When to Use
-
-- **Critical bugs**: Security, memory safety, financial calculations
-- **Pre-refactor**: Before changing a function, generate its Dafny spec to lock down behavior
-- **Bug reports with no test**: Generate a Dafny specification from the bug description, verify the fix
-- **API contracts**: Enforce pre/postconditions across module boundaries
 
 ## Workflow
 
@@ -158,25 +150,6 @@ Output format:
 <python equivalent>
 ```
 
-## Integration with Scout
-
-Use Scout-Lite to find the existing function signature before generating:
-
-```python
-# 1. Scout finds the existing function
-results = search_files(pattern="def authenticate_user", target="files", path="src/")
-
-# 2. Read the file to understand the context
-content = read_file(results[0])
-
-# 3. Generate Dafny spec from the existing code
-result = subprocess.run([
-    "python", "verified-synthesize/scripts/dafny_verify.py",
-    "--spec", f"existing code: {content[:500]}",
-    "--language", "python",
-    "--verify-only"
-], capture_output=True, text=True)
-```
 
 ## Limitations
 

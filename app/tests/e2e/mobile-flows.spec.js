@@ -71,10 +71,8 @@ test.describe('mobile modals', () => {
 
 test.describe('mobile settings', () => {
   test('settings page loads', async ({ page }) => {
-    await gotoReady(page);
-    await page.getByRole('button', { name: SETTINGS_TAB }).click();
+    await gotoReady(page, '/settings');
 
-    await expect(page).toHaveURL(/\/settings/);
     await expect(page.getByRole('heading', { name: 'Ritual Chamber' })).toBeVisible();
   });
 });

@@ -1,15 +1,17 @@
 ---
 name: codebase-divide-conquer-search
-description: Hierarchical multi-agent search protocol for large codebases. Compresses codebase via summarization, partitions into candidate zones via semantic similarity, spawns parallel sub-agents for deep investigation, and synthesizes ranked results with confidence scores.
-...
-
-
-
+description: "Use when the codebase is too large to fit in context (>50K tokens), grep produces too many candidates, you need to find code by behavior not by name, or the search target could be in any of several modules."
+triggers:
+  - The codebase is too large to fit in the LLM context window (>50K tokens of relevant code)
+  - grep or simple semantic search returns too many candidates
+  - You need to find code by behavior, not by name (vocabulary mismatch)
+  - The search target could be in any of several modules or layers
+  - You have a bug report, feature request, or architectural question with no obvious starting file
 ---
 
 # Skill: Codebase Divide-and-Conquer Search
 
-## ⚠️ Two Usage Modes
+## Two Usage Modes
 
 This skill works in **two modes**. Pick the one that fits your setup.
 
@@ -34,43 +36,10 @@ pip install tree-sitter tree-sitter-python tree-sitter-javascript tree-sitter-ty
 
 Use this mode when you cannot run local Python or the codebase is small enough that the agent's built-in tools (search_files, code-review-graph MCP, delegate_task) are sufficient. The protocol below works identically — you manually perform the Comprehend and Divide phases using agent tools instead of the script.
 
-___
-
-
-## Purpose
-
-Find code in a codebase too large to fit in context — a bug to fix, a feature to modify, related code, or where an API is consumed.
-
-This protocol implements the convergent algorithm found across five recent research papers on LLM-based bug localization and multi-agent code search:
-
-| Paper | arXiv | Core Technique | Key Result |
-|-------|-------|---------------|------------|
-| Meta-RAG on Large Codebases | 2508.02611 | Multi-agent + hierarchical code summarization + RAG | 84.67% file-level localization; 79.8% codebase compression |
-| GenLoc (Explorative IRBL) | 2508.00253 | ReAct iterative exploration over semantic retrieval shortlist | 44-63% Accuracy@1; outperforms all baselines on SWE-bench |
-| AgentGroupChat-V2 | 2506.15451 | Divide-and-conquer task forest with parallel agent groups | 91.5% GSM8K; 64.6% improvement scaling 2→5 agents |
-| RepoAudit | 2501.18160 | Demand-driven path-sensitive analysis (Initiator→Explorer→Validator) | 78.43% precision, $2.54/project, 0.44hr/project |
-| Code-Craft (HCGS) | 2504.08975 | Hierarchical graph-based code summarization for retrieval | +82% Pass@1 on complex codebases vs flat embeddings |
-
-All five papers agree on the same 4-phase structure. This skill operationalizes it for agent execution.
-
-___
-
-
-## When to Use
-
-- The codebase is too large to fit in the LLM context window (>50K tokens of relevant code)
-- `grep` or simple semantic search returns too many candidates
-- You need to find code by behavior, not by name (vocabulary mismatch)
-- The search target could be in any of several modules or layers
-- You have a bug report, feature request, or architectural question with no obvious starting file
-
-**Do not use when:**
+Do not use when:
 - You already know the exact file and function name
 - The codebase is small (<20 files) and easily searchable
 - You are doing a simple text replacement across known files
-
-___
-
 
 ## The Convergent Algorithm
 
@@ -94,9 +63,6 @@ Why this works:
 - **AgentGroupChat-V2** proved divide-and-conquer parallelization scales sub-linearly
 - **RepoAudit** proved demand-driven traversal avoids path explosion
 - **Code-Craft** proved hierarchical graph summarization enables multi-resolution zoom
-
-___
-
 
 ## Phase 0: Setup / Comprehend
 
@@ -152,9 +118,6 @@ Use agent tools to build the summary tree manually:
 
 **Research constraint:** Meta-RAG achieves 79.8% compression by summarizing at file/class/function granularity. Do not skip the function level for files >200 lines.
 
-___
-
-
 ## Phase 1: Query Embedding & Divide
 
 **Goal:** Use semantic similarity to partition the codebase into candidate zones.
@@ -204,9 +167,6 @@ Output:
 - Max zones (sub-agents): 3-5 (AgentGroupChat-V2: diminishing returns after 5)
 - Context budget per zone: ~13K-50K tokens (Meta-RAG sweet spot)
 
-___
-
-
 ## Phase 2: Conquer (Parallel Sub-Agent Deep Dives)
 
 **Goal:** Spawn one sub-agent per zone to investigate deeply and return evidence.
@@ -239,9 +199,6 @@ Return format:
 - Iteration limit: 10 tool calls per sub-agent (GenLoc)
 - Always include file paths + line numbers in evidence
 - Sub-agents should use ReAct-style interleaving: reason → act (search/read) → observe → repeat
-
-___
-
 
 ## Phase 3: Synthesize
 
@@ -281,9 +238,6 @@ codebase_search_results:
       reason: "Only defines Session interface, no validation logic"
 ```
 
-___
-
-
 ## Phase 4: Deepen (Optional)
 
 **Goal:** If top result is uncertain, re-run Phases 1-3 at finer granularity.
@@ -301,71 +255,6 @@ Action:
 
 This implements the **GenLoc ReAct iterative deepening** and **Meta-RAG hierarchical drill-down**.
 
-___
-
-
-## State Machine
-
-### State 0 — Comprehend
-**Goal:** Build hierarchical summary tree.
-**Action:** Run script or manually summarize files.
-**Exit condition:** Summary tree exists covering all major modules.
-
-### State 1 — Divide
-**Goal:** Rank and partition into zones.
-**Action:** Embed query, score summaries, allocate to sub-agents.
-**Exit condition:** 3-5 non-overlapping zones identified, each fitting context budget.
-
-### State 2 — Conquer
-**Goal:** Parallel deep investigation.
-**Action:** Spawn sub-agents per zone with scoped mandates.
-**Exit condition:** All sub-agents returned findings JSON.
-
-### State 3 — Synthesize
-**Goal:** Merge, validate, rank.
-**Action:** Deduplicate, cross-validate, resolve contradictions, output ranked list.
-**Exit condition:** Final ranked findings with confidence scores.
-
-### State 4 — Deepen (Conditional)
-**Goal:** Refine if uncertain.
-**Entry condition:** Top confidence < 0.75 or near-ties exist.
-**Action:** Re-run States 1-3 on most promising zone at finer granularity.
-**Exit condition:** Confidence >= 0.75 or max 2 deepening iterations reached.
-
-___
-
-
-## Tool Gating
-
-### Comprehend phase
-Allowed:
-- Script execution (Mode A)
-- search_files, read_file (Mode B)
-- Diagnostic artifact writing
-
-Disallowed:
-- Code edits
-- test execution that mutates state
-
-### Divide phase
-Allowed:
-- Embedding / similarity scoring
-- search_files, query_graph
-- Zone assignment
-
-### Conquer phase
-Allowed:
-- delegate_task (sub-agents)
-- read_file, search_files, query_graph (inside sub-agents)
-
-### Synthesize phase
-Allowed:
-- read_file (for adjudication)
-- File edits only if the original task included fixing
-
-___
-
-
 ## Circuit Breakers
 
 Stop and reassess if:
@@ -373,9 +262,6 @@ Stop and reassess if:
 - All zones return empty findings (query may be malformed or target may not exist)
 - Sub-agents keep exploring outside their zones (zone boundaries were wrong)
 - After 2 deepening iterations, confidence is still < 0.75 (escalate to human)
-
-___
-
 
 ## Integration with Other Skills
 
@@ -386,9 +272,6 @@ ___
 | `how-to-solve-it-state-machine` | Apply before this skill to frame the search query precisely |
 | `tree-of-thoughts` | Use for branching hypotheses about where the target lives in Phase 1 |
 | `debug-subagent` | Use as the Phase 2 conquer agent template when the query is bug-specific |
-
-___
-
 
 ## Example: Bug Localization Walkthrough
 
@@ -423,9 +306,6 @@ Sub-agent for Zone 3 returns: `[]`
 ### Step 3 — Synthesize
 Top finding: `src/auth/config.ts:8` with confidence 0.98. Single source, no contradiction. No deepen needed.
 
-___
-
-
 ## Anti-Patterns
 
 **Don't:**
@@ -441,9 +321,6 @@ ___
 - Include line numbers in all evidence
 - Cross-validate findings across zones
 - Deepen when confidence is borderline
-
-___
-
 
 ## Script Reference
 

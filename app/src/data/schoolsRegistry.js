@@ -343,7 +343,7 @@ const schools = [
       {
         "name": "API Surface Scry",
         "skill": "api-surface-anchoring",
-        "effect": "Before writing code that calls any external library or API, verify its current API surface from authoritative docs. Prevents hallucinated signatures, wrong imports, and outdated parameters. Tracks verified surfaces in a durable artifact.",
+        "effect": "Use when using any external library, SDK, or API you are not 100% sure of, libraries released after your LLM's training cutoff, or niche/low-training-count libraries.",
         "status": "—"
       },
       {
@@ -355,25 +355,25 @@ const schools = [
       {
         "name": "Battalion Auto-Fix",
         "skill": "lint-battalion",
-        "effect": "Mass linter error remediation via auto-fix sprint + parallel subagent battalions. Handles 500+ trivial errors mechanically, escalates semantic errors to specialists, and enforces contamination checks.",
+        "effect": "Use when facing 50+ linter errors that are mostly mechanical, accumulated lint debt after a rule change or migration, or pre-commit cleanup where auto-fix did not resolve everything.",
         "status": "—"
       },
       {
         "name": "Coordinated Strike",
         "skill": "coordinated-change",
-        "effect": "Plan and execute changes across multiple related files as a coordinated atomic unit. For when a fix or feature requires touching 2+ files that must stay consistent — types, implementation, tests, schema, config.",
+        "effect": "Use when a fix or feature requires touching 2+ files that must stay consistent — types, implementation, tests, schema, config.",
         "status": "New"
       },
       {
         "name": "Critical System Interrogation",
         "skill": "critical-system-interrogation",
-        "effect": "Deep-dive investigation of critical system components (auth pipelines, payment flows, data validation) combining relentless questioning with extreme code quality standards. Use when you need to stress-test a critical system path for correctness, race conditions, security flaws, and architectural integrity.",
+        "effect": "Use when stress-testing a critical system path (auth pipelines, payment flows, data validation) for correctness, race conditions, security flaws, and architectural integrity.",
         "status": "New"
       },
       {
         "name": "Deployment Gate",
         "skill": "pre-deployment-gate",
-        "effect": "Complete pre-push/pre-deploy checklist combining LLM Pre-Push Review with Vibe Coding Security Hardening. 7-pass protocol: execution grounding, security surface, contextual correctness, structural quality, integration points, production hardening, secrets audit.",
+        "effect": "Use before deploying any code to production or before pushing AI-authored code.",
         "status": "—",
         "combos": [
           "Security Warding",
@@ -385,19 +385,19 @@ const schools = [
       {
         "name": "Diagnostics Aggregator",
         "skill": "dev-diagnostics-mcp",
-        "effect": "MCP server aggregating lint, test, build, and type-check diagnostics across tools. Returns structured JSON issues with severity, category, and contamination checks.",
+        "effect": "Use when running diagnostics across multiple tools (eslint, tsc, vitest, pytest, biome, ruff) or comparing before/after fix diagnostics for contamination.",
         "status": "—"
       },
       {
         "name": "Divide & Search",
         "skill": "codebase-divide-conquer-search",
-        "effect": "Hierarchical multi-agent search protocol for large codebases. Compresses codebase via summarization, partitions into candidate zones via semantic similarity, spawns parallel sub-agents for deep investigation, and synthesizes ranked results with confidence scores.",
+        "effect": "Use when the codebase is too large to fit in context (>50K tokens), grep produces too many candidates, you need to find code by behavior not by name, or the search target could be in any of several modules.",
         "status": "—"
       },
       {
         "name": "Git Surgery",
         "skill": "git-surgery",
-        "effect": "Recover from common local git disasters fast. Diagnose repo state, apply the correct recovery protocol, and avoid making things worse.",
+        "effect": "Use when the repo is in a state you don't fully understand, git status output scares you, or you need to recover from a local git disaster.",
         "status": "—"
       },
       {
@@ -415,7 +415,7 @@ const schools = [
       {
         "name": "Review Ladder Plus",
         "skill": "review-ladder-plus",
-        "effect": "Rigorous multi-layer code review process with dual specialized reviewers, forced test generation, and \"explain why it's safe\" justification gate for Critical/High findings. Turns casual self-review into production-grade QA.",
+        "effect": "Use after completing any non-trivial coding task, before merging code that touches security/auth/data/concurrency, or when upgrading from casual self-review to production-grade QA.",
         "status": "—"
       },
       {
@@ -427,13 +427,13 @@ const schools = [
       {
         "name": "Verified API Workflow",
         "skill": "verified-api-workflow",
-        "effect": "Hybrid of api-surface-anchoring + hallucination-anchor-chain. Every verified API surface entry becomes an anchor. Code using external APIs is fully traceable to docs you actually checked.",
+        "effect": "Use when writing code that calls external libraries/APIs — every external API call must be traceable to a doc you actually checked.",
         "status": "—"
       },
       {
         "name": "Verified Synthesis",
         "skill": "verified-synthesize",
-        "effect": "Use when code correctness must be proven, not tested — generate code + Dafny preconditions/postconditions from a natural language spec; companion script runs `dafny verify` for a machine-checkable proof.",
+        "effect": "Use when code correctness must be proven, not tested — critical bugs, pre-refactor spec locking, or API contracts requiring formal verification.",
         "status": "—"
       }
     ]
@@ -960,7 +960,7 @@ const schools = [
       {
         "name": "Bisect Divination",
         "skill": "bisect-debugging",
-        "effect": "Isolate the exact commit that introduced a bug using binary search through git history. The fastest way to find \"what changed\" when tests used to pass.",
+        "effect": "Isolate the exact commit that introduced a bug using binary search through git history. The fastest way to find 'what changed' when tests used to pass.",
         "status": "Proven",
         "note": "+9.9% speed",
         "combos": [
@@ -979,7 +979,7 @@ const schools = [
       {
         "name": "Debug Familiar",
         "skill": "debug-subagent",
-        "effect": "A dedicated debugging subagent that must be consulted before making code edits. Wraps debugger complexity behind natural-language queries and enforces \"debug before edit\" workflow. Based on Debug2Fix research (+13-22% bug fix rate).",
+        "effect": "A dedicated debugging subagent that must be consulted before making code edits. Wraps debugger complexity behind natural-language queries and enforces 'debug before edit' workflow. Based on Debug2Fix research (+13-22% bug fix rate).",
         "status": "Proven",
         "combos": [
           "Instrumentation Charm",
@@ -1022,7 +1022,7 @@ const schools = [
       {
         "name": "Iterative Mend",
         "skill": "iterative-patch-repair",
-        "effect": "Loop of generate patch → run test → capture runtime state → refine patch. Max N iterations with patch augmentation to avoid overfitting.",
+        "effect": "Loop of generate patch → run test → capture runtime state → refine patch. Max N iterations with patch augmentation to avoid overfitting. Use when first patch attempt failed, bug has multiple plausible fixes, or test feedback reveals the fix was close but not quite right.",
         "status": "Proven",
         "trueName": "The Mend That Mends Itself",
         "kins": [
@@ -1059,7 +1059,7 @@ const schools = [
       {
         "name": "Pipeline of Restoration",
         "skill": "debug-to-fix-pipeline",
-        "effect": "Use when debugging is stalling — 6-phase pipeline that increases evidence quality each phase while cutting token waste. Sequences data → hypothesis → isolation → exploitation → repair → verification.",
+        "effect": "6-phase pipeline that increases evidence quality each phase while cutting token waste. Sequences data → hypothesis → isolation → exploitation → repair → verification. Use when debugging is stalling, multi-file bugs need runtime state, or first patch attempt failed.",
         "status": "Hybrid",
         "combos": [
           "Spectral Analysis",
@@ -1080,7 +1080,7 @@ const schools = [
       {
         "name": "Purify Vision",
         "skill": "purify-test-output",
-        "effect": "Slice failing test output to only failure-relevant lines before showing to the LLM. Removes noise and focuses attention on the actual bug.",
+        "effect": "Use when failing test output contains >50% framework noise (site-packages, node_modules) that drowns out user code, or when multiple tests fail and you need to isolate the most relevant failure first.",
         "status": "Proven",
         "combos": [
           "Instrumentation Charm",
@@ -1098,7 +1098,7 @@ const schools = [
       {
         "name": "Root Cause Revelation",
         "skill": "root-cause-analysis",
-        "effect": "Use when a bug must be fixed, not patched — distinguish symptoms from causes, verify causal chains, fix the underlying defect. Stops recurring regressions caused by workaround hacks.",
+        "effect": "Distinguish symptoms from causes, verify causal chains, fix the underlying defect. Stops recurring regressions caused by workaround hacks. Use when a bug returns after being 'fixed', multiple symptoms share a cause, or a fix in one area breaks another.",
         "status": "Framework",
         "combos": [
           "Occam\\'s Verdict",
@@ -1117,7 +1117,7 @@ const schools = [
       {
         "name": "Spectral Reasoning",
         "skill": "specter",
-        "effect": "Abduce the bug — generate competing hypotheses, locate code by structural relationship, then disconfirm until one survivor remains. Use when the crash site is not the cause, the bug is \"weird,\" or your first instinct is suspect.",
+        "effect": "Abduce the bug — generate competing hypotheses, locate code by structural relationship, then disconfirm until one survivor remains. Use when the crash site is not the cause, the bug is 'weird,' or your first instinct is suspect.",
         "status": "—",
         "trueName": "The Ghost That Hunts",
         "kins": [
@@ -1142,7 +1142,7 @@ const schools = [
       {
         "name": "Trace Sight",
         "skill": "log-trace-correlation",
-        "effect": "Map error logs and stack traces to source code to identify root cause and suggest fixes.",
+        "effect": "Map error logs and stack traces to source code to identify root cause and suggest fixes. Use when you have an error log with a stack trace and need to determine which file, function, and line caused the failure.",
         "status": "Proven",
         "note": "Polished effect description; tier unchanged.",
         "combos": [

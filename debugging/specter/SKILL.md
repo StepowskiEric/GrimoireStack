@@ -1,6 +1,6 @@
 ---
 name: specter
-description: Abduce the bug — generate competing hypotheses, locate code by structural relationship, then disconfirm until one survivor remains. Use when the crash site is not the cause, the bug is "weird," or your first instinct is suspect.
+description: "Abduce the bug — generate competing hypotheses, locate code by structural relationship, then disconfirm until one survivor remains. Use when the crash site is not the cause, the bug is 'weird,' or your first instinct is suspect."
 triggers:
   - Multiple plausible causes and your first guess is suspect
   - Crash site is not the root cause (deferred execution, async, state machine)

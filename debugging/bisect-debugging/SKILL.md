@@ -1,34 +1,18 @@
 ---
 name: bisect-debugging
-description: Isolate the exact commit that introduced a bug using binary search through git history. The fastest way to find "what changed" when tests used to pass.
+description: "Isolate the exact commit that introduced a bug using binary search through git history. The fastest way to find 'what changed' when tests used to pass."
+triggers:
+  - Tests pass on an older commit but fail on HEAD
+  - Feature worked yesterday but is broken today
+  - Need the exact change that caused a regression
+  - Multiple commits could be the culprit
 category: debugging
 tags: [debugging, git, bisect, regression, testing]
 author: empirical-testing
 version: 1.0.0
-...
-
-
-
 ---
 
 # Bisect Debugging
-
-## When to Use
-
-- Tests pass on an older commit but fail on HEAD
-- A feature worked yesterday but is broken today
-- You need to find the **exact change** that caused a regression
-- Multiple commits could be the culprit and you want to avoid checking each one
-
-**Don't use when:**
-- The bug is in uncommitted local changes (use `git diff` instead)
-- The bug is environmental (not code-related)
-- You don't have a reproducible test or symptom
-
-___
-
-
-## Core Method
 
 Binary search through git history to find the first bad commit.
 
@@ -41,9 +25,6 @@ Step 1: Test middle commit
 Step 2: If bad, search left half. If good, search right half.
 Step 3: Repeat until adjacent commits (good, bad) found
 ```
-
-___
-
 
 ## State Machine
 
@@ -63,32 +44,22 @@ ___
 
 **Exit Condition:** Have one `good` and one `bad` commit hash.
 
-___
-
+---
 
 ### State 2: Bisect (Manual or Automated)
 
 **Option A: Git Bisect (Automated)**
 
 ```bash
-# Start bisect session
 git bisect start
-
-# Mark current HEAD as bad
 git bisect bad
-
-# Mark known good commit
 git bisect good <commit-hash>
-
 # Git checks out a middle commit automatically
 # Run your test, then tell git:
 git bisect good   # if test passes
 git bisect bad    # if test fails
-
 # Repeat until git reports:
 # "<commit-hash> is the first bad commit"
-
-# Clean up
 git bisect reset
 ```
 
@@ -97,49 +68,26 @@ git bisect reset
 Use when `git bisect` is unavailable or you need more control:
 
 ```bash
-# Count commits between good and bad
 git log --oneline <good>..<bad> | wc -l
-
-# If 10 commits, check commit at index 5
 git log --oneline --reverse <good>..<bad> | sed -n '5p'
-
-# Check out that commit
 git checkout <middle-commit-hash>
-
 # Run test, decide good/bad, repeat on appropriate half
 ```
 
 **Exit Condition:** First bad commit identified.
 
-___
-
+---
 
 ### State 3: Analyze the Culprit Commit
 
 **Goal:** Understand what changed and why it broke things.
 
 **Actions:**
-1. Show the commit:
-   ```bash
-   git show <bad-commit-hash>
-   ```
-
+1. Show the commit: `git show <bad-commit-hash>`
 2. Read the commit message → does it claim to fix something related?
-
 3. Look at the diff → what files changed? How many lines?
-
-4. Check if the commit was a merge:
-   ```bash
-   git log --merges <bad-commit-hash>~1..<bad-commit-hash>
-   ```
-
-5. If merge, bisect into the merge:
-   ```bash
-   git bisect start
-   git bisect bad <bad-commit-hash>
-   git bisect good <good-commit-hash>
-   git bisect run <test-command>
-   ```
+4. Check if the commit was a merge: `git log --merges <bad-commit-hash>~1..<bad-commit-hash>`
+5. If merge, bisect into the merge: `git bisect run <test-command>`
 
 **Key Questions:**
 - Was this commit supposed to touch the failing area?
@@ -148,8 +96,7 @@ ___
 
 **Exit Condition:** Understand the root cause of the regression.
 
-___
-
+---
 
 ### State 4: Fix or Escalate
 
@@ -165,8 +112,7 @@ ___
 
 **Exit Condition:** Bug is fixed and tests pass.
 
-___
-
+---
 
 ## Speed Tips
 
@@ -186,8 +132,7 @@ git bisect run npm test
 # Fully automated — walks away and comes back to the answer
 ```
 
-___
-
+---
 
 ## Common Pitfalls
 
@@ -197,18 +142,7 @@ ___
 4. **Build steps required** → Some commits need `npm install` or rebuild between checkouts. Account for this.
 5. **Submodules or generated files** → Ensure clean state between checkouts: `git clean -fd` (use with caution).
 
-___
-
-
-## Definition of Done
-
-- First bad commit identified with `git bisect` or manual binary search
-- Commit diff reviewed and understood
-- Root cause documented
-- Fix applied and verified with tests
-
-___
-
+---
 
 ## Example
 

@@ -1,6 +1,12 @@
 ---
 name: occam-root-cause
 description: "Combo — Root Cause Analysis traces causal chains backward from a symptom; Occam's Razor selects the simplest root cause from competing candidates. Prefers a single verified cause over a complex multi-factor explanation unless the evidence requires it."
+triggers:
+  - RCA has produced multiple candidate root causes
+  - 5 Whys branched into different causal chains
+  - Ishikawa diagram has multiple plausible causes across different categories
+  - Competing root causes differ substantially in complexity
+  - Tempted to accept a "multiple contributing factors" explanation without testing whether a single root cause suffices
 ---
 
 # Skill: Occam's Razor + Root Cause Analysis
@@ -14,22 +20,6 @@ This combo makes Occam's Razor the **root cause selection criterion**:
 > Among root causes that fit all the evidence, prefer the simplest causal chain.
 
 A single verified root cause is better than a plausible multi-factor explanation. Multi-factor explanations must earn their complexity by demonstrating that no single cause suffices.
-
----
-
-## When to Use
-
-Use this combo when:
-- RCA has produced multiple candidate root causes
-- the 5 Whys branched into different causal chains
-- the Ishikawa diagram has multiple plausible causes across different categories
-- competing root causes differ substantially in complexity
-- you are tempted to accept a "multiple contributing factors" explanation without testing whether a single root cause suffices
-
-Do not use when:
-- RCA has produced a single clear root cause with strong causal evidence
-- the problem is genuinely multi-causal (multiple independent failures must coincide)
-- you are still in the evidence-gathering phase of RCA
 
 ---
 
@@ -215,22 +205,3 @@ Multi-causal explanations are rare. Default to single-cause. Escalate to multi-c
 - **specter** — specter generates hypotheses structurally; this combo picks the simplest verified root cause
 - **pre-mortem** — run pre-mortem on the winning root cause before committing to the fix
 - **occam-mcts** — use occam-mcts to explore fix branches; use this combo to determine which root cause the fix should address
-
----
-
-## Definition of Done
-
-This combo was applied correctly when:
-- RCA was completed through candidate root cause identification
-- All candidate root causes were listed with their full causal chains
-- Each candidate was checked against all confirmed evidence before ranking
-- Causal chains were ranked by simplicity (fewest steps, fewest independent new entities)
-- The simplest surviving candidate was verified with a falsification experiment
-- Multi-causal explanations were only accepted after single-cause was falsified
-- The final root cause is the simplest sufficient explanation, not the most comprehensive
-
----
-
-## Final Instruction
-
-Trace the chain back. List every candidate cause. Pick the simplest one that fits. Verify it before you fix. Multi-causal explanations are expensive — make them prove they are necessary.

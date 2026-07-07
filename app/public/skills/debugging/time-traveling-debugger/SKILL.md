@@ -2,14 +2,15 @@
 source: "GrimoireStack"
 name: time-traveling-debugger
 category: debugging
-description: When a bug occurs, record a deterministic execution trace forward, then replay it in reverse from the crash point to find the exact line where state first diverged. Spawns 'past self' and 'future self' that meet at the divergence.
+description: "When a bug occurs, record a deterministic execution trace forward, then replay it in reverse from the crash point to find the exact line where state first diverged. Spawns 'past self' and 'future self' that meet at the divergence."
+triggers:
+  - Runtime error or crash with a stack trace where the error message doesn't immediately suggest the root cause
+  - Value that is clearly wrong (None instead of a dict, empty instead of populated) but don't know where it got set
+  - Bug that "fixes itself" when you add print statements (Heisenbug) — the trace approach is non-invasive
+  - Reproducible crashes where the trace length is manageable (<10K lines executed)
 version: 1.0.0
 priority: high
 tags: [debugging, time-travel, reverse-execution, trace, state-divergence, bytecode]
-...
-
-
-
 ---
 
 # ⚡ The Time-Traveling Debugger
@@ -30,20 +31,6 @@ They **meet** at the line where state diverged — that's the root cause.
 - **Reverse-execution debugging** (e.g., UndoDB, rr, GDB reverse-step): deterministic recording + replay is a proven technique that shifts debugging from "guess and check" to "walk backward from the crash."
 - **Delta debugging** (Zeller, 1999): The minimal difference between a passing and failing execution is the root cause. This skill applies that principle to *trace data* rather than program inputs.
 - **`sys.settrace`** (Python stdlib): Per-line call tracing is zero-dependency and deterministic. Each call frame + line number + local state snapshot forms a complete execution trace.
-
-## When to Use
-
-- A runtime error or crash with a stack trace — and the error message doesn't immediately suggest the root cause
-- A value that is clearly wrong (None instead of a dict, empty instead of populated) but you don't know where it got set
-- A bug that "fixes itself" when you add print statements (Heisenbug) — the trace approach is non-invasive
-- Reproducible crashes where the trace length is manageable (<10K lines executed)
-
-## When NOT to Use
-
-- Trivial bugs where the error message points directly to the problem
-- Performance-critical tracing on loops exceeding 100K iterations (trace file blows up)
-- Non-deterministic bugs (race conditions, network timing, random seeds) — traces capture one execution path, not all possibilities
-- Production environments where `sys.settrace` is too slow (use structured logging instead)
 
 ## Companion Script
 
@@ -216,44 +203,29 @@ Analyze an existing trace file from crash point backward.
 ## Companion Script Reference
 
 ### `trace`
-
 ```bash
 python time_travel.py trace <script> [--args "args"] [--output trace.jsonl] [--max-steps 10000] [--max-locals-size 1024]
 ```
 
-Records execution trace via `sys.settrace`.
-
 ### `rewind`
-
 ```bash
 python time_travel.py rewind <trace.jsonl> --crash-line <N> --expected "<description>"
 ```
 
-Walks trace backward from crash line, finds divergence point, outputs analysis.
-
 ### `diagnose`
-
 ```bash
 python time_travel.py diagnose <script> [--args "args"] [--expected "description"]
 ```
 
-Combines `trace` + `rewind` in one command.
-
 ### `inspect`
-
 ```bash
 python time_travel.py inspect <trace.jsonl> [--anomalies]
 ```
 
-Shows trace summary or anomaly scan.
-
 ### `diff`
-
 ```bash
 python time_travel.py diff <passing.jsonl> <failing.jsonl>
 ```
-
-Compares two traces to find the first step where they diverge.
 
 ## Usage Example
 

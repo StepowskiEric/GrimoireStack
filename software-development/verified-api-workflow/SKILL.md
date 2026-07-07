@@ -1,30 +1,20 @@
 ---
 source: "GrimoireStack"
-name: verified-api-workflow
-category: software-development
-description: Hybrid of api-surface-anchoring + hallucination-anchor-chain. Every verified API surface entry becomes an anchor. Code using external APIs is fully traceable to docs you actually checked.
-...
-
-
-
+description: "Use when writing code that calls external libraries/APIs — every external API call must be traceable to a doc you actually checked."
+triggers:
+  - Writing code that calls external libraries/APIs
+  - Building against APIs that change frequently (FastAPI, httpx, newer frameworks)
+  - Any task where API hallucination would waste time debugging
+  - Code review — verify someone else's API usage
 ---
 
 # Verified API Workflow
-
-## Objective
 
 Combine `api-surface-anchoring` and `hallucination-anchor-chain` into a single workflow where every external API call in your code is:
 1. Verified against current docs (api-surface-anchoring)
 2. Anchored as a claim with a source (hallucination-anchor-chain)
 
 Result: **100% of external API calls are traceable to a doc you actually checked.**
-
-## When to Use
-
-- Writing code that calls external libraries/APIs
-- Building against APIs that change frequently (FastAPI, httpx, newer frameworks)
-- Any task where API hallucination would waste time debugging
-- Code review — verify someone else's API usage
 
 ## Workflow (Strictly Follow)
 

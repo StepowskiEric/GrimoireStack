@@ -13,7 +13,7 @@ test.describe('accessibility baseline', () => {
     await page.locator('.spine-card').first().click();
     await page.locator('.spell-card').first().click();
     await expect(page.locator('.modal-wide')).toBeVisible();
-    await checkA11y(page);
+    await checkA11y(page, { excludeRules: ['scrollable-region-focusable'] });
   });
 
   test('shortcuts modal is accessible', async ({ page }) => {

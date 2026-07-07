@@ -26,7 +26,6 @@ function mergeFavorites(local, cloud) {
   return Array.from(bySkill.values());
 }
 
-
 async function callSyncApi({ op, code, data }) {
   const res = await fetch(SYNC_API_URL, {
     method: 'POST',
@@ -68,6 +67,7 @@ export function useFavoritesSync() {
   const dirtyRef = useRef(false);
   const initializedRef = useRef(false);
   const favoritesRef = useRef(favorites);
+  const prevCodeRef = useRef(code);
 
   useEffect(() => { favoritesRef.current = favorites; });
 
@@ -88,6 +88,7 @@ export function useFavoritesSync() {
     setStatus('idle');
     setError(null);
     setDirty(false);
+    setLastSyncedAt(null);
     setCodeValue(newCode);
     return newCode;
   }, [setCodeValue]);
@@ -105,58 +106,79 @@ export function useFavoritesSync() {
     setDirty(false);
   }, [setCodeValue]);
 
-  // Effect 1: on code change, pull cloud state, merge with local, push merged.
+  // Single effect: on code change, pull cloud state and merge.
+  // After initialization, schedule a debounced push when dirty.
   useEffect(() => {
     if (!code) return undefined;
-    initializedRef.current = false;
-    let cancelled = false;
 
-    (async () => {
+    const codeJustChanged = prevCodeRef.current !== code;
+    prevCodeRef.current = code;
+
+    let cancelled = false;
+    let pushTimer = null;
+
+    const schedulePush = () => {
+      if (pushTimer) clearTimeout(pushTimer);
+      pushTimer = setTimeout(async () => {
+        if (cancelled) return;
+        try {
+          await callSyncApi({ op: 'put', code, data: favoritesRef.current });
+          if (cancelled) return;
+          dirtyRef.current = false;
+          setDirty(false);
+          setLastSyncedAt(Date.now());
+          setStatus('synced');
+        } catch (e) {
+          if (cancelled) return;
+          setError(e.message);
+          setStatus('error');
+        } finally {
+          pushTimer = null;
+        }
+      }, PUSH_DEBOUNCE_MS);
+    };
+
+    if (codeJustChanged || !initializedRef.current) {
+      const wasDirty = dirtyRef.current;
+      initializedRef.current = false;
+      dirtyRef.current = false;
+      setDirty(false);
       setStatus('syncing');
       setError(null);
-      try {
-        const res = await callSyncApi({ op: 'get', code });
-        if (cancelled) return;
-        const cloud = Array.isArray(res.data) ? res.data : [];
-        const currentFavorites = favoritesRef.current;
-        const merged = mergeFavorites(currentFavorites, cloud);
-        setFavorites(merged);
-        await callSyncApi({ op: 'put', code, data: merged });
-        if (cancelled) return;
-        initializedRef.current = true;
-        dirtyRef.current = false;
-        setDirty(false);
-        setLastSyncedAt(Date.now());
-        setStatus('synced');
-      } catch (e) {
-        if (cancelled) return;
-        setError(e.message);
-        setStatus('error');
-      }
-    })();
 
-    return () => { cancelled = true; };
-  }, [code, setFavorites]);
+      (async () => {
+        try {
+          const res = await callSyncApi({ op: 'get', code });
+          if (cancelled) return;
+          const cloud = Array.isArray(res.data) ? res.data : [];
+          const merged = mergeFavorites(favoritesRef.current, cloud);
+          setFavorites(merged);
 
-  // Effect 2: on dirty flag, debounced push of local favorites to cloud.
-  useEffect(() => {
-    if (!code || !initializedRef.current || !dirty) return undefined;
+          await callSyncApi({ op: 'put', code, data: merged });
+          if (cancelled) return;
 
-    const timeoutId = setTimeout(async () => {
-      try {
-        await callSyncApi({ op: 'put', code, data: favoritesRef.current });
-        setDirty(false);
-        dirtyRef.current = false;
-        setLastSyncedAt(Date.now());
-        setStatus('synced');
-      } catch (e) {
-        setError(e.message);
-        setStatus('error');
-      }
-    }, PUSH_DEBOUNCE_MS);
+          initializedRef.current = true;
+          setLastSyncedAt(Date.now());
+          setStatus('synced');
 
-    return () => clearTimeout(timeoutId);
-  }, [code, dirty]);
+          if (wasDirty) {
+            schedulePush();
+          }
+        } catch (e) {
+          if (cancelled) return;
+          setError(e.message);
+          setStatus('error');
+        }
+      })();
+    } else if (initializedRef.current && dirty) {
+      schedulePush();
+    }
+
+    return () => {
+      cancelled = true;
+      if (pushTimer) clearTimeout(pushTimer);
+    };
+  }, [code, dirty, setFavorites]);
 
   return {
     favorites,

@@ -1,14 +1,13 @@
 ---
-name: lint-battalion
-category: software-development
-description: Mass linter error remediation via auto-fix sprint + parallel subagent battalions. Handles 500+ trivial errors mechanically, escalates semantic errors to specialists, and enforces contamination checks.
+description: "Use when facing 50+ linter errors that are mostly mechanical, accumulated lint debt after a rule change or migration, or pre-commit cleanup where auto-fix did not resolve everything."
 version: 1.0
 priority: high
 tags: [linting, bulk-fix, parallel-agents, code-quality, mass-remediation]
-...
-
-
-
+triggers:
+  - 50+ linter errors that are mostly mechanical (missing imports, unused variables, formatting)
+  - A codebase with accumulated lint debt after a rule change or migration
+  - Pre-commit cleanup where auto-fix did not resolve everything
+  - Onboarding a project to a stricter lint configuration
 ---
 
 ## Overview
@@ -24,25 +23,11 @@ This skill turns mass lint remediation into a pipeline:
 
 Research on multi-agent code search (AgentGroupChat-V2, RepoAudit) shows parallel agents on partitioned tasks scale sub-linearly. Linting is ideal for this: errors are independent, fixes are local, and verification is objective.
 
-___
-
-
-## When to Use
-
-- 50+ linter errors that are mostly mechanical (missing imports, unused variables, formatting)
-- A codebase with accumulated lint debt after a rule change or migration
-- Pre-commit cleanup where auto-fix did not resolve everything
-- Onboarding a project to a stricter lint configuration
-
-## When NOT to Use
-
+Do NOT use for:
 - Single-digit errors (use direct fix, not battalion overhead)
 - Errors that all trace to one architectural change (fix the root, not the symptoms)
 - Security or logic bugs flagged by linter (route to `debug-subagent`)
 - Token budget severely constrained (subagents multiply cost)
-
-___
-
 
 ## Installation Notes
 
@@ -65,9 +50,6 @@ python ~/.hermes/skills/software-development/lint-battalion/lint_battalion.py --
 ```
 
 For manual copy or development symlinks, see the [skill-development-with-supporting-files](development/skill-development-with-supporting-files.md) skill.
-
-___
-
 
 ## Core Protocol
 
@@ -92,9 +74,6 @@ npx tsc --noEmit
 **Gate:** If errors drop below 50, switch to single-agent mode. No battalion needed.
 
 **Log:** Record how many errors auto-fix eliminated and how many remain.
-
-___
-
 
 ### Phase 1 — Inventory & Categorize
 
@@ -129,9 +108,6 @@ npx eslint . --format json | jq -r '.[] | .ruleId' | sort | uniq -c | sort -rn
 
 **Tooling:** If the linter does not support JSON output, grep/sed the text output into a structured list per file and rule.
 
-___
-
-
 ### Phase 2 — Batch Assignment
 
 Group errors into battalion-sized batches.
@@ -154,9 +130,6 @@ Group errors into battalion-sized batches.
 - Duplicate errors (same line, same rule — count once)
 - Errors in generated files (auto-generated, node_modules, lockfiles — skip)
 - Errors in test files vs source files (different standards may apply)
-
-___
-
 
 ### Phase 3 — Parallel Execution
 
@@ -193,9 +166,6 @@ Errors:
 - Each subagent gets read access to assigned files + adjacent imports/types
 - Each subagent gets NO write access outside its assigned files
 
-___
-
-
 ### Phase 4 — Verification & Contamination Check
 
 After all subagents report:
@@ -219,9 +189,6 @@ After all subagents report:
 - Never assign the same file to multiple subagents
 - Run linter per-subagent during Phase 3 (catches most contamination early)
 
-___
-
-
 ### Phase 5 — Triage Survivors
 
 Errors surviving 3 cycles fall into these buckets:
@@ -235,49 +202,6 @@ Errors surviving 3 cycles fall into these buckets:
 
 **Escalation rule:** If >10% of original errors are survivors, re-examine categorization. You likely misclassified architectural errors as semantic or mechanical.
 
-___
-
-
-## State Tracking
-
-Maintain a running log:
-
-```markdown
-## Lint Battalion Log
-
-### Phase 0 — Auto-Fix
-- Initial errors: 547
-- Auto-fix resolved: 423
-- Remaining: 124
-
-### Phase 1 — Categorize
-- Mechanical: 98
-- Semantic: 21
-- Architectural: 5
-
-### Phase 2 — Batches
-- Mechanical: 5 batches of ~20 errors each
-- Semantic: 2 batches of ~10 errors each
-- Architectural: 1 batch (deferred)
-
-### Phase 3 — Execution
-- Batch M1-M5: PASS (all 5)
-- Batch S1: PASS
-- Batch S2: FAIL (2 errors remain, retry cycle 1)
-
-### Phase 4 — Verification
-- Total errors after battalion: 7
-- New errors introduced: 0 (clean)
-
-### Phase 5 — Triage
-- 3 false positives → inline disable
-- 4 semantic → `debug-subagent`
-```
-
-___
-
-
-## Iteration Budget
 
 | Error Count | Max Subagents | Max Cycles | Typical Time |
 |-------------|--------------|------------|--------------|
@@ -288,9 +212,6 @@ ___
 
 **Token budget heuristic:** Mechanical fixes cost ~100 tokens/error. Semantic fixes cost ~500 tokens/error. Plan accordingly.
 
-___
-
-
 ## Anti-Patterns
 
 - **Skipping auto-fix:** Never spawn subagents for mechanical fixes `--fix` could handle. Token waste.
@@ -299,9 +220,6 @@ ___
 - **Fixing generated files:** If the file is auto-generated, fix the generator, not the output.
 - **Infinite retry:** If a batch fails 3 times, escalate — do not loop forever.
 - **Ignoring new errors:** Always run full linter after. Contamination is real.
-
-___
-
 
 ## Integration
 
@@ -314,42 +232,9 @@ ___
 | `iterative-patch-repair` | If a subagent's first fix is close but wrong |
 | `pre-deployment-gate` | Final lint check before commit |
 
-___
-
-
 ## Research Basis
 
 - **AgentGroupChat-V2** (arXiv:2506.15451): Divide-and-conquer with parallel agents scales sub-linearly for independent tasks.
 - **RepoAudit** (arXiv:2501.18160): Demand-driven partitioning keeps agent context focused.
 - **Meta-RAG on Large Codebases** (arXiv:2508.02611): Hierarchical summarization + partitioning beats monolithic approaches on large codebases.
 
-___
-
-
-## Example
-
-**Situation:** 612 ESLint errors after migrating a project to stricter TypeScript rules.
-
-**Phase 0:** `eslint --fix` resolves 498 errors. 114 remain.
-
-**Phase 1:** Categorize:
-- 89 `mechanical`: missing return types, unused imports
-- 18 `semantic`: `any` types that need real types
-- 7 `architectural`: cyclic imports between `services/` and `models/`
-
-**Phase 2:** Batches:
-- M1-M5: 18 errors each across `components/`, `hooks/`, `utils/`
-- S1-S2: 9 errors each in `services/` and `api/`
-- A1: Deferred (cyclic imports need human decision)
-
-**Phase 3:** Spawn 5 mechanical + 2 semantic subagents.
-- All mechanical pass.
-- S1 passes. S2 fails: 2 `any` types in `auth.ts` require understanding external API shape.
-
-**Phase 4:** Re-run linter. 102 errors remain → 12 new errors? No. Clean. 2 errors from S2 batch.
-
-**Phase 5:**
-- 2 semantic errors → debug subagent traces external API, adds interface
-- 7 architectural → human: "Move shared types to `types/` to break cycles"
-
-**Result:** 612 → 0 in 12 minutes. 1 structural decision deferred to human.

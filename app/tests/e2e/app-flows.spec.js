@@ -67,7 +67,7 @@ test.describe('settings', () => {
     await page.getByRole('button', { name: 'Display' }).click();
 
     const audioToggle = page.getByLabel('Enable sounds');
-    const castToggle = page.getByLabel('Cast animation & cackle');
+    const castToggle = page.getByLabel('Cast animation');
 
     await expect(audioToggle).toBeVisible();
     await expect(castToggle).toBeVisible();

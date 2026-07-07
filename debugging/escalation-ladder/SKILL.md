@@ -15,13 +15,7 @@ triggers:
 
 # Escalation Ladder
 
-## The Problem This Solves
-
-`trajectory-guard` detects you're stuck. `summarize` bails out entirely. But between "stuck" and "give up" there are productive middle steps that most agents skip — or waste time on approaches that don't escalate properly.
-
-This skill provides a **5-level escalation ladder** where each level has specific actions, time budgets, and clear exit criteria.
-
----
+`trajectory-guard` detects you're stuck. `summarize` bails out entirely. Between "stuck" and "give up" there are productive middle steps. This skill provides a **5-level escalation ladder** with specific actions, time budgets, and clear exit criteria.
 
 ## Level 0: Self-Correction (0-5 min, 3-5 tool calls)
 
@@ -56,9 +50,7 @@ This skill provides a **5-level escalation ladder** where each level has specifi
 ## Minimal Reproduction Attempt
 
 Bug: [exact error message or behavior]
-
 Hypothesis: [most likely root cause]
-
 Step 1: Create minimal test that should PASS if bug is fixed
 Step 2: Run it — confirm it FAILS (bug reproduced)
 Step 3: If step 2 passes (test doesn't fail) → hypothesis is wrong, try next one
@@ -139,7 +131,7 @@ If it doesn't: **present this to the user.** Ask specifically for help on "Block
    - Current best hypothesis and why you're not confident
    - Minimal reproduction (if found)
    - Next steps someone else should try
-   
+
 2. **Revert any incomplete changes** — Don't leave half-applied patches in the codebase. Either commit a working partial fix (with TODO) or revert entirely.
 
 3. **Add a failing test** if possible — Even if you can't fix the bug, a failing test documents the expected behavior and prevents the bug from being silently "fixed" by accident.
@@ -163,7 +155,6 @@ If it doesn't: **present this to the user.** Ask specifically for help on "Block
 | 4 | immediate | 1-2 | Deliver handoff |
 
 **Maximum total debugging time before full retreat: ~40 minutes.**
-
 After 40 minutes of active debugging without resolution, the cost of continuing exceeds the value of the information you're generating. Stop and hand off.
 
 ---

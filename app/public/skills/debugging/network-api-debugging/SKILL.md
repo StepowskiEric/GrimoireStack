@@ -17,15 +17,7 @@ triggers:
 
 # Network / API Debugging
 
-## Why This Skill Exists
-
-Code-level debugging skills (specter, debug-to-fix-pipeline) assume the code is the problem. But network/API failures exist in a gray zone:
-
-- The code is correct
-- The server is correct
-- Something between them is broken
-
-These failures are invisible in source code and require a different debugging approach: **inspect the actual HTTP request/response, not the code that generates it.**
+Code-level debugging skills (specter, debug-to-fix-pipeline) assume the code is the problem. But network/API failures exist in a gray zone: the code is correct, the server is correct, but something between them is broken. These failures require **inspect the actual HTTP request/response, not the code that generates it.**
 
 ---
 
@@ -38,15 +30,13 @@ Before hypothesizing, see exactly what's going over the wire.
 ### Browser
 
 ```javascript
-// In browser console or React Native debugger
-// Capture the actual request being sent
 const originalFetch = globalThis.fetch;
 globalThis.fetch = async function(...args) {
   const [url, options] = args;
   console.log('→ REQUEST:', {
     url: typeof url === 'string' ? url : url.toString(),
     method: options?.method || 'GET',
-    headers: Object.fromEntries(options?.headers ? 
+    headers: Object.fromEntries(options?.headers ?
       (options.headers instanceof Headers ? options.headers.entries() : Object.entries(options.headers)) : []),
     body: options?.body ? (typeof options.body === 'string' ? options.body : '[non-string body]') : undefined
   });
@@ -66,9 +56,7 @@ globalThis.fetch = async function(...args) {
 ### React Native / Expo
 
 ```typescript
-// In app entry point, before any API calls
 if (__DEV__) {
-  // Network inspection via console
   const originalFetch = global.fetch;
   global.fetch = async (input, init) => {
     console.log(`→ ${init?.method || 'GET'} ${input}`);
@@ -84,8 +72,6 @@ if (__DEV__) {
 ### Server-side (Node.js)
 
 ```bash
-# Proxy through mitmproxy or Charles to see full traffic
-# Or use NODE_DEBUG=http,https environment variable
 NODE_DEBUG=http,https node server.js
 ```
 
@@ -109,8 +95,6 @@ NODE_DEBUG=http,https node server.js
 
 ### 2xx — Everything OK but Wrong Data
 
-**The request succeeded but the response doesn't match expectations.**
-
 Check:
 1. Content-Type header — is the server returning JSON when you expect it? Is it HTML (error page)?
 2. Request body — is the client sending the payload the server expects? Check:
@@ -121,8 +105,6 @@ Check:
 4. Pagination — are you getting page 1 when you expect page 5?
 
 ### 3xx — Redirects
-
-**Server is redirecting. Common issues:**
 
 1. **301 vs 302** — 301 is permanent; browser caches it. If server changed, clear browser cache or use 302.
 2. **Redirect losing POST body** — 301/302 converts POST to GET. Data lost. Use 307/308 for body-preserving redirects.
@@ -182,7 +164,6 @@ Check:
 
 **Fix (server-side):**
 ```typescript
-// Convex example — add corsUtil helper
 const corsHeaders = {
   "Access-Control-Allow-Origin": "https://your-app.com",
   "Access-Control-Allow-Methods": "GET, POST, PUT, DELETE, OPTIONS",
@@ -209,21 +190,16 @@ const corsHeaders = {
 // CAUSE 1: Token not set before request fires (race condition)
 // BAD: useQuery fires before token is available
 const { data } = useQuery(api.someData, {}); // no auth yet!
-
 // GOOD: wait for token before querying
 const { data } = useQuery(api.someData, {}, { enabled: !!authToken });
 
 // CAUSE 2: Token in wrong format
-// BAD:
-headers: { Authorization: token }  // missing "Bearer" prefix
-
-// GOOD:
-headers: { Authorization: `Bearer ${token}` }
+// BAD: headers: { Authorization: token }  // missing "Bearer" prefix
+// GOOD: headers: { Authorization: `Bearer ${token}` }
 
 // CAUSE 3: Refresh loop
 // BAD: refresh on every 401
 if (response.status === 401) { refreshToken(); retry(); }  // infinite loop if refresh also 401s
-
 // GOOD: limit refresh attempts
 if (response.status === 401 && !hasRetried) {
   await refreshToken();
@@ -240,27 +216,18 @@ if (response.status === 401 && !hasRetried) {
 - Requests work, then suddenly fail, then work again
 
 **Diagnosis:**
-- Check response headers for rate limit info:
-  - `X-RateLimit-Limit`
-  - `X-RateLimit-Remaining`
-  - `X-RateLimit-Reset`
-  - `Retry-After`
+- Check response headers for rate limit info: `X-RateLimit-Limit`, `X-RateLimit-Remaining`, `X-RateLimit-Reset`, `Retry-After`
 
 **Fix patterns:**
-
 ```typescript
-// Exponential backoff with jitter
 async function fetchWithRetry(url: string, options: RequestInit, maxRetries = 3) {
   for (let attempt = 0; attempt <= maxRetries; attempt++) {
     const response = await fetch(url, options);
-
     if (response.status !== 429) return response;
-
     const retryAfter = response.headers.get('Retry-After');
     const delay = retryAfter
       ? parseInt(retryAfter) * 1000
       : Math.min(1000 * 2 ** attempt + Math.random() * 1000, 30000);
-
     await new Promise(resolve => setTimeout(resolve, delay));
   }
   throw new Error(`Max retries exceeded for ${url}`);
@@ -277,7 +244,6 @@ async function fetchWithRetry(url: string, options: RequestInit, maxRetries = 3)
 
 **Diagnosis:**
 ```bash
-# See full redirect chain
 curl -v -L http://your-api.com/endpoint 2>&1 | grep -E "< HTTP|< Location"
 ```
 
@@ -296,92 +262,16 @@ curl -v -L http://your-api.com/endpoint 2>&1 | grep -E "< HTTP|< Location"
 
 **Diagnosis:**
 ```typescript
-// Log the exact request being sent
 console.log('Request body:', JSON.stringify(body, null, 2));
-console.log('Content-Type:', headers['Content-Type']);
-
-// Common mismatches:
-// Sending JSON with content-type: multipart/form-data
-// Sending FormData with content-type: application/json
-// Sending string body with content-type: application/json (should be JSON.stringify'd)
-// Double-encoding: JSON.stringify(JSON.stringify(body))
 ```
+
+**Common causes:**
+- Double-encoding: `JSON.stringify(JSON.stringify(body))`
+- FormData sent as JSON (should be multipart)
+- Missing required fields
+- Wrong data types (string instead of number)
 
 ---
-
-## Phase 4: SPECIAL CASES
-
-**Done when:** the special case (WebSocket, SSL, or RN-specific) has been diagnosed and either fixed or confirmed to be outside the current scope.
-
-### WebSocket Issues
-
-```typescript
-// Debug WebSocket connections
-const ws = new WebSocket('ws://...');
-ws.onopen = () => console.log('WS connected');
-ws.onerror = (e) => console.log('WS error:', e);
-ws.onclose = (e) => console.log('WS closed:', e.code, e.reason);
-ws.onmessage = (e) => console.log('WS message:', e.data);
-
-// Common issues:
-// - ws:// used instead of wss:// on production
-// - Auth token not sent in WebSocket upgrade request
-// - Connection drops after idle period (need ping/pong)
-// - React Native: some WebSocket implementations don't follow redirects
-```
-
-### SSL/TLS in Development
-
-```typescript
-// For local development with self-signed certs
-// React Native: this is handled by the development client
-// Node.js: set NODE_TLS_REJECT_UNAUTHORIZED=0 (DEVELOPMENT ONLY)
-// curl: use -k flag
-
-// NEVER disable TLS verification in production
-```
-
-### React Native / Expo Network Debugging
-
-```bash
-# Flipper (if available)
-# React DevTools → Network tab shows all fetch requests
-
-# Proxy debugging
-# Use Charles or Proxyman to inspect all HTTPS traffic from device/simulator
-
-# For Android emulator
-adb reverse tcp:8081 tcp:8081  # forward Metro bundler
-adb reverse tcp:3000 tcp:3000   # forward local API
-
-# For iOS simulator
-# Simulator uses host network by default — check localhost directly
-```
-
----
-
-## Anti-Patterns
-
-| Anti-Pattern | Why It Fails |
-|-------------|-------------|
-| Adding `cors: true` to every request | CORS is a server-side concern; client can't bypass it |
-| Disabling SSL verification in production | Massive security vulnerability |
-| Adding retry without backoff | Amplifies rate limiting; makes 429 worse |
-| Assuming 5xx means server bug | May be caused by client sending invalid data that crashes a validation handler |
-| Testing with curl and assuming app will behave the same | curl doesn't send CORS preflight, auth tokens, or cookies the same way |
-| Ignoring response headers | Status code is only half the story; headers contain rate limits, auth info, caching directives |
-| Modifying the wrong side | 4xx = fix the client; 5xx = fix the server. Don't add client workarounds for server bugs. |
-
----
-
-## Quick Reference
-
-```
-Phase 1: CAPTURE TRAFFIC → see the actual request/response
-Phase 2: DIAGNOSE BY STATUS CODE → 2xx/3xx/4xx/5xx decision tree
-Phase 3: FIX BY FAILURE TYPE → CORS/auth/rate-limit/redirect/body
-Phase 4: SPECIAL CASES → WebSocket/SSL/RN-specific
-```
 
 ## References
 

@@ -89,6 +89,7 @@ export default function GrimoireStackLayout({
   featuredSchools,
   eyeMood = 'neutral',
   onSpellView,
+  agentPrompt,
 }) {
   // hasNote lookup for the Bestiary Codex "Annotated" filter
   const hasNote = useCallback(
@@ -393,6 +394,7 @@ export default function GrimoireStackLayout({
             isSearching={isSearching}
             eyeRadius={eyeRadius}
             mood={eyeMood}
+            onAgentPrompt={agentPrompt?.handlePrompt}
           />
 
           {/* Collapsible Oracle — subtle bar, expands on click */}

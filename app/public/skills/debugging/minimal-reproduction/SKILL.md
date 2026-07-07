@@ -13,16 +13,7 @@ triggers:
 
 # Minimal Reproduction
 
-## Why This Skill Exists
-
-Every structured debugging skill (debug-to-fix-pipeline, iterative-patch-repair, specter) assumes you have a failing test to work with. But the most common debugging scenario is:
-
-1. Bug visible at runtime
-2. No existing test covers the buggy code path
-3. Agent guesses at a fix, applies it, runs the full app, checks manually
-4. Can't tell if fix worked or just shifted the symptom
-
-This skill creates the failing test first, THEN hands off to other debugging skills.
+Every structured debugging skill (debug-to-fix-pipeline, iterative-patch-repair, specter) assumes you have a failing test to work with. This skill creates the failing test first, THEN hands off to other debugging skills.
 
 ## The MR Protocol (Minimal Reproduction)
 
@@ -97,12 +88,7 @@ describe("Bug: [one-line description]", () => {
 Run the test in isolation:
 
 ```bash
-# Run just the reproduction test
 npx jest test/minimal-reproduction.test.ts --no-coverage
-
-# Confirm it fails with the expected failure
-# If it PASSES → you haven't reproduced the bug, go back to Step 2
-# If it FAILS for a DIFFERENT reason → fix the test setup, not the bug
 ```
 
 **Done when:** the test fails with the expected error. If it passes, you haven't reproduced the bug — go back to Step 2. If it fails for a different reason, the test setup is wrong — fix the test, not the code.
@@ -146,75 +132,6 @@ npm run check
 **Done when:** the reproduction test passes AND the full test suite passes with no regressions. If either fails, the fix is incomplete.
 
 **Anti-pattern:** Removing the reproduction test after fixing the bug. This test is now a permanent regression guard.
-
----
-
-## Common Reproduction Patterns
-
-### Pattern: Async Timing Bug
-
-Bug only appears when async operations complete in a specific order.
-
-```typescript
-it("demonstrates race condition in data fetch", async () => {
-  // Use fake timers to control async timing precisely
-  jest.useFakeTimers();
-
-  const promise = fetchUserData(userId);
-  // Advance past one network request but not the other
-  jest.advanceTimersByTime(100);
-
-  const result = await promise;
-  expect(result.status).toBe("complete"); // currently "pending"
-});
-```
-
-### Pattern: State-Dependent Bug
-
-Bug only appears when app state is in a specific configuration.
-
-```typescript
-it("demonstrates crash when submitting form with stale session", async () => {
-  // Set up the specific state that triggers the bug
-  const staleSession = { token: "expired", userId: "123" };
-  useAuthStore.setState({ session: staleSession });
-
-  const result = await submitForm(validInput);
-  expect(result.error).toBeUndefined(); // currently throws
-});
-```
-
-### Pattern: Rendering Bug (React Native / Expo)
-
-Bug only appears in UI rendering, no test covers it.
-
-```typescript
-it("renders user avatar when image URL is provided", () => {
-  const { getByTestId } = render(
-    <UserProfile user={{ name: "Test", avatarUrl: "https://img.test/1.jpg" }} />
-  );
-  expect(getByTestId("user-avatar")).toBeTruthy(); // currently null
-});
-```
-
-### Pattern: Integration Bug (API → UI)
-
-Bug is in the connection between layers.
-
-```typescript
-it("displays server error message when API returns 400", async () => {
-  server.use(
-    rest.post("/api/submit", (req, res, ctx) =>
-      res(ctx.status(400), ctx.json({ error: "Invalid input" }))
-    )
-  );
-
-  const { getByText } = render(<SubmitForm />);
-  await userEvent.press(getByText("Submit"));
-
-  expect(getByText("Invalid input")).toBeTruthy(); // currently shows generic error
-});
-```
 
 ---
 

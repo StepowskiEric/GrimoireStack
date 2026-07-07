@@ -164,4 +164,38 @@ describe('useFavoritesSync', () => {
 
     await waitFor(() => expect(getCalls).toBe(2), { timeout: 2000 });
   });
+
+  it('preserves dirty local favorites across a sync code change', async () => {
+    let getCalls = 0;
+    let putCalls = 0;
+    mockSyncApi((body) => {
+      if (body.op === 'get') {
+        getCalls++;
+        return { data: [] };
+      }
+      if (body.op === 'put') {
+        putCalls++;
+        return { ok: true, syncedAt: Date.now() };
+      }
+      return {};
+    });
+
+    localStorage.setItem('grimoire-sync-code', 'abcdefghjkmnpqrs');
+    const { result } = renderHook(() => useFavoritesSync());
+
+    await waitFor(() => expect(result.current.sync.status).toBe('synced'), { timeout: 2000 });
+    expect(getCalls).toBe(1);
+
+    act(() => { result.current.toggleFavorite('A', 'a-skill'); });
+    expect(result.current.favorites).toHaveLength(1);
+
+    act(() => { result.current.sync.enableSync(); });
+    const newCode = result.current.sync.code;
+    expect(newCode).toHaveLength(16);
+
+    await waitFor(() => expect(getCalls).toBe(2), { timeout: 2000 });
+    await waitFor(() => expect(putCalls).toBeGreaterThanOrEqual(2), { timeout: 3000 });
+    expect(result.current.favorites).toHaveLength(1);
+    expect(result.current.favorites[0].skill).toBe('a-skill');
+  });
 });

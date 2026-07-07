@@ -1,17 +1,15 @@
 ---
-name: dev-diagnostics-mcp
-category: software-development
-description: MCP server aggregating lint, test, build, and type-check diagnostics across tools. Returns structured JSON issues with severity, category, and contamination checks.
+description: "Use when running diagnostics across multiple tools (eslint, tsc, vitest, pytest, biome, ruff) or comparing before/after fix diagnostics for contamination."
 version: 1.0.0
 priority: high
 tags: [mcp, diagnostics, lint, tests, tsc, eslint, vitest, pytest, ruff, biome]
-...
-
-
-
+triggers:
+  - Running diagnostics across multiple tools (eslint, tsc, vitest, pytest, biome, ruff)
+  - Comparing before/after fix diagnostics for contamination
+  - Getting structured JSON from unstructured linter/test output
 ---
 
-## Overview
+# Dev Diagnostics MCP
 
 This skill registers the `dev-diagnostics` MCP server with Hermes Agent, turning a pile of unstructured linter/test output into clean JSON.
 
@@ -40,9 +38,6 @@ This skill registers the `dev-diagnostics` MCP server with Hermes Agent, turning
 **How it works:**
 Pure Python stdlib server implementing raw MCP JSON-RPC over stdio. No `pip install` needed.
 
-___
-
-
 ## Installation
 
 **1. Configure in Hermes:**
@@ -63,9 +58,6 @@ Tools appear as:
 - `mcp_devdiag_parse_output`
 - `mcp_devdiag_get_summary`
 - `mcp_devdiag_contamination_check`
-
-___
-
 
 ## Usage Workflow
 
@@ -117,17 +109,11 @@ Returns:
 }
 ```
 
-___
-
-
 ## Pairing with Skills
 
 - **`lint-battalion`** — use `run_diagnostics` as Phase 0 input (instead of manual lint-battalion.py invocation).
 - **`test-driven-development`** — use `run_diagnostics` with `"scanners": ["vitest"]` for automated test feedback.
 - **`pre-deployment-gate`** — run `eslint + tsc + vitest` via one tool call for the gate check.
-
-___
-
 
 ## Limitations
 
@@ -135,9 +121,6 @@ ___
 - **Does not execute fixes.** This is read-only diagnostics, not an auto-fixer.
 - **Large projects** may hit the 120s default timeout. Increase `timeout` in config for monorepos.
 - **pytest** plain output fallback uses simple regex and may miss some structured failure data.
-
-___
-
 
 ## Related Skills
 

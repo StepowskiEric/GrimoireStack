@@ -1,20 +1,15 @@
 ---
-name: review-ladder-plus
-category: software-development
-description: Rigorous multi-layer code review process with dual specialized reviewers, forced test generation, and "explain why it's safe" justification gate for Critical/High findings. Turns casual self-review into production-grade QA.
+description: "Use after completing any non-trivial coding task, before merging code that touches security/auth/data/concurrency, or when upgrading from casual self-review to production-grade QA."
 version: 1.0.0
 priority: high
 tags: [code-review, multi-agent, testing, security, quality-gate, production-ready]
 author: GrimoireStack
 created: 2026-05-09
-...
-
-## Overview
-
-This skill adds a disciplined, multi-layered code review process after the main agent completes any coding task. It runs dual specialized reviewers in parallel, forces test generation for all reported issues, and requires an explicit "explain why it's safe" justification for any Critical/High finding the main agent chooses not to fix.
-
-**Goal:** Catch real bugs, security issues, and edge cases before submission — not perform cosmetic feedback.
-
+triggers:
+  - After completing any non-trivial coding task (feature, fix, refactor, migration)
+  - Before merging any code that touches security, auth, data, or concurrency
+  - Any time you want to upgrade from casual self-review to production-grade QA
+  - Security-sensitive code, data mutations, concurrent logic, external API integrations
 ---
 
 ## Core Principles
@@ -25,17 +20,6 @@ This skill adds a disciplined, multi-layered code review process after the main 
 4. A dedicated test-generation step ensures findings are backed by verifiable tests.
 5. Final submission only happens after all Critical/High issues are resolved or properly justified.
 6. A final fresh-context reviewer validates the post-fix diff with no knowledge of prior conversation.
-
----
-
-## When to Use
-
-- After completing any non-trivial coding task (feature, fix, refactor, migration)
-- Before merging any code that touches security, auth, data, or concurrency
-- Any time you want to upgrade from casual self-review to production-grade QA
-- Particularly valuable for: security-sensitive code, data mutations, concurrent logic, external API integrations
-
----
 
 ## Workflow
 
@@ -49,8 +33,6 @@ Before invoking reviewers, the main agent packages:
 - **Brief summary** of what was implemented and why
 
 This becomes the input for all reviewers.
-
----
 
 ### Phase 2: Dual Reviewers (Parallel)
 
@@ -107,8 +89,6 @@ Both reviewers use the **identical JSON output format**:
 - Assume this code will run in production under adversarial conditions.
 - Confidence scores below 70 should be flagged as "speculative — verify before acting."
 
----
-
 ### Phase 3: Test Generation Reviewer
 
 After dual review, a **Test Engineer** reviewer consumes the issues and generates 3–5 concrete test cases that would have caught each reported problem.
@@ -133,8 +113,6 @@ For each test:
   ]
 }
 ```
-
----
 
 ### Phase 4: Explain Why It's Safe Gate
 
@@ -162,8 +140,6 @@ For every **Critical or High** issue the main agent does **not** fix, the main a
 - The gate fails if any Critical/High issue is unaddressed without a passing proof.
 - Medium/Low issues may be noted as "accepted technical debt" without formal proof.
 
----
-
 ### Phase 5: Final Fresh-Context Reviewer (Recommended)
 
 A brand-new agent receives only:
@@ -184,8 +160,6 @@ Output format:
 }
 ```
 
----
-
 ### Phase 6: Submission Gate
 
 **Submission is only allowed when:**
@@ -195,76 +169,9 @@ Output format:
 
 If not ready: state exactly what remains, fix it, then re-run the gate.
 
----
+## Prompt Templates
 
-## Reviewer Prompt Template (Alpha & Beta)
-
-Use this exact prompt structure for both dual reviewers:
-
-```
-You are a ruthless senior code reviewer. Your ONLY job is to find real, non-cosmetic problems in the provided code diff. You do NOT write code. You do NOT refactor. You diagnose and recommend.
-
-Input you will receive:
-- diff: the full code changes
-- requirements: what the code was supposed to do
-- existing_tests: what already passes
-
-Output format (JSON only — no preamble, no explanation outside the JSON):
-{
-  "issues": [
-    {
-      "id": "ISSUE-001",
-      "type": "Correctness | Security | Performance | Concurrency | Maintainability | Edge_Case",
-      "severity": "Critical | High | Medium | Low",
-      "location": "file:line or function name",
-      "description": "What is the problem?",
-      "suggested_fix": "Brief recommendation",
-      "why_it_matters": "Real-world impact",
-      "confidence": 0-100
-    }
-  ],
-  "nits": [...],
-  "summary": "One-sentence overall risk assessment",
-  "no_issues_found": false
-}
-
-Rules:
-- Only report issues with clear negative impact. Do not report style preferences.
-- Be explicit about uncertainty. Confidence < 70 = "verify before acting."
-- Assume production conditions under adversarial input.
-- Critical = data loss, security breach, or crash. High = incorrect behavior that is hard to detect.
-```
-
----
-
-## Test Generation Prompt Template
-
-```
-You are a Test Engineer. Based on the issues found by the dual reviewers, create 3–5 concrete test cases (unit, integration, or edge-case) that would have caught those problems.
-
-For each test, provide:
-- Test name (follows test_<what>_<scenario>)
-- File location where it should be added
-- What it validates
-- Expected behavior
-- Explicit link to which reported issue this would have caught
-
-Output format (JSON only):
-{
-  "tests": [
-    {
-      "id": "TEST-001",
-      "name": "test_<what>_<scenario>",
-      "file": "tests/test_xxx.py",
-      "what_it_validates": "...",
-      "expected_behavior": "...",
-      "would_have_caught": "ISSUE-XXX"
-    }
-  ]
-}
-```
-
----
+See `references/prompt-templates.md` for the Reviewer Prompt Template (Alpha & Beta) and Test Generation Prompt Template.
 
 ## Severity Definitions
 
@@ -275,8 +182,6 @@ Output format (JSON only):
 | **Medium** | Noticeable quality issue, correctable with refactor | Fix or document as accepted debt |
 | **Low** | Minor quality concern, cosmetic | Optional — document if desired |
 
----
-
 ## Audit Trail
 
 Each issue must have a recorded outcome:
@@ -286,8 +191,6 @@ Each issue must have a recorded outcome:
 - `DEBT` — filed as accepted technical debt (Medium/Low only)
 
 Keep this log as a comment in the diff or in a `review-log.jsonl` file alongside the code.
-
----
 
 ## Anti-Patterns This Skill Prevents
 
@@ -300,8 +203,6 @@ Keep this log as a comment in the diff or in a `review-log.jsonl` file alongside
 | "Looks fine to me" self-review | Dual reviewers force perspective diversity |
 | Edge cases deemed "theoretically impossible" | Beta reviewer explicitly hunts boundary conditions |
 
----
-
 ## Related Skills
 
 - `llm-pre-push-review` — pre-push checklist based on LLM coding failure research
@@ -310,9 +211,3 @@ Keep this log as a comment in the diff or in a `review-log.jsonl` file alongside
 - `security-review-protocol` — STRIDE-based security review
 - `vibe-coding-security-hardening` — OWASP vulnerability hardening for AI-generated code
 - `debug-to-fix-pipeline` — systematic debugging when issues are found
-
----
-
-## Changelog
-
-- **1.0.0** (2026-05-09) — Initial release

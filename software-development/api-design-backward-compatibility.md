@@ -1,30 +1,20 @@
 ---
 name: api-design-backward-compatibility
 description: "Use when APIs, schemas, or contracts must evolve without breaking clients — contract-first design and additive-only change discipline."
+triggers:
+  - Adding a new endpoint, method, or public function
+  - Changing request/response shapes, error formats, or status codes
+  - Renaming fields, types, or resources
+  - Adding or removing parameters
+  - Introducing a new API version
+  - Changing database schemas that surface through an API
+  - Publishing SDKs, client libraries, or webhooks
+  - Consuming a third-party API that may change
 ---
 
 # Skill: API Design and Backward Compatibility
 
-## Purpose
-
-Use this skill when designing, modifying, or versioning APIs, interfaces, contracts, or data schemas. Prevents the agent from shipping breaking changes that break clients, creating ambiguous contracts that invite misuse, or designing endpoints that cannot evolve without pain.
-
 Good API design is not about making the current feature easy; it is about making the next ten features possible without breaking the first one.
-
----
-
-## When to Apply
-
-- Adding a new endpoint, method, or public function
-- Changing request/response shapes, error formats, or status codes
-- Renaming fields, types, or resources
-- Adding or removing parameters
-- Introducing a new API version
-- Changing database schemas that surface through an API
-- Publishing SDKs, client libraries, or webhooks
-- Consuming a third-party API that may change
-
----
 
 ## The Pattern
 
@@ -181,22 +171,6 @@ Document what the consumer sends and receives, not how the server works.
 - Changelog with breaking vs non-breaking classification
 - A "migrating from vN to vN+1" guide when versions change
 
----
-
-## Anti-Patterns
-
-| Anti-Pattern | Why It Fails |
-|--------------|-------------|
-| Returning different shapes for success vs error | Breaks typed clients and parsing logic |
-| Using floats for money | `0.1 + 0.2 !== 0.3`; use integer cents or decimal strings |
-| `200 OK` with error in body | HTTP semantics exist for a reason; use `4xx`/`5xx` |
-| Undocumented optional fields | Clients cannot rely on them; they become breaking changes when removed |
-| Exposing internal IDs directly | Locks you into internal data model; use opaque IDs or slugs |
-| Pagination without stable ordering | Duplicate or missing items on page transitions |
-| Changing error messages without changing codes | Consumers parsing messages break; code is the contract |
-| N+1 query endpoints | `/users` returning full nested orders invites abuse and performance cliffs |
-
----
 
 ## Quick Reference
 
@@ -210,8 +184,6 @@ Document what the consumer sends and receives, not how the server works.
 7. Errors           → machine code + human message + field target
 8. Documentation    → consumer-facing examples and changelogs
 ```
-
----
 
 ## Related Skills
 

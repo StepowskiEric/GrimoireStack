@@ -1,14 +1,15 @@
 ---
-name: git-surgery
-category: software-development
-description: Recover from common local git disasters fast. Diagnose repo state, apply the correct recovery protocol, and avoid making things worse.
+description: "Use when the repo is in a state you don't fully understand, git status output scares you, or you need to recover from a local git disaster."
 version: 1.0.0
 priority: high
 tags: [git, recovery, disaster-recovery, version-control, cli]
-...
-
-
-
+triggers:
+  - The repo is in a state you don't fully understand
+  - git status output scares you
+  - Detached HEAD, botched rebase, accidental commit to wrong branch
+  - Force-push overwrite, hard reset gone wrong, merge conflict hell
+  - Cherry-pick gone wrong, dirty working tree blocking branch switch
+  - Need to revert a public commit on a shared branch
 ---
 
 ## Overview
@@ -21,12 +22,7 @@ This skill provides a diagnostic-first recovery system:
 3. **Execute dry-run first** — simulate the fix before touching reflog
 4. **Recover** — run the protocol with escape hatches at every step
 
-When to use: any time the repo is in a state you don't fully understand, or when `git status` output scares you.
-
-When NOT to use: remote team coordination issues (use `github-operations`), or when you need to learn git concepts (read a book instead).
-
-___
-
+Do NOT use for: remote team coordination issues (use `github-operations`), or when you need to learn git concepts (read a book instead).
 
 ## Installation Notes
 
@@ -40,9 +36,6 @@ npx GrimoireStack install --agent pi --skill git-surgery --with-scripts
 
 If installing manually, copy `git_surgery.py` to the same directory as `SKILL.md`.
 
-___
-
-
 ## Companion Script
 
 The script requires only Python 3 (stdlib only):
@@ -52,9 +45,6 @@ python3 git_surgery.py diagnose    # shows repo state + suggested protocol
 python3 git_surgery.py reflog      # shows recent HEAD history with tips
 python3 git_surgery.py --dry-run   # simulate but don't execute recovery
 ```
-
-___
-
 
 ## Diagnostic Quick-Check
 
@@ -67,9 +57,6 @@ git reflog --oneline | head -20
 ```
 
 Match the `git status` pattern to a protocol below.
-
-___
-
 
 ## Protocol 1: Detached HEAD
 
@@ -113,9 +100,6 @@ git branch -d temp-recovery
 
 **NEVER do:** `git reset --hard` while detached. You will lose commits.
 
-___
-
-
 ## Protocol 2: Botched Rebase (Abort)
 
 **Symptoms:** `git status` shows `rebase in progress` or dozens of conflict markers.
@@ -149,9 +133,6 @@ git rebase --continue
 
 **NEVER do:** `git reset --hard` during a rebase. You will lose the commits being rebased.
 
-___
-
-
 ## Protocol 3: Botched Rebase (Continue Despite Conflicts)
 
 **Symptoms:** Rebase paused on a commit with conflicts. You want to finish it.
@@ -175,9 +156,6 @@ git commit --amend
 **When to skip vs continue:**
 - Skip = the commit's changes are already present in the target branch (common when cherry-picking or rebasing across branches that partially overlap).
 - Continue = conflicts were resolved and the commit still has meaningful changes.
-
-___
-
 
 ## Protocol 4: Accidental Commit to Main (Wrong Branch)
 
@@ -217,9 +195,6 @@ git checkout feature-branch
 git rebase main  # or just keep it as-is and PR normally
 ```
 
-___
-
-
 ## Protocol 5: Force-Push Overwrite (Lost Remote Commits)
 
 **Symptoms:** You force-pushed and someone else's (or your own) commits disappeared from the remote.
@@ -257,9 +232,6 @@ git branch -r --contains <lost-hash>
 
 **NEVER do:** Force-push again hoping to "undo" the first force-push. That just overwrites more history.
 
-___
-
-
 ## Protocol 6: Hard Reset Gone Wrong (Lost Local Commits)
 
 **Symptoms:** You ran `git reset --hard <hash>` and realized you needed the commits you just discarded.
@@ -290,9 +262,6 @@ git merge recovered-work
 Git cannot recover uncommitted changes after `reset --hard`. If you ran `git stash` earlier, use `git stash list` / `git stash pop`.
 
 **NEVER do:** `git reset --hard` is permanent for uncommitted changes. There is no undo.
-
-___
-
 
 ## Protocol 7: Merge Conflict Hell
 
@@ -336,9 +305,6 @@ git commit  # git pre-fills the merge commit message
 git checkout --conflict=diff3 <file>  # shows base/ours/theirs markers with base context
 ```
 
-___
-
-
 ## Protocol 8: Cherry-Pick Gone Wrong
 
 **Symptoms:** `git cherry-pick` stopped with conflicts or applied wrong.
@@ -365,9 +331,6 @@ git cherry-pick <hash> --no-commit  # apply changes to working tree without comm
 git status  # review changes manually
 git commit -m "cherry-picked <hash> with manual resolution"
 ```
-
-___
-
 
 ## Protocol 9: Dirty Working Tree, Need to Switch Branches
 
@@ -399,9 +362,6 @@ git reset --hard  # discard working tree if it's a mess
 git stash pop  # try again on clean tree
 ```
 
-___
-
-
 ## Protocol 10: Reverting a Public Commit (Shared Branch)
 
 **Symptoms:** A bad commit is already on origin/main. You can't reset because others pulled it.
@@ -425,9 +385,6 @@ git push origin main
 git revert -m 1 <merge-commit-hash>  # -m 1 = keep the mainline parent
 ```
 
-___
-
-
 ## Quick Reference: Dangerous vs Safe Commands
 
 | Dangerous (destructive, hard to undo) | Safe (recoverable via reflog) |
@@ -440,9 +397,6 @@ ___
 | `git stash drop` | `git stash list` before dropping |
 
 **Golden rule:** If a command discards or rewrites history, run `git branch backup-$(date +%s)` first. Branches are cheap. Lost commits are expensive.
-
-___
-
 
 ## Related Skills
 

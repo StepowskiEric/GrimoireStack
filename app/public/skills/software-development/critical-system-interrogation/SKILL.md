@@ -1,6 +1,12 @@
 ---
-name: critical-system-interrogation
-description: Deep-dive investigation of critical system components (auth pipelines, payment flows, data validation) combining relentless questioning with extreme code quality standards. Use when you need to stress-test a critical system path for correctness, race conditions, security flaws, and architectural integrity.
+description: "Use when stress-testing a critical system path (auth pipelines, payment flows, data validation) for correctness, race conditions, security flaws, and architectural integrity."
+triggers:
+  - Investigating authentication/authorization pipelines
+  - Reviewing payment processing flows
+  - Auditing data validation and sanitization layers
+  - Examining session management systems
+  - Reviewing cryptographic implementations
+  - Investigating any system path where bugs could cause security breaches, data corruption, financial loss, service outages, or compliance violations
 ---
 
 # Critical System Interrogation
@@ -228,25 +234,3 @@ Treat these as presumptive blockers unless the author can justify them clearly:
 - the implementation duplicates an existing helper or puts logic in the wrong layer when there is a clear canonical home
 
 If those conditions are not met, leave explicit, actionable feedback and push for a cleaner decomposition.
-
-## When to Use This Skill
-
-Use this skill when:
-- Investigating authentication/authorization pipelines
-- Reviewing payment processing flows
-- Auditing data validation and sanitization layers
-- Examining session management systems
-- Reviewing cryptographic implementations
-- Investigating any system path where bugs could cause:
-  - Security breaches
-  - Data corruption
-  - Financial loss
-  - Service outages
-  - Compliance violations
-
-Do NOT use this skill for:
-- Simple utility functions
-- UI components without security implications
-- Documentation-only changes
-- Configuration changes without security impact
-- Performance optimizations without correctness implications

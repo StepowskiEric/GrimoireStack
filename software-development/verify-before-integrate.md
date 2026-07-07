@@ -1,24 +1,14 @@
 ---
 name: verify-before-integrate
 description: "Use when integrating research or external docs into code — verify the actual system behavior rather than matching abstract terminology."
+triggers:
+  - Writing a skill that connects to an existing system (Coppermind, Convex, Supabase, etc.)
+  - Implementing a research paper's algorithm in a production codebase
+  - Mapping abstract concepts to concrete APIs or database schemas
+  - Creating integration documentation or tutorials
 ---
 
 # Skill: Verify Before Integrate
-
-## Purpose
-
-When integrating research paper concepts, API documentation, or external system descriptions into a skill or implementation, verify the actual system behavior rather than assuming terminology alignment. Names that sound similar often refer to different implementations.
-
----
-
-## When to Use
-
-- Writing a skill that connects to an existing system (Coppermind, Convex, Supabase, etc.)
-- Implementing a research paper's algorithm in a production codebase
-- Mapping abstract concepts to concrete APIs or database schemas
-- Creating integration documentation or tutorials
-
----
 
 ## The Pitfall
 
@@ -35,8 +25,6 @@ Research papers and high-level documentation use abstract terminology:
 - A third system: raw events → aggregates → projections
 
 All are "three-layer" but have different schemas, fields, and constraints.
-
----
 
 ## The Pattern
 
@@ -85,8 +73,6 @@ All are "three-layer" but have different schemas, fields, and constraints.
                             └──────────────┘
 ```
 
----
-
 ## Verification Checklist
 
 Before writing integration code or skills:
@@ -133,8 +119,6 @@ mapping:
   conclusion: "memory with canonical_candidate=true"
 ```
 
----
-
 ## Example: What Went Wrong vs. Right
 
 ### Wrong (Assumption)
@@ -171,8 +155,6 @@ observation_thought:
   edges: ["derived_from"]
 ```
 
----
-
 ## Red Flags
 
 Watch for these signals that you need to verify:
@@ -182,19 +164,12 @@ Watch for these signals that you need to verify:
 3. **Research paper integration** — papers use abstract models
 4. **Multiple interpretations possible** — "three-layer" could mean many things
 
----
-
-## Action When Flagged
-
 If any red flag appears:
-
 1. **Stop writing the integration**
 2. **Find the schema source** — usually `src/` or `schema/` directory
 3. **Read the actual implementation** — not just README/docs
 4. **Create explicit mapping** — paper concept → system field
 5. **Verify with system owner** if possible
-
----
 
 ## Anti-Patterns
 
@@ -210,8 +185,6 @@ If any red flag appears:
 - Create explicit translation layers
 - Document the mapping for future maintainers
 
----
-
 ## Quick Reference
 
 | Situation | Verify Against |
@@ -221,8 +194,6 @@ If any red flag appears:
 | Research paper | Source code of reference implementation |
 | External system | SDK types, protobuf definitions |
 | Internal system | `src/types.ts`, `schema.sql`, entity files |
-
----
 
 ## See Also
 

@@ -306,7 +306,7 @@ export const SKILL_CATALOG = [
     "skill": "api-surface-anchoring",
     "name": "API Surface Scry",
     "school": "Software Development",
-    "effect": "Before writing code that calls any external library or API, verify its current API surface from authoritative docs. P..."
+    "effect": "Use when using any external library, SDK, or API you are not 100% sure of, libraries released after your LLM's traini..."
   },
   {
     "skill": "api-design-backward-compatibility",
@@ -318,43 +318,43 @@ export const SKILL_CATALOG = [
     "skill": "lint-battalion",
     "name": "Battalion Auto-Fix",
     "school": "Software Development",
-    "effect": "Mass linter error remediation via auto-fix sprint + parallel subagent battalions. Handles 500+ trivial errors mechani..."
+    "effect": "Use when facing 50+ linter errors that are mostly mechanical, accumulated lint debt after a rule change or migration,..."
   },
   {
     "skill": "coordinated-change",
     "name": "Coordinated Strike",
     "school": "Software Development",
-    "effect": "Plan and execute changes across multiple related files as a coordinated atomic unit. For when a fix or feature requir..."
+    "effect": "Use when a fix or feature requires touching 2+ files that must stay consistent — types, implementation, tests, schema..."
   },
   {
     "skill": "critical-system-interrogation",
     "name": "Critical System Interrogation",
     "school": "Software Development",
-    "effect": "Deep-dive investigation of critical system components (auth pipelines, payment flows, data validation) combining rele..."
+    "effect": "Use when stress-testing a critical system path (auth pipelines, payment flows, data validation) for correctness, race..."
   },
   {
     "skill": "pre-deployment-gate",
     "name": "Deployment Gate",
     "school": "Software Development",
-    "effect": "Complete pre-push/pre-deploy checklist combining LLM Pre-Push Review with Vibe Coding Security Hardening. 7-pass prot..."
+    "effect": "Use before deploying any code to production or before pushing AI-authored code."
   },
   {
     "skill": "dev-diagnostics-mcp",
     "name": "Diagnostics Aggregator",
     "school": "Software Development",
-    "effect": "MCP server aggregating lint, test, build, and type-check diagnostics across tools. Returns structured JSON issues wit..."
+    "effect": "Use when running diagnostics across multiple tools (eslint, tsc, vitest, pytest, biome, ruff) or comparing before/aft..."
   },
   {
     "skill": "codebase-divide-conquer-search",
     "name": "Divide & Search",
     "school": "Software Development",
-    "effect": "Hierarchical multi-agent search protocol for large codebases. Compresses codebase via summarization, partitions into ..."
+    "effect": "Use when the codebase is too large to fit in context (>50K tokens), grep produces too many candidates, you need to fi..."
   },
   {
     "skill": "git-surgery",
     "name": "Git Surgery",
     "school": "Software Development",
-    "effect": "Recover from common local git disasters fast. Diagnose repo state, apply the correct recovery protocol, and avoid mak..."
+    "effect": "Use when the repo is in a state you don't fully understand, git status output scares you, or you need to recover from..."
   },
   {
     "skill": "llm-pre-push-review",
@@ -372,7 +372,7 @@ export const SKILL_CATALOG = [
     "skill": "review-ladder-plus",
     "name": "Review Ladder Plus",
     "school": "Software Development",
-    "effect": "Rigorous multi-layer code review process with dual specialized reviewers, forced test generation, and \"explain why it..."
+    "effect": "Use after completing any non-trivial coding task, before merging code that touches security/auth/data/concurrency, or..."
   },
   {
     "skill": "super-review-typescript",
@@ -384,13 +384,13 @@ export const SKILL_CATALOG = [
     "skill": "verified-api-workflow",
     "name": "Verified API Workflow",
     "school": "Software Development",
-    "effect": "Hybrid of api-surface-anchoring + hallucination-anchor-chain. Every verified API surface entry becomes an anchor. Cod..."
+    "effect": "Use when writing code that calls external libraries/APIs — every external API call must be traceable to a doc you act..."
   },
   {
     "skill": "verified-synthesize",
     "name": "Verified Synthesis",
     "school": "Software Development",
-    "effect": "Use when code correctness must be proven, not tested — generate code + Dafny preconditions/postconditions from a natu..."
+    "effect": "Use when code correctness must be proven, not tested — critical bugs, pre-refactor spec locking, or API contracts req..."
   },
   {
     "skill": "how-to-solve-it-analogy",
@@ -858,7 +858,7 @@ export const SKILL_CATALOG = [
     "skill": "bisect-debugging",
     "name": "Bisect Divination",
     "school": "Debugging",
-    "effect": "Isolate the exact commit that introduced a bug using binary search through git history. The fastest way to find \"what..."
+    "effect": "Isolate the exact commit that introduced a bug using binary search through git history. The fastest way to find 'what..."
   },
   {
     "skill": "debug-subagent",
@@ -918,19 +918,19 @@ export const SKILL_CATALOG = [
     "skill": "debug-to-fix-pipeline",
     "name": "Pipeline of Restoration",
     "school": "Debugging",
-    "effect": "Use when debugging is stalling — 6-phase pipeline that increases evidence quality each phase while cutting token wast..."
+    "effect": "6-phase pipeline that increases evidence quality each phase while cutting token waste. Sequences data → hypothesis → ..."
   },
   {
     "skill": "purify-test-output",
     "name": "Purify Vision",
     "school": "Debugging",
-    "effect": "Slice failing test output to only failure-relevant lines before showing to the LLM. Removes noise and focuses attenti..."
+    "effect": "Use when failing test output contains >50% framework noise (site-packages, node_modules) that drowns out user code, o..."
   },
   {
     "skill": "root-cause-analysis",
     "name": "Root Cause Revelation",
     "school": "Debugging",
-    "effect": "Use when a bug must be fixed, not patched — distinguish symptoms from causes, verify causal chains, fix the underlyin..."
+    "effect": "Distinguish symptoms from causes, verify causal chains, fix the underlying defect. Stops recurring regressions caused..."
   },
   {
     "skill": "specter",
@@ -948,7 +948,7 @@ export const SKILL_CATALOG = [
     "skill": "log-trace-correlation",
     "name": "Trace Sight",
     "school": "Debugging",
-    "effect": "Map error logs and stack traces to source code to identify root cause and suggest fixes."
+    "effect": "Map error logs and stack traces to source code to identify root cause and suggest fixes. Use when you have an error l..."
   },
   {
     "skill": "effective-web-search",

@@ -1,13 +1,14 @@
 ---
 name: simulate-instrumentation
-description: Auto-insert temporary print/logging statements at key points in the code, run the failing test, and feed the captured runtime state to the LLM.
+description: "Auto-insert temporary print/logging statements at key points in the code, run the failing test, and feed the captured runtime state to the LLM."
+triggers:
+  - Bug involves data transformation or type mismatch
+  - Static analysis hasn't revealed the root cause
+  - Failure is a silent logic error (not a crash)
+  - Need to verify assumptions about what values actually flow through the code
 category: debugging
 priority: high
 tags: [debugging, instrumentation, runtime-state, logging, program-repair]
-...
-
-
-
 ---
 
 ## Overview
@@ -17,19 +18,6 @@ Static analysis (reading code) often fails because the bug involves runtime stat
 This gives the LLM ground-truth runtime evidence instead of forcing it to mentally simulate execution.
 
 Research shows removing simulated instrumentation causes a **26.3% drop** in correct fixes. It's one of the highest-impact components of modern APR systems.
-
-## When to use
-
-- Bug involves data transformation or type mismatch
-- Static analysis hasn't revealed the root cause
-- The failure is a silent logic error (not a crash)
-- You need to verify assumptions about what values actually flow through the code
-
-## When NOT to use
-
-- The bug is a clear syntax error or obvious logic flaw
-- The code is in a language where runtime instrumentation is hard (compiled C/C++ without debug build)
-- Side effects from print statements would alter behavior (timing-sensitive code)
 
 ## Core protocol
 

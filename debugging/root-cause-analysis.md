@@ -1,26 +1,16 @@
 ---
 name: root-cause-analysis
-description: "Use when a bug must be fixed, not patched — distinguish symptoms from causes, verify causal chains, fix the underlying defect. Stops recurring regressions caused by workaround hacks."
+description: "Distinguish symptoms from causes, verify causal chains, fix the underlying defect. Stops recurring regressions caused by workaround hacks. Use when a bug returns after being 'fixed', multiple symptoms share a cause, or a fix in one area breaks another."
+triggers:
+  - Bug returns after being "fixed"
+  - Multiple symptoms seem unrelated but might share a cause
+  - Fix in one area breaks something else
+  - Agent tempted to add guard clause or null check without understanding why bad input arrived
+  - Log errors are cryptic or stack traces point to secondary failures
+  - System degraded gradually and trigger is unclear
 ---
 
 # Skill: Root Cause Analysis for AI Agents
-
-## Purpose
-
-Use this skill when diagnosing failures, bugs, regressions, or anomalous behavior. Distinguishes symptoms from causes — fixes the underlying defect, not its visible manifestation.
-
----
-
-## When to Apply
-
-- A bug returns after being "fixed"
-- Multiple symptoms seem unrelated but might share a cause
-- A fix in one area breaks something else
-- The agent is tempted to add a guard clause, retry loop, or null check without understanding why the bad input arrived
-- Log errors are cryptic or stack traces point to secondary failures
-- A system degraded gradually and the trigger is unclear
-
----
 
 ## The Pattern
 
@@ -130,21 +120,6 @@ After the fix, add a specific preventive measure tied to the root cause category
 | Fix the most recent change | Recent changes are often symptoms of deeper issues |
 | Stop at "race condition" without analyzing the ordering | Race conditions have specific interleavings; generic "it's a race" is not actionable |
 | Patch the failing test instead of the code | Tests are symptoms; the code under test is the cause |
-
----
-
-## Quick Reference
-
-```
-1. Symptom      → exact, reproducible description
-2. Events       → all changes, not just recent ones
-3. 5 Whys       → recursive causal chain
-4. Ishikawa     → categorize branches
-5. Root vs contrib → fix what prevents recurrence
-6. Hypothesis   → falsifiable prediction
-7. Fix          → remove defect, not mask symptom
-8. Prevent      → test, process, or guard tied to root cause
-```
 
 ---
 

@@ -1,39 +1,24 @@
 ---
 name: debug-to-fix-pipeline
-description: "Use when debugging is stalling — 6-phase pipeline that increases evidence quality each phase while cutting token waste. Sequences data → hypothesis → isolation → exploitation → repair → verification."
+description: "6-phase pipeline that increases evidence quality each phase while cutting token waste. Sequences data → hypothesis → isolation → exploitation → repair → verification. Use when debugging is stalling, multi-file bugs need runtime state, or first patch attempt failed."
+triggers:
+  - Bug where fix is not immediately obvious from error message
+  - Multi-file bugs requiring runtime state inspection
+  - Silent logic errors where static analysis hasn't revealed the root cause
+  - First patch attempt failed or only partially fixed the issue
 ---
 
 # Skill: Debug-to-Fix Pipeline for AI Agents
 
-## Purpose
-
-A structured 6-phase debugging pipeline that increases evidence quality each phase while cutting token waste.
-
-Fuses Abductive-First Debugging (competing hypotheses), Debug Subagent (debug-before-edit gate), Simulate Instrumentation (runtime state capture), Purify Test Output (failure-relevant slicing), and Iterative Patch Repair (generate -> test -> refine loop).
-
-## When to Use
-
-- Bug where fix is not immediately obvious from error message
-- Multi-file bugs requiring runtime state inspection
-- Silent logic errors where static analysis hasn't revealed the root cause
-- First patch attempt failed or only partially fixed the issue
-
-## When NOT to Use
-
-- Trivial syntax errors or clear one-line fixes
-- Token budget severely constrained (< 30 calls available)
-- Compiled code (C/C++) without debug build
-- Test output is already minimal (< 20 lines, no framework noise)
-
----
+Fuses Abductive-First Debugging (competing hypotheses), Debug Subagent (debug-before-edit gate), Simulate Instrumentation (runtime state capture), Purify Test Output (failure-relevant slicing), and Iterative Patch Repair (generate → test → refine loop).
 
 ## Phase 0: REPRODUCE (if no failing test)
 
-If you don't have a failing test to start with, use `minimal-reproduction` to create one before entering the pipeline. Every subsequent phase assumes you have a test that demonstrates the bug.
+If you don't have a failing test, use `minimal-reproduction` to create one before entering the pipeline. Every subsequent phase assumes you have a test that demonstrates the bug.
 
 - If a failing test already exists → skip to Phase 1
-- If bug is visible at runtime but no test covers it → use `minimal-reproduction` Skill first
-- If bug is environmental (build fails, command not found) → use `environment-recovery` Skill first
+- If bug is visible at runtime but no test covers it → use `minimal-reproduction` first
+- If bug is environmental (build fails, command not found) → use `environment-recovery` first
 
 ---
 
@@ -140,16 +125,3 @@ Confirm the fix is correct and doesn't introduce regressions.
 - **Don't skip Phase 6** — a fix that breaks other tests isn't a fix
 - **Don't spawn multiple debug subagents in parallel** — serial investigation is more token-efficient
 - **Don't use abduction for clear error messages** — if the error points to a specific line, use deductive tracing instead
-
----
-
-## Exit Criteria
-
-The pipeline is complete when ALL of the following are true:
-
-1. A root cause hypothesis was generated and confirmed with runtime evidence
-2. A patch was generated that fixes the failing test
-3. The full test suite passes with no regressions
-4. All instrumentation has been removed from the code
-5. The patch is minimal (smallest diff that addresses root cause)
-6. The fix was verified against the original hypothesis (root cause addressed, not just symptom)

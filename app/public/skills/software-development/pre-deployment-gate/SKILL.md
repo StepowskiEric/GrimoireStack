@@ -1,9 +1,9 @@
 ---
-name: Pre-Deployment Gate
-description: "Complete pre-push/pre-deploy checklist combining LLM Pre-Push Review with Vibe Coding Security Hardening. 7-pass protocol: execution grounding, security surface, contextual correctness, structural quality, integration points, production hardening, secrets audit."
-
-
-
+description: "Use before deploying any code to production or before pushing AI-authored code."
+triggers:
+  - Before deploying any code to production
+  - Before pushing AI-authored code
+  - Running a pre-deployment security and quality gate
 ---
 
 ## Pre-Deployment Gate
@@ -12,59 +12,9 @@ A complete pre-deployment checklist that merges the LLM Pre-Push Review (5 struc
 
 Based on arXiv research identifying systematic LLM failure modes: hallucinated execution traces (2604.19825), Format-Reliability Gap (2604.16697), False Security Confidence (2604.17014), systematic overcorrection (2603.00539), hallucinated reviews (2601.19072).
 
-### Pass 1: Execution Grounding
+### Passes 1-5: LLM Pre-Push Review
 
-**Goal:** Don't imagine — verify.
-
-- [ ] Every new function/method has a test or is called by one
-- [ ] Edge cases tested (empty input, null, zero, max, off-by-one)
-- [ ] Types match at boundaries (optional vs required, null vs undefined)
-- [ ] Async/await correct (missing await, unhandled rejection, race conditions)
-- [ ] Error paths tested, not just happy paths
-
-**Red flag:** "It looks right" without running it = Mental-Reality Gap. Execute it.
-
-### Pass 2: Security Surface
-
-**Goal:** Catch functionally-correct-but-vulnerable code.
-
-- [ ] Input validation on all external-facing surfaces (API endpoints, user inputs, env vars)
-- [ ] No hardcoded secrets or keys
-- [ ] No SQL/query injection vectors (string interpolation in queries)
-- [ ] Auth checks on every protected route/mutation
-- [ ] No secrets in logs or error messages
-- [ ] New dependencies checked: maintained? transitive junk?
-
-### Pass 3: Contextual Correctness
-
-**Goal:** The change does what was actually requested.
-
-- [ ] Change matches requirement/spec — no overcorrection of working code
-- [ ] No scope creep — every changed line traces to the requirement
-- [ ] No speculative code ("might be useful later" = dead code now)
-- [ ] Existing tests still pass
-- [ ] Imports cleaned up (both directions — unused removed, missing added)
-
-### Pass 4: Structural Quality
-
-**Goal:** No LLM structural anti-patterns.
-
-- [ ] No god functions (>50 lines = too much)
-- [ ] No duplicated logic (near-duplicate blocks in the diff)
-- [ ] Naming matches intent (data/result/item/info → rename)
-- [ ] No premature abstractions (single-use helpers, one-key config objects)
-- [ ] Comments explain why not what
-- [ ] Error messages are actionable
-
-### Pass 5: Integration Points
-
-**Goal:** Code works when connected to everything else.
-
-- [ ] API contracts match (changed signatures → check all callers)
-- [ ] Schema migrations are safe (no destructive drops without path)
-- [ ] New env vars documented in .env.example and deployment config
-- [ ] Backwards compatibility maintained for existing consumers
-- [ ] File moves/renames don't break import paths
+Run the 5-pass LLM Pre-Push Review first: execution grounding, security surface, contextual correctness, structural quality, integration points. See `llm-pre-push-review` for the full checklist.
 
 ### Pass 6: Production Hardening
 
@@ -119,4 +69,3 @@ git diff main | grep -iE '(api_key|secret|token|password|credential|private_key)
 ## References
 
 - `references/gate-checklist.md` — Printable deployment gate checklist with per-pass verification items, threshold tables, and execution order.
-```

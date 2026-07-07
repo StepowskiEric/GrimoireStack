@@ -8,7 +8,6 @@ import './components/LidlessEyeCast.css';
 import ApprenticeWelcome, { STORAGE_KEY as WELCOME_STORAGE_KEY } from './components/ApprenticeWelcome.jsx';
 import GrimoireStackLayout from './components/GrimoireStackLayout.jsx';
 import { useSpellInteraction } from './hooks/useSpellInteraction.js';
-import { useFavorites } from './hooks/useFavorites.js';
 import { useFavoritesSync } from './hooks/useFavoritesSync.js';
 import { useRecentlyViewed } from './hooks/useRecentlyViewed.js';
 import { useMarginalia } from './hooks/useMarginalia.js';
@@ -23,6 +22,7 @@ import CompareSpellsModal from './components/CompareSpellsModal.jsx';
 import SpellModal from './components/SpellModal.jsx';
 import StaleLinkBanner from './components/StaleLinkBanner.jsx';
 import InstallPrompt from './components/InstallPrompt.jsx';
+import { useAgentPrompt } from './hooks/useAgentPrompt.js';
 
 const ShortcutsModal = lazy(() => import('./components/ShortcutsModal.jsx'));
 
@@ -53,11 +53,7 @@ function AppInner() {
   const [compareOpen, setCompareOpen] = useState(false);
   const [compareLeft, setCompareLeft] = useState(null);  // { spell, school }
   const [compareRight, setCompareRight] = useState(null);  // { spell, school }
-  const { favorites, isFavorited, toggleFavorite, setFavorites } = useFavorites();
-  const sync = useFavoritesSync({
-    favorites,
-    onMerge: setFavorites,
-  });
+  const { favorites, isFavorited, toggleFavorite, sync } = useFavoritesSync();
   const { recent, record: recordRecent } = useRecentlyViewed();
   const { mood, recordView } = useEyeMood();
   const marginalia = useMarginalia();
@@ -74,6 +70,11 @@ function AppInner() {
     notFoundSkill,
     dismissNotFound,
   } = useSpellInteraction(castEnabled);
+
+  const agentPrompt = useAgentPrompt({
+    onSpellClick: handleSpellClick,
+    onBrowseResults: (q) => filter.setQuery(q),
+  });
 
   // Record spell view in history when modal opens
   useEffect(() => {
@@ -272,6 +273,7 @@ function AppInner() {
         filterResults={filter.results}
         featuredSchools={featuredSchools}
         onFeaturedSchoolsChange={setFeaturedSchools}
+        agentPrompt={agentPrompt}
       />
 
       {/* Modals — lazy-loaded with themed fallback */}

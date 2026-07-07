@@ -1,7 +1,5 @@
 ---
-source: "GrimoireStack"
-name: coordinated-change
-description: "Plan and execute changes across multiple related files as a coordinated atomic unit. For when a fix or feature requires touching 2+ files that must stay consistent — types, implementation, tests, schema, config."
+description: "Use when a fix or feature requires touching 2+ files that must stay consistent — types, implementation, tests, schema, config."
 triggers:
   - A fix requires changes in more than one file
   - Changing an API contract that has client and server consumers
@@ -15,8 +13,6 @@ triggers:
 # Coordinated Change
 
 **Biological analog:** An organ transplant — you can't just swap the heart, you need to reconnect the arteries, update the blood pressure, adjust the medications. The change is atomic across the whole system.
-
-## Why This Skill Exists
 
 Most debugging and patching skills (iterative-patch-repair, debug-to-fix-pipeline) work on single files. But real-world bugs and features frequently require **coordinated changes across multiple files**:
 
@@ -154,8 +150,6 @@ git commit -m "Update query for avatarUrl"  # broken without type
 git commit -m "Update test for avatarUrl"  # broken without implementation
 ```
 
----
-
 ## Common Change Set Patterns
 
 ### Pattern: New API Field
@@ -198,8 +192,6 @@ git commit -m "Update test for avatarUrl"  # broken without implementation
 5. test.ts — test migration and fallback
 ```
 
----
-
 ## Anti-Patterns
 
 | Anti-Pattern | Why It Fails |
@@ -210,8 +202,6 @@ git commit -m "Update test for avatarUrl"  # broken without implementation
 | Committing partial change sets | Leaves the codebase in a broken state between commits |
 | Only updating the primary file | Type errors, broken imports, and inconsistent behavior cascade |
 | Using `any` to "make it compile" during transition | Masks real type mismatches; remove before committing |
-
----
 
 ## Integration with Other Skills
 

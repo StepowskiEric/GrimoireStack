@@ -20,23 +20,6 @@ triggers:
 
 Every other debugging skill assumes the environment is healthy. This one runs first.
 
-## When to Use
-
-- Any command fails before you get to the actual bug
-- `npm run check`, `npm run build`, or `npx expo start` fails with cryptic errors
-- Tests can't run because the environment is broken
-- Agent ran install commands and things got worse, not better
-- "It was working yesterday" — something changed in the environment
-- You've been debugging for 10+ minutes and haven't reached the actual code yet
-
-## When NOT to Use
-
-- Code logic bugs where the environment is known-good
-- Feature implementation (not fixing anything)
-- The error message clearly points to a specific code issue
-
----
-
 ## Phase 1: VITALS CHECK
 
 Run a structured sweep of the 8 most common environment failures. This takes 30 seconds and catches 80% of env issues.
@@ -92,13 +75,8 @@ Apply the fix matching your Phase 1 finding. Do NOT run fixes for problems you d
 ### Fix #1: Disk Full (ENOSPC)
 
 ```bash
-# Identify what's eating space
 du -sh node_modules .expo .turbo ~/.npm ~/.cache 2>/dev/null | sort -rh | head -5
-
-# Nuclear option (safe — only removes caches, not source)
 rm -rf node_modules/.cache .expo .turbo
-
-# If still full — check for Docker images, OrbStack, old builds
 docker system df 2>/dev/null
 du -sh ~/Library/Developer/Xcode 2>/dev/null
 ```
@@ -108,18 +86,12 @@ du -sh ~/Library/Developer/Xcode 2>/dev/null
 ### Fix #2: Wrong Tool Version Resolved
 
 ```bash
-# Check what's resolved vs what's expected
 which -a node
 which -a npm
 which -a npx
-
-# If nvm is installed but shell not loading it
-source ~/.nvm/nvm.sh
-nvm use
-
-# If pyenv conflict
+source ~/.nvm/nvm.sh 2>/dev/null && nvm use
 which -a python3
-pyenv which python3
+pyenv which python3 2>/dev/null
 ```
 
 **Anti-pattern:** Installing a new tool version without checking what's already there. Always check `which -a` first.
@@ -133,14 +105,13 @@ pyenv which python3
 # If pnpm-lock.yaml exists → pnpm
 # NEVER mix package managers
 
-# Clean install (nuclear — deletes node_modules and reinstalls)
 rm -rf node_modules
 rm -f package-lock.json  # only if lockfile is corrupted
 npm install  # or yarn install, or pnpm install
 
 # For peer dependency conflicts
-npm ls <problem-package>  # see who depends on it
-npm dedupe  # flatten dependency tree
+npm ls <problem-package>
+npm dedupe
 
 # For Expo/RN native deps
 npx pod-install  # iOS
@@ -156,50 +127,30 @@ cd android && ./gradlew clean  # Android
 ### Fix #4: Port Conflicts
 
 ```bash
-# Find what's using the port
 lsof -i :8081  # Metro bundler
 lsof -i :3000  # Common dev server
 lsof -i :19000 -i :19001 -i :19002  # Expo dev
-
-# Kill specific process
 kill -9 <PID>
-
-# Kill all node processes (nuclear — kills everything)
-pkill -f node
+pkill -f node  # nuclear — kills everything
 ```
 
 ### Fix #5: Stale Cache
 
 ```bash
-# React Native / Expo
 npx expo start --clear
-
-# Metro bundler
 rm -rf node_modules/.cache/metro
 rm -rf /tmp/metro-* 2>/dev/null
 rm -rf /tmp/haste-map-* 2>/dev/null
-
-# TypeScript
 rm -rf tsconfig.tsbuildinfo
 rm -rf node_modules/.cache/typescript
-
-# Turbopack
 rm -rf .turbo
-
-# Nuclear: clear all caches
-npx expo start --clear
 ```
 
 ### Fix #6: Permission Drift
 
 ```bash
-# Fix ownership of project files
 sudo chown -R $(whoami) .
-
-# Fix node_modules specifically
 sudo chown -R $(whoami) node_modules
-
-# Fix npm global prefix (common cause of EACCES)
 npm config get prefix
 # Should NOT be /usr — if it is:
 mkdir -p ~/.npm-global
@@ -210,16 +161,10 @@ export PATH=~/.npm-global/bin:$PATH
 ### Fix #7: Expo-Specific Environment Issues
 
 ```bash
-# iOS Simulator runtime missing (err 70)
-xcodebuild -downloadPlatform iOS
-
-# Android SDK not found
+xcodebuild -downloadPlatform iOS  # iOS Simulator runtime missing
 echo $ANDROID_HOME
-# Should point to SDK dir — if empty:
 export ANDROID_HOME=$HOME/Library/Android/sdk
 export PATH=$PATH:$ANDROID_HOME/platform-tools
-
-# Expo CLI version mismatch
 npx expo --version
 npx expo install expo --fix  # auto-fix version mismatches
 ```
@@ -232,21 +177,14 @@ After applying any fix, verify the environment is now functional:
 
 ```bash
 # 1. Re-run the command that originally failed
-# (the specific npm run check, build, or start command)
-
 # 2. Verify tool resolution
 which node && node --version
 which npm && npm --version
-
 # 3. Quick smoke test
 npm run check  # or project-specific check command
 ```
 
 **Done when:** the original failing command now passes, or it still fails (meaning the environment was healthy and the bug is in the code — switch to a code-level debugging skill).
-
-**If the original command still fails after environment fix:**
-- The environment was healthy; the bug is in the code
-- Switch to a code-level debugging skill (specter, debug-to-fix-pipeline, root-cause-analysis)
 
 ---
 
@@ -260,14 +198,6 @@ npm run check  # or project-specific check command
 | Ignoring `EACCES` and `sudo npm install` | Masks permission problems with root; creates worse permission drift |
 | Switching package managers mid-project | npm ↔ yarn ↔ pnpm creates conflicting lockfiles; pick one and stay |
 | Assuming the env is fine because "it worked yesterday" | Something changed — a new dep, a version bump, a cache invalidation |
-
----
-
-## Combination Opportunities
-
-- **Before `specter` or `debug-to-fix-pipeline`:** Run Phase 1 vitals. If env is broken, fix env first. Code-level debugging on a broken environment wastes time and produces misleading results.
-- **After `environment-recovery` + still broken:** The env is fine. The bug is in the code. Switch to code-level debugging.
-- **With `trajectory-guard`:** If `trajectory-guard` detects you've been running env fixes for >3 cycles without progress, the problem may not be environmental — escalate to `escalation-ladder`.
 
 ---
 

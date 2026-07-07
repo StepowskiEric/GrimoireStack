@@ -15,10 +15,13 @@ export async function gotoReady(page, url = '/') {
   await expect(page.locator('.grimoirestack-layout')).toBeVisible({ timeout: 10_000 });
 }
 
-export async function checkA11y(page) {
-  const results = await new AxeBuilder({ page })
-    .exclude('#main-content')
-    .analyze();
+export async function checkA11y(page, options = {}) {
+  const { excludeRules = [] } = options;
+  const builder = new AxeBuilder({ page }).exclude('#main-content');
+  for (const rule of excludeRules) {
+    builder.disableRules([rule]);
+  }
+  const results = await builder.analyze();
   expect(results.violations).toEqual([]);
 }
 

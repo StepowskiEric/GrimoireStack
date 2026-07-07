@@ -1,20 +1,18 @@
 ---
 source: "GrimoireStack"
-name: api-surface-anchoring
-category: software-development
-description: Before writing code that calls any external library or API, verify its current API surface from authoritative docs. Prevents hallucinated signatures, wrong imports, and outdated parameters. Tracks verified surfaces in a durable artifact.
+description: "Use when using any external library, SDK, or API you are not 100% sure of, libraries released after your LLM's training cutoff, or niche/low-training-count libraries."
 version: 1.0.0
 priority: high
 tags: [api, verification, hallucination-prevention, code-quality, documentation, sdk]
-...
-
-
-
+triggers:
+  - Using any external library, SDK, or API you are not 100% sure of
+  - Libraries released or updated after your LLM's training cutoff
+  - Niche or low-training-count libraries
+  - Internal/SDK packages whose API may differ from documentation
+  - Any code that imports from pip install packages, npm packages, or external REST/gRPC APIs
 ---
 
 # API Surface Anchoring
-
-## Overview
 
 LLMs hallucinate API signatures they've never seen, or whose signatures changed post-cutoff. This is the #1 source of code that looks right but fails at runtime — wrong parameter names, missing imports, incompatible return types, removed methods.
 
@@ -22,16 +20,7 @@ LLMs hallucinate API signatures they've never seen, or whose signatures changed 
 
 Research basis: The pre-verification pattern mirrors **Chain-of-Verification** (Dhuliawala et al., 2023) — verify facts before building on them. Applied to API surfaces, this catches hallucinated signatures at the write site rather than at the runtime error.
 
-## When to Use
-
-- Using any external library, SDK, or API you are not 100% sure of
-- Libraries released or updated after your LLM's training cutoff
-- Niche or low-training-count libraries
-- Internal/SDK packages whose API may differ from documentation
-- Any code that imports from `pip install` packages, npm packages, or external REST/gRPC APIs
-
-## When NOT to Use
-
+Do NOT use for:
 - Standard library calls you use daily (Python `os.path`, `json.dumps`)
 - Code you're writing against your own project's internal modules
 - Trivial wrappers where the API surface is obvious from context
@@ -153,28 +142,6 @@ Each line is one verified API surface:
 - **REST API endpoints**: For external HTTP APIs, verify the endpoint path, method, headers, and response shape. The companion script's `verify-api` subcommand handles this via `curl` + doc extraction.
 - **Cache staleness**: `api-surface.jsonl` accumulates across sessions. If you verify something in one session and use it in another, re-verify if the library version changed.
 
-## Companion Script Details
-
-### Installation
-
-The script is included with the skill. When using `npx GrimoireStack install --with-scripts`, it's copied alongside SKILL.md automatically:
-
-```bash
-npx GrimoireStack install --agent hermes --skill api-surface-anchoring --with-scripts
-```
-
-For manual setup, copy `api_surface.py` alongside `SKILL.md` in the skill directory.
-
-### Subcommands
-
-- `verify <package> [symbol] [version]` — Fetch current signature from docs
-- `verify-api <url> [method]` — Fetch and parse REST API endpoint docs
-- `fetch-docs <url>` — Extract signature information from a docs page
-- `status` — Show all verified surfaces for the current session
-- `check <file>` — Scan a source file for unverified external calls (static analysis)
-- `init` — Create an empty `api-surface.jsonl` in current directory
-
-All subcommands support `--help` for detailed usage.
 
 ## Usage Example
 

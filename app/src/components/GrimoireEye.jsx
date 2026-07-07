@@ -3,7 +3,7 @@
 import { useRef, useEffect } from 'react';
 import SchoolSigil from './SchoolSigil.tsx';
 
-export default function GrimoireEye({ searchQuery, onSearchChange, totalMatches, featuredSchools, onSchoolSelect, isSearching, eyeRadius = 220, mood = 'neutral' }) {
+export default function GrimoireEye({ searchQuery, onSearchChange, totalMatches, featuredSchools, onSchoolSelect, isSearching, eyeRadius = 220, mood = 'neutral', onAgentPrompt }) {
   const wrapperRef = useRef(null);
   const containerRef = useRef(null);
   const pupilRef = useRef(null);
@@ -441,6 +441,15 @@ export default function GrimoireEye({ searchQuery, onSearchChange, totalMatches,
           )}
           {searchQuery && totalMatches > 0 && (
             <span className="pupil-search__matches">{totalMatches} found</span>
+          )}
+          {searchQuery && totalMatches > 0 && (
+            <button
+              type="button"
+              className="pupil-search__agent-btn"
+              onClick={() => onAgentPrompt?.(searchQuery)}
+            >
+              Ask agent
+            </button>
           )}
         </div>
       </div>

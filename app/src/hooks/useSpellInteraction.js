@@ -22,6 +22,7 @@ export function useSpellInteraction(castEnabled) {
   const [casting, setCasting] = useState(null);
   const [notFoundSkill, setNotFoundSkill] = useState(null);
   const userOpenedRef = useRef(false);
+  const castingKeyRef = useRef(null);
 
   const lockBody = useCallback(() => {
     document.body.style.overflow = 'hidden';
@@ -53,8 +54,12 @@ export function useSpellInteraction(castEnabled) {
   }, [unlockBody]);
 
   const handleSpellClick = useCallback((spell, school) => {
+    const key = `${spell.skill}::${school.id}`;
     if (castEnabled) {
-      setCasting({ spell, school });
+      if (castingKeyRef.current !== key) {
+        castingKeyRef.current = key;
+        setCasting({ spell, school });
+      }
     } else {
       openModal(spell, school);
     }
@@ -70,6 +75,7 @@ export function useSpellInteraction(castEnabled) {
       if (c) openModal(c.spell, c.school);
       return null;
     });
+    castingKeyRef.current = null;
   }, [openModal]);
 
   // Open spell from URL on mount (do not push — URL is already correct)

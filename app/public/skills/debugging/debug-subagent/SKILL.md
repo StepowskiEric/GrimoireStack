@@ -1,13 +1,13 @@
 ---
 name: debug-subagent
-description: A dedicated debugging subagent that must be consulted before making code edits. Wraps debugger complexity behind natural-language queries and enforces "debug before edit" workflow. Based on Debug2Fix research (+13-22% bug fix rate).
+description: "A dedicated debugging subagent that must be consulted before making code edits. Wraps debugger complexity behind natural-language queries and enforces 'debug before edit' workflow. Based on Debug2Fix research (+13-22% bug fix rate)."
+triggers:
+  - Bug where fix is not immediately obvious from the error message
+  - Multi-file bugs requiring runtime state inspection
+  - Bugs where static analysis (reading code) hasn't revealed the root cause
 category: debugging
 priority: high
 tags: [debugging, subagent, interactive-debugging, program-repair]
-...
-
-
-
 ---
 
 ## Overview
@@ -15,17 +15,6 @@ tags: [debugging, subagent, interactive-debugging, program-repair]
 Instead of exposing raw debugger tools to the main agent, the **gate** pattern inserts a specialized Debug Subagent that handles all debugging complexity. The main agent can only ask it natural-language questions like "Why does this test fail?" or "What is the value of `customerId` at line 45?" — the gate enforces a **debug-before-edit** workflow.
 
 Research shows this gate architecture achieves **>98% debug tool call rate** vs ~60% when tools are exposed directly. Models with a debug subagent **outperform stronger models without one**.
-
-## When to use
-
-- Any bug where the fix is not immediately obvious from the error message
-- Multi-file bugs requiring runtime state inspection
-- Bugs where static analysis (reading code) hasn't revealed the root cause
-
-## When NOT to use
-
-- Trivial syntax errors or clear one-line fixes
-- When token budget is severely constrained (subagent adds overhead)
 
 ## Core protocol
 

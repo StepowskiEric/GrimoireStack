@@ -1,13 +1,14 @@
 ---
 name: iterative-patch-repair
-description: Loop of generate patch → run test → capture runtime state → refine patch. Max N iterations with patch augmentation to avoid overfitting.
+description: "Loop of generate patch → run test → capture runtime state → refine patch. Max N iterations with patch augmentation to avoid overfitting. Use when first patch attempt failed, bug has multiple plausible fixes, or test feedback reveals the fix was close but not quite right."
+triggers:
+  - First patch attempt failed or only partially fixed the issue
+  - Bug has multiple plausible fixes (different files, different approaches)
+  - Test feedback reveals the fix was close but not quite right
+  - High stakes: need confidence the fix is correct, not just plausible
 category: debugging
 priority: high
 tags: [debugging, iterative-repair, patch-augmentation, program-repair]
-...
-
-
-
 ---
 
 ## Overview
@@ -22,19 +23,6 @@ Most agents generate one patch and hope it works. **Iterative Patch Repair** tre
 This is especially powerful for bugs where the first plausible fix is wrong — a common failure mode where the agent "fixes" the symptom but not the root cause.
 
 Research shows patch augmentation (generating variants) alone provides a **+19.9%** correctness improvement.
-
-## When to use
-
-- First patch attempt failed or only partially fixed the issue
-- The bug has multiple plausible fixes (different files, different approaches)
-- Test feedback reveals the fix was close but not quite right
-- High stakes: you need confidence the fix is correct, not just plausible
-
-## When NOT to use
-
-- First patch already passes all tests
-- Token budget is severely constrained (iterations multiply cost)
-- The bug is a one-line typo with an obvious fix
 
 ## Core protocol
 

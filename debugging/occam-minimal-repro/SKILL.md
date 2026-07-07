@@ -1,33 +1,22 @@
 ---
 name: occam-minimal-repro
 description: "Combo — When isolating a bug, systematically rank possible reproduction triggers by complexity and test the simplest trigger first. Only escalate to more complex triggers when simpler ones are falsified. Prevents wasted effort building elaborate reproduction setups when a one-liner would suffice."
+triggers:
+  - Writing a minimal reproduction test for a bug
+  - Several plausible ways to trigger the bug with different complexity levels
+  - Catching yourself setting up a complex test environment before trying a simple one
 ---
 
 # Skill: Occam's Razor + Minimal Reproduction
 
 ## Purpose
 
-`minimal-reproduction` already has a "find the minimal trigger" step, but it does not explicitly rank multiple possible triggers by complexity or require falsification before escalating. An agent can still jump to a complex reproduction setup (full app, specific environment, multi-step flow) before checking whether a simpler trigger works.
-
-This combo adds **explicit trigger ranking and falsification** to the minimal reproduction protocol:
+`minimal-reproduction` already has a "find the minimal trigger" step, but it does not explicitly rank multiple possible triggers by complexity or require falsification before escalating. This combo adds **explicit trigger ranking and falsification** to the minimal reproduction protocol:
 
 1. Brainstorm all possible triggers for the bug
 2. **Rank by complexity** (Occam's Razor) — simplest trigger first
 3. Test the simplest trigger
 4. **Only escalate** to a more complex trigger if the simpler one is falsified
-
----
-
-## When to Use
-
-Use this combo when:
-- you are writing a minimal reproduction test for a bug
-- there are several plausible ways to trigger the bug with different complexity levels
-- you catch yourself setting up a complex test environment before trying a simple one
-
-Do not use when:
-- there is only one known trigger (no ranking needed)
-- the simplest trigger has already been tested and failed to reproduce
 
 ---
 
@@ -159,39 +148,9 @@ Step 3:
 
 ---
 
-## What This Combo Prevents
-
-| Failure Mode | Minimal Reproduction alone | Occam-Minimal-Repro |
-|---|---|---|
-| Jumping to complex trigger before trying simple ones | Possible | Prevented — ranking is explicit |
-| Writing the repro at the wrong tier | Possible | Rule: write at simplest tier that reproduces |
-| Exhausting all triggers equally | Possible | Stop at first tier that reproduces |
-| Environment-hunting before code-hunting | Possible | Tier 0–2 always probed before Tier 4 |
-| Over-reproduction (test is more complex than needed) | Possible | Simplicity ranking caps the test tier |
-
----
-
 ## Pairing Guide
 
 - **minimal-reproduction** — the base skill; this combo adds explicit trigger ranking and falsification before escalation
 - **occam-abduction** — use occam-abduction to generate hypotheses about *what causes* the bug, then use this combo to generate the simplest trigger that *reproduces* it
 - **specter** — specter generates structural hypotheses; this combo produces the test that lets specter's hypotheses be falsified
 - **iterative-patch-repair** — hands off a failing test at the correct tier for patch-repair to iterate on
-
----
-
-## Definition of Done
-
-This combo was applied correctly when:
-- All plausible triggers were brainstormed before any test was written
-- Triggers were explicitly ranked by complexity tier
-- Triggers were tested in ascending tier order
-- Testing stopped at the first tier that reproduced the bug
-- The reproduction test was written at that tier, not at a higher tier
-- If simpler triggers were falsified, falsification was explicit (not just "it didn't work")
-
----
-
-## Final Instruction
-
-List every way to trigger the bug. Try them from simplest to most complex. The first one that reproduces it is your minimal repro — not the fanciest one.
