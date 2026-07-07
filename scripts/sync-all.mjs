@@ -32,6 +32,14 @@ function runInApp(scriptPath) {
   execSync(`node ${scriptPath}`, { cwd: APP_DIR, stdio: 'inherit' });
 }
 
+function runRegistryGenerator() {
+  if (DRY_RUN) {
+    console.log(`  [dry] Would run: node scripts/registry/index.mjs`);
+    return;
+  }
+  execSync('node scripts/registry/index.mjs', { cwd: APP_DIR, stdio: 'inherit' });
+}
+
 // ─────────────────────────────────────────────
 //  COPY NEW SKILLS
 // ─────────────────────────────────────────────
