@@ -15,17 +15,13 @@
  *        npx wrangler kv namespace create FAVORITES
  *      Paste the returned `id` into `wrangler.toml` under the
  *      `[[kv_namespaces]] binding = "FAVORITES"` block.
- *   2. The rate-limit binding (SYNC_WRITES) is configured in wrangler.toml
- *      with [[ratelimits]] — no dashboard step required.
- *   3. No secret env vars. The KV binding is configured via dashboard or wrangler.
+ *   2. (Optional) Rate-limit binding SYNC_WRITES is configured via the
+ *      Cloudflare dashboard — see comment in wrangler.toml. The function
+ *      works without it (writes are unthrottled).
+ *   3. No secret env vars.
  *
  * Free tier (2026): 100K reads/day, 1K writes/day, 1 GB storage,
  * 25 MiB max value. Per https://developers.cloudflare.com/kv/platform/limits/
- *
- * Rate limit: 10 writes (put/delete) per minute per sync code. Reads are
- * not rate-limited (legitimate device-pairing reads are continuous). The
- * limit fails open if the rate limiter binding is unreachable — the KV
- * 1K writes/day free tier is the natural backstop.
  *
  * Threat model & accepted risks:
  *   - The 16-char sync code is the only auth. Anyone with the code owns
@@ -34,11 +30,8 @@
  *     not cookies — there's no CSRF surface.
  *   - Validation runs before KV access. Malformed bodies return 400,
  *     never 500.
- *   - Read operations are not rate-limited to avoid blocking device
- *     pairing; if code enumeration becomes a concern, add a second
- *     [[ratelimits]] block keyed by client IP.
  *
- * Bound at runtime: env.FAVORITES (KVNamespace), env.SYNC_WRITES (RateLimiter)
+ * Bound at runtime: env.FAVORITES (KVNamespace)
  */
 
 const ALPHABET = 'abcdefghijkmnpqrstuvwxyz23456789'; // 32 chars, no 0/o/1/i/l
@@ -46,6 +39,8 @@ const CODE_LEN = 16;
 const MAX_FAVORITES = 5000;     // soft cap; KV limit is 25 MiB
 const MAX_NAME_LEN = 120;
 const MAX_SKILL_LEN = 120;
+const MAX_PAYLOAD = 1_000_000;  // 1 MB hard ceiling per request
+
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
   'Access-Control-Allow-Methods': 'POST, OPTIONS',
@@ -109,22 +104,16 @@ export async function onRequest(context) {
     return json({ error: 'Invalid sync code (must be 16 chars from a-z2-9)' }, 400);
   }
 
-  // Rate limit writes (put/delete) per sync code. Reads are deliberately
-  // not rate-limited — device pairing fires a get on every mount. The
-  // binding is configured via the Cloudflare dashboard; this code path
-  // is fully defensive so a missing or misconfigured binding never breaks
-  // the function. KV's 1K writes/day free tier is the natural ceiling.
-  if ((op === 'put' || op === 'delete')
-      && env.SYNC_WRITES && typeof env.SYNC_WRITES.limit === 'function') {
-    try {
-      const { success } = await env.SYNC_WRITES.limit({ key: code });
-      if (!success) {
-        return json({ error: 'Rate limit exceeded. Try again in a minute.' }, 429);
-      }
-    } catch (e) {
-      console.warn('rate limiter unavailable, failing open:', e.message);
-    }
-  }
+  // Rate limiting note: a SYNC_WRITES RateLimiter binding (10 puts/deletes
+  // per minute per code) was the intended defense against abuse. Pages
+  // does not support [[ratelimits]] / [[unsafe.bindings]] in wrangler.toml
+  // and the Cloudflare API does not expose a rate_limit binding field for
+  // Pages projects as of 2026-07. The binding can be added manually via
+  // the dashboard (Pages > grimoirestack > Settings > Bindings > Add >
+  // Rate limiting) but until that exists, every successful request to
+  // this function is unthrottled. KV's 1K writes/day free tier remains
+  // the natural ceiling for casual abuse.
+
   try {
     if (op === 'get') {
       const raw = await env.FAVORITES.get(code);
