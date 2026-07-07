@@ -110,19 +110,19 @@ export async function onRequest(context) {
   }
 
   // Rate limit writes (put/delete) per sync code. Reads are deliberately
-  // not rate-limited — device pairing fires a get on every mount. Fails
-  // open if the binding is unavailable; the KV 1K writes/day free tier
-  // is the natural ceiling below this.
-  if (op === 'put' || op === 'delete') {
-    if (env.SYNC_WRITES) {
-      try {
-        const { success } = await env.SYNC_WRITES.limit({ key: code });
-        if (!success) {
-          return json({ error: 'Rate limit exceeded. Try again in a minute.' }, 429);
-        }
-      } catch (e) {
-        console.warn('rate limiter unavailable, failing open:', e.message);
+  // not rate-limited — device pairing fires a get on every mount. The
+  // binding is configured via the Cloudflare dashboard; this code path
+  // is fully defensive so a missing or misconfigured binding never breaks
+  // the function. KV's 1K writes/day free tier is the natural ceiling.
+  if ((op === 'put' || op === 'delete')
+      && env.SYNC_WRITES && typeof env.SYNC_WRITES.limit === 'function') {
+    try {
+      const { success } = await env.SYNC_WRITES.limit({ key: code });
+      if (!success) {
+        return json({ error: 'Rate limit exceeded. Try again in a minute.' }, 429);
       }
+    } catch (e) {
+      console.warn('rate limiter unavailable, failing open:', e.message);
     }
   }
   try {

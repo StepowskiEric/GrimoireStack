@@ -19,10 +19,14 @@ binding = "AI"
 binding = "FAVORITES"
 id = "a453372cb3eb4ee1a2492eb193194d97"
 
-# Rate limit for sync code writes — protects against anyone (code holder
-# or brute-forcer) flooding the API. 10 puts/deletes per minute per code.
-# The KV free tier (1K writes/day) is the natural ceiling below this.
-[[ratelimits]]
-binding = "SYNC_WRITES"
-namespace_id = "19c1ca7d-48b3-4c9d-b531-648245dcc08b"
-simple = { limit = 10, period = 60 }
+# Rate limit for sync code writes (binding: SYNC_WRITES) is configured
+# in the Cloudflare dashboard, not in wrangler.toml:
+#   Pages > grimoirestack > Settings > Bindings > Add > Rate limiting
+#   Name: SYNC_WRITES
+#   Namespace: 19c1ca7d-48b3-4c9d-b531-648245dcc08b (pre-created via
+#     `npx wrangler rate_limit create favorites-sync-writes`)
+#   Limit: 10, Period: 60
+# The Pages PATCH API does not support rate_limit bindings as of 2026-07,
+# and [[ratelimits]] / [[unsafe.bindings]] are not accepted in wrangler.toml
+# for Pages projects. The function fails open when the binding is missing,
+# so the deploy is safe without it.
