@@ -126,17 +126,25 @@ export default function GrimoireStackLayout({
 
   // Intercept oracle spell selection to run page-agent first
   const handleOracleSelect = useCallback(async (spell, school) => {
-    if (!spell) return;
+    if (!spell) {
+      console.log('[handleOracleSelect] No spell provided, skipping');
+      return;
+    }
+    console.log('[handleOracleSelect] Starting agent run for', { skill: spell.skill, name: spell.name, school: school?.id });
     const navigated = await agent.runAgent({
       bestSkill: { name: spell.name, skill: spell.skill },
       onError: (msg) => {
+        console.log('[handleOracleSelect] Agent error:', msg);
         setAgentToast(msg);
         setTimeout(() => setAgentToast(''), 3000);
       },
     });
+    console.log('[handleOracleSelect] Agent returned navigated =', navigated);
     if (!navigated) {
-      // Agent not configured or failed silently — fall back to normal click
+      console.log('[handleOracleSelect] Falling back to direct onSpellClick');
       onSpellClick(spell, school);
+    } else {
+      console.log('[handleOracleSelect] Agent handled navigation, not calling onSpellClick');
     }
   }, [agent, onSpellClick]);
 
