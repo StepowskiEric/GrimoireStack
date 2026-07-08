@@ -101,17 +101,34 @@ async function runAiInference(env, query) {
       'Content-Type': 'application/json',
     },
     body: JSON.stringify({
-      model: env.GROQ_MODEL || 'llama-3.1-8b-instant',
+      model: env.GROQ_MODEL || 'openai/gpt-oss-20b',
       messages: [
         {
           role: 'system',
-          content: `You are a skill matcher. Rank these skill IDs by relevance to the user's problem. Return ONLY a JSON object: {"ranked_ids": ["id1", "id2", ...]}. Use ONLY IDs from this list: ${skillIds.join(', ')}`,
+          content: `Rank these skill IDs by relevance to the user's problem. Return the top 5 most relevant.`,
         },
         { role: 'user', content: query },
       ],
       max_tokens: 256,
       temperature: 0.3,
-      response_format: { type: 'json_object' },
+      response_format: {
+        type: 'json_schema',
+        json_schema: {
+          name: 'ranked_skills',
+          strict: true,
+          schema: {
+            type: 'object',
+            properties: {
+              ranked_ids: {
+                type: 'array',
+                items: { type: 'string', enum: skillIds },
+              },
+            },
+            required: ['ranked_ids'],
+            additionalProperties: false,
+          },
+        },
+      },
     }),
   });
   if (!res.ok) throw new Error(`Groq API error: ${res.status}`);
