@@ -264,6 +264,8 @@ export async function onRequest(context) {
       return jsonResponse({ results: lr, source: 'local', debug: err?.message || String(err) });
     }
   }
-  // No GROQ_API_KEY bound
-  const lr0 = localMatch(query);
-  return jsonResponse({ results: lr0, source: 'local', debug: 'no GROQ_API_KEY' });
+
+  // 3) Local token-overlap fallback (sub-50ms).
+  const localResults = localMatch(query);
+  return jsonResponse({ results: localResults, source: 'local' });
+}
