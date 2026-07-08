@@ -6,9 +6,15 @@
  * into Cloudflare Workers AI calls and maps the response back into
  * the OpenAI shape.
  *
+ * Important: Workers AI's native `env.AI.run()` expects tools in a
+ * flat shape — `{ name, description, parameters }` — NOT OpenAI's
+ * nested `{ type: "function", function: { ... } }` shape. We translate
+ * between them here. See:
+ *   https://developers.cloudflare.com/workers-ai/features/function-calling/
+ *
  * Pass-through semantics:
  *   - `messages`  forwarded verbatim (system / user / assistant / tool)
- *   - `tools`     forwarded verbatim (function-calling tool definitions)
+ *   - `tools`     translated from OpenAI → Workers AI shape
  *   - `tool_choice` forwarded verbatim
  *   - `temperature`, `max_tokens`, `stream` forwarded as configured
  *
@@ -46,16 +52,23 @@ function uuid() {
 
 function normalizeTools(tools) {
   if (!Array.isArray(tools)) return undefined;
+  // OpenAI uses nested shape:
+  //   { type: "function", function: { name, description, parameters } }
+  // Workers AI's `env.AI.run()` expects flat shape:
+  //   { name, description, parameters }
+  // Translate OpenAI → Workers AI before forwarding.
   return tools
-    .filter((t) => t && typeof t === 'object' && t.type === 'function' && t.function?.name)
-    .map((t) => ({
-      type: 'function',
-      function: {
-        name: String(t.function.name),
-        description: typeof t.function.description === 'string' ? t.function.description : '',
-        parameters: t.function.parameters ?? { type: 'object', properties: {} },
-      },
-    }));
+    .map((t) => {
+      if (!t || typeof t !== 'object') return null;
+      const fn = t.type === 'function' ? t.function : t.function ?? t;
+      if (!fn?.name) return null;
+      return {
+        name: String(fn.name),
+        description: typeof fn.description === 'string' ? fn.description : '',
+        parameters: fn.parameters ?? { type: 'object', properties: {} },
+      };
+    })
+    .filter(Boolean);
 }
 
 function extractText(response) {
@@ -245,7 +258,17 @@ export async function onRequest(context) {
   const aiParams = { messages: augmentedMessages, temperature, max_tokens: maxTokens };
   if (tools) {
     aiParams.tools = tools;
-    if (toolChoice) aiParams.tool_choice = toolChoice;
+    // Translate tool_choice: OpenAI uses
+    //   "auto" or { type: "function", function: { name } }
+    // Workers AI expects flat
+    //   { type: "tool", name }
+    if (toolChoice) {
+      if (typeof toolChoice === 'object' && toolChoice.function?.name) {
+        aiParams.tool_choice = { type: 'tool', name: toolChoice.function.name };
+      } else if (toolChoice !== 'none') {
+        aiParams.tool_choice = toolChoice;
+      }
+    }
   }
 
   // Workers AI binding (native). Per Cloudflare's 2026-02-17 changelog,
