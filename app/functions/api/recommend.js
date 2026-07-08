@@ -105,20 +105,26 @@ async function runAiInference(env, query) {
       messages: [
         {
           role: 'user',
-          content: `You are a skill matcher. Rank these skill IDs by relevance to the user's problem. Return ONLY a JSON object with a "ranked_ids" array of the top 5 most relevant IDs. Use ONLY IDs from the list.
+          content: `Rank these skill IDs by relevance to the user's problem. Pick the top 5 most relevant from the list below. Output only a JSON object with a "ranked_ids" array.
 
-Example output: {"ranked_ids": ["security-threat-modeling", "pre-mortem", "bisect-debugging"]}
+Example:
+User problem: "I have security vulnerabilities"
+Output: {"ranked_ids": ["security-threat-modeling", "vibe-coding-security-hardening", "security-review-protocol"]}
 
-Skill IDs: ${skillIds.join(', ')}
+Skill IDs to choose from:
+${skillIds.join(', ')}
 
 User problem: ${query}`,
+        },
+        {
+          role: 'assistant',
+          content: '{"ranked_ids": ["',
         },
       ],
       max_completion_tokens: 256,
       temperature: 0.0,
       response_format: { type: 'json_object' },
       reasoning_effort: 'none',
-      reasoning_format: 'hidden',
     }),
   });
   if (!res.ok) {
@@ -126,17 +132,28 @@ User problem: ${query}`,
     throw new Error(`Groq API ${res.status}: ${errBody.slice(0, 300)}`);
   }
   const data = await res.json();
-  const text = data.choices?.[0]?.message?.content || '';
+  // The prefilled assistant message means content starts with {"ranked_ids": ["
+  // The model continues from there, so we need to close the JSON ourselves.
+  let text = data.choices?.[0]?.message?.content || '';
+  // If the model didn't close the array/object, auto-close it.
+  if (text.startsWith('{"ranked_ids":')) {
+    const openBrackets = (text.match(/\[/g) || []).length;
+    const closeBrackets = (text.match(/\]/g) || []).length;
+    const openBraces = (text.match(/\{/g) || []).length;
+    const closeBraces = (text.match(/\}/g) || []).length;
+    if (closeBrackets < openBrackets) text += ']';
+    if (closeBraces < openBraces) text += '}';
+  }
 
-  // Parse {"ranked_ids": [...]} and auto-attach full skill data.
   let rankedIds = [];
   try {
     const parsed = JSON.parse(text);
     rankedIds = Array.isArray(parsed.ranked_ids) ? parsed.ranked_ids : [];
   } catch {
-    // Model might return a raw array — try that too.
     const match = text.match(/\[[\s\S]*\]/);
-    if (match) rankedIds = JSON.parse(match[0]);
+    if (match) {
+      try { rankedIds = JSON.parse(match[0]); } catch {}
+    }
   }
 
   // Filter to valid IDs only, then build result objects from catalog data.
