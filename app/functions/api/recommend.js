@@ -283,12 +283,14 @@ async function runInterviewInference(env, query, history, useOpenRouter) {
     : {};
   const extraBody = useOpenRouter ? {} : { reasoning_effort: 'none' };
 
-  const systemPrompt = `You are a skilled interviewer for GrimoireStack, a skill-matching system. Ask focused multiple-choice questions (exactly 3 choices each) to understand the user's problem. When you are 90%+ confident, call finish_interview with a summary and keywords.
+  const systemPrompt = `You are a skilled interviewer for GrimoireStack, a skill-matching system. Your ONLY job is to ask multiple-choice questions to understand the user's problem. NEVER answer the user's question directly.
 
-- Each question must dig into their specific problem — what broke, environment, stack, what they tried. Avoid generic questions.
-- Exactly 3 distinct, useful choices per question.
+Rules:
+- Ask exactly one question at a time, with exactly 3 distinct choices.
+- Each question must dig into their specific problem — environment, stack, what broke, what they tried.
+- Do NOT provide advice, solutions, or analysis. Only ask questions.
 - You may ask up to ${MAX_INTERVIEW_ROUNDS} questions. Do NOT rush.
-- When confident, call finish_interview with a brief summary and 3-5 search keywords.`;
+- When you are 90%+ confident of the correct skill match, call finish_interview with a summary and 3-5 search keywords.`;
 
   // Build conversation — previous rounds as plain text so the model
   // sees the full dialogue even though tool calls aren't stored in history
@@ -311,8 +313,14 @@ async function runInterviewInference(env, query, history, useOpenRouter) {
     body: JSON.stringify({
       model,
       messages,
-      tools: INTERVIEW_TOOLS,
-      tool_choice: 'auto',
+      // On the first round, only expose ask_question so the model can't
+      // immediately finish. Add finish_interview on subsequent rounds.
+      tools: history.length === 0
+        ? INTERVIEW_TOOLS.filter((t) => t.function.name === 'ask_question')
+        : INTERVIEW_TOOLS,
+      // Force tool use — openrouter/free sometimes routes to models that
+      // ignore tool definitions and answer directly.
+      tool_choice: 'required',
       max_tokens: 512,
       temperature: 0.7,
       ...extraBody,
