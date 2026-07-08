@@ -1,119 +1,133 @@
 /**
  * functions/api/llm-proxy.js — Pages Function
  *
- * OpenAI-compatible proxy for page-agent and other browser clients.
+ * OpenAI-compatible chat-completions proxy for page-agent and other
+ * browser clients. Translates standard `/v1/chat/completions` requests
+ * into Cloudflare Workers AI calls and maps the response back into
+ * the OpenAI shape.
  *
- * Translates standard `/v1/chat/completions` requests into
- * Cloudflare Workers AI calls, then maps the response back into
- * the OpenAI shape expected by page-agent.
+ * Pass-through semantics:
+ *   - `messages`  forwarded verbatim (system / user / assistant / tool)
+ *   - `tools`     forwarded verbatim (function-calling tool definitions)
+ *   - `tool_choice` forwarded verbatim
+ *   - `temperature`, `max_tokens`, `stream` forwarded as configured
  *
- * Security:
- * - This route is intentionally unauthenticated because the app
- *   already exposes public skill data. If you add private prompts
- *   later, protect this endpoint with a short-lived token or
- *   session check.
- * - CORS is restricted to the site origin to limit abuse from
- *   other origins.
+ * Response mapping:
+ *   - Workers AI response is wrapped into OpenAI's chat.completion shape
+ *   - `tool_calls` from Workers AI are normalized into OpenAI's nested format
+ *   - `finish_reason` is mapped to "tool_calls" or "stop"
+ *
+ * Skill-matching has its own endpoint: /api/recommend
  */
 
-import { SKILL_CATALOG } from './skill-catalog.js';
-
-const CATALOG_TEXT = SKILL_CATALOG
-  .map((s) => `- ${s.skill}: "${s.name}" [${s.school}] — ${s.effect}`)
-  .join('\n');
-
-const SYSTEM_PROMPT = `You are a skill-matching oracle for the GrimoireStack.
-Given a user's problem description, return the 3-5 most relevant skills from the catalog.
-
-For each match, output a JSON object with:
-- "skill": the skill id
-- "name": the skill display name
-- "school": the school name
-- "score": a number 0-1 indicating relevance
-- "reason": one short sentence explaining why this skill fits
-
-Return ONLY a JSON array. No markdown, no explanation, no preamble.
-
-CATALOG:
-${CATALOG_TEXT}`;
-
-const corsHeaders = {
+const CORS_HEADERS = {
   'Access-Control-Allow-Origin': '*',
   'Access-Control-Allow-Methods': 'POST, OPTIONS',
   'Access-Control-Allow-Headers': 'Content-Type',
 };
 
+const DEFAULT_MODEL = '@cf/ibm-granite/granite-4.0-h-micro';
+const MAX_OUTPUT_TOKENS = 4096;
+
 function json(data, status = 200) {
   return new Response(JSON.stringify(data), {
     status,
-    headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+    headers: { ...CORS_HEADERS, 'Content-Type': 'application/json' },
   });
 }
 
-function extractTextFromWorkersAIResponse(response) {
+function sseError(message) {
+  return `data: ${JSON.stringify({ error: message })}\n\n`;
+}
+
+function uuid() {
+  return `chatcmpl-${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 10)}`;
+}
+
+function normalizeTools(tools) {
+  if (!Array.isArray(tools)) return undefined;
+  return tools
+    .filter((t) => t && typeof t === 'object' && t.type === 'function' && t.function?.name)
+    .map((t) => ({
+      type: 'function',
+      function: {
+        name: String(t.function.name),
+        description: typeof t.function.description === 'string' ? t.function.description : '',
+        parameters: t.function.parameters ?? { type: 'object', properties: {} },
+      },
+    }));
+}
+
+function extractText(response) {
   if (typeof response === 'string') return response;
   if (!response || typeof response !== 'object') return '';
-
-  const candidate = response.response || response.content || response.text || '';
+  const candidate = response.response ?? response.content ?? response.text ?? '';
   if (typeof candidate === 'string') return candidate;
-
   if (Array.isArray(candidate)) {
-    return candidate
-      .map((part) => part.text || part.content || '')
-      .join('');
+    return candidate.map((p) => p?.text ?? p?.content ?? '').join('');
   }
-
   if (candidate && typeof candidate === 'object') {
-    return candidate.text || candidate.content || '';
-  }
-
-  return '';
-}
-
-function normalizeMessageContent(content) {
-  if (typeof content === 'string') return content;
-  if (Array.isArray(content)) {
-    return content
-      .map((part) => (typeof part === 'string' ? part : part.text || part.content || ''))
-      .join('');
-  }
-  if (content && typeof content === 'object') {
-    return content.text || content.content || '';
+    return candidate.text ?? candidate.content ?? '';
   }
   return '';
 }
 
-function parseResultsFromText(text) {
-  const trimmed = (text || '').trim();
-  if (!trimmed) return [];
+function extractToolCalls(response) {
+  if (!response || typeof response !== 'object') return [];
+  const raw = response.tool_calls ?? response.toolCalls;
+  if (!Array.isArray(raw)) return [];
 
-  try {
-    const jsonMatch = trimmed.match(/\[[\s\S]*\]/);
-    const parsed = jsonMatch ? JSON.parse(jsonMatch[0]) : JSON.parse(trimmed);
-    if (!Array.isArray(parsed)) return [];
-    return parsed.slice(0, 5);
-  } catch {
-    return [];
-  }
+  return raw
+    .map((call, index) => {
+      if (!call) return null;
+      const name = call.name ?? call.function?.name;
+      if (!name) return null;
+      const args = call.arguments ?? call.function?.arguments ?? '{}';
+      const argsString = typeof args === 'string' ? args : JSON.stringify(args ?? {});
+      return {
+        id: call.id ?? `call_${index}_${Math.random().toString(36).slice(2, 10)}`,
+        type: 'function',
+        function: { name, arguments: argsString },
+      };
+    })
+    .filter(Boolean);
 }
 
-function buildOpenAIChatResponse(text) {
-  const results = parseResultsFromText(text);
-  const content = results.length > 0 ? JSON.stringify(results) : '[]';
+function buildChatCompletion({ response, model, stream = false }) {
+  const text = extractText(response);
+  const toolCalls = extractToolCalls(response);
+  const hasOutput = Boolean(text) || toolCalls.length > 0;
 
-  return {
-    id: `grimoire-${Date.now()}`,
+  if (!hasOutput) {
+    return {
+      ok: false,
+      status: 502,
+      body: {
+        error: 'empty_model_response',
+        message: 'Workers AI returned an empty response (no content and no tool_calls). The model may be in a degraded state; retry after a short delay or switch models.',
+        model,
+      },
+    };
+  }
+
+  const finishReason = toolCalls.length > 0 ? 'tool_calls' : 'stop';
+
+  const message = {
+    role: 'assistant',
+    content: text || null,
+  };
+  if (toolCalls.length > 0) message.tool_calls = toolCalls;
+
+  const payload = {
+    id: uuid(),
     object: 'chat.completion',
     created: Math.floor(Date.now() / 1000),
-    model: 'workers-ai/granite-4.0-h-micro',
+    model,
     choices: [
       {
         index: 0,
-        message: {
-          role: 'assistant',
-          content,
-        },
-        finish_reason: 'stop',
+        message,
+        finish_reason: finishReason,
       },
     ],
     usage: {
@@ -122,15 +136,71 @@ function buildOpenAIChatResponse(text) {
       total_tokens: 0,
     },
   };
+
+  if (stream) {
+    const lines = [];
+    lines.push(`data: ${JSON.stringify({
+      id: payload.id,
+      object: 'chat.completion.chunk',
+      created: payload.created,
+      model,
+      choices: [{ index: 0, delta: { role: 'assistant' }, finish_reason: null }],
+    })}\n\n`);
+    if (text) {
+      lines.push(`data: ${JSON.stringify({
+        id: payload.id,
+        object: 'chat.completion.chunk',
+        created: payload.created,
+        model,
+        choices: [{ index: 0, delta: { content: text }, finish_reason: null }],
+      })}\n\n`);
+    }
+    if (toolCalls.length > 0) {
+      lines.push(`data: ${JSON.stringify({
+        id: payload.id,
+        object: 'chat.completion.chunk',
+        created: payload.created,
+        model,
+        choices: [{ index: 0, delta: { tool_calls: toolCalls }, finish_reason: null }],
+      })}\n\n`);
+    }
+    lines.push(`data: ${JSON.stringify({
+      id: payload.id,
+      object: 'chat.completion.chunk',
+      created: payload.created,
+      model,
+      choices: [{ index: 0, delta: {}, finish_reason: finishReason }],
+    })}\n\n`);
+    lines.push('data: [DONE]\n\n');
+    return {
+      ok: true,
+      body: new Response(lines.join(''), {
+        status: 200,
+        headers: {
+          ...CORS_HEADERS,
+          'Content-Type': 'text/event-stream',
+          'Cache-Control': 'no-cache',
+          Connection: 'keep-alive',
+        },
+      }),
+    };
+  }
+
+  return {
+    ok: true,
+    body: new Response(JSON.stringify(payload), {
+      status: 200,
+      headers: { ...CORS_HEADERS, 'Content-Type': 'application/json' },
+    }),
+  };
 }
 
 export async function onRequest(context) {
   const { request, env } = context;
 
   if (request.method === 'OPTIONS') {
-    return new Response(null, { headers: corsHeaders });
+    return new Response(null, { headers: CORS_HEADERS });
   }
-
   if (request.method !== 'POST') {
     return json({ error: 'Method not allowed' }, 405);
   }
@@ -143,44 +213,35 @@ export async function onRequest(context) {
   }
 
   const messages = Array.isArray(body.messages) ? body.messages : [];
-  const userMessage = messages.find((m) => m.role === 'user');
-  const query = typeof userMessage?.content === 'string'
-    ? userMessage.content.trim()
-    : normalizeMessageContent(userMessage?.content).trim();
-
-  if (!query) {
-    return json({ error: 'Missing user message' }, 400);
+  if (messages.length === 0) {
+    return json({ error: 'Missing messages array' }, 400);
   }
+
+  const model = typeof body.model === 'string' && body.model ? body.model : DEFAULT_MODEL;
+  const tools = normalizeTools(body.tools);
+  const toolChoice = body.tool_choice;
+  const temperature = typeof body.temperature === 'number' ? body.temperature : 0.7;
+  const maxTokens = typeof body.max_tokens === 'number' ? body.max_tokens : MAX_OUTPUT_TOKENS;
+  const stream = body.stream === true;
 
   if (!env.AI) {
     return json({ error: 'Workers AI binding is not configured' }, 500);
   }
 
+  const aiParams = { messages, temperature, max_tokens: maxTokens };
+  if (tools) {
+    aiParams.tools = tools;
+    if (toolChoice) aiParams.tool_choice = toolChoice;
+  }
+
   try {
-    const aiResponse = await env.AI.run('@cf/ibm-granite/granite-4.0-h-micro', {
-      messages: [
-        { role: 'system', content: SYSTEM_PROMPT },
-        { role: 'user', content: `User problem: "${query}"\n\nReturn the 3-5 most relevant skills from the catalog as a JSON array.` },
-      ],
-      max_tokens: 1024,
-      temperature: 0.3,
-    });
-
-    const text = extractTextFromWorkersAIResponse(aiResponse);
-    const results = parseResultsFromText(text);
-
-    if (results.length === 0) {
-      return json({
-        error: 'Failed to parse AI response',
-        raw: text,
-      }, 500);
+    const aiResponse = await env.AI.run(model, aiParams);
+    const built = buildChatCompletion({ response: aiResponse, model, stream });
+    if (!built.ok) {
+      return json(built.body, built.status);
     }
-
-    return json(buildOpenAIChatResponse(text));
+    return built.body;
   } catch (err) {
-    return json({
-      error: 'AI inference failed',
-      detail: err.message,
-    }, 500);
+    return json({ error: 'AI inference failed', detail: err.message }, 500);
   }
 }
