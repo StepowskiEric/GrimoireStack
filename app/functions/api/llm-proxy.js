@@ -217,6 +217,20 @@ export async function onRequest(context) {
     return json({ error: 'Missing messages array' }, 400);
   }
 
+  // Inject a default system prompt if the caller didn't provide one —
+  // Workers AI models (especially the smaller ones) behave erratically
+  // with bare user messages, returning empty content.
+  const hasSystem = messages.some((m) => m && m.role === 'system');
+  const augmentedMessages = hasSystem
+    ? messages
+    : [
+        {
+          role: 'system',
+          content: 'You are a helpful assistant with access to tools. Use the tools when the user asks for actions you cannot perform with text alone. Always produce a non-empty response.',
+        },
+        ...messages,
+      ];
+
   const model = typeof body.model === 'string' && body.model ? body.model : DEFAULT_MODEL;
   const tools = normalizeTools(body.tools);
   const toolChoice = body.tool_choice;
@@ -228,12 +242,16 @@ export async function onRequest(context) {
     return json({ error: 'Workers AI binding is not configured' }, 500);
   }
 
-  const aiParams = { messages, temperature, max_tokens: maxTokens };
+  const aiParams = { messages: augmentedMessages, temperature, max_tokens: maxTokens };
   if (tools) {
     aiParams.tools = tools;
     if (toolChoice) aiParams.tool_choice = toolChoice;
   }
 
+  // Workers AI binding (native). Per Cloudflare's 2026-02-17 changelog,
+  // the binding's response shape and tool-call handling have been
+  // fixed in newer releases — we map that native shape into the
+  // OpenAI chat-completion shape below.
   try {
     const aiResponse = await env.AI.run(model, aiParams);
     const built = buildChatCompletion({ response: aiResponse, model, stream });
