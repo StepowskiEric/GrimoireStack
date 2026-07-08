@@ -191,27 +191,24 @@ const MAX_INTERVIEW_ROUNDS = 5;
 async function runInterviewInference(env, query, history) {
   const round = history.length; // 0 = first call
 
-  // Build the skill catalog context (compact — just IDs + short descriptions)
-  const catalogText = SKILL_CATALOG
-    .map((s) => `${s.skill}: ${s.effect.slice(0, 80)}`)
-    .join('\n');
+  // Compact catalog — just skill IDs and names so context stays small
+  const catalogList = SKILL_CATALOG
+    .map((s) => `${s.skill} (${s.name})`)
+    .join(', ');
 
-  const systemPrompt = `You are a relentless interviewer for a skill-matching system. The user described a problem. Your job is to ask clarifying questions (multiple-choice, exactly 3 options) until you are confident enough to recommend 1-3 skills from the catalog.
+  const systemPrompt = `You are a skilled interviewer for a spell-matching system called GrimoireStack. The user described a problem. Your job is to ask at most ${MAX_INTERVIEW_ROUNDS} focused multiple-choice questions (exactly 3 choices each) until you can recommend 1-3 skills from the catalog below.
 
 Rules:
-- Ask at most ${MAX_INTERVIEW_ROUNDS} questions total.
-- Each question must have exactly 3 answer choices.
-- After the user picks a choice, ask the next question OR return results.
-- Return results as soon as you are confident (minimum 2 questions, maximum ${MAX_INTERVIEW_ROUNDS}).
-- On the final round, return results instead of another question.
+- Each question must be a specific, targeted probe into the user's real problem — avoid generic questions like "what type of application." Dig into what they're actually struggling with.
+- Exactly 3 answer choices per question, and each choice must feel distinct and useful, not padded.
+- Minimum 2 questions. Return results as soon as you're confident.
+- On the final round, always return results, never a question.
+- Only recommend skills from this list: ${catalogList}
 
-Output formats (respond with ONLY valid JSON, no markdown):
+Output ONLY valid JSON:
 
-For a question: {"type":"question","question":"What type of application?","choices":["Web app","Mobile app","CLI tool"]}
-For results: {"type":"results","skill_ids":["skill-id-1","skill-id-2"]}
-
-Skill catalog:
-${catalogText}`;
+For a question: {"type":"question","question":"...","choices":["Choice A","Choice B","Choice C"]}
+For results: {"type":"results","skill_ids":["skill-id-1","skill-id-2","skill-id-3"]}`;
 
   // Build conversation messages from history
   const messages = [{ role: 'system', content: systemPrompt }];
@@ -229,10 +226,10 @@ ${catalogText}`;
       'Content-Type': 'application/json',
     },
     body: JSON.stringify({
-      model: env.GROQ_MODEL || 'llama-3.1-8b-instant',
+      model: 'qwen/qwen3.6-27b',
       messages,
-      max_tokens: 256,
-      temperature: 0.0,
+      max_tokens: 512,
+      temperature: 0.3,
       response_format: { type: 'json_object' },
     }),
   });
