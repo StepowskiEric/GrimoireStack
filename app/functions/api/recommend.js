@@ -97,29 +97,27 @@ function cacheKey(query) {
   return `https://grimoirestack.com/api/recommend?q=${encodeURIComponent(query)}`;
 }
 
-// Build a condensed catalog context from a pre-filtered subset.
-// Sending all 181 skills (~15K tokens) makes the 3B model too slow.
-// Pre-filter with local matcher to ~20 candidates, then AI re-ranks.
-function buildCatalogContext(skills) {
-  return skills
-    .map((s) => `- ${s.skill}: "${s.name}" [${s.school}] — ${s.effect}`)
-    .join('\n');
-}
-
 async function runAiInference(env, query) {
   const candidates = localMatch(query, 20);
   const pool = candidates.length > 0
     ? SKILL_CATALOG.filter((s) => candidates.includes(s.skill))
     : SKILL_CATALOG;
-  const catalogText = buildCatalogContext(pool);
-  const systemPrompt = `You are a skill-matching oracle for the GrimoireStack.
-Given a user's problem description, return the 3-5 most relevant skills from the catalog below.
+  const catalogText = pool
+    .map((s) => s.skill)
+    .join('\n');
+  const systemPrompt = `You are a skill matcher. The user has a problem. Pick the 3-5 most relevant skill IDs from this list:
 
-Return ONLY a JSON array. No markdown, no explanation, no preamble.
-Each entry: {"skill": id, "name": display name, "school": school, "score": 0-1, "reason": one sentence}
+${catalogText}
 
-CATALOG:
-${catalogText}`;
+Respond with ONLY a JSON array of objects. Each object MUST have exactly these fields:
+- "skill": one of the IDs from the list above (copy it exactly)
+- "name": the display name
+- "school": the school name
+- "score": relevance 0-1
+- "reason": one sentence why
+
+CRITICAL: Only use skill IDs from the list above. Do not invent skills.`;
+  const validIds = new Set(pool.map((s) => s.skill));
   const res = await fetch('https://api.groq.com/openai/v1/chat/completions', {
     method: 'POST',
     headers: {
@@ -130,7 +128,7 @@ ${catalogText}`;
       model: env.GROQ_MODEL || 'llama-3.1-8b-instant',
       messages: [
         { role: 'system', content: systemPrompt },
-        { role: 'user', content: `User problem: "${query}"` },
+        { role: 'user', content: query },
       ],
       max_tokens: 512,
       temperature: 0.3,
@@ -139,7 +137,9 @@ ${catalogText}`;
   if (!res.ok) throw new Error(`Groq API error: ${res.status}`);
   const data = await res.json();
   const text = data.choices?.[0]?.message?.content || '';
-  return parseAiResults(text);
+  const results = parseAiResults(text);
+  // Filter out hallucinated skills not in the catalog.
+  return results.filter((r) => validIds.has(r.skill));
 }
 
 async function populateCache(cache, key, results) {
@@ -224,19 +224,12 @@ export async function onRequest(context) {
         }
         return jsonResponse({ results: aiResults, source: 'ai' });
       }
-    } catch (err) {
+    } catch {
       // AI failed or timed out — fall through to local matching.
-      // Temporarily include error in response for debugging.
-      const localResults = localMatch(query);
-      return jsonResponse({
-        results: localResults,
-        source: 'local',
-        debug: {
-          error: err?.message || String(err),
-          hasKey: !!env.GROQ_API_KEY,
-          keyPrefix: env.GROQ_API_KEY?.slice(0, 8),
-        },
-      });
+      // Still kick off background AI to warm the cache for next time.
+      if (env.GROQ_API_KEY && cache && typeof waitUntil === 'function') {
+        waitUntil(warmCacheInBackground(env, cache, key, query));
+      }
     }
   }
 
