@@ -86,7 +86,7 @@ function cacheKey(query) {
 }
 
 async function runAiInference(env, query) {
-  const candidates = localMatch(query, 20);
+  const candidates = localMatch(query, 20).map((r) => r.skill);
   const pool = candidates.length > 0
     ? SKILL_CATALOG.filter((s) => candidates.includes(s.skill))
     : SKILL_CATALOG;
