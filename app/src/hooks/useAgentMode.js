@@ -1,19 +1,17 @@
-import { useState, useCallback, useRef } from 'react';
+import { useState, useCallback } from 'react';
+import { DEFAULT_LLM_MODEL, DEFAULT_LLM_PROXY_PATH } from '../lib/llm-defaults.js';
 
 const STORAGE_KEY = 'grimoire-agent-mode';
 
-// Defaults that point at the Cloudflare Pages Function proxy. The proxy
-// is OpenAI-compatible and forwards to Workers AI internally — so the
-// user never needs to provide their own API key or endpoint.
 const DEFAULT_BASE_URL =
-  typeof window !== 'undefined' ? `${window.location.origin}/api/llm-proxy/v1` : '/api/llm-proxy/v1';
-const DEFAULT_MODEL = '@cf/ibm-granite/granite-4.0-h-micro';
+  typeof window !== 'undefined'
+    ? `${window.location.origin}${DEFAULT_LLM_PROXY_PATH}`
+    : DEFAULT_LLM_PROXY_PATH;
 
 export function useAgentMode() {
   const [enabled, setEnabled] = useState(() => {
     try {
       const saved = localStorage.getItem(STORAGE_KEY);
-      // Default: enabled. The user can toggle off in Settings.
       if (saved === 'true' || saved === 'false') return saved === 'true';
     } catch {
       // ignore
@@ -37,26 +35,10 @@ export function useAgentMode() {
     } catch {
       // ignore corrupt storage
     }
-    return {
-      baseURL: DEFAULT_BASE_URL,
-      model: DEFAULT_MODEL,
-      apiKey: '',
-    };
+    return { baseURL: DEFAULT_BASE_URL, model: DEFAULT_LLM_MODEL, apiKey: '' };
   });
 
   const [status, setStatus] = useState('idle');
-  const statusRef = useRef(status);
-  const agentRef = useRef(null);
-  const onNavigateRef = useRef(null);
-
-  const persistConfig = useCallback((next) => {
-    setConfig(next);
-    try {
-      localStorage.setItem(`${STORAGE_KEY}-config`, JSON.stringify(next));
-    } catch {
-      // storage may be unavailable
-    }
-  }, []);
 
   const toggle = useCallback(() => {
     setEnabled((prev) => {
@@ -73,59 +55,57 @@ export function useAgentMode() {
   const updateConfig = useCallback((patch) => {
     setConfig((prev) => {
       const next = { ...prev, ...patch };
-      persistConfig(next);
+      try {
+        localStorage.setItem(`${STORAGE_KEY}-config`, JSON.stringify(next));
+      } catch {
+        // storage may be unavailable
+      }
       return next;
     });
-  }, [persistConfig]);
+  }, []);
 
-  const runAgent = useCallback(async ({ query: _query, bestSkill, onNavigate }) => {
-    onNavigateRef.current = onNavigate;
-    if (!enabled || !bestSkill) return false;
+  const runAgent = useCallback(
+    async ({ bestSkill }) => {
+      if (!enabled || !bestSkill) return false;
 
-    const trimmedBaseURL = config.baseURL.trim();
-    const trimmedModel = config.model.trim();
-    if (!trimmedBaseURL || !trimmedModel) {
-      // Silent fallback: agent unavailable, caller opens the skill directly.
-      return false;
-    }
+      const baseURL = config.baseURL.trim();
+      const model = config.model.trim();
+      if (!baseURL || !model) {
+        // Silent fallback: agent unavailable, caller opens the skill directly.
+        return false;
+      }
 
-    statusRef.current = 'running';
-    setStatus('running');
+      setStatus('running');
 
-    try {
-      const { PageAgent } = await import('page-agent');
+      try {
+        const { PageAgent } = await import('page-agent');
 
-      const agent = new PageAgent({
-        baseURL: trimmedBaseURL.replace(/\/$/, ''),
-        model: trimmedModel,
-        apiKey: config.apiKey || undefined,
-        language: 'en-US',
-      });
+        const agent = new PageAgent({
+          baseURL: baseURL.replace(/\/$/, ''),
+          model,
+          apiKey: config.apiKey || undefined,
+          language: 'en-US',
+        });
 
-      agentRef.current = agent;
+        const prompt = `The user is looking for the skill "${bestSkill.name}" (${bestSkill.skill}). Scroll to that skill card in the library, then click it to open the spell. After it opens, briefly explain in one sentence what the skill does so the user understands why it matched.`;
 
-      const prompt = `The user is looking for the skill "${bestSkill.name}" (${bestSkill.skill}). Scroll to that skill card in the library, then click it to open the spell. After it opens, briefly explain in one sentence what the skill does so the user understands why it matched.`;
-
-      await agent.execute(prompt);
-      statusRef.current = 'done';
-      setStatus('done');
-      return true;
-    } catch {
-      // Silent fallback: don't call onNavigate here — the caller observes
-      // the `false` return and triggers its own navigation, avoiding
-      // double-firing.
-      statusRef.current = 'error';
-      setStatus('error');
-      return false;
-    } finally {
-      agentRef.current = null;
-    }
-  }, [enabled, config]);
+        await agent.execute(prompt);
+        setStatus('done');
+        return true;
+      } catch {
+        // Silent fallback: don't trigger navigation here — the caller
+        // observes the `false` return and navigates itself, avoiding
+        // double-firing.
+        setStatus('error');
+        return false;
+      }
+    },
+    [enabled, config],
+  );
 
   const resetStatus = useCallback(() => {
-    statusRef.current = 'idle';
     setStatus('idle');
-  }, [setStatus]);
+  }, []);
 
   return {
     enabled,
@@ -133,7 +113,6 @@ export function useAgentMode() {
     config,
     updateConfig,
     status,
-    statusRef,
     runAgent,
     resetStatus,
   };
