@@ -101,7 +101,7 @@ async function runAiInference(env, query) {
       'Content-Type': 'application/json',
     },
     body: JSON.stringify({
-      model: env.GROQ_MODEL || 'qwen/qwen3.6-27b',
+      model: env.GROQ_MODEL || 'llama-3.1-8b-instant',
       messages: [
         {
           role: 'user',
@@ -121,10 +121,9 @@ User problem: ${query}`,
           content: '{"ranked_ids": ["',
         },
       ],
-      max_completion_tokens: 256,
+      max_tokens: 256,
       temperature: 0.0,
       response_format: { type: 'json_object' },
-      reasoning_effort: 'none',
     }),
   });
   if (!res.ok) {
