@@ -2,14 +2,23 @@ import { useState, useCallback, useRef } from 'react';
 
 const STORAGE_KEY = 'grimoire-agent-mode';
 
+// Defaults that point at the Cloudflare Pages Function proxy. The proxy
+// is OpenAI-compatible and forwards to Workers AI internally — so the
+// user never needs to provide their own API key or endpoint.
+const DEFAULT_BASE_URL =
+  typeof window !== 'undefined' ? `${window.location.origin}/api/llm-proxy/v1` : '/api/llm-proxy/v1';
+const DEFAULT_MODEL = '@cf/zai-org/glm-4.7-flash';
+
 export function useAgentMode() {
   const [enabled, setEnabled] = useState(() => {
     try {
       const saved = localStorage.getItem(STORAGE_KEY);
-      return saved === 'true';
+      // Default: enabled. The user can toggle off in Settings.
+      if (saved === 'true' || saved === 'false') return saved === 'true';
     } catch {
-      return false;
+      // ignore
     }
+    return true;
   });
 
   const [config, setConfig] = useState(() => {
@@ -29,8 +38,8 @@ export function useAgentMode() {
       // ignore corrupt storage
     }
     return {
-      baseURL: '',
-      model: '',
+      baseURL: DEFAULT_BASE_URL,
+      model: DEFAULT_MODEL,
       apiKey: '',
     };
   });
@@ -76,8 +85,7 @@ export function useAgentMode() {
     const trimmedBaseURL = config.baseURL.trim();
     const trimmedModel = config.model.trim();
     if (!trimmedBaseURL || !trimmedModel) {
-      statusRef.current = 'error';
-      setStatus('error');
+      // Silent fallback: agent unavailable, caller opens the skill directly.
       return false;
     }
 
@@ -96,16 +104,18 @@ export function useAgentMode() {
 
       agentRef.current = agent;
 
-      const prompt = `The user is looking for the skill "${bestSkill.name}" (${bestSkill.skill}). Scroll to that skill card in the library and click it to open it.`;
+      const prompt = `The user is looking for the skill "${bestSkill.name}" (${bestSkill.skill}). Scroll to that skill card in the library, then click it to open the spell. After it opens, briefly explain in one sentence what the skill does so the user understands why it matched.`;
 
       await agent.execute(prompt);
       statusRef.current = 'done';
       setStatus('done');
       return true;
     } catch {
+      // Silent fallback: don't call onNavigate here — the caller observes
+      // the `false` return and triggers its own navigation, avoiding
+      // double-firing.
       statusRef.current = 'error';
       setStatus('error');
-      onNavigateRef.current?.();
       return false;
     } finally {
       agentRef.current = null;

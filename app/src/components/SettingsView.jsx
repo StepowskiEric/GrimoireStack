@@ -232,50 +232,13 @@ export default function SettingsView({
                 <span>Enable Agent Mode</span>
               </label>
               <p className="settings-view__option-hint">
-                Uses an OpenAI-compatible LLM endpoint to drive the UI.
+                Defaults to the built-in Cloudflare proxy ({agent.config.model});
+                no API key needed. Falls back to opening the skill directly
+                if the agent cannot run.
               </p>
             </div>
 
             <div className="settings-view__agent-config">
-              <div className="settings-view__option">
-                <label htmlFor="agent-base-url">Base URL</label>
-                <input
-                  id="agent-base-url"
-                  className="settings-view__input"
-                  type="url"
-                  value={agent.config.baseURL}
-                  onChange={(e) => agent.updateConfig({ baseURL: e.target.value })}
-                  placeholder="https://api.openai.com/v1"
-                />
-                <p className="settings-view__option-hint">
-                  Must expose <code>/chat/completions</code>.
-                </p>
-              </div>
-              <div className="settings-view__option">
-                <label htmlFor="agent-model">Model</label>
-                <input
-                  id="agent-model"
-                  className="settings-view__input"
-                  type="text"
-                  value={agent.config.model}
-                  onChange={(e) => agent.updateConfig({ model: e.target.value })}
-                  placeholder="gpt-4o-mini"
-                />
-              </div>
-              <div className="settings-view__option">
-                <label htmlFor="agent-api-key">API Key</label>
-                <input
-                  id="agent-api-key"
-                  className="settings-view__input"
-                  type="password"
-                  value={agent.config.apiKey}
-                  onChange={(e) => agent.updateConfig({ apiKey: e.target.value })}
-                  placeholder="Optional for some providers"
-                />
-                <p className="settings-view__option-hint">
-                  Stored locally only. Use a backend proxy in production.
-                </p>
-              </div>
               <p className="settings-view__agent-status" role="status" aria-live="polite">
                 {agent.status === 'running' && 'Agent is running…'}
                 {agent.status === 'done' && 'Agent completed.'}

@@ -2,6 +2,17 @@ import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import { renderHook, act } from '@testing-library/react';
 import { useAgentPrompt } from '../hooks/useAgentPrompt.js';
 
+const mockExecute = vi.fn(async () => undefined);
+
+vi.mock('page-agent', () => ({
+  PageAgent: class {
+    constructor() {}
+    async execute() {
+      return mockExecute();
+    }
+  },
+}));
+
 function mockRecommendApi(results) {
   globalThis.fetch = vi.fn(async () =>
     new Response(JSON.stringify({ results }), {
@@ -15,6 +26,7 @@ describe('useAgentPrompt', () => {
   beforeEach(() => {
     localStorage.clear();
     vi.resetModules();
+    mockExecute.mockReset();
   });
 
   afterEach(() => {
@@ -33,6 +45,9 @@ describe('useAgentPrompt', () => {
       { skill: 'skill-a', name: 'Skill A', school: 'School A', score: 0.9, reason: 'Best match' },
       { skill: 'skill-b', name: 'Skill B', school: 'School B', score: 0.5, reason: 'Okay match' },
     ]);
+
+    // Make the agent fail so the hook falls back to onSpellClick.
+    mockExecute.mockRejectedValueOnce(new Error('agent failed'));
 
     const onSpellClick = vi.fn();
     const { result } = renderHook(() => useAgentPrompt({ onSpellClick }));
