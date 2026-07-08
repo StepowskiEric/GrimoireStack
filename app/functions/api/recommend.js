@@ -227,12 +227,9 @@ export async function onRequest(context) {
         }
         return jsonResponse({ results: aiResults, source: 'ai' });
       }
-    } catch {
-      // AI failed or timed out — fall through to local matching.
-      // Still kick off background AI to warm the cache for next time.
-      if (env.GROQ_API_KEY && cache && typeof waitUntil === 'function') {
-        waitUntil(warmCacheInBackground(env, cache, key, query));
-      }
+    } catch (err) {
+      const localResults = localMatch(query);
+      return jsonResponse({ results: localResults, source: 'local', debug: err?.message || String(err) });
     }
 
   // 3) Local token-overlap fallback (sub-50ms).
