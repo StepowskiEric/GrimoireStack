@@ -13,32 +13,8 @@
 // Keeping the per-model quirks in one table replaces four scattered
 // `if (model === ...)` branches in the proxy handler.
 
-import { serializeMessagesToPrompt, buildToolPromptInstruction } from './llm-prompt.js';
 
 const ADAPTERS = {
-  // Granite's input schema is prompt-only. The binding rejects multi-
-  // turn tool histories when given `messages` (5006 validation), and
-  // rejects the `tools` field outright. We inject tool instructions
-  // into the user prompt and serialize everything into one prompt
-  // string for the binding.
-  '@cf/ibm-granite/granite-4.0-h-micro': {
-    native: false,
-    transformMessages(messages, tools) {
-      if (!tools) return { messages };
-      const lastUserIdx = messages.findLastIndex((m) => m.role === 'user');
-      const targetIdx = lastUserIdx >= 0 ? lastUserIdx : 0;
-      const instruction = buildToolPromptInstruction(tools);
-      const injectedMessages = messages.map((m, i) =>
-        i === targetIdx
-          ? { ...m, content: `${instruction} ${m.content}` }
-          : m,
-      );
-      return {
-        messages: injectedMessages,
-        serialize: () => serializeMessagesToPrompt(injectedMessages, tools),
-      };
-    },
-  },
 
   // glm-4.7-flash is a reasoning model that defaults to burning the
   // entire output budget on chain-of-thought. Disable thinking so

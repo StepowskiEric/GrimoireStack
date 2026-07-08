@@ -49,6 +49,11 @@ async function copyNewSkills(newSkills) {
   for (const skill of newSkills) {
     const srcDir = path.dirname(skill.src);
     const destDir = path.join(PUBLIC_SKILLS, skill.relDir);
+    if (path.resolve(srcDir) === path.resolve(destDir)) {
+      // Skills are now canonical in app/public/skills — no copy needed.
+      console.log(`  ${DRY_RUN ? '[dry] ' : ''}Already in place: ${skill.skillId}`);
+      continue;
+    }
     if (!DRY_RUN) {
       await fs.mkdir(destDir, { recursive: true });
       const entries = await fs.readdir(srcDir, { withFileTypes: true });

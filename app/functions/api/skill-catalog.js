@@ -19,6 +19,22 @@ export const SKILL_CATALOG = [
     "effect": "Use when stuck on a problem — break fixation by mapping the structure to biology, music, traffic, or another foreign domain and transferring insights. Generates novel solutions when standard approaches fail."
   },
   {
+    "skill": "architecture-evolution-review",
+    "name": "Architecture Evolution Review",
+    "school": "Systems & Architecture",
+    "schoolName": "School of Architecture",
+    "status": "New",
+    "effect": "Review the repository as a living system. Detect architectural drift, feature erosion, and long-term maintenance risks before they become expensive."
+  },
+  {
+    "skill": "maintain-architecture",
+    "name": "Architecture Maintenance",
+    "school": "Systems & Architecture",
+    "schoolName": "School of Architecture",
+    "status": "New",
+    "effect": "Review completed work for architectural quality, maintainability, feature ownership, and long-term scalability."
+  },
+  {
     "skill": "the-goal-theory-of-constraints-ai",
     "name": "Bottleneck Sight",
     "school": "Systems & Architecture",
@@ -43,12 +59,28 @@ export const SKILL_CATALOG = [
     "effect": "Use when reasoning about data systems — storage choices, replication, consistency, partitioning, queues, failure modes, and operational tradeoffs. Covers backend architecture, event systems, schema changes, distributed debugging."
   },
   {
+    "skill": "improve-codebase-architecture",
+    "name": "Deepening Ritual",
+    "school": "Systems & Architecture",
+    "schoolName": "School of Architecture",
+    "status": "New",
+    "effect": "Finds deepening opportunities informed by the domain language in CONTEXT.md and decisions in docs/adr/."
+  },
+  {
     "skill": "sre-error-budget",
     "name": "Error Budget Divination",
     "school": "Systems & Architecture",
     "schoolName": "School of Architecture",
     "status": "—",
     "effect": "Use when reasoning about reliability vs velocity — SLOs, error budgets, toil budgets, and change-velocity governance. Spend the budget on speed when healthy; freeze changes when depleted."
+  },
+  {
+    "skill": "plan-feature-architecture",
+    "name": "Feature Architecture Planner",
+    "school": "Systems & Architecture",
+    "schoolName": "School of Architecture",
+    "status": "New",
+    "effect": "Plan the architecture of a feature before implementation. Decide ownership, placement, module boundaries, dependencies, and project impact before writing code."
   },
   {
     "skill": "system-architecture-audit",
@@ -81,46 +113,6 @@ export const SKILL_CATALOG = [
     "schoolName": "School of Architecture",
     "status": "—",
     "effect": "Use when handling auth, secrets, user input, or sensitive data — STRIDE threat analysis, attack-surface mapping, trust-boundary reasoning, and attacker-perspective review before shipping security-relevant changes."
-  },
-  {
-    "skill": "surrealdb",
-    "name": "SurrealDB Agent Skill",
-    "school": "Systems & Architecture",
-    "schoolName": "School of Architecture",
-    "status": "—",
-    "effect": "SurrealDB modeling, querying, SDK patterns, and 3.x operational gotchas."
-  },
-  {
-    "skill": "surrealdb-js-sdk",
-    "name": "SurrealDB JavaScript SDK Skill",
-    "school": "Systems & Architecture",
-    "schoolName": "School of Architecture",
-    "status": "—",
-    "effect": "SurrealDB JavaScript/TypeScript SDK v2 — connection patterns, authentication, query execution, live queries, React/SolidJS/Svelte integration, and critical SDK gotchas."
-  },
-  {
-    "skill": "surrealdb-optimization",
-    "name": "SurrealDB Optimization Skill",
-    "school": "Systems & Architecture",
-    "schoolName": "School of Architecture",
-    "status": "—",
-    "effect": "SurrealDB query optimization, EXPLAIN analysis, indexing strategies, server configuration, and performance best practices for production SurrealDB 3.x deployments."
-  },
-  {
-    "skill": "surrealdb-security",
-    "name": "SurrealDB Security Skill",
-    "school": "Systems & Architecture",
-    "schoolName": "School of Architecture",
-    "status": "—",
-    "effect": "SurrealDB security best practices — capabilities system, authentication (JWT/record/bearer), password hashing, session/token expiration, network hardening, and vulnerability management."
-  },
-  {
-    "skill": "surrealdb-testing",
-    "name": "SurrealDB Testing Skill",
-    "school": "Systems & Architecture",
-    "schoolName": "School of Architecture",
-    "status": "—",
-    "effect": "Testing strategies for SurrealDB — SDK integration tests, direct SurrealQL testing via HTTP, CLI validation, transaction-based assertions, and the internal language test suite."
   },
   {
     "skill": "thinking-in-systems-state-machine",
@@ -264,7 +256,7 @@ export const SKILL_CATALOG = [
     "school": "MCP Servers",
     "schoolName": "School of Conduits",
     "status": "—",
-    "effect": "Use when solutions can be evolved rather than generated — LLM-driven evolutionary search with automated fitness evaluation."
+    "effect": ">"
   },
   {
     "skill": "active-inference-agent",
@@ -272,7 +264,7 @@ export const SKILL_CATALOG = [
     "school": "MCP Servers",
     "schoolName": "School of Conduits",
     "status": "—",
-    "effect": "Use when an agent needs a principled Bayesian decision theory — Active Inference via the Free Energy Principle for belief-based action selection."
+    "effect": ">"
   },
   {
     "skill": "separation-of-concerns",
@@ -339,6 +331,14 @@ export const SKILL_CATALOG = [
     "effect": "Use when treating a task as a single-shot reply would lose reliability — adopt pattern-based orchestration with planning, routing, reflection, and recovery."
   },
   {
+    "skill": "pre-flight-intent-verification",
+    "name": "Pre-Flight Gate",
+    "school": "Agent Orchestration",
+    "schoolName": "School of Confluence",
+    "status": "New",
+    "effect": "Unified pre-action gate that prevents the #1 agent failure mode: confidently executing the wrong task. Fuses socratic-clarification (assumption surfacing), intent-specification-protocol (testable spec crystallization), and assumption-grounding (factual verification) into one mandatory gate before any significant task execution. Use when about to start a feature, bug fix, code change, refactor, or any task with ambiguity, blast radius, or irreversible side effects — especially when the request..."
+  },
+  {
     "skill": "scout",
     "name": "Scout Protocol",
     "school": "Agent Orchestration",
@@ -369,6 +369,22 @@ export const SKILL_CATALOG = [
     "schoolName": "School of Confluence",
     "status": "—",
     "effect": "Use after repeated successes on a class of tasks — distill trajectories into reusable Standard Operating Procedures (SOPs). Future similar tasks load the SOP instead of the full history."
+  },
+  {
+    "skill": "subagent-laws",
+    "name": "Sub-Agent Laws",
+    "school": "Agent Orchestration",
+    "schoolName": "School of Confluence",
+    "status": "New",
+    "effect": "Persistent, opinionated rules every sub-agent must follow regardless of task type. Loaded automatically by subagent-composer alongside task-specific skills. Use when composing sub-agent briefs to enforce scope discipline, test hygiene, code structure, and communication standards."
+  },
+  {
+    "skill": "subagent-composer",
+    "name": "Subagent Composer",
+    "school": "Agent Orchestration",
+    "schoolName": "School of Confluence",
+    "status": "—",
+    "effect": "Compose high-context sub-agent briefs with skill loading, explicit boundaries, success criteria, and stop rules. Use when delegating work to sub-agents to eliminate first-pass failures from incomplete briefs. Covers skill selection, context levels, multi-agent coordination, and anti-patterns."
   },
   {
     "skill": "thought-retriever-coppermind",
@@ -443,6 +459,14 @@ export const SKILL_CATALOG = [
     "effect": "Use when stress-testing a critical system path (auth pipelines, payment flows, data validation) for correctness, race conditions, security flaws, and architectural integrity."
   },
   {
+    "skill": "native-data-fetching",
+    "name": "Data Fetch Ward",
+    "school": "Software Development",
+    "schoolName": "School of Crafting",
+    "status": "New",
+    "effect": "Covers fetch API, React Query, SWR, error handling, caching, offline support, and Expo Router data loaders."
+  },
+  {
     "skill": "pre-deployment-gate",
     "name": "Deployment Gate",
     "school": "Software Development",
@@ -475,6 +499,14 @@ export const SKILL_CATALOG = [
     "effect": "Use when the repo is in a state you don't fully understand, git status output scares you, or you need to recover from a local git disaster."
   },
   {
+    "skill": "code-knowledge-graph-mcp",
+    "name": "Knowledge Graph",
+    "school": "Software Development",
+    "schoolName": "School of Crafting",
+    "status": "—",
+    "effect": "MCP server with structured symbol and call-graph queries. Navigate code by structure, not by string search."
+  },
+  {
     "skill": "llm-pre-push-review",
     "name": "LLM Pre-Push Ward",
     "school": "Software Development",
@@ -497,6 +529,30 @@ export const SKILL_CATALOG = [
     "schoolName": "School of Crafting",
     "status": "—",
     "effect": "Use after completing any non-trivial coding task, before merging code that touches security/auth/data/concurrency, or when upgrading from casual self-review to production-grade QA."
+  },
+  {
+    "skill": "review-changes",
+    "name": "Review Lens",
+    "school": "Software Development",
+    "schoolName": "School of Crafting",
+    "status": "—",
+    "effect": "Structured review checklist for evaluating code changes systematically rather than reading through aimlessly."
+  },
+  {
+    "skill": "code-review-excellence",
+    "name": "Review Mastery",
+    "school": "Software Development",
+    "schoolName": "School of Crafting",
+    "status": "New",
+    "effect": "Provides constructive feedback, catches bugs early, and fosters knowledge sharing while maintaining team morale."
+  },
+  {
+    "skill": "refactor-safely",
+    "name": "Safe Refactor",
+    "school": "Software Development",
+    "schoolName": "School of Crafting",
+    "status": "—",
+    "effect": "Characterization testing to capture existing behavior, then bounded changes with immediate verification. Safe transformation of untested code."
   },
   {
     "skill": "super-review-typescript",
@@ -683,6 +739,14 @@ export const SKILL_CATALOG = [
     "effect": "Create an implementation plan in JSONL format, then iteratively improve it using a stronger user-specified model as a judge until the plan is approved."
   },
   {
+    "skill": "retrospective",
+    "name": "Retrospective Mirror",
+    "school": "Execution & Improvement",
+    "schoolName": "School of Execution",
+    "status": "—",
+    "effect": "Use this skill after an incident, shipped feature, completed project, or any significant outcome to systematically learn from what happened. The natural counterpart to pre-mortem: before execution you imagine failure; after execution you examine the real outcome."
+  },
+  {
     "skill": "process-reward-model-protocol",
     "name": "Reward Path Backtrack",
     "school": "Execution & Improvement",
@@ -761,6 +825,22 @@ export const SKILL_CATALOG = [
     "schoolName": "School of Execution",
     "status": "—",
     "effect": "Use for mission-critical features where a single bug, security flaw, or misalignment could cause catastrophic failure — 14-phase protocol: data contracting, invariant mapping, red-team critique, pre-mortem before any code is written."
+  },
+  {
+    "skill": "adversarial-review",
+    "name": "Adversarial Trial",
+    "school": "Judgment & Decision-Making",
+    "schoolName": "School of Judgment",
+    "status": "New",
+    "effect": "Stress-tests proposals against a SEPARATE adversarial subagent. Not self-critique — tool-mediated review with no prior investment."
+  },
+  {
+    "skill": "advocatus-diaboli",
+    "name": "Advocatus Diaboli — Adversarial Review via Separate Sub-Agent",
+    "school": "Judgment & Decision-Making",
+    "schoolName": "School of Judgment",
+    "status": "—",
+    "effect": "Use this skill when the main agent must stress-test a proposal, plan, code change, or decision against a SEPARATE adversarial sub-agent before committing. This is NOT self-critique (steelmanning). It is tool-mediated adversarial review using a genuinely different cognitive entity with no prior investment in the proposal."
   },
   {
     "skill": "cognitive-bias-auditor",
@@ -1019,6 +1099,14 @@ export const SKILL_CATALOG = [
     "effect": "Comprehensive reference for E2E testing mindset, architecture, and strategy — nothing framework-specific. Covers testing epistemology, 3-layer BDR architecture, risk-based prioritization, data realism principles, anti-patterns, heuristics, and suite management."
   },
   {
+    "skill": "empirical-justification",
+    "name": "Empirical Justification",
+    "school": "Testing & Evaluation",
+    "schoolName": "School of Measurement",
+    "status": "—",
+    "effect": "Gather empirical evidence — usage telemetry, A/B results, regression counts — to justify retiring, refining, or promoting a skill. Use when a skill change is contested or high-stakes."
+  },
+  {
     "skill": "mobile-e2e-testing-enterprise-guide",
     "name": "Mobile E2E Testing: The Hunter's Mindset",
     "school": "Testing & Evaluation",
@@ -1033,6 +1121,14 @@ export const SKILL_CATALOG = [
     "schoolName": "School of Measurement",
     "status": "—",
     "effect": "Premortem for E2E test changes. Run after writing or modifying E2E tests to audit coverage gaps, data realism, failure-mode coverage, and assertion quality before declaring done. Also run before writing E2E tests to map the flow and identify blind spots first."
+  },
+  {
+    "skill": "test-driven-development",
+    "name": "Red-Green Rite",
+    "school": "Testing & Evaluation",
+    "schoolName": "School of Measurement",
+    "status": "New",
+    "effect": "Red-green-refactor loop. Write the test first, watch it fail, write the minimal fix, then refactor."
   },
   {
     "skill": "local-llm-tooling",
@@ -1139,6 +1235,14 @@ export const SKILL_CATALOG = [
     "effect": "Use when the first reasoning path may be wrong — branch, evaluate, and prune candidate solutions before committing."
   },
   {
+    "skill": "abductive-first-debugging",
+    "name": "Abductive Strike",
+    "school": "Debugging",
+    "schoolName": "School of Remediation",
+    "status": "New",
+    "effect": "Generates multiple competing hypotheses, selects the one that best explains all observed symptoms — not the first plausible cause."
+  },
+  {
     "skill": "bisect-debugging",
     "name": "Bisect Divination",
     "school": "Debugging",
@@ -1147,12 +1251,44 @@ export const SKILL_CATALOG = [
     "effect": "Isolate the exact commit that introduced a bug using binary search through git history. The fastest way to find 'what changed' when tests used to pass."
   },
   {
+    "skill": "bug-inquisition",
+    "name": "Bug Inquisition",
+    "school": "Debugging",
+    "schoolName": "School of Remediation",
+    "status": "New",
+    "effect": "Deep root-cause debugging with mandatory context-gathering. Fuses root-cause analysis, specter, diagnose, debug-to-fix-pipeline, occam-root-cause, and reasoning-integrity-chain into one sequential protocol. Use when user says 'hard bug', 'stuck on debugging', 'can't figure out this error', 'stuck on bug', or 'bug inquisition'."
+  },
+  {
+    "skill": "bug-inquisition-conquest",
+    "name": "Bug Inquisition Conquest",
+    "school": "Debugging",
+    "schoolName": "School of Remediation",
+    "status": "New",
+    "effect": "Ultra-heavy root-cause debugging with relentless ongoing interrogation. Fuses bug-inquisition pre-flight with continuous adversarial self-grilling, evidence-ledger tracking, pre-mortem on every fix, confidence-gated phase transitions, and final adversarial review. Use for the hardest bugs where surface debugging has failed, when the bug is intermittent or environment-specific, or when the cost of a wrong fix is high. Triggers: 'deep bug', 'intermittent bug', 'heisenbug', 'ghost bug', 'bug inq..."
+  },
+  {
+    "skill": "explore-codebase",
+    "name": "Codebase Walk",
+    "school": "Debugging",
+    "schoolName": "School of Remediation",
+    "status": "—",
+    "effect": "Structured exploration with progressive deepening: module structure → file roles → symbol resolution. Token-efficient for unfamiliar codebases."
+  },
+  {
     "skill": "debug-subagent",
     "name": "Debug Familiar",
     "school": "Debugging",
     "schoolName": "School of Remediation",
     "status": "Proven",
     "effect": "A dedicated debugging subagent that must be consulted before making code edits. Wraps debugger complexity behind natural-language queries and enforces 'debug before edit' workflow. Based on Debug2Fix research (+13-22% bug fix rate)."
+  },
+  {
+    "skill": "debug-issue",
+    "name": "Debug Workflow",
+    "school": "Debugging",
+    "schoolName": "School of Remediation",
+    "status": "—",
+    "effect": "Forces the reproduce → isolate → fix → verify cycle. Graph-powered code navigation traces issues through the system along dataflow edges."
   },
   {
     "skill": "environment-recovery",
@@ -1283,6 +1419,14 @@ export const SKILL_CATALOG = [
     "effect": "Process for adding a new skill to GrimoireStack repository with proper documentation, installation support, and cross-platform verification."
   },
   {
+    "skill": "project-folder-architecture",
+    "name": "Project Folder Architecture",
+    "school": "Development & Tooling",
+    "schoolName": "School of Tools",
+    "status": "New",
+    "effect": ">"
+  },
+  {
     "skill": "bulk-rename-and-update-references",
     "name": "Rename & Recall",
     "school": "Development & Tooling",
@@ -1297,5 +1441,13 @@ export const SKILL_CATALOG = [
     "schoolName": "School of Tools",
     "status": "—",
     "effect": "Use when a skill depends on scripts, templates, or other supporting files — package them so installation copies the full set, not just SKILL.md."
+  },
+  {
+    "skill": "unit-test-debugging",
+    "name": "Test Oracle",
+    "school": "Development & Tooling",
+    "schoolName": "School of Tools",
+    "status": "New",
+    "effect": "Systematic workflow for fixing failing unit tests by first determining whether the tests or the code under test are the source of truth. Use when fixing test failures, debugging test suites, resolving \"tests are passing/failing unexpectedly,\" or when an agent keeps changing code to match failing tests without investigating root cause. Also use when improving weak passing tests that do not actually prove correctness."
   }
 ];

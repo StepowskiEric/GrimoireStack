@@ -9,7 +9,7 @@
 
 import { promises as fs } from 'fs';
 import path from 'path';
-import { REPO_ROOT, PUBLIC_SKILLS, SCAN_DIRS } from './constants.mjs';
+import { PUBLIC_SKILLS, SCAN_DIRS } from './constants.mjs';
 
 /**
  * Discover all skills in the repo by scanning SCAN_DIRS.
@@ -18,7 +18,7 @@ import { REPO_ROOT, PUBLIC_SKILLS, SCAN_DIRS } from './constants.mjs';
 export async function discoverSkills() {
   const results = [];
   for (const scanDir of SCAN_DIRS) {
-    const rootPath = path.join(REPO_ROOT, scanDir);
+    const rootPath = path.join(PUBLIC_SKILLS, scanDir);
     let entries;
     try {
       entries = await fs.readdir(rootPath, { withFileTypes: true });

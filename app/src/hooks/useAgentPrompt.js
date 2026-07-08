@@ -60,6 +60,7 @@ export function useAgentPrompt({ onSpellClick, onBrowseResults, onShowAgentToast
         query: q,
         bestSkill: skill,
         onNavigate: () => onSpellClick?.(skill.spell, skill.school),
+        onError: (msg) => onShowAgentToast?.(`Agent failed: ${msg}`),
       });
 
       if (!navigated) {

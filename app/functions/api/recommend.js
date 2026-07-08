@@ -5,15 +5,14 @@
  * Body: { query: string }
  * Returns: { results: Array<{ skill: string, name: string, school: string, score: number, reason: string }> }
  *
- * Speed model: return local token-overlap matches immediately (sub-100ms),
- * then fire a Workers AI call in the background via `context.waitUntil`
- * and cache the AI-ranked result under `caches.default` keyed by the query.
- * Subsequent requests for the same query hit the cache and return the
- * AI-ranked results in O(1) edge lookup time.
+ * Architecture: every first-touch query awaits Workers AI synchronously
+ * so the user gets LLM-quality recommendations immediately. Successful AI
+ * results are cached in the background (via `context.waitUntil`) under
+ * `caches.default` keyed by the query; subsequent requests for the same
+ * query hit the cache in O(1) edge lookup time.
  *
- * Fallback: if the local matcher finds nothing for a query (rare — only
- * queries with every token in the stopword list), the AI call is awaited
- * synchronously so we still return something useful.
+ * Fallback: if AI is unavailable or returns empty results, the local
+ * token-overlap matcher runs as a sub-50ms fallback.
  */
 
 import { SKILL_CATALOG } from './skill-catalog.js';
@@ -144,10 +143,9 @@ async function runAiInference(env, query) {
   return parseAiResults(text);
 }
 
-async function populateCache(cache, key, query, env) {
+async function populateCache(cache, key, results) {
   try {
-    const results = await runAiInference(env, query);
-    if (!results.length) return;
+    if (!results || !results.length) return;
     const response = jsonResponse({ results, source: 'ai' });
     response.headers.set('Cache-Control', `public, max-age=${CACHE_TTL_SECONDS}`);
     await cache.put(key, response);
@@ -197,28 +195,25 @@ export async function onRequest(context) {
     }
   }
 
-  // 2) Local token-overlap match (immediate, <50ms).
-  const localResults = localMatch(query);
-
-  // If local matching found nothing useful, wait synchronously for AI
-  // so we still return useful results.
-  if (localResults.length === 0) {
-    if (env.AI) {
-      try {
-        const aiResults = await runAiInference(env, query);
-        if (aiResults.length > 0) return jsonResponse({ results: aiResults, source: 'ai' });
-      } catch {
-        // Fall through to empty local.
+  // 2) Synchronous AI inference — every first-touch query gets LLM
+  // quality. Local matching is only a fallback when AI is unavailable
+  // or returns empty results.
+  if (env.AI) {
+    try {
+      const aiResults = await runAiInference(env, query);
+      if (aiResults.length > 0) {
+        // Populate cache in the background for subsequent requests.
+        if (cache && typeof waitUntil === 'function') {
+          waitUntil(populateCache(cache, key, aiResults));
+        }
+        return jsonResponse({ results: aiResults, source: 'ai' });
       }
+    } catch {
+      // Fall through to local matching.
     }
-    return jsonResponse({ results: localResults, source: 'local' });
   }
 
-  // 3) Kick off AI enrichment in the background to populate the cache
-  // for subsequent requests.
-  if (env.AI && cache && typeof waitUntil === 'function') {
-    waitUntil(populateCache(cache, key, query, env));
-  }
-
+  // 3) Local token-overlap fallback (sub-50ms).
+  const localResults = localMatch(query);
   return jsonResponse({ results: localResults, source: 'local' });
 }

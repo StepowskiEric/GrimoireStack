@@ -65,7 +65,7 @@ export function useAgentMode() {
   }, []);
 
   const runAgent = useCallback(
-    async ({ bestSkill }) => {
+    async ({ bestSkill, onError }) => {
       if (!enabled || !bestSkill) return false;
 
       const baseURL = config.baseURL.trim();
@@ -92,11 +92,11 @@ export function useAgentMode() {
         await agent.execute(prompt);
         setStatus('done');
         return true;
-      } catch {
-        // Silent fallback: don't trigger navigation here — the caller
-        // observes the `false` return and navigates itself, avoiding
-        // double-firing.
+      } catch (err) {
+        // Surface the failure so the user knows the agent didn't navigate
+        // — the caller still opens the skill directly (observing `false`).
         setStatus('error');
+        onError?.(err?.message || 'Agent failed to navigate');
         return false;
       }
     },

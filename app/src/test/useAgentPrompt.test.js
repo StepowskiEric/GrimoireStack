@@ -106,7 +106,7 @@ describe('useAgentPrompt', () => {
     expect(onShowAgentToast).toHaveBeenCalledWith('Oracle failed: network down');
   });
 
-  it('does not show a toast when matching succeeds', async () => {
+  it('shows a toast when page-agent fails but still opens the skill', async () => {
     mockRecommendApi([
       { skill: 'skill-a', name: 'Skill A', school: 'School A', score: 0.9, reason: 'Best match' },
     ]);
@@ -120,7 +120,8 @@ describe('useAgentPrompt', () => {
     await act(async () => { result.current.handlePrompt('find me a skill'); });
 
     expect(result.current.status).toBe('matched');
-    expect(onShowAgentToast).not.toHaveBeenCalled();
+    expect(onShowAgentToast).toHaveBeenCalledWith('Agent failed: agent failed');
+    expect(onSpellClick).toHaveBeenCalled();
   });
 
   it('resets state after browsing', async () => {

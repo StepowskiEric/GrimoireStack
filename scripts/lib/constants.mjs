@@ -15,9 +15,11 @@ export const SCHOOLS_JS = path.join(APP_DIR, 'src', 'data', 'schools.js');
 export const README = path.join(REPO_ROOT, 'README.md');
 export const SKILL_CATALOG = path.join(REPO_ROOT, 'docs', 'skill-catalog.md');
 
+// Skills now live in a single canonical location: app/public/skills/<topic>/.
+// SCAN_DIRS are relative to PUBLIC_SKILLS (not REPO_ROOT) so the registry
+// builder and catalog generator discover skills from the consolidated source.
 export const SCAN_DIRS = [
-  'debugging', 'execution', 'judgment-and-routing', 'mcp-servers',
-  'mlops', 'orchestration', 'output-quality', 'reasoning',
-  'software-development', 'systems-and-architecture', 'testing', 'development',
-  'research',
+  'debugging', 'development', 'execution', 'judgment-and-routing',
+  'mcp-servers', 'mlops', 'orchestration', 'output-quality', 'reasoning',
+  'research', 'software-development', 'systems-and-architecture', 'testing',
 ];

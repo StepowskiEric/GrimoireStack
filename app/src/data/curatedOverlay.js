@@ -144,10 +144,6 @@ export const CURATED_OVERLAY = {
     "displayName": "Test Oracle",
     "status": "New"
   },
-  "jest-testing": {
-    "displayName": "Jest Invocation",
-    "status": "New"
-  },
   "explore-codebase": {
     "displayName": "Codebase Walk",
     "status": "—"
@@ -770,12 +766,32 @@ export const CURATED_OVERLAY = {
     "displayName": "Red-Green Rite",
     "status": "New"
   },
-  "vitest": {
-    "displayName": "Vitest Conjuration",
+  "maintain-architecture": {
+    "displayName": "Architecture Maintenance",
     "status": "New"
   },
-  "playwright-best-practices": {
-    "displayName": "Playwright Binding",
+  "plan-feature-architecture": {
+    "displayName": "Feature Architecture Planner",
+    "status": "New"
+  },
+  "architecture-evolution-review": {
+    "displayName": "Architecture Evolution Review",
+    "status": "New"
+  },
+  "bug-inquisition": {
+    "displayName": "Bug Inquisition",
+    "status": "New"
+  },
+  "bug-inquisition-conquest": {
+    "displayName": "Bug Inquisition Conquest",
+    "status": "New"
+  },
+  "project-folder-architecture": {
+    "displayName": "Project Folder Architecture",
+    "status": "New"
+  },
+  "subagent-laws": {
+    "displayName": "Sub-Agent Laws",
     "status": "New"
   }
 };

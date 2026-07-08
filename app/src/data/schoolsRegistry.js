@@ -21,6 +21,18 @@ const schools = [
         "status": "—"
       },
       {
+        "name": "Architecture Evolution Review",
+        "skill": "architecture-evolution-review",
+        "effect": "Review the repository as a living system. Detect architectural drift, feature erosion, and long-term maintenance risks before they become expensive.",
+        "status": "New"
+      },
+      {
+        "name": "Architecture Maintenance",
+        "skill": "maintain-architecture",
+        "effect": "Review completed work for architectural quality, maintainability, feature ownership, and long-term scalability.",
+        "status": "New"
+      },
+      {
         "name": "Bottleneck Sight",
         "skill": "the-goal-theory-of-constraints-ai",
         "effect": "Use when throughput is capped or work piles up — find the one constraint, ignore non-constraints, exploit then elevate it, repeat when it moves. Stops micro-optimization that does not move total throughput.",
@@ -39,10 +51,22 @@ const schools = [
         "status": "—"
       },
       {
+        "name": "Deepening Ritual",
+        "skill": "improve-codebase-architecture",
+        "effect": "Finds deepening opportunities informed by the domain language in CONTEXT.md and decisions in docs/adr/.",
+        "status": "New"
+      },
+      {
         "name": "Error Budget Divination",
         "skill": "sre-error-budget",
         "effect": "Use when reasoning about reliability vs velocity — SLOs, error budgets, toil budgets, and change-velocity governance. Spend the budget on speed when healthy; freeze changes when depleted.",
         "status": "—"
+      },
+      {
+        "name": "Feature Architecture Planner",
+        "skill": "plan-feature-architecture",
+        "effect": "Plan the architecture of a feature before implementation. Decide ownership, placement, module boundaries, dependencies, and project impact before writing code.",
+        "status": "New"
       },
       {
         "name": "Full Architecture Audit",
@@ -66,36 +90,6 @@ const schools = [
         "name": "STRIDE Analysis",
         "skill": "security-threat-modeling",
         "effect": "Use when handling auth, secrets, user input, or sensitive data — STRIDE threat analysis, attack-surface mapping, trust-boundary reasoning, and attacker-perspective review before shipping security-relevant changes.",
-        "status": "—"
-      },
-      {
-        "name": "SurrealDB Agent Skill",
-        "skill": "surrealdb",
-        "effect": "SurrealDB modeling, querying, SDK patterns, and 3.x operational gotchas.",
-        "status": "—"
-      },
-      {
-        "name": "SurrealDB JavaScript SDK Skill",
-        "skill": "surrealdb-js-sdk",
-        "effect": "SurrealDB JavaScript/TypeScript SDK v2 — connection patterns, authentication, query execution, live queries, React/SolidJS/Svelte integration, and critical SDK gotchas.",
-        "status": "—"
-      },
-      {
-        "name": "SurrealDB Optimization Skill",
-        "skill": "surrealdb-optimization",
-        "effect": "SurrealDB query optimization, EXPLAIN analysis, indexing strategies, server configuration, and performance best practices for production SurrealDB 3.x deployments.",
-        "status": "—"
-      },
-      {
-        "name": "SurrealDB Security Skill",
-        "skill": "surrealdb-security",
-        "effect": "SurrealDB security best practices — capabilities system, authentication (JWT/record/bearer), password hashing, session/token expiration, network hardening, and vulnerability management.",
-        "status": "—"
-      },
-      {
-        "name": "SurrealDB Testing Skill",
-        "skill": "surrealdb-testing",
-        "effect": "Testing strategies for SurrealDB — SDK integration tests, direct SurrealQL testing via HTTP, CLI validation, transaction-based assertions, and the internal language test suite.",
         "status": "—"
       },
       {
@@ -219,13 +213,13 @@ const schools = [
       {
         "name": "Evolutionary Forge",
         "skill": "evolutionary-tool-composer",
-        "effect": "Use when solutions can be evolved rather than generated — LLM-driven evolutionary search with automated fitness evaluation.",
+        "effect": ">",
         "status": "—"
       },
       {
         "name": "Free Energy Seeker",
         "skill": "active-inference-agent",
-        "effect": "Use when an agent needs a principled Bayesian decision theory — Active Inference via the Free Energy Principle for belief-based action selection.",
+        "effect": ">",
         "status": "—"
       }
     ]
@@ -285,6 +279,12 @@ const schools = [
         "status": "—"
       },
       {
+        "name": "Pre-Flight Gate",
+        "skill": "pre-flight-intent-verification",
+        "effect": "Unified pre-action gate that prevents the #1 agent failure mode: confidently executing the wrong task. Fuses socratic-clarification (assumption surfacing), intent-specification-protocol (testable spec crystallization), and assumption-grounding (factual verification) into one mandatory gate before any significant task execution. Use when about to start a feature, bug fix, code change, refactor, or any task with ambiguity, blast radius, or irreversible side effects — especially when the request could be interpreted multiple ways, touches existing behavior, or the stakes of being wrong are non-trivial.",
+        "status": "New"
+      },
+      {
         "name": "Scout Protocol",
         "skill": "scout",
         "effect": "Fast context scout — a lightweight sub-agent reads files and returns only distilled, relevant context for the main model. Saves tokens, reduces distraction, and prevents the main model from getting lost in large codebases.",
@@ -306,6 +306,18 @@ const schools = [
         "name": "SOP Evolution",
         "skill": "sop-evolution-memory",
         "effect": "Use after repeated successes on a class of tasks — distill trajectories into reusable Standard Operating Procedures (SOPs). Future similar tasks load the SOP instead of the full history.",
+        "status": "—"
+      },
+      {
+        "name": "Sub-Agent Laws",
+        "skill": "subagent-laws",
+        "effect": "Persistent, opinionated rules every sub-agent must follow regardless of task type. Loaded automatically by subagent-composer alongside task-specific skills. Use when composing sub-agent briefs to enforce scope discipline, test hygiene, code structure, and communication standards.",
+        "status": "New"
+      },
+      {
+        "name": "Subagent Composer",
+        "skill": "subagent-composer",
+        "effect": "Compose high-context sub-agent briefs with skill loading, explicit boundaries, success criteria, and stop rules. Use when delegating work to sub-agents to eliminate first-pass failures from incomplete briefs. Covers skill selection, context levels, multi-agent coordination, and anti-patterns.",
         "status": "—"
       },
       {
@@ -371,6 +383,12 @@ const schools = [
         "status": "New"
       },
       {
+        "name": "Data Fetch Ward",
+        "skill": "native-data-fetching",
+        "effect": "Covers fetch API, React Query, SWR, error handling, caching, offline support, and Expo Router data loaders.",
+        "status": "New"
+      },
+      {
         "name": "Deployment Gate",
         "skill": "pre-deployment-gate",
         "effect": "Use before deploying any code to production or before pushing AI-authored code.",
@@ -401,6 +419,12 @@ const schools = [
         "status": "—"
       },
       {
+        "name": "Knowledge Graph",
+        "skill": "code-knowledge-graph-mcp",
+        "effect": "MCP server with structured symbol and call-graph queries. Navigate code by structure, not by string search.",
+        "status": "—"
+      },
+      {
         "name": "LLM Pre-Push Ward",
         "skill": "llm-pre-push-review",
         "effect": "Use before pushing AI-authored code — checklist and protocol for catching systematic LLM coding failures: overcorrection, hallucinated logic, silent vulnerabilities, missing edge cases, context-ignorant reviews.",
@@ -416,6 +440,24 @@ const schools = [
         "name": "Review Ladder Plus",
         "skill": "review-ladder-plus",
         "effect": "Use after completing any non-trivial coding task, before merging code that touches security/auth/data/concurrency, or when upgrading from casual self-review to production-grade QA.",
+        "status": "—"
+      },
+      {
+        "name": "Review Lens",
+        "skill": "review-changes",
+        "effect": "Structured review checklist for evaluating code changes systematically rather than reading through aimlessly.",
+        "status": "—"
+      },
+      {
+        "name": "Review Mastery",
+        "skill": "code-review-excellence",
+        "effect": "Provides constructive feedback, catches bugs early, and fosters knowledge sharing while maintaining team morale.",
+        "status": "New"
+      },
+      {
+        "name": "Safe Refactor",
+        "skill": "refactor-safely",
+        "effect": "Characterization testing to capture existing behavior, then bounded changes with immediate verification. Safe transformation of untested code.",
         "status": "—"
       },
       {
@@ -570,6 +612,12 @@ const schools = [
         "status": "—"
       },
       {
+        "name": "Retrospective Mirror",
+        "skill": "retrospective",
+        "effect": "Use this skill after an incident, shipped feature, completed project, or any significant outcome to systematically learn from what happened. The natural counterpart to pre-mortem: before execution you imagine failure; after execution you examine the real outcome.",
+        "status": "—"
+      },
+      {
         "name": "Reward Path Backtrack",
         "skill": "process-reward-model-protocol",
         "effect": "Use when reasoning may have committed to a wrong path too early — self-assign process rewards per step and backtrack when cumulative reward drops below threshold.",
@@ -637,6 +685,18 @@ const schools = [
     "name": "School of Judgment",
     "desc": "Incantations for routing decisions, weighing tradeoffs, and routing problems to the right approach.",
     "spells": [
+      {
+        "name": "Adversarial Trial",
+        "skill": "adversarial-review",
+        "effect": "Stress-tests proposals against a SEPARATE adversarial subagent. Not self-critique — tool-mediated review with no prior investment.",
+        "status": "New"
+      },
+      {
+        "name": "Advocatus Diaboli — Adversarial Review via Separate Sub-Agent",
+        "skill": "advocatus-diaboli",
+        "effect": "Use this skill when the main agent must stress-test a proposal, plan, code change, or decision against a SEPARATE adversarial sub-agent before committing. This is NOT self-critique (steelmanning). It is tool-mediated adversarial review using a genuinely different cognitive entity with no prior investment in the proposal.",
+        "status": "—"
+      },
       {
         "name": "Automated Bias Detection",
         "skill": "cognitive-bias-auditor",
@@ -844,6 +904,12 @@ const schools = [
         "status": "—"
       },
       {
+        "name": "Empirical Justification",
+        "skill": "empirical-justification",
+        "effect": "Gather empirical evidence — usage telemetry, A/B results, regression counts — to justify retiring, refining, or promoting a skill. Use when a skill change is contested or high-stakes.",
+        "status": "—"
+      },
+      {
         "name": "Mobile E2E Testing: The Hunter's Mindset",
         "skill": "mobile-e2e-testing-enterprise-guide",
         "effect": "Hunter's mindset for mobile E2E testing — think like a professional tester: what to test, how to catch real bugs, verify flows work, and avoid traps. Use when planning tests, reviewing coverage, debugging flakiness, or needing adversarial/edge-case ideas.",
@@ -854,6 +920,12 @@ const schools = [
         "skill": "e2e-test-premortem",
         "effect": "Premortem for E2E test changes. Run after writing or modifying E2E tests to audit coverage gaps, data realism, failure-mode coverage, and assertion quality before declaring done. Also run before writing E2E tests to map the flow and identify blind spots first.",
         "status": "—"
+      },
+      {
+        "name": "Red-Green Rite",
+        "skill": "test-driven-development",
+        "effect": "Red-green-refactor loop. Write the test first, watch it fail, write the minimal fix, then refactor.",
+        "status": "New"
       }
     ]
   },
@@ -958,6 +1030,12 @@ const schools = [
     "desc": "Incantations to banish bugs and restore order to broken code.",
     "spells": [
       {
+        "name": "Abductive Strike",
+        "skill": "abductive-first-debugging",
+        "effect": "Generates multiple competing hypotheses, selects the one that best explains all observed symptoms — not the first plausible cause.",
+        "status": "New"
+      },
+      {
         "name": "Bisect Divination",
         "skill": "bisect-debugging",
         "effect": "Isolate the exact commit that introduced a bug using binary search through git history. The fastest way to find 'what changed' when tests used to pass.",
@@ -977,6 +1055,24 @@ const schools = [
         ]
       },
       {
+        "name": "Bug Inquisition",
+        "skill": "bug-inquisition",
+        "effect": "Deep root-cause debugging with mandatory context-gathering. Fuses root-cause analysis, specter, diagnose, debug-to-fix-pipeline, occam-root-cause, and reasoning-integrity-chain into one sequential protocol. Use when user says 'hard bug', 'stuck on debugging', 'can't figure out this error', 'stuck on bug', or 'bug inquisition'.",
+        "status": "New"
+      },
+      {
+        "name": "Bug Inquisition Conquest",
+        "skill": "bug-inquisition-conquest",
+        "effect": "Ultra-heavy root-cause debugging with relentless ongoing interrogation. Fuses bug-inquisition pre-flight with continuous adversarial self-grilling, evidence-ledger tracking, pre-mortem on every fix, confidence-gated phase transitions, and final adversarial review. Use for the hardest bugs where surface debugging has failed, when the bug is intermittent or environment-specific, or when the cost of a wrong fix is high. Triggers: 'deep bug', 'intermittent bug', 'heisenbug', 'ghost bug', 'bug inquisition conquest', or when bug-inquisition has already failed.",
+        "status": "New"
+      },
+      {
+        "name": "Codebase Walk",
+        "skill": "explore-codebase",
+        "effect": "Structured exploration with progressive deepening: module structure → file roles → symbol resolution. Token-efficient for unfamiliar codebases.",
+        "status": "—"
+      },
+      {
         "name": "Debug Familiar",
         "skill": "debug-subagent",
         "effect": "A dedicated debugging subagent that must be consulted before making code edits. Wraps debugger complexity behind natural-language queries and enforces 'debug before edit' workflow. Based on Debug2Fix research (+13-22% bug fix rate).",
@@ -993,6 +1089,12 @@ const schools = [
           "simulate-instrumentation",
           "specter"
         ]
+      },
+      {
+        "name": "Debug Workflow",
+        "skill": "debug-issue",
+        "effect": "Forces the reproduce → isolate → fix → verify cycle. Graph-powered code navigation traces issues through the system along dataflow edges.",
+        "status": "—"
       },
       {
         "name": "Environment Exorcism",
@@ -1187,6 +1289,12 @@ const schools = [
         "status": "—"
       },
       {
+        "name": "Project Folder Architecture",
+        "skill": "project-folder-architecture",
+        "effect": ">",
+        "status": "New"
+      },
+      {
         "name": "Rename & Recall",
         "skill": "bulk-rename-and-update-references",
         "effect": "Use when renaming many files where old names appear in content — discover references first to avoid broken links and stale cross-references.",
@@ -1197,6 +1305,12 @@ const schools = [
         "skill": "skill-development-with-supporting-files",
         "effect": "Use when a skill depends on scripts, templates, or other supporting files — package them so installation copies the full set, not just SKILL.md.",
         "status": "—"
+      },
+      {
+        "name": "Test Oracle",
+        "skill": "unit-test-debugging",
+        "effect": "Systematic workflow for fixing failing unit tests by first determining whether the tests or the code under test are the source of truth. Use when fixing test failures, debugging test suites, resolving \"tests are passing/failing unexpectedly,\" or when an agent keeps changing code to match failing tests without investigating root cause. Also use when improving weak passing tests that do not actually prove correctness.",
+        "status": "New"
       }
     ]
   }
