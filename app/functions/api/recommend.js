@@ -101,7 +101,7 @@ async function runAiInference(env, query) {
       'Content-Type': 'application/json',
     },
     body: JSON.stringify({
-      model: env.GROQ_MODEL || 'openai/gpt-oss-20b',
+      model: env.GROQ_MODEL || 'qwen/qwen3.6-27b',
       messages: [
         {
           role: 'system',
@@ -111,24 +111,7 @@ async function runAiInference(env, query) {
       ],
       max_tokens: 256,
       temperature: 0.3,
-      response_format: {
-        type: 'json_schema',
-        json_schema: {
-          name: 'ranked_skills',
-          strict: true,
-          schema: {
-            type: 'object',
-            properties: {
-              ranked_ids: {
-                type: 'array',
-                items: { type: 'string', enum: skillIds },
-              },
-            },
-            required: ['ranked_ids'],
-            additionalProperties: false,
-          },
-        },
-      },
+      response_format: { type: 'json_object' },
     }),
   });
   if (!res.ok) throw new Error(`Groq API error: ${res.status}`);
@@ -244,11 +227,13 @@ export async function onRequest(context) {
         }
         return jsonResponse({ results: aiResults, source: 'ai' });
       }
-    } catch (err) {
-      // AI failed or timed out — expose error temporarily for debugging.
-      const localResults = localMatch(query);
-      return jsonResponse({ results: localResults, source: 'local', debug: err?.message || String(err) });
-  }
+    } catch {
+      // AI failed or timed out — fall through to local matching.
+      // Still kick off background AI to warm the cache for next time.
+      if (env.GROQ_API_KEY && cache && typeof waitUntil === 'function') {
+        waitUntil(warmCacheInBackground(env, cache, key, query));
+      }
+    }
 
   // 3) Local token-overlap fallback (sub-50ms).
   const localResults = localMatch(query);
