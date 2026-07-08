@@ -33,16 +33,11 @@ export function useOracle() {
     setSource(null);
 
     try {
-      const controller = new AbortController();
-      const timeoutId = setTimeout(() => controller.abort(), 15000);
-
       const res = await fetch('/api/recommend', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ query: q }),
-        signal: controller.signal,
       });
-      clearTimeout(timeoutId);
 
       if (!res.ok) {
         const err = await res.json().catch(() => ({}));
@@ -50,11 +45,11 @@ export function useOracle() {
       }
       const data = await res.json();
       setResults(data.results || []);
-      setSource('ai');
+      setSource(data.source || 'ai');
       setOracleState('answering');
     } catch (fetchErr) {
       console.error('[oracle] askOracle failed', fetchErr);
-      // Try local fallback
+      // Local fallback (only reachable if the endpoint itself is unreachable)
       setOracleState('error');
       try {
         const local = grimoireIndex.matchProblem(q, { limit: 5 });
