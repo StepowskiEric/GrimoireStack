@@ -180,7 +180,7 @@ User problem: ${query}`,
     });
 }
 
-const MAX_INTERVIEW_ROUNDS = 18;
+const MAX_INTERVIEW_ROUNDS = 15;
 
 // Tool definitions for Qwen3.6 native function calling
 const INTERVIEW_TOOLS = [
@@ -188,13 +188,13 @@ const INTERVIEW_TOOLS = [
     type: 'function',
     function: {
       name: 'ask_question',
-      description: 'Ask the user a multiple-choice question to narrow down which skill they need.',
+      description: 'Ask the user a multiple-choice question to narrow down their problem.',
       parameters: {
         type: 'object',
         properties: {
           question: {
             type: 'string',
-            description: 'A specific, targeted question about their problem. Avoid generic questions like "what type of application."',
+            description: 'A specific, targeted question about their problem. Avoid generic questions.',
           },
           choices: {
             type: 'array',
@@ -211,94 +211,131 @@ const INTERVIEW_TOOLS = [
   {
     type: 'function',
     function: {
-      name: 'return_results',
-      description: 'You are confident enough to recommend specific skills. Call this when you are at least 90% sure of the best skill match.',
+      name: 'finish_interview',
+      description: 'Call this when you are at least 90% confident you understand the user problem well enough to recommend a skill. Provide a brief summary and 3-5 search keywords.',
       parameters: {
         type: 'object',
         properties: {
-          skill_ids: {
+          summary: {
+            type: 'string',
+            description: 'Brief summary of what the user needs (2-3 sentences).',
+          },
+          keywords: {
             type: 'array',
             items: { type: 'string' },
-            minItems: 1,
-            maxItems: 3,
-            description: 'The skill IDs (from the catalog) that best match the user problem, ranked by relevance.',
+            minItems: 3,
+            maxItems: 5,
+            description: 'Search keywords that describe the user problem, from most to least specific.',
           },
         },
-        required: ['skill_ids'],
+        required: ['summary', 'keywords'],
       },
     },
   },
 ];
 
 /**
- * Interview-mode inference. The LLM acts as a relentless interviewer
- * that narrows down the user's problem through multiple-choice questions.
- * Uses Qwen3.6 native tool calling.
+ * Try to parse a plain-text question with numbered choices, e.g.:
+ *   "What type of loop?\n\n1. Option A\n2. Option B\n3. Option C"
+ * Returns { question, choices } or null.
+ */
+function parsePlainTextQuestion(text) {
+  if (!text) return null;
+  const lines = text.split('\n').map((l) => l.trim()).filter(Boolean);
+  // Find the first line that's not a numbered choice — that's the question
+  const choiceRe = /^\d+[\.\)]\s+(.+)/;
+  const questionLines = [];
+  const choices = [];
+  let inChoices = false;
+  for (const line of lines) {
+    const match = line.match(choiceRe);
+    if (match) {
+      inChoices = true;
+      choices.push(match[1].replace(/\.\.\.+$/, '').trim());
+    } else if (!inChoices) {
+      questionLines.push(line);
+    }
+  }
+  if (questionLines.length > 0 && choices.length >= 2) {
+    // Pad or trim to exactly 3 choices
+    while (choices.length < 3) choices.push(choices[choices.length - 1]);
+    return { question: questionLines.join(' '), choices: choices.slice(0, 3) };
+  }
+  return null;
+}
+
+/**
+ * Interview-mode inference via OpenRouter free tier. The LLM asks targeted
+ * multiple-choice questions to understand the user's problem, then signals
+ * when confident via finish_interview. The server performs skill matching
+ * against the full catalog.
  * Returns either { type: 'question', question, choices: [a,b,c] }
  * or { type: 'results', results: [...] }.
  */
-async function runInterviewInference(env, query, history) {
-  // Compact catalog—skill ID, name, effect so the model can match precisely
-  const catalogText = SKILL_CATALOG
-    .map((s) => `${s.skill}: ${s.name} — ${s.effect.replace(/^Use when|^Use this skill when|^Use /i, '').slice(0, 120)}`)
-    .join('\n\n');
+async function runInterviewInference(env, query, history, useOpenRouter) {
+  const apiKey = useOpenRouter ? env.OPENROUTER_API_KEY : env.GROQ_API_KEY;
+  const baseUrl = useOpenRouter
+    ? 'https://openrouter.ai/api/v1'
+    : 'https://api.groq.com/openai/v1';
+  const model = useOpenRouter ? 'openrouter/free' : 'qwen/qwen3.6-27b';
+  const extraHeaders = useOpenRouter
+    ? { 'HTTP-Referer': 'https://grimoirestack.com', 'X-Title': 'GrimoireStack' }
+    : {};
+  const extraBody = useOpenRouter ? {} : { reasoning_effort: 'none' };
 
-  const systemPrompt = `You are a skilled interviewer for a spell-matching system called GrimoireStack. Your job is to ask focused multiple-choice questions (exactly 3 choices each) until you are AT LEAST 90% confident of which skill the user needs, then call return_results.
+  const systemPrompt = `You are a skilled interviewer for GrimoireStack, a skill-matching system. Ask focused multiple-choice questions (exactly 3 choices each) to understand the user's problem. When you are 90%+ confident, call finish_interview with a summary and keywords.
 
-Rules:
-- Each question must dig into their actual problem — what broke, what they tried, what environment, what stack. Avoid generic questions.
-- Exactly 3 answer choices per question, distinct and useful.
-- You may ask up to ${MAX_INTERVIEW_ROUNDS} questions if needed.
-- Do NOT rush. Keep asking until you are truly 90%+ confident.
-- Only recommend skills from the catalog below.
-- Call return_results with 1-3 skill IDs when confident.
-
-Skill catalog:
-${catalogText}`;
+- Each question must dig into their specific problem — what broke, environment, stack, what they tried. Avoid generic questions.
+- Exactly 3 distinct, useful choices per question.
+- You may ask up to ${MAX_INTERVIEW_ROUNDS} questions. Do NOT rush.
+- When confident, call finish_interview with a brief summary and 3-5 search keywords.`;
 
   // Build conversation — previous rounds as plain text so the model
   // sees the full dialogue even though tool calls aren't stored in history
   const messages = [{ role: 'system', content: systemPrompt }];
   messages.push({ role: 'user', content: `User's problem: ${query}` });
 
-  for (const turn of history) {
+  for (const turn of history.slice(-2)) {
     const qText = turn.question?.question || (typeof turn.question === 'string' ? turn.question : JSON.stringify(turn.question));
     messages.push({ role: 'assistant', content: qText });
     messages.push({ role: 'user', content: turn.answer });
   }
 
-  const res = await fetch('https://api.groq.com/openai/v1/chat/completions', {
+  const res = await fetch(`${baseUrl}/chat/completions`, {
     method: 'POST',
     headers: {
-      'Authorization': `Bearer ${env.GROQ_API_KEY}`,
+      'Authorization': `Bearer ${apiKey}`,
       'Content-Type': 'application/json',
+      ...extraHeaders,
     },
     body: JSON.stringify({
-      model: 'qwen/qwen3.6-27b',
+      model,
       messages,
       tools: INTERVIEW_TOOLS,
       tool_choice: 'auto',
-      max_tokens: 4096,
+      max_tokens: 512,
       temperature: 0.7,
+      ...extraBody,
     }),
   });
   if (!res.ok) {
     const errBody = await res.text().catch(() => '');
-    throw new Error(`Groq API ${res.status}: ${errBody.slice(0, 300)}`);
+    throw new Error(`OpenRouter API ${res.status}: ${errBody.slice(0, 300)}`);
   }
   const data = await res.json();
   const choice = data.choices?.[0]?.message;
   const toolCalls = choice?.tool_calls;
 
-  // No tool call — the model returned plain text. Treat as a failure.
   if (!toolCalls || toolCalls.length === 0) {
-    console.log('[ritual] qwen returned no tool calls, content:', (choice?.content || '').slice(0, 100));
-    // Fallback: force results from local match
+    console.log('[ritual] no tool calls, content:', (choice?.content || '').slice(0, 200));
+    // Some free models return questions as plain text. Try to parse them.
+    const text = (choice?.content || '').trim();
+    const parsed = parsePlainTextQuestion(text);
+    if (parsed) return { type: 'question', question: parsed.question, choices: parsed.choices };
     const localResults = localMatch(query, 3);
     return { type: 'results', results: localResults };
   }
 
-  // Process the first tool call
   const tc = toolCalls[0];
   if (tc.function.name === 'ask_question') {
     let args;
@@ -306,33 +343,21 @@ ${catalogText}`;
     if (args && args.question && Array.isArray(args.choices) && args.choices.length === 3) {
       return { type: 'question', question: args.question, choices: args.choices };
     }
-    // Malformed ask_question — fallback
     return { type: 'results', results: localMatch(query, 3) };
   }
 
-  if (tc.function.name === 'return_results') {
+  if (tc.function.name === 'finish_interview') {
     let args;
     try { args = JSON.parse(tc.function.arguments); } catch { args = null; }
-    if (args && Array.isArray(args.skill_ids)) {
-      const validIds = new Set(SKILL_CATALOG.map((s) => s.skill));
-      const idToSkill = new Map(SKILL_CATALOG.map((s) => [s.skill, s]));
-      const filtered = args.skill_ids.filter((id) => validIds.has(id)).slice(0, 3);
-      if (filtered.length > 0) {
-        const results = filtered.map((id, i) => {
-          const s = idToSkill.get(id);
-          return {
-            skill: s.skill, name: s.name, school: s.school,
-            score: Math.max(0.1, 1 - i * 0.2), reason: s.effect,
-          };
-        });
-        return { type: 'results', results };
-      }
+    if (args && args.summary && Array.isArray(args.keywords)) {
+      // Build a combined query from the interview context and do server-side matching
+      const combinedQuery = `${query} ${args.keywords.join(' ')} ${args.summary}`;
+      const results = localMatch(combinedQuery, 3); // use the same localMatch with combined query
+      return { type: 'results', results };
     }
-    // Malformed return_results or no valid IDs — fallback
     return { type: 'results', results: localMatch(query, 3) };
   }
 
-  // Unknown tool — fallback
   console.log('[ritual] unexpected tool call:', tc.function.name);
   return { type: 'results', results: localMatch(query, 3) };
 }
@@ -386,22 +411,25 @@ export async function onRequest(context) {
     return jsonResponse({ error: `Query too long (max ${MAX_QUERY_LENGTH} chars)` }, 400, corsH);
   }
 
-  // Interview mode: multi-turn narrowing dialogue
-  if (body.mode === 'interview' && env.GROQ_API_KEY) {
+  // Interview mode: multi-turn narrowing dialogue via OpenRouter (preferred) or Groq
+  const useOpenRouter = !!env.OPENROUTER_API_KEY;
+  if (body.mode === 'interview' && (useOpenRouter || env.GROQ_API_KEY)) {
     const history = Array.isArray(body.history) ? body.history.slice(0, MAX_INTERVIEW_ROUNDS) : [];
     try {
       const aiTimeout = new Promise((_, reject) =>
-        setTimeout(() => reject(new Error('AI timeout')), 8000),
+        setTimeout(() => reject(new Error('AI timeout')), 20000),
       );
       const result = await Promise.race([
-        runInterviewInference(env, query, history),
+        runInterviewInference(env, query, history, useOpenRouter),
         aiTimeout,
       ]);
       if (result) {
         return jsonResponse({ ...result, source: 'ai' }, 200, corsH);
       }
-    } catch {
-      // Fall through to local matching
+    } catch (err) {
+      console.log('[recommend] interview inference failed', err?.message?.slice(0, 500) || 'unknown error');
+      const localResults = localMatch(query, 3);
+      return jsonResponse({ type: 'results', results: localResults, source: 'local' }, 200, corsH);
     }
     const localResults = localMatch(query, 3);
     return jsonResponse({ type: 'results', results: localResults, source: 'local' }, 200, corsH);
