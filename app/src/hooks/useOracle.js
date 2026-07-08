@@ -2,15 +2,31 @@ import { useState, useCallback, useRef } from 'react';
 import { grimoireIndex } from '../data/grimoireIndexInstance.js';
 
 /**
+ * Runs local fallback matching against grimoireIndex and returns
+ * mapped results. Returns empty array if nothing matches.
+ */
+function fallbackLocal(query, limit = 5) {
+  const local = grimoireIndex.matchProblem(query, { limit });
+  return local.map((r) => ({
+    skill: r.spell.skill,
+    name: r.spell.name,
+    school: r.school.real,
+    score: Math.min(1, r.score / 10),
+    reason: r.spell.effect,
+  }));
+}
+
+/**
  * useOracle — state machine for the Oracle Eye.
  *
  * Manages query, results, loading, error, and oracleState transitions.
- * Falls back to local matchProblem when the AI endpoint is unreachable.
+ * Falls back to local matchProblem when the AI endpoint is unreachable
+ * or returns empty results.
  *
  * State transitions:
- *   idle → consulting → answering  (AI success)
- *   idle → consulting → error → answering  (AI fails, local fallback)
- *   idle → error  (immediate failure, no fallback)
+ *   idle → consulting → answering  (AI / local success)
+ *   idle → consulting → error → answering  (API fails, local fallback)
+ *   idle → consulting → error  (API + local both fail)
  */
 export function useOracle() {
   const [query, setQuery] = useState('');
@@ -44,30 +60,33 @@ export function useOracle() {
         throw new Error(err.error || `Server error (${res.status})`);
       }
       const data = await res.json();
-      setResults(data.results || []);
-      setSource(data.source || 'ai');
-      setOracleState('answering');
+      const apiResults = data.results || [];
+
+      if (apiResults.length > 0) {
+        setResults(apiResults);
+        setSource(data.source || 'ai');
+        setOracleState('answering');
+        return;
+      }
+
+      // API returned empty — fall back to local matching
+      const local = fallbackLocal(q);
+      if (local.length > 0) {
+        setResults(local);
+        setSource('local');
+        setOracleState('answering');
+      } else {
+        setError('No skills matched your query. Try different terms or browse by category.');
+      }
     } catch (fetchErr) {
       console.error('[oracle] askOracle failed', fetchErr);
-      // Local fallback (only reachable if the endpoint itself is unreachable)
-      setOracleState('error');
-      try {
-        const local = grimoireIndex.matchProblem(q, { limit: 5 });
-        if (local.length > 0) {
-          const mapped = local.map((r) => ({
-            skill: r.spell.skill,
-            name: r.spell.name,
-            school: r.school.real,
-            score: Math.min(1, r.score / 10),
-            reason: r.spell.effect,
-          }));
-          setResults(mapped);
-          setSource('local');
-          setOracleState('answering');
-        } else {
-          setError(fetchErr.message || 'Unknown error');
-        }
-      } catch {
+      // Local fallback when the API call itself fails
+      const local = fallbackLocal(q);
+      if (local.length > 0) {
+        setResults(local);
+        setSource('local');
+        setOracleState('answering');
+      } else {
         setError(fetchErr.message || 'Unknown error');
       }
     } finally {

@@ -156,7 +156,6 @@ export const messages = {
     intakeExample8: 'Want to verify an answer before I commit to it',
     intakeOracle: 'Ask the Oracle',
     intakeOracleLoading: 'Consulting the Oracle…',
-    intakeOracleError: 'The Oracle is silent. Try again or use local search.',
     intakeOracleReason: 'Why:',
     intakeOracleScore: 'Match:',
 
@@ -362,7 +361,6 @@ export const messages = {
     intakeExample3: 'Need to refactor a 2000-line legacy module safely',
     intakeOracle: 'Ask the Oracle',
     intakeOracleLoading: 'Consulting the Oracle…',
-    intakeOracleError: 'The Oracle is silent. Try again or use local search.',
     intakeOracleReason: 'Why:',
     intakeOracleScore: 'Match:',
     intakeExample4: 'Designing a new microservice and worried about coupling',

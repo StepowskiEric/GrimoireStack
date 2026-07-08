@@ -87,6 +87,15 @@ export default function OracleInlinePanel({
 
   const handleSubmit = (e) => {
     e?.preventDefault?.();
+    // Prefer oracle results when available (more relevant to the query)
+    if (results.length > 0) {
+      const top = results[0];
+      const entry = grimoireIndex.resolveBySkill(top.skill);
+      if (entry) {
+        onSelectSpell?.(entry.spell, entry.school);
+        return;
+      }
+    }
     if (matches.length > 0) {
       const top = matches[0];
       onSelectSpell?.(top.spell, top.school);
@@ -188,7 +197,7 @@ export default function OracleInlinePanel({
 
       {/* Oracle results */}
       {error && (
-        <div className="oracle-inline-error" role="alert">{t('intakeOracleError')} ({error})</div>
+        <div className="oracle-inline-error" role="alert">{error}</div>
       )}
       {results.length > 0 && (
         <div className="oracle-inline-results" aria-live="polite">
