@@ -73,18 +73,6 @@ function localMatch(query, limit = 5) {
 }
 
 
-function parseAiResults(text) {
-  const trimmed = (text || '').trim();
-  if (!trimmed) return [];
-  try {
-    const jsonMatch = trimmed.match(/\[[\s\S]*\]/);
-    const parsed = jsonMatch ? JSON.parse(jsonMatch[0]) : JSON.parse(trimmed);
-    if (!Array.isArray(parsed)) return [];
-    return parsed.slice(0, 5);
-  } catch {
-    return [];
-  }
-}
 
 function jsonResponse(data, status = 200) {
   return new Response(JSON.stringify(data), {
@@ -102,22 +90,10 @@ async function runAiInference(env, query) {
   const pool = candidates.length > 0
     ? SKILL_CATALOG.filter((s) => candidates.includes(s.skill))
     : SKILL_CATALOG;
-  const catalogText = pool
-    .map((s) => s.skill)
-    .join('\n');
-  const systemPrompt = `You are a skill matcher. The user has a problem. Pick the 3-5 most relevant skill IDs from this list:
+  const skillIds = pool.map((s) => s.skill);
+  const validIds = new Set(skillIds);
+  const idToSkill = new Map(pool.map((s) => [s.skill, s]));
 
-${catalogText}
-
-Respond with ONLY a JSON array of objects. Each object MUST have exactly these fields:
-- "skill": one of the IDs from the list above (copy it exactly)
-- "name": the display name
-- "school": the school name
-- "score": relevance 0-1
-- "reason": one sentence why
-
-CRITICAL: Only use skill IDs from the list above. Do not invent skills.`;
-  const validIds = new Set(pool.map((s) => s.skill));
   const res = await fetch('https://api.groq.com/openai/v1/chat/completions', {
     method: 'POST',
     headers: {
@@ -127,19 +103,46 @@ CRITICAL: Only use skill IDs from the list above. Do not invent skills.`;
     body: JSON.stringify({
       model: env.GROQ_MODEL || 'llama-3.1-8b-instant',
       messages: [
-        { role: 'system', content: systemPrompt },
+        {
+          role: 'system',
+          content: `You are a skill matcher. Rank these skill IDs by relevance to the user's problem. Return ONLY a JSON object: {"ranked_ids": ["id1", "id2", ...]}. Use ONLY IDs from this list: ${skillIds.join(', ')}`,
+        },
         { role: 'user', content: query },
       ],
-      max_tokens: 512,
+      max_tokens: 256,
       temperature: 0.3,
+      response_format: { type: 'json_object' },
     }),
   });
   if (!res.ok) throw new Error(`Groq API error: ${res.status}`);
   const data = await res.json();
   const text = data.choices?.[0]?.message?.content || '';
-  const results = parseAiResults(text);
-  // Filter out hallucinated skills not in the catalog.
-  return results.filter((r) => validIds.has(r.skill));
+
+  // Parse {"ranked_ids": [...]} and auto-attach full skill data.
+  let rankedIds = [];
+  try {
+    const parsed = JSON.parse(text);
+    rankedIds = Array.isArray(parsed.ranked_ids) ? parsed.ranked_ids : [];
+  } catch {
+    // Model might return a raw array — try that too.
+    const match = text.match(/\[[\s\S]*\]/);
+    if (match) rankedIds = JSON.parse(match[0]);
+  }
+
+  // Filter to valid IDs only, then build result objects from catalog data.
+  return rankedIds
+    .filter((id) => validIds.has(id))
+    .slice(0, 5)
+    .map((id, i) => {
+      const s = idToSkill.get(id);
+      return {
+        skill: s.skill,
+        name: s.name,
+        school: s.school,
+        score: Math.max(0.1, 1 - i * 0.15),
+        reason: s.effect,
+      };
+    });
 }
 
 async function populateCache(cache, key, results) {
