@@ -11,6 +11,8 @@ export async function callRecommendApi({ query, history, mode } = {}) {
   if (mode) body.mode = mode;
   if (history) body.history = history;
 
+  console.log('[oracle-api] request', { mode, queryLength: query?.length, historyLength: history?.length });
+
   const res = await fetch('/api/recommend', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
@@ -18,9 +20,14 @@ export async function callRecommendApi({ query, history, mode } = {}) {
   });
 
   if (!res.ok) {
-    const err = await res.json().catch(() => ({}));
+    const errText = await res.text().catch(() => '');
+    console.error('[oracle-api] non-ok response', { status: res.status, body: errText.slice(0, 500) });
+    let err;
+    try { err = JSON.parse(errText); } catch { err = {}; }
     throw new Error(err.error || `Server error (${res.status})`);
   }
 
-  return res.json();
+  const data = await res.json();
+  console.log('[oracle-api] response', { type: data.type, resultsCount: data.results?.length, source: data.source });
+  return data;
 }

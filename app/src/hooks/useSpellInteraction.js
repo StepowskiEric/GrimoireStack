@@ -33,6 +33,11 @@ export function useSpellInteraction(castEnabled) {
   }, []);
 
   const openModal = useCallback((spell, school) => {
+    console.log('[spellInteraction] openModal', { spell: spell ? { name: spell.name, skill: spell.skill } : spell, school: school ? { id: school.id, name: school.name } : school });
+    if (!spell || !spell.skill) {
+      console.error('[spellInteraction] openModal called with invalid spell', { spell, school });
+      return;
+    }
     setModal({ spell, school });
     setNotFoundSkill(null);
     userOpenedRef.current = true;
@@ -54,6 +59,11 @@ export function useSpellInteraction(castEnabled) {
   }, [unlockBody]);
 
   const handleSpellClick = useCallback((spell, school) => {
+    console.log('[spellInteraction] handleSpellClick', { spell: spell ? { name: spell.name, skill: spell.skill } : spell, school: school ? { id: school.id, name: school.name } : school });
+    if (!spell || !spell.skill) {
+      console.error('[spellInteraction] handleSpellClick called with invalid spell', { spell, school });
+      return;
+    }
     const key = `${spell.skill}::${school.id}`;
     if (castEnabled) {
       if (castingKeyRef.current !== key) {

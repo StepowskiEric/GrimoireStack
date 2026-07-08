@@ -12,7 +12,8 @@ import Icon from './Icon.jsx';
  * Visual urgency: each round darkens the panel and narrows the eye.
  */
 export default function RitualPanel({ ritual, onConverge }) {
-  const { state, question, choices, results, round, error } = ritual;
+  console.log('[RitualPanel] render', { ritual: ritual ? { state: ritual.state, round: ritual.round, hasQuestion: !!ritual.question, choicesCount: ritual.choices?.length, resultsCount: ritual.results?.length } : 'undefined' });
+  const { state, question, choices, results, round, error } = ritual || {};
   const [input, setInput] = useState('');
 
   const handleSubmit = (e) => {

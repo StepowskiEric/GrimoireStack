@@ -18,9 +18,13 @@ export function useRitualOrchestrator({ onSpellClick, navigateToLibrary }) {
 
   const ritualWalkHook = useRitualWalk({
     onComplete: (target) => {
+      console.log('[orchestrator] walk complete', { target });
       const resolved = grimoireIndex.resolveBySkill(target.skill);
       if (resolved) {
+        console.log('[orchestrator] resolved spell', { name: resolved.spell.name, skill: resolved.spell.skill });
         onSpellClick?.(resolved.spell, resolved.school);
+      } else {
+        console.error('[orchestrator] could not resolve skill', { skill: target.skill });
       }
       setActivePanel(null);
     },
@@ -29,16 +33,24 @@ export function useRitualOrchestrator({ onSpellClick, navigateToLibrary }) {
 
   const ritual = useRitual({
     onConverge: (results) => {
+      console.log('[orchestrator] onConverge', { count: results.length, results });
       if (results.length === 1) {
-        ritualWalkHook.start({ skill: results[0].skill, school: results[0].school });
+        const skill = results[0].skill;
+        const school = results[0].school;
+        console.log('[orchestrator] auto-starting ritual walk', { skill, school });
+        ritualWalkHook.start({ skill, school });
       }
     },
   });
 
   const handleRitualConverge = useCallback((r) => {
+    console.log('[orchestrator] handleRitualConverge', { r });
     const resolved = grimoireIndex.resolveBySkill(r.skill);
     if (resolved) {
+      console.log('[orchestrator] resolved spell for converge', { name: resolved.spell.name, skill: resolved.spell.skill });
       onSpellClick?.(resolved.spell, resolved.school);
+    } else {
+      console.error('[orchestrator] could not resolve skill for converge', { skill: r.skill });
     }
     setActivePanel(null);
   }, [onSpellClick]);
@@ -52,6 +64,7 @@ export function useRitualOrchestrator({ onSpellClick, navigateToLibrary }) {
   }, []);
 
   const openRitual = useCallback(() => {
+    console.log('[orchestrator] openRitual');
     setActivePanel('ritual');
     ritual.reset();
   }, [ritual]);
