@@ -256,12 +256,14 @@ export async function onRequest(context) {
         }
         return jsonResponse({ results: aiResults, source: 'ai' });
       }
+      // AI returned empty — fall through to local with debug.
+      const lr = localMatch(query);
+      return jsonResponse({ results: lr, source: 'local', debug: 'AI returned 0 results' });
     } catch (err) {
       const lr = localMatch(query);
       return jsonResponse({ results: lr, source: 'local', debug: err?.message || String(err) });
     }
   }
-
-  // 3) Local token-overlap fallback (sub-50ms).
-  const localResults = localMatch(query);
-  return jsonResponse({ results: localResults, source: 'local' });
+  // No GROQ_API_KEY bound
+  const lr0 = localMatch(query);
+  return jsonResponse({ results: lr0, source: 'local', debug: 'no GROQ_API_KEY' });
