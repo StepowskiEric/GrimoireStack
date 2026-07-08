@@ -5,7 +5,7 @@
  * Body: { query: string }
  * Returns: { results: Array<{ skill: string, name: string, school: string, score: number, reason: string }> }
  *
- * Architecture: every first-touch query awaits Workers AI synchronously
+ * Architecture: every first-touch query awaits Groq AI synchronously
  * so the user gets LLM-quality recommendations immediately. Successful AI
  * results are cached in the background (via `context.waitUntil`) under
  * `caches.default` keyed by the query; subsequent requests for the same
@@ -13,18 +13,31 @@
  *
  * Fallback: if AI is unavailable or returns empty results, the local
  * token-overlap matcher runs as a sub-50ms fallback.
+ *
+ * Security: CORS locked to grimoirestack.com origins, query length capped
+ * to 500 chars, rate limiting via Cloudflare dashboard binding (RECOMMEND).
  */
 
 import { SKILL_CATALOG } from './skill-catalog.js';
 
+const ALLOWED_ORIGINS = [
+  'https://grimoirestack.com',
+  'https://www.grimoirestack.com',
+];
 
-const CORS_HEADERS = {
-  'Access-Control-Allow-Origin': '*',
-  'Access-Control-Allow-Methods': 'POST, OPTIONS',
-  'Access-Control-Allow-Headers': 'Content-Type',
-};
+function corsHeaders(request) {
+  const origin = request.headers.get('Origin') || '';
+  const allowed = ALLOWED_ORIGINS.includes(origin) ? origin : ALLOWED_ORIGINS[0];
+  return {
+    'Access-Control-Allow-Origin': allowed,
+    'Access-Control-Allow-Methods': 'POST, OPTIONS',
+    'Access-Control-Allow-Headers': 'Content-Type',
+    'X-Content-Type-Options': 'nosniff',
+  };
+}
 
 const CACHE_TTL_SECONDS = 60 * 60 * 6; // 6 hours
+const MAX_QUERY_LENGTH = 500;
 
 // Server-side replica of `spellMatcher.matchProblem` in
 // app/src/data/spellMatcher.js. Kept short and identical so the
@@ -72,12 +85,10 @@ function localMatch(query, limit = 5) {
   }));
 }
 
-
-
-function jsonResponse(data, status = 200) {
+function jsonResponse(data, status, corsH) {
   return new Response(JSON.stringify(data), {
     status,
-    headers: { ...CORS_HEADERS, 'Content-Type': 'application/json' },
+    headers: { ...corsH, 'Content-Type': 'application/json' },
   });
 }
 
@@ -131,10 +142,8 @@ User problem: ${query}`,
     throw new Error(`Groq API ${res.status}: ${errBody.slice(0, 300)}`);
   }
   const data = await res.json();
-  // The prefilled assistant message means content starts with {"ranked_ids": ["
-  // The model continues from there, so we need to close the JSON ourselves.
   let text = data.choices?.[0]?.message?.content || '';
-  // If the model didn't close the array/object, auto-close it.
+  // Auto-close incomplete JSON from prefilled assistant message.
   if (text.startsWith('{"ranked_ids":')) {
     const openBrackets = (text.match(/\[/g) || []).length;
     const closeBrackets = (text.match(/\]/g) || []).length;
@@ -155,10 +164,8 @@ User problem: ${query}`,
     }
   }
 
+  // Filter to valid IDs only, then build result objects from catalog data.
   const filtered = rankedIds.filter((id) => validIds.has(id));
-  if (filtered.length === 0 && rankedIds.length > 0) {
-    throw new Error(`AI returned ${rankedIds.length} IDs but 0 matched. Raw: ${text.slice(0, 200)}. Valid sample: ${[...validIds].slice(0, 3).join(', ')}`);
-  }
   return filtered
     .slice(0, 5)
     .map((id, i) => {
@@ -173,10 +180,10 @@ User problem: ${query}`,
     });
 }
 
-async function populateCache(cache, key, results) {
+async function populateCache(cache, key, results, corsH) {
   try {
     if (!results || !results.length) return;
-    const response = jsonResponse({ results, source: 'ai' });
+    const response = jsonResponse({ results, source: 'ai' }, 200, corsH);
     response.headers.set('Cache-Control', `public, max-age=${CACHE_TTL_SECONDS}`);
     await cache.put(key, response);
   } catch {
@@ -184,11 +191,11 @@ async function populateCache(cache, key, results) {
   }
 }
 
-async function warmCacheInBackground(env, cache, key, query) {
+async function warmCacheInBackground(env, cache, key, query, corsH) {
   try {
     const results = await runAiInference(env, query);
     if (results.length > 0) {
-      await populateCache(cache, key, results);
+      await populateCache(cache, key, results, corsH);
     }
   } catch {
     // Cache stays empty; future requests retry.
@@ -197,25 +204,29 @@ async function warmCacheInBackground(env, cache, key, query) {
 
 export async function onRequest(context) {
   const { request, env, waitUntil } = context;
+  const corsH = corsHeaders(request);
 
   if (request.method === 'OPTIONS') {
-    return new Response(null, { headers: CORS_HEADERS });
+    return new Response(null, { headers: corsH });
   }
 
   if (request.method !== 'POST') {
-    return jsonResponse({ error: 'Method not allowed' }, 405);
+    return jsonResponse({ error: 'Method not allowed' }, 405, corsH);
   }
 
   let body;
   try {
     body = await request.json();
   } catch {
-    return jsonResponse({ error: 'Invalid JSON body' }, 400);
+    return jsonResponse({ error: 'Invalid JSON body' }, 400, corsH);
   }
 
   const query = (body.query || '').trim();
   if (!query) {
-    return jsonResponse({ error: 'Missing query' }, 400);
+    return jsonResponse({ error: 'Missing query' }, 400, corsH);
+  }
+  if (query.length > MAX_QUERY_LENGTH) {
+    return jsonResponse({ error: `Query too long (max ${MAX_QUERY_LENGTH} chars)` }, 400, corsH);
   }
 
   const cache = caches.default;
@@ -228,7 +239,7 @@ export async function onRequest(context) {
       if (cached) {
         return new Response(cached.body, {
           status: cached.status,
-          headers: { ...CORS_HEADERS, 'Content-Type': 'application/json' },
+          headers: { ...corsH, 'Content-Type': 'application/json' },
         });
       }
     } catch {
@@ -236,10 +247,9 @@ export async function onRequest(context) {
     }
   }
 
-  // 2) Synchronous AI inference with a timeout guard. The pre-filtered
-  // prompt (top-20 candidates) keeps the model input small, but cold
-  // starts can still be slow. If the AI doesn't respond in 5s, fall
-  // back to local matching and warm the cache in the background.
+  // 2) Synchronous AI inference with a timeout guard. If the AI doesn't
+  // respond in 5s, fall back to local matching and warm the cache in
+  // the background.
   if (env.GROQ_API_KEY) {
     try {
       const aiTimeout = new Promise((_, reject) =>
@@ -251,20 +261,20 @@ export async function onRequest(context) {
       ]);
       if (aiResults.length > 0) {
         if (cache && typeof waitUntil === 'function') {
-          waitUntil(populateCache(cache, key, aiResults));
+          waitUntil(populateCache(cache, key, aiResults, corsH));
         }
-        return jsonResponse({ results: aiResults, source: 'ai' });
+        return jsonResponse({ results: aiResults, source: 'ai' }, 200, corsH);
       }
-      // AI returned empty — fall through to local with debug.
-      const lr = localMatch(query);
-      return jsonResponse({ results: lr, source: 'local', debug: 'AI returned 0 results' });
-    } catch (err) {
-      const lr = localMatch(query);
-      return jsonResponse({ results: lr, source: 'local', debug: err?.message || String(err) });
+    } catch {
+      // AI failed or timed out — fall through to local matching.
+      // Warm cache in the background for subsequent requests.
+      if (cache && typeof waitUntil === 'function') {
+        waitUntil(warmCacheInBackground(env, cache, key, query, corsH));
+      }
     }
   }
 
   // 3) Local token-overlap fallback (sub-50ms).
   const localResults = localMatch(query);
-  return jsonResponse({ results: localResults, source: 'local' });
+  return jsonResponse({ results: localResults, source: 'local' }, 200, corsH);
 }
