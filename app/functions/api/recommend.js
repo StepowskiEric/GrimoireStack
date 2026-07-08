@@ -154,6 +154,17 @@ async function populateCache(cache, key, results) {
   }
 }
 
+async function warmCacheInBackground(env, cache, key, query) {
+  try {
+    const results = await runAiInference(env, query);
+    if (results.length > 0) {
+      await populateCache(cache, key, results);
+    }
+  } catch {
+    // Cache stays empty; future requests retry.
+  }
+}
+
 export async function onRequest(context) {
   const { request, env, waitUntil } = context;
 
@@ -195,12 +206,19 @@ export async function onRequest(context) {
     }
   }
 
-  // 2) Synchronous AI inference — every first-touch query gets LLM
-  // quality. Local matching is only a fallback when AI is unavailable
-  // or returns empty results.
+  // 2) Synchronous AI inference with a timeout guard. Granite processing
+  // the 181-skill catalog (~15K tokens) can take 10-20s on cold starts.
+  // If the AI doesn't respond in 8s, fall back to local matching and
+  // let the AI populate the cache in the background for next time.
   if (env.AI) {
     try {
-      const aiResults = await runAiInference(env, query);
+      const aiTimeout = new Promise((_, reject) =>
+        setTimeout(() => reject(new Error('AI timeout')), 8000),
+      );
+      const aiResults = await Promise.race([
+        runAiInference(env, query),
+        aiTimeout,
+      ]);
       if (aiResults.length > 0) {
         // Populate cache in the background for subsequent requests.
         if (cache && typeof waitUntil === 'function') {
@@ -209,7 +227,11 @@ export async function onRequest(context) {
         return jsonResponse({ results: aiResults, source: 'ai' });
       }
     } catch {
-      // Fall through to local matching.
+      // AI failed or timed out — fall through to local matching.
+      // Still kick off background AI to warm the cache for next time.
+      if (env.AI && cache && typeof waitUntil === 'function') {
+        waitUntil(warmCacheInBackground(env, cache, key, query));
+      }
     }
   }
 
