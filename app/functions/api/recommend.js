@@ -78,7 +78,6 @@ function localMatch(query, limit = 5) {
       if (haystack.includes(tok)) score += 2;
     }
     if (skill.status === 'Proven') score += 0.5;
-    }
     if (score > 0) {
       scored.push({ skill, score });
     }
