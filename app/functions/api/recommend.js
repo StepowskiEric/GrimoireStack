@@ -180,42 +180,88 @@ User problem: ${query}`,
     });
 }
 
-const MAX_INTERVIEW_ROUNDS = 5;
+const MAX_INTERVIEW_ROUNDS = 18;
+
+// Tool definitions for Qwen3.6 native function calling
+const INTERVIEW_TOOLS = [
+  {
+    type: 'function',
+    function: {
+      name: 'ask_question',
+      description: 'Ask the user a multiple-choice question to narrow down which skill they need.',
+      parameters: {
+        type: 'object',
+        properties: {
+          question: {
+            type: 'string',
+            description: 'A specific, targeted question about their problem. Avoid generic questions like "what type of application."',
+          },
+          choices: {
+            type: 'array',
+            items: { type: 'string' },
+            minItems: 3,
+            maxItems: 3,
+            description: 'Exactly 3 distinct answer choices.',
+          },
+        },
+        required: ['question', 'choices'],
+      },
+    },
+  },
+  {
+    type: 'function',
+    name: 'return_results',
+    description: 'You are confident enough to recommend specific skills. Call this when you are at least 90% sure of the best skill match.',
+    parameters: {
+      type: 'object',
+      properties: {
+        skill_ids: {
+          type: 'array',
+          items: { type: 'string' },
+          minItems: 1,
+          maxItems: 3,
+          description: 'The skill IDs (from the catalog) that best match the user problem, ranked by relevance.',
+        },
+      },
+      required: ['skill_ids'],
+    },
+  },
+];
 
 /**
  * Interview-mode inference. The LLM acts as a relentless interviewer
  * that narrows down the user's problem through multiple-choice questions.
+ * Uses Qwen3.6 native tool calling.
  * Returns either { type: 'question', question, choices: [a,b,c] }
  * or { type: 'results', results: [...] }.
  */
 async function runInterviewInference(env, query, history) {
-  const round = history.length; // 0 = first call
+  // Compact catalog—skill ID, name, effect so the model can match precisely
+  const catalogText = SKILL_CATALOG
+    .map((s) => `${s.skill}: ${s.name} — ${s.effect.replace(/^Use when|^Use this skill when|^Use /i, '').slice(0, 120)}`)
+    .join('\n\n');
 
-  // Compact catalog — just skill IDs and names so context stays small
-  const catalogList = SKILL_CATALOG
-    .map((s) => `${s.skill} (${s.name})`)
-    .join(', ');
-
-  const systemPrompt = `You are a skilled interviewer for a spell-matching system called GrimoireStack. The user described a problem. Your job is to ask at most ${MAX_INTERVIEW_ROUNDS} focused multiple-choice questions (exactly 3 choices each) until you can recommend 1-3 skills from the catalog below.
+  const systemPrompt = `You are a skilled interviewer for a spell-matching system called GrimoireStack. Your job is to ask focused multiple-choice questions (exactly 3 choices each) until you are AT LEAST 90% confident of which skill the user needs, then call return_results.
 
 Rules:
-- Each question must be a specific, targeted probe into the user's real problem — avoid generic questions like "what type of application." Dig into what they're actually struggling with.
-- Exactly 3 answer choices per question, and each choice must feel distinct and useful, not padded.
-- Minimum 2 questions. Return results as soon as you're confident.
-- On the final round, always return results, never a question.
-- Only recommend skills from this list: ${catalogList}
+- Each question must dig into their actual problem — what broke, what they tried, what environment, what stack. Avoid generic questions.
+- Exactly 3 answer choices per question, distinct and useful.
+- You may ask up to ${MAX_INTERVIEW_ROUNDS} questions if needed.
+- Do NOT rush. Keep asking until you are truly 90%+ confident.
+- Only recommend skills from the catalog below.
+- Call return_results with 1-3 skill IDs when confident.
 
-Output ONLY valid JSON:
+Skill catalog:
+${catalogText}`;
 
-For a question: {"type":"question","question":"...","choices":["Choice A","Choice B","Choice C"]}
-For results: {"type":"results","skill_ids":["skill-id-1","skill-id-2","skill-id-3"]}`;
-
-  // Build conversation messages from history
+  // Build conversation — previous rounds as plain text so the model
+  // sees the full dialogue even though tool calls aren't stored in history
   const messages = [{ role: 'system', content: systemPrompt }];
   messages.push({ role: 'user', content: `User's problem: ${query}` });
 
   for (const turn of history) {
-    messages.push({ role: 'assistant', content: JSON.stringify(turn.question) });
+    const qText = turn.question?.question || (typeof turn.question === 'string' ? turn.question : JSON.stringify(turn.question));
+    messages.push({ role: 'assistant', content: qText });
     messages.push({ role: 'user', content: turn.answer });
   }
 
@@ -228,9 +274,10 @@ For results: {"type":"results","skill_ids":["skill-id-1","skill-id-2","skill-id-
     body: JSON.stringify({
       model: 'qwen/qwen3.6-27b',
       messages,
-      max_tokens: 512,
-      temperature: 0.3,
-      response_format: { type: 'json_object' },
+      tools: INTERVIEW_TOOLS,
+      tool_choice: 'auto',
+      max_tokens: 4096,
+      temperature: 0.7,
     }),
   });
   if (!res.ok) {
@@ -238,37 +285,54 @@ For results: {"type":"results","skill_ids":["skill-id-1","skill-id-2","skill-id-
     throw new Error(`Groq API ${res.status}: ${errBody.slice(0, 300)}`);
   }
   const data = await res.json();
-  const text = data.choices?.[0]?.message?.content || '';
-  let parsed;
-  try {
-    parsed = JSON.parse(text);
-  } catch {
-    return null;
+  const choice = data.choices?.[0]?.message;
+  const toolCalls = choice?.tool_calls;
+
+  // No tool call — the model returned plain text. Treat as a failure.
+  if (!toolCalls || toolCalls.length === 0) {
+    console.log('[ritual] qwen returned no tool calls, content:', (choice?.content || '').slice(0, 100));
+    // Fallback: force results from local match
+    const localResults = localMatch(query, 3);
+    return { type: 'results', results: localResults };
   }
 
-  // Force results on the final round
-  if (round >= MAX_INTERVIEW_ROUNDS - 1 && parsed.type === 'question') {
-    parsed = { type: 'results', skill_ids: localMatch(query, 3).map((r) => r.skill) };
+  // Process the first tool call
+  const tc = toolCalls[0];
+  if (tc.function.name === 'ask_question') {
+    let args;
+    try { args = JSON.parse(tc.function.arguments); } catch { args = null; }
+    if (args && args.question && Array.isArray(args.choices) && args.choices.length === 3) {
+      return { type: 'question', question: args.question, choices: args.choices };
+    }
+    // Malformed ask_question — fallback
+    return { type: 'results', results: localMatch(query, 3) };
   }
 
-  if (parsed.type === 'question' && Array.isArray(parsed.choices) && parsed.choices.length === 3) {
-    return { type: 'question', question: parsed.question, choices: parsed.choices };
+  if (tc.function.name === 'return_results') {
+    let args;
+    try { args = JSON.parse(tc.function.arguments); } catch { args = null; }
+    if (args && Array.isArray(args.skill_ids)) {
+      const validIds = new Set(SKILL_CATALOG.map((s) => s.skill));
+      const idToSkill = new Map(SKILL_CATALOG.map((s) => [s.skill, s]));
+      const filtered = args.skill_ids.filter((id) => validIds.has(id)).slice(0, 3);
+      if (filtered.length > 0) {
+        const results = filtered.map((id, i) => {
+          const s = idToSkill.get(id);
+          return {
+            skill: s.skill, name: s.name, school: s.school,
+            score: Math.max(0.1, 1 - i * 0.2), reason: s.effect,
+          };
+        });
+        return { type: 'results', results };
+      }
+    }
+    // Malformed return_results or no valid IDs — fallback
+    return { type: 'results', results: localMatch(query, 3) };
   }
-  if (parsed.type === 'results' && Array.isArray(parsed.skill_ids)) {
-    const validIds = new Set(SKILL_CATALOG.map((s) => s.skill));
-    const idToSkill = new Map(SKILL_CATALOG.map((s) => [s.skill, s]));
-    const filtered = parsed.skill_ids.filter((id) => validIds.has(id)).slice(0, 3);
-    if (filtered.length === 0) return null;
-    const results = filtered.map((id, i) => {
-      const s = idToSkill.get(id);
-      return {
-        skill: s.skill, name: s.name, school: s.school,
-        score: Math.max(0.1, 1 - i * 0.2), reason: s.effect,
-      };
-    });
-    return { type: 'results', results };
-  }
-  return null;
+
+  // Unknown tool — fallback
+  console.log('[ritual] unexpected tool call:', tc.function.name);
+  return { type: 'results', results: localMatch(query, 3) };
 }
 
 async function populateCache(cache, key, results, corsH) {
