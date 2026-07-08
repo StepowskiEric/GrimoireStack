@@ -156,9 +156,11 @@ User problem: ${query}`,
     }
   }
 
-  // Filter to valid IDs only, then build result objects from catalog data.
-  return rankedIds
-    .filter((id) => validIds.has(id))
+  const filtered = rankedIds.filter((id) => validIds.has(id));
+  if (filtered.length === 0 && rankedIds.length > 0) {
+    throw new Error(`AI returned ${rankedIds.length} IDs but 0 matched. Raw: ${text.slice(0, 200)}. Valid sample: ${[...validIds].slice(0, 3).join(', ')}`);
+  }
+  return filtered
     .slice(0, 5)
     .map((id, i) => {
       const s = idToSkill.get(id);
