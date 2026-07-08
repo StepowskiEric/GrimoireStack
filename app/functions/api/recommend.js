@@ -224,8 +224,9 @@ export async function onRequest(context) {
         }
         return jsonResponse({ results: aiResults, source: 'ai' });
       }
-    } catch {
+    } catch (err) {
       // AI failed or timed out — fall through to local matching.
+      console.error('[recommend] AI inference failed:', err?.message || err);
       // Still kick off background AI to warm the cache for next time.
       if (env.GROQ_API_KEY && cache && typeof waitUntil === 'function') {
         waitUntil(warmCacheInBackground(env, cache, key, query));
