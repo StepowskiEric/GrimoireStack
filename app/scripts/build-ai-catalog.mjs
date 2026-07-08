@@ -32,15 +32,17 @@ const schools = eval(`(${arrayContent})`);
 const entries = [];
 for (const school of schools) {
   for (const spell of school.spells) {
-    // Condense the effect to ~100 chars max
+    // Keep effects long enough for local token-overlap matching to work well.
     let effect = spell.effect || '';
-    if (effect.length > 120) {
-      effect = effect.substring(0, 117) + '...';
+    if (effect.length > 500) {
+      effect = effect.substring(0, 497) + '...';
     }
     entries.push({
       skill: spell.skill,
       name: spell.name,
       school: school.real,
+      schoolName: school.name,
+      status: spell.status || '',
       effect,
     });
   }

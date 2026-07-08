@@ -72,10 +72,12 @@ function localMatch(query, limit = 5) {
 
   const scored = [];
   for (const skill of SKILL_CATALOG) {
-    const haystack = `${skill.name} ${skill.skill} ${skill.effect} ${skill.school}`.toLowerCase();
+    const haystack = `${skill.name} ${skill.skill} ${skill.effect} ${skill.school} ${skill.schoolName || ''} ${skill.status || ''}`.toLowerCase();
     let score = 0;
     for (const tok of tokens) {
       if (haystack.includes(tok)) score += 2;
+    }
+    if (skill.status === 'Proven') score += 0.5;
     }
     if (score > 0) {
       scored.push({ skill, score });
