@@ -72,19 +72,6 @@ function localMatch(query, limit = 5) {
   }));
 }
 
-function extractText(response) {
-  if (typeof response === 'string') return response;
-  if (!response || typeof response !== 'object') return '';
-  const candidate = response.response || response.content || response.text || '';
-  if (typeof candidate === 'string') return candidate;
-  if (Array.isArray(candidate)) {
-    return candidate.map((p) => p?.text || p?.content || '').join('');
-  }
-  if (candidate && typeof candidate === 'object') {
-    return candidate.text || candidate.content || '';
-  }
-  return '';
-}
 
 function parseAiResults(text) {
   const trimmed = (text || '').trim();
@@ -133,15 +120,25 @@ Each entry: {"skill": id, "name": display name, "school": school, "score": 0-1, 
 
 CATALOG:
 ${catalogText}`;
-  const aiResponse = await env.AI.run('@cf/ibm-granite/granite-4.0-h-micro', {
-    messages: [
-      { role: 'system', content: systemPrompt },
-      { role: 'user', content: `User problem: "${query}"` },
-    ],
-    max_tokens: 512,
-    temperature: 0.3,
+  const res = await fetch('https://api.groq.com/openai/v1/chat/completions', {
+    method: 'POST',
+    headers: {
+      'Authorization': `Bearer ${env.GROQ_API_KEY}`,
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      model: env.GROQ_MODEL || 'llama-3.3-70b-versatile',
+      messages: [
+        { role: 'system', content: systemPrompt },
+        { role: 'user', content: `User problem: "${query}"` },
+      ],
+      max_tokens: 512,
+      temperature: 0.3,
+    }),
   });
-  const text = extractText(aiResponse);
+  if (!res.ok) throw new Error(`Groq API error: ${res.status}`);
+  const data = await res.json();
+  const text = data.choices?.[0]?.message?.content || '';
   return parseAiResults(text);
 }
 
@@ -212,7 +209,7 @@ export async function onRequest(context) {
   // prompt (top-20 candidates) keeps the model input small, but cold
   // starts can still be slow. If the AI doesn't respond in 5s, fall
   // back to local matching and warm the cache in the background.
-  if (env.AI) {
+  if (env.GROQ_API_KEY) {
     try {
       const aiTimeout = new Promise((_, reject) =>
         setTimeout(() => reject(new Error('AI timeout')), 5000),
@@ -222,7 +219,6 @@ export async function onRequest(context) {
         aiTimeout,
       ]);
       if (aiResults.length > 0) {
-        // Populate cache in the background for subsequent requests.
         if (cache && typeof waitUntil === 'function') {
           waitUntil(populateCache(cache, key, aiResults));
         }
@@ -231,7 +227,7 @@ export async function onRequest(context) {
     } catch {
       // AI failed or timed out — fall through to local matching.
       // Still kick off background AI to warm the cache for next time.
-      if (env.AI && cache && typeof waitUntil === 'function') {
+      if (env.GROQ_API_KEY && cache && typeof waitUntil === 'function') {
         waitUntil(warmCacheInBackground(env, cache, key, query));
       }
     }
