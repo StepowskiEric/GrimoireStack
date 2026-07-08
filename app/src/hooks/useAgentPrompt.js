@@ -2,7 +2,7 @@ import { useState, useCallback, useRef } from 'react';
 import { grimoireIndex } from '../data/grimoireIndexInstance.js';
 import { useAgentMode } from './useAgentMode.js';
 
-export function useAgentPrompt({ onSpellClick, onBrowseResults } = {}) {
+export function useAgentPrompt({ onSpellClick, onBrowseResults, onShowAgentToast } = {}) {
   const [prompt, setPrompt] = useState('');
   const [bestSkill, setBestSkill] = useState(null);
   const [status, setStatus] = useState('idle');
@@ -34,7 +34,12 @@ export function useAgentPrompt({ onSpellClick, onBrowseResults } = {}) {
 
       if (!res.ok) {
         const err = await res.json().catch(() => ({}));
-        throw new Error(err.error || `Recommendation failed (${res.status})`);
+        const message = err.error || `Recommendation failed (${res.status})`;
+        setStatus('error');
+        setError(message);
+        onShowAgentToast?.(`Oracle unavailable: ${message}`);
+        onBrowseResults?.(q);
+        return;
       }
 
       const data = await res.json();
@@ -61,11 +66,13 @@ export function useAgentPrompt({ onSpellClick, onBrowseResults } = {}) {
         onSpellClick?.(skill.spell, skill.school);
       }
     } catch (err) {
+      const message = err.message || 'Unknown error';
       setStatus('error');
-      setError(err.message);
+      setError(message);
+      onShowAgentToast?.(`Oracle failed: ${message}`);
       onBrowseResults?.(q);
     }
-  }, [prompt, agent, onSpellClick, onBrowseResults]);
+  }, [prompt, agent, onSpellClick, onBrowseResults, onShowAgentToast]);
 
   const handleBrowse = useCallback(() => {
     const q = prompt.trim() || bestSkill?.name || '';

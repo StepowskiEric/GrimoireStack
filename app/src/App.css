@@ -3214,6 +3214,7 @@ header .header-sigil-text{display:none}
 
 /* ── Export Toast ────────────────────────────────── */
 .export-toast{position:fixed;bottom:80px;left:50%;transform:translateX(-50%);background:rgba(26,20,10,.92);border:1px solid rgba(212,175,55,.3);border-radius:6px;padding:8px 18px;font-family:'Cinzel',serif;font-size:.62rem;color:#d4af37;z-index:9999;pointer-events:none;animation:ritualToastIn .3s ease}
+.agent-toast{position:fixed;bottom:80px;left:50%;transform:translateX(-50%);background:rgba(26,20,10,.92);border:1px solid rgba(192,112,112,.35);border-radius:6px;padding:8px 18px;font-family:'Cinzel',serif;font-size:.62rem;color:#f0c8c8;z-index:9999;pointer-events:none;animation:ritualToastIn .3s ease}
 .footer-export{margin-top:8px;display:flex;gap:8px;align-items:center;justify-content:center;flex-wrap:wrap}
 .footer-export-label{font-family:'Cinzel',serif;font-size:.55rem;text-transform:uppercase;letter-spacing:.06em;color:#7a6a5a}
 .footer-export-btn{background:rgba(26,20,10,.5);border:1px solid rgba(180,140,80,.1);border-radius:3px;padding:8px 12px;font-family:'Cinzel',serif;font-size:.55rem;color:#8a7a5a;cursor:pointer;transition:all .2s ease;min-height:44px}

@@ -71,9 +71,19 @@ function AppInner() {
     dismissNotFound,
   } = useSpellInteraction(castEnabled);
 
+  const [agentToast, setAgentToast] = useState('');
+  const agentToastTimerRef = useRef(null);
+
+  const showAgentToast = useCallback((message) => {
+    setAgentToast(message);
+    if (agentToastTimerRef.current) clearTimeout(agentToastTimerRef.current);
+    agentToastTimerRef.current = setTimeout(() => setAgentToast(''), 2400);
+  }, []);
+
   const agentPrompt = useAgentPrompt({
     onSpellClick: handleSpellClick,
     onBrowseResults: (q) => filter.setQuery(q),
+    onShowAgentToast: showAgentToast,
   });
 
   // Record spell view in history when modal opens
@@ -325,6 +335,11 @@ function AppInner() {
       {exportToast && (
         <div className="export-toast" role="status" aria-live="polite">
           {exportToast}
+        </div>
+      )}
+      {agentToast && (
+        <div className="agent-toast" role="alert" aria-live="assertive">
+          {agentToast}
         </div>
       )}
       <InstallPrompt />

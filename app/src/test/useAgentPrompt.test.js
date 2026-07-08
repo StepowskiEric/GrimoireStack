@@ -80,12 +80,47 @@ describe('useAgentPrompt', () => {
     );
 
     const onBrowseResults = vi.fn();
-    const { result } = renderHook(() => useAgentPrompt({ onBrowseResults }));
+    const onShowAgentToast = vi.fn();
+    const { result } = renderHook(() => useAgentPrompt({ onBrowseResults, onShowAgentToast }));
 
     await act(async () => { result.current.handlePrompt('test'); });
 
     expect(result.current.status).toBe('error');
     expect(onBrowseResults).toHaveBeenCalledWith('test');
+    expect(onShowAgentToast).toHaveBeenCalledWith('Oracle unavailable: AI inference failed');
+  });
+
+  it('shows a toast on unexpected failure', async () => {
+    globalThis.fetch = vi.fn(async () => {
+      throw new Error('network down');
+    });
+
+    const onBrowseResults = vi.fn();
+    const onShowAgentToast = vi.fn();
+    const { result } = renderHook(() => useAgentPrompt({ onBrowseResults, onShowAgentToast }));
+
+    await act(async () => { result.current.handlePrompt('test'); });
+
+    expect(result.current.status).toBe('error');
+    expect(onBrowseResults).toHaveBeenCalledWith('test');
+    expect(onShowAgentToast).toHaveBeenCalledWith('Oracle failed: network down');
+  });
+
+  it('does not show a toast when matching succeeds', async () => {
+    mockRecommendApi([
+      { skill: 'skill-a', name: 'Skill A', school: 'School A', score: 0.9, reason: 'Best match' },
+    ]);
+
+    mockExecute.mockRejectedValueOnce(new Error('agent failed'));
+
+    const onSpellClick = vi.fn();
+    const onShowAgentToast = vi.fn();
+    const { result } = renderHook(() => useAgentPrompt({ onSpellClick, onShowAgentToast }));
+
+    await act(async () => { result.current.handlePrompt('find me a skill'); });
+
+    expect(result.current.status).toBe('matched');
+    expect(onShowAgentToast).not.toHaveBeenCalled();
   });
 
   it('resets state after browsing', async () => {
