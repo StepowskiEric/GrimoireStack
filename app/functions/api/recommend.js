@@ -105,20 +105,26 @@ async function runAiInference(env, query) {
       messages: [
         {
           role: 'user',
-          content: `Rank these skill IDs by relevance to the user's problem. Return ONLY a JSON object like {"ranked_ids": ["id1", "id2", ...]} with the top 5. Use ONLY IDs from this list. Do not include reasoning in the output.
+          content: `You are a skill matcher. Rank these skill IDs by relevance to the user's problem. Return ONLY a JSON object with a "ranked_ids" array of the top 5 most relevant IDs. Use ONLY IDs from the list.
+
+Example output: {"ranked_ids": ["security-threat-modeling", "pre-mortem", "bisect-debugging"]}
 
 Skill IDs: ${skillIds.join(', ')}
 
 User problem: ${query}`,
         },
       ],
-      max_completion_tokens: 512,
-      temperature: 0.3,
+      max_completion_tokens: 256,
+      temperature: 0.0,
       response_format: { type: 'json_object' },
+      reasoning_effort: 'none',
       reasoning_format: 'hidden',
     }),
   });
-  if (!res.ok) throw new Error(`Groq API error: ${res.status}`);
+  if (!res.ok) {
+    const errBody = await res.text().catch(() => '');
+    throw new Error(`Groq API ${res.status}: ${errBody.slice(0, 300)}`);
+  }
   const data = await res.json();
   const text = data.choices?.[0]?.message?.content || '';
 
@@ -231,14 +237,12 @@ export async function onRequest(context) {
         }
         return jsonResponse({ results: aiResults, source: 'ai' });
       }
-    } catch {
-      // AI failed or timed out — fall through to local matching.
-      if (env.GROQ_API_KEY && cache && typeof waitUntil === 'function') {
-        waitUntil(warmCacheInBackground(env, cache, key, query));
-      }
+    } catch (err) {
+      const lr = localMatch(query);
+      return jsonResponse({ results: lr, source: 'local', debug: err?.message || String(err) });
     }
+  }
 
   // 3) Local token-overlap fallback (sub-50ms).
   const localResults = localMatch(query);
   return jsonResponse({ results: localResults, source: 'local' });
-}
