@@ -104,14 +104,18 @@ async function runAiInference(env, query) {
       model: env.GROQ_MODEL || 'qwen/qwen3.6-27b',
       messages: [
         {
-          role: 'system',
-          content: `Rank these skill IDs by relevance to the user's problem. Return the top 5 most relevant.`,
+          role: 'user',
+          content: `Rank these skill IDs by relevance to the user's problem. Return ONLY a JSON object like {"ranked_ids": ["id1", "id2", ...]} with the top 5. Use ONLY IDs from this list. Do not include reasoning in the output.
+
+Skill IDs: ${skillIds.join(', ')}
+
+User problem: ${query}`,
         },
-        { role: 'user', content: query },
       ],
-      max_tokens: 256,
+      max_completion_tokens: 512,
       temperature: 0.3,
       response_format: { type: 'json_object' },
+      reasoning_format: 'hidden',
     }),
   });
   if (!res.ok) throw new Error(`Groq API error: ${res.status}`);
@@ -227,9 +231,11 @@ export async function onRequest(context) {
         }
         return jsonResponse({ results: aiResults, source: 'ai' });
       }
-    } catch (err) {
-      const localResults = localMatch(query);
-      return jsonResponse({ results: localResults, source: 'local', debug: err?.message || String(err) });
+    } catch {
+      // AI failed or timed out — fall through to local matching.
+      if (env.GROQ_API_KEY && cache && typeof waitUntil === 'function') {
+        waitUntil(warmCacheInBackground(env, cache, key, query));
+      }
     }
 
   // 3) Local token-overlap fallback (sub-50ms).
