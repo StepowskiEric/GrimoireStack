@@ -17,25 +17,6 @@
 
 import { SKILL_CATALOG } from './skill-catalog.js';
 
-// Build the system prompt once at module scope (cold start only)
-const CATALOG_TEXT = SKILL_CATALOG
-  .map((s) => `- ${s.skill}: "${s.name}" [${s.school}] — ${s.effect}`)
-  .join('\n');
-
-const SYSTEM_PROMPT = `You are a skill-matching oracle for the GrimoireStack — a catalog of agent skills.
-Given a user's problem description, return the 3-5 most relevant skills from the catalog.
-
-For each match, output a JSON object with:
-- "skill": the skill id (e.g. "cognitive-bias-checklist")
-- "name": the skill display name
-- "school": the school name
-- "score": a number 0-1 indicating relevance
-- "reason": one short sentence explaining why this skill fits
-
-Return ONLY a JSON array. No markdown, no explanation, no preamble.
-
-CATALOG:
-${CATALOG_TEXT}`;
 
 const CORS_HEADERS = {
   'Access-Control-Allow-Origin': '*',
@@ -129,16 +110,37 @@ function cacheKey(query) {
   return `https://grimoirestack.com/api/recommend?q=${encodeURIComponent(query)}`;
 }
 
+// Build a condensed catalog context from a pre-filtered subset.
+// Sending all 181 skills (~15K tokens) makes the 3B model too slow.
+// Pre-filter with local matcher to ~20 candidates, then AI re-ranks.
+function buildCatalogContext(skills) {
+  return skills
+    .map((s) => `- ${s.skill}: "${s.name}" [${s.school}] — ${s.effect}`)
+    .join('\n');
+}
+
 async function runAiInference(env, query) {
+  const candidates = localMatch(query, 20);
+  const pool = candidates.length > 0
+    ? SKILL_CATALOG.filter((s) => candidates.includes(s.skill))
+    : SKILL_CATALOG;
+  const catalogText = buildCatalogContext(pool);
+  const systemPrompt = `You are a skill-matching oracle for the GrimoireStack.
+Given a user's problem description, return the 3-5 most relevant skills from the catalog below.
+
+Return ONLY a JSON array. No markdown, no explanation, no preamble.
+Each entry: {"skill": id, "name": display name, "school": school, "score": 0-1, "reason": one sentence}
+
+CATALOG:
+${catalogText}`;
   const aiResponse = await env.AI.run('@cf/ibm-granite/granite-4.0-h-micro', {
     messages: [
-      { role: 'system', content: SYSTEM_PROMPT },
-      { role: 'user', content: `User problem: "${query}"\n\nReturn the 3-5 most relevant skills from the catalog as a JSON array.` },
+      { role: 'system', content: systemPrompt },
+      { role: 'user', content: `User problem: "${query}"` },
     ],
-    max_tokens: 1024,
+    max_tokens: 512,
     temperature: 0.3,
   });
-
   const text = extractText(aiResponse);
   return parseAiResults(text);
 }
@@ -206,14 +208,14 @@ export async function onRequest(context) {
     }
   }
 
-  // 2) Synchronous AI inference with a timeout guard. Granite processing
-  // the 181-skill catalog (~15K tokens) can take 10-20s on cold starts.
-  // If the AI doesn't respond in 8s, fall back to local matching and
-  // let the AI populate the cache in the background for next time.
+  // 2) Synchronous AI inference with a timeout guard. The pre-filtered
+  // prompt (top-20 candidates) keeps the model input small, but cold
+  // starts can still be slow. If the AI doesn't respond in 5s, fall
+  // back to local matching and warm the cache in the background.
   if (env.AI) {
     try {
       const aiTimeout = new Promise((_, reject) =>
-        setTimeout(() => reject(new Error('AI timeout')), 8000),
+        setTimeout(() => reject(new Error('AI timeout')), 5000),
       );
       const aiResults = await Promise.race([
         runAiInference(env, query),
