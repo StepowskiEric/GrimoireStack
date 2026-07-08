@@ -17,6 +17,7 @@ import AboutView from './AboutView.jsx';
 import LanguageToggle from './LanguageToggle.jsx';
 import { grimoireIndex } from '../data/grimoireIndexInstance.js';
 import { useOracle } from '../hooks/useOracle.js';
+import { useAgentMode } from '../hooks/useAgentMode.js';
 import OracleInlinePanel from './OracleInlinePanel.jsx';
 import RitualPanel from './RitualPanel.jsx';
 import { useRitualOrchestrator } from '../hooks/useRitualOrchestrator.js';
@@ -119,7 +120,25 @@ export default function GrimoireStackLayout({
   const navigateToLibrary = useCallback(() => handleTabSelect(TABS.LIBRARY), [handleTabSelect]);
   const ritualOrch = useRitualOrchestrator({ onSpellClick, navigateToLibrary });
   const oracle = useOracle();
+  const agent = useAgentMode();
   const { t } = useLanguage();
+  const [agentToast, setAgentToast] = useState('');
+
+  // Intercept oracle spell selection to run page-agent first
+  const handleOracleSelect = useCallback(async (spell, school) => {
+    if (!spell) return;
+    const navigated = await agent.runAgent({
+      bestSkill: { name: spell.name, skill: spell.skill },
+      onError: (msg) => {
+        setAgentToast(msg);
+        setTimeout(() => setAgentToast(''), 3000);
+      },
+    });
+    if (!navigated) {
+      // Agent not configured or failed silently — fall back to normal click
+      onSpellClick(spell, school);
+    }
+  }, [agent, onSpellClick]);
 
   // Derive active tab from URL
   const activeTab = (() => {
@@ -417,7 +436,7 @@ export default function GrimoireStackLayout({
                   results={oracle.results}
                   loading={oracle.loading}
                   error={oracle.error}
-                  onSelectSpell={onSpellClick}
+                  onSelectSpell={handleOracleSelect}
                   source={oracle.source}
                   activeCategory={null}
                   onCategoryChange={() => {}}
@@ -489,6 +508,9 @@ export default function GrimoireStackLayout({
           <span className="eye-footer__github-label">Source</span>
         </a>
       </footer>
+      {agentToast && (
+        <div className="agent-toast" role="status" aria-live="polite">{agentToast}</div>
+      )}
     </div>
   );
 }
