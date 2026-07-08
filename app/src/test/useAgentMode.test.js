@@ -27,7 +27,7 @@ describe('useAgentMode', () => {
     const { result } = renderHook(() => useAgentMode());
     expect(result.current.enabled).toBe(true);
     expect(result.current.config.baseURL).toMatch(/\/api\/llm-proxy\/v1$/);
-    expect(result.current.config.model).toBe('@cf/zai-org/glm-4.7-flash');
+    expect(result.current.config.model).toBe('@cf/ibm-granite/granite-4.0-h-micro');
     expect(result.current.config.apiKey).toBe('');
   });
 
@@ -62,7 +62,7 @@ describe('useAgentMode', () => {
     localStorage.setItem('grimoire-agent-mode-config', 'not-json');
     const { result } = renderHook(() => useAgentMode());
     expect(result.current.config.baseURL).toMatch(/\/api\/llm-proxy\/v1$/);
-    expect(result.current.config.model).toBe('@cf/zai-org/glm-4.7-flash');
+    expect(result.current.config.model).toBe('@cf/ibm-granite/granite-4.0-h-micro');
     expect(result.current.config.apiKey).toBe('');
   });
 

@@ -37,7 +37,7 @@ const CORS_HEADERS = {
   'Access-Control-Allow-Headers': 'Content-Type',
 };
 
-const DEFAULT_MODEL = '@cf/zai-org/glm-4.7-flash';
+const DEFAULT_MODEL = '@cf/ibm-granite/granite-4.0-h-micro';
 const MAX_OUTPUT_TOKENS = 4096;
 
 function json(data, status = 200) {
@@ -360,24 +360,47 @@ export async function onRequest(context) {
   const maxTokens = typeof body.max_tokens === 'number' ? body.max_tokens : MAX_OUTPUT_TOKENS;
   const stream = body.stream === true;
 
+  // For models without native tool-calling support (e.g. granite-4.0-h-micro),
+  // prepend a tool-instruction block to the first user message so the
+  // model knows what tools exist and how to emit a tool call. (We use
+  // the user message rather than system because Workers AI's chat
+  // template for some models stops generation early after a system
+  // message that contains tool-call instructions, producing truncated
+  // JSON.) The response handler then parses the JSON tool call out of
+  // content.
+  if (tools && !modelSupportsNativeTools(model)) {
+    const instruction = buildToolPromptInstruction(tools);
+    // Prepend to the last user message — that's where the actual query
+    // lives, and prepending to the first user message has the model
+    // emit a greeting instead of a tool call.
+    const lastUserIdx = augmentedMessages.findLastIndex((m) => m.role === 'user');
+    const targetIdx = lastUserIdx >= 0 ? lastUserIdx : 0;
+    augmentedMessages[targetIdx] = {
+      ...augmentedMessages[targetIdx],
+      content: `${instruction} ${augmentedMessages[targetIdx].content}`,
+    };
+  }
+
   if (!env.AI) {
     return json({ error: 'Workers AI binding is not configured' }, 500);
   }
 
-  const aiParams = {
-    messages: augmentedMessages,
-    temperature,
-    max_tokens: maxTokens,
-    // glm-4.7-flash is a reasoning model that defaults to burning the
-    // entire output budget on chain-of-thought. Disable thinking for
-    // agentic callers (page-agent) so the model produces content
-    // directly. Reasoning controls belong on the inputs object of
-    // `binding.run()`, not the options argument — see
-    // https://github.com/cloudflare/ai/issues/501
-    chat_template_kwargs: { enable_thinking: false },
-    reasoning_effort: null,
-  };
-  if (tools) {
+  const aiParams = { messages: augmentedMessages, temperature, max_tokens: maxTokens };
+
+  // glm-4.7-flash is a reasoning model that defaults to burning the
+  // entire output budget on chain-of-thought. Disable thinking for
+  // agentic callers (page-agent) so the model produces content
+  // directly. Reasoning controls belong on the inputs object of
+  // `binding.run()`, not the options argument — see
+  // https://github.com/cloudflare/ai/issues/501. We only set these on
+  // models that accept them; passing them to other models can hang
+  // the inference call.
+  if (model === '@cf/zai-org/glm-4.7-flash') {
+    aiParams.chat_template_kwargs = { enable_thinking: false };
+    aiParams.reasoning_effort = null;
+  }
+
+  if (tools && modelSupportsNativeTools(model)) {
     aiParams.tools = tools;
     // tool_choice is OpenAI-shaped in both worlds. Pass it through.
     // Accepted values per glm-4.7-flash's input schema:
@@ -386,12 +409,33 @@ export async function onRequest(context) {
     if (toolChoice) aiParams.tool_choice = toolChoice;
   }
 
+  // Models with prompt-only input schemas (granite-4.0-h-micro and
+  // similar) reject messages that have non-string content (null, array,
+// etc.) and tool messages in their native shape. We only serialize the
+// conversation into a single `prompt` string when tools are present —
+// for plain chat, the binding accepts `messages` directly and the
+// model responds correctly without any transformation.
+  if (modelNeedsPromptString(model) && tools) {
+    const promptStr = serializeMessagesToPrompt(augmentedMessages, tools);
+    // Drop messages; send a single prompt string instead.
+    delete aiParams.messages;
+    aiParams.prompt = promptStr;
+  }
+
   // Workers AI binding (native). As of 2026, the binding returns
   // the OpenAI chat.completion shape directly, so we pass it
   // through with minor enrichment (id, created) when present.
   try {
     const aiResponse = await env.AI.run(model, aiParams);
-    const built = buildChatCompletion({ response: aiResponse, model, stream });
+    // Models without native tool-calling support (e.g. granite-4.0-h-micro
+    // — its input schema is prompt-only) need us to inject tool
+    // descriptions into the system prompt and parse JSON tool calls out
+    // of the response content. Do that here for the affected models.
+    const responseForBuild =
+      tools && !modelSupportsNativeTools(model)
+        ? parseJsonToolCallsFromContent(aiResponse, tools)
+        : aiResponse;
+    const built = buildChatCompletion({ response: responseForBuild, model, stream });
     if (!built.ok) {
       return json(built.body, built.status);
     }
@@ -399,4 +443,183 @@ export async function onRequest(context) {
   } catch (err) {
     return json({ error: 'AI inference failed', detail: err.message }, 500);
   }
+}
+
+// Models whose input schema (per Cloudflare's sync-input.json) includes
+// a `tools` field support native OpenAI-style tool calling. Other
+// models need us to inject tool descriptions into the prompt and parse
+// the response manually.
+const NATIVE_TOOL_MODELS = new Set([
+  '@cf/zai-org/glm-4.7-flash',
+  '@cf/moonshotai/kimi-k2.6',
+  '@cf/google/gemma-4-26b-a4b-it',
+]);
+
+function modelSupportsNativeTools(model) {
+  return NATIVE_TOOL_MODELS.has(model);
+}
+
+// Models whose input schema is prompt-only (no `messages` field) —
+// the binding still accepts `messages` for a single user turn, but
+// rejects multi-turn tool-call histories with a 5006 validation error.
+// For those models we serialize the conversation into a single prompt
+// string the binding can accept.
+const PROMPT_STRING_MODELS = new Set([
+  '@cf/ibm-granite/granite-4.0-h-micro',
+]);
+
+function modelNeedsPromptString(model) {
+  return PROMPT_STRING_MODELS.has(model);
+}
+
+// Serialize an OpenAI-style messages array into a single chat-template
+// prompt string. Used for models whose input schema is prompt-only.
+// All message content is coerced to a string (null becomes empty).
+function serializeMessagesToPrompt(messages, tools) {
+  const parts = [];
+  for (const m of messages) {
+    if (!m || !m.role) continue;
+    const content = typeof m.content === 'string'
+      ? m.content
+      : (m.content == null ? '' : JSON.stringify(m.content));
+
+    if (m.role === 'system') {
+      parts.push(`<|system|>\n${content}`);
+    } else if (m.role === 'user') {
+      parts.push(`<|user|>\n${content}`);
+    } else if (m.role === 'assistant') {
+      let assistantBlock = content;
+      if (Array.isArray(m.tool_calls) && m.tool_calls.length > 0) {
+        const tc = m.tool_calls[0];
+        const args = typeof tc.function?.arguments === 'string'
+          ? tc.function.arguments
+          : JSON.stringify(tc.function?.arguments ?? {});
+        // Use the same `call`/`args` keys the prompt asks the model for.
+        assistantBlock = `${content}\n{"call": {"name": "${tc.function?.name ?? tc.name}", "args": ${args}}}`;
+      }
+      parts.push(`<|assistant|>\n${assistantBlock}`);
+    } else if (m.role === 'tool') {
+      parts.push(`<|tool|>\n${content}`);
+    }
+  }
+  // End with the assistant prompt prefix so the model continues from there.
+  parts.push('<|assistant|>');
+  return parts.join('\n\n');
+}
+
+// Inject tool descriptions into the user prompt. For models without
+// native tool support (e.g. granite-4.0-h-micro), the binding's input
+// schema is prompt-only, so we have to spell out the available tools
+// in plain text and tell the model to emit a JSON tool call.
+//
+// Notes from testing:
+//  - Keys are `call`/`args` (NOT `tool_call`/`arguments`) — the chat
+//    template Workers AI uses for granite adds stop tokens on `}}` and
+//    `tool_call` patterns, which truncates the emitted JSON.
+//  - The instruction is placed at the START of the user prompt (not a
+//    system message) and uses short, direct language so the model
+//    actually follows it instead of just answering the question.
+function buildToolPromptInstruction(tools) {
+  const lines = [
+    'IMPORTANT: To answer this request, output ONLY the JSON below (no prose, no markdown fences):',
+    '',
+    'Tools available:',
+    ...tools.map((tool) => {
+      const fn = tool.function ?? tool;
+      const params = fn.parameters?.properties ?? {};
+      const required = fn.parameters?.required ?? [];
+      const paramDescs = Object.entries(params)
+        .map(([k, v]) => {
+          const isReq = required.includes(k) ? '*' : '';
+          return `  - ${k}${isReq}: ${v.description ?? v.type ?? 'value'}`;
+        })
+        .join('\n');
+      return `${fn.name}(${fn.description ?? ''})\n${paramDescs}`;
+    }),
+    '',
+    'Output format (one JSON object, nothing else):',
+    '{"call":{"name":"<tool_name>","args":{<params>}}}',
+    '',
+    'Or, if no tool is needed, answer normally.',
+    '',
+    'User request:',
+  ];
+  return lines.join('\n');
+}
+
+// Parse a JSON tool call out of the model's content. Returns a shallow
+// clone of the response with the tool_calls field populated in OpenAI's
+// nested shape, OR the original response if no tool call was detected.
+function parseJsonToolCallsFromContent(response, tools) {
+  if (!response || typeof response !== 'object') return response;
+
+  // The model may return content in either the chat.completion shape
+  // (choices[0].message.content) or the legacy text-completion shape
+  // (choices[0].text). Check both.
+  const choice = response.choices?.[0];
+  const contentStr =
+    (typeof choice?.message?.content === 'string' && choice.message.content) ||
+    (typeof choice?.text === 'string' && choice.text) ||
+    null;
+  if (typeof contentStr !== 'string') return response;
+
+  // Try to extract a JSON object from the content. Models sometimes wrap
+  // it in markdown fences or add prose around it, so be tolerant.
+  const trimmed = contentStr.trim();
+  let parsed = null;
+  const fenceMatch = trimmed.match(/```(?:json)?\s*(\{[\s\S]*?\})\s*```/);
+  const jsonStr = fenceMatch ? fenceMatch[1] : trimmed;
+
+  const tryParse = (s) => {
+    try {
+      return JSON.parse(s);
+    } catch {
+      return null;
+    }
+  };
+
+  parsed = tryParse(jsonStr);
+  if (!parsed) {
+    const objMatch = trimmed.match(/(\{(?:[^{}]|\{[^{}]*\})*\})/);
+    if (objMatch) parsed = tryParse(objMatch[1]);
+  }
+
+  if (!parsed) return response;
+
+  const tc = parsed.call ?? parsed.tool_call ?? parsed.tool_calls?.[0];
+  if (!tc?.name) return response;
+
+  const knownTool = tools.find((t) => (t.function?.name ?? t.name) === tc.name);
+  if (!knownTool) return response;
+
+  const argsString =
+    typeof tc.args === 'string'
+      ? tc.args
+      : typeof tc.arguments === 'string'
+        ? tc.arguments
+        : JSON.stringify(tc.args ?? tc.arguments ?? {});
+
+  const toolCall = {
+    id: `call_${Date.now().toString(36)}_${Math.random().toString(36).slice(2, 8)}`,
+    type: 'function',
+    function: { name: tc.name, arguments: argsString },
+  };
+
+  // Return the response in OpenAI chat.completion shape regardless of
+  // which input shape we received.
+  return {
+    ...response,
+    object: 'chat.completion',
+    choices: [
+      {
+        index: 0,
+        message: {
+          role: 'assistant',
+          content: null,
+          tool_calls: [toolCall],
+        },
+        finish_reason: 'tool_calls',
+      },
+    ],
+  };
 }

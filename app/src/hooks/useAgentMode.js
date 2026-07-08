@@ -7,7 +7,7 @@ const STORAGE_KEY = 'grimoire-agent-mode';
 // user never needs to provide their own API key or endpoint.
 const DEFAULT_BASE_URL =
   typeof window !== 'undefined' ? `${window.location.origin}/api/llm-proxy/v1` : '/api/llm-proxy/v1';
-const DEFAULT_MODEL = '@cf/zai-org/glm-4.7-flash';
+const DEFAULT_MODEL = '@cf/ibm-granite/granite-4.0-h-micro';
 
 export function useAgentMode() {
   const [enabled, setEnabled] = useState(() => {
