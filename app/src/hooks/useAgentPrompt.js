@@ -96,6 +96,5 @@ export function useAgentPrompt({ onSpellClick, onBrowseResults, onShowAgentToast
     handleBrowse,
     reset,
     focusInput,
-    agentStatus: agent.status,
   };
 }

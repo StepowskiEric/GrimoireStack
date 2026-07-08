@@ -4,7 +4,6 @@ import { useFavorites } from '../hooks/useFavorites.js';
 import { useRecentlyViewed } from '../hooks/useRecentlyViewed.js';
 import { useMarginalia } from '../hooks/useMarginalia.js';
 import { importConfig } from '../utils/exporter.js';
-import { useAgentMode } from '../hooks/useAgentMode.js';
 import Icon from './Icon.jsx';
 
 const GITHUB_REPO_URL = 'https://github.com/StepowskiEric/GrimoireStack';
@@ -33,7 +32,6 @@ export default function SettingsView({
   const { setFavorites } = useFavorites();
   const { setRecent } = useRecentlyViewed();
   const { setNotes } = useMarginalia();
-  const agent = useAgentMode();
 
   return (
     <div className="settings-view">
@@ -220,57 +218,10 @@ export default function SettingsView({
             <h3>Agent Mode</h3>
             <p>
               Uses <strong>page-agent</strong> with <strong>Groq</strong>
-              (<code>qwen/qwen3.6-27b</code>) to visually navigate to the
-              best skill card. A Groq API key is required.
+              ({' '}<code>qwen/qwen3.6-27b</code>) to visually navigate to the
+              best skill card. The Groq API key is configured on the server
+              and does not need to be set here.
             </p>
-
-            <div className="settings-view__agent-config">
-              <div className="settings-view__option">
-                <label htmlFor="agent-base-url">Base URL</label>
-                <input
-                  id="agent-base-url"
-                  className="settings-view__input"
-                  type="text"
-                  value={agent.config.baseURL}
-                  onChange={(e) => agent.updateConfig({ baseURL: e.target.value })}
-                  placeholder="https://api.groq.com/openai/v1"
-                />
-              </div>
-              <div className="settings-view__option">
-                <label htmlFor="agent-model">Model</label>
-                <input
-                  id="agent-model"
-                  className="settings-view__input"
-                  type="text"
-                  value={agent.config.model}
-                  onChange={(e) => agent.updateConfig({ model: e.target.value })}
-                  placeholder="qwen/qwen3.6-27b"
-                />
-              </div>
-              <div className="settings-view__option">
-                <label htmlFor="agent-api-key">Groq API Key</label>
-                <input
-                  id="agent-api-key"
-                  className="settings-view__input"
-                  type="password"
-                  value={agent.config.apiKey}
-                  onChange={(e) => agent.updateConfig({ apiKey: e.target.value })}
-                  placeholder="gsk_..."
-                />
-              </div>
-              <p className="settings-view__agent-status" role="status" aria-live="polite">
-                {agent.status === 'running' && 'Agent is running…'}
-                {agent.status === 'done' && 'Agent completed.'}
-                {agent.status === 'error' && 'Agent failed; opened skill directly.'}
-              </p>
-              <button
-                className="settings-view__action-btn"
-                type="button"
-                onClick={agent.resetStatus}
-              >
-                Clear agent status
-              </button>
-            </div>
           </div>
         )}
 

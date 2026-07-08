@@ -5128,28 +5128,6 @@ header .header-sigil-text{display:none}
   border-color: rgba(196,184,152,0.6);
   box-shadow: 0 0 14px rgba(138,154,106,0.12);
 }
-.settings-view__input {
-  width: 100%;
-  padding: 10px 12px;
-  background: rgba(2,2,4,0.65);
-  border: 1px solid rgba(138,154,106,0.25);
-  border-radius: 2px;
-  color: #c4b8a0;
-  font-family: 'Cormorant Garamond', serif;
-  font-size: 0.95rem;
-  outline: none;
-  transition: all 0.25s ease;
-  box-sizing: border-box;
-}
-.settings-view__input:focus {
-  border-color: rgba(196,184,152,0.6);
-  box-shadow: 0 0 14px rgba(138,154,106,0.12);
-}
-.settings-view__input::placeholder {
-  color: rgba(138,154,106,0.35);
-  font-style: italic;
-}
-
 .settings-view__toggle {
   display: flex;
   align-items: center;
