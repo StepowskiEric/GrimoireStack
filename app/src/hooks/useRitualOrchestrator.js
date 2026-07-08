@@ -1,6 +1,7 @@
 import { useState, useCallback } from 'react';
 import { useRitual } from './useRitual.js';
 import { useRitualWalk } from './useRitualWalk.js';
+import { grimoireIndex } from '../data/grimoireIndexInstance.js';
 
 /**
  * useRitualOrchestrator — encapsulates all ritual-related state and callbacks.
@@ -17,7 +18,10 @@ export function useRitualOrchestrator({ onSpellClick, navigateToLibrary }) {
 
   const ritualWalkHook = useRitualWalk({
     onComplete: (target) => {
-      onSpellClick?.(target.skill, target.school);
+      const resolved = grimoireIndex.resolveBySkill(target.skill);
+      if (resolved) {
+        onSpellClick?.(resolved.spell, resolved.school);
+      }
       setActivePanel(null);
     },
     navigateToLibrary,
@@ -32,7 +36,10 @@ export function useRitualOrchestrator({ onSpellClick, navigateToLibrary }) {
   });
 
   const handleRitualConverge = useCallback((r) => {
-    onSpellClick?.(r.skill, r.school);
+    const resolved = grimoireIndex.resolveBySkill(r.skill);
+    if (resolved) {
+      onSpellClick?.(resolved.spell, resolved.school);
+    }
     setActivePanel(null);
   }, [onSpellClick]);
 
