@@ -35,8 +35,9 @@ export function useAgentMode() {
 
       console.log('[useAgentMode] Calling agent.execute()...');
       const result = await agent.execute(prompt);
-      console.log('[useAgentMode] agent.execute() completed', { result });
-      return true;
+      const success = result?.success === true;
+      console.log('[useAgentMode] agent.execute() completed', { result, success });
+      return success;
     } catch (err) {
       console.log('[useAgentMode] agent.execute() failed', { message: err.message, stack: err.stack?.slice(0, 300) });
       onError?.(err?.message || 'Agent failed to navigate');

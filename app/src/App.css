@@ -9069,3 +9069,440 @@ header .header-sigil-text{display:none}
 .ritual-walk-overlay--walking{opacity:1;background:radial-gradient(ellipse at center,rgba(26,20,10,.2) 0%,rgba(10,8,4,.5) 60%,rgba(5,3,1,.75) 100%);backdrop-filter:blur(1px)}
 .ritual-walk-overlay--arriving{opacity:.8;background:radial-gradient(ellipse at center,rgba(42,28,14,.15) 0%,rgba(10,8,4,.4) 100%)}
 .ritual-walk-overlay--done{opacity:0;background:transparent}
+
+/* ==============================
+   Wandering Animation — 5 Chambers
+   ============================== */
+
+.wandering-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 2147483640;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #050301;
+  overflow: hidden;
+  animation: wanderingFadeIn 0.6s ease;
+}
+
+@keyframes wanderingFadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.wandering-chamber {
+  position: absolute;
+  inset: 0;
+}
+
+/* ---------- Narration ---------- */
+
+.wandering-narration {
+  position: absolute;
+  bottom: 60px;
+  left: 50%;
+  transform: translateX(-50%);
+  text-align: center;
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  animation: wanderingNarrationIn 0.5s ease;
+}
+
+@keyframes wanderingNarrationIn {
+  from { opacity: 0; transform: translateX(-50%) translateY(12px); }
+  to { opacity: 1; transform: translateX(-50%) translateY(0); }
+}
+
+.wandering-chamber-title {
+  font-family: 'Cinzel', serif;
+  font-size: 0.7rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: rgba(180, 150, 100, 0.6);
+}
+
+.wandering-chamber-text {
+  font-family: 'EB Garamond', 'Georgia', serif;
+  font-size: 0.9rem;
+  font-style: italic;
+  color: rgba(200, 180, 150, 0.85);
+  max-width: 400px;
+}
+
+/* ==============================
+   Chamber 1 — The Corridor
+   ============================== */
+
+.wandering-chamber--corridor {
+  background: radial-gradient(ellipse at 50% 60%, #1a1410 0%, #0a0806 50%, #030201 100%);
+}
+
+.corridor-wall {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 28%;
+  background-image:
+    repeating-linear-gradient(
+      0deg,
+      transparent 0px,
+      rgba(80, 60, 40, 0.08) 2px,
+      transparent 4px,
+      transparent 20px
+    ),
+    repeating-linear-gradient(
+      90deg,
+      transparent 0px,
+      rgba(60, 45, 30, 0.06) 1px,
+      transparent 3px,
+      transparent 24px
+    );
+}
+
+.corridor-wall--left {
+  left: 0;
+  box-shadow: inset 12px 0 20px rgba(0, 0, 0, 0.6);
+}
+
+.corridor-wall--right {
+  right: 0;
+  box-shadow: inset -12px 0 20px rgba(0, 0, 0, 0.6);
+}
+
+.corridor-torch {
+  position: absolute;
+  bottom: 40%;
+  width: 8px;
+  height: 60px;
+}
+
+.corridor-torch--left {
+  left: 22%;
+}
+
+.corridor-torch--right {
+  right: 22%;
+}
+
+.torch-flame {
+  position: absolute;
+  top: -18px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 10px;
+  height: 18px;
+  border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+  background: radial-gradient(ellipse at 50% 30%, #fff4d0 0%, #ffaa33 40%, #cc5500 70%, transparent 100%);
+  animation: torchFlicker 0.15s ease-in-out infinite alternate;
+  transform-origin: bottom center;
+}
+
+@keyframes torchFlicker {
+  0% { transform: translateX(-50%) scaleY(1) scaleX(1); opacity: 0.9; }
+  25% { transform: translateX(-48%) scaleY(1.15) scaleX(0.9); opacity: 1; }
+  50% { transform: translateX(-52%) scaleY(0.95) scaleX(1.05); opacity: 0.85; }
+  75% { transform: translateX(-49%) scaleY(1.08) scaleX(0.95); opacity: 0.95; }
+  100% { transform: translateX(-51%) scaleY(1.02) scaleX(1); opacity: 0.9; }
+}
+
+.torch-glow {
+  position: absolute;
+  top: -80px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  background: radial-gradient(ellipse, rgba(255, 150, 50, 0.15) 0%, rgba(255, 100, 20, 0.05) 50%, transparent 70%);
+  animation: torchGlowPulse 1.5s ease-in-out infinite alternate;
+}
+
+@keyframes torchGlowPulse {
+  from { transform: translateX(-50%) scale(1); opacity: 0.6; }
+  to { transform: translateX(-50%) scale(1.2); opacity: 1; }
+}
+
+.corridor-arch {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 70%;
+  height: 100%;
+  background: radial-gradient(ellipse at 50% 0%, transparent 40%, rgba(0, 0, 0, 0.4) 70%, transparent 72%);
+  pointer-events: none;
+}
+
+/* ==============================
+   Chamber 2 — The Flooded Passage
+   ============================== */
+
+.wandering-chamber--flooded {
+  background: linear-gradient(180deg, #060810 0%, #080c1e 30%, #0a0f28 60%, #0c1228 100%);
+}
+
+.flood-water {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 45%;
+  background: linear-gradient(0deg, rgba(10, 20, 40, 0.9) 0%, rgba(15, 25, 50, 0.5) 60%, transparent 100%);
+}
+
+.flood-ripple {
+  position: absolute;
+  bottom: 30%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 20px;
+  height: 20px;
+  border: 1px solid rgba(100, 180, 220, 0.15);
+  border-radius: 50%;
+  animation: floodRipple 3s ease-out infinite;
+}
+
+.flood-ripple--1 { animation-delay: 0s; }
+.flood-ripple--2 { animation-delay: 1s; }
+.flood-ripple--3 { animation-delay: 2s; }
+
+@keyframes floodRipple {
+  0% { transform: translate(-50%, -50%) scale(1); opacity: 0.6; }
+  100% { transform: translate(-50%, -50%) scale(20); opacity: 0; }
+}
+
+.flood-submerged {
+  position: absolute;
+  bottom: 5%;
+  left: 30%;
+  right: 30%;
+  height: 30%;
+  background: radial-gradient(ellipse at 50% 100%, rgba(60, 120, 180, 0.08) 0%, transparent 70%);
+  animation: floodSubmerged 4s ease-in-out infinite alternate;
+}
+
+@keyframes floodSubmerged {
+  from { opacity: 0.3; transform: scaleY(1); }
+  to { opacity: 0.7; transform: scaleY(1.15); }
+}
+
+/* ==============================
+   Chamber 3 — The Hall of Watchers
+   ============================== */
+
+.wandering-chamber--watchers {
+  background: #030104;
+}
+
+.watcher {
+  position: absolute;
+  width: 30px;
+  height: 16px;
+  border-radius: 50%;
+  background: rgba(180, 120, 40, 0.06);
+  box-shadow: 0 0 8px rgba(200, 150, 60, 0.08);
+  animation: watcherBlink 4s ease-in-out infinite;
+}
+
+.watcher-pupil {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: radial-gradient(circle, #ffdd66 0%, #cc8800 60%, #664400 100%);
+  box-shadow: 0 0 6px 2px rgba(255, 200, 50, 0.3);
+  transform: translate(-50%, -50%);
+  animation: watcherPupil 3s ease-in-out infinite alternate;
+}
+
+@keyframes watcherPupil {
+  0% { transform: translate(-50%, -50%) scale(1); }
+  50% { transform: translate(-40%, -45%) scale(1.2); }
+  100% { transform: translate(-60%, -55%) scale(0.9); }
+}
+
+@keyframes watcherBlink {
+  0%, 85%, 100% { transform: scaleY(1); opacity: 0.8; }
+  88% { transform: scaleY(0.1); opacity: 0.2; }
+  92% { transform: scaleY(1); opacity: 0.8; }
+}
+
+.watcher--1 { top: 12%; left: 15%; animation-delay: 0s; }
+.watcher--2 { top: 8%; right: 20%; animation-delay: 0.7s; width: 24px; height: 14px; }
+.watcher--3 { top: 40%; left: 8%; animation-delay: 1.5s; width: 36px; height: 18px; }
+.watcher--4 { top: 35%; right: 10%; animation-delay: 2.2s; width: 28px; height: 15px; }
+.watcher--5 { top: 65%; left: 20%; animation-delay: 0.4s; width: 22px; height: 12px; }
+.watcher--6 { top: 60%; right: 18%; animation-delay: 1.8s; width: 32px; height: 17px; }
+
+/* ==============================
+   Chamber 4 — The Narrowing Crevice
+   ============================== */
+
+.wandering-chamber--crevice {
+  background: #080603;
+  animation: creviceDarken 2.5s ease;
+}
+
+@keyframes creviceDarken {
+  from { background: #0f0a06; }
+  to { background: #040201; }
+}
+
+.crevice-wall {
+  position: absolute;
+  top: -5%;
+  bottom: -5%;
+  width: 10%;
+  background: linear-gradient(
+    90deg,
+    rgba(40, 28, 16, 0.8) 0%,
+    rgba(60, 40, 25, 0.4) 30%,
+    transparent 100%
+  );
+  animation: creviceClose 2.5s ease forwards;
+}
+
+.crevice-wall--left {
+  left: 0;
+  background: linear-gradient(
+    90deg,
+    rgba(40, 28, 16, 0.8) 0%,
+    rgba(60, 40, 25, 0.4) 30%,
+    transparent 100%
+  );
+  box-shadow: inset -10px 0 20px rgba(0, 0, 0, 0.5);
+}
+
+.crevice-wall--right {
+  right: 0;
+  background: linear-gradient(
+    270deg,
+    rgba(40, 28, 16, 0.8) 0%,
+    rgba(60, 40, 25, 0.4) 30%,
+    transparent 100%
+  );
+  box-shadow: inset 10px 0 20px rgba(0, 0, 0, 0.5);
+}
+
+@keyframes creviceClose {
+  0% { width: 10%; }
+  100% { width: 35%; }
+}
+
+.crevice-glow {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(100, 70, 40, 0.2) 0%, transparent 70%);
+  animation: creviceGlow 2s ease-in-out infinite alternate;
+}
+
+@keyframes creviceGlow {
+  from { transform: translate(-50%, -50%) scale(1); opacity: 0.4; }
+  to { transform: translate(-50%, -50%) scale(1.5); opacity: 0.8; }
+}
+
+/* ==============================
+   Chamber 5 — The Scroll Chamber (Reveal)
+   ============================== */
+
+.wandering-chamber--reveal {
+  background: #050302;
+  animation: revealDarken 3s ease;
+}
+
+@keyframes revealDarken {
+  from { background: #080504; }
+  to { background: #030101; }
+}
+
+.reveal-glow {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 0;
+  height: 0;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(200, 160, 80, 0.3) 0%, rgba(150, 120, 60, 0.1) 40%, transparent 70%);
+  animation: revealGlowExpand 2.5s ease forwards;
+}
+
+@keyframes revealGlowExpand {
+  0% { width: 0; height: 0; opacity: 0; }
+  40% { width: 300px; height: 300px; opacity: 0.6; }
+  100% { width: 600px; height: 600px; opacity: 0.3; }
+}
+
+.reveal-light {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 2px;
+  height: 2px;
+  border-radius: 50%;
+  box-shadow:
+    0 0 10px 4px rgba(255, 200, 80, 0.3),
+    0 0 30px 10px rgba(200, 160, 60, 0.15),
+    0 0 60px 20px rgba(150, 120, 50, 0.08);
+  animation: revealLightPulse 1.5s ease-in-out infinite alternate;
+}
+
+@keyframes revealLightPulse {
+  from { box-shadow: 0 0 10px 4px rgba(255, 200, 80, 0.3), 0 0 30px 10px rgba(200, 160, 60, 0.15), 0 0 60px 20px rgba(150, 120, 50, 0.08); }
+  to { box-shadow: 0 0 15px 6px rgba(255, 210, 100, 0.4), 0 0 40px 14px rgba(200, 160, 60, 0.2), 0 0 80px 30px rgba(150, 120, 50, 0.12); }
+}
+
+.reveal-scroll {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 2;
+  text-align: center;
+  animation: revealScrollIn 1.5s ease 0.8s both;
+}
+
+@keyframes revealScrollIn {
+  from { opacity: 0; transform: translate(-50%, -50%) scale(0.7); }
+  to { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+}
+
+.reveal-skill-name {
+  font-family: 'Cinzel', serif;
+  font-size: 1.1rem;
+  letter-spacing: 0.08em;
+  color: rgba(255, 215, 140, 0.9);
+  text-shadow:
+    0 0 10px rgba(255, 200, 80, 0.4),
+    0 0 30px rgba(200, 160, 60, 0.2),
+    0 0 60px rgba(150, 120, 50, 0.1);
+}
+
+.reveal-particles {
+  position: absolute;
+  inset: 0;
+  background-image:
+    radial-gradient(1px 1px at 20% 30%, rgba(255, 200, 100, 0.6) 0%, transparent 100%),
+    radial-gradient(1px 1px at 50% 20%, rgba(255, 220, 150, 0.4) 0%, transparent 100%),
+    radial-gradient(1px 1px at 80% 40%, rgba(255, 200, 100, 0.5) 0%, transparent 100%),
+    radial-gradient(1.5px 1.5px at 30% 60%, rgba(255, 220, 150, 0.3) 0%, transparent 100%),
+    radial-gradient(1px 1px at 65% 70%, rgba(255, 200, 100, 0.4) 0%, transparent 100%),
+    radial-gradient(1px 1px at 45% 80%, rgba(255, 210, 120, 0.5) 0%, transparent 100%);
+  animation: revealParticles 2s ease-in-out infinite alternate;
+}
+
+@keyframes revealParticles {
+  from { opacity: 0.3; }
+  to { opacity: 0.8; }
+}

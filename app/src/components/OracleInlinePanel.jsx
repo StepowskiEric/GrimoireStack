@@ -92,19 +92,19 @@ export default function OracleInlinePanel({
       const top = results[0];
       const entry = grimoireIndex.resolveBySkill(top.skill);
       if (entry) {
-        onSelectSpell?.(entry.spell, entry.school);
+        onSelectSpell?.(entry.spell, entry.school, 'ai');
         return;
       }
     }
     if (matches.length > 0) {
       const top = matches[0];
-      onSelectSpell?.(top.spell, top.school);
+      onSelectSpell?.(top.spell, top.school, 'local');
     }
   };
 
-  const handleOpenSpell = (spell) => {
+  const handleOpenSpell = (spell, origin) => {
     const entry = grimoireIndex.resolveBySkill(spell.skill);
-    if (entry) onSelectSpell?.(entry.spell, entry.school);
+    if (entry) onSelectSpell?.(entry.spell, entry.school, origin);
   };
 
   const handleChipClick = (catId) => {
@@ -180,7 +180,7 @@ export default function OracleInlinePanel({
                 key={m.spell.skill}
                 type="button"
                 className="intake-result"
-                onClick={() => handleOpenSpell(m.spell)}
+                onClick={() => handleOpenSpell(m.spell, 'local')}
               >
                 <span className="intake-result-rank">#{i + 1}</span>
                 <span className="intake-result-symbol" aria-hidden="true"><SchoolSigil schoolId={m.school.id} size={20} /></span>
@@ -226,7 +226,7 @@ export default function OracleInlinePanel({
                   key={r.skill}
                   type="button"
                   className="intake-result"
-                  onClick={() => handleOpenSpell(entry.spell)}
+                  onClick={() => handleOpenSpell(entry.spell, 'ai')}
                 >
                   <span className="intake-result-rank">#{i + 1}</span>
                   <span className="intake-result-symbol" aria-hidden="true"><SchoolSigil schoolId={entry.school.id} size={20} /></span>

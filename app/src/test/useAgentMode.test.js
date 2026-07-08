@@ -22,7 +22,7 @@ describe('useAgentMode', () => {
   });
 
   it('runs agent and returns true on success', async () => {
-    mockExecute.mockResolvedValue(undefined);
+    mockExecute.mockResolvedValue({ success: true });
     const { result } = renderHook(() => useAgentMode());
 
     const returned = await act(async () => {
@@ -32,6 +32,19 @@ describe('useAgentMode', () => {
     });
 
     expect(returned).toBe(true);
+  });
+
+  it('returns false when agent execute returns success:false', async () => {
+    mockExecute.mockResolvedValue({ success: false });
+    const { result } = renderHook(() => useAgentMode());
+
+    const returned = await act(async () => {
+      return result.current.runAgent({
+        bestSkill: { skill: 'test', name: 'Test Skill' },
+      });
+    });
+
+    expect(returned).toBe(false);
   });
 
   it('returns false when bestSkill is missing', async () => {

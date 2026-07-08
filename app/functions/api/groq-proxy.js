@@ -65,9 +65,15 @@ export async function onRequest(context) {
 
   console.log(`[groq-proxy:${requestId}] Request: model=${model}, tools=${hasTools}, tool_choice=${JSON.stringify(toolChoice)}, messages=${messages.length}, lastMsg=${(messages[messages.length - 1]?.content || '').slice(0, 120)}`);
 
-  // Forward the full body as-is, preserving tools, tool_choice,
+  // Forward the full body, preserving tools, tool_choice,
   // parallel_tool_calls, temperature, max_tokens, etc.
+  // Strip fields that Groq does not support (page-agent's model
+  // patcher adds enable_thinking for Qwen, but Groq rejects it).
   const groqBody = { ...body, model };
+  delete groqBody.enable_thinking;
+  delete groqBody.thinking;
+  delete groqBody.reasoning_effort;
+  delete groqBody.verbosity;
 
   try {
     console.log(`[groq-proxy:${requestId}] Sending to Groq: ${JSON.stringify({ model, hasTools, toolChoice, msgCount: groqBody.messages?.length })}`);

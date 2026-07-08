@@ -16,12 +16,9 @@ import Icon from './Icon.jsx';
 import AboutView from './AboutView.jsx';
 import LanguageToggle from './LanguageToggle.jsx';
 import { grimoireIndex } from '../data/grimoireIndexInstance.js';
-import { useOracle } from '../hooks/useOracle.js';
-import { useAgentMode } from '../hooks/useAgentMode.js';
-import OracleInlinePanel from './OracleInlinePanel.jsx';
 import RitualPanel from './RitualPanel.jsx';
 import { useRitualOrchestrator } from '../hooks/useRitualOrchestrator.js';
-import { useLanguage } from '../i18n/LanguageContext';
+import WanderingAnimation from './WanderingAnimation.jsx';
 
 const SCHOOL_MAP = grimoireIndex.getSchoolMap();
 
@@ -118,35 +115,23 @@ export default function GrimoireStackLayout({
   }, [navigate]);
 
   const navigateToLibrary = useCallback(() => handleTabSelect(TABS.LIBRARY), [handleTabSelect]);
-  const ritualOrch = useRitualOrchestrator({ onSpellClick, navigateToLibrary });
-  const oracle = useOracle();
-  const agent = useAgentMode();
-  const { t } = useLanguage();
-  const [agentToast, setAgentToast] = useState('');
 
-  // Intercept oracle spell selection to run page-agent first
-  const handleOracleSelect = useCallback(async (spell, school) => {
-    if (!spell) {
-      console.log('[handleOracleSelect] No spell provided, skipping');
-      return;
+  // Wandering animation state — set when the ritual converges on a result
+  const [wandering, setWandering] = useState(null);
+
+  // Intercept spell opens from the ritual flow to show the wandering animation first
+  const handleRitualSpellOpen = useCallback((spell, school) => {
+    setWandering({ spell, school });
+  }, []);
+
+  const ritualOrch = useRitualOrchestrator({ onSpellClick: handleRitualSpellOpen, navigateToLibrary });
+
+  const handleWanderingComplete = useCallback(() => {
+    if (wandering) {
+      onSpellClick(wandering.spell, wandering.school);
+      setWandering(null);
     }
-    console.log('[handleOracleSelect] Starting agent run for', { skill: spell.skill, name: spell.name, school: school?.id });
-    const navigated = await agent.runAgent({
-      bestSkill: { name: spell.name, skill: spell.skill },
-      onError: (msg) => {
-        console.log('[handleOracleSelect] Agent error:', msg);
-        setAgentToast(msg);
-        setTimeout(() => setAgentToast(''), 3000);
-      },
-    });
-    console.log('[handleOracleSelect] Agent returned navigated =', navigated);
-    if (!navigated) {
-      console.log('[handleOracleSelect] Falling back to direct onSpellClick');
-      onSpellClick(spell, school);
-    } else {
-      console.log('[handleOracleSelect] Agent handled navigation, not calling onSpellClick');
-    }
-  }, [agent, onSpellClick]);
+  }, [wandering, onSpellClick]);
 
   // Derive active tab from URL
   const activeTab = (() => {
@@ -408,50 +393,19 @@ export default function GrimoireStackLayout({
             mood={eyeMood}
           />
 
-          {/* Prominent Oracle CTA + Ritual */}
+          {/* The Ritual — the only path for guided problem intake */}
           <div className={`oracle-cta ${ritualOrch.activePanel ? 'oracle-cta--open' : ''}`}>
-            <button
-              type="button"
-              className="oracle-cta__btn"
-              onClick={() => { if (ritualOrch.activePanel === 'oracle') { ritualOrch.closeOracle(); } else { ritualOrch.openOracle(); } }}
-              aria-expanded={ritualOrch.activePanel === 'oracle'}
-              aria-label="Toggle Oracle"
-            >
-              <span className="oracle-cta__icon"><Icon name="oracle" size={20} /></span>
-              <span className="oracle-cta__label">
-                {ritualOrch.activePanel === 'oracle' ? 'Close the Oracle' : 'Ask the Oracle'}
-              </span>
-              <span className={`oracle-cta__chevron ${ritualOrch.activePanel === 'oracle' ? 'oracle-cta__chevron--open' : ''}`} />
-            </button>
             {!ritualOrch.activePanel && (
               <button
                 type="button"
                 className="oracle-cta__btn oracle-cta__btn--ritual"
                 onClick={ritualOrch.openRitual}
-                aria-label="Begin Problem Intake Ritual"
+                aria-label="Begin the Ritual"
               >
                 <span className="oracle-cta__icon"><Icon name="oracle" size={20} /></span>
                 <span className="oracle-cta__label">Begin the Ritual</span>
                 <span className="oracle-cta__chevron" />
               </button>
-            )}
-            {ritualOrch.activePanel === 'oracle' && (
-              <div className="oracle-cta__body">
-                <OracleInlinePanel
-                  query={oracle.query}
-                  onQueryChange={oracle.setQuery}
-                  onAskOracle={oracle.askOracle}
-                  results={oracle.results}
-                  loading={oracle.loading}
-                  error={oracle.error}
-                  onSelectSpell={handleOracleSelect}
-                  source={oracle.source}
-                  activeCategory={null}
-                  onCategoryChange={() => {}}
-                  onBrowseLibrary={() => handleTabSelect(TABS.LIBRARY)}
-                  t={t}
-                />
-              </div>
             )}
             {ritualOrch.activePanel === 'ritual' && (
               <div className="oracle-cta__body">
@@ -516,8 +470,11 @@ export default function GrimoireStackLayout({
           <span className="eye-footer__github-label">Source</span>
         </a>
       </footer>
-      {agentToast && (
-        <div className="agent-toast" role="status" aria-live="polite">{agentToast}</div>
+      {wandering && (
+        <WanderingAnimation
+          skillName={wandering.spell.name}
+          onComplete={handleWanderingComplete}
+        />
       )}
     </div>
   );
