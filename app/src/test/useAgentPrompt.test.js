@@ -6,6 +6,8 @@ const mockExecute = vi.fn(async () => undefined);
 
 vi.mock('page-agent', () => ({
   PageAgent: class {
+    panel = { show: vi.fn(), hide: vi.fn() };
+    dispose = vi.fn();
     constructor() {}
     async execute() {
       return mockExecute();

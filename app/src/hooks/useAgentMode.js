@@ -1,27 +1,14 @@
-import { useState, useCallback } from 'react';
-import { DEFAULT_LLM_MODEL, DEFAULT_LLM_PROXY_PATH } from '../lib/llm-defaults.js';
+import { useState, useCallback, useRef } from 'react';
+import { GROQ_BASE_URL, GROQ_MODEL } from '../lib/llm-defaults.js';
 
-const STORAGE_KEY = 'grimoire-agent-mode';
-
-const DEFAULT_BASE_URL =
-  typeof window !== 'undefined'
-    ? `${window.location.origin}${DEFAULT_LLM_PROXY_PATH}`
-    : DEFAULT_LLM_PROXY_PATH;
+const STORAGE_KEY = 'grimoire-agent-mode-config';
 
 export function useAgentMode() {
-  const [enabled, setEnabled] = useState(() => {
-    try {
-      const saved = localStorage.getItem(STORAGE_KEY);
-      if (saved === 'true' || saved === 'false') return saved === 'true';
-    } catch {
-      // ignore
-    }
-    return true;
-  });
+  const agentRef = useRef(null);
 
   const [config, setConfig] = useState(() => {
     try {
-      const saved = localStorage.getItem(`${STORAGE_KEY}-config`);
+      const saved = localStorage.getItem(STORAGE_KEY);
       if (saved) {
         const parsed = JSON.parse(saved);
         if (parsed && typeof parsed.baseURL === 'string' && typeof parsed.model === 'string') {
@@ -35,28 +22,16 @@ export function useAgentMode() {
     } catch {
       // ignore corrupt storage
     }
-    return { baseURL: DEFAULT_BASE_URL, model: DEFAULT_LLM_MODEL, apiKey: '' };
+    return { baseURL: GROQ_BASE_URL, model: GROQ_MODEL, apiKey: '' };
   });
 
   const [status, setStatus] = useState('idle');
-
-  const toggle = useCallback(() => {
-    setEnabled((prev) => {
-      const next = !prev;
-      try {
-        localStorage.setItem(STORAGE_KEY, next ? 'true' : 'false');
-      } catch {
-        // ignore storage errors
-      }
-      return next;
-    });
-  }, []);
 
   const updateConfig = useCallback((patch) => {
     setConfig((prev) => {
       const next = { ...prev, ...patch };
       try {
-        localStorage.setItem(`${STORAGE_KEY}-config`, JSON.stringify(next));
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(next));
       } catch {
         // storage may be unavailable
       }
@@ -66,12 +41,11 @@ export function useAgentMode() {
 
   const runAgent = useCallback(
     async ({ bestSkill, onError }) => {
-      if (!enabled || !bestSkill) return false;
+      if (!bestSkill) return false;
 
       const baseURL = config.baseURL.trim();
       const model = config.model.trim();
       if (!baseURL || !model) {
-        // Silent fallback: agent unavailable, caller opens the skill directly.
         return false;
       }
 
@@ -86,6 +60,10 @@ export function useAgentMode() {
           apiKey: config.apiKey || undefined,
           language: 'en-US',
         });
+        agentRef.current = agent;
+
+        // Show the page-agent floating panel for visual feedback
+        agent.panel.show();
 
         const prompt = `The user is looking for the skill "${bestSkill.name}" (${bestSkill.skill}). Scroll to that skill card in the library, then click it to open the spell. After it opens, briefly explain in one sentence what the skill does so the user understands why it matched.`;
 
@@ -93,14 +71,23 @@ export function useAgentMode() {
         setStatus('done');
         return true;
       } catch (err) {
-        // Surface the failure so the user knows the agent didn't navigate
-        // — the caller still opens the skill directly (observing `false`).
         setStatus('error');
         onError?.(err?.message || 'Agent failed to navigate');
         return false;
+      } finally {
+        // Cleanup: hide panel and dispose agent after a brief delay so
+        // the user sees the "Task completed" state.
+        const agent = agentRef.current;
+        if (agent) {
+          setTimeout(() => {
+            agent.panel?.hide();
+            agent.dispose();
+            agentRef.current = null;
+          }, 2000);
+        }
       }
     },
-    [enabled, config],
+    [config],
   );
 
   const resetStatus = useCallback(() => {
@@ -108,8 +95,6 @@ export function useAgentMode() {
   }, []);
 
   return {
-    enabled,
-    toggle,
     config,
     updateConfig,
     status,

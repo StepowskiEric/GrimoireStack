@@ -13,8 +13,12 @@ import Icon from './Icon.jsx';
  */
 export default function RitualPanel({ ritual, onConverge }) {
   console.log('[RitualPanel] render', { ritual: ritual ? { state: ritual.state, round: ritual.round, hasQuestion: !!ritual.question, choicesCount: ritual.choices?.length, resultsCount: ritual.results?.length } : 'undefined' });
-  const { state, question, choices, results, round, error } = ritual || {};
   const [input, setInput] = useState('');
+  if (!ritual) {
+    console.error('[RitualPanel] ritual is undefined');
+    return <div className="ritual-panel"><p className="ritual-error">The ritual has not been prepared.</p></div>;
+  }
+  const { state, question, choices, results, round, error } = ritual;
 
   const handleSubmit = (e) => {
     e?.preventDefault?.();

@@ -513,7 +513,7 @@ describe('SettingsView', () => {
         />
       </LanguageProvider>
     );
-    expect(screen.getByText('Ritual Chamber')).toBeInTheDocument();
+    expect(screen.getByText('Settings')).toBeInTheDocument();
     const select = screen.getByLabelText(/Language/i);
     expect(select).toBeInTheDocument();
     expect(select.value).toBe('plain');

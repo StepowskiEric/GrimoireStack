@@ -219,26 +219,45 @@ export default function SettingsView({
           <div className="settings-view__section-content">
             <h3>Agent Mode</h3>
             <p>
-              When enabled, matching prompts can use page-agent to visually
-              navigate to the best skill instead of opening it directly.
+              Uses <strong>page-agent</strong> with <strong>Groq</strong>
+              (<code>qwen/qwen3.6-27b</code>) to visually navigate to the
+              best skill card. A Groq API key is required.
             </p>
-            <div className="settings-view__option">
-              <label className="settings-view__toggle">
-                <input
-                  type="checkbox"
-                  checked={agent.enabled}
-                  onChange={agent.toggle}
-                />
-                <span>Enable Agent Mode</span>
-              </label>
-              <p className="settings-view__option-hint">
-                Defaults to the built-in Cloudflare proxy ({agent.config.model});
-                no API key needed. Falls back to opening the skill directly
-                if the agent cannot run.
-              </p>
-            </div>
 
             <div className="settings-view__agent-config">
+              <div className="settings-view__option">
+                <label htmlFor="agent-base-url">Base URL</label>
+                <input
+                  id="agent-base-url"
+                  className="settings-view__input"
+                  type="text"
+                  value={agent.config.baseURL}
+                  onChange={(e) => agent.updateConfig({ baseURL: e.target.value })}
+                  placeholder="https://api.groq.com/openai/v1"
+                />
+              </div>
+              <div className="settings-view__option">
+                <label htmlFor="agent-model">Model</label>
+                <input
+                  id="agent-model"
+                  className="settings-view__input"
+                  type="text"
+                  value={agent.config.model}
+                  onChange={(e) => agent.updateConfig({ model: e.target.value })}
+                  placeholder="qwen/qwen3.6-27b"
+                />
+              </div>
+              <div className="settings-view__option">
+                <label htmlFor="agent-api-key">Groq API Key</label>
+                <input
+                  id="agent-api-key"
+                  className="settings-view__input"
+                  type="password"
+                  value={agent.config.apiKey}
+                  onChange={(e) => agent.updateConfig({ apiKey: e.target.value })}
+                  placeholder="gsk_..."
+                />
+              </div>
               <p className="settings-view__agent-status" role="status" aria-live="polite">
                 {agent.status === 'running' && 'Agent is running…'}
                 {agent.status === 'done' && 'Agent completed.'}
