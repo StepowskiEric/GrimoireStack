@@ -1,5 +1,6 @@
 import { useState, useCallback, useRef } from 'react';
 import { grimoireIndex } from '../data/grimoireIndexInstance.js';
+import { callRecommendApi } from '../api/oracle.js';
 
 /**
  * Runs local fallback matching against grimoireIndex and returns
@@ -49,17 +50,7 @@ export function useOracle() {
     setSource(null);
 
     try {
-      const res = await fetch('/api/recommend', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ query: q }),
-      });
-
-      if (!res.ok) {
-        const err = await res.json().catch(() => ({}));
-        throw new Error(err.error || `Server error (${res.status})`);
-      }
-      const data = await res.json();
+      const data = await callRecommendApi({ query: q });
       const apiResults = data.results || [];
 
       if (apiResults.length > 0) {

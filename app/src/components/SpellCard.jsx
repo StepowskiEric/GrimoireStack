@@ -36,6 +36,7 @@ export default function SpellCard({ spell, onClick, matched, children, isFavorit
   return (
     <div
       className={`spell-card${matched === true ? ' glow' : ''}${matched === false ? ' dim' : ''}${hasTrueName ? ' has-true-name' : ''}`}
+      data-skill={spell.skill}
       onClick={onClick}
       onKeyDown={handleKeyDown}
       role="button"

@@ -146,7 +146,7 @@ export function useFavoritesSync() {
       setStatus('syncing');
       setError(null);
 
-      (async () => {
+      const initSync = async () => {
         try {
           const res = await callSyncApi({ op: 'get', code });
           if (cancelled) return;
@@ -169,7 +169,8 @@ export function useFavoritesSync() {
           setError(e.message);
           setStatus('error');
         }
-      })();
+      };
+      initSync();
     } else if (initializedRef.current && dirty) {
       schedulePush();
     }

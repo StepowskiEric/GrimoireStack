@@ -650,21 +650,21 @@ export default function SpellModal({ spell, school, onClose, marginalia, getVote
               navigator.share({ title: spell.name, text: spell.effect, url }).catch(() => {
                 // Fallback to clipboard if share fails
                 navigator.clipboard.writeText(url).then(() => {
-                  btn.innerHTML = 'Link Copied!';
+                  btn.textContent = 'Link Copied!';
                   btn.classList.add('modal-goo-btn--broken');
                   setTimeout(restore, 2000);
                 }).catch(() => {
-                  btn.innerHTML = 'Copy failed';
+                  btn.textContent = 'Copy failed';
                   setTimeout(restore, 2000);
                 });
               });
             } else if (navigator.clipboard) {
               navigator.clipboard.writeText(url).then(() => {
-                btn.innerHTML = 'Link Copied!';
+                btn.textContent = 'Link Copied!';
                 btn.classList.add('modal-goo-btn--broken');
                 setTimeout(restore, 2000);
               }).catch(() => {
-                btn.innerHTML = 'Copy failed';
+                btn.textContent = 'Copy failed';
                 setTimeout(restore, 2000);
               });
             }
@@ -696,16 +696,16 @@ export default function SpellModal({ spell, school, onClose, marginalia, getVote
               const restore = () => { btn.innerHTML = btn.dataset.originalHtml; btn.classList.remove('modal-goo-btn--broken'); };
               if (!btn.dataset.originalHtml) btn.dataset.originalHtml = btn.innerHTML;
               if (!navigator.clipboard) {
-                btn.innerHTML = 'Copy unsupported';
+                btn.textContent = 'Copy unsupported';
                 setTimeout(restore, 2000);
                 return;
               }
               navigator.clipboard.writeText(cmd).then(() => {
-                btn.innerHTML = 'Incantation Inscribed';
+                btn.textContent = 'Incantation Inscribed';
                 btn.classList.add('modal-goo-btn--broken');
                 setTimeout(restore, 2000);
               }).catch(() => {
-                btn.innerHTML = 'Copy failed';
+                btn.textContent = 'Copy failed';
                 setTimeout(restore, 2000);
               });
             }}>

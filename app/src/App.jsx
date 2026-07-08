@@ -22,7 +22,6 @@ import CompareSpellsModal from './components/CompareSpellsModal.jsx';
 import SpellModal from './components/SpellModal.jsx';
 import StaleLinkBanner from './components/StaleLinkBanner.jsx';
 import InstallPrompt from './components/InstallPrompt.jsx';
-import { useAgentPrompt } from './hooks/useAgentPrompt.js';
 
 const ShortcutsModal = lazy(() => import('./components/ShortcutsModal.jsx'));
 
@@ -71,20 +70,7 @@ function AppInner() {
     dismissNotFound,
   } = useSpellInteraction(castEnabled);
 
-  const [agentToast, setAgentToast] = useState('');
-  const agentToastTimerRef = useRef(null);
 
-  const showAgentToast = useCallback((message) => {
-    setAgentToast(message);
-    if (agentToastTimerRef.current) clearTimeout(agentToastTimerRef.current);
-    agentToastTimerRef.current = setTimeout(() => setAgentToast(''), 2400);
-  }, []);
-
-  const agentPrompt = useAgentPrompt({
-    onSpellClick: handleSpellClick,
-    onBrowseResults: (q) => filter.setQuery(q),
-    onShowAgentToast: showAgentToast,
-  });
 
   // Record spell view in history when modal opens
   useEffect(() => {
@@ -146,10 +132,6 @@ function AppInner() {
 
   const keyboardHandlers = useMemo(() => ({
     openCheatsheet: () => setShortcutsOpen(true),
-    focusSearch: () => {
-      const input = document.getElementById('searchInput');
-      if (input) { input.focus(); input.select?.(); }
-    },
     handleGlobalEscape: () => {
       let handled = false;
       if (shortcutsOpen) { setShortcutsOpen(false); handled = true; }
@@ -167,9 +149,6 @@ function AppInner() {
     setTimeout(pageCreak, 50);
   }, []);
 
-  const handleSearch = useCallback((q) => {
-    filter.setQuery(q);
-  }, [filter]);
 
   const toggleCast = useCallback(() => {
     setCastEnabled((prev) => {
@@ -256,8 +235,6 @@ function AppInner() {
           }
         }}
         searchQuery={filter.query}
-        onSearchChange={handleSearch}
-        totalMatches={filter.searchResults.total}
         onSpellClick={handleSpellClick}
         isFavorited={isFavorited}
         onToggleFavorite={toggleFavorite}
@@ -265,8 +242,6 @@ function AppInner() {
         recent={recent}
         marginalia={marginalia}
         getVote={getVote}
-        castVote={castVote}
-        aggregateFor={aggregateFor}
         castEnabled={castEnabled}
         onToggleCast={toggleCast}
         audioEnabled={audioEnabled}
@@ -283,7 +258,6 @@ function AppInner() {
         filterResults={filter.results}
         featuredSchools={featuredSchools}
         onFeaturedSchoolsChange={setFeaturedSchools}
-        agentPrompt={agentPrompt}
       />
 
       {/* Modals — lazy-loaded with themed fallback */}
@@ -335,11 +309,6 @@ function AppInner() {
       {exportToast && (
         <div className="export-toast" role="status" aria-live="polite">
           {exportToast}
-        </div>
-      )}
-      {agentToast && (
-        <div className="agent-toast" role="alert" aria-live="assertive">
-          {agentToast}
         </div>
       )}
       <InstallPrompt />

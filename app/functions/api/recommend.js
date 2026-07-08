@@ -180,6 +180,100 @@ User problem: ${query}`,
     });
 }
 
+const MAX_INTERVIEW_ROUNDS = 5;
+
+/**
+ * Interview-mode inference. The LLM acts as a relentless interviewer
+ * that narrows down the user's problem through multiple-choice questions.
+ * Returns either { type: 'question', question, choices: [a,b,c] }
+ * or { type: 'results', results: [...] }.
+ */
+async function runInterviewInference(env, query, history) {
+  const round = history.length; // 0 = first call
+
+  // Build the skill catalog context (compact — just IDs + short descriptions)
+  const catalogText = SKILL_CATALOG
+    .map((s) => `${s.skill}: ${s.effect.slice(0, 80)}`)
+    .join('\n');
+
+  const systemPrompt = `You are a relentless interviewer for a skill-matching system. The user described a problem. Your job is to ask clarifying questions (multiple-choice, exactly 3 options) until you are confident enough to recommend 1-3 skills from the catalog.
+
+Rules:
+- Ask at most ${MAX_INTERVIEW_ROUNDS} questions total.
+- Each question must have exactly 3 answer choices.
+- After the user picks a choice, ask the next question OR return results.
+- Return results as soon as you are confident (minimum 2 questions, maximum ${MAX_INTERVIEW_ROUNDS}).
+- On the final round, return results instead of another question.
+
+Output formats (respond with ONLY valid JSON, no markdown):
+
+For a question: {"type":"question","question":"What type of application?","choices":["Web app","Mobile app","CLI tool"]}
+For results: {"type":"results","skill_ids":["skill-id-1","skill-id-2"]}
+
+Skill catalog:
+${catalogText}`;
+
+  // Build conversation messages from history
+  const messages = [{ role: 'system', content: systemPrompt }];
+  messages.push({ role: 'user', content: `User's problem: ${query}` });
+
+  for (const turn of history) {
+    messages.push({ role: 'assistant', content: JSON.stringify(turn.question) });
+    messages.push({ role: 'user', content: turn.answer });
+  }
+
+  const res = await fetch('https://api.groq.com/openai/v1/chat/completions', {
+    method: 'POST',
+    headers: {
+      'Authorization': `Bearer ${env.GROQ_API_KEY}`,
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      model: env.GROQ_MODEL || 'llama-3.1-8b-instant',
+      messages,
+      max_tokens: 256,
+      temperature: 0.0,
+      response_format: { type: 'json_object' },
+    }),
+  });
+  if (!res.ok) {
+    const errBody = await res.text().catch(() => '');
+    throw new Error(`Groq API ${res.status}: ${errBody.slice(0, 300)}`);
+  }
+  const data = await res.json();
+  const text = data.choices?.[0]?.message?.content || '';
+  let parsed;
+  try {
+    parsed = JSON.parse(text);
+  } catch {
+    return null;
+  }
+
+  // Force results on the final round
+  if (round >= MAX_INTERVIEW_ROUNDS - 1 && parsed.type === 'question') {
+    parsed = { type: 'results', skill_ids: localMatch(query, 3).map((r) => r.skill) };
+  }
+
+  if (parsed.type === 'question' && Array.isArray(parsed.choices) && parsed.choices.length === 3) {
+    return { type: 'question', question: parsed.question, choices: parsed.choices };
+  }
+  if (parsed.type === 'results' && Array.isArray(parsed.skill_ids)) {
+    const validIds = new Set(SKILL_CATALOG.map((s) => s.skill));
+    const idToSkill = new Map(SKILL_CATALOG.map((s) => [s.skill, s]));
+    const filtered = parsed.skill_ids.filter((id) => validIds.has(id)).slice(0, 3);
+    if (filtered.length === 0) return null;
+    const results = filtered.map((id, i) => {
+      const s = idToSkill.get(id);
+      return {
+        skill: s.skill, name: s.name, school: s.school,
+        score: Math.max(0.1, 1 - i * 0.2), reason: s.effect,
+      };
+    });
+    return { type: 'results', results };
+  }
+  return null;
+}
+
 async function populateCache(cache, key, results, corsH) {
   try {
     if (!results || !results.length) return;
@@ -227,6 +321,27 @@ export async function onRequest(context) {
   }
   if (query.length > MAX_QUERY_LENGTH) {
     return jsonResponse({ error: `Query too long (max ${MAX_QUERY_LENGTH} chars)` }, 400, corsH);
+  }
+
+  // Interview mode: multi-turn narrowing dialogue
+  if (body.mode === 'interview' && env.GROQ_API_KEY) {
+    const history = Array.isArray(body.history) ? body.history.slice(0, MAX_INTERVIEW_ROUNDS) : [];
+    try {
+      const aiTimeout = new Promise((_, reject) =>
+        setTimeout(() => reject(new Error('AI timeout')), 8000),
+      );
+      const result = await Promise.race([
+        runInterviewInference(env, query, history),
+        aiTimeout,
+      ]);
+      if (result) {
+        return jsonResponse({ ...result, source: 'ai' }, 200, corsH);
+      }
+    } catch {
+      // Fall through to local matching
+    }
+    const localResults = localMatch(query, 3);
+    return jsonResponse({ type: 'results', results: localResults, source: 'local' }, 200, corsH);
   }
 
   const cache = caches.default;

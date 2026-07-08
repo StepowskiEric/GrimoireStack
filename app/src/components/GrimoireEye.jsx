@@ -1,12 +1,9 @@
 /* eslint-disable react/no-array-index-key -- decorative procedural arrays; index is stable for the lifetime of the mount */
-
 import { useRef, useEffect } from 'react';
-import SchoolSigil from './SchoolSigil.tsx';
 
-export default function GrimoireEye({ searchQuery, onSearchChange, totalMatches, featuredSchools, onSchoolSelect, isSearching, eyeRadius = 220, mood = 'neutral', onAgentPrompt }) {
+export default function GrimoireEye({ mood = 'neutral' }) {
   const wrapperRef = useRef(null);
   const containerRef = useRef(null);
-  const pupilRef = useRef(null);
   const mouseRef = useRef({ x: 0.5, y: 0.5 });
   const moodRef = useRef(mood);
 
@@ -394,64 +391,6 @@ export default function GrimoireEye({ searchQuery, onSearchChange, totalMatches,
 
         {/* Blink overlay */}
         <div className="eye-blink-overlay" />
-
-        {/* School filaments */}
-        <div className="eye-filaments">
-          {featuredSchools.map((school, i) => {
-            const total = featuredSchools.length;
-            const angle = (i / total) * Math.PI * 2 - Math.PI / 2;
-            const x = Math.cos(angle) * eyeRadius;
-            const y = Math.sin(angle) * eyeRadius * 0.5;
-
-            return (
-              <button
-                key={school.id}
-                className="eye-filament-btn"
-                onClick={() => onSchoolSelect(school.id)}
-                type="button"
-                style={{
-                  '--tx': `${x}px`,
-                  '--ty': `${y}px`,
-                  transform: `translate(${x}px, ${y}px)`,
-                  animationDelay: `${i * 0.3}s`,
-                }}
-                title={school.name}
-              >
-                <span className="eye-filament-btn__glow" />
-                <span className="eye-filament-btn__symbol"><SchoolSigil schoolId={school.id} size={22} /></span>
-                <span className="eye-filament-btn__name">{school.real}</span>
-                <span className="eye-filament-btn__count">{school.spells.length}</span>
-              </button>
-            );
-          })}
-        </div>
-
-        {/* Search input */}
-        <div ref={pupilRef} className={`pupil-search ${isSearching ? 'pupil-search--active' : ''}`}>
-          <input
-            type="text"
-            value={searchQuery}
-            onChange={(e) => onSearchChange(e.target.value)}
-            placeholder=""
-            aria-label="Search spells"
-            className="pupil-search__input"
-          />
-          {!searchQuery && (
-            <span className="pupil-search__placeholder">Search skills...</span>
-          )}
-          {searchQuery && totalMatches > 0 && (
-            <span className="pupil-search__matches">{totalMatches} found</span>
-          )}
-          {searchQuery && totalMatches > 0 && (
-            <button
-              type="button"
-              className="pupil-search__agent-btn"
-              onClick={() => onAgentPrompt?.(searchQuery)}
-            >
-              Ask agent
-            </button>
-          )}
-        </div>
       </div>
     </div>
   );

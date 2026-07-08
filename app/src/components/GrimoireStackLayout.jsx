@@ -18,6 +18,8 @@ import LanguageToggle from './LanguageToggle.jsx';
 import { grimoireIndex } from '../data/grimoireIndexInstance.js';
 import { useOracle } from '../hooks/useOracle.js';
 import OracleInlinePanel from './OracleInlinePanel.jsx';
+import RitualPanel from './RitualPanel.jsx';
+import { useRitualOrchestrator } from '../hooks/useRitualOrchestrator.js';
 import { useLanguage } from '../i18n/LanguageContext';
 
 const SCHOOL_MAP = grimoireIndex.getSchoolMap();
@@ -64,8 +66,6 @@ export default function GrimoireStackLayout({
   currentSchool,
   onSchoolSelect,
   searchQuery,
-  onSearchChange,
-  totalMatches,
   onSpellClick,
   isFavorited,
   onToggleFavorite,
@@ -73,8 +73,6 @@ export default function GrimoireStackLayout({
   recent,
   marginalia,
   getVote,
-  _castVote,
-  _aggregateFor,
   castEnabled,
   onToggleCast,
   audioEnabled,
@@ -89,7 +87,6 @@ export default function GrimoireStackLayout({
   featuredSchools,
   eyeMood = 'neutral',
   onSpellView,
-  agentPrompt,
 }) {
   // hasNote lookup for the Bestiary Codex "Annotated" filter
   const hasNote = useCallback(
@@ -103,8 +100,24 @@ export default function GrimoireStackLayout({
   const navigate = useNavigate();
   const location = useLocation();
   const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
-  const [isSearching, setIsSearching] = useState(false);
-  const [oracleOpen, setOracleOpen] = useState(false);
+
+  // Track page state for sub-views
+  const [pageKey, setPageKey] = useState('home');
+
+  useEffect(() => {
+    const handleResize = () => setIsMobile(window.innerWidth < 768);
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
+  const handleTabSelect = useCallback((tab) => {
+    const route = TAB_ROUTES[tab] || '/';
+    setPageKey('home');
+    navigate(route);
+  }, [navigate]);
+
+  const navigateToLibrary = useCallback(() => handleTabSelect(TABS.LIBRARY), [handleTabSelect]);
+  const ritualOrch = useRitualOrchestrator({ onSpellClick, navigateToLibrary });
   const oracle = useOracle();
   const { t } = useLanguage();
 
@@ -123,25 +136,6 @@ export default function GrimoireStackLayout({
     return TABS.LIBRARY;
   })();
 
-  // Track page state for sub-views
-  const [pageKey, setPageKey] = useState('home');
-
-  useEffect(() => {
-    const handleResize = () => setIsMobile(window.innerWidth < 768);
-    window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
-  }, []);
-
-  useEffect(() => {
-    setIsSearching(searchQuery.length > 0);
-  }, [searchQuery]);
-
-  const handleTabSelect = useCallback((tab) => {
-    const route = TAB_ROUTES[tab] || '/';
-    setPageKey('home');
-    navigate(route);
-  }, [navigate]);
-
   const handleSchoolCardClick = useCallback((schoolId) => {
     onSchoolSelect(schoolId);
     setPageKey('school-detail');
@@ -155,13 +149,7 @@ export default function GrimoireStackLayout({
 
   const { totalSchools, totalSpells } = grimoireIndex.getStats();
 
-  // Position featured schools around the eye
-  const featured = featuredSchools
-    .map(id => SCHOOL_MAP.get(id))
-    .filter(Boolean)
-    .slice(0, 6);
 
-  const eyeRadius = isMobile ? 140 : 220;
 
   // Resolve the current school object from the id prop
   const activeSchool = currentSchool && currentSchool !== 'all'
@@ -334,6 +322,10 @@ export default function GrimoireStackLayout({
           fill="none" stroke="rgba(122,58,90,0.04)" strokeWidth="1" strokeLinecap="round" />
       </svg>
 
+      {/* Ritual Walk candlelight overlay */}
+      {ritualOrch.ritualWalkHook.phase !== 'idle' && (
+        <div className={`ritual-walk-overlay ritual-walk-overlay--${ritualOrch.ritualWalkHook.phase}`} aria-hidden="true" />
+      )}
       <div className="eye-main">
         {/* Left sidebar */}
         <aside className="eye-sidebar" aria-label="Sidebar">
@@ -386,34 +378,38 @@ export default function GrimoireStackLayout({
         {/* Center stage - The Great Eye */}
         <main className="eye-stage">
           <GrimoireEye
-            searchQuery={searchQuery}
-            onSearchChange={onSearchChange}
-            totalMatches={totalMatches}
-            featuredSchools={featured}
-            onSchoolSelect={handleSchoolCardClick}
-            isSearching={isSearching}
-            eyeRadius={eyeRadius}
             mood={eyeMood}
-            onAgentPrompt={agentPrompt?.handlePrompt}
           />
 
-          {/* Collapsible Oracle — subtle bar, expands on click */}
-          <div className={`oracle-collapse ${oracleOpen ? 'oracle-collapse--open' : ''}`}>
+          {/* Prominent Oracle CTA + Ritual */}
+          <div className={`oracle-cta ${ritualOrch.activePanel ? 'oracle-cta--open' : ''}`}>
             <button
               type="button"
-              className="oracle-collapse__bar"
-              onClick={() => setOracleOpen(prev => !prev)}
-              aria-expanded={oracleOpen}
+              className="oracle-cta__btn"
+              onClick={() => { if (ritualOrch.activePanel === 'oracle') { ritualOrch.closeOracle(); } else { ritualOrch.openOracle(); } }}
+              aria-expanded={ritualOrch.activePanel === 'oracle'}
               aria-label="Toggle Oracle"
             >
-              <span className="oracle-collapse__icon"><Icon name="oracle" size={14} /></span>
-              <span className="oracle-collapse__label">
-                {oracleOpen ? 'Close the Oracle' : 'Ask the Oracle...'}
+              <span className="oracle-cta__icon"><Icon name="oracle" size={20} /></span>
+              <span className="oracle-cta__label">
+                {ritualOrch.activePanel === 'oracle' ? 'Close the Oracle' : 'Ask the Oracle'}
               </span>
-              <span className={`oracle-collapse__chevron ${oracleOpen ? 'oracle-collapse__chevron--open' : ''}`} />
+              <span className={`oracle-cta__chevron ${ritualOrch.activePanel === 'oracle' ? 'oracle-cta__chevron--open' : ''}`} />
             </button>
-            {oracleOpen && (
-              <div className="oracle-collapse__body">
+            {!ritualOrch.activePanel && (
+              <button
+                type="button"
+                className="oracle-cta__btn oracle-cta__btn--ritual"
+                onClick={ritualOrch.openRitual}
+                aria-label="Begin Problem Intake Ritual"
+              >
+                <span className="oracle-cta__icon"><Icon name="oracle" size={20} /></span>
+                <span className="oracle-cta__label">Begin the Ritual</span>
+                <span className="oracle-cta__chevron" />
+              </button>
+            )}
+            {ritualOrch.activePanel === 'oracle' && (
+              <div className="oracle-cta__body">
                 <OracleInlinePanel
                   query={oracle.query}
                   onQueryChange={oracle.setQuery}
@@ -427,6 +423,14 @@ export default function GrimoireStackLayout({
                   onCategoryChange={() => {}}
                   onBrowseLibrary={() => handleTabSelect(TABS.LIBRARY)}
                   t={t}
+                />
+              </div>
+            )}
+            {ritualOrch.activePanel === 'ritual' && (
+              <div className="oracle-cta__body">
+                <RitualPanel
+                  ritual={ritualOrch.ritual}
+                  onConverge={ritualOrch.handleRitualConverge}
                 />
               </div>
             )}
