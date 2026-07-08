@@ -210,20 +210,22 @@ const INTERVIEW_TOOLS = [
   },
   {
     type: 'function',
-    name: 'return_results',
-    description: 'You are confident enough to recommend specific skills. Call this when you are at least 90% sure of the best skill match.',
-    parameters: {
-      type: 'object',
-      properties: {
-        skill_ids: {
-          type: 'array',
-          items: { type: 'string' },
-          minItems: 1,
-          maxItems: 3,
-          description: 'The skill IDs (from the catalog) that best match the user problem, ranked by relevance.',
+    function: {
+      name: 'return_results',
+      description: 'You are confident enough to recommend specific skills. Call this when you are at least 90% sure of the best skill match.',
+      parameters: {
+        type: 'object',
+        properties: {
+          skill_ids: {
+            type: 'array',
+            items: { type: 'string' },
+            minItems: 1,
+            maxItems: 3,
+            description: 'The skill IDs (from the catalog) that best match the user problem, ranked by relevance.',
+          },
         },
+        required: ['skill_ids'],
       },
-      required: ['skill_ids'],
     },
   },
 ];
