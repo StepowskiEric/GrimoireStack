@@ -226,11 +226,17 @@ export async function onRequest(context) {
       }
     } catch (err) {
       // AI failed or timed out — fall through to local matching.
-      console.error('[recommend] AI inference failed:', err?.message || err);
-      // Still kick off background AI to warm the cache for next time.
-      if (env.GROQ_API_KEY && cache && typeof waitUntil === 'function') {
-        waitUntil(warmCacheInBackground(env, cache, key, query));
-      }
+      // Temporarily include error in response for debugging.
+      const localResults = localMatch(query);
+      return jsonResponse({
+        results: localResults,
+        source: 'local',
+        debug: {
+          error: err?.message || String(err),
+          hasKey: !!env.GROQ_API_KEY,
+          keyPrefix: env.GROQ_API_KEY?.slice(0, 8),
+        },
+      });
     }
   }
 
