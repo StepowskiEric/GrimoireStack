@@ -79,7 +79,7 @@ describe('SpellCard', () => {
 
   it('shows the arcane tier when status is set', () => {
     const { container } = render(<SpellCard spell={sampleSpell} matched={null} />);
-    const tier = container.querySelector('.spell-tier');
+    const tier = container.querySelector('[data-testid="spell-tier"]');
     expect(tier).not.toBeNull();
     expect(tier.textContent).toContain('Adept Sigil');
   });
