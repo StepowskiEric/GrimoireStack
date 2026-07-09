@@ -9042,6 +9042,13 @@ header .header-sigil-text{display:none}
 .ritual-choice{display:flex;align-items:center;gap:10px;background:rgba(26,20,10,.4);border:1px solid rgba(180,140,80,.12);border-radius:4px;padding:10px 12px;cursor:pointer;transition:border-color .2s ease,background .2s ease,transform .15s ease-out;text-align:left;font-family:'Cormorant Garamond',serif;font-size:.78rem;color:#e8dcc4;opacity:0;animation:ritualChoiceIn 200ms var(--ease-out,ease-out) forwards}
 @keyframes ritualChoiceIn{to{opacity:1;transform:translateY(0)}}
 .ritual-choice:active{transform:scale(.97)}
+.ritual-choice--other{border-style:dashed!important;opacity:.7}
+.ritual-other-form{display:flex;flex-direction:column;gap:6px;padding-top:6px}
+.ritual-other-input{background:rgba(26,20,10,.6);border:1px solid rgba(180,140,80,.15);border-radius:4px;padding:8px 10px;font-family:'Cormorant Garamond',serif;font-size:.78rem;color:#e8dcc4;resize:none;min-height:50px}
+.ritual-other-input:focus{outline:none;border-color:rgba(212,175,55,.3)}
+.ritual-other-submit,.ritual-other-cancel{background:rgba(26,20,10,.6);border:1px solid rgba(180,140,80,.15);border-radius:4px;padding:6px 10px;font-family:'Cinzel',serif;font-size:.65rem;color:#e8dcc4;cursor:pointer;transition:border-color .2s ease}
+.ritual-other-submit:hover,.ritual-other-cancel:hover{border-color:rgba(212,175,55,.25)}
+.ritual-other-submit:disabled{opacity:.4;cursor:default}
 .ritual-choice-letter{font-family:'Cinzel',serif;font-size:.6rem;color:rgba(212,175,55,.6);min-width:16px;border:1px solid rgba(180,140,80,.2);border-radius:3px;text-align:center;padding:2px 4px}
 .ritual-choice-text{flex:1}
 .ritual-error{text-align:center;padding:16px;color:#c07070;font-style:italic;font-size:.72rem;display:flex;flex-direction:column;gap:10px;align-items:center}

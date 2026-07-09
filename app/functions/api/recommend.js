@@ -59,6 +59,13 @@ function tokenizeQuery(query) {
   return out;
 }
 
+function formatSkillId(id) {
+  return id
+    .split('-')
+    .map((w) => (w === 'ai' ? 'AI' : w.charAt(0).toUpperCase() + w.slice(1)))
+    .join(' ');
+}
+
 function localMatch(query, limit = 5) {
   const tokens = tokenizeQuery(query);
   if (!tokens.length) return [];
@@ -78,7 +85,7 @@ function localMatch(query, limit = 5) {
   scored.sort((a, b) => b.score - a.score);
   return scored.slice(0, limit).map(({ skill, score }) => ({
     skill: skill.skill,
-    name: skill.name,
+    name: formatSkillId(skill.skill),
     school: skill.school,
     score: Math.min(1, score / 10),
     reason: skill.effect,
@@ -172,7 +179,7 @@ User problem: ${query}`,
       const s = idToSkill.get(id);
       return {
         skill: s.skill,
-        name: s.name,
+        name: formatSkillId(s.skill),
         school: s.school,
         score: Math.max(0.1, 1 - i * 0.15),
         reason: s.effect,
@@ -265,85 +272,10 @@ function parsePlainTextQuestion(text) {
 }
 
 /**
- * Interview-mode inference via OpenRouter free tier. The LLM asks targeted
- * multiple-choice questions to understand the user's problem, then signals
- * when confident via finish_interview. The server performs skill matching
- * against the full catalog.
- * Returns either { type: 'question', question, choices: [a,b,c] }
- * or { type: 'results', results: [...] }.
+ * Process tool calls from the model response. Dispatch to the right handler
+ * based on the tool name. Returns the interview result object or null.
  */
-async function runInterviewInference(env, query, history, useOpenRouter) {
-  const apiKey = useOpenRouter ? env.OPENROUTER_API_KEY : env.GROQ_API_KEY;
-  const baseUrl = useOpenRouter
-    ? 'https://openrouter.ai/api/v1'
-    : 'https://api.groq.com/openai/v1';
-  const model = useOpenRouter ? 'openrouter/free' : 'qwen/qwen3.6-27b';
-  const extraHeaders = useOpenRouter
-    ? { 'HTTP-Referer': 'https://grimoirestack.com', 'X-Title': 'GrimoireStack' }
-    : {};
-  const extraBody = useOpenRouter ? {} : { reasoning_effort: 'none' };
-
-  const systemPrompt = `You are a skilled interviewer for GrimoireStack, a skill-matching system. Your ONLY job is to ask multiple-choice questions to understand the user's problem. NEVER answer the user's question directly.
-
-Rules:
-- Ask exactly one question at a time, with exactly 3 distinct choices.
-- Each question must dig into their specific problem — environment, stack, what broke, what they tried.
-- Do NOT provide advice, solutions, or analysis. Only ask questions.
-- You may ask up to ${MAX_INTERVIEW_ROUNDS} questions. Do NOT rush.
-- When you are 90%+ confident of the correct skill match, call finish_interview with a summary and 3-5 search keywords.`;
-
-  // Build conversation — previous rounds as plain text so the model
-  // sees the full dialogue even though tool calls aren't stored in history
-  const messages = [{ role: 'system', content: systemPrompt }];
-  messages.push({ role: 'user', content: `User's problem: ${query}` });
-
-  for (const turn of history.slice(-2)) {
-    const qText = turn.question?.question || (typeof turn.question === 'string' ? turn.question : JSON.stringify(turn.question));
-    messages.push({ role: 'assistant', content: qText });
-    messages.push({ role: 'user', content: turn.answer });
-  }
-
-  const res = await fetch(`${baseUrl}/chat/completions`, {
-    method: 'POST',
-    headers: {
-      'Authorization': `Bearer ${apiKey}`,
-      'Content-Type': 'application/json',
-      ...extraHeaders,
-    },
-    body: JSON.stringify({
-      model,
-      messages,
-      // On the first round, only expose ask_question so the model can't
-      // immediately finish. Add finish_interview on subsequent rounds.
-      tools: history.length === 0
-        ? INTERVIEW_TOOLS.filter((t) => t.function.name === 'ask_question')
-        : INTERVIEW_TOOLS,
-      // Force tool use — openrouter/free sometimes routes to models that
-      // ignore tool definitions and answer directly.
-      tool_choice: 'required',
-      max_tokens: 512,
-      temperature: 0.7,
-      ...extraBody,
-    }),
-  });
-  if (!res.ok) {
-    const errBody = await res.text().catch(() => '');
-    throw new Error(`OpenRouter API ${res.status}: ${errBody.slice(0, 300)}`);
-  }
-  const data = await res.json();
-  const choice = data.choices?.[0]?.message;
-  const toolCalls = choice?.tool_calls;
-
-  if (!toolCalls || toolCalls.length === 0) {
-    console.log('[ritual] no tool calls, content:', (choice?.content || '').slice(0, 200));
-    // Some free models return questions as plain text. Try to parse them.
-    const text = (choice?.content || '').trim();
-    const parsed = parsePlainTextQuestion(text);
-    if (parsed) return { type: 'question', question: parsed.question, choices: parsed.choices };
-    const localResults = localMatch(query, 3);
-    return { type: 'results', results: localResults };
-  }
-
+function processToolCalls(toolCalls, query) {
   const tc = toolCalls[0];
   if (tc.function.name === 'ask_question') {
     let args;
@@ -358,16 +290,115 @@ Rules:
     let args;
     try { args = JSON.parse(tc.function.arguments); } catch { args = null; }
     if (args && args.summary && Array.isArray(args.keywords)) {
-      // Build a combined query from the interview context and do server-side matching
       const combinedQuery = `${query} ${args.keywords.join(' ')} ${args.summary}`;
-      const results = localMatch(combinedQuery, 3); // use the same localMatch with combined query
-      return { type: 'results', results };
+      return { type: 'results', results: localMatch(combinedQuery, 3) };
     }
     return { type: 'results', results: localMatch(query, 3) };
   }
 
   console.log('[ritual] unexpected tool call:', tc.function.name);
   return { type: 'results', results: localMatch(query, 3) };
+}
+
+/**
+ * Interview-mode inference via OpenRouter free tier. The LLM asks targeted
+ * multiple-choice questions to understand the user's problem, then signals
+ * when confident via finish_interview. The server performs skill matching
+ * against the full catalog.
+ * Returns either { type: 'question', question, choices: [a,b,c] }
+ * or { type: 'results', results: [...] }.
+ */
+async function runInterviewInference(env, query, history, useOpenRouter) {
+  const apiKey = useOpenRouter ? env.OPENROUTER_API_KEY : env.GROQ_API_KEY;
+  const baseUrl = useOpenRouter
+    ? 'https://openrouter.ai/api/v1'
+    : 'https://api.groq.com/openai/v1';
+  const models = useOpenRouter
+    ? ['openrouter/free', 'cohere/north-mini-code:free']
+    : ['qwen/qwen3.6-27b'];
+  const extraHeaders = useOpenRouter
+    ? { 'HTTP-Referer': 'https://grimoirestack.com', 'X-Title': 'GrimoireStack' }
+    : {};
+  const extraBody = useOpenRouter ? {} : { reasoning_effort: 'none' };
+
+  const systemPrompt = `You are a relentless interviewer for GrimoireStack, a skill-matching system. Your ONLY job is to grill the user about their problem until you are truly certain which skill they need. NEVER answer their question or offer advice.
+
+GRILLING RULES:
+- Ask ONE question at a time with exactly 3 distinct choices.
+- Walk down each branch. If they say "backend", ask what language. If they say "Python", ask what framework. Follow the dependency tree.
+- Dig into: exact error messages, what they tried, their environment, their stack, what already broke, what almost worked.
+- Surface their assumptions. Challenge vague answers.
+- NEVER settle. 3 questions is almost never enough. Keep going until the problem is fully mapped.
+- You may ask up to ${MAX_INTERVIEW_ROUNDS} questions. Use them.
+- Only call finish_interview when you can name a single skill with high confidence — you know the exact stack, exact failure mode, and exact context. Until then, keep grilling.`;
+
+  // Build conversation — previous rounds as plain text so the model
+  // sees the full dialogue even though tool calls aren't stored in history
+  const messages = [{ role: 'system', content: systemPrompt }];
+  messages.push({ role: 'user', content: `User's problem: ${query}` });
+
+  for (const turn of history.slice(-2)) {
+    const qText = turn.question?.question || (typeof turn.question === 'string' ? turn.question : JSON.stringify(turn.question));
+    messages.push({ role: 'assistant', content: qText });
+    messages.push({ role: 'user', content: turn.answer });
+  }
+
+  const makeRequest = async (modelId, toolChoice) => {
+    console.log('[ritual] trying model:', modelId, 'tool_choice:', JSON.stringify(toolChoice));
+    const res = await fetch(`${baseUrl}/chat/completions`, {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${apiKey}`,
+        'Content-Type': 'application/json',
+        ...extraHeaders,
+      },
+      body: JSON.stringify({
+        model: modelId,
+        messages,
+        tools: INTERVIEW_TOOLS,
+        tool_choice: toolChoice,
+        max_tokens: 1024,
+        temperature: 0.7,
+        ...extraBody,
+      }),
+    });
+    if (!res.ok) {
+      const errBody = await res.text().catch(() => '');
+      throw new Error(`OpenRouter API ${res.status}: ${errBody.slice(0, 300)}`);
+    }
+    return res.json();
+  };
+
+  // Try each model in order until one returns tool calls
+  for (let mi = 0; mi < models.length; mi++) {
+    const modelId = models[mi];
+
+    // First attempt with this model
+    const tc = history.length < 3 && useOpenRouter
+      ? { type: 'function', function: { name: 'ask_question' } }
+      : 'auto';
+    let data = await makeRequest(modelId, tc);
+    let choice = data.choices?.[0]?.message;
+    let toolCalls = choice?.tool_calls;
+
+    // If tool calls found, process them
+    if (toolCalls && toolCalls.length > 0) {
+      const result = processToolCalls(toolCalls, query);
+      if (result) return result;
+    }
+
+    // No tool calls — try plain text parsing before moving to next model
+    const text = (choice?.content || '').trim();
+    const parsed = parsePlainTextQuestion(text);
+    if (parsed) return { type: 'question', question: parsed.question, choices: parsed.choices };
+
+    console.log(`[ritual] model ${modelId} returned no tool calls, trying next model`);
+  }
+
+  // All models exhausted — fall back to local matching
+  console.log('[ritual] all models exhausted, falling back to local match');
+  const localResults = localMatch(query, 3);
+  return { type: 'results', results: localResults };
 }
 
 async function populateCache(cache, key, results, corsH) {
@@ -402,6 +433,23 @@ export async function onRequest(context) {
 
   if (request.method !== 'POST') {
     return jsonResponse({ error: 'Method not allowed' }, 405, corsH);
+  }
+
+  // Rate limiting via KV — protects LLM quota. Uses the existing FAVORITES
+  // namespace with a `ratelimit:` key prefix. Fails open if KV is unavailable.
+  const RATE_LIMIT = 20;
+  const RATE_WINDOW_SECONDS = 60;
+  if (env.FAVORITES) {
+    const clientIp = request.headers.get('cf-connecting-ip') || 'unknown';
+    const rateKey = `ratelimit:${clientIp}`;
+    const current = parseInt((await env.FAVORITES.get(rateKey)) || '0', 10);
+    if (current >= RATE_LIMIT) {
+      return jsonResponse({ error: `Rate limit exceeded (${RATE_LIMIT} req/${RATE_WINDOW_SECONDS}s). Try again later.` }, 429, corsH);
+    }
+    // Atomic increment with TTL — if the key already has a TTL, this extends it.
+    // KV is eventually consistent so a few extra requests may slip through under
+    // concurrent load, which is acceptable for abuse prevention.
+    await env.FAVORITES.put(rateKey, String(current + 1), { expirationTtl: RATE_WINDOW_SECONDS });
   }
 
   let body;

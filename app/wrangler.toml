@@ -19,29 +19,15 @@ binding = "AI"
 binding = "FAVORITES"
 id = "a453372cb3eb4ee1a2492eb193194d97"
 
-# Rate limit for sync code writes (binding: SYNC_WRITES) is configured
-# in the Cloudflare dashboard, not in wrangler.toml:
-#   Pages > grimoirestack > Settings > Bindings > Add > Rate limiting
-#   Name: SYNC_WRITES
-#   Namespace: 19c1ca7d-48b3-4c9d-b531-648245dcc08b (pre-created via
-#     `npx wrangler rate_limit create favorites-sync-writes`)
-#   Limit: 10, Period: 60
-# The Pages PATCH API does not support rate_limit bindings as of 2026-07,
-# and [[ratelimits]] / [[unsafe.bindings]] are not accepted in wrangler.toml
-# for Pages projects. The function fails open when the binding is missing,
-# so the deploy is safe without it.
-
-# Rate limiting for /api/recommend (binding: RECOMMEND) — protects the
-# Groq API quota (14k free req/day). Configure in the Cloudflare dashboard:
-#   Pages > grimoirestack > Settings > Bindings > Add > Rate limiting
-#   Name: RECOMMEND
-#   Limit: 20, Period: 60 (20 requests per minute per IP)
-# The function fails open when the binding is missing.
-#
-# Rate limiting for /api/llm-proxy (binding: LLM_PROXY) — prevents abuse
-# as a free LLM proxy. Configure in the dashboard:
-#   Name: LLM_PROXY
-#   Limit: 30, Period: 60
+# Rate limiting is implemented in-code via the FAVORITES KV namespace (keyed by
+# client IP with TTL). No dashboard configuration required. Remove this comment
+# block once Cloudflare Pages supports [[ratelimits]] bindings in wrangler.toml:
+#   [[ratelimits]]
+#   name = "RECOMMEND"
+#   namespace_id = "1001"
+#     [ratelimits.simple]
+#     limit = 20
+#     period = 60
 #
 # GROQ_API_KEY is set as a production secret:
 #   npx wrangler pages secret put GROQ_API_KEY --project-name grimoirestack

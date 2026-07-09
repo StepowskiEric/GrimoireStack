@@ -14,6 +14,8 @@ import Icon from './Icon.jsx';
 export default function RitualPanel({ ritual, onConverge }) {
   console.log('[RitualPanel] render', { ritual: ritual ? { state: ritual.state, round: ritual.round, hasQuestion: !!ritual.question, choicesCount: ritual.choices?.length, resultsCount: ritual.results?.length } : 'undefined' });
   const [input, setInput] = useState('');
+  const [otherOpen, setOtherOpen] = useState(false);
+  const [otherInput, setOtherInput] = useState('');
   if (!ritual) {
     console.error('[RitualPanel] ritual is undefined');
     return <div className="ritual-panel"><p className="ritual-error">The ritual has not been prepared.</p></div>;
@@ -29,6 +31,14 @@ export default function RitualPanel({ ritual, onConverge }) {
 
   const handleChoice = (choice) => {
     ritual.answer(choice);
+  };
+
+  const handleOtherSubmit = () => {
+    const val = otherInput.trim();
+    if (!val) return;
+    setOtherOpen(false);
+    setOtherInput('');
+    ritual.answer(val);
   };
 
   // ── Idle: textarea for the initial problem ──
@@ -97,7 +107,7 @@ export default function RitualPanel({ ritual, onConverge }) {
   // ── Questioning: show question + 3 choices ──
   if (state === 'questioning') {
     return (
-      <div className="ritual-panel" data-round={round}>
+      <div className="ritual-panel" data-round={round} key={round}>
         <div className="ritual-question-round">
           Question {round + 1}
         </div>
@@ -119,6 +129,48 @@ export default function RitualPanel({ ritual, onConverge }) {
               <span className="ritual-choice-text">{choice}</span>
             </button>
           ))}
+          {!otherOpen ? (
+            <button
+              type="button"
+              className="ritual-choice ritual-choice--other"
+              onClick={() => setOtherOpen(true)}
+              style={{ animationDelay: `${choices.length * 60}ms` }}
+            >
+              <span className="ritual-choice-letter">?</span>
+              <span className="ritual-choice-text">Other...</span>
+            </button>
+          ) : (
+            <div className="ritual-other-form">
+              <textarea
+                className="ritual-other-input"
+                value={otherInput}
+                onChange={(e) => setOtherInput(e.target.value)}
+                placeholder="Type your answer..."
+                ref={(el) => el?.focus()}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter' && !e.shiftKey) {
+                    e.preventDefault();
+                    handleOtherSubmit();
+                  }
+                }}
+              />
+              <button
+                type="button"
+                className="ritual-other-submit"
+                onClick={handleOtherSubmit}
+                disabled={!otherInput.trim()}
+              >
+                Submit
+              </button>
+              <button
+                type="button"
+                className="ritual-other-cancel"
+                onClick={() => { setOtherOpen(false); setOtherInput(''); }}
+              >
+                Back
+              </button>
+            </div>
+          )}
         </div>
       </div>
     );
