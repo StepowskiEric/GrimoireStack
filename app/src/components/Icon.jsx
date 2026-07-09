@@ -144,12 +144,12 @@ export default function Icon({ name, size, className, style }) {
 
     case 'warded-seal':
       // Ritual circle with an inverted triangle sigil inside
-      // Uses lidless-eye__sigil-stroke for draw-on animation when parent applies it
+      // Uses draw-on animation when parent applies it
       return (
         <svg {...props}>
-          <circle cx="12" cy="12" r="9" className="lidless-eye__sigil-stroke" pathLength="1" />
-          <path d="M 5.5 7 L 18.5 7 L 12 17 Z" className="lidless-eye__sigil-stroke" pathLength="1" style={{ transitionDelay: '0.12s' }} />
-          <path d="M 8 7 L 16 7" className="lidless-eye__sigil-stroke" pathLength="1" style={{ transitionDelay: '0.24s' }} />
+          <circle cx="12" cy="12" r="9" pathLength="1" style={{ transitionDelay: '0s' }} />
+          <path d="M 5.5 7 L 18.5 7 L 12 17 Z" pathLength="1" style={{ transitionDelay: '0.12s' }} />
+          <path d="M 8 7 L 16 7" pathLength="1" style={{ transitionDelay: '0.24s' }} />
         </svg>
       );
 

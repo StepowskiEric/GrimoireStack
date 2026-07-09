@@ -1,6 +1,89 @@
 @import "tailwindcss";
 
+@layer base {
+  *, *::before, *::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    background-color: var(--abyss);
+    color: #c8d8e0;
+    font-family: var(--font-body);
+    font-size: 19px;
+    line-height: 1.65;
+    min-height: 100vh;
+    overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  ::selection {
+    background: rgba(138, 154, 106, 0.25);
+    color: #e0f8f0;
+  }
+
+  :focus {
+    outline: none;
+  }
+
+  :focus-visible {
+    outline: 3px solid rgba(212, 175, 55, 0.85);
+    outline-offset: 2px;
+    border-radius: 2px;
+  }
+
+  button:focus-visible,
+  [role="button"]:focus-visible,
+  a:focus-visible,
+  input:focus-visible,
+  select:focus-visible,
+  textarea:focus-visible {
+    outline: 3px solid rgba(212, 175, 55, 0.85);
+    outline-offset: 2px;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background:
+      radial-gradient(ellipse 60% 40% at 50% 50%, rgba(138, 154, 106, 0.03) 0%, transparent 70%),
+      radial-gradient(ellipse 40% 30% at 25% 75%, rgba(124, 58, 237, 0.04) 0%, transparent 60%),
+      radial-gradient(ellipse 50% 35% at 75% 30%, rgba(138, 154, 106, 0.02) 0%, transparent 50%),
+      repeating-linear-gradient(90deg, transparent, transparent 4px, rgba(138, 154, 106, 0.003) 4px, rgba(138, 154, 106, 0.003) 5px);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  body::after {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background:
+      radial-gradient(ellipse 50% 50% at 50% 50%, transparent 20%, rgba(2, 2, 5, 0.5) 100%),
+      radial-gradient(circle at 50% 50%, transparent 40%, rgba(5, 5, 12, 0.7) 100%);
+    pointer-events: none;
+    z-index: 0;
+  }
+}
+
 @theme {
+  /* Brand tokens */
   --color-abyss: #050508;
   --color-abyss-deep: #020203;
   --color-void: #080a0f;
@@ -32,11 +115,34 @@
   --color-leather-mid: #3a2a18;
   --color-leather-edge: #1a0e06;
 
+  /* Semantic tokens */
+  --color-background: var(--abyss);
+  --color-foreground: var(--silver);
+  --color-surface: rgba(8, 10, 16, 0.6);
+  --color-surface-raised: rgba(10, 14, 22, 0.75);
+  --color-surface-overlay: rgba(2, 2, 4, 0.5);
+  --color-border: rgba(138, 154, 106, 0.15);
+  --color-border-hover: rgba(138, 154, 106, 0.35);
+  --color-border-strong: rgba(212, 175, 55, 0.45);
+  --color-text-primary: var(--moonlight);
+  --color-text-secondary: var(--parchment-dark);
+  --color-text-muted: var(--silver-mute);
+  --color-accent: var(--gold-bright);
+  --color-accent-dim: var(--gold);
+  --color-danger: #c47a7a;
+  --color-danger-strong: #6a0e0e;
+  --color-danger-subtle: rgba(196, 71, 71, 0.1);
+  --color-danger-hover: rgba(196, 71, 71, 0.25);
+  --color-accent-subtle: rgba(212, 175, 55, 0.15);
+  --color-accent-hover: rgba(212, 175, 55, 0.25);
+
+  /* Typography */
   --font-display: "Cinzel Decorative", "Cinzel", serif;
   --font-body: "Cormorant Garamond", serif;
   --font-mono: "Special Elite", cursive;
   --font-ui: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
 
+  /* Animation tokens */
   --animate-fade-in: fade-in 0.5s ease both;
   --animate-pulse-slow: pulse-slow 3s ease-in-out infinite;
 }
@@ -49,4 +155,38 @@
 @keyframes pulse-slow {
   0%, 100% { opacity: 0.3; }
   50% { opacity: 0.7; }
+}
+
+/* Reusable utilities */
+@utility divider-line {
+  @apply relative flex items-center gap-2;
+}
+
+.divider-line::after {
+  content: '';
+  flex: 1 1 auto;
+  height: 1px;
+  background-image: linear-gradient(to right, rgba(138,154,106,0.25), transparent);
+}
+
+@utility panel {
+  @apply border border-border bg-surface rounded-sm;
+}
+@utility panel-raised {
+  @apply border border-border-hover bg-surface-raised rounded-sm;
+}
+@utility section-title {
+  @apply font-display text-[0.7rem] font-bold uppercase tracking-widest text-sickly;
+}
+
+/* Accessibility: visually hidden until focused (keyboard-only skip link) */
+@utility skip-link {
+  @apply sr-only;
+}
+.skip-link:focus,
+.skip-link:focus-visible {
+  @apply not-sr-only fixed top-2 left-2 z-[9999] px-3 py-2 bg-abyss text-moonlight border border-sickly rounded-sm no-underline outline-none;
+}
+.skip-link:focus-visible {
+  @apply outline outline-2 outline-[rgba(212,175,55,0.85)] outline-offset-2;
 }

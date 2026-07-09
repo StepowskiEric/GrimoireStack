@@ -1,0 +1,2 @@
+# Local Biome config: prevent Biome from walking up to root and reporting errors.
+# Real ignores are in repo-root .gitignore (useIgnoreFile: true).

@@ -1,4 +1,4 @@
-import { render, screen } from '@testing-library/react';
+import { render, screen, fireEvent } from '@testing-library/react';
 import SpellWeb from '../components/SpellWeb.jsx';
 
 // Mock the grimoireIndex module
@@ -106,5 +106,17 @@ describe('SpellWeb', () => {
     expect(screen.getByText('Trace Sight')).toBeInTheDocument();
     expect(screen.getByText('Bisect Divination')).toBeInTheDocument();
     expect(screen.getByText('Razor of Parsimony')).toBeInTheDocument();
+  });
+
+  it('shows tooltip details on spell hover', () => {
+    render(<SpellWeb onSpellClick={() => {}} />);
+    const traceSight = screen.getByText('Trace Sight');
+    fireEvent.mouseEnter(traceSight.closest('g'));
+
+    const tooltip = screen.getByTestId('spell-web-tooltip');
+    expect(tooltip).toBeInTheDocument();
+    expect(tooltip).toHaveTextContent('Trace Sight');
+    expect(tooltip).toHaveTextContent('Debugging');
+    expect(tooltip).toHaveTextContent('0 connections');
   });
 });

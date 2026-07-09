@@ -26,19 +26,19 @@ export default class ErrorBoundary extends Component {
   render() {
     if (this.state.hasError) {
       return (
-        <div className="grimoire-error" role="alert" aria-live="assertive">
-          <div className="grimoire-error__scroll">
-            <span className="grimoire-error__rune" aria-hidden="true">⟐</span>
-            <h2 className="grimoire-error__title">The Scroll Has Torn</h2>
-            <p className="grimoire-error__desc">
+        <div className="flex items-center justify-center min-h-screen bg-background text-foreground p-4" role="alert" aria-live="assertive">
+          <div className="panel max-w-md w-full p-6 text-center">
+            <div className="text-sickly text-2xl mb-3" aria-hidden="true">⟐</div>
+            <h2 className="font-['Cinzel_Decorative'] text-[1.25rem] font-bold text-text-primary tracking-wide mb-2">The Scroll Has Torn</h2>
+            <p className="text-text-secondary text-[0.82rem] mb-4">
               Something went wrong while rendering this part of the Grimoire.
             </p>
             {this.state.error?.message && (
-              <pre className="grimoire-error__trace">{this.state.error.message}</pre>
+              <pre className="bg-surface-overlay border border-border text-text-primary text-[0.82rem] p-3 rounded-sm mb-4 text-left overflow-auto">{this.state.error.message}</pre>
             )}
             <button
               type="button"
-              className="grimoire-error__reload"
+              className="section-title px-3 py-2 border border-border-hover text-text-primary hover:bg-surface-raised"
               onClick={this.handleReload}
             >
               ⟐ Rebind the Scroll

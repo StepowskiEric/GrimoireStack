@@ -1,6 +1,7 @@
 import { useEffect, useRef } from 'react';
 import ModalEye from './ModalEye.tsx';
 import Icon from './Icon.jsx';
+import { cn } from '../utils/cn.js';
 
 const SHORTCUTS = [
   { keys: ['/'], desc: 'Focus the Scrying Orb (search)' },
@@ -33,29 +34,29 @@ export default function ShortcutsModal({ onClose }) {
 
   return (
     // eslint-disable-next-line jsx-a11y/click-events-have-key-events, jsx-a11y/no-static-element-interactions
-    <div className="modal-overlay open" onClick={(e) => { if (e.target === e.currentTarget) onClose(); }}>
-      <div className="modal shortcuts-modal" ref={modalRef} role="dialog" aria-modal="true" aria-label="Keyboard shortcuts">
-        <button className="modal-close" onClick={onClose} aria-label="Close cheatsheet" type="button">
+    <div className="fixed inset-0 z-[100] flex items-center justify-center bg-[radial-gradient(ellipse_at_center,rgba(8,10,6,0.78)_0%,rgba(2,2,3,0.96)_80%)] backdrop-blur-[6px]" onClick={(e) => { if (e.target === e.currentTarget) onClose(); }}>
+      <div className="relative w-full max-w-[520px] rounded-sm border border-border bg-surface p-6" ref={modalRef} role="dialog" aria-modal="true" aria-label="Keyboard shortcuts">
+        <button className="absolute right-[18px] top-[14px] z-[3] flex h-11 w-11 min-h-11 min-w-11 items-center justify-center rounded-full border border-border bg-[rgba(20,22,18,0.7)] font-['IM_Fell_English'] text-[1.1rem] text-[#d4c8a0] transition-all hover:border-border-hover hover:text-sickly hover:shadow-[0_0_12px_rgba(138,154,106,0.4)]" onClick={onClose} aria-label="Close cheatsheet" type="button">
           <Icon name="close" size={18} />
         </button>
-        <span className="modal-symbol"><ModalEye size={36} /></span>
-        <div className="modal-title">Runes of Power</div>
-        <div className="modal-school">Keyboard shortcuts for the warlock on the go</div>
+        <span className="mb-3 block text-[1.6rem] text-[#3a3018] text-shadow-gold"><ModalEye size={36} /></span>
+        <div className="font-['Cinzel'] text-center text-[1.55rem] font-bold tracking-wide text-[#3a2010] text-shadow-modal-title">Runes of Power</div>
+        <div className="font-['Cinzel'] mt-1 text-center text-[0.65rem] uppercase tracking-widest text-[#3a2a18]">Keyboard shortcuts for the warlock on the go</div>
 
-        <div className="shortcuts-list">
+        <div className="mt-4 flex flex-col gap-3">
           {SHORTCUTS.map((s) => (
-            <div key={s.desc} className="shortcut-row">
-              <span className="shortcut-desc">{s.desc}</span>
-              <span className="shortcut-keys">
+            <div key={s.desc} className="flex items-center justify-between gap-4 rounded-md border border-[rgba(180,140,80,0.18)] bg-[rgba(35,22,12,0.5)] px-3 py-2">
+              <span className="flex-1 text-right font-['Cormorant_Garamond'] text-[0.95rem] text-[#e8d8b8]">{s.desc}</span>
+              <span className="flex shrink-0 items-center gap-1.5">
                 {s.keys.map((k) => (
-                  <span key={k} className={`shortcut-key${k.length > 1 ? ' wide' : ''}`}>{k}</span>
+                  <span key={k} className={cn('inline-flex h-6 min-w-7 items-center justify-center rounded border px-1.5 font-["Special_Elite"] text-[0.72rem] font-bold text-[#2a1a08] shadow-[0_1px_0_rgba(0,0,0,0.4),inset_0_1px_0_rgba(255,255,255,0.3)]', k.length > 1 ? 'min-w-[48px] text-[0.65rem]' : '')}>{k}</span>
                 ))}
               </span>
             </div>
           ))}
         </div>
 
-        <div className="shortcuts-footnote">
+        <div className="mt-4 text-center font-['Cormorant_Garamond'] italic text-[0.82rem] text-[#a89878]">
           Shortcuts are inert when typing in the search or a note.
         </div>
       </div>

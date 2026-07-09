@@ -1,4 +1,5 @@
 import { getSchoolSigil } from '../data/schoolSigils.jsx';
+import { cn } from '../utils/cn.js';
 
 interface Props {
   schoolId: string;
@@ -14,7 +15,7 @@ export default function SchoolSigil({ schoolId, size = 24, className, animated =
   const Sigil = getSchoolSigil(schoolId);
   return (
     <svg
-      className={`school-sigil ${animated ? 'lidless-eye__sigil--drawing' : ''} ${className || ''}`}
+      className={cn('text-gold', animated && 'lidless-eye__sigil--drawing', className)}
       width={size}
       height={size}
       viewBox="0 0 24 24"

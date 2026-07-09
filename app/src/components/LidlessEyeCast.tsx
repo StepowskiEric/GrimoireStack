@@ -2,6 +2,7 @@ import { useMemo } from 'react';
 import { useEldritchCast } from '../hooks/useEldritchCast.js';
 import { getSchoolSigil } from '../data/schoolSigils.jsx';
 import SchoolSigil from './SchoolSigil.tsx';
+import { cn } from '../utils/cn.js';
 
 interface Props {
   spell: { name: string; effect: string; status?: string };
@@ -34,17 +35,21 @@ export default function LidlessEyeCast({ spell, school, onComplete }: Props) {
   if (reduced) {
     return (
       <div
-        className="lidless-cast lidless-cast--reduced"
+        className={cn(
+          'fixed inset-0 z-[999] flex items-center justify-center bg-[radial-gradient(ellipse_at_center,rgba(8,6,4,0.6)_0%,rgba(2,2,3,0.92)_100%)] cursor-default select-none',
+          'animate-[castFadeIn_0.4s_ease-out]',
+        )}
         role="button"
         aria-live="assertive"
         tabIndex={0}
         onClick={onComplete}
         onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); onComplete(); } }}
         title="Dismiss"
+        data-testid="lidless-cast"
       >
-        <div className="lidless-cast__reduced-inner">
-          <span className="lidless-cast__reduced-symbol"><SchoolSigil schoolId={school.id} size={32} /></span>
-          <h2 className="lidless-cast__reduced-name">{spell.name}</h2>
+        <div className="text-center p-6 border border-[rgba(240,216,120,0.3)] bg-[radial-gradient(ellipse_at_center,rgba(240,216,120,0.06)_0%,transparent_70%)]">
+          <span className="block mb-2 text-2xl drop-shadow-[0_0_8px_rgba(240,216,120,0.4)]"><SchoolSigil schoolId={school.id} size={32} /></span>
+          <h2 className="m-0 font-['Cinzel_Decorative'] text-[1.6rem] font-black text-[#f0d878] tracking-wide" style={{ textShadow: '0 0 12px rgba(240,216,120,0.4)' }}>{spell.name}</h2>
         </div>
       </div>
     );
@@ -57,17 +62,23 @@ export default function LidlessEyeCast({ spell, school, onComplete }: Props) {
 
   return (
     <div
-      className={`lidless-cast lidless-cast--${phase} ${canSkip ? 'lidless-cast--skippable' : ''}`}
+      className={cn(
+        'fixed inset-0 z-[999] flex items-center justify-center bg-[radial-gradient(ellipse_at_center,rgba(8,6,4,0.6)_0%,rgba(2,2,3,0.92)_100%)] select-none',
+        'animate-[castFadeIn_0.4s_ease-out]',
+        canSkip && 'cursor-pointer',
+        `lidless-cast--${phase}`,
+      )}
       role="button"
       tabIndex={0}
       aria-live="assertive"
       onClick={handleSkip}
       onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); handleSkip(); } }}
       title={canSkip ? 'Click to skip' : ''}
+      data-testid="lidless-cast"
     >
-      <div className="lidless-cast__stage">
+      <div className="relative w-[min(90vw,480px)] aspect-[240/160] flex items-center justify-center">
         <svg
-          className="lidless-eye"
+          className="w-full h-full overflow-visible drop-shadow-[0_0_30px_rgba(196,184,152,0.08)]"
           viewBox="0 0 240 160"
           preserveAspectRatio="xMidYMid meet"
         >
@@ -130,15 +141,19 @@ export default function LidlessEyeCast({ spell, school, onComplete }: Props) {
 
           {/* Blood crack overlay — drawn on top of the iris when bleeding */}
           {showBlood && (
-            <g className="lidless-eye__blood-group" clipPath="url(#cast-iris-clip)">
+            <g clipPath="url(#cast-iris-clip)">
               <ellipse
                 cx="120" cy="80" rx="55" ry="38"
                 fill="url(#cast-blood-grad)"
-                className="lidless-eye__blood"
+                className={cn(
+                  'origin-[120px_80px] scale-[0.3] transition-transform duration-500 ease-[cubic-bezier(0.34,1.56,0.64,1)]',
+                  (phase === 'sigil' || phase === 'name' || phase === 'hold') && 'scale-[1.05]',
+                  phase === 'close' && 'scale-[0.6] opacity-0 transition-transform duration-700 ease-in transition-opacity duration-500 ease-in',
+                )}
               />
               {/* Cracks — radiating red veins */}
               {showVeins && (
-                <g className="lidless-eye__veins">
+                <g>
                   {veins.map((v, i) => (
                     // eslint-disable-next-line react/no-array-index-key
                     <path key={i}
@@ -148,8 +163,11 @@ export default function LidlessEyeCast({ spell, school, onComplete }: Props) {
                       strokeLinecap="round"
                       fill="none"
                       opacity="0.85"
-                      className="lidless-eye__vein"
                       pathLength={1}
+                      className={cn(
+                        'stroke-dasharray-[1] stroke-dashoffset-[1] transition-stroke-dashoffset duration-500 ease-out',
+                        (phase === 'sigil' || phase === 'name' || phase === 'hold') && 'stroke-dashoffset-0',
+                      )}
                     />
                   ))}
                 </g>
@@ -158,9 +176,12 @@ export default function LidlessEyeCast({ spell, school, onComplete }: Props) {
               {/* Sigil — drawn over the blood */}
               {drawing && (
                 <g
-                  className="lidless-eye__sigil lidless-eye__sigil--drawing"
                   style={{ color: '#f0d878' }}
                   filter="url(#cast-glow)"
+                  className={cn(
+                    'transition-opacity duration-500 ease-in',
+                    phase === 'close' && 'opacity-0',
+                  )}
                 >
                   <Sigil />
                 </g>
@@ -180,7 +201,12 @@ export default function LidlessEyeCast({ spell, school, onComplete }: Props) {
 
           {/* Upper lid (the one that retracts in Wake and descends in Close) */}
           <path
-            className="lidless-eye__lid lidless-eye__lid--upper"
+            className={cn(
+              'origin-[center_80px] transition-transform duration-500 ease-[cubic-bezier(0.65,0,0.35,1)]',
+              phase === 'wake' && 'translate-y-[-32px]',
+              (phase === 'bleed' || phase === 'sigil' || phase === 'name' || phase === 'hold') && 'translate-y-[-42px]',
+              phase === 'close' && 'translate-y-0 transition-transform duration-700 ease-[cubic-bezier(0.7,0,0.84,0)]',
+            )}
             d="M 10 80 C 10 30 50 8 120 8 C 190 8 230 30 230 80 C 200 28 40 28 10 80 Z"
             fill="#020203"
             stroke="rgba(196, 184, 152, 0.08)"
@@ -188,7 +214,12 @@ export default function LidlessEyeCast({ spell, school, onComplete }: Props) {
           />
           {/* Lower lid */}
           <path
-            className="lidless-eye__lid lidless-eye__lid--lower"
+            className={cn(
+              'origin-[center_80px] transition-transform duration-500 ease-[cubic-bezier(0.65,0,0.35,1)]',
+              phase === 'wake' && 'translate-y-[32px]',
+              (phase === 'bleed' || phase === 'sigil' || phase === 'name' || phase === 'hold') && 'translate-y-[42px]',
+              phase === 'close' && 'translate-y-0 transition-transform duration-700 ease-[cubic-bezier(0.7,0,0.84,0)]',
+            )}
             d="M 10 80 C 10 130 50 152 120 152 C 190 152 230 130 230 80 C 200 132 40 132 10 80 Z"
             fill="#020203"
             stroke="rgba(196, 184, 152, 0.08)"
@@ -197,10 +228,14 @@ export default function LidlessEyeCast({ spell, school, onComplete }: Props) {
         </svg>
 
         {/* Spell name — appears in the Name phase, persists through Close */}
-        <div className={`lidless-cast__name ${showName ? 'lidless-cast__name--visible' : ''}`}>
-          <div className="lidless-cast__name-inner">
-            <span className="lidless-cast__name-school">{school.real}</span>
-            <h2 className="lidless-cast__name-spell">{spell.name}</h2>
+        <div className={cn(
+          'absolute inset-0 flex items-center justify-center pointer-events-none opacity-0 scale-[0.85] transition-all duration-400 ease-out',
+          showName && 'opacity-100 scale-100',
+          phase === 'close' && 'opacity-0 scale-[1.1] transition-opacity duration-500 ease-in transition-transform duration-600 ease-in',
+        )}>
+          <div className="text-center px-5 py-3.5 border-t border-b border-[rgba(240,216,120,0.25)] bg-[radial-gradient(ellipse_at_center,rgba(240,216,120,0.04)_0%,transparent_70%)]">
+            <span className="block font-['Cinzel'] text-[0.65rem] font-semibold uppercase tracking-[0.24em] text-[#c4a060] mb-1.5" style={{ textShadow: '0 0 8px rgba(240,216,120,0.3)' }}>{school.real}</span>
+            <h2 className="m-0 font-['Cinzel_Decorative'] text-[clamp(1.3rem,4vw,2.1rem)] font-black text-[#f0d878] tracking-wide" style={{ textShadow: '0 0 12px rgba(240,216,120,0.5), 0 0 28px rgba(240,216,120,0.25), 0 0 48px rgba(196,69,69,0.2), 1px 1px 0 rgba(0,0,0,0.6)' }}>{spell.name}</h2>
           </div>
         </div>
       </div>

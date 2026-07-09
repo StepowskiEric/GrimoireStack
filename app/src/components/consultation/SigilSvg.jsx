@@ -1,3 +1,5 @@
+import { cn } from '../../utils/cn.js';
+
 // Displacement scale per sanity level (indexed by sanity value).
 // Higher = more fractured. Sanity 5 and 4 are crisp; the ramp
 // accelerates below 3 for a eldritch reality-warp feel.
@@ -51,11 +53,12 @@ export default function SigilSvg({ sanity }) {
 
   return (
     <svg
-      className={`seance-sigil-svg seance-sigil-svg--sanity-${sanity}`}
+      className={cn('seance-sigil-svg', `seance-sigil-svg--sanity-${sanity}`)}
       viewBox="0 0 240 240"
       aria-hidden="true"
       focusable="false"
       data-sanity={sanity}
+      data-testid="seance-sigil"
     >
       <defs>
         <filter id={filterId} x="-25%" y="-25%" width="150%" height="150%">

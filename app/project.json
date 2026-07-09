@@ -1,0 +1,148 @@
+{
+  "name": "app",
+  "$schema": "../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "src",
+  "projectType": "application",
+  "tags": ["app:vite", "app:react"],
+  "targets": {
+    "build": {
+      "executor": "nx:run-commands",
+      "cache": true,
+      "inputs": [
+        { "runtime": "node -v" },
+        "production",
+        "^production",
+        { "env": "NODE_ENV" }
+      ],
+      "outputs": ["{projectRoot}/dist"],
+      "options": {
+        "command": "npm run build",
+        "cwd": "{projectRoot}"
+      },
+      "configurations": {
+        "no-prerender": {
+          "command": "node ../scripts/sync-all.mjs && node scripts/registry/index.mjs && node scripts/build-skill-map.mjs && node scripts/build-ai-catalog.mjs && npm run typecheck && vite build"
+        }
+      }
+    },
+    "dev": {
+      "executor": "@nx/vite:dev-server",
+      "options": {
+        "buildTarget": "app:build",
+        "configFile": "vite.config.js"
+      },
+      "configurations": {
+        "development": {
+          "mode": "development"
+        },
+        "production": {
+          "buildTarget": "app:build",
+          "mode": "production"
+        }
+      },
+      "defaultConfiguration": "development"
+    },
+    "preview": {
+      "executor": "@nx/vite:preview-server",
+      "options": {
+        "buildTarget": "app:build"
+      }
+    },
+    "test": {
+      "executor": "nx:run-script",
+      "cache": true,
+      "inputs": ["default", "^production"],
+      "outputs": ["{projectRoot}/coverage"],
+      "options": {
+        "script": "test"
+      }
+    },
+    "lint": {
+      "executor": "nx:run-script",
+      "cache": true,
+      "inputs": [
+        "default",
+        "{workspaceRoot}/eslint.config.js"
+      ],
+      "outputs": [],
+      "options": {
+        "script": "lint"
+      }
+    },
+    "typecheck": {
+      "executor": "nx:run-script",
+      "cache": true,
+      "inputs": ["default", "^production"],
+      "outputs": [],
+      "options": {
+        "script": "typecheck"
+      }
+    },
+    "verify": {
+      "executor": "nx:run-script",
+      "dependsOn": ["lint", "typecheck", "test"],
+      "options": {
+        "script": "verify"
+      }
+    },
+    "e2e": {
+      "executor": "@nx/playwright:playwright",
+      "cache": true,
+      "inputs": [
+        "default",
+        "^production",
+        { "env": "PLAYWRIGHT_BROWSERS_PATH" }
+      ],
+      "outputs": [
+        "{projectRoot}/playwright-report",
+        "{projectRoot}/test-results"
+      ],
+      "options": {
+        "config": "{projectRoot}/playwright.config.js"
+      },
+      "configurations": {
+        "prod": {
+          "env": {
+            "SKIP_WEB_SERVER": "1"
+          }
+        }
+      }
+    },
+    "biome:check": {
+      "executor": "nx:run-script",
+      "options": {
+        "script": "biome:check"
+      }
+    },
+    "biome:lint": {
+      "executor": "nx:run-script",
+      "options": {
+        "script": "biome:lint"
+      }
+    },
+    "biome:format": {
+      "executor": "nx:run-script",
+      "options": {
+        "script": "biome:format"
+      }
+    },
+    "biome:fix": {
+      "executor": "nx:run-script",
+      "options": {
+        "script": "biome:fix"
+      }
+    },
+    "biome:ci": {
+      "executor": "nx:run-script",
+      "options": {
+        "script": "biome:ci"
+      }
+    },
+    "sync": {
+      "executor": "nx:run-script",
+      "options": {
+        "script": "sync"
+      }
+    }
+  }
+}

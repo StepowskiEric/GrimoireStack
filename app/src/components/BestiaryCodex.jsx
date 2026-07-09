@@ -3,6 +3,7 @@ import { TIER_META, getSpellTier } from '../data/tiers.js';
 import { getSpellLastUpdated } from '../data/changeFeed.js';
 import { grimoireIndex } from '../data/grimoireIndexInstance.js';
 import SchoolSigil from './SchoolSigil.tsx';
+import { cn } from '../utils/cn.js';
 
 const TIER_ORDER = ['archmage', 'master', 'adept', 'apprentice', 'faded'];
 
@@ -22,10 +23,6 @@ const STATUS_OPTIONS = [
   { id: 'Common', label: 'Common' },
 ];
 
-function statusClass(status) {
-  return (status || 'common').toLowerCase().replace(/[^a-z]/g, '') || 'common';
-}
-
 function _formatDate(iso) {
   if (!iso) return '—';
   try {
@@ -36,6 +33,14 @@ function _formatDate(iso) {
     return iso;
   }
 }
+
+const TIER_STYLES = {
+  archmage: 'border-danger/40 text-danger',
+  master: 'border-accent/40 text-accent',
+  adept: 'border-border-hover text-text-primary',
+  apprentice: 'border-[rgba(154,138,170,0.4)] text-[#9a8aaa]',
+  faded: 'border-[rgba(154,154,162,0.4)] text-[#9a9aa2]',
+};
 
 export default function BestiaryCodex({
   onSpellClick,
@@ -156,172 +161,178 @@ export default function BestiaryCodex({
   const totalSpells = all.length;
 
   return (
-    <div className="bestiary-codex">
-      {/* Header */}
-      <header className="bestiary-codex__header">
-        <div className="bestiary-codex__heading">
-          <h2 className="bestiary-codex__title">The Bestiary Codex</h2>
-          <p className="bestiary-codex__sub">
-            A complete catalogue of every entity bound within this grimoire.
-            Filter the abyss, mark what binds you, and read what you dare.
-          </p>
+    <div className="py-1">
+      <div className="panel p-4 mb-4">
+        <div className="flex flex-col gap-2 md:flex-row md:items-end md:justify-between">
+          <div>
+            <h2 className="font-['Cinzel_Decorative'] text-[1.25rem] font-bold text-text-primary tracking-wide">The Bestiary Codex</h2>
+            <p className="text-text-secondary text-[0.82rem] mt-1">
+              A complete catalogue of every entity bound within this grimoire.
+              Filter the abyss, mark what binds you, and read what you dare.
+            </p>
+          </div>
+          <div className="font-['Cinzel'] text-[0.72rem] uppercase tracking-widest text-text-muted">
+            {sorted.length} {sorted.length === 1 ? 'entity' : 'entities'}
+            {sorted.length !== totalSpells ? ` of ${totalSpells}` : ''}
+            {pageCount > 1 ? ` · page ${safePage + 1} of ${pageCount}` : ''}
+          </div>
         </div>
+      </div>
 
-        {/* Filter rail */}
-        <div className="bestiary-codex__filters">
-          <div className="bestiary-codex__search">
-            <span className="bestiary-codex__search-rune" aria-hidden="true">⟐</span>
+      <div className="panel p-3.5 mb-4">
+        <div className="mb-3">
+          <div className="relative">
+            <span className="absolute inset-y-0 left-2.5 flex items-center text-sickly" aria-hidden="true">⟐</span>
             <input
               type="text"
               value={query}
               onChange={(e) => { setQuery(e.target.value); setPage(0); }}
               placeholder="Scry by name, skill, effect, or school…"
               aria-label="Search the bestiary"
-              className="bestiary-codex__search-input"
+              className="w-full bg-surface-overlay border border-border text-text-primary placeholder:text-text-muted text-[0.95rem] pl-8 pr-2 py-2 rounded-sm focus:outline-3 focus:outline-offset-2 focus:border-border-hover"
             />
           </div>
+        </div>
 
-          <div className="bestiary-codex__filter-rows">
-            <div className="bestiary-codex__filter-row">
-              <span className="bestiary-codex__filter-label" aria-hidden="true">School</span>
-              <div className="bestiary-codex__chips">
-                {Array.from(schoolMap.values()).map((s) => {
-                  const active = schoolFilter.has(s.id);
-                  return (
-                    <button
-                      key={s.id}
-                      type="button"
-                      className={`bestiary-codex__chip${active ? ' is-active' : ''}`}
-                      onClick={() => toggleSchool(s.id)}
-                      aria-pressed={active}
-                      title={s.real}
-                    >
-                      <span className="bestiary-codex__chip-glyph" aria-hidden="true"><SchoolSigil schoolId={s.id} size={14} /></span>
-                      <span className="bestiary-codex__chip-text">{s.real}</span>
-                    </button>
-                  );
-                })}
-              </div>
-            </div>
-
-            <div className="bestiary-codex__filter-row">
-              <span className="bestiary-codex__filter-label" aria-hidden="true">Tier</span>
-              <div className="bestiary-codex__chips">
-                {TIER_ORDER.map((key) => {
-                  const meta = TIER_META[key];
-                  if (!meta) return null;
-                  const active = tierFilter.has(key);
-                  return (
-                    <button
-                      key={key}
-                      type="button"
-                      className={`bestiary-codex__chip bestiary-codex__chip--${meta.className.split('-').pop()}${active ? ' is-active' : ''}`}
-                      onClick={() => toggleTier(key)}
-                      aria-pressed={active}
-                      title={meta.title}
-                    >
-                      <span className="bestiary-codex__chip-glyph" aria-hidden="true">⟐</span>
-                      <span className="bestiary-codex__chip-text">{meta.label}</span>
-                    </button>
-                  );
-                })}
-              </div>
+        <div className="grid gap-3">
+          <div>
+            <div className="section-title mb-1.5" aria-hidden="true">School</div>
+            <div className="flex flex-wrap gap-2">
+              {Array.from(schoolMap.values()).map((s) => {
+                const active = schoolFilter.has(s.id);
+                return (
+                  <button
+                    key={s.id}
+                    type="button"
+                    className={cn('flex items-center gap-1.5 border rounded-sm px-2 py-1.5 text-[0.68rem] font-semibold uppercase tracking-wider transition-all duration-200', active ? 'border-border-hover bg-surface-raised text-text-primary' : 'border-border bg-surface text-text-muted hover:border-border-hover')}
+                    onClick={() => toggleSchool(s.id)}
+                    aria-pressed={active}
+                    title={s.real}
+                  >
+                    <span className="text-sickly" aria-hidden="true"><SchoolSigil schoolId={s.id} size={14} /></span>
+                    <span>{s.real}</span>
+                  </button>
+                );
+              })}
             </div>
           </div>
 
-          <div className="bestiary-codex__filter-rows">
-            <div className="bestiary-codex__filter-row">
-              <span className="bestiary-codex__filter-label" aria-hidden="true">Status</span>
-              {/* eslint-disable-next-line jsx-a11y/no-onchange */}
-              <select
-                className="bestiary-codex__select"
-                value={statusFilter}
-                onChange={(e) => { setStatusFilter(e.target.value); setPage(0); }}
-                aria-label="Filter by status"
-              >
-                {STATUS_OPTIONS.map(opt => (
-                  <option key={opt.id} value={opt.id}>{opt.label}</option>
-                ))}
-              </select>
-              <span className="bestiary-codex__filter-label" aria-hidden="true">Sort</span>
-              {/* eslint-disable-next-line jsx-a11y/no-onchange */}
-              <select
-                className="bestiary-codex__select"
-                value={sortBy}
-                onChange={(e) => setSortBy(e.target.value)}
-                aria-label="Sort entries"
-              >
-                {SORT_OPTIONS.map(opt => (
-                  <option key={opt.id} value={opt.id}>{opt.label}</option>
-                ))}
-              </select>
-            </div>
-
-            <div className="bestiary-codex__filter-row bestiary-codex__filter-row--toggles">
-              <label className="bestiary-codex__toggle">
-                <input
-                  type="checkbox"
-                  checked={combosOnly}
-                  onChange={(e) => { setCombosOnly(e.target.checked); setPage(0); }}
-                />
-                <span>Synergies</span>
-              </label>
-              <label className="bestiary-codex__toggle">
-                <input
-                  type="checkbox"
-                  checked={favoritesOnly}
-                  onChange={(e) => { setFavoritesOnly(e.target.checked); setPage(0); }}
-                />
-                <span>Favorited</span>
-              </label>
-              <label className="bestiary-codex__toggle">
-                <input
-                  type="checkbox"
-                  checked={annotatedOnly}
-                  onChange={(e) => { setAnnotatedOnly(e.target.checked); setPage(0); }}
-                />
-                <span>Annotated</span>
-              </label>
-              {anyActive ? (
-                <button
-                  type="button"
-                  className="bestiary-codex__clear"
-                  onClick={clearAll}
-                  title="Clear all filters"
-                >
-                  Purge
-                </button>
-              ) : null}
+          <div>
+            <div className="section-title mb-1.5" aria-hidden="true">Tier</div>
+            <div className="flex flex-wrap gap-2">
+              {TIER_ORDER.map((key) => {
+                const meta = TIER_META[key];
+                if (!meta) return null;
+                const active = tierFilter.has(key);
+                const style = TIER_STYLES[key] || 'border-border text-text-muted';
+                return (
+                  <button
+                    key={key}
+                    type="button"
+                    className={cn('flex items-center gap-1.5 border rounded-sm px-2 py-1.5 text-[0.68rem] font-semibold uppercase tracking-wider transition-all duration-200', active ? style : 'border-border bg-surface text-text-muted hover:border-border-hover')}
+                    onClick={() => toggleTier(key)}
+                    aria-pressed={active}
+                    title={meta.title}
+                  >
+                    <span aria-hidden="true">⟐</span>
+                    <span>{meta.label}</span>
+                  </button>
+                );
+              })}
             </div>
           </div>
         </div>
-      </header>
 
-      {/* Result count */}
-      <div className="bestiary-codex__count">
-        {sorted.length} {sorted.length === 1 ? 'entity' : 'entities'}
-        {sorted.length !== totalSpells ? ` of ${totalSpells}` : ''}
-        {pageCount > 1 ? ` · page ${safePage + 1} of ${pageCount}` : ''}
+        <div className="mt-3 grid gap-3 md:grid-cols-2">
+          <div>
+            <div className="section-title mb-1.5" aria-hidden="true">Status</div>
+            {/* eslint-disable-next-line jsx-a11y/no-onchange */}
+            <select
+              className="w-full bg-surface-overlay border border-border text-text-primary text-[0.95rem] p-2 rounded-sm focus:outline-3 focus:outline-offset-2 focus:border-border-hover"
+              value={statusFilter}
+              onChange={(e) => { setStatusFilter(e.target.value); setPage(0); }}
+              aria-label="Filter by status"
+            >
+              {STATUS_OPTIONS.map(opt => (
+                <option key={opt.id} value={opt.id}>{opt.label}</option>
+              ))}
+            </select>
+          </div>
+          <div>
+            <div className="section-title mb-1.5" aria-hidden="true">Sort</div>
+            {/* eslint-disable-next-line jsx-a11y/no-onchange */}
+            <select
+              className="w-full bg-surface-overlay border border-border text-text-primary text-[0.95rem] p-2 rounded-sm focus:outline-3 focus:outline-offset-2 focus:border-border-hover"
+              value={sortBy}
+              onChange={(e) => setSortBy(e.target.value)}
+              aria-label="Sort entries"
+            >
+              {SORT_OPTIONS.map(opt => (
+                <option key={opt.id} value={opt.id}>{opt.label}</option>
+              ))}
+            </select>
+          </div>
+        </div>
+
+        <div className="mt-3 flex flex-wrap items-center gap-2">
+          <label className="flex items-center gap-2 text-text-primary text-[0.82rem]">
+            <input
+              type="checkbox"
+              checked={combosOnly}
+              onChange={(e) => { setCombosOnly(e.target.checked); setPage(0); }}
+            />
+            <span>Synergies</span>
+          </label>
+          <label className="flex items-center gap-2 text-text-primary text-[0.82rem]">
+            <input
+              type="checkbox"
+              checked={favoritesOnly}
+              onChange={(e) => { setFavoritesOnly(e.target.checked); setPage(0); }}
+            />
+            <span>Favorited</span>
+          </label>
+          <label className="flex items-center gap-2 text-text-primary text-[0.82rem]">
+            <input
+              type="checkbox"
+              checked={annotatedOnly}
+              onChange={(e) => { setAnnotatedOnly(e.target.checked); setPage(0); }}
+            />
+            <span>Annotated</span>
+          </label>
+          {anyActive ? (
+            <button
+              type="button"
+              className="section-title px-2.5 py-1.5 border border-border-hover text-text-primary hover:bg-surface-raised"
+              onClick={clearAll}
+              title="Clear all filters"
+            >
+              Purge
+            </button>
+          ) : null}
+        </div>
       </div>
 
-      {/* Table */}
       {visible.length === 0 ? (
-        <div className="bestiary-codex__empty">
-          <p>The abyss returns nothing for this filter.</p>
+        <div className="panel p-4 text-center">
+          <p className="text-text-muted italic">The abyss returns nothing for this filter.</p>
           {anyActive ? (
-            <button type="button" className="bestiary-codex__empty-btn" onClick={clearAll}>
+            <button
+              type="button"
+              className="mt-2 section-title px-3 py-2 border border-border-hover text-text-primary hover:bg-surface-raised"
+              onClick={clearAll}
+            >
               Lift the binding
             </button>
           ) : null}
         </div>
       ) : (
-        <div className="bestiary-codex__table-wrap">
-          <table className="bestiary-codex__table">
+        <div className="panel overflow-x-auto">
+          <table className="w-full text-left">
             <thead>
               <tr>
-                <th className="bestiary-codex__th bestiary-codex__th--name">Skill</th>
-                <th className="bestiary-codex__th bestiary-codex__th--tier">Tier</th>
-                <th className="bestiary-codex__th bestiary-codex__th--effect">Effect</th>
+                <th className="section-title px-3 py-2 border-b border-border">Skill</th>
+                <th className="section-title px-3 py-2 border-b border-border">Tier</th>
+                <th className="section-title px-3 py-2 border-b border-border">Effect</th>
               </tr>
             </thead>
             <tbody>
@@ -334,34 +345,36 @@ export default function BestiaryCodex({
                 return (
                   <tr
                     key={school.id + '::' + spell.skill}
-                    className={`bestiary-codex__tr bestiary-codex__tr--${tier}`}
+                    data-testid="bestiary-row"
+                    className="cursor-pointer transition-all duration-200 hover:bg-surface-raised"
                     onClick={() => onSpellClick?.(spell, school)}
                     role="button"
                     tabIndex={0}
                     onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') onSpellClick?.(spell, school); }}
                   >
-                    <td className="bestiary-codex__td bestiary-codex__td--name">
-                      <span className="bestiary-codex__td-name">{spell.name}</span>
-                      <span className="bestiary-codex__td-meta">
-                        <span className="bestiary-codex__td-school"><SchoolSigil schoolId={school.id} size={16} /></span>
+                    <td className="px-3 py-2.5 border-b border-border">
+                      <div className="font-['Cinzel'] text-[0.68rem] font-semibold tracking-wide text-text-primary">{spell.name}</div>
+                      <div className="flex flex-wrap items-center gap-2 mt-1">
+                        <span className="text-sickly"><SchoolSigil schoolId={school.id} size={16} /></span>
                         {statusStr !== 'Common' ? (
-                          <span className={`bestiary-codex__td-status ${statusClass(statusStr)}`}>{statusStr}</span>
+                          <span data-testid="bestiary-status" className="font-['Cinzel'] text-[0.6rem] uppercase tracking-widest text-accent border border-accent/40 rounded-sm px-1.5 py-0.5">{statusStr}</span>
                         ) : null}
                         {comboCount > 0 ? (
-                          <span className="bestiary-codex__td-combos">{comboCount}</span>
+                          <span data-testid="bestiary-combos" className="font-['Cinzel'] text-[0.6rem] uppercase tracking-widest text-text-muted border border-border rounded-sm px-1.5 py-0.5">{comboCount}</span>
                         ) : null}
-                      </span>
+                      </div>
                     </td>
-                    <td className="bestiary-codex__td bestiary-codex__td--tier">
+                    <td className="px-3 py-2.5 border-b border-border">
                       <span
-                        className={`bestiary-codex__tier-badge ${tierMeta.className}`}
+                        data-testid="bestiary-tier"
+                        className={cn('inline-flex items-center gap-1.5 border rounded-sm px-2 py-1 text-[0.68rem] font-semibold uppercase tracking-wider', TIER_STYLES[tier] || 'border-border text-text-muted')}
                         title={tierMeta.title}
                       >
-                        <span className="bestiary-codex__tier-mark" aria-hidden="true">⟐</span>
-                        <span className="bestiary-codex__tier-label">{compactLabel}</span>
+                        <span aria-hidden="true">⟐</span>
+                        <span>{compactLabel}</span>
                       </span>
                     </td>
-                    <td className="bestiary-codex__td bestiary-codex__td--effect">
+                    <td className="px-3 py-2.5 border-b border-border text-text-secondary text-[0.82rem]">
                       {spell.effect}
                     </td>
                   </tr>
@@ -372,24 +385,21 @@ export default function BestiaryCodex({
         </div>
       )}
 
-      {/* Pagination */}
       {pageCount > 1 ? (
-        <nav className="bestiary-codex__pager" aria-label="Bestiary pagination">
+        <nav className="mt-3 flex items-center justify-center gap-3.5" aria-label="Bestiary pagination">
           <button
             type="button"
-            className="bestiary-codex__pager-btn"
+            className="font-['Cinzel'] text-[0.7rem] uppercase tracking-widest border border-border text-text-muted px-2.5 py-1 rounded-sm cursor-pointer transition-all duration-200 hover:border-border-hover hover:text-text-primary disabled:opacity-35 disabled:cursor-not-allowed"
             onClick={() => setPage((p) => Math.max(0, p - 1))}
             disabled={safePage === 0}
             aria-label="Previous page"
           >
             ← Earlier
           </button>
-          <span className="bestiary-codex__pager-info">
-            {safePage + 1} / {pageCount}
-          </span>
+          <span className="font-['Cinzel'] text-[0.74rem] text-text-muted tracking-widest">{safePage + 1} / {pageCount}</span>
           <button
             type="button"
-            className="bestiary-codex__pager-btn"
+            className="font-['Cinzel'] text-[0.7rem] uppercase tracking-widest border border-border text-text-muted px-2.5 py-1 rounded-sm cursor-pointer transition-all duration-200 hover:border-border-hover hover:text-text-primary disabled:opacity-35 disabled:cursor-not-allowed"
             onClick={() => setPage((p) => Math.min(pageCount - 1, p + 1))}
             disabled={safePage >= pageCount - 1}
             aria-label="Next page"
@@ -399,10 +409,9 @@ export default function BestiaryCodex({
         </nav>
       ) : null}
 
-      {/* Decorative footer bone */}
-      <div className="bestiary-codex__footer-ornament" aria-hidden="true">
+      <div className="mt-6 text-center text-text-muted" aria-hidden="true">
         <span>⟐</span>
-        <span className="bestiary-codex__footer-rune">ᚦ</span>
+        <span className="mx-2">ᚦ</span>
         <span>⟐</span>
       </div>
     </div>

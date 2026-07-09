@@ -35,7 +35,7 @@ describe('CommuneView — sigil stage', () => {
 
   it('renders 6 sigil cards, one per school', () => {
     renderCommune();
-    const picker = screen.getByText('Choose the Sigil That Calls You').closest('.seance-sigil-picker');
+    const picker = screen.getByText('Choose the Sigil That Calls You').closest('[data-stage="sigil"]');
     const cards = within(picker).getAllByRole('button');
     expect(cards).toHaveLength(6);
   });
@@ -44,7 +44,7 @@ describe('CommuneView — sigil stage', () => {
     renderCommune();
     const meter = screen.getByRole('meter', { name: 'Sanity' });
     expect(meter).toHaveAttribute('aria-valuenow', '5');
-    const filled = meter.querySelectorAll('.seance-sanity__pip--filled');
+    const filled = meter.querySelectorAll('[data-testid="sanity-pip-filled"]');
     expect(filled).toHaveLength(5);
   });
 });
@@ -107,10 +107,10 @@ describe('CommuneView — Beasthood ending at Sanity 0', () => {
     fireEvent.click(screen.getByText(/A failing test, plain to see/i).closest('button'));        // dbg-n2-a
     fireEvent.click(screen.getByText(/The many truths, all fighting for the throat/i).closest('button')); // dbg-d1-c
     fireEvent.click(screen.getByText(/Patience beyond reason/i).closest('button'));              // dbg-d2-a
-    const result = document.querySelector('.seance-result');
+    const result = document.querySelector('[data-testid="seance-result"]');
     expect(result).toBeTruthy();
     expect(result.dataset.beasthood).toBe('true');
-    expect(result.className).toMatch(/seance-result--beasthood/);
+    expect(result.className).toMatch(/border-danger\/40/);
   });
 });
 

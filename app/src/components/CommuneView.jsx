@@ -8,6 +8,7 @@ import ResultCard from './consultation/ResultCard.jsx';
 import SigilSvg from './consultation/SigilSvg.jsx';
 import TentacleSvg from './consultation/TentacleSvg.jsx';
 import Icon from './Icon.jsx';
+import { cn } from '../utils/cn.js';
 
 /**
  * CommuneView — the Séance, a new tab in the bottom nav.
@@ -57,30 +58,30 @@ export default function CommuneView({ onSpellClick, audioEnabled = false }) {
 
   return (
     <div
-      className={`seance seance--sanity-${sanity} ${result?.beasthood ? 'seance--beasthood' : ''}`}
+      className={cn('seance', `seance--sanity-${sanity}`, result?.beasthood && 'seance--beasthood')}
       data-stage={stage}
       data-sanity={sanity}
       role="region"
       aria-label="The Séance"
     >
       {/* Atmospheric backdrops — re-used from the app's visual primitives */}
-      <div className="seance__backdrop" aria-hidden="true" />
+      <div className="absolute inset-0" aria-hidden="true" />
       <SigilSvg sanity={sanity} />
       <TentacleSvg sanity={sanity} />
 
-      <header className="seance__header">
-        <h1 className="seance__title">The Séance</h1>
-        <p className="seance__subtitle">
+      <header className="text-center max-w-[520px] mx-auto z-[2]">
+        <h1 className="font-['Cinzel_Decorative'] text-[1.25rem] font-bold text-text-primary tracking-wide">The Séance</h1>
+        <p className="text-text-secondary text-[0.82rem] mt-1">
           Six domains. Six wounds. Find the incantation that names what ails you.
         </p>
       </header>
 
-      <div className="seance__meters">
+      <div className="flex gap-4">
         <SanityMeter sanity={sanity} />
         <InsightMeter insight={insight} />
       </div>
 
-      <main className="seance__stage">
+      <main className="w-full max-w-[680px]">
         {stage === 'sigil' && (
           <SigilPicker onPick={pickSigil} />
         )}
@@ -103,9 +104,9 @@ export default function CommuneView({ onSpellClick, audioEnabled = false }) {
         )}
       </main>
 
-      <footer className="seance__footer">
+      <footer className="flex justify-center mt-2">
         {stage !== 'sigil' && (
-          <button type="button" className="seance__abandon" onClick={reset}>
+          <button type="button" className="inline-flex items-center gap-1.5 px-3 py-1.5 border border-border text-text-muted text-[0.68rem] uppercase tracking-wider transition-colors hover:border-border-hover hover:text-text-primary" onClick={reset}>
             <Icon name="close" size={14} /> Abandon the Ritual
           </button>
         )}

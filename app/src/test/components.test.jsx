@@ -191,7 +191,7 @@ describe('GrimoireStackLayout search results', () => {
     );
 
     expect(screen.getAllByText('Testing').length).toBeGreaterThanOrEqual(1);
-    expect(container.querySelector('.bestiary-index__row')).not.toBeNull();
+    expect(container.querySelector('[data-testid="bestiary-index-row"]')).not.toBeNull();
   });
 });
 

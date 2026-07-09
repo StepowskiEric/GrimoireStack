@@ -5,6 +5,7 @@ import { getSpellSearchableText } from '../data/spellDisplay.js';
 import SchoolSigil from './SchoolSigil.tsx';
 import { pageCreak } from '../audio/sounds.js';
 import { grimoireIndex } from '../data/grimoireIndexInstance.js';
+import { cn } from '../utils/cn.js';
 
 function getDominantTier(spells) {
   const counts = {};
@@ -19,6 +20,14 @@ function getDominantTier(spells) {
   }
   return best;
 }
+
+const TIER_STYLES = {
+  archmage: 'border-danger/40 text-danger',
+  master: 'border-accent/40 text-accent',
+  adept: 'border-border-hover text-text-primary',
+  apprentice: 'border-[rgba(154,138,170,0.4)] text-[#9a8aaa]',
+  faded: 'border-[rgba(154,154,162,0.4)] text-[#9a9aa2]',
+};
 
 export default function AllSchoolsView({
   onSchoolSelect,
@@ -45,47 +54,47 @@ export default function AllSchoolsView({
   };
 
   return (
-    <div className="bestiary-index">
+    <div className="py-1">
       {!searchQuery && (
-        <div className="bestiary-index__header">
-          <p className="bestiary-index__desc">
+        <div className="panel p-3.5 mb-4">
+          <p className="text-text-secondary text-[0.82rem]">
             Browse all {grimoireIndex.getStats().totalSchools} schools and their {grimoireIndex.getStats().totalSpells} incantations.
           </p>
         </div>
       )}
 
-      <div className="bestiary-index__spine" aria-hidden="true">
-        <div className="bestiary-index__ichor" />
-      </div>
-
-      <div className="bestiary-index__list">
+      <div className="space-y-2">
         {filteredSchools.map((school, idx) => {
           const colors = schoolColors(school.id);
           const tier = getDominantTier(school.spells);
           const tierMeta = TIER_META[tier];
           const isNear = hoveredIdx >= 0 && Math.abs(hoveredIdx - idx) <= 1;
+          const isHover = hoveredIdx === idx;
           return (
             <button
               key={school.id}
-              className={`bestiary-index__row ${isNear ? 'bestiary-index__row--near' : ''} ${hoveredIdx === idx ? 'bestiary-index__row--hover' : ''}`}
+              data-testid="bestiary-index-row"
+              className={cn('w-full text-left border rounded-sm p-3 transition-all duration-200', isHover ? 'border-border-hover bg-surface-raised' : isNear ? 'border-border bg-surface' : 'border-border bg-surface opacity-70')}
               style={colors.cssVars}
               onClick={() => handleClick(school)}
               onMouseEnter={() => setHoveredIdx(idx)}
               onMouseLeave={() => setHoveredIdx(-1)}
               type="button"
             >
-              <div className="bestiary-index__row-symbol"><SchoolSigil schoolId={school.id} size={32} /></div>
-              <div className="bestiary-index__row-body">
-                <div className="bestiary-index__row-name">{school.real}</div>
-                <div className="bestiary-index__row-desc">{school.desc}</div>
-              </div>
-              <div className="bestiary-index__row-meta">
-                <span className="bestiary-index__row-count">{school.spells.length} spells</span>
-                {tierMeta && (
-                  <span className={`bestiary-index__row-tier bestiary-index__row-tier--${tier}`}>
-                    {tierMeta.label}
-                  </span>
-                )}
+              <div className="flex items-center gap-3">
+                <div className="text-sickly"><SchoolSigil schoolId={school.id} size={32} /></div>
+                <div className="flex-1 min-w-0">
+                  <div className="font-['Cinzel'] text-[0.68rem] font-semibold tracking-wide text-text-primary">{school.real}</div>
+                  <div className="text-text-secondary text-[0.82rem] truncate">{school.desc}</div>
+                </div>
+                <div className="flex flex-col items-end gap-1.5">
+                  <span className="font-['Cinzel'] text-[0.68rem] text-text-muted">{school.spells.length} spells</span>
+                  {tierMeta && (
+                    <span className={cn('font-display text-[0.6rem] uppercase tracking-widest border rounded-sm px-1.5 py-0.5', TIER_STYLES[tier] || 'border-border text-text-muted')}>
+                      {tierMeta.label}
+                    </span>
+                  )}
+                </div>
               </div>
             </button>
           );
@@ -93,8 +102,8 @@ export default function AllSchoolsView({
       </div>
 
       {filteredSchools.length === 0 && (
-        <div className="bestiary-index__empty">
-          <p>The abyss returns no wardens for this scrying. Try a different glyph.</p>
+        <div className="panel p-4 text-center">
+          <p className="text-text-muted italic">The abyss returns no wardens for this scrying. Try a different glyph.</p>
         </div>
       )}
     </div>

@@ -31,51 +31,61 @@ export default function SpellDetailView({
     const favorited = isFavorited(activeSpell.name, activeSpell.skill);
 
     return (
-      <div className="spell-detail" style={colors.cssVars}>
-        <div className="spell-detail__spine-deco" aria-hidden="true" />
-        <button className="spell-detail__back" onClick={handleBackToSchool} type="button">
+      <div className="panel p-4" style={colors.cssVars}>
+        <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-[rgba(196,71,71,0.5)] to-transparent" aria-hidden="true" />
+        <button
+          className="section-title mb-3"
+          onClick={handleBackToSchool}
+          type="button"
+        >
           ← Back to {school.real}
         </button>
 
-        <div className="spell-detail__header spell-detail__header--spell">
-          <span className="spell-detail__symbol"><SchoolSigil schoolId={school.id} size={42} /></span>
-          <h2 className="spell-detail__name">{activeSpell.name}</h2>
-          <div className="spell-detail__meta">
-            <span className="spell-detail__tier">{tierName}</span>
+        <div className="flex flex-col items-center gap-2 text-center">
+          <span className="text-sickly"><SchoolSigil schoolId={school.id} size={42} /></span>
+          <h2 className="font-['Cinzel_Decorative'] text-[1.25rem] font-bold text-text-primary tracking-wide">{activeSpell.name}</h2>
+          <div className="flex flex-wrap items-center justify-center gap-2">
+            <span className="font-['Cinzel'] text-[0.68rem] uppercase tracking-widest text-text-muted">{tierName}</span>
             {activeSpell.status && (
-              <span className={`spell-detail__status spell-detail__status--${activeSpell.status.toLowerCase()}`}>
+              <span className="font-['Cinzel'] text-[0.6rem] uppercase tracking-widest text-accent border border-accent/40 rounded-sm px-1.5 py-0.5">
                 {activeSpell.status}
               </span>
             )}
           </div>
         </div>
 
-        <div className="spell-detail__effect">
-          <h3>Effect</h3>
-          <p>{activeSpell.effect}</p>
+        <div className="mt-4">
+          <div className="relative flex items-center gap-2 mb-2">
+            <h3 className="section-title">Effect</h3>
+          </div>
+          <p className="text-text-secondary text-[0.95rem]">{activeSpell.effect}</p>
         </div>
 
         {activeSpell.note && (
-          <div className="spell-detail__note">
-            <h3>Note</h3>
-            <p>{activeSpell.note}</p>
+          <div className="mt-4" data-testid="spell-detail-note">
+            <div className="relative flex items-center gap-2 mb-2">
+              <h3 className="section-title">Note</h3>
+            </div>
+            <p className="text-text-secondary text-[0.95rem]">{activeSpell.note}</p>
           </div>
         )}
 
         {activeSpell.combos && activeSpell.combos.length > 0 && (
-          <div className="spell-detail__combos">
-            <h3>Combinations</h3>
-            <div className="spell-detail__combo-list">
+          <div className="mt-4">
+            <div className="relative flex items-center gap-2 mb-2">
+              <h3 className="section-title">Combinations</h3>
+            </div>
+            <div className="flex flex-wrap gap-2">
               {activeSpell.combos.map((combo) => (
-                <span key={combo} className="spell-detail__combo-tag">{combo}</span>
+                <span key={combo} className="font-['Cinzel'] text-[0.68rem] uppercase tracking-widest text-text-muted border border-border rounded-sm px-2 py-1">{combo}</span>
               ))}
             </div>
           </div>
         )}
 
-        <div className="spell-detail__actions">
+        <div className="mt-5">
           <button
-            className={`spell-detail__fav ${favorited ? 'spell-detail__fav--active' : ''}`}
+            className={favorited ? 'section-title px-3 py-2 border border-accent/40 text-accent' : 'section-title px-3 py-2 border border-border hover:border-border-hover text-text-muted'}
             onClick={() => {
               const result = onToggleFavorite(activeSpell.name, activeSpell.skill);
               if (result === false) {
@@ -92,15 +102,16 @@ export default function SpellDetailView({
             data-testid="warded-seal"
           >
             <Icon name="warded-seal" size={16} />
-            <span>{favorited ? 'Favorited' : 'Add to Favorites'}</span>
+            <span className="ml-2">{favorited ? 'Favorited' : 'Add to Favorites'}</span>
           </button>
         </div>
 
-        {/* Marginalia */}
-        <div className="spell-detail__marginalia">
-          <h3>Marginalia</h3>
+        <div className="mt-5">
+          <div className="relative flex items-center gap-2 mb-2">
+            <h3 className="section-title">Marginalia</h3>
+          </div>
           <textarea
-            className="spell-detail__note-input"
+            className="mt-2 w-full bg-surface-overlay border border-border text-text-primary placeholder:text-text-muted text-[0.95rem] p-2 rounded-sm focus:outline-3 focus:outline-offset-2 focus:border-border-hover"
             placeholder="Add your notes here..."
             value={note}
             onChange={(e) => setNote(e.target.value)}
@@ -112,38 +123,40 @@ export default function SpellDetailView({
 
   // School view with spell list
   return (
-    <div className="spell-detail" style={colors.cssVars}>
-      <div className="spell-detail__spine-deco" aria-hidden="true" />
-      <button className="spell-detail__back" onClick={onBack} type="button">
+    <div className="panel p-4" style={colors.cssVars}>
+      <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-[rgba(196,71,71,0.5)] to-transparent" aria-hidden="true" />
+      <button
+        className="section-title mb-3"
+        onClick={onBack}
+        type="button"
+      >
         ← Back to The Spine
       </button>
-      
-      <div className="spell-detail__header">
-        <span className="spell-detail__symbol"><SchoolSigil schoolId={school.id} size={48} /></span>
-        <h2 className="spell-detail__name">{school.real}</h2>
-        <p className="spell-detail__desc">{school.desc}</p>
-        <div className="spell-detail__school-count">{school.spells.length} incantations</div>
+
+      <div className="flex flex-col items-center gap-2 text-center">
+        <span className="text-sickly"><SchoolSigil schoolId={school.id} size={48} /></span>
+        <h2 className="font-['Cinzel_Decorative'] text-[1.25rem] font-bold text-text-primary tracking-wide">{school.real}</h2>
+        <p className="text-text-secondary text-[0.95rem]">{school.desc}</p>
+        <div className="font-['Cinzel'] text-[0.68rem] uppercase tracking-widest text-text-muted">{school.spells.length} incantations</div>
       </div>
 
-      <div className="spell-detail__spell-list">
-        <div className="spell-detail__spells">
-          {school.spells.map((spell) => (
-            <button
-              key={spell.skill}
-              className="spell-detail__spell-item"
-              onClick={() => handleSpellSelect(spell)}
-              type="button"
-            >
-              <div className="spell-detail__spell-name">{spell.name}</div>
-              <div className="spell-detail__spell-effect">{spell.effect.slice(0, 120)}{spell.effect.length > 120 ? '...' : ''}</div>
-              {spell.status && spell.status !== '—' && (
-                <span className={`spell-detail__spell-status spell-detail__spell-status--${spell.status.toLowerCase()}`}>
-                  {spell.status}
-                </span>
-              )}
-            </button>
-          ))}
-        </div>
+      <div className="mt-4 grid gap-2">
+        {school.spells.map((spell) => (
+          <button
+            key={spell.skill}
+            className="panel-raised text-left p-3 transition-all duration-200 hover:border-border-hover"
+            onClick={() => handleSpellSelect(spell)}
+            type="button"
+          >
+            <div className="font-['Cinzel'] text-[0.68rem] font-semibold tracking-wide text-text-primary">{spell.name}</div>
+            <div className="text-text-secondary text-[0.82rem]">{spell.effect.slice(0, 120)}{spell.effect.length > 120 ? '...' : ''}</div>
+            {spell.status && spell.status !== '—' && (
+              <span className="mt-1 inline-block font-['Cinzel'] text-[0.6rem] uppercase tracking-widest text-accent border border-accent/40 rounded-sm px-1.5 py-0.5" data-testid="spell-status">
+                {spell.status}
+              </span>
+            )}
+          </button>
+        ))}
       </div>
     </div>
   );

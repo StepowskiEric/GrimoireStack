@@ -1,4 +1,56 @@
 {
   "$schema": "./node_modules/nx/schemas/nx-schema.json",
-  "analytics": false
+  "analytics": false,
+  "namedInputs": {
+    "default": ["{projectRoot}/**/*", "sharedGlobals"],
+    "production": [
+      "default",
+      "!{projectRoot}/**/?(*.)+(spec|test).[jt]s?(x)?(.snap)",
+      "!{projectRoot}/tsconfig.spec.json",
+      "!{projectRoot}/jest.config.[jt]s",
+      "!{projectRoot}/.eslintrc.json",
+      "!{projectRoot}/eslint.config.js"
+    ],
+    "sharedGlobals": ["{workspaceRoot}/package.json"]
+  },
+  "targetDefaults": {
+    "build": {
+      "cache": true,
+      "dependsOn": ["^build"],
+      "inputs": ["production", "^production"]
+    },
+    "test": {
+      "cache": true,
+      "inputs": ["default", "^production", "{workspaceRoot}/vitest.config.js"]
+    },
+    "lint": {
+      "cache": true,
+      "inputs": ["default", "{workspaceRoot}/.eslintrc.json"]
+    },
+    "typecheck": {
+      "cache": true,
+      "inputs": ["default", "^production"]
+    },
+    "e2e": {
+      "cache": true,
+      "inputs": ["default", "^production"]
+    },
+    "biome:check": {
+      "cache": true,
+      "inputs": ["default", "{workspaceRoot}/app/biome.json"]
+    },
+    "biome:lint": {
+      "cache": true,
+      "inputs": ["default", "{workspaceRoot}/app/biome.json"]
+    },
+    "biome:format": {
+      "cache": false,
+      "inputs": ["default", "{workspaceRoot}/app/biome.json"]
+    },
+    "verify": {
+      "cache": false,
+      "dependsOn": ["^build"]
+    }
+  },
+  "defaultBase": "main"
 }

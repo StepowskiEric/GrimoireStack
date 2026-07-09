@@ -104,11 +104,8 @@ describe('SpellDetailView', () => {
   it('does not show status badge for spells with em-dash status', () => {
     render(<SpellDetailView school={sampleSchool} onBack={() => {}} />);
     // Minimal Summoning has status '—', should not render a status badge
-    const items = document.querySelectorAll('.spell-detail__spell-item');
-    const minimalItem = Array.from(items).find(el =>
-      el.querySelector('.spell-detail__spell-name')?.textContent === 'Minimal Summoning'
-    );
-    expect(minimalItem.querySelector('.spell-detail__spell-status')).toBeNull();
+    const minimalItem = screen.getByText('Minimal Summoning').closest('button');
+    expect(minimalItem.querySelector('[data-testid="spell-status"]')).toBeNull();
   });
 
   it('returns to school view when back is clicked from spell detail', () => {
@@ -302,7 +299,7 @@ describe('SpellDetailView', () => {
     fireEvent.click(screen.getByText('Trace Sight'));
     // Note section should not exist for spells without a note
     const effectSection = screen.getByText('Effect');
-    const noteHeading = document.querySelector('.spell-detail__note h3');
+    const noteHeading = document.querySelector('[data-testid="spell-detail-note"] h3');
     expect(noteHeading).toBeNull();
   });
 

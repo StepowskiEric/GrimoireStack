@@ -155,7 +155,7 @@ describe('CompareSpellsModal', () => {
         onSelect={() => {}}
       />
     );
-    const diffRows = container.querySelectorAll('.compare-table-row.diff');
+    const diffRows = container.querySelectorAll('[data-testid="compare-table-row"][data-state="diff"]');
     expect(diffRows.length).toBeGreaterThan(0);
   });
 
@@ -168,7 +168,7 @@ describe('CompareSpellsModal', () => {
         onSelect={() => {}}
       />
     );
-    const sameRows = container.querySelectorAll('.compare-table-row.same');
+    const sameRows = container.querySelectorAll('[data-testid="compare-table-row"][data-state="same"]');
     expect(sameRows.length).toBeGreaterThan(0);
   });
 
@@ -196,7 +196,7 @@ describe('CompareSpellsModal', () => {
         onSelect={() => {}}
       />
     );
-    const overlay = container.querySelector('.modal-overlay');
+    const overlay = container.querySelector('[data-testid="compare-overlay"]');
     fireEvent.click(overlay);
     expect(onClose).toHaveBeenCalledTimes(1);
   });
@@ -237,7 +237,7 @@ describe('CompareSpellsModal', () => {
       />
     );
     // Click the left slot button (which contains the spell name)
-    const slotButtons = document.querySelectorAll('.compare-slot');
+    const slotButtons = screen.getAllByTestId('compare-slot');
     fireEvent.click(slotButtons[0]);
     expect(screen.getByText(/Choose a spell for the left side/)).toBeInTheDocument();
   });
@@ -421,7 +421,7 @@ describe('CompareSpellsModal', () => {
     fireEvent.click(screen.getByText('Trace Sight'));
     const rows = screen.getAllByText('Trace Sight');
     // The row in the picker should be disabled
-    const pickerRow = rows.find(el => el.closest('.compare-picker-row'));
+    const pickerRow = rows.find(el => el.closest('[data-testid="compare-picker-row"]'));
     if (pickerRow) {
       expect(pickerRow.closest('button')).toBeDisabled();
     }

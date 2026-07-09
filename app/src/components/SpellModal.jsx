@@ -8,6 +8,7 @@ import { buildShareUrl } from '../utils/urlSpellSync.js';
 import Icon from './Icon.jsx';
 import SchoolSigil from './SchoolSigil.tsx';
 import FamiliarWhisper from './FamiliarWhisper.jsx';
+import { cn } from '../utils/cn.js';
 
 function findSpell(name) {
   const entry = grimoireIndex.resolveByName(name);
@@ -334,7 +335,7 @@ export default function SpellModal({ spell, school, onClose, marginalia, getVote
 
   return (
     // eslint-disable-next-line jsx-a11y/click-events-have-key-events, jsx-a11y/no-static-element-interactions
-    <div className="modal-overlay open" onClick={(e) => { if (e.target === e.currentTarget) onClose(); }}>
+    <div className="modal-overlay open flex" onClick={(e) => { if (e.target === e.currentTarget) onClose(); }} data-testid="spell-modal-overlay">
       {/* Background peering eyes — drift + occasional blink, decorative */}
       <div className="modal-bg-eyes" aria-hidden="true">
         {Array.from({ length: 7 }).map((_, i) => (
@@ -349,7 +350,7 @@ export default function SpellModal({ spell, school, onClose, marginalia, getVote
         ))}
       </div>
 
-      <div className="modal modal-wide" ref={modalRef} role="dialog" aria-modal="true" aria-label={`${spell.name} spell details`}>
+      <div className="modal modal-wide" ref={modalRef} role="dialog" aria-modal="true" aria-label={`${spell.name} spell details`} data-testid="spell-modal-dialog">
         {/* Corner tentacle claws — tapered, multi-curved, with prominent
             suckers, dorsal spines, and a grasping hook at the tip. */}
         {['tl', 'tr', 'bl', 'br'].map((corner) => {
@@ -446,7 +447,7 @@ export default function SpellModal({ spell, school, onClose, marginalia, getVote
           );
         })}
 
-        <button type="button" className="modal-close modal-close--icon" onClick={onClose} aria-label="Close spell details">
+        <button type="button" className="modal-close" onClick={onClose} aria-label="Close spell details">
           <Icon name="close" size={18} />
         </button>
 
@@ -476,11 +477,11 @@ export default function SpellModal({ spell, school, onClose, marginalia, getVote
         </div>
         {hasDistinctTrueName(spell) ? (
           <>
-            <div className="modal-true-name">{spell.trueName}</div>
-            <div className="modal-title modal-title--secondary">{spell.name}</div>
+            <div className="modal-true-name" data-testid="spell-modal-true-name">{spell.trueName}</div>
+            <div className="modal-title modal-title--secondary" data-testid="spell-modal-title-secondary">{spell.name}</div>
           </>
         ) : (
-          <div className="modal-title">{spell.name}</div>
+          <div className="modal-title" data-testid="spell-modal-title">{spell.name}</div>
         )}
         <div className="modal-incantation">〈 {spell.skill} 〉</div>
         <div className="modal-metadata">
@@ -491,7 +492,7 @@ export default function SpellModal({ spell, school, onClose, marginalia, getVote
         <div className="modal-view-toggle">
           <button
             type="button"
-            className={viewMode === 'plain' ? 'active' : ''}
+            className={cn('px-3 py-1.5 border border-border text-text-muted text-[0.68rem] uppercase tracking-wider transition-colors', viewMode === 'plain' && 'border-border-hover text-text-primary bg-surface-raised')}
             onClick={() => setViewMode('plain')}
             aria-pressed={viewMode === 'plain'}
           >
@@ -499,7 +500,7 @@ export default function SpellModal({ spell, school, onClose, marginalia, getVote
           </button>
           <button
             type="button"
-            className={viewMode === 'full' ? 'active' : ''}
+            className={cn('px-3 py-1.5 border border-border text-text-muted text-[0.68rem] uppercase tracking-wider transition-colors', viewMode === 'full' && 'border-border-hover text-text-primary bg-surface-raised')}
             onClick={() => setViewMode('full')}
             aria-pressed={viewMode === 'full'}
           >
@@ -510,7 +511,7 @@ export default function SpellModal({ spell, school, onClose, marginalia, getVote
         {viewMode === 'plain' ? (
           <>
             {spell.note ? (
-              <div className="modal-detail-row modal-note" style={{ display: 'flex' }}>
+              <div className="modal-detail-row modal-note flex" style={{ display: 'flex' }}>
                 <div className="modal-detail-label">Note</div>
                 <div className="modal-detail-value">{spell.note}</div>
               </div>
@@ -589,7 +590,7 @@ export default function SpellModal({ spell, school, onClose, marginalia, getVote
                     <div className="signal-buttons">
                       <button
                         type="button"
-                        className={`signal-btn signal-up${userVote === 'up' ? ' active' : ''}`}
+                        className={cn('signal-btn', 'signal-up', userVote === 'up' && 'active')}
                         onClick={() => castVote?.(spell.skill, 'up')}
                         aria-label="This spell helped me"
                         title="This helped"
@@ -599,7 +600,7 @@ export default function SpellModal({ spell, school, onClose, marginalia, getVote
                       </button>
                       <button
                         type="button"
-                        className={`signal-btn signal-down${userVote === 'down' ? ' active' : ''}`}
+                        className={cn('signal-btn', 'signal-down', userVote === 'down' && 'active')}
                         onClick={() => castVote?.(spell.skill, 'down')}
                         aria-label="This spell did not help"
                         title="Did not help"
@@ -641,7 +642,7 @@ export default function SpellModal({ spell, school, onClose, marginalia, getVote
         <p className="modal-warning">Speak not of this to those who sleep.</p>
 
         <div className="modal-actions">
-          <button type="button" className="modal-share modal-share-half modal-goo-btn" onClick={(e) => {
+          <button type="button" className={cn('modal-share modal-share-half modal-goo-btn', 'w-full')} onClick={(e) => {
             const url = buildShareUrl(window.location.origin, spell.skill);
             const btn = e.currentTarget;
             const restore = () => { btn.innerHTML = btn.dataset.originalHtml; };
@@ -687,7 +688,7 @@ export default function SpellModal({ spell, school, onClose, marginalia, getVote
                 <option key={agent.id} value={agent.id}>{agent.label}</option>
               ))}
             </select>
-            <button type="button" className="modal-share modal-share-half modal-inscribe modal-goo-btn" onClick={(e) => {
+            <button type="button" className={cn('modal-share modal-share-half modal-inscribe modal-goo-btn', 'w-full')} onClick={(e) => {
               const agent = INSCRIBE_AGENTS.find(a => a.id === inscribeAgent);
               const cmd = agent.id === 'factory-droid'
                 ? `Copy ${spell.skill}/SKILL.md into ~/.factory/skills/${spell.skill}/`

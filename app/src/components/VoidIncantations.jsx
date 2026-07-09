@@ -45,14 +45,14 @@ export default function VoidIncantations({ gaze = 0 }) {
   if (gaze < PEAK_THRESHOLD) return null;
 
   return (
-    <form className="void-incantations" onSubmit={handleUtter} aria-label="Void incantations">
-      <label className="void-incantations__label" htmlFor="void-incantation-input">
+    <form className="panel p-3.5" onSubmit={handleUtter} aria-label="Void incantations">
+      <label className="section-title mb-2 block" htmlFor="void-incantation-input">
         The void listens…
       </label>
-      <div className="void-incantations__row">
+      <div className="flex flex-col gap-2 sm:flex-row sm:items-center">
         <input
           id="void-incantation-input"
-          className="void-incantations__input"
+          className="flex-1 bg-surface-overlay border border-border text-text-primary placeholder:text-text-muted text-[0.95rem] p-2 rounded-sm focus:outline-3 focus:outline-offset-2 focus:border-border-hover"
           type="text"
           value={incantation}
           placeholder="utter an incantation"
@@ -62,15 +62,15 @@ export default function VoidIncantations({ gaze = 0 }) {
         />
         <button
           type="submit"
-          className="void-incantations__utter"
+          className="section-title px-3 py-2 border border-border-hover text-text-primary hover:bg-surface-raised disabled:opacity-35 disabled:cursor-not-allowed"
           disabled={status === 'stirring' || !incantation.trim()}
         >
           Utter
         </button>
       </div>
-      {status === 'stirring' && <p className="void-incantations__status">The void stirs…</p>}
+      {status === 'stirring' && <p className="mt-2 text-text-muted text-[0.82rem]">The void stirs…</p>}
       {status === 'error' && (
-        <p className="void-incantations__status void-incantations__status--error">{error}</p>
+        <p className="mt-2 text-danger text-[0.82rem]">{error}</p>
       )}
     </form>
   );

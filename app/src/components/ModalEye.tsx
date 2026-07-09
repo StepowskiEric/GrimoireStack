@@ -1,6 +1,7 @@
 /* eslint-disable react/no-array-index-key -- fixed-size decorative iris detail lines */
 
 import { useEffect, useRef, useState } from 'react';
+import { cn } from '../utils/cn.js';
 
 interface Props {
   size?: number;
@@ -42,7 +43,11 @@ export default function ModalEye({ size = 48, className }: Props) {
 
   return (
     <svg
-      className={`modal-eye ${className || ''} ${opened ? 'modal-eye--opened' : ''} ${reduced ? 'modal-eye--reduced' : ''}`}
+      className={cn(
+        className,
+        opened && 'modal-eye--opened',
+        reduced && 'modal-eye--reduced',
+      )}
       width={w}
       height={h}
       viewBox="0 0 240 160"
@@ -91,7 +96,11 @@ export default function ModalEye({ size = 48, className }: Props) {
 
       {/* Upper lid (the one that opens) */}
       <path
-        className="modal-eye__lid modal-eye__lid--upper"
+        className={cn(
+          'origin-[120px_80px] transition-transform duration-500 ease-[cubic-bezier(0.65,0,0.35,1)]',
+          opened && !reduced && 'translate-y-[-32px]',
+          reduced && 'translate-y-[-32px]',
+        )}
         d="M 15 80 C 15 30 55 12 120 12 C 185 12 225 30 225 80 C 195 32 45 32 15 80 Z"
         fill="#020203"
         stroke="rgba(196,184,152,0.14)"
@@ -99,7 +108,11 @@ export default function ModalEye({ size = 48, className }: Props) {
       />
       {/* Lower lid (static) */}
       <path
-        className="modal-eye__lid modal-eye__lid--lower"
+        className={cn(
+          'origin-[120px_80px] transition-transform duration-500 ease-[cubic-bezier(0.65,0,0.35,1)]',
+          opened && !reduced && 'translate-y-[32px]',
+          reduced && 'translate-y-[32px]',
+        )}
         d="M 15 80 C 15 130 55 148 120 148 C 185 148 225 130 225 80 C 195 128 45 128 15 80 Z"
         fill="#020203"
         stroke="rgba(196,184,152,0.14)"

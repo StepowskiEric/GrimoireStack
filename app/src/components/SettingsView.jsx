@@ -4,6 +4,7 @@ import { useFavorites } from '../hooks/useFavorites.js';
 import { useRecentlyViewed } from '../hooks/useRecentlyViewed.js';
 import { useMarginalia } from '../hooks/useMarginalia.js';
 import { importConfig } from '../utils/exporter.js';
+import { cn } from '../utils/cn.js';
 import Icon from './Icon.jsx';
 
 const GITHUB_REPO_URL = 'https://github.com/StepowskiEric/GrimoireStack';
@@ -34,99 +35,93 @@ export default function SettingsView({
   const { setNotes } = useMarginalia();
 
   return (
-    <div className="settings-view">
-      <h2 className="settings-view__title">{t('settingsTitle')}</h2>
-      <p className="settings-view__sub">
-        {t('settingsSub')}
-      </p>
+    <div className="py-1">
+      <div className="text-center mb-4">
+        <h2 className="font-['Cinzel_Decorative'] text-[1.25rem] font-bold text-text-primary tracking-wide">{t('settingsTitle')}</h2>
+        <p className="text-text-secondary text-[0.82rem] mt-1">{t('settingsSub')}</p>
+      </div>
 
-      <div className="settings-view__selector">
+      <div className="flex flex-wrap justify-center gap-2 mb-4">
         {SECTIONS.map(section => (
           <button
             key={section.id}
-            className={`settings-view__section-btn ${activeSection === section.id ? 'settings-view__section-btn--active' : ''}`}
+            className={cn('flex items-center gap-2 px-3 py-2 border rounded-sm text-[0.68rem] font-semibold uppercase tracking-wider transition-all duration-200', activeSection === section.id ? 'border-border-hover bg-surface-raised text-text-primary' : 'border-border bg-surface text-text-muted hover:border-border-hover')}
             onClick={() => setActiveSection(section.id)}
             type="button"
           >
-            <span className="settings-view__section-icon"><Icon name={section.icon} size={18} /></span>
-            <span className="settings-view__section-name">{t(section.nameKey)}</span>
+            <span className="text-sickly"><Icon name={section.icon} size={18} /></span>
+            <span>{t(section.nameKey)}</span>
           </button>
         ))}
       </div>
 
-      <div className="settings-view__content">
+      <div className="panel p-4">
         {activeSection === 'language' && (
-          <div className="settings-view__section-content">
-            <h3>{t('settingsVoiceTitle')}</h3>
-            <p>
-              {t('settingsVoiceSub')}
-            </p>
-            <div className="settings-view__option">
-              <label htmlFor="lang-select">{t('settingsLanguageLabel')}</label>
-              {/* eslint-disable-next-line jsx-a11y/no-onchange */}
-              <select
-                id="lang-select"
-                className="settings-view__select"
-                value={lang}
-                onChange={(e) => setLang(e.target.value)}
-              >
-                <option value="grimoire">{t('languageGrimoire')} ({t('settingsThemed')})</option>
-                <option value="plain">{t('languagePlain')}</option>
-              </select>
+          <div>
+            <div className="relative flex items-center gap-2 mb-2">
+              <h3 className="section-title">{t('settingsVoiceTitle')}</h3>
             </div>
+            <p className="text-text-secondary text-[0.82rem] mb-3">{t('settingsVoiceSub')}</p>
+            <label className="block text-text-primary text-[0.82rem] mb-1" htmlFor="lang-select">{t('settingsLanguageLabel')}</label>
+            {/* eslint-disable-next-line jsx-a11y/no-onchange */}
+            <select
+              id="lang-select"
+              className="w-full bg-surface-overlay border border-border text-text-primary text-[0.95rem] p-2 rounded-sm focus:outline-3 focus:outline-offset-2 focus:border-border-hover"
+              value={lang}
+              onChange={(e) => setLang(e.target.value)}
+            >
+              <option value="grimoire">{t('languageGrimoire')} ({t('settingsThemed')})</option>
+              <option value="plain">{t('languagePlain')}</option>
+            </select>
           </div>
         )}
 
         {activeSection === 'data' && (
-          <div className="settings-view__section-content">
-            <h3>{t('settingsVaultTitle')}</h3>
-            <p>
-              {t('settingsVaultSub')}
-            </p>
+          <div>
+            <div className="relative flex items-center gap-2 mb-2">
+              <h3 className="section-title">{t('settingsVaultTitle')}</h3>
+            </div>
+            <p className="text-text-secondary text-[0.82rem] mb-3">{t('settingsVaultSub')}</p>
 
-            <div className="settings-view__export-group">
-              <div className="settings-view__export-row">
+            <div className="grid gap-3 md:grid-cols-2">
+              <div className="panel-raised p-3">
                 <button
-                  className="settings-view__action-btn"
+                  className="section-title w-full text-left"
                   onClick={onExportJson}
                   type="button"
                   title={t('exportJsonDesc')}
                 >
                   <Icon name="clipboard" size={16} /> {t('exportJson')}
                 </button>
-                <p className="settings-view__option-hint">
-                  {t('exportJsonDesc')}
-                </p>
+                <p className="text-text-muted text-[0.78rem] mt-1">{t('exportJsonDesc')}</p>
               </div>
-              <div className="settings-view__export-row">
+              <div className="panel-raised p-3">
                 <button
-                  className="settings-view__action-btn"
+                  className="section-title w-full text-left"
                   onClick={onExportMarkdown}
                   type="button"
                   title={t('exportMdDesc')}
                 >
                   <Icon name="clipboard" size={16} /> {t('exportMarkdown')}
                 </button>
-                <p className="settings-view__option-hint">
-                  {t('exportMdDesc')}
-                </p>
+                <p className="text-text-muted text-[0.78rem] mt-1">{t('exportMdDesc')}</p>
               </div>
             </div>
 
-            <div className="settings-view__import-group">
-              <h4>{t('importHeading')}</h4>
-              <p className="settings-view__option-hint">
-                {t('settingsImportHint')}
-              </p>
+            <div className="mt-4">
+              <div className="relative flex items-center gap-2 mb-2">
+                <h3 className="section-title">{t('importHeading')}</h3>
+              </div>
+              <p className="text-text-muted text-[0.78rem] mb-2">{t('settingsImportHint')}</p>
               <textarea
-                className="settings-view__import-textarea"
+                className="mt-2 w-full bg-surface-overlay border border-border text-text-primary placeholder:text-text-muted text-[0.95rem] p-2 rounded-sm focus:outline-3 focus:outline-offset-2 focus:border-border-hover"
                 placeholder={t('importPlaceholder')}
                 rows={4}
                 value={importText}
                 onChange={(e) => setImportText(e.target.value)}
               />
               <button
-                className="settings-view__action-btn settings-view__action-btn--restore"
+                className="mt-2 section-title px-3 py-2 border border-border-hover text-text-primary hover:bg-surface-raised"
                 type="button"
                 onClick={() => {
                   if (!importText.trim()) return;
@@ -143,9 +138,11 @@ export default function SettingsView({
               </button>
             </div>
 
-            <div className="settings-view__sync-group">
-              <h4>Cross-device binding</h4>
-              <p className="settings-view__option-hint">
+            <div className="mt-4">
+              <div className="relative flex items-center gap-2 mb-2">
+                <h3 className="section-title">Cross-device binding</h3>
+              </div>
+              <p className="text-text-muted text-[0.78rem] mb-2">
                 {sync?.code
                   ? 'Your circle is bound. Enter the same code on another device to merge your incantations.'
                   : 'Bind your circle to a short code so it follows you between devices. No account required.'}
@@ -166,7 +163,7 @@ export default function SettingsView({
                 />
               ) : (
                 <button
-                  className="settings-view__action-btn"
+                  className="section-title px-3 py-2 border border-border-hover text-text-primary hover:bg-surface-raised"
                   type="button"
                   onClick={() => {
                     const newCode = sync.enableSync();
@@ -182,13 +179,13 @@ export default function SettingsView({
         )}
 
         {activeSection === 'display' && (
-          <div className="settings-view__section-content">
-            <h3>{t('settingsSightTitle')}</h3>
-            <p>
-              {t('settingsSightSub')}
-            </p>
-            <div className="settings-view__option">
-              <label className="settings-view__toggle">
+          <div>
+            <div className="relative flex items-center gap-2 mb-2">
+              <h3 className="section-title">{t('settingsSightTitle')}</h3>
+            </div>
+            <p className="text-text-secondary text-[0.82rem] mb-3">{t('settingsSightSub')}</p>
+            <div className="panel-raised p-3 mb-2">
+              <label className="flex items-center gap-2 text-text-primary text-[0.82rem]">
                 <input
                   type="checkbox"
                   checked={audioEnabled}
@@ -196,12 +193,10 @@ export default function SettingsView({
                 />
                 <span>{t('settingsEnableSounds')}</span>
               </label>
-              <p className="settings-view__option-hint">
-                {t('settingsSoundsHint')}
-              </p>
+              <p className="text-text-muted text-[0.78rem] mt-1">{t('settingsSoundsHint')}</p>
             </div>
-            <div className="settings-view__option">
-              <label className="settings-view__toggle">
+            <div className="panel-raised p-3">
+              <label className="flex items-center gap-2 text-text-primary text-[0.82rem]">
                 <input
                   type="checkbox"
                   checked={castEnabled}
@@ -214,9 +209,11 @@ export default function SettingsView({
         )}
 
         {activeSection === 'agent' && (
-          <div className="settings-view__section-content">
-            <h3>Agent Mode</h3>
-            <p>
+          <div>
+            <div className="relative flex items-center gap-2 mb-2">
+              <h3 className="section-title">Agent Mode</h3>
+            </div>
+            <p className="text-text-secondary text-[0.82rem]">
               Uses <strong>page-agent</strong> with <strong>Groq</strong>
               ({' '}<code>qwen/qwen3.6-27b</code>) to visually navigate to the
               best skill card. The Groq API key is configured on the server
@@ -226,17 +223,17 @@ export default function SettingsView({
         )}
 
         {activeSection === 'about' && (
-          <div className="settings-view__section-content">
-            <h3>{t('settingsAboutTitle')}</h3>
-            <p>
-              {t('settingsAboutBody')}
-            </p>
-            <div className="settings-view__links">
-              <button className="settings-view__link" onClick={onShowShortcuts} type="button">
+          <div>
+            <div className="relative flex items-center gap-2 mb-2">
+              <h3 className="section-title">{t('settingsAboutTitle')}</h3>
+            </div>
+            <p className="text-text-secondary text-[0.82rem] mb-3">{t('settingsAboutBody')}</p>
+            <div className="flex flex-wrap gap-2">
+              <button className="section-title px-3 py-2 border border-border-hover text-text-primary hover:bg-surface-raised" onClick={onShowShortcuts} type="button">
                 {t('shortcutsTitle')}
               </button>
               <a
-                className="settings-view__link"
+                className="section-title px-3 py-2 border border-border-hover text-text-primary hover:bg-surface-raised"
                 href={GITHUB_REPO_URL}
                 target="_blank"
                 rel="noopener noreferrer"
@@ -278,11 +275,11 @@ function SyncStatus({ code, status, lastSyncedAt, error, onSyncNow, onDisconnect
     return 'Idle';
   })();
   return (
-    <div className="settings-view__sync-status">
-      <div className="settings-view__sync-code-row">
-        <code className="settings-view__sync-code" data-testid="sync-code">{display}</code>
+    <div className="panel p-3">
+      <div className="flex flex-wrap items-center gap-2">
+        <code className="flex-1 bg-surface-overlay border border-border text-text-primary text-[0.82rem] p-2 rounded-sm" data-testid="sync-code">{display}</code>
         <button
-          className="settings-view__action-btn settings-view__action-btn--small"
+          className="section-title px-2.5 py-2 border border-border text-text-muted hover:border-border-hover"
           type="button"
           onClick={() => setRevealed((v) => !v)}
           title={revealed ? 'Hide code' : 'Show code'}
@@ -290,7 +287,7 @@ function SyncStatus({ code, status, lastSyncedAt, error, onSyncNow, onDisconnect
           {revealed ? 'Hide' : 'Show'}
         </button>
         <button
-          className="settings-view__action-btn settings-view__action-btn--small"
+          className="section-title px-2.5 py-2 border border-border text-text-muted hover:border-border-hover"
           type="button"
           onClick={handleCopy}
           title="Copy code"
@@ -299,15 +296,15 @@ function SyncStatus({ code, status, lastSyncedAt, error, onSyncNow, onDisconnect
         </button>
       </div>
       <p
-        className={`settings-view__sync-status-text settings-view__sync-status-text--${status}`}
+        className={cn('mt-2 text-[0.78rem]', status === 'error' ? 'text-danger' : 'text-text-muted')}
         role="status"
         aria-live="polite"
       >
         {statusLabel}
       </p>
-      <div className="settings-view__sync-actions">
+      <div className="mt-3 flex flex-wrap gap-2">
         <button
-          className="settings-view__action-btn"
+          className="section-title px-3 py-2 border border-border-hover text-text-primary hover:bg-surface-raised"
           type="button"
           onClick={onSyncNow}
           disabled={status === 'syncing'}
@@ -315,7 +312,7 @@ function SyncStatus({ code, status, lastSyncedAt, error, onSyncNow, onDisconnect
           <Icon name="sigil" size={14} /> Sync now
         </button>
         <button
-          className="settings-view__action-btn settings-view__action-btn--restore"
+          className="section-title px-3 py-2 border border-danger/40 text-danger hover:bg-danger-subtle"
           type="button"
           onClick={onDisconnect}
         >

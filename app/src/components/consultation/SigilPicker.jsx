@@ -10,26 +10,26 @@ import SchoolSigil from '../SchoolSigil.tsx';
  */
 export default function SigilPicker({ onPick }) {
   return (
-    <div className="seance-sigil-picker" data-stage="sigil">
-      <h2 className="seance-sigil-picker__title">Choose the Sigil That Calls You</h2>
-      <p className="seance-sigil-picker__subtitle">
+    <div className="flex flex-col items-center gap-4" data-stage="sigil">
+      <h2 className="font-['Cinzel_Decorative'] text-[1.25rem] font-bold text-text-primary tracking-wide text-center">Choose the Sigil That Calls You</h2>
+      <p className="text-text-muted text-[0.82rem] text-center italic">
         Six domains. Six wounds. Touch the one that answers.
       </p>
-      <div className="seance-sigil-picker__grid" role="list">
+      <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 w-full max-w-2xl" role="list">
         {SEANCE_SIGILS.map((sigil) => (
           <button
             key={sigil.id}
             type="button"
-            className="seance-sigil-card"
+            className="panel-raised flex flex-col items-center gap-2 p-4 cursor-pointer transition-all duration-200 hover:border-border-hover"
             onClick={() => onPick(sigil.schoolId)}
             data-school-id={sigil.schoolId}
           >
-            <span className="seance-sigil-card__symbol" aria-hidden="true">
+            <span className="text-sickly" aria-hidden="true">
               <SchoolSigil schoolId={sigil.schoolId} size={42} animated />
             </span>
-            <span className="seance-sigil-card__name">{sigil.crypticName}</span>
-            <span className="seance-sigil-card__label">{sigil.plainLabel}</span>
-            <span className="seance-sigil-card__line">{sigil.crypticLine}</span>
+            <span className="font-['Cinzel'] text-[0.78rem] font-semibold text-text-primary">{sigil.crypticName}</span>
+            <span className="text-text-muted text-[0.7rem]">{sigil.plainLabel}</span>
+            <span className="text-text-muted text-[0.68rem] italic">{sigil.crypticLine}</span>
           </button>
         ))}
       </div>

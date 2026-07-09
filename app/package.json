@@ -21,6 +21,11 @@
     "lint:fix": "eslint src scripts eslint.config.js --fix",
     "typecheck": "tsc --noEmit",
     "verify": "npm run lint && npm run typecheck && npm test",
+    "biome:check": "biome check .",
+    "biome:lint": "biome lint .",
+    "biome:format": "biome format .",
+    "biome:fix": "biome check --write .",
+    "biome:ci": "biome ci .",
     "sync": "node ../scripts/sync-all.mjs",
     "sync:dry": "node ../scripts/sync-all.mjs --dry",
     "skill": "node ../scripts/skill.mjs",
@@ -28,13 +33,17 @@
     "remove-skill": "node ../scripts/skill.mjs remove"
   },
   "dependencies": {
+    "class-variance-authority": "^0.7.1",
+    "clsx": "^2.1.1",
     "page-agent": "^1.11.0",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
-    "react-router-dom": "^7.17.0"
+    "react-router-dom": "^7.17.0",
+    "tailwind-merge": "^3.6.0"
   },
   "devDependencies": {
     "@axe-core/playwright": "^4.11.3",
+    "@biomejs/biome": "2.2.4",
     "@eslint/js": "^9.39.4",
     "@nx/eslint": "23.0.1",
     "@nx/playwright": "23.0.1",

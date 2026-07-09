@@ -188,27 +188,27 @@ export default function GrimoireStackLayout({
     }
     if (pageKey === 'school-detail' && activeSchool) {
       return (
-        <div className="school-detail">
-          <div className="school-detail__header">
+        <div className="flex flex-col gap-4">
+          <div className="flex items-center gap-3">
             <button
               type="button"
-              className="school-detail__back"
+              className="px-3 py-2 border border-border text-text-muted text-[0.68rem] uppercase tracking-wider transition-colors hover:border-border-hover hover:text-text-primary"
               onClick={() => handleTabSelect(TABS.LIBRARY)}
               aria-label="Back to all schools"
             >
               ← All Schools
             </button>
-            <div className="school-detail__title">
-              <span className="school-detail__symbol"><SchoolSigil schoolId={activeSchool.id} size={36} /></span>
+            <div className="flex items-center gap-2">
+              <span className="text-sickly"><SchoolSigil schoolId={activeSchool.id} size={36} /></span>
               <div>
-                <h2 className="school-detail__name">{activeSchool.real}</h2>
-                <p className="school-detail__count">
+                <h2 className="font-['Cinzel'] text-[1rem] font-bold text-text-primary tracking-wide">{activeSchool.real}</h2>
+                <p className="text-text-muted text-[0.78rem]">
                   {activeSchool.spells.length} {activeSchool.spells.length === 1 ? 'spell' : 'spells'}
                 </p>
               </div>
             </div>
           </div>
-          <div className="school-detail__grid">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
             {activeSchool.spells.map((spell) => (
               <SpellCard
                 key={spell.name}
@@ -316,15 +316,15 @@ export default function GrimoireStackLayout({
   }
   return (
     <div
-      className={`flex min-h-screen flex-col relative z-[1] ${isMobile ? 'flex-col' : ''}`}
+      className="flex min-h-screen flex-col relative z-[1]"
       data-gaze={gaze}
       style={{ '--gaze-veil': gaze }}
     >
       {/* Abyssal background with floating particles */}
-      <div className="abyss-background" />
+      <div className="abyss-background" aria-hidden="true" />
 
       {/* Corner tentacle decorations */}
-      <svg className="corner-vines corner-vines--tl" viewBox="0 0 200 200" preserveAspectRatio="xMinYMin meet">
+      <svg className="absolute top-0 left-0 w-[200px] h-[200px] pointer-events-none" viewBox="0 0 200 200" preserveAspectRatio="xMinYMin meet">
         <path d="M 0,40 C 40,35 60,60 80,50 C 100,40 110,70 130,55 C 150,40 160,80 180,65" 
           fill="none" stroke="rgba(138,154,106,0.06)" strokeWidth="1.5" strokeLinecap="round" />
         <path d="M 0,55 C 35,50 55,75 75,65 C 95,55 105,85 125,70 C 145,55 155,95 175,80" 
@@ -332,19 +332,19 @@ export default function GrimoireStackLayout({
         <path d="M 0,25 C 30,20 50,45 70,35 C 90,25 100,55 120,40" 
           fill="none" stroke="rgba(138,154,106,0.04)" strokeWidth="0.8" strokeLinecap="round" />
       </svg>
-      <svg className="corner-vines corner-vines--tr" viewBox="0 0 200 200" preserveAspectRatio="xMaxYMin meet">
+      <svg className="absolute top-0 right-0 w-[200px] h-[200px] pointer-events-none" viewBox="0 0 200 200" preserveAspectRatio="xMaxYMin meet">
         <path d="M 200,40 C 160,35 140,60 120,50 C 100,40 90,70 70,55 C 50,40 40,80 20,65" 
           fill="none" stroke="rgba(138,154,106,0.06)" strokeWidth="1.5" strokeLinecap="round" />
         <path d="M 200,55 C 165,50 145,75 125,65 C 105,55 95,85 75,70 C 55,55 45,95 25,80" 
           fill="none" stroke="rgba(122,58,90,0.04)" strokeWidth="1" strokeLinecap="round" />
       </svg>
-      <svg className="corner-vines corner-vines--bl" viewBox="0 0 200 200" preserveAspectRatio="xMinYMax meet">
+      <svg className="absolute bottom-0 left-0 w-[200px] h-[200px] pointer-events-none" viewBox="0 0 200 200" preserveAspectRatio="xMinYMax meet">
         <path d="M 0,160 C 40,165 60,140 80,150 C 100,160 110,130 130,145 C 150,160 160,120 180,135" 
           fill="none" stroke="rgba(138,154,106,0.06)" strokeWidth="1.5" strokeLinecap="round" />
         <path d="M 0,145 C 35,150 55,125 75,135 C 95,145 105,115 125,130 C 145,145 155,105 175,120" 
           fill="none" stroke="rgba(122,58,90,0.04)" strokeWidth="1" strokeLinecap="round" />
       </svg>
-      <svg className="corner-vines corner-vines--br" viewBox="0 0 200 200" preserveAspectRatio="xMaxYMax meet">
+      <svg className="absolute bottom-0 right-0 w-[200px] h-[200px] pointer-events-none" viewBox="0 0 200 200" preserveAspectRatio="xMaxYMax meet">
         <path d="M 200,160 C 160,165 140,140 120,150 C 100,160 90,130 70,145 C 50,160 40,120 20,135" 
           fill="none" stroke="rgba(138,154,106,0.06)" strokeWidth="1.5" strokeLinecap="round" />
         <path d="M 200,145 C 165,150 145,125 125,135 C 105,145 95,115 75,130 C 55,145 45,105 25,120" 
@@ -359,7 +359,7 @@ export default function GrimoireStackLayout({
       <div className="gaze-veil" aria-hidden="true" />
       {/* Cosmic tendrils at peak gaze — Slice 09 */}
       <div className="gaze-tentacles" aria-hidden="true">
-        <svg className="gaze-tentacles__svg" viewBox="0 0 1000 420" preserveAspectRatio="xMidYMin slice">
+        <svg className="w-full h-full" viewBox="0 0 1000 420" preserveAspectRatio="xMidYMin slice">
           <defs>
             <linearGradient id="tentacleGradShell" x1="0" y1="0" x2="0" y2="1">
               <stop offset="0%" stopColor="#4a6cff" stopOpacity="0.85" />
@@ -380,7 +380,7 @@ export default function GrimoireStackLayout({
       </div>
       {/* Void incantations — the eye listens at peak gaze (Slice 10) */}
       <VoidIncantations gaze={gaze} />
-      <div className={`flex flex-1 gap-0 w-full ${isMobile ? 'flex-col px-3 pb-20 pt-5' : 'p-5'}`}>
+      <div className={`flex flex-1 w-full ${isMobile ? 'flex-col px-3 pb-20 pt-5' : 'p-5'}`}>
         {/* Left sidebar */}
         <aside className={`${isMobile ? 'w-full min-w-full flex-row flex-wrap gap-2 p-3 mb-3' : 'w-60 min-w-60 flex flex-col p-4'} bg-[rgba(8,10,16,0.6)] border border-[rgba(138,154,106,0.08)] rounded-lg backdrop-blur-md`} aria-label="Sidebar">
           <div className={`${isMobile ? 'w-full mb-3 pb-3 border-b border-[rgba(138,154,106,0.1)]' : 'text-center mb-4 pb-3 border-b border-[rgba(138,154,106,0.1)]'}`}>
@@ -417,13 +417,13 @@ export default function GrimoireStackLayout({
           <div className={`${isMobile ? 'w-full mt-2 pt-2 border-t border-[rgba(138,154,106,0.08)] flex flex-wrap gap-2 justify-center' : 'mt-auto pt-3 border-t border-[rgba(138,154,106,0.08)] flex flex-wrap gap-2'}`}>
             <LanguageToggle />
             <div className="w-full h-px bg-gradient-to-r from-transparent via-[rgba(138,154,106,0.12)] to-transparent" />
-            <button className="eye-footer-link" onClick={onShowShortcuts} type="button">
+            <button className="px-3 py-1.5 border border-border text-text-muted text-[0.68rem] uppercase tracking-wider transition-colors hover:border-border-hover hover:text-text-primary" onClick={onShowShortcuts} type="button">
               <Icon name="sigil" size={14} /> Shortcuts
             </button>
-            <button className="eye-footer-link" onClick={onExportJson} type="button">
+            <button className="px-3 py-1.5 border border-border text-text-muted text-[0.68rem] uppercase tracking-wider transition-colors hover:border-border-hover hover:text-text-primary" onClick={onExportJson} type="button">
               <Icon name="archive" size={14} /> Export JSON
             </button>
-            <button className="eye-footer-link" onClick={onExportMarkdown} type="button">
+            <button className="px-3 py-1.5 border border-border text-text-muted text-[0.68rem] uppercase tracking-wider transition-colors hover:border-border-hover hover:text-text-primary" onClick={onExportMarkdown} type="button">
               <Icon name="clipboard" size={14} /> Export Markdown
             </button>
           </div>
@@ -441,17 +441,17 @@ export default function GrimoireStackLayout({
             {!ritualOrch.activePanel && (
               <button
                 type="button"
-                className="oracle-cta__btn oracle-cta__btn--ritual"
+                className="w-full flex items-center justify-center gap-2.5 px-4 py-3 bg-gradient-to-b from-[rgba(20,28,40,.7)] to-[rgba(10,14,22,.9)] border border-[rgba(138,154,106,.25)] rounded-lg cursor-pointer transition-all duration-200 font-['Cinzel'] text-[0.85rem] font-semibold uppercase tracking-widest text-sickly-bright hover:border-[rgba(138,154,106,.5)] hover:shadow-[0_0_20px_rgba(138,154,106,.15)]"
                 onClick={ritualOrch.openRitual}
                 aria-label="Begin the Ritual"
               >
-                <span className="oracle-cta__icon"><Icon name="oracle" size={20} /></span>
-                <span className="oracle-cta__label">Begin the Ritual</span>
-                <span className="oracle-cta__chevron" />
+                <span className="inline-flex items-center justify-center text-sickly"><Icon name="oracle" size={20} /></span>
+                <span className="flex-1 text-center">Begin the Ritual</span>
+                <span className="ml-auto h-2 w-2 rotate-45 border-r border-b border-[rgba(138,154,106,.4)]" />
               </button>
             )}
             {ritualOrch.activePanel === 'ritual' && (
-              <div className="oracle-cta__body">
+              <div className="pt-2 pb-1">
                 <RitualPanel
                   ritual={ritualOrch.ritual}
                   onConverge={ritualOrch.handleRitualConverge}
@@ -463,10 +463,8 @@ export default function GrimoireStackLayout({
 
         {/* Right panel - content */}
         <aside className={`${isMobile ? 'w-full min-w-full' : 'flex-1 min-w-[420px]'} p-5 bg-[rgba(8,10,16,0.6)] border border-[rgba(138,154,106,0.08)] rounded-lg backdrop-blur-md overflow-y-auto max-h-[calc(100vh-120px)]`} aria-label="Main content">
-          <div className="text-silver content-visibility-auto contain-intrinsic-size-[500px]" id="main-content" key={`${activeTab}-${pageKey}-${searchQuery || ''}`}>
-            <div className="spine-transition">
-              {renderContent()}
-            </div>
+          <div className="text-silver" id="main-content" key={`${activeTab}-${pageKey}-${searchQuery || ''}`}>
+            {renderContent()}
           </div>
         </aside>
       </div>
@@ -492,25 +490,23 @@ export default function GrimoireStackLayout({
       <footer className="flex justify-between items-center px-6 py-3 border-t border-[rgba(138,154,106,0.06)] font-['Cormorant_Garamond'] text-[0.72rem] text-silver-dim">
         <span className="italic text-sickly-dim">"All eyes remain open."</span>
         <a
-          className="eye-footer__github"
           href="https://github.com/StepowskiEric/GrimoireStack"
           target="_blank"
           rel="noopener noreferrer"
           aria-label="GrimoireStack on GitHub"
           title="GrimoireStack on GitHub"
+          className="inline-flex items-center gap-2 text-silver-dim transition-colors hover:text-sickly"
         >
           <svg
-            className="eye-footer__github-icon"
+            className="h-5 w-5"
             viewBox="0 0 24 24"
-            width="20"
-            height="20"
             fill="currentColor"
             aria-hidden="true"
             focusable="false"
           >
             <path d="M12 .5C5.65.5.5 5.65.5 12c0 5.08 3.29 9.39 7.86 10.91.58.1.79-.25.79-.56v-2.16c-3.2.7-3.87-1.36-3.87-1.36-.52-1.32-1.28-1.67-1.28-1.67-1.04-.71.08-.7.08-.7 1.15.08 1.76 1.18 1.76 1.18 1.03 1.76 2.7 1.25 3.36.96.1-.75.4-1.25.73-1.54-2.55-.29-5.24-1.28-5.24-5.7 0-1.26.45-2.29 1.18-3.1-.12-.29-.51-1.46.11-3.04 0 0 .97-.31 3.18 1.18a11.04 11.04 0 0 1 5.8 0c2.2-1.49 3.17-1.18 3.17-1.18.63 1.58.24 2.75.12 3.04.74.81 1.18 1.84 1.18 3.1 0 4.43-2.7 5.41-5.27 5.69.41.36.78 1.06.78 2.14v3.17c0 .31.21.67.8.56C20.21 21.39 23.5 17.08 23.5 12 23.5 5.65 18.35.5 12 .5Z" />
           </svg>
-          <span className="eye-footer__github-label">Source</span>
+          <span className="text-[0.72rem]">Source</span>
         </a>
       </footer>
       {wandering && (

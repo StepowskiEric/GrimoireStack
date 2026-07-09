@@ -9,15 +9,15 @@ export default function OptionButton({ option, onTap, disabled }) {
   return (
     <button
       type="button"
-      className="seance-option"
+      className="panel-raised w-full text-left p-3 cursor-pointer transition-all duration-200 disabled:opacity-40 disabled:cursor-not-allowed"
       onClick={() => onTap(option.id)}
       disabled={disabled}
       data-option-id={option.id}
     >
-      <span className="seance-option__glyph" aria-hidden="true">
+      <span className="text-sickly text-lg" aria-hidden="true">
         {option.sigilGlyph || '\u2756'}
       </span>
-      <span className="seance-option__label">{option.label}</span>
+      <span className="text-text-primary text-[0.95rem]">{option.label}</span>
     </button>
   );
 }

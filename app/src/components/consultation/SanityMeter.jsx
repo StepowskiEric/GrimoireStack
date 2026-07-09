@@ -44,14 +44,15 @@ export default function SanityMeter({ sanity, maxSanity = SEANCE_MAX_SANITY }) {
       aria-valuenow={sanity}
       data-sanity={sanity}
     >
-      <span className="seance-sanity__label">Sanity</span>
-      <div className="seance-sanity__pips" aria-hidden="true">
+      <span className="font-['Cinzel'] text-[0.68rem] uppercase tracking-widest text-text-muted">Sanity</span>
+      <div className="flex items-center gap-1.5" aria-hidden="true">
         {pips.map((filled, i) => (
           <span
             key={`pip-${i}`}
+            data-testid={filled ? 'sanity-pip-filled' : undefined}
             className={[
-              'seance-sanity__pip',
-              filled ? 'seance-sanity__pip--filled' : 'seance-sanity__pip--drained',
+              'h-2 w-2 rounded-full border border-border transition-all duration-200',
+              filled ? 'bg-accent shadow-[0_0_8px_rgba(212,175,55,0.35)]' : 'bg-surface-overlay',
               i === drainingIndex ? 'seance-sanity__pip--draining' : '',
             ]
               .filter(Boolean)
