@@ -6912,6 +6912,19 @@ header .header-sigil-text{display:none}
   pointer-events: none;
 }
 
+/* Slice 07 — background eyes swarm: a slow, staggered blink so the field feels
+   watched. Per-eye animation-delay is set inline from the eye data. Disabled
+   under prefers-reduced-motion. Opacity-only, so no layout thrash / rAF cost. */
+@media (prefers-reduced-motion: no-preference) {
+  .bg-eye-group {
+    animation: bg-eye-blink 7s ease-in-out infinite;
+  }
+}
+@keyframes bg-eye-blink {
+  0%, 100% { opacity: 0.6; }
+  50% { opacity: 1; }
+}
+
 /* The eye container */
 .great-eye-container {
   position: relative;

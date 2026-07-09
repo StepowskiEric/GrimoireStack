@@ -31,6 +31,9 @@ export default function GrimoireEye({ mood = 'neutral', gaze = 0.25 } = {}) {
       `drop-shadow(${(-abOff).toFixed(2)}px 0 0 rgba(176,74,138,${abOp.toFixed(3)}))`
     : 'none';
 
+  // Slice 07 — background eyes swarm: density scales with gaze (20 → 60, capped).
+  const bgCount = Math.min(60, Math.round(20 + gaze * 40));
+
 
 
   // Single rAF loop — writes ALL animated properties directly to DOM.
@@ -211,15 +214,21 @@ export default function GrimoireEye({ mood = 'neutral', gaze = 0.25 } = {}) {
       clearTimeout(blinkTimeout);
     };
   }, []);
-
-  // Background eyes — static data generated once via ref
+  // Background eyes — static pool generated once via ref. First 20 are the calm
+  // baseline; eyes 20..59 are weighted cold/red so the swarm reddens as it grows.
   const bgEyes = useRef(
-    Array.from({ length: 20 }, () => ({
-      x: 8 + Math.random() * 84,
-      y: 8 + Math.random() * 84,
-      size: 0.8 + Math.random() * 2.5,
-      color: Math.random() < 0.4 ? '#7a3a5a' : Math.random() < 0.3 ? '#7fd4ff' : '#5a6a8a',
-    }))
+    Array.from({ length: 60 }, (_, i) => {
+      const base = i < 20;
+      return {
+        x: 8 + Math.random() * 84,
+        y: 8 + Math.random() * 84,
+        size: base ? 0.8 + Math.random() * 2.5 : 1.0 + Math.random() * 3.0,
+        color: base
+          ? (Math.random() < 0.4 ? '#7a3a5a' : Math.random() < 0.3 ? '#7fd4ff' : '#5a6a8a')
+          : (Math.random() < 0.5 ? '#7a3a5a' : '#7fd4ff'),
+        delay: Math.random() * 6,
+      };
+    })
   ).current;
 
   // Starfield — static data generated once via ref
@@ -241,15 +250,15 @@ export default function GrimoireEye({ mood = 'neutral', gaze = 0.25 } = {}) {
     <div ref={wrapperRef} className="grimoire-eye-wrapper">
       {/* Background blinking eyes */}
       <svg className="bg-eyes-canvas" viewBox="0 0 100 100" preserveAspectRatio="none">
-        {bgEyes.map((eye, i) => (
-          <g key={i} className="bg-eye-group">
+        {bgEyes.slice(0, bgCount).map((eye, i) => (
+          <g key={i} className="bg-eye-group" style={{ animationDelay: `${eye.delay}s` }}>
             <ellipse
               cx={eye.x}
               cy={eye.y}
               rx={eye.size / 2}
               ry={eye.size / 2}
               fill={eye.color}
-              opacity="0.12"
+              opacity={0.09 + gaze * 0.13}
               className="bg-eye-lid"
             />
             <circle
@@ -257,7 +266,7 @@ export default function GrimoireEye({ mood = 'neutral', gaze = 0.25 } = {}) {
               cy={eye.y}
               r={eye.size * 0.15}
               fill="#020203"
-              opacity="0.1"
+              opacity={0.08 + gaze * 0.1}
               className="bg-eye-pupil"
             />
           </g>
