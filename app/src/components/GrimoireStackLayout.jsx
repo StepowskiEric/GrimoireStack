@@ -1,4 +1,4 @@
-import { useState, useCallback, useEffect, lazy, Suspense } from 'react';
+import { useState, useCallback, lazy, Suspense } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import SchoolCardGrid from './SchoolCardGrid.jsx';
 import SpellDetailView from './SpellDetailView.jsx';
@@ -100,17 +100,7 @@ export default function GrimoireStackLayout({
   );
   const navigate = useNavigate();
   const location = useLocation();
-  const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
-
-  // Track page state for sub-views
   const [pageKey, setPageKey] = useState('home');
-
-  useEffect(() => {
-    const handleResize = () => setIsMobile(window.innerWidth < 768);
-    window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
-  }, []);
-
   const handleTabSelect = useCallback((tab) => {
     const route = TAB_ROUTES[tab] || '/';
     setPageKey('home');
@@ -380,10 +370,10 @@ export default function GrimoireStackLayout({
       </div>
       {/* Void incantations — the eye listens at peak gaze (Slice 10) */}
       <VoidIncantations gaze={gaze} />
-      <div className={`flex flex-1 w-full ${isMobile ? 'flex-col px-3 pb-20 pt-5' : 'p-5'}`}>
+      <div className="flex flex-1 w-full flex-col px-3 pb-20 pt-5 md:p-5">
         {/* Left sidebar */}
-        <aside className={`${isMobile ? 'w-full min-w-full flex-row flex-wrap gap-2 p-3 mb-3' : 'w-60 min-w-60 flex flex-col p-4'} bg-[rgba(8,10,16,0.6)] border border-[rgba(138,154,106,0.08)] rounded-lg backdrop-blur-md`} aria-label="Sidebar">
-          <div className={`${isMobile ? 'w-full mb-3 pb-3 border-b border-[rgba(138,154,106,0.1)]' : 'text-center mb-4 pb-3 border-b border-[rgba(138,154,106,0.1)]'}`}>
+        <aside className="w-full min-w-full flex-row flex-wrap gap-2 p-3 mb-3 md:w-60 md:min-w-60 md:flex-col md:p-4 bg-[rgba(8,10,16,0.6)] border border-[rgba(138,154,106,0.08)] rounded-lg backdrop-blur-md" aria-label="Sidebar">
+          <div className="w-full mb-3 pb-3 border-b border-[rgba(138,154,106,0.1)] md:text-center md:mb-4">
             <div className="flex items-center justify-center gap-2 mb-3">
               <span className="inline-flex items-center justify-center text-sickly drop-shadow-[0_0_8px_rgba(138,154,106,0.3)]"><Icon name="archive" size="20" /></span>
               <span className="font-display font-black text-[1.2rem] text-[#c8d8e0] tracking-wide">GrimoireStack</span>
@@ -400,7 +390,7 @@ export default function GrimoireStackLayout({
             </div>
           </div>
 
-          <nav className={`${isMobile ? 'hidden' : 'flex flex-col gap-1 flex-1'}`} aria-label="Sidebar navigation">
+          <nav className="hidden md:flex md:flex-col md:gap-1 md:flex-1" aria-label="Sidebar navigation">
             {Object.entries(TAB_LABELS).map(([key, { name, icon }]) => (
               <button
                 key={key}
@@ -414,7 +404,7 @@ export default function GrimoireStackLayout({
             ))}
           </nav>
 
-          <div className={`${isMobile ? 'w-full mt-2 pt-2 border-t border-[rgba(138,154,106,0.08)] flex flex-wrap gap-2 justify-center' : 'mt-auto pt-3 border-t border-[rgba(138,154,106,0.08)] flex flex-wrap gap-2'}`}>
+          <div className="w-full mt-2 pt-2 border-t border-[rgba(138,154,106,0.08)] flex flex-wrap gap-2 justify-center md:mt-auto md:pt-3">
             <LanguageToggle />
             <div className="w-full h-px bg-gradient-to-r from-transparent via-[rgba(138,154,106,0.12)] to-transparent" />
             <button className="px-3 py-1.5 border border-border text-text-muted text-[0.68rem] uppercase tracking-wider transition-colors hover:border-border-hover hover:text-text-primary" onClick={onShowShortcuts} type="button">
@@ -462,7 +452,7 @@ export default function GrimoireStackLayout({
         </main>
 
         {/* Right panel - content */}
-        <aside className={`${isMobile ? 'w-full min-w-full' : 'flex-1 min-w-[420px]'} p-5 bg-[rgba(8,10,16,0.6)] border border-[rgba(138,154,106,0.08)] rounded-lg backdrop-blur-md overflow-y-auto max-h-[calc(100vh-120px)]`} aria-label="Main content">
+        <aside className="w-full min-w-full p-5 md:flex-1 md:min-w-[420px] bg-[rgba(8,10,16,0.6)] border border-[rgba(138,154,106,0.08)] rounded-lg backdrop-blur-md overflow-y-auto max-h-[calc(100vh-120px)] md:max-h-[calc(100dvh-120px)]" aria-label="Main content">
           <div className="text-silver" id="main-content" key={`${activeTab}-${pageKey}-${searchQuery || ''}`}>
             {renderContent()}
           </div>
@@ -470,21 +460,19 @@ export default function GrimoireStackLayout({
       </div>
 
       {/* Mobile bottom nav */}
-      {isMobile && (
-        <nav className="fixed bottom-0 left-0 right-0 flex justify-around py-2 bg-[rgba(5,5,8,0.95)] border-t border-[rgba(138,154,106,0.1)] z-[100] backdrop-blur-md">
-          {Object.entries(TAB_LABELS).map(([key, { name, icon }]) => (
-            <button
-              key={key}
-              className={`flex flex-col items-center gap-1 px-3 py-2 rounded-md transition-all duration-200 ${activeTab === key ? 'bg-[rgba(138,154,106,0.08)]' : 'bg-transparent hover:bg-[rgba(138,154,106,0.05)]'}`}
-              onClick={() => handleTabSelect(key)}
-              type="button"
-            >
-              <span className="inline-flex items-center justify-center text-sickly"><Icon name={icon} size="20" /></span>
-              <span className={`font-['Cinzel'] text-[0.5rem] font-semibold uppercase tracking-wide ${activeTab === key ? 'text-sickly' : 'text-silver-dim'}`}>{name}</span>
-            </button>
-          ))}
-        </nav>
-      )}
+      <nav className="fixed bottom-0 left-0 right-0 flex justify-around py-2 bg-[rgba(5,5,8,0.95)] border-t border-[rgba(138,154,106,0.1)] z-[100] backdrop-blur-md md:hidden">
+        {Object.entries(TAB_LABELS).map(([key, { name, icon }]) => (
+          <button
+            key={key}
+            className={`flex flex-col items-center gap-1 px-3 py-2 rounded-md transition-all duration-200 ${activeTab === key ? 'bg-[rgba(138,154,106,0.08)]' : 'bg-transparent hover:bg-[rgba(138,154,106,0.05)]'}`}
+            onClick={() => handleTabSelect(key)}
+            type="button"
+          >
+            <span className="inline-flex items-center justify-center text-sickly"><Icon name={icon} size="20" /></span>
+            <span className={`font-['Cinzel'] text-[0.5rem] font-semibold uppercase tracking-wide ${activeTab === key ? 'text-sickly' : 'text-silver-dim'}`}>{name}</span>
+          </button>
+        ))}
+      </nav>
 
       {/* Footer tagline */}
       <footer className="flex justify-between items-center px-6 py-3 border-t border-[rgba(138,154,106,0.06)] font-['Cormorant_Garamond'] text-[0.72rem] text-silver-dim">
