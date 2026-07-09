@@ -1,4 +1,5 @@
 # Slice 03 — CSS sizing + cold base restyle
+**Status:** DONE & verified 2026-07-09. Eye recolored cold (sclera `#05060c`, ice-blue/violet iris+ring, no `#8a9a6a`); `--eye-glow` green retired; cold ambient `drop-shadow` added. Eye CSS already sized the eye (existing `.great-eye-container`/`mood-filter` rules), so the contract's `.grimoire-eye-wrapper` sizing block was not appended — see Deviation note. Verified: build exit 0, 693 tests pass, lint clean, `screenshot-critique` on `/gaze-preview?gaze=0` and `?gaze=1` confirms cold/eldritch read with no sickly green. Reference captures: `../assets/slice03-gaze{0,1}.webp`.
 
 **Visual variable judged:** EYE **SIZE** + **BASE COLD PALETTE** (not the warp yet).
 The eye currently has no CSS and uses browser-default SVG sizing — the "cheap" look.

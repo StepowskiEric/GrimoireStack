@@ -1,8 +1,8 @@
 # The Gaze — progressive cosmic corruption of the front-page eye
 
-**Status:** Slice 01 (gaze plumbing) built & green. Slices 02–09 pending. Last updated 2026-07-09.
+**Status:** Slices 01 (gaze plumbing), 02 (`/gaze-preview` fixture), 03 (cold cosmic eye recolor + ambient glow) built & green. Slices 04–09 pending. Last updated 2026-07-09.
 **Owner:** Front-end / `app/` React app.
-**Next pickup:** Slice 02 (`/gaze-preview` fixture) so every later visual slice is judged live.
+**Next pickup:** Slice 04 (void pupil + starfield) — first warping slice, judged on `/gaze-preview` at gaze 0 / 0.25 / 0.5 / 0.75 / 1.0.
 
 ---
 
@@ -167,14 +167,15 @@ user approves Phase 2.
 
 ## Next Agent Prompt
 
-You are resuming the **Gaze** feature for GrimoireStack (`app/`). Slice 01 (gaze
-plumbing) is **built and green**: `gaze.js` + `useGaze` derive a banded `gaze` from
-dwell + `ritual.{state,round}`; the layout sets `data-gaze` on its root and forwards
-`gaze` to `GrimoireEye`. `useEyeMood` is untouched and unrelated.
+You are resuming the **Gaze** feature for GrimoireStack (`app/`). Slices 01 (gaze
+plumbing), 02 (`/gaze-preview` fixture), and 03 (cold cosmic eye recolor + ambient
+glow) are **built and green**. The eye now reads cold/eldritch/cosmic with a
+cyan-ice glow and no sickly green; reference captures are in
+`specs/gaze-eye/assets/slice03-gaze{0,1}.webp`.
 
-1. **Start at slice 02** (`specs/gaze-eye/slices/02-fixture-preview.md`) — build the
-   `/gaze-preview` dev-only fixture with a `?gaze=N` scrubber so every later visual
-   slice is judged live at gaze 0 / 0.25 / 0.5 / 0.75 / 1.0.
+1. **Start at slice 04** (`specs/gaze-eye/slices/04-void-pupil-starfield.md`) — void
+   pupil + starfield, the first warping slice. Judge live at gaze 0 / 0.25 / 0.5 /
+   0.75 / 1.0.
 2. Proceed slice-by-slice (03→09). Each visual slice: implement, run the fixture at
    the listed gaze bands, run `screenshot-critique` as the final gate, and (where a
    prior band exists) `compare-screenshots`.
@@ -185,8 +186,8 @@ dwell + `ritual.{state,round}`; the layout sets `data-gaze` on its root and forw
 
 Global TODO (each points to its slice):
 - [x] 01 gaze plumbing — `gaze` prop + `bandGaze` + wiring (DONE)
-- [ ] 02 `/gaze-preview` fixture + scrubber
-- [ ] 03 CSS sizing + cold base restyle
+- [x] 02 `/gaze-preview` fixture + scrubber (DONE)
+- [x] 03 CSS sizing + cold base restyle — recolor + ambient glow (DONE)
 - [ ] 04 void pupil + starfield
 - [ ] 05 non-Euclidean iris rings
 - [ ] 06 chromatic aberration

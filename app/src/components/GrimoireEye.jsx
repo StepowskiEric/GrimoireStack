@@ -73,19 +73,19 @@ export default function GrimoireEye({ mood = 'neutral', gaze = 0.25 } = {}) {
       if (svgEl) {
         const glow = 40 + Math.sin(t * Math.PI * 1.5) * (15 + glowBoost * 20);
         const glow2 = 80 + Math.sin(t * Math.PI) * (20 + glowBoost * 25);
-        svgEl.style.filter = `drop-shadow(0 0 ${glow}px rgba(138,154,106,${0.12 + glowBoost * 0.08})) drop-shadow(0 0 ${glow2}px rgba(138,154,106,${0.06 + glowBoost * 0.04}))`;
+        svgEl.style.filter = `drop-shadow(0 0 ${glow}px rgba(127,212,255,${0.14 + glowBoost * 0.1})) drop-shadow(0 0 ${glow2}px rgba(127,212,255,${0.07 + glowBoost * 0.05}))`;
       }
 
       // Iris ring pulse
       if (irisRingEl) {
         const irisOpacity = 0.12 + Math.sin(t * Math.PI) * 0.1;
-        irisRingEl.setAttribute('stroke', `rgba(138,154,106,${irisOpacity})`);
+        irisRingEl.setAttribute('stroke', `rgba(201,210,232,${irisOpacity})`);
       }
 
       // Pupil glow pulse
       if (pupilGlowEl) {
         const glowOpacity = 0.08 + Math.sin(t * Math.PI * 1.5) * 0.08;
-        pupilGlowEl.setAttribute('fill', `rgba(138,154,106,${glowOpacity})`);
+        pupilGlowEl.setAttribute('fill', `rgba(120,150,255,${glowOpacity})`);
       }
 
       // Blood vessels — staggered sin/cos opacity
@@ -186,7 +186,7 @@ export default function GrimoireEye({ mood = 'neutral', gaze = 0.25 } = {}) {
       x: 8 + Math.random() * 84,
       y: 8 + Math.random() * 84,
       size: 0.8 + Math.random() * 2.5,
-      color: Math.random() < 0.4 ? '#7a3a5a' : Math.random() < 0.3 ? '#8a9a6a' : '#5a6a40',
+      color: Math.random() < 0.4 ? '#7a3a5a' : Math.random() < 0.3 ? '#7fd4ff' : '#5a6a8a',
     }))
   ).current;
 
@@ -225,15 +225,15 @@ export default function GrimoireEye({ mood = 'neutral', gaze = 0.25 } = {}) {
         >
           <defs>
             <radialGradient id="scleraGrad" cx="50%" cy="50%" r="50%">
-              <stop offset="0%" stopColor="#141a24" stopOpacity="0.9" />
-              <stop offset="50%" stopColor="#0d1018" stopOpacity="0.95" />
-              <stop offset="100%" stopColor="#06070a" stopOpacity="0.98" />
+              <stop offset="0%" stopColor="#05060c" stopOpacity="0.9" />
+              <stop offset="50%" stopColor="#05060c" stopOpacity="0.95" />
+              <stop offset="100%" stopColor="#05060c" stopOpacity="0.98" />
             </radialGradient>
             <radialGradient id="irisGrad" cx="50%" cy="50%" r="50%">
-              <stop offset="0%" stopColor="#8a9a6a" stopOpacity="0.25" />
-              <stop offset="30%" stopColor="#0a5a3a" stopOpacity="0.2" />
-              <stop offset="60%" stopColor="#4a1a3a" stopOpacity="0.15" />
-              <stop offset="85%" stopColor="#1a2530" stopOpacity="0.4" />
+              <stop offset="0%" stopColor="#3a5a8c" stopOpacity="0.25" />
+              <stop offset="30%" stopColor="#2a1a44" stopOpacity="0.2" />
+              <stop offset="60%" stopColor="#1a2540" stopOpacity="0.15" />
+              <stop offset="85%" stopColor="#16243a" stopOpacity="0.4" />
               <stop offset="100%" stopColor="#0a0c14" stopOpacity="0.6" />
             </radialGradient>
             <radialGradient id="pupilGrad" cx="45%" cy="40%" r="55%">
@@ -243,9 +243,9 @@ export default function GrimoireEye({ mood = 'neutral', gaze = 0.25 } = {}) {
               <stop offset="100%" stopColor="#000000" stopOpacity="1" />
             </radialGradient>
             <linearGradient id="ringGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-              <stop offset="0%" stopColor="#8a9a6a" stopOpacity="0.3" />
-              <stop offset="50%" stopColor="#4a1a3a" stopOpacity="0.15" />
-              <stop offset="100%" stopColor="#8a9a6a" stopOpacity="0.3" />
+              <stop offset="0%" stopColor="#7fd4ff" stopOpacity="0.3" />
+              <stop offset="50%" stopColor="#7c3aed" stopOpacity="0.15" />
+              <stop offset="100%" stopColor="#7fd4ff" stopOpacity="0.3" />
             </linearGradient>
           </defs>
 
@@ -257,14 +257,14 @@ export default function GrimoireEye({ mood = 'neutral', gaze = 0.25 } = {}) {
             fill="none" stroke="url(#ringGrad)" strokeWidth="0.8" opacity="0.2"
             className="eye-ring-spin-reverse" />
           <ellipse cx="200" cy="140" rx="190" ry="120"
-            fill="none" stroke="#8a9a6a" strokeWidth="0.5" opacity="0.15"
+            fill="none" stroke="rgba(127,212,255,0.15)" strokeWidth="0.5" opacity="0.15"
             strokeDasharray="4 8" className="eye-ring-spin-medium" />
 
           {/* Sclera */}
           <path
             d="M 15,140 C 15,40 70,5 200,5 C 330,5 385,40 385,140 C 385,240 330,275 200,275 C 70,275 15,240 15,140 Z"
             fill="url(#scleraGrad)"
-            stroke="rgba(138,154,106,0.06)"
+            stroke="rgba(127,212,255,0.05)"
             strokeWidth="0.8"
           />
 
@@ -297,7 +297,7 @@ export default function GrimoireEye({ mood = 'neutral', gaze = 0.25 } = {}) {
             <ellipse cx="200" cy="140" rx="125" ry="82" fill="url(#irisGrad)" />
             <ellipse cx="200" cy="140" rx="125" ry="82"
               fill="none"
-              stroke="rgba(138,154,106,0.15)"
+              stroke="rgba(201,210,232,0.2)"
               strokeWidth="2"
               className="eye-iris-ring" />
 
@@ -312,7 +312,7 @@ export default function GrimoireEye({ mood = 'neutral', gaze = 0.25 } = {}) {
               return (
                 <line key={i}
                   x1={x1} y1={y1} x2={x2} y2={y2}
-                  stroke={`rgba(138,154,106,${opacity})`}
+                  stroke={`rgba(150,185,230,${opacity})`}
                   strokeWidth="0.3"
                   strokeLinecap="round"
                 />
@@ -331,12 +331,12 @@ export default function GrimoireEye({ mood = 'neutral', gaze = 0.25 } = {}) {
                 fill="url(#pupilGrad)"
               />
               <ellipse cx="200" cy="140" rx="12" ry="20"
-                fill="rgba(138,154,106,0.1)"
+                fill="rgba(120,150,255,0.12)"
                 className="eye-pupil-glow" />
               <ellipse cx="192" cy="128" rx="8" ry="5"
-                fill="rgba(138,154,106,0.08)" opacity="0.7" />
+                fill="rgba(170,195,235,0.1)" opacity="0.7" />
               <ellipse cx="208" cy="152" rx="5" ry="3"
-                fill="rgba(138,154,106,0.04)" opacity="0.5" />
+                fill="rgba(170,195,235,0.06)" opacity="0.5" />
             </g>
           </g>
 
@@ -367,7 +367,7 @@ export default function GrimoireEye({ mood = 'neutral', gaze = 0.25 } = {}) {
               <path key={`top-${i}`}
                 d={`M ${baseX},${baseY} Q ${baseX + ((i * 3) % 20 - 10)},${baseY - 18} ${tipX},${tipY}`}
                 fill="none"
-                stroke="rgba(138,154,106,0.15)"
+                stroke="rgba(150,185,230,0.15)"
                 strokeWidth="1.5"
                 strokeLinecap="round"
                 className="eye-tentacle"

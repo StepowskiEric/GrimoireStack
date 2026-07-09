@@ -34,7 +34,7 @@
   --silver:#b8a890;
   --silver-dim:#a09480;
   --silver-mute:#847c70;
-  --eye-glow:rgba(138,154,106,.06);
+  --eye-glow:rgba(127,212,255,.08);
   --purple:#7c3aed;
   --purple-dim:#5b21b6;
   --purple-glow:rgba(124,58,237,.12);
@@ -6873,12 +6873,12 @@ header .header-sigil-text{display:none}
 /* ── Eye mood classes (driven by data-mood on the wrapper) ─── */
 .grimoire-eye-wrapper[data-mood="neutral"] { /* baseline, no overrides */ }
 .grimoire-eye-wrapper[data-mood="curious"] .great-eye-svg {
-  filter: drop-shadow(0 0 55px rgba(138,154,106,0.18)) drop-shadow(0 0 100px rgba(138,154,106,0.08));
+  filter: drop-shadow(0 0 55px rgba(127,212,255,0.18)) drop-shadow(0 0 100px rgba(127,212,255,0.08));
 }
 .grimoire-eye-wrapper[data-mood="overwhelmed"] .great-eye-svg {
   filter:
-    drop-shadow(0 0 70px rgba(138,154,106,0.28))
-    drop-shadow(0 0 130px rgba(122,58,90,0.18));
+    drop-shadow(0 0 70px rgba(127,212,255,0.26))
+    drop-shadow(0 0 130px rgba(124,58,237,0.16));
 }
 .grimoire-eye-wrapper[data-mood="overwhelmed"] .eye-blink-overlay {
   background: linear-gradient(
@@ -6890,7 +6890,7 @@ header .header-sigil-text{display:none}
   );
 }
 .grimoire-eye-wrapper[data-mood="neglectful"] .great-eye-svg {
-  filter: drop-shadow(0 0 30px rgba(138,154,106,0.08));
+  filter: drop-shadow(0 0 30px rgba(127,212,255,0.08));
 }
 .grimoire-eye-wrapper[data-mood="neglectful"] .eye-blink-overlay {
   background: linear-gradient(
@@ -6921,6 +6921,10 @@ header .header-sigil-text{display:none}
   align-items: center;
   justify-content: center;
   z-index: 1;
+  transform-origin: center center;
+  filter:
+    drop-shadow(0 0 22px rgba(127, 212, 255, 0.10))
+    drop-shadow(0 0 60px rgba(124, 58, 237, 0.06));
 }
 
 .great-eye-svg {
