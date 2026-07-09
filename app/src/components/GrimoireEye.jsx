@@ -36,7 +36,11 @@ export default function GrimoireEye({ mood = 'neutral', gaze = 0.25 } = {}) {
     let pupilGlowEl = null;
     let irisGroupEl = null;
     let pupilGroupEl = null;
+    let starsGroupEl = null;
+    let starsInnerEl = null;
     const vesselEls = [];
+    const prefersReduced = typeof window !== 'undefined' && window.matchMedia
+      && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
     const queryElements = () => {
       containerEl = wrapper.querySelector('.great-eye-container');
@@ -45,6 +49,8 @@ export default function GrimoireEye({ mood = 'neutral', gaze = 0.25 } = {}) {
       pupilGlowEl = wrapper.querySelector('.eye-pupil-glow');
       irisGroupEl = wrapper.querySelector('#eye-iris-group');
       pupilGroupEl = wrapper.querySelector('#eye-pupil-group');
+      starsGroupEl = wrapper.querySelector('#eye-stars-group');
+      starsInnerEl = wrapper.querySelector('#eye-stars-inner');
       wrapper.querySelectorAll('.eye-vessel').forEach((el) => vesselEls.push(el));
     };
 
@@ -109,6 +115,21 @@ export default function GrimoireEye({ mood = 'neutral', gaze = 0.25 } = {}) {
         const px = (mouse.x - 0.5) * 28;
         const py = (mouse.y - 0.5) * 20;
         pupilGroupEl.setAttribute('transform', `translate(${px}, ${py})`);
+      }
+      // Starfield — slow rotation + brightness scale with gaze; opposite parallax
+      if (starsGroupEl) {
+        const speed = prefersReduced ? 0 : 2 + gazeRef.current * 26;
+        const rot = (Date.now() / 1000) * speed;
+        const px = prefersReduced ? 0 : -((mouse.x - 0.5) * 18) * 1.5;
+        const py = prefersReduced ? 0 : -((mouse.y - 0.5) * 12) * 1.5;
+        starsGroupEl.setAttribute(
+          'transform',
+          `translate(200,140) rotate(${rot}) translate(${px},${py})`
+        );
+      }
+      if (starsInnerEl) {
+        const b = prefersReduced ? 0.5 : 0.25 + gazeRef.current * 0.75;
+        starsInnerEl.style.opacity = String(b);
       }
 
       rafId = requestAnimationFrame(animate);
@@ -190,6 +211,21 @@ export default function GrimoireEye({ mood = 'neutral', gaze = 0.25 } = {}) {
     }))
   ).current;
 
+  // Starfield — static data generated once via ref
+  const stars = useRef(
+    Array.from({ length: 14 }, () => {
+      const angle = Math.random() * Math.PI * 2;
+      const radius = Math.random() * 13;
+      return {
+        dx: Math.cos(angle) * radius,
+        dy: Math.sin(angle) * radius * 0.7,
+        r: 0.4 + Math.random() * 1.3,
+        color: Math.random() < 0.5 ? '#aebfff' : '#cfd8ff',
+        opacity: 0.04 + Math.random() * 0.08,
+      };
+    })
+  ).current;
+
   return (
     <div ref={wrapperRef} className="grimoire-eye-wrapper">
       {/* Background blinking eyes */}
@@ -236,12 +272,14 @@ export default function GrimoireEye({ mood = 'neutral', gaze = 0.25 } = {}) {
               <stop offset="85%" stopColor="#16243a" stopOpacity="0.4" />
               <stop offset="100%" stopColor="#0a0c14" stopOpacity="0.6" />
             </radialGradient>
-            <radialGradient id="pupilGrad" cx="45%" cy="40%" r="55%">
-              <stop offset="0%" stopColor="#1a2a30" stopOpacity="0.8" />
-              <stop offset="40%" stopColor="#060a0f" stopOpacity="0.95" />
-              <stop offset="80%" stopColor="#020203" stopOpacity="1" />
-              <stop offset="100%" stopColor="#000000" stopOpacity="1" />
+            <radialGradient id="pupilGrad" cx="50%" cy="50%" r="55%">
+              <stop offset="0%" stopColor="#000000" stopOpacity="1" />
+              <stop offset="70%" stopColor="#02030a" stopOpacity="1" />
+              <stop offset="100%" stopColor="#05060c" stopOpacity="0.96" />
             </radialGradient>
+            <filter id="voidBlur" x="-50%" y="-50%" width="200%" height="200%">
+              <feGaussianBlur stdDeviation="5" />
+            </filter>
             <linearGradient id="ringGrad" x1="0%" y1="0%" x2="100%" y2="100%">
               <stop offset="0%" stopColor="#7fd4ff" stopOpacity="0.3" />
               <stop offset="50%" stopColor="#7c3aed" stopOpacity="0.15" />
@@ -324,7 +362,7 @@ export default function GrimoireEye({ mood = 'neutral', gaze = 0.25 } = {}) {
               stroke="rgba(2,2,5,0.4)"
               strokeWidth="1.5" />
 
-            {/* Pupil */}
+            {/* Pupil — depthless void */}
             <g id="eye-pupil-group">
               <path
                 d="M 200,104 C 215,104 218,140 218,140 C 218,140 215,176 200,176 C 185,176 182,140 182,140 C 182,140 185,104 200,104 Z"
@@ -333,10 +371,17 @@ export default function GrimoireEye({ mood = 'neutral', gaze = 0.25 } = {}) {
               <ellipse cx="200" cy="140" rx="12" ry="20"
                 fill="rgba(120,150,255,0.12)"
                 className="eye-pupil-glow" />
-              <ellipse cx="192" cy="128" rx="8" ry="5"
-                fill="rgba(170,195,235,0.1)" opacity="0.7" />
-              <ellipse cx="208" cy="152" rx="5" ry="3"
-                fill="rgba(170,195,235,0.06)" opacity="0.5" />
+            </g>
+          </g>
+
+          {/* Starfield + nebula — deeper layer, parallax opposite the iris */}
+          <g id="eye-stars-group" transform="translate(200,140)">
+            <g id="eye-stars-inner">
+              <ellipse cx="-4" cy="3" rx="14" ry="10" fill="#1b1f4a" opacity="0.5" filter="url(#voidBlur)" className="eye-nebula" />
+              <ellipse cx="6" cy="-4" rx="9" ry="7" fill="#3a2a5a" opacity="0.42" filter="url(#voidBlur)" className="eye-nebula eye-nebula--b" />
+              {stars.map((s, i) => (
+                <circle key={i} cx={s.dx} cy={s.dy} r={s.r} fill={s.color} opacity={s.opacity} className="eye-star" />
+              ))}
             </g>
           </g>
 
