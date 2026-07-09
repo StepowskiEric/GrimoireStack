@@ -1,5 +1,5 @@
-# The Gaze — progressive cosmic corruption of the front-page eye
-
+**Status:** Slices 01 (gaze plumbing), 02 (`/gaze-preview` fixture), 03 (cold cosmic eye recolor + ambient glow), 04 (void pupil + starfield), 05 (non-Euclidean iris rings) built & green. Slices 06–09 pending. Last updated 2026-07-09.
+**Next pickup:** Slice 06 (chromatic aberration) — judged on `/gaze-preview` at gaze 0 / 0.25 / 0.5 / 0.75 / 1.0.
 **Status:** Slices 01 (gaze plumbing), 02 (`/gaze-preview` fixture), 03 (cold cosmic eye recolor + ambient glow), 04 (void pupil + starfield) built & green. Slices 05–09 pending. Last updated 2026-07-09.
 **Owner:** Front-end / `app/` React app.
 **Next pickup:** Slice 05 (non-Euclidean iris rings) — judged on `/gaze-preview` at gaze 0 / 0.25 / 0.5 / 0.75 / 1.0.
@@ -169,14 +169,14 @@ user approves Phase 2.
 
 You are resuming the **Gaze** feature for GrimoireStack (`app/`). Slices 01 (gaze
 plumbing), 02 (`/gaze-preview` fixture), 03 (cold cosmic eye recolor + ambient
-glow), and 04 (void pupil + starfield) are **built and green**. The eye now reads
-cold/eldritch/cosmic with a depthless void pupil, a slowly rotating cold starfield,
-and no sickly green; reference captures are in
-`specs/gaze-eye/assets/slice04-gaze{0,0.5,1}.webp`.
+glow), 04 (void pupil + starfield), and 05 (non-Euclidean iris rings) are **built
+and green**. The eye now reads cold/eldritch/cosmic with a depthless void pupil, a
+slowly rotating cold starfield, conflicting-angle iris rings, and no sickly green;
+reference captures are in `specs/gaze-eye/assets/slice05-gaze{0.2,0.6,1}.webp`.
 
-1. **Start at slice 05** (`specs/gaze-eye/slices/05-iris-rings.md`) — non-Euclidean
-   iris rings. Judge live at gaze 0 / 0.25 / 0.5 / 0.75 / 1.0. Slice 04 reference
-   captures are in `specs/gaze-eye/assets/slice04-gaze{0,0.5,1}.webp`.
+1. **Start at slice 06** (`specs/gaze-eye/slices/06-chromatic-aberration.md`) —
+   chromatic aberration. Judge live at gaze 0 / 0.25 / 0.5 / 0.75 / 1.0. Slice 05
+   reference captures are in `specs/gaze-eye/assets/slice05-gaze{0.2,0.6,1}.webp`.
 2. Proceed slice-by-slice (03→09). Each visual slice: implement, run the fixture at
    the listed gaze bands, run `screenshot-critique` as the final gate, and (where a
    prior band exists) `compare-screenshots`.
@@ -190,7 +190,7 @@ Global TODO (each points to its slice):
 - [x] 02 `/gaze-preview` fixture + scrubber (DONE)
 - [x] 03 CSS sizing + cold base restyle — recolor + ambient glow (DONE)
 - [x] 04 void pupil + starfield (DONE)
-- [ ] 05 non-Euclidean iris rings
+- [x] 05 non-Euclidean iris rings
 - [ ] 06 chromatic aberration
 - [ ] 07 background eyes swarm
 - [ ] 08 whole-page gaze veil

@@ -339,23 +339,25 @@ export default function GrimoireEye({ mood = 'neutral', gaze = 0.25 } = {}) {
               strokeWidth="2"
               className="eye-iris-ring" />
 
-            {/* Iris fibers */}
-            {Array.from({ length: 48 }).map((_, i) => {
-              const angle = (i / 48) * Math.PI * 2;
-              const x1 = 200 + Math.cos(angle) * 40;
-              const y1 = 140 + Math.sin(angle) * 40 * 0.65;
-              const x2 = 200 + Math.cos(angle) * 110;
-              const y2 = 140 + Math.sin(angle) * 110 * 0.65;
-              const opacity = 0.04 + (i % 5) * 0.015;
-              return (
-                <line key={i}
-                  x1={x1} y1={y1} x2={x2} y2={y2}
-                  stroke={`rgba(150,185,230,${opacity})`}
-                  strokeWidth="0.3"
-                  strokeLinecap="round"
-                />
-              );
-            })}
+            {/* Non-Euclidean iris rings — count + contrast scale with gaze */}
+            <g id="eye-rings-group">
+              <ellipse cx="200" cy="140" rx="72" ry="66"
+                fill="none" stroke="#c9d2e8" strokeWidth="0.8"
+                strokeOpacity={0.10 + gaze * 0.25}
+                transform="rotate(0 200 140)" className="eye-ring eye-ring--a" />
+              {gaze >= 0.55 && (
+                <ellipse cx="200" cy="140" rx="112" ry="42"
+                  fill="none" stroke="#c9d2e8" strokeWidth="0.7"
+                  strokeOpacity={0.07 + gaze * 0.22}
+                  transform="rotate(24 200 140)" className="eye-ring eye-ring--b" />
+              )}
+              {gaze >= 0.8 && (
+                <ellipse cx="200" cy="140" rx="84" ry="60"
+                  fill="none" stroke="#c9d2e8" strokeWidth="0.6"
+                  strokeOpacity={0.05 + gaze * 0.20}
+                  transform="rotate(-34 200 140)" className="eye-ring eye-ring--c" />
+              )}
+            </g>
 
             <ellipse cx="200" cy="140" rx="45" ry="28"
               fill="none"
