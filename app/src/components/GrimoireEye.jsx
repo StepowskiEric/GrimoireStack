@@ -1,21 +1,25 @@
 /* eslint-disable react/no-array-index-key -- decorative procedural arrays; index is stable for the lifetime of the mount */
 import { useRef, useEffect } from 'react';
 
-export default function GrimoireEye({ mood = 'neutral' }) {
+export default function GrimoireEye({ mood = 'neutral', gaze = 0.25 } = {}) {
   const wrapperRef = useRef(null);
   const containerRef = useRef(null);
   const mouseRef = useRef({ x: 0.5, y: 0.5 });
   const moodRef = useRef(mood);
+  const gazeRef = useRef(gaze);
 
-  // Keep a ref in sync with the prop so the rAF loop (which closes over the ref)
-  // always reads the latest mood without triggering re-renders.
+  // Keep refs in sync with props so the rAF loop (which closes over the refs)
+  // always reads the latest mood/gaze without triggering re-renders.
   useEffect(() => {
     moodRef.current = mood;
+    gazeRef.current = gaze;
     const wrapper = wrapperRef.current;
     if (wrapper) {
       wrapper.setAttribute('data-mood', mood);
+      wrapper.setAttribute('data-gaze', String(gaze));
     }
-  }, [mood]);
+  }, [mood, gaze]);
+
 
 
   // Single rAF loop — writes ALL animated properties directly to DOM.

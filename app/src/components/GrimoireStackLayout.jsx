@@ -18,6 +18,7 @@ import LanguageToggle from './LanguageToggle.jsx';
 import { grimoireIndex } from '../data/grimoireIndexInstance.js';
 import RitualPanel from './RitualPanel.jsx';
 import { useRitualOrchestrator } from '../hooks/useRitualOrchestrator.js';
+import { useGaze } from '../hooks/useGaze.js';
 import WanderingAnimation from './WanderingAnimation.jsx';
 
 const SCHOOL_MAP = grimoireIndex.getSchoolMap();
@@ -125,6 +126,7 @@ export default function GrimoireStackLayout({
   }, []);
 
   const ritualOrch = useRitualOrchestrator({ onSpellClick: handleRitualSpellOpen, navigateToLibrary });
+  const { gaze } = useGaze(ritualOrch.ritual);
 
   const handleWanderingComplete = useCallback(() => {
     if (wandering) {
@@ -302,7 +304,7 @@ export default function GrimoireStackLayout({
   };
 
   return (
-    <div className={`grimoirestack-layout ${isMobile ? 'grimoirestack-layout--mobile' : ''}`}>
+    <div className={`grimoirestack-layout ${isMobile ? 'grimoirestack-layout--mobile' : ''}`} data-gaze={gaze}>
       {/* Abyssal background with floating particles */}
       <div className="abyss-background" />
 
@@ -391,6 +393,7 @@ export default function GrimoireStackLayout({
         <main className="eye-stage">
           <GrimoireEye
             mood={eyeMood}
+            gaze={gaze}
           />
 
           {/* The Ritual — the only path for guided problem intake */}

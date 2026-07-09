@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Gaze Eye — Slice Roadmap</title>
+<style>
+  :root { color-scheme: dark; }
+  body {
+    margin: 0; background: #05060c; color: #c9d2e8;
+    font: 14px/1.5 ui-monospace, SFMono-Regular, Menlo, monospace;
+    padding: 32px;
+  }
+  h1 { font-weight: 600; letter-spacing: .5px; color: #aebfff; }
+  .sub { color: #6b7390; margin-top: -8px; }
+  .ladder { display: grid; grid-template-columns: 48px 1fr; gap: 10px 16px; margin: 28px 0; }
+  .band {
+    display: inline-flex; align-items: center; justify-content: center;
+    width: 40px; height: 40px; border-radius: 50%;
+    border: 1px solid #2a3358; color: #aebfff; font-size: 12px;
+  }
+  .slice {
+    border: 1px solid #1b2240; border-radius: 10px; padding: 12px 14px;
+    background: linear-gradient(180deg, #0a0d18, #070910);
+  }
+  .slice b { color: #e6ebff; }
+  .var { color: #b04a8a; }
+  .future { opacity: .7; border-style: dashed; }
+  .curve { margin-top: 32px; }
+  .curve svg { width: 100%; height: 180px; }
+  .note { color: #6b7390; font-size: 12px; margin-top: 24px; max-width: 70ch; }
+  a { color: #7fa0ff; }
+</style>
+</head>
+<body>
+  <h1>The Gaze — slice roadmap</h1>
+  <div class="sub">Progressive cosmic corruption of the front-page eye · one visual variable per slice</div>
+
+  <div class="ladder">
+    <div class="band">01</div>
+    <div class="slice"><b>Gaze plumbing</b> — <span class="var">seam</span>: continuous <code>gaze</code> 0..1, <code>bandGaze()</code>, wiring</div>
+
+    <div class="band">02</div>
+    <div class="slice"><b>Fixture /gaze-preview</b> — <span class="var">harness</span>: dev-only slider + <code>?gaze=N</code> scrubber</div>
+
+    <div class="band">03</div>
+    <div class="slice"><b>CSS sizing + cold base</b> — <span class="var">size + palette</span></div>
+
+    <div class="band">04</div>
+    <div class="slice"><b>Void pupil + starfield</b> — <span class="var">pupil void texture + motion</span></div>
+
+    <div class="band">05</div>
+    <div class="slice"><b>Non-Euclidean iris rings</b> — <span class="var">iris geometry</span></div>
+
+    <div class="band">06</div>
+    <div class="slice"><b>Chromatic aberration</b> — <span class="var">colour fringe</span></div>
+
+    <div class="band">07</div>
+    <div class="slice"><b>Background eyes swarm</b> — <span class="var">bg density</span></div>
+
+    <div class="band">08</div>
+    <div class="slice"><b>Whole-page gaze veil</b> — <span class="var">global strangeness</span> (mirrors Séance pattern; does not touch it)</div>
+
+    <div class="band">09</div>
+    <div class="slice"><b>Tentacles at peak gaze</b> — <span class="var">appendage silhouette</span> (subtle cosmic, ≥0.8)</div>
+
+    <div class="band">10</div>
+    <div class="slice future"><b>page-agent "void incantations"</b> — <span class="var">FUTURE / PHASE 2</span>, optional, research spike only. See <a href="https://github.com/alibaba/page-agent">alibaba/page-agent</a></div>
+  </div>
+
+  <div class="curve">
+    <div class="sub">Default gaze curve (slice 01) — dwell ramp + per-question steps</div>
+    <svg viewBox="0 0 600 180" preserveAspectRatio="none">
+      <defs>
+        <linearGradient id="v" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0" stop-color="#4a6cff" stop-opacity="0.5"/>
+          <stop offset="1" stop-color="#05060c" stop-opacity="0"/>
+        </linearGradient>
+      </defs>
+      <rect x="0" y="0" width="600" height="180" fill="url(#v)"/>
+      <line x1="0" y1="160" x2="600" y2="160" stroke="#2a3358"/>
+      <path d="M0,160 C40,158 120,120 240,108 C360,98 480,96 600,95"
+            fill="none" stroke="#aebfff" stroke-width="2"/>
+      <path d="M0,160 L60,150 L120,140 L180,128 L240,118 L300,108 L360,98 L420,90 L480,82 L540,74 L600,68"
+            fill="none" stroke="#b04a8a" stroke-width="1.5" stroke-dasharray="4 4" opacity="0.7"/>
+      <text x="8" y="176" fill="#6b7390" font-size="11">gaze 0 → 1 · blue = dwell · violet = ritual steps</text>
+    </svg>
+  </div>
+
+  <div class="note">
+    Open <code>/gaze-preview?gaze=0.5</code> on the dev server to scrub any band.
+    Every visual slice (03–09) is judged there via <code>screenshot-critique</code>,
+    and against the prior band via <code>compare-screenshots</code>. Slice 10 is a
+    captured future option, not part of the current build.
+  </div>
+</body>
+</html>
