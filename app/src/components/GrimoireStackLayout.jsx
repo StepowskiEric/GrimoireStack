@@ -462,7 +462,7 @@ export default function GrimoireStackLayout({
         </main>
 
         {/* Right panel - content */}
-        <aside className={`${isMobile ? 'w-full min-w-full' : 'w-[440px] min-w-[440px]'} p-5 bg-[rgba(8,10,16,0.6)] border border-[rgba(138,154,106,0.08)] rounded-lg backdrop-blur-md overflow-y-auto max-h-[calc(100vh-120px)]`} aria-label="Main content">
+        <aside className={`${isMobile ? 'w-full min-w-full' : 'flex-1 min-w-[420px]'} p-5 bg-[rgba(8,10,16,0.6)] border border-[rgba(138,154,106,0.08)] rounded-lg backdrop-blur-md overflow-y-auto max-h-[calc(100vh-120px)]`} aria-label="Main content">
           <div className="text-silver content-visibility-auto contain-intrinsic-size-[500px]" id="main-content" key={`${activeTab}-${pageKey}-${searchQuery || ''}`}>
             <div className="spine-transition">
               {renderContent()}
