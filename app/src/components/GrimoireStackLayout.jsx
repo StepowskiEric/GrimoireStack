@@ -315,7 +315,11 @@ export default function GrimoireStackLayout({
     );
   }
   return (
-    <div className={`grimoirestack-layout ${isMobile ? 'grimoirestack-layout--mobile' : ''}`} data-gaze={gaze} style={{ '--gaze-veil': gaze }}>
+    <div
+      className={`flex min-h-screen flex-col relative z-[1] ${isMobile ? 'flex-col' : ''}`}
+      data-gaze={gaze}
+      style={{ '--gaze-veil': gaze }}
+    >
       {/* Abyssal background with floating particles */}
       <div className="abyss-background" />
 
@@ -376,43 +380,43 @@ export default function GrimoireStackLayout({
       </div>
       {/* Void incantations — the eye listens at peak gaze (Slice 10) */}
       <VoidIncantations gaze={gaze} />
-      <div className="eye-main">
+      <div className={`flex flex-1 gap-0 w-full ${isMobile ? 'flex-col px-3 pb-20 pt-5' : 'p-5'}`}>
         {/* Left sidebar */}
-        <aside className="eye-sidebar" aria-label="Sidebar">
-          <div className="eye-sidebar__header">
-            <div className="eye-brand">
-              <span className="eye-brand__icon"><Icon name="archive" size="20" /></span>
-              <span className="eye-brand__name">GrimoireStack</span>
+        <aside className={`${isMobile ? 'w-full min-w-full flex-row flex-wrap gap-2 p-3 mb-3' : 'w-60 min-w-60 flex flex-col p-4'} bg-[rgba(8,10,16,0.6)] border border-[rgba(138,154,106,0.08)] rounded-lg backdrop-blur-md`} aria-label="Sidebar">
+          <div className={`${isMobile ? 'w-full mb-3 pb-3 border-b border-[rgba(138,154,106,0.1)]' : 'text-center mb-4 pb-3 border-b border-[rgba(138,154,106,0.1)]'}`}>
+            <div className="flex items-center justify-center gap-2 mb-3">
+              <span className="inline-flex items-center justify-center text-sickly drop-shadow-[0_0_8px_rgba(138,154,106,0.3)]"><Icon name="archive" size="20" /></span>
+              <span className="font-display font-black text-[1.2rem] text-[#c8d8e0] tracking-wide">GrimoireStack</span>
             </div>
-            <div className="eye-stats">
-              <div className="eye-stat">
-                <span className="eye-stat__num">{totalSchools}</span>
-                <span className="eye-stat__label">Schools</span>
+            <div className="flex justify-center gap-2">
+              <div className="flex flex-col items-center p-1.5 bg-[rgba(138,154,106,0.04)] border border-[rgba(138,154,106,0.1)] rounded">
+                <span className="font-['Cinzel'] text-[1.1rem] font-bold text-sickly">{totalSchools}</span>
+                <span className="font-['Cinzel'] text-[0.5rem] uppercase tracking-widest text-silver-dim">Schools</span>
               </div>
-              <div className="eye-stat">
-                <span className="eye-stat__num">{totalSpells}</span>
-                <span className="eye-stat__label">Spells</span>
+              <div className="flex flex-col items-center p-1.5 bg-[rgba(138,154,106,0.04)] border border-[rgba(138,154,106,0.1)] rounded">
+                <span className="font-['Cinzel'] text-[1.1rem] font-bold text-sickly">{totalSpells}</span>
+                <span className="font-['Cinzel'] text-[0.5rem] uppercase tracking-widest text-silver-dim">Spells</span>
               </div>
             </div>
           </div>
 
-          <nav className="eye-sidebar__nav" aria-label="Sidebar navigation">
+          <nav className={`${isMobile ? 'hidden' : 'flex flex-col gap-1 flex-1'}`} aria-label="Sidebar navigation">
             {Object.entries(TAB_LABELS).map(([key, { name, icon }]) => (
               <button
                 key={key}
-                className={`eye-nav-btn ${activeTab === key ? 'eye-nav-btn--active' : ''}`}
+                className={`flex items-center gap-2.5 px-3 py-2 rounded-md text-left transition-all duration-200 ${activeTab === key ? 'bg-[rgba(138,154,106,0.12)] border border-[rgba(138,154,106,0.35)] shadow-[0_0_18px_rgba(138,154,106,0.1),inset_0_1px_0_rgba(138,154,106,0.05)]' : 'bg-[rgba(138,154,106,0.02)] border border-transparent hover:bg-[rgba(138,154,106,0.05)] hover:border-[rgba(138,154,106,0.1)] hover:shadow-[0_0_10px_rgba(138,154,106,0.04)]'}`}
                 onClick={() => handleTabSelect(key)}
                 type="button"
               >
-                <span className="eye-nav-btn__icon"><Icon name={icon} size="18" /></span>
-                <span className="eye-nav-btn__name">{name}</span>
+                <span className="inline-flex items-center justify-center w-5 h-5 text-sickly flex-shrink-0"><Icon name={icon} size="18" /></span>
+                <span className={`font-['Cinzel'] text-[0.65rem] font-semibold uppercase tracking-wide ${activeTab === key ? 'text-sickly-bright' : 'text-silver'}`}>{name}</span>
               </button>
             ))}
           </nav>
 
-          <div className="eye-sidebar__footer">
+          <div className={`${isMobile ? 'w-full mt-2 pt-2 border-t border-[rgba(138,154,106,0.08)] flex flex-wrap gap-2 justify-center' : 'mt-auto pt-3 border-t border-[rgba(138,154,106,0.08)] flex flex-wrap gap-2'}`}>
             <LanguageToggle />
-            <div className="eye-sidebar__footer-divider" />
+            <div className="w-full h-px bg-gradient-to-r from-transparent via-[rgba(138,154,106,0.12)] to-transparent" />
             <button className="eye-footer-link" onClick={onShowShortcuts} type="button">
               <Icon name="sigil" size={14} /> Shortcuts
             </button>
@@ -426,14 +430,14 @@ export default function GrimoireStackLayout({
         </aside>
 
         {/* Center stage - The Great Eye */}
-        <main className="eye-stage">
+        <main className="flex flex-1 flex-col items-center justify-start relative min-h-[500px] overflow-y-auto gap-3 p-4 pb-8">
           <GrimoireEye
             mood={eyeMood}
             gaze={gaze}
           />
 
           {/* The Ritual — the only path for guided problem intake */}
-          <div className={`oracle-cta ${ritualOrch.activePanel ? 'oracle-cta--open' : ''}`}>
+          <div className={`w-full max-w-[480px] flex flex-col gap-2 mt-1 ${ritualOrch.activePanel ? 'max-w-[520px]' : ''}`}>
             {!ritualOrch.activePanel && (
               <button
                 type="button"
@@ -458,8 +462,8 @@ export default function GrimoireStackLayout({
         </main>
 
         {/* Right panel - content */}
-        <aside className="eye-panel" aria-label="Main content">
-          <div className="eye-panel__content" id="main-content" key={`${activeTab}-${pageKey}-${searchQuery || ''}`}>
+        <aside className={`${isMobile ? 'w-full min-w-full' : 'w-[440px] min-w-[440px]'} p-5 bg-[rgba(8,10,16,0.6)] border border-[rgba(138,154,106,0.08)] rounded-lg backdrop-blur-md overflow-y-auto max-h-[calc(100vh-120px)]`} aria-label="Main content">
+          <div className="text-silver content-visibility-auto contain-intrinsic-size-[500px]" id="main-content" key={`${activeTab}-${pageKey}-${searchQuery || ''}`}>
             <div className="spine-transition">
               {renderContent()}
             </div>
@@ -469,24 +473,24 @@ export default function GrimoireStackLayout({
 
       {/* Mobile bottom nav */}
       {isMobile && (
-        <nav className="eye-bottom-nav">
+        <nav className="fixed bottom-0 left-0 right-0 flex justify-around py-2 bg-[rgba(5,5,8,0.95)] border-t border-[rgba(138,154,106,0.1)] z-[100] backdrop-blur-md">
           {Object.entries(TAB_LABELS).map(([key, { name, icon }]) => (
             <button
               key={key}
-              className={`eye-bottom-btn ${activeTab === key ? 'eye-bottom-btn--active' : ''}`}
+              className={`flex flex-col items-center gap-1 px-3 py-2 rounded-md transition-all duration-200 ${activeTab === key ? 'bg-[rgba(138,154,106,0.08)]' : 'bg-transparent hover:bg-[rgba(138,154,106,0.05)]'}`}
               onClick={() => handleTabSelect(key)}
               type="button"
             >
-              <span className="eye-bottom-btn__icon"><Icon name={icon} size="20" /></span>
-              <span className="eye-bottom-btn__label">{name}</span>
+              <span className="inline-flex items-center justify-center text-sickly"><Icon name={icon} size="20" /></span>
+              <span className={`font-['Cinzel'] text-[0.5rem] font-semibold uppercase tracking-wide ${activeTab === key ? 'text-sickly' : 'text-silver-dim'}`}>{name}</span>
             </button>
           ))}
         </nav>
       )}
 
       {/* Footer tagline */}
-      <footer className="eye-footer">
-        <span className="eye-footer__quote">"All eyes remain open."</span>
+      <footer className="flex justify-between items-center px-6 py-3 border-t border-[rgba(138,154,106,0.06)] font-['Cormorant_Garamond'] text-[0.72rem] text-silver-dim">
+        <span className="italic text-sickly-dim">"All eyes remain open."</span>
         <a
           className="eye-footer__github"
           href="https://github.com/StepowskiEric/GrimoireStack"

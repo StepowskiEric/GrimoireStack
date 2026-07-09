@@ -1,0 +1,52 @@
+@import "tailwindcss";
+
+@theme {
+  --color-abyss: #050508;
+  --color-abyss-deep: #020203;
+  --color-void: #080a0f;
+  --color-sickly: #8a9a6a;
+  --color-sickly-dim: #5a6a40;
+  --color-sickly-bright: #a8b88a;
+  --color-bruised: #7a3a5a;
+  --color-bruised-dim: #4a1a3a;
+  --color-moonlight: #c4b898;
+  --color-moonlight-dim: #8a8068;
+  --color-moonlight-mute: #5a5040;
+  --color-blood: #8a1a1a;
+  --color-blood-dim: #4a0e0e;
+  --color-silver: #b8a890;
+  --color-silver-dim: #a09480;
+  --color-silver-mute: #847c70;
+  --color-purple: #7c3aed;
+  --color-purple-dim: #5b21b6;
+  --color-gold: #c9a449;
+  --color-gold-bright: #d4af37;
+  --color-parchment: #d8ccb5;
+  --color-parchment-light: #e8dcc4;
+  --color-parchment-dark: #b8a888;
+  --color-ink: #1a0e06;
+  --color-ink-soft: #3a2a1a;
+  --color-ink-mute: #5a4a3a;
+  --color-oxblood: #7a1a1a;
+  --color-leather: #2a1a0a;
+  --color-leather-mid: #3a2a18;
+  --color-leather-edge: #1a0e06;
+
+  --font-display: "Cinzel Decorative", "Cinzel", serif;
+  --font-body: "Cormorant Garamond", serif;
+  --font-mono: "Special Elite", cursive;
+  --font-ui: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+
+  --animate-fade-in: fade-in 0.5s ease both;
+  --animate-pulse-slow: pulse-slow 3s ease-in-out infinite;
+}
+
+@keyframes fade-in {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes pulse-slow {
+  0%, 100% { opacity: 0.3; }
+  50% { opacity: 0.7; }
+}

@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback, useRef, useMemo, lazy, Suspense } from 'react';
-import { BrowserRouter } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { grimoireIndex } from './data/grimoireIndexInstance.js';
 import { pageCreak } from './audio/sounds.js';
 import { useAudioState } from './hooks/useAudioState.js';
@@ -30,7 +30,10 @@ export default function App() {
     <BrowserRouter>
       <LanguageProvider>
         <ErrorBoundary>
-          <AppInner />
+          <Routes>
+            <Route path="/" element={<Navigate to="/about" replace />} />
+            <Route path="/*" element={<AppInner />} />
+          </Routes>
         </ErrorBoundary>
       </LanguageProvider>
     </BrowserRouter>

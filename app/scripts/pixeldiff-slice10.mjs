@@ -15,7 +15,7 @@ async function diffPair(page, aPath, bPath, region = null) {
   await page.setContent(
     `<img id="a" src="data:image/png;base64,${aB64}"><img id="b" src="data:image/png;base64,${bB64}">`
   );
-  return page.evaluate(async (region) => {
+  return page.evaluate(async (_cropRegion) => {
     const load = (id) => new Promise((res, rej) => {
       const img = document.getElementById(id);
       if (img.complete && img.naturalWidth) return res(img);
