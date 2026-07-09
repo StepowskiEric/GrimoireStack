@@ -19,6 +19,17 @@ export default function GrimoireEye({ mood = 'neutral', gaze = 0.25 } = {}) {
       wrapper.setAttribute('data-gaze', String(gaze));
     }
   }, [mood, gaze]);
+  // Slice 06 — chromatic-aberration fringe on the void edge. Computed at render
+  // time (only changes when `gaze` prop changes), never per animation frame.
+  const reducedMotion = typeof window !== 'undefined' && window.matchMedia
+    && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const abT = !reducedMotion && gaze >= 0.4 ? Math.sqrt((gaze - 0.4) / 0.6) : 0; // 0..1, eased
+  const abOff = 1 + abT;          // 1..2 px offset
+  const abOp = abT * 0.08;        // 0..0.08 (subtle, cosmic)
+  const pupilAberration = abOp > 0
+    ? `drop-shadow(${abOff.toFixed(2)}px 0 0 rgba(74,108,255,${abOp.toFixed(3)})) ` +
+      `drop-shadow(${(-abOff).toFixed(2)}px 0 0 rgba(176,74,138,${abOp.toFixed(3)}))`
+    : 'none';
 
 
 
@@ -365,7 +376,7 @@ export default function GrimoireEye({ mood = 'neutral', gaze = 0.25 } = {}) {
               strokeWidth="1.5" />
 
             {/* Pupil — depthless void */}
-            <g id="eye-pupil-group">
+            <g id="eye-pupil-group" style={{ filter: pupilAberration }}>
               <path
                 d="M 200,104 C 215,104 218,140 218,140 C 218,140 215,176 200,176 C 185,176 182,140 182,140 C 182,140 185,104 200,104 Z"
                 fill="url(#pupilGrad)"
