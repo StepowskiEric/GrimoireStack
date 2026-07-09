@@ -1,8 +1,8 @@
-**Status:** Slices 01 (gaze plumbing), 02 (`/gaze-preview` fixture), 03 (cold cosmic eye recolor + ambient glow), 04 (void pupil + starfield), 05 (non-Euclidean iris rings), 06 (chromatic aberration), 07 (background eyes swarm), 08 (whole-page gaze veil) built & green. Slice 09 pending. Last updated 2026-07-09.
-**Next pickup:** Slice 09 (tentacles at peak gaze) — judged on `/gaze-preview` at gaze 0 / 0.25 / 0.5 / 0.75 / 1.0.
-**Status:** Slices 01 (gaze plumbing), 02 (`/gaze-preview` fixture), 03 (cold cosmic eye recolor + ambient glow), 04 (void pupil + starfield), 05 (non-Euclidean iris rings), 06 (chromatic aberration), 07 (background eyes swarm), 08 (whole-page gaze veil) built & green. Slice 09 pending. Last updated 2026-07-09.
+**Status:** Slices 01 (gaze plumbing), 02 (`/gaze-preview` fixture), 03 (cold cosmic eye recolor + ambient glow), 04 (void pupil + starfield), 05 (non-Euclidean iris rings), 06 (chromatic aberration), 07 (background eyes swarm), 08 (whole-page gaze veil), 09 (tentacles at peak gaze) built & green. Slice 10 (page-agent) is Phase 2 / optional, not in the current build. Last updated 2026-07-09.
+**Next pickup:** All visual gaze slices (01–09) complete. Slice 10 (page-agent void incantations) is Phase 2 — research spike only, not in the current build.
+**Status:** Slices 01 (gaze plumbing), 02 (`/gaze-preview` fixture), 03 (cold cosmic eye recolor + ambient glow), 04 (void pupil + starfield), 05 (non-Euclidean iris rings), 06 (chromatic aberration), 07 (background eyes swarm), 08 (whole-page gaze veil), 09 (tentacles at peak gaze) built & green. Slice 10 (page-agent) is Phase 2 / optional, not in the current build. Last updated 2026-07-09.
 **Owner:** Front-end / `app/` React app.
-**Next pickup:** Slice 09 (tentacles at peak gaze) — judged on `/gaze-preview` at gaze 0 / 0.25 / 0.5 / 0.75 / 1.0.
+**Next pickup:** All visual gaze slices (01–09) complete. Slice 10 (page-agent void incantations) is Phase 2 — research spike only, not in the current build.
 
 ---
 
@@ -178,9 +178,12 @@ higher gaze; no sickly green.
 reference captures are in `specs/gaze-eye/assets/slice06-gaze{0.3,0.6,1}.webp`,
 `specs/gaze-eye/assets/slice07-gaze{0.3,0.5,0.6,1.0}.webp`, and
 `specs/gaze-eye/assets/slice08-gaze{0,0.25,0.5,0.75,1.0}.png`.
-1. **Start at slice 09** (`specs/gaze-eye/slices/09-tentacles-peak.md`) — tentacles at
-   peak gaze. Judge live at gaze 0 / 0.25 / 0.5 / 0.75 / 1.0. Slice 08 reference
-   captures are in `specs/gaze-eye/assets/slice08-gaze{0,0.25,0.5,0.75,1.0}.png`.
+`specs/gaze-eye/assets/slice09-gaze{0.7,0.85,1.0}.png` (peak-gaze tendrils: none at 0.7, faint at 0.85, full at 1.0; plus `slice09-gaze1-reduced.png`).
+1. **Slice 09 (tentacles at peak gaze) is DONE** — faint cosmic tendrils appear at the
+   top edge only at gaze ≥ 0.8 (none at 0.7, faint at 0.85, full at 1.0), cold blue/violet,
+   ink-like, otherworldly — not fleshy/gory/cartoon. Reference captures:
+   `specs/gaze-eye/assets/slice09-gaze{0.7,0.85,1.0}.png`. The next work is **Slice 10
+   (page-agent)** — Phase 2, out of current scope.
 2. Proceed slice-by-slice (03→09). Each visual slice: implement, run the fixture at
    the listed gaze bands, run `screenshot-critique` as the final gate, and (where a
    prior band exists) `compare-screenshots`.
@@ -198,5 +201,5 @@ Global TODO (each points to its slice):
 - [x] 06 chromatic aberration
 - [x] 07 background eyes swarm
 - [x] 08 whole-page gaze veil
-- [ ] 09 tentacles at peak gaze
+- [x] 09 tentacles at peak gaze
 - [ ] 10 (future/optional) page-agent void incantations — Phase 2, not in current sequence

@@ -28,6 +28,27 @@ export default function GazePreview() {
       <div className="abyss-background" />
       {/* Whole-page gaze veil — void vignette + cold desaturation (Slice 08) */}
       <div className="gaze-veil" aria-hidden="true" />
+      {/* Cosmic tendrils at peak gaze — Slice 09 */}
+      <div className="gaze-tentacles" aria-hidden="true">
+        <svg className="gaze-tentacles__svg" viewBox="0 0 1000 420" preserveAspectRatio="xMidYMin slice">
+          <defs>
+            <linearGradient id="tentacleGrad" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stopColor="#4a6cff" stopOpacity="0.85" />
+              <stop offset="55%" stopColor="#7fd4ff" stopOpacity="0.5" />
+              <stop offset="100%" stopColor="#b04a8a" stopOpacity="0" />
+            </linearGradient>
+            <filter id="tentacleSoft" x="-20%" y="-20%" width="140%" height="140%">
+              <feGaussianBlur stdDeviation="1.4" />
+            </filter>
+          </defs>
+          <g filter="url(#tentacleSoft)" fill="none" stroke="url(#tentacleGrad)" strokeWidth="2.2" strokeLinecap="round">
+            <path d="M 180 0 C 150 70, 210 140, 170 210 S 140 300, 190 350" />
+            <path d="M 400 0 C 430 60, 360 130, 405 200 S 440 290, 395 345" />
+            <path d="M 620 0 C 590 65, 655 135, 610 205 S 580 295, 630 348" />
+            <path d="M 840 0 C 870 70, 805 140, 850 210 S 885 300, 835 352" />
+          </g>
+        </svg>
+      </div>
       <main className="gaze-preview__stage">
         <GrimoireEye gaze={gaze} mood="neutral" />
       </main>
