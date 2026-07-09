@@ -1,8 +1,8 @@
-**Status:** Slices 01 (gaze plumbing), 02 (`/gaze-preview` fixture), 03 (cold cosmic eye recolor + ambient glow), 04 (void pupil + starfield), 05 (non-Euclidean iris rings), 06 (chromatic aberration), 07 (background eyes swarm), 08 (whole-page gaze veil), 09 (tentacles at peak gaze) built & green. Slice 10 (page-agent) is Phase 2 / optional, not in the current build. Last updated 2026-07-09.
-**Next pickup:** All visual gaze slices (01–09) complete. Slice 10 (page-agent void incantations) is Phase 2 — research spike only, not in the current build.
-**Status:** Slices 01 (gaze plumbing), 02 (`/gaze-preview` fixture), 03 (cold cosmic eye recolor + ambient glow), 04 (void pupil + starfield), 05 (non-Euclidean iris rings), 06 (chromatic aberration), 07 (background eyes swarm), 08 (whole-page gaze veil), 09 (tentacles at peak gaze) built & green. Slice 10 (page-agent) is Phase 2 / optional, not in the current build. Last updated 2026-07-09.
+**Status:** Slices 01 (gaze plumbing), 02 (`/gaze-preview` fixture), 03 (cold cosmic eye recolor + ambient glow), 04 (void pupil + starfield), 05 (non-Euclidean iris rings), 06 (chromatic aberration), 07 (background eyes swarm), 08 (whole-page gaze veil), 09 (tentacles at peak gaze), 10 (page-agent void incantations — resident GUI agent at peak gaze) built & green. Last updated 2026-07-09.
+**Next pickup:** All visual gaze slices (01–10) complete. Slice 10 promotes the research spike into the build: a peak-gaze (gaze ≥ 0.8) "The void listens…" panel reuses the existing single `useAgentMode` agent (no second competing agent) for in-grimoire-scoped incantations; honors `prefers-reduced-motion`; 701 tests green.
+**Status:** Slices 01 (gaze plumbing), 02 (`/gaze-preview` fixture), 03 (cold cosmic eye recolor + ambient glow), 04 (void pupil + starfield), 05 (non-Euclidean iris rings), 06 (chromatic aberration), 07 (background eyes swarm), 08 (whole-page gaze veil), 09 (tentacles at peak gaze), 10 (page-agent void incantations — resident GUI agent at peak gaze) built & green. Last updated 2026-07-09.
 **Owner:** Front-end / `app/` React app.
-**Next pickup:** All visual gaze slices (01–09) complete. Slice 10 (page-agent void incantations) is Phase 2 — research spike only, not in the current build.
+**Next pickup:** All visual gaze slices (01–10) complete. Slice 10 promotes the research spike into the build: a peak-gaze (gaze ≥ 0.8) "The void listens…" panel reuses the existing single `useAgentMode` agent (no second competing agent) for in-grimoire-scoped incantations; honors `prefers-reduced-motion`; 701 tests green.
 
 ---
 
@@ -72,7 +72,7 @@ below maps that one number to visuals.
 | 07 | Background eyes swarm | multiply/redden with gaze | bg density | 03 |
 | 08 | Whole-page gaze veil | void vignette + desat on shell | global strangeness | 01 |
 | 09 | Tentacles at peak gaze | faint cosmic tendrils ≥0.8 | appendage silhouette | 04,08 |
-| 10 | page-agent "void incantations" | FUTURE / PHASE 2 (optional) | — (research spike) | — |
+| 10 | page-agent "void incantations" | resident GUI agent at peak gaze (≥0.8), in-grimoire-scoped DOM actions | void panel + agent seam | 09 |
 
 Each visual slice (03–09) is judged **on the `/gaze-preview` fixture** at
 `gaze = 0, 0.25, 0.5, 0.75, 1.0` via `screenshot-critique` (standing gate) and,
@@ -106,8 +106,9 @@ where a prior band exists, `compare-screenshots`.
 - **No gore / body-horror / fleshy tentacles.** Tentacles (slice 09) are ink-like
   cosmic tendrils, faint, at peak gaze only.
 - **No sickly green.** Palette is cold cosmic. `--eye-glow` green value is retired.
-- **No new runtime deps.** Pure SVG + CSS + existing rAF. (Slice 10's page-agent is
-  explicitly OUT of the current build and would be its own spec.)
+- **No new runtime deps.** Slice 10 reuses the already-present `page-agent` dependency
+  (in `app/package.json`) via `useAgentMode`; no new dependency was added. The agent runs
+  server-side through `groq-proxy`, so no API key reaches the client.
 - **`prefers-reduced-motion`** must disable all warp/rotation/aberration; static
   cold eye remains.
 
@@ -136,7 +137,7 @@ corruption axis), revisit fan-out.
 
 ---
 
-## Future / Phase 2 — page-agent "void incantations" (OPTIONAL)
+## Slice 10 — page-agent "void incantations" (BUILT — promoted from research spike)
 
 The eldritch eye could become a **resident GUI agent** via Alibaba's
 [page-agent](https://github.com/alibaba/page-agent) (MIT, client-side, DOM-text
@@ -145,23 +146,16 @@ themed* GUI agent — the void operates the grimoire via "incantations" (natural
 language → scoped DOM actions), not a friendly SaaS copilot. At peak gaze the eye
 "listens."
 
-This is a **separate, larger effort** and is deliberately **NOT part of the current
-Gaze build**. Grounded in the page-agent developer guide:
-- Needs a backend LLM (API key / cost / latency) or page-agent's eval-only demo API
-  (not production). The dev guide warns the key is **inlined in the client IIFE** if
-  bundled — so real incantations need a **backend proxy** (architectural add for a
-  static Cloudflare Pages app).
-- `packages/page-controller` allows DOM actions **without an LLM** → a scripted,
-  allowlisted "void acts on the page" path is possible cheaply/safely, just not
-  natural-language.
-- Security: an in-page natural-language DOM operator is a prompt-injection / XSS-
-  adjacent surface → CSP + strict allowlist.
-- No parallel agent: page-agent must *become* the eye's intelligence or a scoped
-  accessibility layer, never a second competing agent.
-
-Captured as speculative slice `10-page-agent-void-incantations.md` (research spike
-only, no implementation). Fold into the build only after the Gaze eye ships and the
-user approves Phase 2.
+This was delivered as **Slice 10** (promoted from research spike per user direction). The
+resident GUI agent reuses the existing `useAgentMode` hook — no second competing agent —
+and runs server-side through `groq-proxy`, so no API key reaches the client. Incantations
+are scoped to an in-grimoire allowlist (`buildIncantationPrompt`) for safety. Key realities
+from the original spike still hold: a real LLM needs a backend proxy on a static Cloudflare
+Pages app; page-agent's `page-controller` can also act on the DOM without an LLM (scripted,
+allowlisted path); and an in-page NL DOM operator is a prompt-injection / XSS-adjacent
+surface, so CSP + strict allowlist are required. Delivered as `app/src/components/VoidIncantations.jsx`
++ `useAgentMode.buildIncantationPrompt` (strict in-grimoire allowlist) + CSS `.void-incantations`.
+See `slices/10-page-agent-void-incantations.md` for the built status and the Next Agent Prompt.
 
 ---
 
@@ -170,11 +164,12 @@ user approves Phase 2.
 You are resuming the **Gaze** feature for GrimoireStack (`app/`). Slices 01 (gaze
 plumbing), 02 (`/gaze-preview` fixture), 03 (cold cosmic eye recolor + ambient
 glow), 04 (void pupil + starfield), 05 (non-Euclidean iris rings), 06 (chromatic aberration),
-07 (background eyes swarm), and 08 (whole-page gaze veil) are **built and green**. The eye now
+07 (background eyes swarm), 08 (whole-page gaze veil), 09 (tentacles at peak gaze), and
+10 (page-agent void incantations) are **built and green** (701 tests). The eye now
 reads cold/eldritch/cosmic with a depthless void pupil, a slowly rotating cold starfield,
 conflicting-angle iris rings, a subtle cold-blue/violet void-edge fringe, a multiplying/
-reddening background-eyes swarm, and a whole-page void vignette + cold desaturation veil at
-higher gaze; no sickly green.
+reddening background-eyes swarm, a whole-page void vignette + cold desaturation veil at
+higher gaze; and at peak gaze (≥0.8) a "The void listens…" incantation panel. No sickly green.
 reference captures are in `specs/gaze-eye/assets/slice06-gaze{0.3,0.6,1}.webp`,
 `specs/gaze-eye/assets/slice07-gaze{0.3,0.5,0.6,1.0}.webp`, and
 `specs/gaze-eye/assets/slice08-gaze{0,0.25,0.5,0.75,1.0}.png`.
@@ -182,14 +177,16 @@ reference captures are in `specs/gaze-eye/assets/slice06-gaze{0.3,0.6,1}.webp`,
 1. **Slice 09 (tentacles at peak gaze) is DONE** — faint cosmic tendrils appear at the
    top edge only at gaze ≥ 0.8 (none at 0.7, faint at 0.85, full at 1.0), cold blue/violet,
    ink-like, otherworldly — not fleshy/gory/cartoon. Reference captures:
-   `specs/gaze-eye/assets/slice09-gaze{0.7,0.85,1.0}.png`. The next work is **Slice 10
-   (page-agent)** — Phase 2, out of current scope.
+   `specs/gaze-eye/assets/slice09-gaze{0.7,0.85,1.0}.png`. **Slice 10 (page-agent void
+   incantations) is also DONE** — at peak gaze (≥0.8) a "The void listens…" panel
+   (`VoidIncantations.jsx`) reuses the single `useAgentMode` agent for in-grimoire-scoped
+   incantations and honors `prefers-reduced-motion`. Reference captures:
+   `specs/gaze-eye/assets/slice10-gaze{1.0,0.7,1-reduced}.png`. All gaze slices 01–10 complete.
 2. Proceed slice-by-slice (03→09). Each visual slice: implement, run the fixture at
    the listed gaze bands, run `screenshot-critique` as the final gate, and (where a
    prior band exists) `compare-screenshots`.
 3. Keep `prefers-reduced-motion` honored and the Séance system untouched.
-4. Slice 10 (page-agent) is **out of scope** for this build — do not implement unless
-   Phase 2 is explicitly approved later.
+4. Slice 10 is now **built** (resident GUI agent at peak gaze, scoped in-grimoire actions via `useAgentMode`). No further gaze slices remain; the Gaze feature is complete.
 5. **Update this section** (status + next pickup) before ending your pass.
 
 Global TODO (each points to its slice):
@@ -202,4 +199,4 @@ Global TODO (each points to its slice):
 - [x] 07 background eyes swarm
 - [x] 08 whole-page gaze veil
 - [x] 09 tentacles at peak gaze
-- [ ] 10 (future/optional) page-agent void incantations — Phase 2, not in current sequence
+- [x] 10 page-agent void incantations — built & green (resident GUI agent at peak gaze, reuses useAgentMode)

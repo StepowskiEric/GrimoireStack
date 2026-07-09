@@ -1,10 +1,10 @@
-# Slice 10 — page-agent "void incantations" (FUTURE / PHASE 2 — OPTIONAL, no build)
+# Slice 10 — page-agent "void incantations" (BUILT & green — promoted from research spike per user direction)
 
-> **Status: research spike only. NOT in the current Gaze build sequence.** Captured
-> per the user's interest in Alibaba's
-> [page-agent](https://github.com/alibaba/page-agent) (MIT, client-side GUI agent:
-> reads live DOM as text, executes natural-language commands, bring-your-own-LLM).
-> Developer guide reviewed: `docs/developer-guide.md`.
+> **Status: built & green.** Implemented as `app/src/components/VoidIncantations.jsx` +
+> `useAgentMode.buildIncantationPrompt` (strict in-grimoire allowlist) + CSS
+> `.void-incantations`. Reuses the single `useAgentMode` agent (no second competing agent);
+> runs server-side via `groq-proxy`, so no API key reaches the client. Honors
+> `prefers-reduced-motion`. 701 tests green.
 
 ## The idea
 
@@ -20,7 +20,7 @@ operates your page.*
 Most page-agent demos are boring SaaS copilots. GrimoireStack could be the first
 **horror-themed GUI agent** — a positioning no one else occupies.
 
-## Hard realities (why it is Phase 2, not now)
+## Hard realities (how the build reconciled them)
 
 Grounded in the page-agent developer guide + README:
 
@@ -48,15 +48,17 @@ Grounded in the page-agent developer guide + README:
 6. **Scope.** This is a feature, not a visual tweak. It deserves its own spec when
    the user approves Phase 2 — not a bolted-on slice here.
 
-## What to do if approved later
+## Build notes (promoted from research spike)
 
-- Spin a separate `specs/void-incantations/` with its own slice ladder.
-- Research spike first: `npm i page-agent` in a branch, mount `new PageAgent({...})`
-  behind a dev flag, confirm the DOM-action allowlist model against the grimoire's
-  real elements. Decide LLM sourcing (user-provided key via a backend proxy? a
-  server route? Ollama-local for dev?).
-- Decide scripted (`page-controller`, no LLM) vs natural-language (full `page-agent`
-  + proxy) — likely start with (a) to de-risk, then (b).
+- Implemented directly in the Gaze spec per user direction (no separate spec needed).
+- `app/src/components/VoidIncantations.jsx`: peak-gaze (≥0.8) "The void listens…" panel;
+  returns `null` below threshold. Reuses `useAgentMode().runAgent` (the single resident agent).
+- `useAgentMode.js`: exported pure `buildIncantationPrompt(incantation)` (strict in-grimoire
+  allowlist); `runAgent` now accepts `{ incantation, onError }` (backward-compatible with the
+  existing `bestSkill` path). Runs server-side via `groq-proxy` — no API key reaches the client.
+- CSS `.void-incantations` mirrors the Slice 08/09 pattern (`--gaze-veil` prop, `clamp()`/
+  `color-mix()`, `prefers-reduced-motion` gate). `z-index:60` sits above veil/tentacles, below modals.
+- Reference captures: `specs/gaze-eye/assets/slice10-gaze{1.0,0.7,1-reduced}.png`.
 
 ## Verification (when built)
 
@@ -69,5 +71,4 @@ Grounded in the page-agent developer guide + README:
 ## Human feedback that would change this slice
 
 - User declines → delete this slice file; Gaze eye stays visual-only.
-- User approves Phase 2 → promote to its own spec; keep slices 01–09 shippable
-  first.
+- Slice 10 was promoted per user direction; the Gaze feature (slices 01–10) is complete.

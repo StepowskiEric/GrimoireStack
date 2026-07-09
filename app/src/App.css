@@ -9157,6 +9157,98 @@ header .header-sigil-text{display:none}
   from { transform: translateY(0) scaleY(0.96); }
   to   { transform: translateY(8px) scaleY(1.02); }
 }
+/* ==============================
+   Void Incantations — Slice 10
+   At peak gaze (>= 0.8) the eye "listens": a cold, eldritch affordance lets
+   the user utter incantations the resident page-agent executes as scoped
+   in-grimoire DOM actions. Rendered only by <VoidIncantations> (returns null
+   below peak gaze), so this styling applies at peak gaze only. z-index sits
+   above the veil (50) + tentacles (55) and below modals (100). Honors
+   prefers-reduced-motion — the entrance is a one-shot rise, not a loop.
+   ============================== */
+.void-incantations {
+  position: fixed;
+  left: 50%;
+  bottom: 6vh;
+  transform: translateX(-50%);
+  z-index: 60;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  width: min(440px, 86vw);
+  padding: 14px 16px;
+  box-sizing: border-box;
+  background: linear-gradient(180deg, rgba(8, 12, 30, 0.9), rgba(3, 6, 18, 0.95));
+  border: 1px solid rgba(74, 108, 255, 0.35);
+  border-radius: 14px;
+  box-shadow: 0 0 28px rgba(74, 108, 255, 0.22), 0 0 60px rgba(176, 74, 138, 0.12);
+  backdrop-filter: blur(6px) saturate(0.9);
+  color: #cdd8ff;
+  font-family: inherit;
+}
+.void-incantations__label {
+  font-size: 12px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: rgba(127, 212, 255, 0.95);
+}
+.void-incantations__row {
+  display: flex;
+  gap: 8px;
+}
+.void-incantations__input {
+  flex: 1 1 auto;
+  min-width: 0;
+  padding: 9px 12px;
+  border-radius: 9px;
+  border: 1px solid rgba(127, 212, 255, 0.6);
+  background: rgba(2, 5, 16, 0.7);
+  color: #e7ecff;
+  font-size: 14px;
+  outline: none;
+}
+.void-incantations__input::placeholder {
+  color: rgba(205, 216, 255, 0.6);
+}
+.void-incantations__input:focus {
+  border-color: rgba(127, 212, 255, 0.65);
+  box-shadow: 0 0 0 2px rgba(74, 108, 255, 0.25);
+}
+.void-incantations__utter {
+  flex: 0 0 auto;
+  padding: 9px 18px;
+  border-radius: 9px;
+  border: 1px solid rgba(74, 108, 255, 0.5);
+  background: linear-gradient(180deg, rgba(74, 108, 255, 0.35), rgba(74, 108, 255, 0.15));
+  color: #eaf0ff;
+  font-size: 14px;
+  letter-spacing: 0.05em;
+  cursor: pointer;
+}
+.void-incantations__utter:disabled {
+  opacity: 0.5;
+  cursor: default;
+}
+.void-incantations__status {
+  margin: 0;
+  font-size: 12px;
+  color: rgba(205, 216, 255, 0.7);
+}
+.void-incantations__status--error {
+  color: rgba(255, 140, 160, 0.9);
+}
+@media (prefers-reduced-motion: no-preference) {
+  .void-incantations {
+    animation: void-incantations-rise 0.6s ease both;
+  }
+}
+@keyframes void-incantations-rise {
+  from { opacity: 0; transform: translate(-50%, 14px); }
+  to   { opacity: 1; transform: translate(-50%, 0); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .void-incantations { animation: none; }
+}
 
 /* ==============================
    Wandering Animation — 5 Chambers

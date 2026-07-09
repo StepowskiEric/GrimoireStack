@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import GrimoireEye from '../components/GrimoireEye.jsx';
 import { clamp01 } from '../utils/gaze.js';
+import VoidIncantations from '../components/VoidIncantations.jsx';
 
 // Dev-only checkpoint harness for the Gaze work. Lets a human scrub the eye
 // across exact gaze bands without waiting for dwell or clicking through the
@@ -49,6 +50,8 @@ export default function GazePreview() {
           </g>
         </svg>
       </div>
+      {/* Void incantations — the eye listens at peak gaze (Slice 10) */}
+      <VoidIncantations gaze={gaze} />
       <main className="gaze-preview__stage">
         <GrimoireEye gaze={gaze} mood="neutral" />
       </main>

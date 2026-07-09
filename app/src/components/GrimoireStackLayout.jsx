@@ -20,6 +20,7 @@ import RitualPanel from './RitualPanel.jsx';
 import { useRitualOrchestrator } from '../hooks/useRitualOrchestrator.js';
 import { useGaze } from '../hooks/useGaze.js';
 import WanderingAnimation from './WanderingAnimation.jsx';
+import VoidIncantations from './VoidIncantations.jsx';
 
 const SCHOOL_MAP = grimoireIndex.getSchoolMap();
 
@@ -373,6 +374,8 @@ export default function GrimoireStackLayout({
           </g>
         </svg>
       </div>
+      {/* Void incantations — the eye listens at peak gaze (Slice 10) */}
+      <VoidIncantations gaze={gaze} />
       <div className="eye-main">
         {/* Left sidebar */}
         <aside className="eye-sidebar" aria-label="Sidebar">
