@@ -48,7 +48,7 @@ export default function FamiliarWhisper({ spell, onNavigate }) {
             style={{ transitionDelay: `${idx * 60}ms` }}
           >
             <span className="italic">{getSpellHeadline(entry.spell)}</span>
-            <span className="text-text-muted text-[0.72rem] normal tracking-wide">— {entry.school.real}</span>
+            <span className="text-text-muted text-[0.72rem] normal tracking-wide">· {entry.school.real}</span>
           </button>
         ))}
       </div>

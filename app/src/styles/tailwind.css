@@ -136,6 +136,17 @@
   --color-accent-subtle: rgba(212, 175, 55, 0.15);
   --color-accent-hover: rgba(212, 175, 55, 0.25);
 
+  /* Radius scale — design-system tokens */
+  --radius-sm: 0.25rem;
+  --radius-md: 0.375rem;
+  --radius-lg: 0.5rem;
+  --radius-xl: 0.75rem;
+  --radius-2xl: 1rem;
+
+  /* Focus ring tokens — used by primitives for accessible focus states */
+  --color-ring: rgba(212, 175, 55, 0.85);
+  --color-ring-offset: var(--abyss);
+
   /* Typography */
   --font-display: "Cinzel Decorative", "Cinzel", serif;
   --font-body: "Cormorant Garamond", serif;
@@ -279,4 +290,13 @@
 @utility container-card {
   container-type: inline-size;
   container-name: card;
+}
+
+/* Accessible focus ring utility — Pattern from tailwind-design-system skill.
+ * Reusable across all primitives so focus is consistent everywhere. */
+@utility focus-ring {
+  @apply outline-none ring-2 ring-ring ring-offset-2 ring-offset-ring-offset;
+}
+@utility focus-ring-inset {
+  @apply outline-none ring-1 ring-inset ring-ring;
 }

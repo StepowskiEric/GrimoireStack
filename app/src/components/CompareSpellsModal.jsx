@@ -145,10 +145,10 @@ export default function CompareSpellsModal({ left, right, onClose, onSelect, onP
                 </div>
               </div>
             ) : (
-              <div className="mt-4 text-center text-[0.72rem] text-[#6a5a3a]">
-                Bind two incantations to weigh them. The Eye will set them
-                side by side — effect, status, and the threads that bind them.
-              </div>
+            <div className="mt-4 text-center text-[0.72rem] text-[#6a5a3a]">
+              Bind two incantations to weigh them. The Eye will set them
+              side by side: effect, status, and the threads that bind them.
+            </div>
             )}
           </>
         ) : (

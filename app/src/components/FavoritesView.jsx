@@ -46,7 +46,7 @@ export default function FavoritesView({
         {favoriteSpells.length === 0 ? (
           <p className="font-['Cormorant_Garamond'] italic text-center text-[0.92rem] text-silver-mute py-5 px-3 relative">
             <span className="block text-[rgba(196,71,71,0.35)] text-[1.2rem] mb-1.5">⛧</span>
-            The circle is silent. No entity is yet bound to your service — seal one with the star to keep it near.
+            The circle is silent. No entity is yet bound to your service. Seal one with the star to keep it near.
           </p>
         ) : (
           <div className="flex flex-col gap-1.5">
@@ -120,7 +120,7 @@ export default function FavoritesView({
       <div className="mb-5.5 p-3.5 border border-[rgba(138,154,106,0.15)] rounded-sm bg-gradient-to-b from-[rgba(8,12,18,0.6)] to-[rgba(4,6,10,0.8)] relative">
         <div className="absolute top-0 left-3.5 right-3.5 h-px bg-gradient-to-r from-transparent via-[rgba(138,154,106,0.35)] to-transparent" aria-hidden="true" />
         <h3 className="font-['Cinzel'] text-[0.7rem] font-bold uppercase tracking-widest text-sickly mb-3 flex items-center gap-2">
-          Marginalia — Your Annotations
+          Marginalia: Your Annotations
           <span className="flex-1 h-px bg-gradient-to-r from-[rgba(138,154,106,0.25)] to-transparent" />
         </h3>
         {(() => {

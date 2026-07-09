@@ -155,7 +155,7 @@ export default function SpellWeb({ onSpellClick }) {
             <div>
               <h2 className="font-['Cinzel_Decorative'] text-[1.25rem] font-bold text-text-primary tracking-wide">The Spell Web</h2>
               <p className="text-text-secondary text-[0.82rem] mt-1">
-                The grimoire as a living web — schools as branches, spells as leaves, synergies as tentacle connections.
+                The grimoire as a living web: schools as branches, spells as leaves, synergies as tentacle connections.
               </p>
             </div>
           </div>

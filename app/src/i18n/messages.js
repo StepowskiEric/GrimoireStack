@@ -118,7 +118,7 @@ export const messages = {
     graphTab: 'Graph',
     changelogTab: 'Changelog',
     indexSub: 'A flat alphabetical catalogue of every incantation, independent of school.',
-    graphSub: 'The grimoire as a graph — spells are nodes, synergies are edges.',
+    graphSub: 'The grimoire as a graph: spells are nodes, synergies are edges.',
     changelogSub: 'Recently inscribed and revised incantations.',
 
     compareTitle: 'Compare Incantations',
@@ -131,7 +131,7 @@ export const messages = {
     compareSame: 'Same',
 
     intakeTitle: 'Skill Finder',
-    intakeSubtitle: 'Pick a category or describe your problem — the orb will suggest incantations.',
+    intakeSubtitle: 'Pick a category or describe your problem. The orb will suggest incantations.',
     intakePlaceholder: "e.g. 'I have a flaky test that only fails in CI' or 'I need to coordinate three agents'…",
     intakeSubmit: 'Reveal Suggestions',
     intakeExamples: 'Or try a sample problem:',
@@ -199,14 +199,14 @@ export const messages = {
     settingsVoiceSub: 'Switch between the grimoire\'s high tongue and mortal speech. The grimoire language calls the catalog by its true names; plain language speaks in workshop terms.',
     settingsLanguageLabel: 'Language',
     settingsVaultTitle: 'Vault Inscription',
-    settingsVaultSub: 'Copy your binding circle — favorites, marginalia, and the trail of recently bound spells — to clipboard. The orb preserves nothing in the cloud; this is the only path between devices.',
+    settingsVaultSub: 'Copy your binding circle: favorites, marginalia, and the trail of recently bound spells to clipboard. The orb preserves nothing in the cloud; this is the only path between devices.',
     settingsImportHint: 'Paste a previously exported JSON config to restore your data.',
     settingsSightTitle: 'Sight of the Eye',
     settingsSightSub: 'The Lidless Eye opens whenever a spell is summoned. The lid falls; the pupil dilates; the incantation reveals itself. Turn this off for those who prefer the quick reveal.',
     settingsEnableSounds: 'Enable sounds',
     settingsSoundsHint: 'Silences the ambient drone, page creaks, cackles, and the distant background whispers. Mute the incantation if the workshop demands silence.',
     settingsAboutTitle: 'Of This Tome',
-    settingsAboutBody: 'GrimoireStack is a living codex of agentic incantations — skills for debugging, reasoning, code review, architecture, and the darker arts of collaboration. These incantations were not meant for mortal eyes, but the wardens are weakening.',
+    settingsAboutBody: 'GrimoireStack is a living codex of agentic incantations: skills for debugging, reasoning, code review, architecture, and the darker arts of collaboration. These incantations were not meant for mortal eyes, but the wardens are weakening.',
     settingsSourceRepo: 'Source Repository',
 
     exportJson: 'JSON',
@@ -328,7 +328,7 @@ export const messages = {
     graphTab: 'Graph',
     changelogTab: 'Changelog',
     indexSub: 'A flat alphabetical list of every skill, independent of category.',
-    graphSub: 'The catalog as a graph — skills are nodes, connections are edges.',
+    graphSub: 'The catalog as a graph: skills are nodes, connections are edges.',
     changelogSub: 'Recently added and updated skills.',
 
     compareTitle: 'Compare Skills',

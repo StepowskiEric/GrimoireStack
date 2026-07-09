@@ -42,7 +42,7 @@ export default function SpellCard({ spell, onClick, matched, children, isFavorit
       onKeyDown={handleKeyDown}
       role="button"
       tabIndex={0}
-      aria-label={`${cardTitle} — ${tierInfo.label} — ${spell.effect}`}
+      aria-label={`${cardTitle}, ${tierInfo.label}, ${spell.effect}`}
       title={tierInfo.title}
       style={{ cursor: 'pointer', display: matched === false ? 'none' : undefined }}
     >
