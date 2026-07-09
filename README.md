@@ -174,26 +174,6 @@ The interface is themed as a Cthulhu-mythos / Bloodborne-style grimoire. Design 
 
 Typography: `Cinzel` / `Cinzel Decorative` (serif display) and `Cormorant Garamond` (body) loaded via Google Fonts in the prerendered HTML.
 
-## Layout (the "Great Eye")
-
-```
-┌─────────────────────────────────────────────────────────────┐
-│  Top nav: ARCHIVE | THE VAULT | RITUALS                     │
-├──────────────┬──────────────────────────┬───────────────────┤
-│              │                          │                   │
-│   Sidebar    │      Center stage        │     Right panel   │
-│              │                          │                   │
-│  · Brand     │     Great Eye SVG        │   Tab content     │
-│  · Stats     │   (breathing, blinking,  │   (Library /      │
-│  · Warden    │    mouse-tracking pupil) │    Vault /        │
-│  · Tabs      │                          │    Rituals /      │
-│  · Footer    │   Featured school        │    Bestiary /     │
-│    links     │   filaments around eye   │    Settings)      │
-│              │   Search in pupil        │                   │
-└──────────────┴──────────────────────────┴───────────────────┘
-```
-
-`GrimoireStackLayout.jsx` orchestrates all three panes. On screens narrower than 768 px the sidebar collapses to a bottom nav (`BottomNav.jsx`).
 
 ## Components (current)
 

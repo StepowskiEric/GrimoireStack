@@ -40,3 +40,9 @@ app/test-results/
 app/playwright-report/
 .pi/
 snap.mjs
+
+
+
+**/.nx/cache
+**/.nx/workspace-data
+**/.nx/migrate-runs
