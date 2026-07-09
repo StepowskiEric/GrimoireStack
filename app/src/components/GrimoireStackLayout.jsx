@@ -24,6 +24,7 @@ import WanderingAnimation from './WanderingAnimation.jsx';
 const SCHOOL_MAP = grimoireIndex.getSchoolMap();
 
 const CommuneView = lazy(() => import('./CommuneView.jsx'));
+const GazePreview = import.meta.env.DEV ? lazy(() => import('../views/GazePreview.jsx')) : null;
 
 const TABS = {
   ABOUT: 'about',
@@ -303,6 +304,15 @@ export default function GrimoireStackLayout({
     }
   };
 
+  // Dev-only gaze fixture: short-circuit the whole shell at /gaze-preview.
+  // GazePreview is lazy-imported only in DEV, so prod never bundles it.
+  if (import.meta.env.DEV && location.pathname === '/gaze-preview' && GazePreview) {
+    return (
+      <Suspense fallback={<div className="modal-suspense-fallback">Summoning the gaze…</div>}>
+        <GazePreview />
+      </Suspense>
+    );
+  }
   return (
     <div className={`grimoirestack-layout ${isMobile ? 'grimoirestack-layout--mobile' : ''}`} data-gaze={gaze}>
       {/* Abyssal background with floating particles */}

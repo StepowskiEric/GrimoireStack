@@ -9513,3 +9513,68 @@ header .header-sigil-text{display:none}
   from { opacity: 0.3; }
   to { opacity: 0.8; }
 }
+/* ── Gaze Preview fixture (dev-only, /gaze-preview) ─────────────── */
+.gaze-preview {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  background: var(--abyss);
+  color: var(--moonlight, #c8d8e0);
+  font-family: 'Cormorant Garamond', serif;
+  z-index: 50;
+  overflow: hidden;
+}
+.gaze-preview .abyss-background { z-index: -1; }
+.gaze-preview__stage {
+  flex: 1;
+  display: grid;
+  place-items: center;
+  min-height: 0;
+}
+.gaze-preview__controls {
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+  padding: 1rem 1.5rem;
+  background: rgba(8, 10, 15, 0.72);
+  border-top: 1px solid rgba(127, 212, 255, 0.12);
+  backdrop-filter: blur(6px);
+  flex-wrap: wrap;
+  justify-content: center;
+}
+.gaze-preview__readout {
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  font-size: 0.85rem;
+  opacity: 0.8;
+}
+.gaze-preview__value { color: #7fd4ff; margin-left: 0.4rem; }
+.gaze-preview__slider {
+  flex: 1;
+  min-width: 200px;
+  max-width: 420px;
+  accent-color: #7fd4ff;
+}
+.gaze-preview__bands { display: flex; gap: 0.4rem; }
+.gaze-preview__band {
+  background: transparent;
+  border: 1px solid rgba(127, 212, 255, 0.25);
+  color: #c8d8e0;
+  font-family: inherit;
+  font-size: 0.8rem;
+  padding: 0.3rem 0.6rem;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: border-color 0.2s ease, color 0.2s ease, background 0.2s ease;
+}
+.gaze-preview__band:hover { border-color: rgba(127, 212, 255, 0.6); }
+.gaze-preview__band--active {
+  background: rgba(127, 212, 255, 0.14);
+  border-color: #7fd4ff;
+  color: #eaf6ff;
+}
+@media (prefers-reduced-motion: reduce) {
+  .gaze-preview__band { transition: none; }
+}
