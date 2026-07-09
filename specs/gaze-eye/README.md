@@ -1,8 +1,8 @@
-**Status:** Slices 01 (gaze plumbing), 02 (`/gaze-preview` fixture), 03 (cold cosmic eye recolor + ambient glow), 04 (void pupil + starfield), 05 (non-Euclidean iris rings), 06 (chromatic aberration), 07 (background eyes swarm) built & green. Slices 08–09 pending. Last updated 2026-07-09.
-**Next pickup:** Slice 08 (whole-page gaze veil) — judged on `/gaze-preview` at gaze 0 / 0.25 / 0.5 / 0.75 / 1.0.
-**Status:** Slices 01 (gaze plumbing), 02 (`/gaze-preview` fixture), 03 (cold cosmic eye recolor + ambient glow), 04 (void pupil + starfield) built & green. Slices 05–09 pending. Last updated 2026-07-09.
+**Status:** Slices 01 (gaze plumbing), 02 (`/gaze-preview` fixture), 03 (cold cosmic eye recolor + ambient glow), 04 (void pupil + starfield), 05 (non-Euclidean iris rings), 06 (chromatic aberration), 07 (background eyes swarm), 08 (whole-page gaze veil) built & green. Slice 09 pending. Last updated 2026-07-09.
+**Next pickup:** Slice 09 (tentacles at peak gaze) — judged on `/gaze-preview` at gaze 0 / 0.25 / 0.5 / 0.75 / 1.0.
+**Status:** Slices 01 (gaze plumbing), 02 (`/gaze-preview` fixture), 03 (cold cosmic eye recolor + ambient glow), 04 (void pupil + starfield), 05 (non-Euclidean iris rings), 06 (chromatic aberration), 07 (background eyes swarm), 08 (whole-page gaze veil) built & green. Slice 09 pending. Last updated 2026-07-09.
 **Owner:** Front-end / `app/` React app.
-**Next pickup:** Slice 05 (non-Euclidean iris rings) — judged on `/gaze-preview` at gaze 0 / 0.25 / 0.5 / 0.75 / 1.0.
+**Next pickup:** Slice 09 (tentacles at peak gaze) — judged on `/gaze-preview` at gaze 0 / 0.25 / 0.5 / 0.75 / 1.0.
 
 ---
 
@@ -169,15 +169,18 @@ user approves Phase 2.
 
 You are resuming the **Gaze** feature for GrimoireStack (`app/`). Slices 01 (gaze
 plumbing), 02 (`/gaze-preview` fixture), 03 (cold cosmic eye recolor + ambient
-glow), 04 (void pupil + starfield), 05 (non-Euclidean iris rings), 06 (chromatic aberration), and 07
-(background eyes swarm) are **built and green**. The eye now reads cold/eldritch/
-cosmic with a depthless void pupil, a slowly rotating cold starfield, conflicting-
-angle iris rings, a subtle cold-blue/violet void-edge fringe, and no sickly green;
-reference captures are in `specs/gaze-eye/assets/slice06-gaze{0.3,0.6,1}.webp`.
-reference captures are in `specs/gaze-eye/assets/slice06-gaze{0.3,0.6,1}.webp` and `specs/gaze-eye/assets/slice07-gaze{0.3,0.5,0.6,1.0}.webp`.
-1. **Start at slice 08** (`specs/gaze-eye/slices/08-gaze-veil.md`) — whole-page
-   gaze veil. Judge live at gaze 0 / 0.25 / 0.5 / 0.75 / 1.0. Slice 07 reference
-   captures are in `specs/gaze-eye/assets/slice07-gaze{0.3,0.5,0.6,1.0}.webp`.
+glow), 04 (void pupil + starfield), 05 (non-Euclidean iris rings), 06 (chromatic aberration),
+07 (background eyes swarm), and 08 (whole-page gaze veil) are **built and green**. The eye now
+reads cold/eldritch/cosmic with a depthless void pupil, a slowly rotating cold starfield,
+conflicting-angle iris rings, a subtle cold-blue/violet void-edge fringe, a multiplying/
+reddening background-eyes swarm, and a whole-page void vignette + cold desaturation veil at
+higher gaze; no sickly green.
+reference captures are in `specs/gaze-eye/assets/slice06-gaze{0.3,0.6,1}.webp`,
+`specs/gaze-eye/assets/slice07-gaze{0.3,0.5,0.6,1.0}.webp`, and
+`specs/gaze-eye/assets/slice08-gaze{0,0.25,0.5,0.75,1.0}.png`.
+1. **Start at slice 09** (`specs/gaze-eye/slices/09-tentacles-peak.md`) — tentacles at
+   peak gaze. Judge live at gaze 0 / 0.25 / 0.5 / 0.75 / 1.0. Slice 08 reference
+   captures are in `specs/gaze-eye/assets/slice08-gaze{0,0.25,0.5,0.75,1.0}.png`.
 2. Proceed slice-by-slice (03→09). Each visual slice: implement, run the fixture at
    the listed gaze bands, run `screenshot-critique` as the final gate, and (where a
    prior band exists) `compare-screenshots`.
@@ -194,6 +197,6 @@ Global TODO (each points to its slice):
 - [x] 05 non-Euclidean iris rings
 - [x] 06 chromatic aberration
 - [x] 07 background eyes swarm
-- [ ] 08 whole-page gaze veil
+- [x] 08 whole-page gaze veil
 - [ ] 09 tentacles at peak gaze
 - [ ] 10 (future/optional) page-agent void incantations — Phase 2, not in current sequence

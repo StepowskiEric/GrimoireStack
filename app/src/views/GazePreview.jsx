@@ -11,7 +11,8 @@ const BANDS = [0, 0.25, 0.5, 0.75, 1];
 
 export default function GazePreview() {
   const [searchParams, setSearchParams] = useSearchParams();
-  const initial = clamp01(Number(searchParams.get('gaze')) || 0.25);
+  const rawGaze = searchParams.get('gaze');
+  const initial = rawGaze === null ? 0.25 : clamp01(Number(rawGaze));
   const [gaze, setGaze] = useState(initial);
 
   // Keep the URL in sync (replace, not push) so a refresh / deep link
@@ -23,8 +24,10 @@ export default function GazePreview() {
   }, [gaze, searchParams, setSearchParams]);
 
   return (
-    <div className="gaze-preview" data-gaze={gaze}>
+    <div className="gaze-preview" data-gaze={gaze} style={{ '--gaze-veil': gaze }}>
       <div className="abyss-background" />
+      {/* Whole-page gaze veil — void vignette + cold desaturation (Slice 08) */}
+      <div className="gaze-veil" aria-hidden="true" />
       <main className="gaze-preview__stage">
         <GrimoireEye gaze={gaze} mood="neutral" />
       </main>

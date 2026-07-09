@@ -314,7 +314,7 @@ export default function GrimoireStackLayout({
     );
   }
   return (
-    <div className={`grimoirestack-layout ${isMobile ? 'grimoirestack-layout--mobile' : ''}`} data-gaze={gaze}>
+    <div className={`grimoirestack-layout ${isMobile ? 'grimoirestack-layout--mobile' : ''}`} data-gaze={gaze} style={{ '--gaze-veil': gaze }}>
       {/* Abyssal background with floating particles */}
       <div className="abyss-background" />
 
@@ -350,6 +350,8 @@ export default function GrimoireStackLayout({
       {ritualOrch.ritualWalkHook.phase !== 'idle' && (
         <div className={`ritual-walk-overlay ritual-walk-overlay--${ritualOrch.ritualWalkHook.phase}`} aria-hidden="true" />
       )}
+      {/* Whole-page gaze veil — void vignette + cold desaturation (Slice 08) */}
+      <div className="gaze-veil" aria-hidden="true" />
       <div className="eye-main">
         {/* Left sidebar */}
         <aside className="eye-sidebar" aria-label="Sidebar">
