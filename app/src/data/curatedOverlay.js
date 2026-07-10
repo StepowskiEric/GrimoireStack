@@ -13,7 +13,7 @@
 
 export const CURATED_OVERLAY = {
   "log-trace-correlation": {
-    "displayName": "Trace Sight",
+    "displayName": "Log Trace Correlation",
     "trueName": "The Eye That Reads the Trace",
     "status": "Proven",
     "note": "Polished effect description; tier unchanged.",
@@ -30,7 +30,7 @@ export const CURATED_OVERLAY = {
     ]
   },
   "bisect-debugging": {
-    "displayName": "Bisect Divination",
+    "displayName": "Bisect Debugging",
     "trueName": "The Halving Rite",
     "status": "Proven",
     "note": "+9.9% speed",
@@ -47,7 +47,7 @@ export const CURATED_OVERLAY = {
     ]
   },
   "debug-subagent": {
-    "displayName": "Debug Familiar",
+    "displayName": "Debug Subagent",
     "trueName": "Familiar of the Debug",
     "status": "Proven",
     "kins": [
@@ -63,7 +63,7 @@ export const CURATED_OVERLAY = {
     ]
   },
   "purify-test-output": {
-    "displayName": "Purify Vision",
+    "displayName": "Test Output Purification",
     "trueName": "The Sight Unclouded",
     "status": "Proven",
     "kins": [
@@ -79,7 +79,7 @@ export const CURATED_OVERLAY = {
     ]
   },
   "simulate-instrumentation": {
-    "displayName": "Instrumentation Charm",
+    "displayName": "Simulate Instrumentation",
     "trueName": "The Wards of Observation",
     "status": "Proven",
     "kins": [
@@ -90,7 +90,7 @@ export const CURATED_OVERLAY = {
     ]
   },
   "iterative-patch-repair": {
-    "displayName": "Iterative Mend",
+    "displayName": "Iterative Patch Repair",
     "trueName": "The Mend That Mends Itself",
     "status": "Proven",
     "kins": [
@@ -101,7 +101,7 @@ export const CURATED_OVERLAY = {
     ]
   },
   "root-cause-analysis": {
-    "displayName": "Root Cause Revelation",
+    "displayName": "Root Cause Analysis",
     "trueName": "The Severing of Cause",
     "status": "Framework",
     "kins": [
@@ -122,7 +122,7 @@ export const CURATED_OVERLAY = {
     "status": "—"
   },
   "debug-to-fix-pipeline": {
-    "displayName": "Pipeline of Restoration",
+    "displayName": "Debug to Fix Pipeline",
     "trueName": "The Six-Phase Restoration",
     "status": "Hybrid",
     "kins": [
@@ -145,7 +145,7 @@ export const CURATED_OVERLAY = {
     "status": "New"
   },
   "explore-codebase": {
-    "displayName": "Codebase Walk",
+    "displayName": "Codebase Exploration",
     "status": "—"
   },
   "codebase-divide-conquer-search": {
@@ -153,7 +153,7 @@ export const CURATED_OVERLAY = {
     "status": "—"
   },
   "specter": {
-    "displayName": "Spectral Reasoning",
+    "displayName": "Spectral Debugging",
     "trueName": "The Ghost That Hunts",
     "status": "—",
     "kins": [
@@ -173,7 +173,7 @@ export const CURATED_OVERLAY = {
     ]
   },
   "time-traveling-debugger": {
-    "displayName": "Temporal Rewind",
+    "displayName": "Time-Travel Debugger",
     "trueName": "The Temporal Rewind",
     "status": "MCP",
     "kins": [
@@ -183,35 +183,35 @@ export const CURATED_OVERLAY = {
     ]
   },
   "environment-recovery": {
-    "displayName": "Environment Exorcism",
+    "displayName": "Environment Recovery",
     "status": "New"
   },
   "network-api-debugging": {
-    "displayName": "Network Divination",
+    "displayName": "Network API Debugging",
     "status": "New"
   },
   "minimal-reproduction": {
-    "displayName": "Minimal Summoning",
+    "displayName": "Minimal Reproduction",
     "status": "New"
   },
   "escalation-ladder": {
-    "displayName": "Escalation Rite",
+    "displayName": "Escalation Ladder",
     "status": "New"
   },
   "coordinated-change": {
-    "displayName": "Coordinated Strike",
+    "displayName": "Coordinated Change",
     "status": "New"
   },
   "abductive-first-debugging": {
-    "displayName": "Abductive Strike",
+    "displayName": "Abductive Debugging",
     "status": "New"
   },
   "how-to-solve-it-state-machine": {
-    "displayName": "First Step Oracle",
+    "displayName": "Problem Solving Protocol",
     "status": "—"
   },
   "occams-razor": {
-    "displayName": "Razor of Parsimony",
+    "displayName": "Occam's Razor",
     "trueName": "The Razor of Parsimony",
     "status": "New",
     "kins": [
@@ -221,27 +221,19 @@ export const CURATED_OVERLAY = {
     ]
   },
   "keyword-agnostic-logic-locator": {
-    "displayName": "Structural Seeker",
-    "status": "—"
-  },
-  "occam-mcts": {
-    "displayName": "Simple Path Scry",
-    "status": "New"
-  },
-  "tree-of-thoughts-plus-monte-carlo-tree-search": {
-    "displayName": "Thought-Weave & Search",
+    "displayName": "Logic-Based Code Search",
     "status": "—"
   },
   "jury": {
-    "displayName": "Court of Minds",
+    "displayName": "Jury",
     "status": "—"
   },
   "prism": {
-    "displayName": "Prism of Understanding",
+    "displayName": "Prism",
     "status": "—"
   },
   "cross-domain-analogy-generator": {
-    "displayName": "Analogy Bridge",
+    "displayName": "Cross-Domain Analogy Generator",
     "status": "—"
   },
   "ooda-loop-state-machine": {
@@ -249,15 +241,15 @@ export const CURATED_OVERLAY = {
     "status": "—"
   },
   "cognitive-friction-governor": {
-    "displayName": "Friction Governor",
+    "displayName": "Cognitive Friction Governor",
     "status": "—"
   },
   "process-reward-model-protocol": {
-    "displayName": "Reward Path Backtrack",
+    "displayName": "Process Reward Model",
     "status": "—"
   },
   "how-to-solve-it-analogy": {
-    "displayName": "Analogy Solver",
+    "displayName": "Analogy-Based Problem Solving",
     "status": "—"
   },
   "step-level-verification-protocol": {
@@ -265,75 +257,67 @@ export const CURATED_OVERLAY = {
     "status": "—"
   },
   "assumption-grounding": {
-    "displayName": "Grounding Ritual",
+    "displayName": "Assumption Grounding",
     "status": "—"
   },
   "trajectory-guard": {
-    "displayName": "Trajectory Warden",
-    "status": "—"
-  },
-  "context-lifecycle-manager": {
-    "displayName": "Context Lifecycle + Budget",
+    "displayName": "Trajectory Guard",
     "status": "—"
   },
   "pdca-deming": {
-    "displayName": "Deming Cycle",
+    "displayName": "PDCA Deming Cycle",
     "status": "—"
   },
   "toyota-kata-state-machine": {
-    "displayName": "Kata Practice",
+    "displayName": "Toyota Kata",
     "status": "—"
   },
   "checklist-manifesto": {
-    "displayName": "Checkman Rite",
+    "displayName": "Checklist Manifesto",
     "status": "—"
   },
   "requirement-crystallization-protocol": {
-    "displayName": "Crystallization",
+    "displayName": "Requirement Crystallization",
     "status": "—"
   },
   "pre-flight-intent-verification": {
-    "displayName": "Pre-Flight Gate",
+    "displayName": "Pre-Flight Verification",
     "status": "New"
   },
-  "iterative-improvement-cycle": {
-    "displayName": "Kata + Deming Synthesis",
-    "status": "—"
-  },
   "zero-defect-protocol": {
-    "displayName": "Zero Defect Ward",
+    "displayName": "Zero Defect Protocol",
     "status": "—"
   },
   "blueprint": {
-    "displayName": "Blueprint Codification",
+    "displayName": "Blueprint",
     "status": "—"
   },
   "rashomon-triad-hybrid": {
-    "displayName": "Triad Perspective",
+    "displayName": "Rashomon Triad",
     "status": "—"
   },
   "compression-as-understanding": {
-    "displayName": "Compression Test",
+    "displayName": "Compression as Understanding",
     "status": "—"
   },
   "metacognitive-monitoring": {
-    "displayName": "Confidence Calibration",
+    "displayName": "Metacognitive Monitoring",
     "status": "—"
   },
   "working-effectively-with-legacy-code-state-machine": {
-    "displayName": "Legacy Seam Working",
+    "displayName": "Legacy Code Working",
     "status": "—"
   },
   "philosophy-of-software-design-state-machine": {
-    "displayName": "Complexity Audit",
+    "displayName": "Software Design Philosophy",
     "status": "—"
   },
   "verify-before-integrate": {
-    "displayName": "Pre-Commit Vigil",
+    "displayName": "Verify Before Integrate",
     "status": "—"
   },
   "llm-pre-push-review": {
-    "displayName": "LLM Pre-Push Ward",
+    "displayName": "Pre-Push Review",
     "status": "—"
   },
   "pre-deployment-gate": {
@@ -351,15 +335,15 @@ export const CURATED_OVERLAY = {
     "status": "—"
   },
   "task-intake-protocol": {
-    "displayName": "Task Intake Gate",
+    "displayName": "Task Intake Protocol",
     "status": "—"
   },
   "failure-analysis-protocol": {
-    "displayName": "Failure Prophecy",
+    "displayName": "Failure Analysis Protocol",
     "status": "—"
   },
   "security-review-protocol": {
-    "displayName": "Security Warding",
+    "displayName": "Security Review Protocol",
     "status": "—"
   },
   "refactoring-state-machine": {
@@ -367,19 +351,19 @@ export const CURATED_OVERLAY = {
     "status": "—"
   },
   "thoroughness-check-etto": {
-    "displayName": "Thoroughness Charm",
+    "displayName": "Thoroughness Check",
     "status": "—"
   },
   "thoroughness-check-etto-state-machine": {
-    "displayName": "Strict Thoroughness",
+    "displayName": "Thoroughness Check Protocol",
     "status": "—"
   },
   "counterfactual-policy-testing": {
-    "displayName": "Counterfactual Design",
+    "displayName": "Counterfactual Policy Testing",
     "status": "—"
   },
   "bounded-self-revision": {
-    "displayName": "Bounded Revision",
+    "displayName": "Bounded Self-Revision",
     "status": "—"
   },
   "speculative-drafting-verification": {
@@ -391,23 +375,23 @@ export const CURATED_OVERLAY = {
     "status": "—"
   },
   "cognitive-bias-checklist": {
-    "displayName": "Bias Audit",
+    "displayName": "Cognitive Bias Checklist",
     "status": "—"
   },
   "cognitive-bias-auditor": {
-    "displayName": "Automated Bias Detection",
+    "displayName": "Cognitive Bias Auditor",
     "status": "—"
   },
   "self-consistency": {
-    "displayName": "Self-Consistency Rite",
+    "displayName": "Self-Consistency",
     "status": "—"
   },
   "tool-interactive-critic": {
-    "displayName": "Interactive Critique",
+    "displayName": "Tool-Interactive Critic",
     "status": "—"
   },
   "api-surface-anchoring": {
-    "displayName": "API Surface Scry",
+    "displayName": "API Surface Anchoring",
     "status": "—"
   },
   "verified-api-workflow": {
@@ -415,15 +399,15 @@ export const CURATED_OVERLAY = {
     "status": "—"
   },
   "super-review-typescript": {
-    "displayName": "TypeScript Vigil",
+    "displayName": "TypeScript Super Review",
     "status": "New"
   },
   "code-review-excellence": {
-    "displayName": "Review Mastery",
+    "displayName": "Code Review Excellence",
     "status": "New"
   },
   "adversarial-review": {
-    "displayName": "Adversarial Trial",
+    "displayName": "Adversarial Review",
     "status": "New"
   },
   "critical-system-interrogation": {
@@ -431,11 +415,11 @@ export const CURATED_OVERLAY = {
     "status": "New"
   },
   "intent-specification-protocol": {
-    "displayName": "Intent Binding",
+    "displayName": "Intent Specification Protocol",
     "status": "—"
   },
   "team-topologies-ai": {
-    "displayName": "Team Topology Sight",
+    "displayName": "Team Topologies",
     "status": "—"
   },
   "designing-data-intensive-applications-ai": {
@@ -443,11 +427,11 @@ export const CURATED_OVERLAY = {
     "status": "—"
   },
   "sre-error-budget": {
-    "displayName": "Error Budget Divination",
+    "displayName": "SRE Error Budget",
     "status": "—"
   },
   "domain-driven-design": {
-    "displayName": "Ubiquitous Language",
+    "displayName": "Domain-Driven Design",
     "status": "—"
   },
   "problem-mode-router-cynefin": {
@@ -455,103 +439,103 @@ export const CURATED_OVERLAY = {
     "status": "—"
   },
   "accelerate-ai": {
-    "displayName": "Acceleration Rite",
+    "displayName": "Accelerate AI",
     "status": "—"
   },
   "release-it-stability": {
-    "displayName": "Stability Warding",
+    "displayName": "Release It Stability",
     "status": "—"
   },
   "separation-of-concerns": {
-    "displayName": "Boundary Weaving",
+    "displayName": "Separation of Concerns",
     "status": "—"
   },
   "problem-mode-router-cynefin-state-machine": {
-    "displayName": "Cynefin Gate",
+    "displayName": "Cynefin Decision Gate",
     "status": "—"
   },
   "thinking-in-systems-state-machine": {
-    "displayName": "System Dynamics",
+    "displayName": "Thinking in Systems",
     "status": "—"
   },
   "api-design-backward-compatibility": {
-    "displayName": "Backward Compat Ward",
+    "displayName": "Backward Compatible API Design",
     "status": "—"
   },
   "system-architecture-audit": {
-    "displayName": "Full Architecture Audit",
+    "displayName": "System Architecture Audit",
     "status": "—"
   },
   "improve-codebase-architecture": {
-    "displayName": "Deepening Ritual",
+    "displayName": "Improve Codebase Architecture",
     "status": "New"
   },
   "evolutionary-tool-composer": {
-    "displayName": "Evolutionary Forge",
+    "displayName": "Evolutionary Tool Composer",
     "status": "—"
   },
   "active-inference-agent": {
-    "displayName": "Free Energy Seeker",
+    "displayName": "Active Inference Agent",
     "status": "—"
   },
   "documentation-craft": {
-    "displayName": "Doc Crafting",
+    "displayName": "Documentation Craft",
     "status": "—"
   },
   "feynman-technique": {
-    "displayName": "Feynman Recitation",
+    "displayName": "Feynman Technique",
     "status": "—"
   },
   "everything-as-code-conceptualizer": {
-    "displayName": "Code Vision",
+    "displayName": "Everything as Code",
     "status": "—"
   },
   "socratic-clarification": {
-    "displayName": "Socratic Elicitation",
+    "displayName": "Socratic Clarification",
     "status": "—"
   },
   "large-documentation-navigation": {
-    "displayName": "Doc Navigation",
+    "displayName": "Documentation Navigation",
     "status": "—"
   },
   "mece-pyramid-principle": {
-    "displayName": "MECE Structuring",
+    "displayName": "MECE Pyramid Principle",
     "status": "—"
   },
   "steelmanning": {
-    "displayName": "Steelman Argument",
+    "displayName": "Steelmanning",
     "status": "—"
   },
   "stakeholder-communication": {
-    "displayName": "Calibrated Communication",
+    "displayName": "Stakeholder Communication",
     "status": "—"
   },
   "reference-class-forecasting": {
-    "displayName": "Base Rate Scry",
+    "displayName": "Reference Class Forecasting",
     "status": "—"
   },
   "pre-mortem-state-machine": {
-    "displayName": "Pre-Mortem Gate",
+    "displayName": "Pre-Mortem Protocol",
     "status": "—"
   },
   "retrospective": {
-    "displayName": "Retrospective Mirror",
+    "displayName": "Retrospective",
     "status": "—"
   },
   "explore-vs-exploit-state-machine": {
-    "displayName": "Explore-Exploit Compass",
+    "displayName": "Explore vs Exploit",
     "status": "—"
   },
   "the-goal-theory-of-constraints-ai": {
-    "displayName": "Bottleneck Sight",
+    "displayName": "Theory of Constraints",
     "status": "—"
   },
   "explore-vs-exploit": {
-    "displayName": "Explore-Exploit Lens",
+    "displayName": "Explore vs Exploit Lens",
     "status": "—"
   },
   "pre-mortem": {
-    "displayName": "Failure Scrying",
+    "displayName": "Pre-Mortem",
     "status": "—"
   },
   "plan-with-judge": {
@@ -559,59 +543,55 @@ export const CURATED_OVERLAY = {
     "status": "—"
   },
   "iterative-spec-authoring": {
-    "displayName": "Iterative Spec",
+    "displayName": "Iterative Spec Authoring",
     "status": "—"
   },
   "structured-feature-planning": {
-    "displayName": "Structured Feature Path",
+    "displayName": "Structured Feature Planning",
     "status": "—"
   },
   "summarize": {
-    "displayName": "Final Word",
+    "displayName": "Summarize",
     "status": "New"
   },
   "tree-of-thoughts": {
-    "displayName": "Thought Tree",
+    "displayName": "Tree of Thoughts",
     "status": "—"
   },
   "first-principles": {
-    "displayName": "First Principles Forge",
+    "displayName": "First Principles",
     "status": "—"
   },
   "inversion-mental-model": {
-    "displayName": "Inversion Lens",
+    "displayName": "Inversion Mental Model",
     "status": "—"
   },
   "six-thinking-hats": {
-    "displayName": "Six Hats",
+    "displayName": "Six Thinking Hats",
     "status": "—"
   },
   "inversion-mental-model-state-machine": {
-    "displayName": "Inversion Path",
+    "displayName": "Inversion Protocol",
     "status": "—"
   },
   "second-order-thinking": {
-    "displayName": "Second-Order Sight",
+    "displayName": "Second-Order Thinking",
     "status": "—"
   },
   "bayesian-updating": {
-    "displayName": "Bayesian Update",
+    "displayName": "Bayesian Updating",
     "status": "—"
   },
   "recognition-primed-triage": {
-    "displayName": "Recognition Triage",
-    "status": "—"
-  },
-  "recognition-primed-triage-state-machine": {
-    "displayName": "Structured RPD",
+    "displayName": "Recognition-Primed Triage",
     "status": "—"
   },
   "kahneman-thinking-fast-slow-software-agent": {
-    "displayName": "Fast-Slow Lens",
+    "displayName": "Fast & Slow Thinking",
     "status": "—"
   },
   "faithfulness-aware-reasoning": {
-    "displayName": "Hallucination Ward",
+    "displayName": "Faithfulness-Aware Reasoning",
     "status": "—"
   },
   "claim-verification-reasoning": {
@@ -619,7 +599,7 @@ export const CURATED_OVERLAY = {
     "status": "—"
   },
   "context-density-operator": {
-    "displayName": "Context Density",
+    "displayName": "Context Density Operator",
     "status": "—"
   },
   "cot-pruning-reasoning": {
@@ -635,35 +615,35 @@ export const CURATED_OVERLAY = {
     "status": "—"
   },
   "reasoning-integrity-chain": {
-    "displayName": "Integrity Chain",
+    "displayName": "Reasoning Integrity Chain",
     "status": "—"
   },
   "hallucination-anchor-chain": {
-    "displayName": "Anchor Chain",
+    "displayName": "Hallucination Anchor Chain",
     "status": "—"
   },
   "self-contradiction-trap": {
-    "displayName": "Contradiction Trap",
+    "displayName": "Self-Contradiction Detection",
     "status": "—"
   },
   "chaos-detector": {
-    "displayName": "Chaos Detection",
+    "displayName": "Chaos Detector",
     "status": "—"
   },
   "add-new-skill-to-repository": {
-    "displayName": "New Skill Rite",
+    "displayName": "Add New Skill",
     "status": "—"
   },
   "bulk-rename-and-update-references": {
-    "displayName": "Rename & Recall",
+    "displayName": "Bulk Rename",
     "status": "—"
   },
   "skill-development-with-supporting-files": {
-    "displayName": "Supporting File Bind",
+    "displayName": "Skill Development with Supporting Files",
     "status": "—"
   },
   "local-llm-tooling": {
-    "displayName": "Local LLM Invocation",
+    "displayName": "Local LLM Tooling",
     "status": "—"
   },
   "refactor-safely": {
@@ -671,7 +651,7 @@ export const CURATED_OVERLAY = {
     "status": "—"
   },
   "review-changes": {
-    "displayName": "Review Lens",
+    "displayName": "Review Changes",
     "status": "—"
   },
   "git-surgery": {
@@ -679,15 +659,15 @@ export const CURATED_OVERLAY = {
     "status": "—"
   },
   "code-knowledge-graph-mcp": {
-    "displayName": "Knowledge Graph",
+    "displayName": "Knowledge Graph MCP",
     "status": "—"
   },
   "dev-diagnostics-mcp": {
-    "displayName": "Diagnostics Aggregator",
+    "displayName": "Dev Diagnostics MCP",
     "status": "—"
   },
   "lint-battalion": {
-    "displayName": "Battalion Auto-Fix",
+    "displayName": "Lint Battalion",
     "status": "—"
   },
   "verified-synthesize": {
@@ -695,7 +675,7 @@ export const CURATED_OVERLAY = {
     "status": "—"
   },
   "native-data-fetching": {
-    "displayName": "Data Fetch Ward",
+    "displayName": "Native Data Fetching",
     "status": "New"
   },
   "agentic-design-patterns-orchestrator": {
@@ -707,7 +687,7 @@ export const CURATED_OVERLAY = {
     "status": "—"
   },
   "thought-retriever-coppermind": {
-    "displayName": "Thought Retrieval",
+    "displayName": "Thought Retriever",
     "status": "—"
   },
   "agent-memory-hygiene": {
@@ -715,7 +695,7 @@ export const CURATED_OVERLAY = {
     "status": "—"
   },
   "monte-carlo-tree-search": {
-    "displayName": "Branch Allocation",
+    "displayName": "Monte Carlo Tree Search",
     "status": "—"
   },
   "weak-link-detection-multi-agent": {
@@ -739,23 +719,23 @@ export const CURATED_OVERLAY = {
     "status": "—"
   },
   "unsafe-control-actions-hazard-analysis": {
-    "displayName": "STPA Ward",
+    "displayName": "Unsafe Control Actions Analysis",
     "status": "—"
   },
   "security-threat-modeling": {
-    "displayName": "STRIDE Analysis",
+    "displayName": "STRIDE Threat Modeling",
     "status": "—"
   },
   "vibe-coding-security-hardening": {
-    "displayName": "Vibe Hardening",
+    "displayName": "Vibe Coding Security Hardening",
     "status": "—"
   },
   "cognitive-load-operator-state-machine": {
-    "displayName": "Load Management",
+    "displayName": "Cognitive Load Operator",
     "status": "—"
   },
   "skill-ab-evaluation": {
-    "displayName": "A/B Scry",
+    "displayName": "A/B Skill Evaluation",
     "status": "—"
   },
   "empirical-justification": {
@@ -763,15 +743,19 @@ export const CURATED_OVERLAY = {
     "status": "—"
   },
   "test-driven-development": {
-    "displayName": "Red-Green Rite",
+    "displayName": "Test-Driven Development",
     "status": "New"
   },
   "maintain-architecture": {
     "displayName": "Architecture Maintenance",
     "status": "New"
   },
+  "recognition-primed-triage-state-machine": {
+    "displayName": "Recognition-Primed Triage (Protocol)",
+    "status": "—"
+  },
   "plan-feature-architecture": {
-    "displayName": "Feature Architecture Planner",
+    "displayName": "Feature Architecture Planning",
     "status": "New"
   },
   "architecture-evolution-review": {
@@ -791,7 +775,7 @@ export const CURATED_OVERLAY = {
     "status": "New"
   },
   "subagent-laws": {
-    "displayName": "Sub-Agent Laws",
+    "displayName": "Subagent Laws",
     "status": "New"
   }
 };
@@ -800,91 +784,109 @@ export const CURATED_SCHOOLS = {
   "debugging": {
     "id": "debugging",
     "real": "Debugging",
-    "name": "School of Remediation",
-    "desc": "Incantations to banish bugs and restore order to broken code."
+    "name": "Debugging",
+    "desc": "Techniques for diagnosing and fixing issues in code and systems."
+  },
+  "execution": {
+    "id": "execution",
+    "real": "Execution & Improvement",
+    "name": "Execution & Improvement",
+    "desc": "Solving problems, executing plans, and improving systems over time."
+  },
+  "judgment-and-routing": {
+    "id": "judgment-and-routing",
+    "real": "Judgment & Decision-Making",
+    "name": "Judgment & Decision-Making",
+    "desc": "Routing decisions, weighing tradeoffs, and choosing the right approach."
+  },
+  "orchestration": {
+    "id": "orchestration",
+    "real": "Agent Orchestration",
+    "name": "Agent Orchestration",
+    "desc": "Coordinating multiple agents and managing shared reasoning."
+  },
+  "output-quality": {
+    "id": "output-quality",
+    "real": "Output Quality",
+    "name": "Output Quality",
+    "desc": "Improving, verifying, and stress-testing output before it ships."
   },
   "reasoning": {
     "id": "reasoning",
     "real": "Reasoning & Problem Solving",
-    "name": "School of Cognition",
-    "desc": "Mental models and structured thought for when the problem itself is unclear."
+    "name": "Reasoning & Problem Solving",
+    "desc": "Mental models and structured thought when the problem isn't clear."
   },
-  "process": {
-    "id": "process",
-    "real": "Process Improvement",
-    "name": "School of Refinement",
-    "desc": "Rituals for improving systems, workflows, and outputs over time through disciplined iteration."
+  "software-development": {
+    "id": "software-development",
+    "real": "Software Development",
+    "name": "Software Development",
+    "desc": "Building, refactoring, searching through, and shipping code."
   },
-  "code-review": {
-    "id": "code-review",
-    "real": "Code Review & Quality",
-    "name": "School of Scrutiny",
-    "desc": "Incantations for verifying, elevating, and safeguarding code quality before it ships."
+  "systems-and-architecture": {
+    "id": "systems-and-architecture",
+    "real": "Systems & Architecture",
+    "name": "Systems & Architecture",
+    "desc": "Design principles for systems that endure across scale and team boundaries."
   },
-  "architecture": {
-    "id": "architecture",
-    "real": "Architecture & Design",
-    "name": "School of Architecture",
-    "desc": "Design rituals for systems that endure across dimensions of scale, time, and team boundaries."
+  "mcp-servers": {
+    "id": "mcp-servers",
+    "real": "MCP Servers",
+    "name": "MCP Servers",
+    "desc": "Model Context Protocol servers that extend agent capabilities."
+  },
+  "mlops": {
+    "id": "mlops",
+    "real": "Mlops",
+    "name": "Mlops",
+    "desc": "Skills related to ML operations and local LLM tooling."
+  },
+  "research": {
+    "id": "research",
+    "real": "Research",
+    "name": "Research",
+    "desc": "Skills related to research."
   },
   "discovery": {
     "id": "discovery",
-    "real": "Algorithm & Tool Discovery",
-    "name": "School of Discovery",
-    "desc": "Algorithms and automated tools that find solutions beyond human intuition."
-  },
-  "documentation": {
-    "id": "documentation",
-    "real": "Documentation & Communication",
-    "name": "School of Expression",
-    "desc": "Incantations for writing clearly, explaining complex systems, and communicating with stakeholders."
+    "real": "Discovery",
+    "name": "Discovery",
+    "desc": "Finding solutions beyond intuitive search."
   },
   "planning": {
     "id": "planning",
     "real": "Planning & Estimation",
-    "name": "School of Foresight",
-    "desc": "Rituals for estimating timelines, surfacing risks, and creating disciplined plans."
+    "name": "Planning & Estimation",
+    "desc": "Estimating timelines, surfacing risks, and creating disciplined plans."
   },
   "learning": {
     "id": "learning",
     "real": "Learning & Understanding",
-    "name": "School of Knowledge",
-    "desc": "Incantations for understanding new domains, stress-testing proposals, and thinking from first principles."
+    "name": "Learning & Understanding",
+    "desc": "Understanding new domains and stress-testing ideas."
   },
   "anti-hallucination": {
     "id": "anti-hallucination",
-    "real": "Reasoning & Anti-Hallucination",
-    "name": "School of Veracity",
-    "desc": "Wards against reasoning decay — incantations that keep agent thinking honest and grounded."
-  },
-  "software-dev": {
-    "id": "software-dev",
-    "real": "Software Development",
-    "name": "School of Crafting",
-    "desc": "Practical incantations for building, renaming, searching through, and shipping code."
-  },
-  "multi-agent": {
-    "id": "multi-agent",
-    "real": "Multi-Agent & Coordination",
-    "name": "School of Confluence",
-    "desc": "Incantations for orchestrating multiple agents, sharing reasoning memory, and coordinating parallel workstreams."
-  },
-  "risk": {
-    "id": "risk",
-    "real": "Risk & Safety Analysis",
-    "name": "School of Warding",
-    "desc": "Protective incantations for safety-critical changes, threat analysis, and pre-deployment hardening."
+    "real": "Anti-Hallucination",
+    "name": "Anti-Hallucination",
+    "desc": "Keeping agent reasoning honest and grounded."
   },
   "cognitive-load": {
     "id": "cognitive-load",
-    "real": "Cognitive Load & Operator Support",
-    "name": "School of Clarity",
-    "desc": "Incantations for managing finite attention, reducing overhead, and keeping the agent focused."
+    "real": "Cognitive Load Management",
+    "name": "Cognitive Load Management",
+    "desc": "Managing finite attention and reducing overhead."
   },
   "testing": {
     "id": "testing",
     "real": "Testing & Evaluation",
-    "name": "School of Measurement",
-    "desc": "Rituals for empirically measuring whether a skill actually improves outcomes."
+    "name": "Testing & Evaluation",
+    "desc": "Measuring whether skills actually improve outcomes."
+  },
+  "development": {
+    "id": "development",
+    "real": "Development & Tooling",
+    "name": "Development & Tooling",
+    "desc": "Tooling, utilities, and workflows for development tasks."
   }
 };

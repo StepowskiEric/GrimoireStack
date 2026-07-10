@@ -370,7 +370,7 @@ export default function GrimoireStackLayout({
       </div>
       {/* Void incantations — the eye listens at peak gaze (Slice 10) */}
       <VoidIncantations gaze={gaze} />
-      <div className="flex flex-1 w-full flex-col px-3 pb-20 pt-5 md:p-5">
+      <div className="flex flex-1 w-full flex-col px-3 pb-20 pt-5 md:p-5 md:flex-row">
         {/* Left sidebar */}
         <aside className="w-full min-w-full flex-row flex-wrap gap-2 p-3 mb-3 md:w-60 md:min-w-60 md:flex-col md:p-4 bg-[rgba(8,10,16,0.6)] border border-[rgba(138,154,106,0.08)] rounded-lg backdrop-blur-md" aria-label="Sidebar">
           <div className="w-full mb-3 pb-3 border-b border-[rgba(138,154,106,0.1)] md:text-center md:mb-4">

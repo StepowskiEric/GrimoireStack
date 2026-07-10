@@ -191,11 +191,10 @@ export default function SpellWeb({ onSpellClick }) {
                 <stop offset="100%" stopColor="#0a0805" stopOpacity="0.6" />
               </radialGradient>
               <filter id="tentacleGlow">
-                <feGaussianBlur stdDeviation="2" result="blur" />
+                <feGaussianBlur stdDeviation="3" result="blur" />
                 <feComposite in="SourceGraphic" in2="blur" operator="over" />
               </filter>
             </defs>
-            <rect width={WIDTH} height={HEIGHT} fill="url(#webBgGradient)" />
 
             {visibleEdges.map((e) => {
               const a = spellBySkill.get(e.source);
@@ -221,9 +220,9 @@ export default function SpellWeb({ onSpellClick }) {
                   <path
                     d={`M ${a.x} ${a.y} Q ${cx} ${cy} ${b.x} ${b.y}`}
                     fill="none"
-                    stroke={dim ? 'rgba(168,152,120,0.08)' : 'rgba(212,175,55,0.35)'}
-                    strokeWidth={dim ? 0.5 : 1 + e.weight * 0.6}
-                    opacity={dim ? 0.4 : 1}
+                    stroke={dim ? 'rgba(168,152,120,0.18)' : 'rgba(212,175,55,0.7)'}
+                    strokeWidth={dim ? 0.8 : 1.6 + e.weight * 0.8}
+                    opacity={dim ? 0.6 : 1}
                     filter={!dim ? 'url(#tentacleGlow)' : undefined}
                   />
                   {!dim && e.weight > 1 && (
@@ -249,14 +248,13 @@ export default function SpellWeb({ onSpellClick }) {
                 </g>
               );
             })}
-
             {positionedSchools.map((school) => (
               <g key={school.id}>
                 <path
                   d={`M ${WIDTH / 2} ${HEIGHT / 2} Q ${(WIDTH / 2 + school.x) / 2 + (school.y - HEIGHT / 2) * 0.1} ${(HEIGHT / 2 + school.y) / 2 - (school.x - WIDTH / 2) * 0.1} ${school.x} ${school.y}`}
                   fill="none"
-                  stroke="rgba(138,154,106,0.2)"
-                  strokeWidth="2"
+                  stroke="rgba(138,154,106,0.35)"
+                  strokeWidth="2.5"
                   strokeLinecap="round"
                 />
                 <g
@@ -269,29 +267,29 @@ export default function SpellWeb({ onSpellClick }) {
                   aria-label={`${school.label} school`}
                 >
                   <circle
-                    r={18}
-                    fill="rgba(20,15,10,0.9)"
-                    stroke="rgba(138,154,106,0.4)"
-                    strokeWidth="1.5"
+                    r={20}
+                    fill="rgba(20,15,10,0.95)"
+                    stroke="rgba(138,154,106,0.6)"
+                    strokeWidth="2"
                   />
-                  <foreignObject x={-12} y={-12} width={24} height={24}>
-                    <SchoolSigil schoolId={school.id} size={24} />
+                  <foreignObject x={-14} y={-14} width={28} height={28}>
+                    <SchoolSigil schoolId={school.id} size={28} />
                   </foreignObject>
                   <text
-                    y={28}
+                    y={32}
                     textAnchor="middle"
-                    fontSize={11}
-                    fill="#d8ccb5"
+                    fontSize={12}
+                    fill="#e8dcc5"
                     fontFamily="Cinzel, serif"
                     style={{ pointerEvents: 'none' }}
                   >
                     {school.label}
                   </text>
                   <text
-                    y={40}
+                    y={45}
                     textAnchor="middle"
-                    fontSize={9}
-                    fill="#8a8074"
+                    fontSize={10}
+                    fill="#a09888"
                     fontFamily="Cormorant Garamond, serif"
                     style={{ pointerEvents: 'none' }}
                   >
@@ -333,18 +331,18 @@ export default function SpellWeb({ onSpellClick }) {
                   />
 
                   <circle
-                    r={isFocus ? size + 4 : size}
-                    fill={dim ? 'rgba(20,15,10,0.6)' : 'rgba(20,15,10,0.9)'}
-                    stroke={isFocus ? '#f0e4cc' : 'rgba(138,154,106,0.3)'}
-                    strokeWidth={isFocus ? 2 : 1}
+                    r={isFocus ? size + 5 : size + 2}
+                    fill={dim ? 'rgba(20,15,10,0.75)' : 'rgba(20,15,10,0.95)'}
+                    stroke={isFocus ? '#f0e4cc' : 'rgba(138,154,106,0.5)'}
+                    strokeWidth={isFocus ? 2.5 : 1.5}
                     opacity={statusToOpacity(spell.tier)}
                   />
 
                   <text
-                    x={size + 6}
+                    x={size + 8}
                     y={4}
-                    fontSize={isFocus ? 12 : 10}
-                    fill={isFocus ? '#f0e4cc' : '#d8ccb5'}
+                    fontSize={isFocus ? 13 : 11}
+                    fill={isFocus ? '#f0e4cc' : '#e8dcc5'}
                     fontFamily="Cinzel, serif"
                     style={{ pointerEvents: 'none' }}
                   >
@@ -353,12 +351,11 @@ export default function SpellWeb({ onSpellClick }) {
                 </g>
               );
             })}
-
             <g transform={`translate(${WIDTH / 2}, ${HEIGHT / 2})`}>
-              <circle r={24} fill="rgba(10,8,6,0.95)" stroke="rgba(138,154,106,0.3)" strokeWidth="1.5" />
-              <ellipse rx={16} ry={10} fill="rgba(138,154,106,0.15)" />
-              <circle r={6} fill="#020203" />
-              <circle r={2} fill="rgba(196,184,152,0.4)" />
+              <circle r={28} fill="rgba(10,8,6,0.95)" stroke="rgba(138,154,106,0.4)" strokeWidth="2" />
+              <ellipse rx={20} ry={12} fill="rgba(138,154,106,0.2)" />
+              <circle r={8} fill="#020203" />
+              <circle r={3} fill="rgba(196,184,152,0.5)" />
             </g>
           </svg>
 

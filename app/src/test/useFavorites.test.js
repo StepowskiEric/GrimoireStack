@@ -69,11 +69,11 @@ describe('useFavorites', () => {
   it('finds a favorite spell across schools', () => {
     const { result } = renderHook(() => useFavorites());
     act(() => {
-      result.current.toggleFavorite('Trace Sight', 'log-trace-correlation');
+      result.current.toggleFavorite('Log Trace Correlation', 'log-trace-correlation');
     });
     const found = result.current.findFavoriteSpell('log-trace-correlation');
     expect(found).not.toBeNull();
-    expect(found.spell.name).toBe('Trace Sight');
+    expect(found.spell.name).toBe('Log Trace Correlation');
   });
 
   it('returns null when favorite spell is not found', () => {

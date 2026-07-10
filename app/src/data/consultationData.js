@@ -83,9 +83,9 @@ export const SEANCE_QUESTIONS = {
         clarification: 'What do your symptoms look like?',
         options: [
           { id: 'dbg-n1-a', label: 'A clear trace, like a sigil in the dark',        sigilGlyph: '\u2741', primary: 'log-trace-correlation',      alt: 'purify-test-output',       reason: 'The trace itself is the data to act on.' },
-          { id: 'dbg-n1-b', label: 'A silence, where sound should be',               sigilGlyph: '\u25c7', primary: 'specter',                   alt: 'occam-root-cause',         reason: 'A ghost-hunt for what is missing.' },
-          { id: 'dbg-n1-c', label: 'A wound that returns with each full moon',       sigilGlyph: '\u263e', primary: 'root-cause-analysis',        alt: 'occam-root-cause',         reason: 'Recurring wounds are symptom suppression.' },
-          { id: 'dbg-n1-d', label: 'A chaos of contradicting voices',                sigilGlyph: '\u2042', primary: 'occam-root-cause',           alt: 'specter',                  reason: 'Many plausible causes; the best one wins.' },
+          { id: 'dbg-n1-b', label: 'A silence, where sound should be',               sigilGlyph: '\u25c7', primary: 'specter',                   alt: 'root-cause-analysis',         reason: 'A ghost-hunt for what is missing.' },
+          { id: 'dbg-n1-c', label: 'A wound that returns with each full moon',       sigilGlyph: '\u263e', primary: 'root-cause-analysis',        alt: 'root-cause-analysis',         reason: 'Recurring wounds are symptom suppression.' },
+          { id: 'dbg-n1-d', label: 'A chaos of contradicting voices',                sigilGlyph: '\u2042', primary: 'root-cause-analysis',           alt: 'specter',                  reason: 'Many plausible causes; the best one wins.' },
         ],
       },
       {
@@ -129,9 +129,9 @@ export const SEANCE_QUESTIONS = {
         clarification: 'What is the deeper pattern?',
         options: [
           { id: 'dbg-d1-a', label: 'The first commit, still bleeding',              sigilGlyph: '\u2620', primary: 'bisect-debugging',          alt: 'time-traveling-debugger', reason: 'The wound has a birthday.' },
-          { id: 'dbg-d1-b', label: 'A recursive nightmare of causes',                sigilGlyph: '\u221e', primary: 'root-cause-analysis',        alt: 'occam-root-cause',         reason: 'Each cause has a cause.' },
-          { id: 'dbg-d1-c', label: 'The many truths, all fighting for the throat',  sigilGlyph: '\u2042', primary: 'occam-root-cause',           alt: 'specter',                  reason: 'Choose the explanation that covers the most.' },
-          { id: 'dbg-d1-d', label: 'Your own reflection, fractured',                 sigilGlyph: '\u2756', primary: 'root-cause-analysis',        alt: 'occam-root-cause',         reason: 'The wound is in the assumption.' },
+          { id: 'dbg-d1-b', label: 'A recursive nightmare of causes',                sigilGlyph: '\u221e', primary: 'root-cause-analysis',        alt: 'root-cause-analysis',         reason: 'Each cause has a cause.' },
+          { id: 'dbg-d1-c', label: 'The many truths, all fighting for the throat',  sigilGlyph: '\u2042', primary: 'root-cause-analysis',           alt: 'specter',                  reason: 'Choose the explanation that covers the most.' },
+          { id: 'dbg-d1-d', label: 'Your own reflection, fractured',                 sigilGlyph: '\u2756', primary: 'root-cause-analysis',        alt: 'root-cause-analysis',         reason: 'The wound is in the assumption.' },
         ],
       },
       {

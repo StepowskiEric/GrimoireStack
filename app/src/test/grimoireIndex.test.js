@@ -21,7 +21,7 @@ describe('grimoireIndex — lookup', () => {
       const entry = grimoireIndex.resolveBySkill('log-trace-correlation');
       expect(entry).not.toBeNull();
       expect(entry.spell.skill).toBe('log-trace-correlation');
-      expect(entry.spell.name).toBe('Trace Sight');
+      expect(entry.spell.name).toBe('Log Trace Correlation');
       expect(entry.school.id).toBe('debugging');
     });
 
@@ -30,7 +30,7 @@ describe('grimoireIndex — lookup', () => {
     });
 
     it('resolves a known name to its entry', () => {
-      const entry = grimoireIndex.resolveByName('Trace Sight');
+      const entry = grimoireIndex.resolveByName('Log Trace Correlation');
       expect(entry).not.toBeNull();
       expect(entry.spell.skill).toBe('log-trace-correlation');
       expect(entry.school.id).toBe('debugging');
@@ -41,7 +41,7 @@ describe('grimoireIndex — lookup', () => {
     });
 
     it('resolves a list of combo names to entries', () => {
-      const entries = grimoireIndex.resolveComboSpells(['Trace Sight', 'Bisect Divination']);
+      const entries = grimoireIndex.resolveComboSpells(['Log Trace Correlation', 'Bisect Debugging']);
       expect(entries).toHaveLength(2);
       expect(entries.map((e) => e.spell.skill)).toEqual([
         'log-trace-correlation',
@@ -69,7 +69,7 @@ describe('grimoireIndex — lookup', () => {
     });
 
     it('returns the spell name for a known skill', () => {
-      expect(grimoireIndex.getSpellNameBySkill('log-trace-correlation')).toBe('Trace Sight');
+      expect(grimoireIndex.getSpellNameBySkill('log-trace-correlation')).toBe('Log Trace Correlation');
     });
 
     it('returns null name for an unknown skill', () => {
@@ -232,7 +232,7 @@ describe('grimoireIndex — matchProblem', () => {
   });
 
   it('matches on school name', () => {
-    const results = grimoireIndex.matchProblem('reasoning cognition', { limit: 5 });
+    const results = grimoireIndex.matchProblem('unclear problem reasoning', { limit: 5 });
     expect(results.length).toBeGreaterThan(0);
     const hasReasoning = results.some((r) => r.school.id === 'reasoning');
     expect(hasReasoning).toBe(true);
@@ -376,7 +376,7 @@ describe('grimoireIndex — buildSpellWeb', () => {
     const web = grimoireIndex.buildSpellWeb();
     const spell = web.findSpellNode('log-trace-correlation');
     expect(spell).not.toBeNull();
-    expect(spell.label).toBe('Trace Sight');
+    expect(spell.label).toBe('Log Trace Correlation');
     expect(spell.schoolId).toBe('debugging');
   });
 

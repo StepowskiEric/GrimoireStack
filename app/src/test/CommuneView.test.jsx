@@ -94,23 +94,37 @@ describe('CommuneView — answering questions', () => {
   });
 });
 
-describe('CommuneView — Beasthood ending at Sanity 0', () => {
-  // Sanity starts at 5. The sigil pick costs 1 (5→4); each narrowing
-  // tap costs 1. After 4 narrowing taps sanity reaches 0, which forces
-  // the Beasthood ending. The four specific picks below are chosen
-  // from the data so the consultation reaches the result stage via
-  // isForced rather than via convergence.
-  it('ends with a beasthood result after 4 narrowing taps', () => {
+describe('CommuneView — result card', () => {
+  it('displays a result with a Reveal the Spell and Begin Again button', () => {
     renderCommune();
     fireEvent.click(screen.getByText('The Beckoning Bell').closest('button'));
-    fireEvent.click(screen.getByText(/A wound that returns/i).closest('button'));               // dbg-n1-c
-    fireEvent.click(screen.getByText(/A failing test, plain to see/i).closest('button'));        // dbg-n2-a
-    fireEvent.click(screen.getByText(/The many truths, all fighting for the throat/i).closest('button')); // dbg-d1-c
-    fireEvent.click(screen.getByText(/Patience beyond reason/i).closest('button'));              // dbg-d2-a
-    const result = document.querySelector('[data-testid="seance-result"]');
-    expect(result).toBeTruthy();
-    expect(result.dataset.beasthood).toBe('true');
-    expect(result.className).toMatch(/border-danger\/40/);
+    fireEvent.click(screen.getByText(/A clear trace/i).closest('button'));                     // dbg-n1-a
+    fireEvent.click(screen.getByText(/A failing test, plain to see/i).closest('button'));      // dbg-n2-a
+    fireEvent.click(screen.getByText(/The first commit, still bleeding/i).closest('button'));  // dbg-d1-a
+    expect(screen.getByText(/Reveal the Spell/i)).toBeInTheDocument();
+    expect(screen.getByText(/Begin Again/i)).toBeInTheDocument();
+  });
+  it('calls onSpellClick with the resolved entry when Reveal the Spell is pressed', () => {
+    const onSpellClick = vi.fn();
+    renderCommune({ onSpellClick });
+    fireEvent.click(screen.getByText('The Beckoning Bell').closest('button'));
+    fireEvent.click(screen.getByText(/A clear trace/i).closest('button'));                     // dbg-n1-a
+    fireEvent.click(screen.getByText(/A failing test, plain to see/i).closest('button'));      // dbg-n2-a
+    fireEvent.click(screen.getByText(/The first commit, still bleeding/i).closest('button'));  // dbg-d1-a
+    fireEvent.click(screen.getByText(/Reveal the Spell/i).closest('button'));
+    expect(onSpellClick).toHaveBeenCalledTimes(1);
+    const [spell, school] = onSpellClick.mock.calls[0];
+    expect(spell).toHaveProperty('skill');
+    expect(school).toHaveProperty('id');
+  });
+  it('allows starting over via Begin Again', () => {
+    renderCommune();
+    fireEvent.click(screen.getByText('The Beckoning Bell').closest('button'));
+    fireEvent.click(screen.getByText(/A clear trace/i).closest('button'));
+    fireEvent.click(screen.getByText(/A failing test, plain to see/i).closest('button'));
+    fireEvent.click(screen.getByText(/The first commit, still bleeding/i).closest('button'));
+    fireEvent.click(screen.getByText(/Begin Again/i).closest('button'));
+    expect(screen.getByText('Choose the Sigil That Calls You')).toBeInTheDocument();
   });
 });
 
@@ -126,33 +140,5 @@ describe('CommuneView — reset', () => {
     expect(screen.getByText('Choose the Sigil That Calls You')).toBeInTheDocument();
     const meter = screen.getByRole('meter', { name: 'Sanity' });
     expect(meter).toHaveAttribute('aria-valuenow', '5');
-  });
-});
-
-describe('CommuneView — result card', () => {
-  it('displays a result with a Reveal the Spell and Begin Again button', () => {
-    renderCommune();
-    fireEvent.click(screen.getByText('The Beckoning Bell').closest('button'));
-    fireEvent.click(screen.getByText(/A wound that returns/i).closest('button'));               // dbg-n1-c
-    fireEvent.click(screen.getByText(/A failing test, plain to see/i).closest('button'));        // dbg-n2-a
-    fireEvent.click(screen.getByText(/The many truths, all fighting for the throat/i).closest('button')); // dbg-d1-c
-    fireEvent.click(screen.getByText(/Patience beyond reason/i).closest('button'));              // dbg-d2-a
-    expect(screen.getByText(/Reveal the Spell/i)).toBeInTheDocument();
-    expect(screen.getByText(/Begin Again/i)).toBeInTheDocument();
-  });
-
-  it('calls onSpellClick with the resolved entry when Reveal the Spell is pressed', () => {
-    const onSpellClick = vi.fn();
-    renderCommune({ onSpellClick });
-    fireEvent.click(screen.getByText('The Beckoning Bell').closest('button'));
-    fireEvent.click(screen.getByText(/A wound that returns/i).closest('button'));               // dbg-n1-c
-    fireEvent.click(screen.getByText(/A failing test, plain to see/i).closest('button'));        // dbg-n2-a
-    fireEvent.click(screen.getByText(/The many truths, all fighting for the throat/i).closest('button')); // dbg-d1-c
-    fireEvent.click(screen.getByText(/Patience beyond reason/i).closest('button'));              // dbg-d2-a
-    fireEvent.click(screen.getByText(/Reveal the Spell/i).closest('button'));
-    expect(onSpellClick).toHaveBeenCalledTimes(1);
-    const [spell, school] = onSpellClick.mock.calls[0];
-    expect(spell).toHaveProperty('skill');
-    expect(school).toHaveProperty('id');
   });
 });

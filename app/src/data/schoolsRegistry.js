@@ -3,247 +3,13 @@
 
 const schools = [
   {
-    "id": "systems-and-architecture",
-    "real": "Systems & Architecture",
-    "name": "School of Architecture",
-    "desc": "Design rituals for systems that endure across dimensions of scale, time, and team boundaries.",
-    "spells": [
-      {
-        "name": "Acceleration Rite",
-        "skill": "accelerate-ai",
-        "effect": "Use when delivery is slow or risky — improve engineering throughput and reliability by strengthening feedback, lowering batch risk, and shortening recovery time. Covers CI/CD, release engineering, platform work, and incident recovery.",
-        "status": "—"
-      },
-      {
-        "name": "Analogy Bridge",
-        "skill": "cross-domain-analogy-generator",
-        "effect": "Use when stuck on a problem — break fixation by mapping the structure to biology, music, traffic, or another foreign domain and transferring insights. Generates novel solutions when standard approaches fail.",
-        "status": "—"
-      },
-      {
-        "name": "Architecture Evolution Review",
-        "skill": "architecture-evolution-review",
-        "effect": "Review the repository as a living system. Detect architectural drift, feature erosion, and long-term maintenance risks before they become expensive.",
-        "status": "New"
-      },
-      {
-        "name": "Architecture Maintenance",
-        "skill": "maintain-architecture",
-        "effect": "Review completed work for architectural quality, maintainability, feature ownership, and long-term scalability.",
-        "status": "New"
-      },
-      {
-        "name": "Bottleneck Sight",
-        "skill": "the-goal-theory-of-constraints-ai",
-        "effect": "Use when throughput is capped or work piles up — find the one constraint, ignore non-constraints, exploit then elevate it, repeat when it moves. Stops micro-optimization that does not move total throughput.",
-        "status": "—"
-      },
-      {
-        "name": "Code Vision",
-        "skill": "everything-as-code-conceptualizer",
-        "effect": "Use when messy human problems resist analysis — codify the system as pseudocode to reveal hidden assumptions, missing decisions, and edge cases that natural-language descriptions obscure.",
-        "status": "—"
-      },
-      {
-        "name": "Data System Principles",
-        "skill": "designing-data-intensive-applications-ai",
-        "effect": "Use when reasoning about data systems — storage choices, replication, consistency, partitioning, queues, failure modes, and operational tradeoffs. Covers backend architecture, event systems, schema changes, distributed debugging.",
-        "status": "—"
-      },
-      {
-        "name": "Deepening Ritual",
-        "skill": "improve-codebase-architecture",
-        "effect": "Finds deepening opportunities informed by the domain language in CONTEXT.md and decisions in docs/adr/.",
-        "status": "New"
-      },
-      {
-        "name": "Error Budget Divination",
-        "skill": "sre-error-budget",
-        "effect": "Use when reasoning about reliability vs velocity — SLOs, error budgets, toil budgets, and change-velocity governance. Spend the budget on speed when healthy; freeze changes when depleted.",
-        "status": "—"
-      },
-      {
-        "name": "Feature Architecture Planner",
-        "skill": "plan-feature-architecture",
-        "effect": "Plan the architecture of a feature before implementation. Decide ownership, placement, module boundaries, dependencies, and project impact before writing code.",
-        "status": "New"
-      },
-      {
-        "name": "Full Architecture Audit",
-        "skill": "system-architecture-audit",
-        "effect": "Use when auditing an existing system for architectural weaknesses — 4-phase audit fusing Thinking in Systems, DDD, DDIA, and Release It. Reveals structural problems before they cascade.",
-        "status": "—"
-      },
-      {
-        "name": "Security Warding",
-        "skill": "security-review-protocol",
-        "effect": "Fuse of Security Threat Modeling (STRIDE) + Unsafe Control Actions + Vibe Coding Security Hardening. Three security lenses merged: attack surface analysis, hazardous operation checking, and LLM-specific vulnerability audit.",
-        "status": "—"
-      },
-      {
-        "name": "Stability Warding",
-        "skill": "release-it-stability",
-        "effect": "Use when reasoning about distributed-system resilience — circuit breakers, bulkheads, timeouts, load shedding, steady-state hygiene for production failure modes. Stops cascading failures before they spread.",
-        "status": "—"
-      },
-      {
-        "name": "STRIDE Analysis",
-        "skill": "security-threat-modeling",
-        "effect": "Use when handling auth, secrets, user input, or sensitive data — STRIDE threat analysis, attack-surface mapping, trust-boundary reasoning, and attacker-perspective review before shipping security-relevant changes.",
-        "status": "—"
-      },
-      {
-        "name": "System Dynamics",
-        "skill": "thinking-in-systems-state-machine",
-        "effect": "Use when tasks involve feedback loops, delayed effects, or multi-step cascades — model stocks, flows, delays, leverage points, and blast radius before touching the system. State-machine protocol, not a mindset.",
-        "status": "—"
-      },
-      {
-        "name": "Team Topology Sight",
-        "skill": "team-topologies-ai",
-        "effect": "Use when organizing work across multiple agents or teams — stream-aligned, platform, enabling, and complicated-subsystem boundaries with explicit interaction modes. Prevents God Agents and platform empires.",
-        "status": "—"
-      },
-      {
-        "name": "Ubiquitous Language",
-        "skill": "domain-driven-design",
-        "effect": "Use when architecture must reflect the business domain — bounded contexts, ubiquitous language, aggregates, context maps, domain events, anti-corruption layers. Forces separation of concerns at the right seams.",
-        "status": "—"
-      },
-      {
-        "name": "Vibe Hardening",
-        "skill": "vibe-coding-security-hardening",
-        "effect": "Use before deploying AI-generated apps — systematic checklist for the vulnerabilities LLMs reliably introduce: exposed secrets, missing RLS, broken auth, injection flaws, insecure defaults.",
-        "status": "—"
-      }
-    ]
-  },
-  {
-    "id": "reasoning",
-    "real": "Reasoning & Problem Solving",
-    "name": "School of Cognition",
-    "desc": "Mental models and structured thought for when the problem itself is unclear.",
-    "spells": [
-      {
-        "name": "Anchor Chain",
-        "skill": "hallucination-anchor-chain",
-        "effect": "Use when factual claims risk hallucination — anchor every claim to a verified source. Unanchored claims are marked unverified and hidden. Builds a verifiable chain of evidence.",
-        "status": "—"
-      },
-      {
-        "name": "Chaos Detection",
-        "skill": "chaos-detector",
-        "effect": "Use when multi-agent or extended reasoning looks unstable — compute empirical Lyapunov exponents over token trajectories and flag when small perturbations are amplifying into divergent conclusions.",
-        "status": "—"
-      },
-      {
-        "name": "Claim Verification",
-        "skill": "claim-verification-reasoning",
-        "effect": "Use when multi-step reasoning contains unverified claims — atomic decomposition with confidence labels and tool-grounded verification.",
-        "status": "—"
-      },
-      {
-        "name": "Context Density",
-        "skill": "context-density-operator",
-        "effect": "Use when context is bloated with low-signal content — maximize decision-relevant information per token via hierarchical memory, on-demand detail expansion, and redundant-context pruning.",
-        "status": "—"
-      },
-      {
-        "name": "Context Rot Pruner",
-        "skill": "context-rot-pruner",
-        "effect": "Apply exponential decay to context messages so old, unreferenced content loses weight and gets pruned before the context window overflows. Extends useful context life by 2-3x.",
-        "status": "—"
-      },
-      {
-        "name": "Contradiction Trap",
-        "skill": "self-contradiction-trap",
-        "effect": "Maintain a belief store of claims made during a session. Detect when new claims contradict existing ones, and force resolution before continuing. Prevents agents from contradicting themselves.",
-        "status": "—"
-      },
-      {
-        "name": "CoT Pruning",
-        "skill": "cot-pruning-reasoning",
-        "effect": "Use when chain-of-thought is consuming budget without changing conclusions — two-pass prune retains only the steps that move the answer (coarse step-level, then fine token-level).",
-        "status": "—"
-      },
-      {
-        "name": "Hallucination Ward",
-        "skill": "faithfulness-aware-reasoning",
-        "effect": "Use when reasoning reads plausibly but should not be trusted — detect and prevent faithfulness hallucinations where claims aren't logically entailed by the premises.",
-        "status": "—"
-      },
-      {
-        "name": "Integrity Chain",
-        "skill": "reasoning-integrity-chain",
-        "effect": "Use when multi-step reasoning risks hallucination — escalating 4-phase verification chain (faithfulness, claims, contradiction, selective halt).",
-        "status": "—"
-      },
-      {
-        "name": "Prism of Understanding",
-        "skill": "prism",
-        "effect": "Calibrate, compress, verify — force numeric confidence on each claim, compress to its essence, then verify the compression reconstructs the original. If it doesn't, you don't understand it.",
-        "status": "—"
-      },
-      {
-        "name": "Selective Halt",
-        "skill": "selective-halt-reasoning",
-        "effect": "Use when reasoning is generating waste — monitor for semantic stabilization and halt early when consecutive steps converge on equivalent conclusions, instead of running to a fixed budget.",
-        "status": "—"
-      },
-      {
-        "name": "Token Budget Operator",
-        "skill": "token-budget-operator",
-        "effect": "Master token-efficiency protocol that orchestrates context compression, CoT pruning, selective halting, and SOP capture in sequence. For long-horizon tasks where token burn is the bottleneck.",
-        "status": "—"
-      },
-      {
-        "name": "Verification Hybrid",
-        "skill": "reasoning-verification-hybrid",
-        "effect": "Use when reasoning conclusions must survive challenge — claim verification, backward contradiction, and calibrated confidence.",
-        "status": "—"
-      }
-    ]
-  },
-  {
-    "id": "mcp-servers",
-    "real": "MCP Servers",
-    "name": "School of Conduits",
-    "desc": "Model Context Protocol servers that extend agent capabilities with structured tools.",
-    "spells": [
-      {
-        "name": "Evolutionary Forge",
-        "skill": "evolutionary-tool-composer",
-        "effect": ">",
-        "status": "—"
-      },
-      {
-        "name": "Free Energy Seeker",
-        "skill": "active-inference-agent",
-        "effect": ">",
-        "status": "—"
-      }
-    ]
-  },
-  {
     "id": "orchestration",
     "real": "Agent Orchestration",
-    "name": "School of Confluence",
-    "desc": "Incantations for orchestrating multiple agents, sharing reasoning memory, and coordinating parallel workstreams.",
+    "name": "Agent Orchestration",
+    "desc": "Coordinating multiple agents and managing shared reasoning.",
     "spells": [
       {
-        "name": "Boundary Weaving",
-        "skill": "separation-of-concerns",
-        "effect": "Use when a multi-step task risks concern contamination — keep planning, diagnosis, observation, and execution phases intellectually isolated.",
-        "status": "—"
-      },
-      {
-        "name": "Branch Allocation",
-        "skill": "monte-carlo-tree-search",
-        "effect": "Use when several strategies compete for limited reasoning budget — allocate search effort to branches that earn it through probes and scoring.",
-        "status": "—"
-      },
-      {
-        "name": "Court of Minds",
+        "name": "Jury",
         "skill": "jury",
         "effect": "Argue, then structure the disagreement — spawn parallel perspectives with conflicting goals, force them to engage, output a conflict graph that reveals what actually matters. Use when reasonable options exist and the choice isn't obvious.",
         "status": "—"
@@ -252,6 +18,12 @@ const schools = [
         "name": "Memory Hygiene",
         "skill": "agent-memory-hygiene",
         "effect": "Use when memory persists across sessions — control what is stored, retrieved, trusted, and discarded to avoid stale-context actions.",
+        "status": "—"
+      },
+      {
+        "name": "Monte Carlo Tree Search",
+        "skill": "monte-carlo-tree-search",
+        "effect": "Use when several strategies compete for limited reasoning budget — allocate search effort to branches that earn it through probes and scoring.",
         "status": "—"
       },
       {
@@ -279,10 +51,16 @@ const schools = [
         "status": "—"
       },
       {
-        "name": "Pre-Flight Gate",
+        "name": "Pre-Flight Verification",
         "skill": "pre-flight-intent-verification",
         "effect": "Unified pre-action gate that prevents the #1 agent failure mode: confidently executing the wrong task. Fuses socratic-clarification (assumption surfacing), intent-specification-protocol (testable spec crystallization), and assumption-grounding (factual verification) into one mandatory gate before any significant task execution. Use when about to start a feature, bug fix, code change, refactor, or any task with ambiguity, blast radius, or irreversible side effects — especially when the request could be interpreted multiple ways, touches existing behavior, or the stakes of being wrong are non-trivial.",
         "status": "New"
+      },
+      {
+        "name": "Rashomon Triad",
+        "skill": "rashomon-triad-hybrid",
+        "effect": "Surface genuine disagreement — parallel perspectives with conflicting goals run independent abductive-deductive-inductive cycles, then argue via attack graph. Returns selection, composition, or conflict-surfacing output. Use for high-stakes trade-offs without a single correct answer.",
+        "status": "—"
       },
       {
         "name": "Scout Protocol",
@@ -291,13 +69,13 @@ const schools = [
         "status": "—"
       },
       {
-        "name": "Simple Path Scry",
-        "skill": "occam-mcts",
-        "effect": "Combo — Occam's Razor ranks branches by complexity (simplest first), then Monte Carlo Tree Search allocates effort to the simplest viable branches before touching complex ones. Prevents exploring fancy solutions when a simple one would suffice.",
-        "status": "New"
+        "name": "Separation of Concerns",
+        "skill": "separation-of-concerns",
+        "effect": "Use when a multi-step task risks concern contamination — keep planning, diagnosis, observation, and execution phases intellectually isolated.",
+        "status": "—"
       },
       {
-        "name": "Socratic Elicitation",
+        "name": "Socratic Clarification",
         "skill": "socratic-clarification",
         "effect": "Use when a task is ambiguous or high-stakes — surface the most critical hidden assumption before committing to execution.",
         "status": "—"
@@ -309,33 +87,21 @@ const schools = [
         "status": "—"
       },
       {
-        "name": "Sub-Agent Laws",
-        "skill": "subagent-laws",
-        "effect": "Persistent, opinionated rules every sub-agent must follow regardless of task type. Loaded automatically by subagent-composer alongside task-specific skills. Use when composing sub-agent briefs to enforce scope discipline, test hygiene, code structure, and communication standards.",
-        "status": "New"
-      },
-      {
         "name": "Subagent Composer",
         "skill": "subagent-composer",
         "effect": "Compose high-context sub-agent briefs with skill loading, explicit boundaries, success criteria, and stop rules. Use when delegating work to sub-agents to eliminate first-pass failures from incomplete briefs. Covers skill selection, context levels, multi-agent coordination, and anti-patterns.",
         "status": "—"
       },
       {
-        "name": "Thought Retrieval",
+        "name": "Subagent Laws",
+        "skill": "subagent-laws",
+        "effect": "Persistent, opinionated rules every sub-agent must follow regardless of task type. Loaded automatically by subagent-composer alongside task-specific skills. Use when composing sub-agent briefs to enforce scope discipline, test hygiene, code structure, and communication standards.",
+        "status": "New"
+      },
+      {
+        "name": "Thought Retriever",
         "skill": "thought-retriever-coppermind",
         "effect": "Use when sub-agents must learn across sessions — store intermediate reasoning as retrievable thoughts in the Coppermind memory layers.",
-        "status": "—"
-      },
-      {
-        "name": "Thought-Weave & Search",
-        "skill": "tree-of-thoughts-plus-monte-carlo-tree-search",
-        "effect": "Branch, prune, commit — decide among competing strategies by evidence using Tree of Thoughts and Monte Carlo Tree Search. Use when the answer isn't obvious and probing cost differs by path.",
-        "status": "—"
-      },
-      {
-        "name": "Triad Perspective",
-        "skill": "rashomon-triad-hybrid",
-        "effect": "Surface genuine disagreement — parallel perspectives with conflicting goals run independent abductive-deductive-inductive cycles, then argue via attack graph. Returns selection, composition, or conflict-surfacing output. Use for high-stakes trade-offs without a single correct answer.",
         "status": "—"
       },
       {
@@ -347,185 +113,304 @@ const schools = [
     ]
   },
   {
-    "id": "software-development",
-    "real": "Software Development",
-    "name": "School of Crafting",
-    "desc": "Practical incantations for building, renaming, searching through, and shipping code.",
+    "id": "debugging",
+    "real": "Debugging",
+    "name": "Debugging",
+    "desc": "Techniques for diagnosing and fixing issues in code and systems.",
     "spells": [
       {
-        "name": "API Surface Scry",
-        "skill": "api-surface-anchoring",
-        "effect": "Use when using any external library, SDK, or API you are not 100% sure of, libraries released after your LLM's training cutoff, or niche/low-training-count libraries.",
-        "status": "—"
-      },
-      {
-        "name": "Backward Compat Ward",
-        "skill": "api-design-backward-compatibility",
-        "effect": "Use when APIs, schemas, or contracts must evolve without breaking clients — contract-first design and additive-only change discipline.",
-        "status": "—"
-      },
-      {
-        "name": "Battalion Auto-Fix",
-        "skill": "lint-battalion",
-        "effect": "Use when facing 50+ linter errors that are mostly mechanical, accumulated lint debt after a rule change or migration, or pre-commit cleanup where auto-fix did not resolve everything.",
-        "status": "—"
-      },
-      {
-        "name": "Coordinated Strike",
-        "skill": "coordinated-change",
-        "effect": "Use when a fix or feature requires touching 2+ files that must stay consistent — types, implementation, tests, schema, config.",
+        "name": "Abductive Debugging",
+        "skill": "abductive-first-debugging",
+        "effect": "Generates multiple competing hypotheses, selects the one that best explains all observed symptoms — not the first plausible cause.",
         "status": "New"
       },
       {
-        "name": "Critical System Interrogation",
-        "skill": "critical-system-interrogation",
-        "effect": "Use when stress-testing a critical system path (auth pipelines, payment flows, data validation) for correctness, race conditions, security flaws, and architectural integrity.",
-        "status": "New"
-      },
-      {
-        "name": "Data Fetch Ward",
-        "skill": "native-data-fetching",
-        "effect": "Covers fetch API, React Query, SWR, error handling, caching, offline support, and Expo Router data loaders.",
-        "status": "New"
-      },
-      {
-        "name": "Deployment Gate",
-        "skill": "pre-deployment-gate",
-        "effect": "Use before deploying any code to production or before pushing AI-authored code.",
-        "status": "—",
+        "name": "Bisect Debugging",
+        "skill": "bisect-debugging",
+        "effect": "Isolate the exact commit that introduced a bug using binary search through git history. The fastest way to find 'what changed' when tests used to pass.",
+        "status": "Proven",
+        "note": "+9.9% speed",
         "combos": [
-          "Security Warding",
-          "Vibe Hardening",
-          "LLM Pre-Push Ward",
-          "Failure Prophecy"
+          "Trace Sight",
+          "Iterative Mend",
+          "Root Cause Revelation"
+        ],
+        "trueName": "The Halving Rite",
+        "kins": [
+          "log-trace-correlation",
+          "root-cause-analysis",
+          "iterative-patch-repair",
+          "time-traveling-debugger"
         ]
       },
       {
-        "name": "Diagnostics Aggregator",
-        "skill": "dev-diagnostics-mcp",
-        "effect": "Use when running diagnostics across multiple tools (eslint, tsc, vitest, pytest, biome, ruff) or comparing before/after fix diagnostics for contamination.",
-        "status": "—"
-      },
-      {
-        "name": "Divide & Search",
-        "skill": "codebase-divide-conquer-search",
-        "effect": "Use when the codebase is too large to fit in context (>50K tokens), grep produces too many candidates, you need to find code by behavior not by name, or the search target could be in any of several modules.",
-        "status": "—"
-      },
-      {
-        "name": "Git Surgery",
-        "skill": "git-surgery",
-        "effect": "Use when the repo is in a state you don't fully understand, git status output scares you, or you need to recover from a local git disaster.",
-        "status": "—"
-      },
-      {
-        "name": "Knowledge Graph",
-        "skill": "code-knowledge-graph-mcp",
-        "effect": "MCP server with structured symbol and call-graph queries. Navigate code by structure, not by string search.",
-        "status": "—"
-      },
-      {
-        "name": "LLM Pre-Push Ward",
-        "skill": "llm-pre-push-review",
-        "effect": "Use before pushing AI-authored code — checklist and protocol for catching systematic LLM coding failures: overcorrection, hallucinated logic, silent vulnerabilities, missing edge cases, context-ignorant reviews.",
-        "status": "—"
-      },
-      {
-        "name": "Pre-Commit Vigil",
-        "skill": "verify-before-integrate",
-        "effect": "Use when integrating research or external docs into code — verify the actual system behavior rather than matching abstract terminology.",
-        "status": "—"
-      },
-      {
-        "name": "Review Ladder Plus",
-        "skill": "review-ladder-plus",
-        "effect": "Use after completing any non-trivial coding task, before merging code that touches security/auth/data/concurrency, or when upgrading from casual self-review to production-grade QA.",
-        "status": "—"
-      },
-      {
-        "name": "Review Lens",
-        "skill": "review-changes",
-        "effect": "Structured review checklist for evaluating code changes systematically rather than reading through aimlessly.",
-        "status": "—"
-      },
-      {
-        "name": "Review Mastery",
-        "skill": "code-review-excellence",
-        "effect": "Provides constructive feedback, catches bugs early, and fosters knowledge sharing while maintaining team morale.",
+        "name": "Bug Inquisition",
+        "skill": "bug-inquisition",
+        "effect": "Deep root-cause debugging with mandatory context-gathering. Fuses root-cause analysis, specter, diagnose, debug-to-fix-pipeline, occam-root-cause, and reasoning-integrity-chain into one sequential protocol. Use when user says 'hard bug', 'stuck on debugging', 'can't figure out this error', 'stuck on bug', or 'bug inquisition'.",
         "status": "New"
       },
       {
-        "name": "Safe Refactor",
-        "skill": "refactor-safely",
-        "effect": "Characterization testing to capture existing behavior, then bounded changes with immediate verification. Safe transformation of untested code.",
-        "status": "—"
-      },
-      {
-        "name": "TypeScript Vigil",
-        "skill": "super-review-typescript",
-        "effect": "Use when reviewing AI-authored TypeScript — targets the five LLM-specific failure modes: security vulnerabilities, hallucinated APIs, logic errors, type-safety violations, architectural decay.",
+        "name": "Bug Inquisition Conquest",
+        "skill": "bug-inquisition-conquest",
+        "effect": "Ultra-heavy root-cause debugging with relentless ongoing interrogation. Fuses bug-inquisition pre-flight with continuous adversarial self-grilling, evidence-ledger tracking, pre-mortem on every fix, confidence-gated phase transitions, and final adversarial review. Use for the hardest bugs where surface debugging has failed, when the bug is intermittent or environment-specific, or when the cost of a wrong fix is high. Triggers: 'deep bug', 'intermittent bug', 'heisenbug', 'ghost bug', 'bug inquisition conquest', or when bug-inquisition has already failed.",
         "status": "New"
       },
       {
-        "name": "Verified API Workflow",
-        "skill": "verified-api-workflow",
-        "effect": "Use when writing code that calls external libraries/APIs — every external API call must be traceable to a doc you actually checked.",
+        "name": "Codebase Exploration",
+        "skill": "explore-codebase",
+        "effect": "Structured exploration with progressive deepening: module structure → file roles → symbol resolution. Token-efficient for unfamiliar codebases.",
         "status": "—"
       },
       {
-        "name": "Verified Synthesis",
-        "skill": "verified-synthesize",
-        "effect": "Use when code correctness must be proven, not tested — critical bugs, pre-refactor spec locking, or API contracts requiring formal verification.",
+        "name": "Debug Subagent",
+        "skill": "debug-subagent",
+        "effect": "A dedicated debugging subagent that must be consulted before making code edits. Wraps debugger complexity behind natural-language queries and enforces 'debug before edit' workflow. Based on Debug2Fix research (+13-22% bug fix rate).",
+        "status": "Proven",
+        "combos": [
+          "Instrumentation Charm",
+          "Spectral Analysis",
+          "Scout Protocol"
+        ],
+        "trueName": "Familiar of the Debug",
+        "kins": [
+          "log-trace-correlation",
+          "root-cause-analysis",
+          "simulate-instrumentation",
+          "specter"
+        ]
+      },
+      {
+        "name": "Debug to Fix Pipeline",
+        "skill": "debug-to-fix-pipeline",
+        "effect": "6-phase pipeline that increases evidence quality each phase while cutting token waste. Sequences data → hypothesis → isolation → exploitation → repair → verification. Use when debugging is stalling, multi-file bugs need runtime state, or first patch attempt failed.",
+        "status": "Hybrid",
+        "combos": [
+          "Spectral Analysis",
+          "Debug Familiar",
+          "Instrumentation Charm",
+          "Purify Vision",
+          "Iterative Mend"
+        ],
+        "trueName": "The Six-Phase Restoration",
+        "kins": [
+          "log-trace-correlation",
+          "root-cause-analysis",
+          "simulate-instrumentation",
+          "iterative-patch-repair",
+          "debug-subagent"
+        ]
+      },
+      {
+        "name": "Debug Workflow",
+        "skill": "debug-issue",
+        "effect": "Forces the reproduce → isolate → fix → verify cycle. Graph-powered code navigation traces issues through the system along dataflow edges.",
         "status": "—"
+      },
+      {
+        "name": "Environment Recovery",
+        "skill": "environment-recovery",
+        "effect": "Diagnose and fix broken development environments — missing tools, wrong versions, corrupted caches, full disks, permission drift, and dependency hell. The skill every other debugging skill assumes.",
+        "status": "New"
+      },
+      {
+        "name": "Escalation Ladder",
+        "skill": "escalation-ladder",
+        "effect": "Structured protocol for when an agent is stuck — escalating from self-recovery to user collaboration to full retreat. Fills the gap between trajectory-guard (detects stuck) and summarize (bails out).",
+        "status": "New"
+      },
+      {
+        "name": "Iterative Patch Repair",
+        "skill": "iterative-patch-repair",
+        "effect": "Loop of generate patch → run test → capture runtime state → refine patch. Max N iterations with patch augmentation to avoid overfitting. Use when first patch attempt failed, bug has multiple plausible fixes, or test feedback reveals the fix was close but not quite right.",
+        "status": "Proven",
+        "trueName": "The Mend That Mends Itself",
+        "kins": [
+          "simulate-instrumentation",
+          "purify-test-output",
+          "root-cause-analysis",
+          "minimal-reproduction"
+        ]
+      },
+      {
+        "name": "Log Trace Correlation",
+        "skill": "log-trace-correlation",
+        "effect": "Map error logs and stack traces to source code to identify root cause and suggest fixes. Use when you have an error log with a stack trace and need to determine which file, function, and line caused the failure.",
+        "status": "Proven",
+        "note": "Polished effect description; tier unchanged.",
+        "combos": [
+          "Bisect Divination",
+          "Root Cause Revelation",
+          "Spectral Analysis"
+        ],
+        "trueName": "The Eye That Reads the Trace",
+        "kins": [
+          "bisect-debugging",
+          "root-cause-analysis",
+          "debug-subagent",
+          "simulate-instrumentation"
+        ]
+      },
+      {
+        "name": "Minimal Reproduction",
+        "skill": "minimal-reproduction",
+        "effect": "Write the smallest possible test that demonstrates the bug, then use it as ammunition for debugging.",
+        "status": "New"
+      },
+      {
+        "name": "Network API Debugging",
+        "skill": "network-api-debugging",
+        "effect": "Diagnose and fix network and API failures — CORS, auth token issues, rate limiting, redirect chains, WebSocket drops, and HTTP request/response mismatches.",
+        "status": "New"
+      },
+      {
+        "name": "Root Cause Analysis",
+        "skill": "root-cause-analysis",
+        "effect": "Distinguish symptoms from causes, verify causal chains, fix the underlying defect. Stops recurring regressions caused by workaround hacks. Use when a bug returns after being 'fixed', multiple symptoms share a cause, or a fix in one area breaks another.",
+        "status": "Framework",
+        "combos": [
+          "Occam\\'s Verdict",
+          "Trace Sight",
+          "Bisect Divination"
+        ],
+        "trueName": "The Severing of Cause",
+        "kins": [
+          "log-trace-correlation",
+          "bisect-debugging",
+          "debug-subagent",
+          "occams-razor",
+          "specter"
+        ]
+      },
+      {
+        "name": "Simulate Instrumentation",
+        "skill": "simulate-instrumentation",
+        "effect": "Auto-insert temporary print/logging statements at key points in the code, run the failing test, and feed the captured runtime state to the LLM.",
+        "status": "Proven",
+        "trueName": "The Wards of Observation",
+        "kins": [
+          "log-trace-correlation",
+          "purify-test-output",
+          "iterative-patch-repair",
+          "debug-subagent"
+        ]
+      },
+      {
+        "name": "Spectral Debugging",
+        "skill": "specter",
+        "effect": "Abduce the bug — generate competing hypotheses, locate code by structural relationship, then disconfirm until one survivor remains. Use when the crash site is not the cause, the bug is 'weird,' or your first instinct is suspect.",
+        "status": "—",
+        "trueName": "The Ghost That Hunts",
+        "kins": [
+          "log-trace-correlation",
+          "debug-subagent",
+          "codebase-divide-conquer-search",
+          "minimal-reproduction"
+        ]
+      },
+      {
+        "name": "Test Output Purification",
+        "skill": "purify-test-output",
+        "effect": "Use when failing test output contains >50% framework noise (site-packages, node_modules) that drowns out user code, or when multiple tests fail and you need to isolate the most relevant failure first.",
+        "status": "Proven",
+        "combos": [
+          "Instrumentation Charm",
+          "Test Oracle",
+          "Iterative Mend"
+        ],
+        "trueName": "The Sight Unclouded",
+        "kins": [
+          "simulate-instrumentation",
+          "iterative-patch-repair",
+          "minimal-reproduction",
+          "time-traveling-debugger"
+        ]
+      },
+      {
+        "name": "Time-Travel Debugger",
+        "skill": "time-traveling-debugger",
+        "effect": "When a bug occurs, record a deterministic execution trace forward, then replay it in reverse from the crash point to find the exact line where state first diverged. Spawns 'past self' and 'future self' that meet at the divergence.",
+        "status": "MCP",
+        "trueName": "The Temporal Rewind",
+        "kins": [
+          "bisect-debugging",
+          "log-trace-correlation",
+          "iterative-patch-repair"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "development",
+    "real": "Development & Tooling",
+    "name": "Development & Tooling",
+    "desc": "Tooling, utilities, and workflows for development tasks.",
+    "spells": [
+      {
+        "name": "Add New Skill",
+        "skill": "add-new-skill-to-repository",
+        "effect": "Process for adding a new skill to GrimoireStack repository with proper documentation, installation support, and cross-platform verification.",
+        "status": "—"
+      },
+      {
+        "name": "Bulk Rename",
+        "skill": "bulk-rename-and-update-references",
+        "effect": "Use when renaming many files where old names appear in content — discover references first to avoid broken links and stale cross-references.",
+        "status": "—"
+      },
+      {
+        "name": "Project Folder Architecture",
+        "skill": "project-folder-architecture",
+        "effect": ">",
+        "status": "New"
+      },
+      {
+        "name": "Skill Development with Supporting Files",
+        "skill": "skill-development-with-supporting-files",
+        "effect": "Use when a skill depends on scripts, templates, or other supporting files — package them so installation copies the full set, not just SKILL.md.",
+        "status": "—"
+      },
+      {
+        "name": "Test Oracle",
+        "skill": "unit-test-debugging",
+        "effect": "Systematic workflow for fixing failing unit tests by first determining whether the tests or the code under test are the source of truth. Use when fixing test failures, debugging test suites, resolving \"tests are passing/failing unexpectedly,\" or when an agent keeps changing code to match failing tests without investigating root cause. Also use when improving weak passing tests that do not actually prove correctness.",
+        "status": "New"
       }
     ]
   },
   {
     "id": "execution",
     "real": "Execution & Improvement",
-    "name": "School of Execution",
-    "desc": "Rituals for solving problems, executing plans, and improving systems over time.",
+    "name": "Execution & Improvement",
+    "desc": "Solving problems, executing plans, and improving systems over time.",
     "spells": [
       {
-        "name": "Analogy Solver",
+        "name": "Analogy-Based Problem Solving",
         "skill": "how-to-solve-it-analogy",
         "effect": "Use when the problem resembles one solved before — deliberately search for the best-matching analog, verify the structural mapping holds, then transfer the prior solution. Companion to first-principles thinking.",
         "status": "—"
       },
       {
-        "name": "Blueprint Codification",
+        "name": "Assumption Grounding",
+        "skill": "assumption-grounding",
+        "effect": "Prevent hallucinated facts from compounding into costly errors. State every assumption explicitly, verify with the cheapest possible check, and only proceed on confirmation. Based on Chain-of-Verification research.",
+        "status": "—"
+      },
+      {
+        "name": "Blueprint",
         "skill": "blueprint",
         "effect": "Type the problem — codify messy situations into schema so contradictions, gaps, and silent assumptions become impossible to ignore. Use when vague problems keep being redefined or stakeholders talk past each other.",
         "status": "—"
       },
       {
-        "name": "Checkman Rite",
+        "name": "Checklist Manifesto",
         "skill": "checklist-manifesto",
         "effect": "Use when a high-stakes procedure demands more than expertise — build the smallest useful checklist, gate execution on checklist completion, stop cleanly and escalate if it cannot be cleared.",
         "status": "—"
       },
       {
-        "name": "Complexity Audit",
-        "skill": "philosophy-of-software-design-state-machine",
-        "effect": "Use when managing complexity or designing modules — design deeper modules, avoid shallow abstraction sprawl, declare unknowns and blast radius, bound change scope, stop explicitly.",
-        "status": "—"
-      },
-      {
-        "name": "Context Lifecycle + Budget",
-        "skill": "context-lifecycle-manager",
-        "effect": "Use when context is decaying — full lifecycle of context messages: tracked by budget operator → decayed/pruned by rot-pruner → optimized by token-budget-operator. Shares one context_state.jsonl artifact.",
-        "status": "—"
-      },
-      {
-        "name": "Crystallization",
-        "skill": "requirement-crystallization-protocol",
-        "effect": "Fuse of Socratic Clarification + Intent Specification Protocol. Surfaces the critical assumption, then crystallizes vague requests into locked, testable specs before coding begins.",
-        "status": "—"
-      },
-      {
-        "name": "Deming Cycle",
-        "skill": "pdca-deming",
-        "effect": "Use when improving a process through a measurement-anchored cycle — plan with a measurable prediction, do, check actual vs predicted, then standardize or escalate. Do not standardize what was not measured.",
+        "name": "Cognitive Friction Governor",
+        "skill": "cognitive-friction-governor",
+        "effect": "Use when deliberation is miscalibrated — over-thinking trivial problems, under-thinking complex ones, or paralyzed by analysis. Assign deliberation budgets; step costs friction; budget exhausted forces decision.",
         "status": "—"
       },
       {
@@ -546,45 +431,15 @@ const schools = [
         "status": "—"
       },
       {
-        "name": "Final Word",
-        "skill": "summarize",
-        "effect": "Use when session quality is degraded, you need to hand off mid-work, or you must preserve context before a /new. Emergency stop + perfect handoff report so the next agent loses nothing.",
-        "status": "New"
-      },
-      {
-        "name": "First Step Oracle",
-        "skill": "how-to-solve-it-state-machine",
-        "effect": "Use when solving a hard problem under uncertainty — frame the problem, gather evidence, explore via hypothesis, plan, reflect. Designed to prevent premature coding.",
-        "status": "—"
-      },
-      {
-        "name": "Friction Governor",
-        "skill": "cognitive-friction-governor",
-        "effect": "Use when deliberation is miscalibrated — over-thinking trivial problems, under-thinking complex ones, or paralyzed by analysis. Assign deliberation budgets; step costs friction; budget exhausted forces decision.",
-        "status": "—"
-      },
-      {
-        "name": "Grounding Ritual",
-        "skill": "assumption-grounding",
-        "effect": "Prevent hallucinated facts from compounding into costly errors. State every assumption explicitly, verify with the cheapest possible check, and only proceed on confirmation. Based on Chain-of-Verification research.",
-        "status": "—"
-      },
-      {
-        "name": "Iterative Spec",
+        "name": "Iterative Spec Authoring",
         "skill": "iterative-spec-authoring",
         "effect": "Use when a spec must be defensible — author a detailed technical spec grounded in research, refine through up to 3 judge-LLM review cycles, then present to the user for final approval.",
         "status": "—"
       },
       {
-        "name": "Kata + Deming Synthesis",
-        "skill": "iterative-improvement-cycle",
-        "effect": "Use when system is underperforming — fuse Toyota Kata target framing, PDCA measurement discipline, and Philosophy of Software Design quality gates. Define target, measure gap, experiment, evaluate, incorporate or revert.",
-        "status": "—"
-      },
-      {
-        "name": "Kata Practice",
-        "skill": "toyota-kata-state-machine",
-        "effect": "Use when improving a system through disciplined iteration instead of one large speculative change — frame target, analyze current, attack one obstacle at a time, run a PDCA experiment, learn, repeat.",
+        "name": "Legacy Code Working",
+        "skill": "working-effectively-with-legacy-code-state-machine",
+        "effect": "Use when changing brittle code with weak tests or unclear behavior — characterize legacy behavior, create seams, transform in bounded slices with anti-loop protection.",
         "status": "—"
       },
       {
@@ -594,9 +449,9 @@ const schools = [
         "status": "—"
       },
       {
-        "name": "Legacy Seam Working",
-        "skill": "working-effectively-with-legacy-code-state-machine",
-        "effect": "Use when changing brittle code with weak tests or unclear behavior — characterize legacy behavior, create seams, transform in bounded slices with anti-loop protection.",
+        "name": "Logic-Based Code Search",
+        "skill": "keyword-agnostic-logic-locator",
+        "effect": "Use when grep and naming-based search fail — find code by structural relationships and logical queries via a Datalog-style knowledge graph over call graphs, data flows, and type hierarchies.",
         "status": "—"
       },
       {
@@ -606,27 +461,51 @@ const schools = [
         "status": "—"
       },
       {
+        "name": "PDCA Deming Cycle",
+        "skill": "pdca-deming",
+        "effect": "Use when improving a process through a measurement-anchored cycle — plan with a measurable prediction, do, check actual vs predicted, then standardize or escalate. Do not standardize what was not measured.",
+        "status": "—"
+      },
+      {
         "name": "Plan with Judge",
         "skill": "plan-with-judge",
         "effect": "Create an implementation plan in JSONL format, then iteratively improve it using a stronger user-specified model as a judge until the plan is approved.",
         "status": "—"
       },
       {
-        "name": "Retrospective Mirror",
-        "skill": "retrospective",
-        "effect": "Use this skill after an incident, shipped feature, completed project, or any significant outcome to systematically learn from what happened. The natural counterpart to pre-mortem: before execution you imagine failure; after execution you examine the real outcome.",
+        "name": "Problem Solving Protocol",
+        "skill": "how-to-solve-it-state-machine",
+        "effect": "Use when solving a hard problem under uncertainty — frame the problem, gather evidence, explore via hypothesis, plan, reflect. Designed to prevent premature coding.",
         "status": "—"
       },
       {
-        "name": "Reward Path Backtrack",
+        "name": "Process Reward Model",
         "skill": "process-reward-model-protocol",
         "effect": "Use when reasoning may have committed to a wrong path too early — self-assign process rewards per step and backtrack when cumulative reward drops below threshold.",
+        "status": "—"
+      },
+      {
+        "name": "Requirement Crystallization",
+        "skill": "requirement-crystallization-protocol",
+        "effect": "Fuse of Socratic Clarification + Intent Specification Protocol. Surfaces the critical assumption, then crystallizes vague requests into locked, testable specs before coding begins.",
+        "status": "—"
+      },
+      {
+        "name": "Retrospective",
+        "skill": "retrospective",
+        "effect": "Use this skill after an incident, shipped feature, completed project, or any significant outcome to systematically learn from what happened. The natural counterpart to pre-mortem: before execution you imagine failure; after execution you examine the real outcome.",
         "status": "—"
       },
       {
         "name": "Safe Refactor",
         "skill": "refactoring-state-machine",
         "effect": "Use when improving structure without drifting into endless cleanup — characterize behavior, transform in bounded slices, re-test. Stops refactor loops.",
+        "status": "—"
+      },
+      {
+        "name": "Software Design Philosophy",
+        "skill": "philosophy-of-software-design-state-machine",
+        "effect": "Use when managing complexity or designing modules — design deeper modules, avoid shallow abstraction sprawl, declare unknowns and blast radius, bound change scope, stop explicitly.",
         "status": "—"
       },
       {
@@ -648,16 +527,16 @@ const schools = [
         "status": "—"
       },
       {
-        "name": "Structural Seeker",
-        "skill": "keyword-agnostic-logic-locator",
-        "effect": "Use when grep and naming-based search fail — find code by structural relationships and logical queries via a Datalog-style knowledge graph over call graphs, data flows, and type hierarchies.",
-        "status": "—"
-      },
-      {
-        "name": "Structured Feature Path",
+        "name": "Structured Feature Planning",
         "skill": "structured-feature-planning",
         "effect": "Use when implementing correctness-critical features — read files, search for patterns, self-review twice, then execute. Governing rule: never hallucinate when confused.",
         "status": "—"
+      },
+      {
+        "name": "Summarize",
+        "skill": "summarize",
+        "effect": "Use when session quality is degraded, you need to hand off mid-work, or you must preserve context before a /new. Emergency stop + perfect handoff report so the next agent loses nothing.",
+        "status": "New"
       },
       {
         "name": "The Pragmatic Programmer — State Machine Protocol for AI Agents",
@@ -666,13 +545,19 @@ const schools = [
         "status": "—"
       },
       {
-        "name": "Trajectory Warden",
+        "name": "Toyota Kata",
+        "skill": "toyota-kata-state-machine",
+        "effect": "Use when improving a system through disciplined iteration instead of one large speculative change — frame target, analyze current, attack one obstacle at a time, run a PDCA experiment, learn, repeat.",
+        "status": "—"
+      },
+      {
+        "name": "Trajectory Guard",
         "skill": "trajectory-guard",
         "effect": "Runtime meta-monitoring protocol that detects agent failure spirals — repetitive loops, specification drift, and stuck trajectories — and forcibly redirects strategy. Based on Wink (2602.17037) misbehavior taxonomy and PALADIN (2509.25238) recovery patterns.",
         "status": "—"
       },
       {
-        "name": "Zero Defect Ward",
+        "name": "Zero Defect Protocol",
         "skill": "zero-defect-protocol",
         "effect": "Use for mission-critical features where a single bug, security flaw, or misalignment could cause catastrophic failure — 14-phase protocol: data contracting, invariant mapping, red-team critique, pre-mortem before any code is written.",
         "status": "—"
@@ -682,11 +567,11 @@ const schools = [
   {
     "id": "judgment-and-routing",
     "real": "Judgment & Decision-Making",
-    "name": "School of Judgment",
-    "desc": "Incantations for routing decisions, weighing tradeoffs, and routing problems to the right approach.",
+    "name": "Judgment & Decision-Making",
+    "desc": "Routing decisions, weighing tradeoffs, and choosing the right approach.",
     "spells": [
       {
-        "name": "Adversarial Trial",
+        "name": "Adversarial Review",
         "skill": "adversarial-review",
         "effect": "Stress-tests proposals against a SEPARATE adversarial subagent. Not self-critique — tool-mediated review with no prior investment.",
         "status": "New"
@@ -698,37 +583,25 @@ const schools = [
         "status": "—"
       },
       {
-        "name": "Automated Bias Detection",
-        "skill": "cognitive-bias-auditor",
-        "effect": "Use when slow-mode reasoning risks bias contamination — explicit audit framework covering the 9 most common cognitive biases in agents.",
-        "status": "—"
-      },
-      {
-        "name": "Base Rate Scry",
-        "skill": "reference-class-forecasting",
-        "effect": "Use when estimating timelines or success probability — anchor to similar past projects before reasoning from the specifics.",
-        "status": "—"
-      },
-      {
-        "name": "Bayesian Update",
+        "name": "Bayesian Updating",
         "skill": "bayesian-updating",
         "effect": "Use when beliefs must shift with evidence — explicit priors updated by likelihood, avoiding over- and under-reaction.",
         "status": "—"
       },
       {
-        "name": "Bias Audit",
+        "name": "Cognitive Bias Auditor",
+        "skill": "cognitive-bias-auditor",
+        "effect": "Use when slow-mode reasoning risks bias contamination — explicit audit framework covering the 9 most common cognitive biases in agents.",
+        "status": "—"
+      },
+      {
+        "name": "Cognitive Bias Checklist",
         "skill": "cognitive-bias-checklist",
         "effect": "Use when slow-mode recommendations need bias audit — explicit checklist to catch contamination before finalizing.",
         "status": "—"
       },
       {
-        "name": "Confidence Calibration",
-        "skill": "metacognitive-monitoring",
-        "effect": "Use when confidence calibration matters more than raw accuracy — explicit KEEP/WITHDRAW decisions tied to measured withdrawal delta.",
-        "status": "—"
-      },
-      {
-        "name": "Counterfactual Design",
+        "name": "Counterfactual Policy Testing",
         "skill": "counterfactual-policy-testing",
         "effect": "Use when a decision must beat its alternatives — compare against null, opposite, and partial counterfactuals before committing.",
         "status": "—"
@@ -740,79 +613,67 @@ const schools = [
         "status": "—"
       },
       {
-        "name": "Cynefin Gate",
+        "name": "Cynefin Decision Gate",
         "skill": "problem-mode-router-cynefin-state-machine",
         "effect": "Use when response style depends on problem type — enforce Cynefin domain classification as a hard gate before any tool use or execution.",
         "status": "—"
       },
       {
-        "name": "Explore-Exploit Compass",
+        "name": "Explore vs Exploit",
         "skill": "explore-vs-exploit-state-machine",
         "effect": "Use when the agent must choose between more searching and committing — explicit explore/exploit protocol with diminishing-returns stopping rule.",
         "status": "—"
       },
       {
-        "name": "Explore-Exploit Lens",
+        "name": "Explore vs Exploit Lens",
         "skill": "explore-vs-exploit",
         "effect": "Use when the agent must choose between more information and acting — deliberate explore/exploit choice instead of defaulting to either extreme.",
         "status": "—"
       },
       {
-        "name": "Failure Prophecy",
+        "name": "Failure Analysis Protocol",
         "skill": "failure-analysis-protocol",
         "effect": "Fuse of Pre-Mortem + Inversion + Second-Order Thinking. Three failure lenses merged: invert success, narrate specific failures, trace cascading consequences. Strongest pre-commitment analysis.",
         "status": "—"
       },
       {
-        "name": "Failure Scrying",
-        "skill": "pre-mortem",
-        "effect": "Use when a plan must surface real risks before commitment — assume failure has occurred and narrate backward to root causes.",
-        "status": "—"
-      },
-      {
-        "name": "Fast-Slow Lens",
+        "name": "Fast & Slow Thinking",
         "skill": "kahneman-thinking-fast-slow-software-agent",
         "effect": "Use when coding or debugging work needs calibrated reasoning — switch between fast pattern recognition and slow deliberation as stakes demand.",
         "status": "—"
       },
       {
-        "name": "First Principles Forge",
+        "name": "First Principles",
         "skill": "first-principles",
         "effect": "Use when conventional solutions fail or framing is inherited — decompose to axiomatic foundations and reason upward from what must be true.",
         "status": "—"
       },
       {
-        "name": "Intent Binding",
+        "name": "Intent Specification Protocol",
         "skill": "intent-specification-protocol",
         "effect": "Crystallize vague user requests into precise, testable intent specifications. Replace vague words (fast, good, optimized) with measurable criteria. Now includes MCP server + companion script.",
         "status": "—"
       },
       {
-        "name": "Inversion Lens",
+        "name": "Inversion Mental Model",
         "skill": "inversion-mental-model",
         "effect": "Use when forward reasoning keeps missing risks — model failure paths before recommending the success path.",
         "status": "—"
       },
       {
-        "name": "Inversion Path",
+        "name": "Inversion Protocol",
         "skill": "inversion-mental-model-state-machine",
         "effect": "Use when risk reasoning needs defensive discipline — enforce failure-mode mapping and guardrail derivation before recommending success paths.",
         "status": "—"
       },
       {
-        "name": "Occam's Razor + Abductive Reasoning",
-        "skill": "occam-abduction",
-        "effect": "Combo — Abductive reasoning generates competing hypotheses for an observed effect; Occam's Razor selects the winner by preferring the simplest explanation that fits all the evidence. Prefers parsimony over plausibility.",
+        "name": "Metacognitive Monitoring",
+        "skill": "metacognitive-monitoring",
+        "effect": "Use when confidence calibration matters more than raw accuracy — explicit KEEP/WITHDRAW decisions tied to measured withdrawal delta.",
         "status": "—"
       },
       {
-        "name": "Pre-Mortem Gate",
-        "skill": "pre-mortem-state-machine",
-        "effect": "Use when a plan needs validation before execution — pre-mortem protocol with artifact gating, narrative failure modeling, and risk-adjusted plan revision.",
-        "status": "—"
-      },
-      {
-        "name": "Razor of Parsimony",
+        "name": "Occam's Razor",
         "skill": "occams-razor",
         "effect": "Apply Occam's Razor to favor the simplest sufficient explanation or solution. Forces the agent to try the simplest thing that fits the evidence before escalating to more complex alternatives. Prevents over-engineering, premature abstraction, and scope creep.",
         "status": "New",
@@ -824,57 +685,539 @@ const schools = [
         ]
       },
       {
-        "name": "Recognition Triage",
+        "name": "Pre-Mortem",
+        "skill": "pre-mortem",
+        "effect": "Use when a plan must surface real risks before commitment — assume failure has occurred and narrate backward to root causes.",
+        "status": "—"
+      },
+      {
+        "name": "Pre-Mortem Protocol",
+        "skill": "pre-mortem-state-machine",
+        "effect": "Use when a plan needs validation before execution — pre-mortem protocol with artifact gating, narrative failure modeling, and risk-adjusted plan revision.",
+        "status": "—"
+      },
+      {
+        "name": "Recognition-Primed Triage",
         "skill": "recognition-primed-triage",
         "effect": "Use when fast judgment is required under incomplete information — pattern recognition, mental simulation, and immediate next move.",
         "status": "—"
       },
       {
-        "name": "Second-Order Sight",
-        "skill": "second-order-thinking",
-        "effect": "Use when a decision's downstream effects matter more than the obvious one — chain consequences past first-order until the system-level outcome is clear.",
-        "status": "—"
-      },
-      {
-        "name": "Six Hats",
-        "skill": "six-thinking-hats",
-        "effect": "Use when a decision risks collapsed thinking — separate fact, intuition, caution, optimism, creativity, and process into six discrete rounds.",
-        "status": "—"
-      },
-      {
-        "name": "Steelman Argument",
-        "skill": "steelmanning",
-        "effect": "Use when a recommendation needs stress-testing — construct the strongest opposing case before committing.",
-        "status": "—"
-      },
-      {
-        "name": "STPA Ward",
-        "skill": "unsafe-control-actions-hazard-analysis",
-        "effect": "Use this skill when the agent is about to recommend or perform an action that could create serious harm, instability, or irreversible damage.",
-        "status": "—"
-      },
-      {
-        "name": "Strict Thoroughness",
-        "skill": "thoroughness-check-etto-state-machine",
-        "effect": "Use as universal preflight before meaningful tasks — gating ETTO classification into executable controls on rigor, evidence, and tools.",
-        "status": "—"
-      },
-      {
-        "name": "Structured RPD",
+        "name": "Recognition-Primed Triage (Protocol)",
         "skill": "recognition-primed-triage-state-machine",
         "effect": "Use when urgent triage demands speed without recklessness — gated incident-response protocol with simulation and bounded first action.",
         "status": "—"
       },
       {
-        "name": "Task Intake Gate",
+        "name": "Reference Class Forecasting",
+        "skill": "reference-class-forecasting",
+        "effect": "Use when estimating timelines or success probability — anchor to similar past projects before reasoning from the specifics.",
+        "status": "—"
+      },
+      {
+        "name": "Second-Order Thinking",
+        "skill": "second-order-thinking",
+        "effect": "Use when a decision's downstream effects matter more than the obvious one — chain consequences past first-order until the system-level outcome is clear.",
+        "status": "—"
+      },
+      {
+        "name": "Six Thinking Hats",
+        "skill": "six-thinking-hats",
+        "effect": "Use when a decision risks collapsed thinking — separate fact, intuition, caution, optimism, creativity, and process into six discrete rounds.",
+        "status": "—"
+      },
+      {
+        "name": "Steelmanning",
+        "skill": "steelmanning",
+        "effect": "Use when a recommendation needs stress-testing — construct the strongest opposing case before committing.",
+        "status": "—"
+      },
+      {
+        "name": "Task Intake Protocol",
         "skill": "task-intake-protocol",
         "effect": "Universal preflight gate combining Cynefin problem classification, ETTO rigor calibration, and Recognition-Primed Triage into a single 3-phase decision. Classify the problem, set the evidence bar, take the first action.",
         "status": "—"
       },
       {
-        "name": "Thoroughness Charm",
+        "name": "Thoroughness Check",
         "skill": "thoroughness-check-etto",
         "effect": "Use when the agent must decide how much rigor a task deserves — classify the efficiency-vs-thoroughness balance before acting.",
+        "status": "—"
+      },
+      {
+        "name": "Thoroughness Check Protocol",
+        "skill": "thoroughness-check-etto-state-machine",
+        "effect": "Use as universal preflight before meaningful tasks — gating ETTO classification into executable controls on rigor, evidence, and tools.",
+        "status": "—"
+      },
+      {
+        "name": "Unsafe Control Actions Analysis",
+        "skill": "unsafe-control-actions-hazard-analysis",
+        "effect": "Use this skill when the agent is about to recommend or perform an action that could create serious harm, instability, or irreversible damage.",
+        "status": "—"
+      }
+    ]
+  },
+  {
+    "id": "mcp-servers",
+    "real": "MCP Servers",
+    "name": "MCP Servers",
+    "desc": "Model Context Protocol servers that extend agent capabilities.",
+    "spells": [
+      {
+        "name": "Active Inference Agent",
+        "skill": "active-inference-agent",
+        "effect": ">",
+        "status": "—"
+      },
+      {
+        "name": "Evolutionary Tool Composer",
+        "skill": "evolutionary-tool-composer",
+        "effect": ">",
+        "status": "—"
+      }
+    ]
+  },
+  {
+    "id": "mlops",
+    "real": "Mlops",
+    "name": "Mlops",
+    "desc": "Skills related to ML operations and local LLM tooling.",
+    "spells": [
+      {
+        "name": "Local LLM Tooling",
+        "skill": "local-llm-tooling",
+        "effect": "Skills for running, prompting, and extracting structured output from local LLMs (e.g., Ollama, llama.cpp).",
+        "status": "—"
+      }
+    ]
+  },
+  {
+    "id": "output-quality",
+    "real": "Output Quality",
+    "name": "Output Quality",
+    "desc": "Improving, verifying, and stress-testing output before it ships.",
+    "spells": [
+      {
+        "name": "Bounded Self-Revision",
+        "skill": "bounded-self-revision",
+        "effect": "Use when an initial draft needs polish but not endless revision — capped self-critique passes that terminate on improvement or budget exhaustion.",
+        "status": "—"
+      },
+      {
+        "name": "Cognitive Load Operator",
+        "skill": "cognitive-load-operator-state-machine",
+        "effect": "Use when an output risks dense overload — inspect complexity and replace high-load structures with lower-load equivalents.",
+        "status": "—"
+      },
+      {
+        "name": "Compression as Understanding",
+        "skill": "compression-as-understanding",
+        "effect": "Use when depth of understanding must be verified, not assumed — compress to the shortest representation and test whether it reconstructs the original.",
+        "status": "—"
+      },
+      {
+        "name": "Documentation Craft",
+        "skill": "documentation-craft",
+        "effect": "Use when writing technical documentation — multi-phase pipeline from outline to verified explanation, audience-driven and source-grounded.",
+        "status": "—"
+      },
+      {
+        "name": "Documentation Navigation",
+        "skill": "large-documentation-navigation",
+        "effect": "Use when a documentation corpus becomes unscannable — layered navigation driven by user situation rather than category labels.",
+        "status": "—"
+      },
+      {
+        "name": "Feynman Technique",
+        "skill": "feynman-technique",
+        "effect": "Use when explanation gaps reveal understanding gaps — explain from scratch in plain language and identify where the explanation breaks.",
+        "status": "—"
+      },
+      {
+        "name": "MECE Pyramid Principle",
+        "skill": "mece-pyramid-principle",
+        "effect": "Use when structuring a complex output — enforce mutually exclusive, collectively exhaustive categories under a single governing thought.",
+        "status": "—"
+      },
+      {
+        "name": "Self-Consistency",
+        "skill": "self-consistency",
+        "effect": "Use when a conclusion must be confirmed, not assumed — generate independent reasoning paths and check whether they converge.",
+        "status": "—"
+      },
+      {
+        "name": "Self-Verify Pipeline",
+        "skill": "self-verify-pipeline",
+        "effect": "Use when outputs risk unverified confidence — escalating verification chain of bounded revision, claim decomposition, and tool-grounded critique.",
+        "status": "—"
+      },
+      {
+        "name": "Stakeholder Communication",
+        "skill": "stakeholder-communication",
+        "effect": "Use when a human must act on the agent's output — calibrate certainty, separate fact from inference, and avoid overpromising or undue alarm.",
+        "status": "—"
+      },
+      {
+        "name": "Tool-Interactive Critic",
+        "skill": "tool-interactive-critic",
+        "effect": "Use when an initial draft needs post-generation verification — external tools critique the output before it is trusted.",
+        "status": "—"
+      },
+      {
+        "name": "Tree of Thoughts",
+        "skill": "tree-of-thoughts",
+        "effect": "Use when the first reasoning path may be wrong — branch, evaluate, and prune candidate solutions before committing.",
+        "status": "—"
+      }
+    ]
+  },
+  {
+    "id": "reasoning",
+    "real": "Reasoning & Problem Solving",
+    "name": "Reasoning & Problem Solving",
+    "desc": "Mental models and structured thought when the problem isn't clear.",
+    "spells": [
+      {
+        "name": "Chaos Detector",
+        "skill": "chaos-detector",
+        "effect": "Use when multi-agent or extended reasoning looks unstable — compute empirical Lyapunov exponents over token trajectories and flag when small perturbations are amplifying into divergent conclusions.",
+        "status": "—"
+      },
+      {
+        "name": "Claim Verification",
+        "skill": "claim-verification-reasoning",
+        "effect": "Use when multi-step reasoning contains unverified claims — atomic decomposition with confidence labels and tool-grounded verification.",
+        "status": "—"
+      },
+      {
+        "name": "Context Density Operator",
+        "skill": "context-density-operator",
+        "effect": "Use when context is bloated with low-signal content — maximize decision-relevant information per token via hierarchical memory, on-demand detail expansion, and redundant-context pruning.",
+        "status": "—"
+      },
+      {
+        "name": "Context Rot Pruner",
+        "skill": "context-rot-pruner",
+        "effect": "Apply exponential decay to context messages so old, unreferenced content loses weight and gets pruned before the context window overflows. Extends useful context life by 2-3x.",
+        "status": "—"
+      },
+      {
+        "name": "CoT Pruning",
+        "skill": "cot-pruning-reasoning",
+        "effect": "Use when chain-of-thought is consuming budget without changing conclusions — two-pass prune retains only the steps that move the answer (coarse step-level, then fine token-level).",
+        "status": "—"
+      },
+      {
+        "name": "Faithfulness-Aware Reasoning",
+        "skill": "faithfulness-aware-reasoning",
+        "effect": "Use when reasoning reads plausibly but should not be trusted — detect and prevent faithfulness hallucinations where claims aren't logically entailed by the premises.",
+        "status": "—"
+      },
+      {
+        "name": "Hallucination Anchor Chain",
+        "skill": "hallucination-anchor-chain",
+        "effect": "Use when factual claims risk hallucination — anchor every claim to a verified source. Unanchored claims are marked unverified and hidden. Builds a verifiable chain of evidence.",
+        "status": "—"
+      },
+      {
+        "name": "Prism",
+        "skill": "prism",
+        "effect": "Calibrate, compress, verify — force numeric confidence on each claim, compress to its essence, then verify the compression reconstructs the original. If it doesn't, you don't understand it.",
+        "status": "—"
+      },
+      {
+        "name": "Reasoning Integrity Chain",
+        "skill": "reasoning-integrity-chain",
+        "effect": "Use when multi-step reasoning risks hallucination — escalating 4-phase verification chain (faithfulness, claims, contradiction, selective halt).",
+        "status": "—"
+      },
+      {
+        "name": "Selective Halt",
+        "skill": "selective-halt-reasoning",
+        "effect": "Use when reasoning is generating waste — monitor for semantic stabilization and halt early when consecutive steps converge on equivalent conclusions, instead of running to a fixed budget.",
+        "status": "—"
+      },
+      {
+        "name": "Self-Contradiction Detection",
+        "skill": "self-contradiction-trap",
+        "effect": "Maintain a belief store of claims made during a session. Detect when new claims contradict existing ones, and force resolution before continuing. Prevents agents from contradicting themselves.",
+        "status": "—"
+      },
+      {
+        "name": "Token Budget Operator",
+        "skill": "token-budget-operator",
+        "effect": "Master token-efficiency protocol that orchestrates context compression, CoT pruning, selective halting, and SOP capture in sequence. For long-horizon tasks where token burn is the bottleneck.",
+        "status": "—"
+      },
+      {
+        "name": "Verification Hybrid",
+        "skill": "reasoning-verification-hybrid",
+        "effect": "Use when reasoning conclusions must survive challenge — claim verification, backward contradiction, and calibrated confidence.",
+        "status": "—"
+      }
+    ]
+  },
+  {
+    "id": "research",
+    "real": "Research",
+    "name": "Research",
+    "desc": "Skills related to research.",
+    "spells": [
+      {
+        "name": "Effective Web Search",
+        "skill": "effective-web-search",
+        "effect": "Web search discipline for technical research. Use when an agent needs to look up an error, library behavior, framework quirk, or bug. Enforces official-docs-first, version-aware research, and full GitHub issue follow-through. Prevents the failure mode where the agent latches onto the first outdated GitHub issue and treats it as truth.",
+        "status": "—"
+      }
+    ]
+  },
+  {
+    "id": "software-development",
+    "real": "Software Development",
+    "name": "Software Development",
+    "desc": "Building, refactoring, searching through, and shipping code.",
+    "spells": [
+      {
+        "name": "API Surface Anchoring",
+        "skill": "api-surface-anchoring",
+        "effect": "Use when using any external library, SDK, or API you are not 100% sure of, libraries released after your LLM's training cutoff, or niche/low-training-count libraries.",
+        "status": "—"
+      },
+      {
+        "name": "Backward Compatible API Design",
+        "skill": "api-design-backward-compatibility",
+        "effect": "Use when APIs, schemas, or contracts must evolve without breaking clients — contract-first design and additive-only change discipline.",
+        "status": "—"
+      },
+      {
+        "name": "Code Review Excellence",
+        "skill": "code-review-excellence",
+        "effect": "Provides constructive feedback, catches bugs early, and fosters knowledge sharing while maintaining team morale.",
+        "status": "New"
+      },
+      {
+        "name": "Coordinated Change",
+        "skill": "coordinated-change",
+        "effect": "Use when a fix or feature requires touching 2+ files that must stay consistent — types, implementation, tests, schema, config.",
+        "status": "New"
+      },
+      {
+        "name": "Critical System Interrogation",
+        "skill": "critical-system-interrogation",
+        "effect": "Use when stress-testing a critical system path (auth pipelines, payment flows, data validation) for correctness, race conditions, security flaws, and architectural integrity.",
+        "status": "New"
+      },
+      {
+        "name": "Deployment Gate",
+        "skill": "pre-deployment-gate",
+        "effect": "Use before deploying any code to production or before pushing AI-authored code.",
+        "status": "—",
+        "combos": [
+          "Security Warding",
+          "Vibe Hardening",
+          "LLM Pre-Push Ward",
+          "Failure Prophecy"
+        ]
+      },
+      {
+        "name": "Dev Diagnostics MCP",
+        "skill": "dev-diagnostics-mcp",
+        "effect": "Use when running diagnostics across multiple tools (eslint, tsc, vitest, pytest, biome, ruff) or comparing before/after fix diagnostics for contamination.",
+        "status": "—"
+      },
+      {
+        "name": "Divide & Search",
+        "skill": "codebase-divide-conquer-search",
+        "effect": "Use when the codebase is too large to fit in context (>50K tokens), grep produces too many candidates, you need to find code by behavior not by name, or the search target could be in any of several modules.",
+        "status": "—"
+      },
+      {
+        "name": "Git Surgery",
+        "skill": "git-surgery",
+        "effect": "Use when the repo is in a state you don't fully understand, git status output scares you, or you need to recover from a local git disaster.",
+        "status": "—"
+      },
+      {
+        "name": "Knowledge Graph MCP",
+        "skill": "code-knowledge-graph-mcp",
+        "effect": "MCP server with structured symbol and call-graph queries. Navigate code by structure, not by string search.",
+        "status": "—"
+      },
+      {
+        "name": "Lint Battalion",
+        "skill": "lint-battalion",
+        "effect": "Use when facing 50+ linter errors that are mostly mechanical, accumulated lint debt after a rule change or migration, or pre-commit cleanup where auto-fix did not resolve everything.",
+        "status": "—"
+      },
+      {
+        "name": "Native Data Fetching",
+        "skill": "native-data-fetching",
+        "effect": "Covers fetch API, React Query, SWR, error handling, caching, offline support, and Expo Router data loaders.",
+        "status": "New"
+      },
+      {
+        "name": "Pre-Push Review",
+        "skill": "llm-pre-push-review",
+        "effect": "Use before pushing AI-authored code — checklist and protocol for catching systematic LLM coding failures: overcorrection, hallucinated logic, silent vulnerabilities, missing edge cases, context-ignorant reviews.",
+        "status": "—"
+      },
+      {
+        "name": "Review Changes",
+        "skill": "review-changes",
+        "effect": "Structured review checklist for evaluating code changes systematically rather than reading through aimlessly.",
+        "status": "—"
+      },
+      {
+        "name": "Review Ladder Plus",
+        "skill": "review-ladder-plus",
+        "effect": "Use after completing any non-trivial coding task, before merging code that touches security/auth/data/concurrency, or when upgrading from casual self-review to production-grade QA.",
+        "status": "—"
+      },
+      {
+        "name": "Safe Refactor",
+        "skill": "refactor-safely",
+        "effect": "Characterization testing to capture existing behavior, then bounded changes with immediate verification. Safe transformation of untested code.",
+        "status": "—"
+      },
+      {
+        "name": "TypeScript Super Review",
+        "skill": "super-review-typescript",
+        "effect": "Use when reviewing AI-authored TypeScript — targets the five LLM-specific failure modes: security vulnerabilities, hallucinated APIs, logic errors, type-safety violations, architectural decay.",
+        "status": "New"
+      },
+      {
+        "name": "Verified API Workflow",
+        "skill": "verified-api-workflow",
+        "effect": "Use when writing code that calls external libraries/APIs — every external API call must be traceable to a doc you actually checked.",
+        "status": "—"
+      },
+      {
+        "name": "Verified Synthesis",
+        "skill": "verified-synthesize",
+        "effect": "Use when code correctness must be proven, not tested — critical bugs, pre-refactor spec locking, or API contracts requiring formal verification.",
+        "status": "—"
+      },
+      {
+        "name": "Verify Before Integrate",
+        "skill": "verify-before-integrate",
+        "effect": "Use when integrating research or external docs into code — verify the actual system behavior rather than matching abstract terminology.",
+        "status": "—"
+      }
+    ]
+  },
+  {
+    "id": "systems-and-architecture",
+    "real": "Systems & Architecture",
+    "name": "Systems & Architecture",
+    "desc": "Design principles for systems that endure across scale and team boundaries.",
+    "spells": [
+      {
+        "name": "Accelerate AI",
+        "skill": "accelerate-ai",
+        "effect": "Use when delivery is slow or risky — improve engineering throughput and reliability by strengthening feedback, lowering batch risk, and shortening recovery time. Covers CI/CD, release engineering, platform work, and incident recovery.",
+        "status": "—"
+      },
+      {
+        "name": "Architecture Evolution Review",
+        "skill": "architecture-evolution-review",
+        "effect": "Review the repository as a living system. Detect architectural drift, feature erosion, and long-term maintenance risks before they become expensive.",
+        "status": "New"
+      },
+      {
+        "name": "Architecture Maintenance",
+        "skill": "maintain-architecture",
+        "effect": "Review completed work for architectural quality, maintainability, feature ownership, and long-term scalability.",
+        "status": "New"
+      },
+      {
+        "name": "Cross-Domain Analogy Generator",
+        "skill": "cross-domain-analogy-generator",
+        "effect": "Use when stuck on a problem — break fixation by mapping the structure to biology, music, traffic, or another foreign domain and transferring insights. Generates novel solutions when standard approaches fail.",
+        "status": "—"
+      },
+      {
+        "name": "Data System Principles",
+        "skill": "designing-data-intensive-applications-ai",
+        "effect": "Use when reasoning about data systems — storage choices, replication, consistency, partitioning, queues, failure modes, and operational tradeoffs. Covers backend architecture, event systems, schema changes, distributed debugging.",
+        "status": "—"
+      },
+      {
+        "name": "Domain-Driven Design",
+        "skill": "domain-driven-design",
+        "effect": "Use when architecture must reflect the business domain — bounded contexts, ubiquitous language, aggregates, context maps, domain events, anti-corruption layers. Forces separation of concerns at the right seams.",
+        "status": "—"
+      },
+      {
+        "name": "Everything as Code",
+        "skill": "everything-as-code-conceptualizer",
+        "effect": "Use when messy human problems resist analysis — codify the system as pseudocode to reveal hidden assumptions, missing decisions, and edge cases that natural-language descriptions obscure.",
+        "status": "—"
+      },
+      {
+        "name": "Feature Architecture Planning",
+        "skill": "plan-feature-architecture",
+        "effect": "Plan the architecture of a feature before implementation. Decide ownership, placement, module boundaries, dependencies, and project impact before writing code.",
+        "status": "New"
+      },
+      {
+        "name": "Improve Codebase Architecture",
+        "skill": "improve-codebase-architecture",
+        "effect": "Finds deepening opportunities informed by the domain language in CONTEXT.md and decisions in docs/adr/.",
+        "status": "New"
+      },
+      {
+        "name": "Release It Stability",
+        "skill": "release-it-stability",
+        "effect": "Use when reasoning about distributed-system resilience — circuit breakers, bulkheads, timeouts, load shedding, steady-state hygiene for production failure modes. Stops cascading failures before they spread.",
+        "status": "—"
+      },
+      {
+        "name": "Security Review Protocol",
+        "skill": "security-review-protocol",
+        "effect": "Fuse of Security Threat Modeling (STRIDE) + Unsafe Control Actions + Vibe Coding Security Hardening. Three security lenses merged: attack surface analysis, hazardous operation checking, and LLM-specific vulnerability audit.",
+        "status": "—"
+      },
+      {
+        "name": "SRE Error Budget",
+        "skill": "sre-error-budget",
+        "effect": "Use when reasoning about reliability vs velocity — SLOs, error budgets, toil budgets, and change-velocity governance. Spend the budget on speed when healthy; freeze changes when depleted.",
+        "status": "—"
+      },
+      {
+        "name": "STRIDE Threat Modeling",
+        "skill": "security-threat-modeling",
+        "effect": "Use when handling auth, secrets, user input, or sensitive data — STRIDE threat analysis, attack-surface mapping, trust-boundary reasoning, and attacker-perspective review before shipping security-relevant changes.",
+        "status": "—"
+      },
+      {
+        "name": "System Architecture Audit",
+        "skill": "system-architecture-audit",
+        "effect": "Use when auditing an existing system for architectural weaknesses — 4-phase audit fusing Thinking in Systems, DDD, DDIA, and Release It. Reveals structural problems before they cascade.",
+        "status": "—"
+      },
+      {
+        "name": "Team Topologies",
+        "skill": "team-topologies-ai",
+        "effect": "Use when organizing work across multiple agents or teams — stream-aligned, platform, enabling, and complicated-subsystem boundaries with explicit interaction modes. Prevents God Agents and platform empires.",
+        "status": "—"
+      },
+      {
+        "name": "Theory of Constraints",
+        "skill": "the-goal-theory-of-constraints-ai",
+        "effect": "Use when throughput is capped or work piles up — find the one constraint, ignore non-constraints, exploit then elevate it, repeat when it moves. Stops micro-optimization that does not move total throughput.",
+        "status": "—"
+      },
+      {
+        "name": "Thinking in Systems",
+        "skill": "thinking-in-systems-state-machine",
+        "effect": "Use when tasks involve feedback loops, delayed effects, or multi-step cascades — model stocks, flows, delays, leverage points, and blast radius before touching the system. State-machine protocol, not a mindset.",
+        "status": "—"
+      },
+      {
+        "name": "Vibe Coding Security Hardening",
+        "skill": "vibe-coding-security-hardening",
+        "effect": "Use before deploying AI-generated apps — systematic checklist for the vulnerabilities LLMs reliably introduce: exposed secrets, missing RLS, broken auth, injection flaws, insecure defaults.",
         "status": "—"
       }
     ]
@@ -882,11 +1225,11 @@ const schools = [
   {
     "id": "testing",
     "real": "Testing & Evaluation",
-    "name": "School of Measurement",
-    "desc": "Rituals for empirically measuring whether a skill actually improves outcomes.",
+    "name": "Testing & Evaluation",
+    "desc": "Measuring whether skills actually improve outcomes.",
     "spells": [
       {
-        "name": "A/B Scry",
+        "name": "A/B Skill Evaluation",
         "skill": "skill-ab-evaluation",
         "effect": "A/B evaluate any GrimoireStack skill against a baseline using isolated subagents, 5 trials each, and an objective rubric. Measures real % improvement without touching current projects.",
         "status": "—"
@@ -922,394 +1265,9 @@ const schools = [
         "status": "—"
       },
       {
-        "name": "Red-Green Rite",
+        "name": "Test-Driven Development",
         "skill": "test-driven-development",
         "effect": "Red-green-refactor loop. Write the test first, watch it fail, write the minimal fix, then refactor.",
-        "status": "New"
-      }
-    ]
-  },
-  {
-    "id": "mlops",
-    "real": "Mlops",
-    "name": "School of Mlops",
-    "desc": "Skills related to mlops.",
-    "spells": [
-      {
-        "name": "Local LLM Invocation",
-        "skill": "local-llm-tooling",
-        "effect": "Skills for running, prompting, and extracting structured output from local LLMs (e.g., Ollama, llama.cpp).",
-        "status": "—"
-      }
-    ]
-  },
-  {
-    "id": "output-quality",
-    "real": "Output Quality",
-    "name": "School of Refinement",
-    "desc": "Incantations for improving, verifying, and stress-testing output before it ships.",
-    "spells": [
-      {
-        "name": "Bounded Revision",
-        "skill": "bounded-self-revision",
-        "effect": "Use when an initial draft needs polish but not endless revision — capped self-critique passes that terminate on improvement or budget exhaustion.",
-        "status": "—"
-      },
-      {
-        "name": "Calibrated Communication",
-        "skill": "stakeholder-communication",
-        "effect": "Use when a human must act on the agent's output — calibrate certainty, separate fact from inference, and avoid overpromising or undue alarm.",
-        "status": "—"
-      },
-      {
-        "name": "Compression Test",
-        "skill": "compression-as-understanding",
-        "effect": "Use when depth of understanding must be verified, not assumed — compress to the shortest representation and test whether it reconstructs the original.",
-        "status": "—"
-      },
-      {
-        "name": "Doc Crafting",
-        "skill": "documentation-craft",
-        "effect": "Use when writing technical documentation — multi-phase pipeline from outline to verified explanation, audience-driven and source-grounded.",
-        "status": "—"
-      },
-      {
-        "name": "Doc Navigation",
-        "skill": "large-documentation-navigation",
-        "effect": "Use when a documentation corpus becomes unscannable — layered navigation driven by user situation rather than category labels.",
-        "status": "—"
-      },
-      {
-        "name": "Feynman Recitation",
-        "skill": "feynman-technique",
-        "effect": "Use when explanation gaps reveal understanding gaps — explain from scratch in plain language and identify where the explanation breaks.",
-        "status": "—"
-      },
-      {
-        "name": "Interactive Critique",
-        "skill": "tool-interactive-critic",
-        "effect": "Use when an initial draft needs post-generation verification — external tools critique the output before it is trusted.",
-        "status": "—"
-      },
-      {
-        "name": "Load Management",
-        "skill": "cognitive-load-operator-state-machine",
-        "effect": "Use when an output risks dense overload — inspect complexity and replace high-load structures with lower-load equivalents.",
-        "status": "—"
-      },
-      {
-        "name": "MECE Structuring",
-        "skill": "mece-pyramid-principle",
-        "effect": "Use when structuring a complex output — enforce mutually exclusive, collectively exhaustive categories under a single governing thought.",
-        "status": "—"
-      },
-      {
-        "name": "Self-Consistency Rite",
-        "skill": "self-consistency",
-        "effect": "Use when a conclusion must be confirmed, not assumed — generate independent reasoning paths and check whether they converge.",
-        "status": "—"
-      },
-      {
-        "name": "Self-Verify Pipeline",
-        "skill": "self-verify-pipeline",
-        "effect": "Use when outputs risk unverified confidence — escalating verification chain of bounded revision, claim decomposition, and tool-grounded critique.",
-        "status": "—"
-      },
-      {
-        "name": "Thought Tree",
-        "skill": "tree-of-thoughts",
-        "effect": "Use when the first reasoning path may be wrong — branch, evaluate, and prune candidate solutions before committing.",
-        "status": "—"
-      }
-    ]
-  },
-  {
-    "id": "debugging",
-    "real": "Debugging",
-    "name": "School of Remediation",
-    "desc": "Incantations to banish bugs and restore order to broken code.",
-    "spells": [
-      {
-        "name": "Abductive Strike",
-        "skill": "abductive-first-debugging",
-        "effect": "Generates multiple competing hypotheses, selects the one that best explains all observed symptoms — not the first plausible cause.",
-        "status": "New"
-      },
-      {
-        "name": "Bisect Divination",
-        "skill": "bisect-debugging",
-        "effect": "Isolate the exact commit that introduced a bug using binary search through git history. The fastest way to find 'what changed' when tests used to pass.",
-        "status": "Proven",
-        "note": "+9.9% speed",
-        "combos": [
-          "Trace Sight",
-          "Iterative Mend",
-          "Root Cause Revelation"
-        ],
-        "trueName": "The Halving Rite",
-        "kins": [
-          "log-trace-correlation",
-          "root-cause-analysis",
-          "iterative-patch-repair",
-          "time-traveling-debugger"
-        ]
-      },
-      {
-        "name": "Bug Inquisition",
-        "skill": "bug-inquisition",
-        "effect": "Deep root-cause debugging with mandatory context-gathering. Fuses root-cause analysis, specter, diagnose, debug-to-fix-pipeline, occam-root-cause, and reasoning-integrity-chain into one sequential protocol. Use when user says 'hard bug', 'stuck on debugging', 'can't figure out this error', 'stuck on bug', or 'bug inquisition'.",
-        "status": "New"
-      },
-      {
-        "name": "Bug Inquisition Conquest",
-        "skill": "bug-inquisition-conquest",
-        "effect": "Ultra-heavy root-cause debugging with relentless ongoing interrogation. Fuses bug-inquisition pre-flight with continuous adversarial self-grilling, evidence-ledger tracking, pre-mortem on every fix, confidence-gated phase transitions, and final adversarial review. Use for the hardest bugs where surface debugging has failed, when the bug is intermittent or environment-specific, or when the cost of a wrong fix is high. Triggers: 'deep bug', 'intermittent bug', 'heisenbug', 'ghost bug', 'bug inquisition conquest', or when bug-inquisition has already failed.",
-        "status": "New"
-      },
-      {
-        "name": "Codebase Walk",
-        "skill": "explore-codebase",
-        "effect": "Structured exploration with progressive deepening: module structure → file roles → symbol resolution. Token-efficient for unfamiliar codebases.",
-        "status": "—"
-      },
-      {
-        "name": "Debug Familiar",
-        "skill": "debug-subagent",
-        "effect": "A dedicated debugging subagent that must be consulted before making code edits. Wraps debugger complexity behind natural-language queries and enforces 'debug before edit' workflow. Based on Debug2Fix research (+13-22% bug fix rate).",
-        "status": "Proven",
-        "combos": [
-          "Instrumentation Charm",
-          "Spectral Analysis",
-          "Scout Protocol"
-        ],
-        "trueName": "Familiar of the Debug",
-        "kins": [
-          "log-trace-correlation",
-          "root-cause-analysis",
-          "simulate-instrumentation",
-          "specter"
-        ]
-      },
-      {
-        "name": "Debug Workflow",
-        "skill": "debug-issue",
-        "effect": "Forces the reproduce → isolate → fix → verify cycle. Graph-powered code navigation traces issues through the system along dataflow edges.",
-        "status": "—"
-      },
-      {
-        "name": "Environment Exorcism",
-        "skill": "environment-recovery",
-        "effect": "Diagnose and fix broken development environments — missing tools, wrong versions, corrupted caches, full disks, permission drift, and dependency hell. The skill every other debugging skill assumes.",
-        "status": "New"
-      },
-      {
-        "name": "Escalation Rite",
-        "skill": "escalation-ladder",
-        "effect": "Structured protocol for when an agent is stuck — escalating from self-recovery to user collaboration to full retreat. Fills the gap between trajectory-guard (detects stuck) and summarize (bails out).",
-        "status": "New"
-      },
-      {
-        "name": "Instrumentation Charm",
-        "skill": "simulate-instrumentation",
-        "effect": "Auto-insert temporary print/logging statements at key points in the code, run the failing test, and feed the captured runtime state to the LLM.",
-        "status": "Proven",
-        "trueName": "The Wards of Observation",
-        "kins": [
-          "log-trace-correlation",
-          "purify-test-output",
-          "iterative-patch-repair",
-          "debug-subagent"
-        ]
-      },
-      {
-        "name": "Iterative Mend",
-        "skill": "iterative-patch-repair",
-        "effect": "Loop of generate patch → run test → capture runtime state → refine patch. Max N iterations with patch augmentation to avoid overfitting. Use when first patch attempt failed, bug has multiple plausible fixes, or test feedback reveals the fix was close but not quite right.",
-        "status": "Proven",
-        "trueName": "The Mend That Mends Itself",
-        "kins": [
-          "simulate-instrumentation",
-          "purify-test-output",
-          "root-cause-analysis",
-          "minimal-reproduction"
-        ]
-      },
-      {
-        "name": "Minimal Summoning",
-        "skill": "minimal-reproduction",
-        "effect": "Write the smallest possible test that demonstrates the bug, then use it as ammunition for debugging.",
-        "status": "New"
-      },
-      {
-        "name": "Network Divination",
-        "skill": "network-api-debugging",
-        "effect": "Diagnose and fix network and API failures — CORS, auth token issues, rate limiting, redirect chains, WebSocket drops, and HTTP request/response mismatches.",
-        "status": "New"
-      },
-      {
-        "name": "Occam's Razor + Minimal Reproduction",
-        "skill": "occam-minimal-repro",
-        "effect": "Combo — When isolating a bug, systematically rank possible reproduction triggers by complexity and test the simplest trigger first. Only escalate to more complex triggers when simpler ones are falsified. Prevents wasted effort building elaborate reproduction setups when a one-liner would suffice.",
-        "status": "—"
-      },
-      {
-        "name": "Occam's Razor + Root Cause Analysis",
-        "skill": "occam-root-cause",
-        "effect": "Combo — Root Cause Analysis traces causal chains backward from a symptom; Occam's Razor selects the simplest root cause from competing candidates. Prefers a single verified cause over a complex multi-factor explanation unless the evidence requires it.",
-        "status": "—"
-      },
-      {
-        "name": "Pipeline of Restoration",
-        "skill": "debug-to-fix-pipeline",
-        "effect": "6-phase pipeline that increases evidence quality each phase while cutting token waste. Sequences data → hypothesis → isolation → exploitation → repair → verification. Use when debugging is stalling, multi-file bugs need runtime state, or first patch attempt failed.",
-        "status": "Hybrid",
-        "combos": [
-          "Spectral Analysis",
-          "Debug Familiar",
-          "Instrumentation Charm",
-          "Purify Vision",
-          "Iterative Mend"
-        ],
-        "trueName": "The Six-Phase Restoration",
-        "kins": [
-          "log-trace-correlation",
-          "root-cause-analysis",
-          "simulate-instrumentation",
-          "iterative-patch-repair",
-          "debug-subagent"
-        ]
-      },
-      {
-        "name": "Purify Vision",
-        "skill": "purify-test-output",
-        "effect": "Use when failing test output contains >50% framework noise (site-packages, node_modules) that drowns out user code, or when multiple tests fail and you need to isolate the most relevant failure first.",
-        "status": "Proven",
-        "combos": [
-          "Instrumentation Charm",
-          "Test Oracle",
-          "Iterative Mend"
-        ],
-        "trueName": "The Sight Unclouded",
-        "kins": [
-          "simulate-instrumentation",
-          "iterative-patch-repair",
-          "minimal-reproduction",
-          "time-traveling-debugger"
-        ]
-      },
-      {
-        "name": "Root Cause Revelation",
-        "skill": "root-cause-analysis",
-        "effect": "Distinguish symptoms from causes, verify causal chains, fix the underlying defect. Stops recurring regressions caused by workaround hacks. Use when a bug returns after being 'fixed', multiple symptoms share a cause, or a fix in one area breaks another.",
-        "status": "Framework",
-        "combos": [
-          "Occam\\'s Verdict",
-          "Trace Sight",
-          "Bisect Divination"
-        ],
-        "trueName": "The Severing of Cause",
-        "kins": [
-          "log-trace-correlation",
-          "bisect-debugging",
-          "debug-subagent",
-          "occams-razor",
-          "specter"
-        ]
-      },
-      {
-        "name": "Spectral Reasoning",
-        "skill": "specter",
-        "effect": "Abduce the bug — generate competing hypotheses, locate code by structural relationship, then disconfirm until one survivor remains. Use when the crash site is not the cause, the bug is 'weird,' or your first instinct is suspect.",
-        "status": "—",
-        "trueName": "The Ghost That Hunts",
-        "kins": [
-          "log-trace-correlation",
-          "debug-subagent",
-          "codebase-divide-conquer-search",
-          "minimal-reproduction"
-        ]
-      },
-      {
-        "name": "Temporal Rewind",
-        "skill": "time-traveling-debugger",
-        "effect": "When a bug occurs, record a deterministic execution trace forward, then replay it in reverse from the crash point to find the exact line where state first diverged. Spawns 'past self' and 'future self' that meet at the divergence.",
-        "status": "MCP",
-        "trueName": "The Temporal Rewind",
-        "kins": [
-          "bisect-debugging",
-          "log-trace-correlation",
-          "iterative-patch-repair"
-        ]
-      },
-      {
-        "name": "Trace Sight",
-        "skill": "log-trace-correlation",
-        "effect": "Map error logs and stack traces to source code to identify root cause and suggest fixes. Use when you have an error log with a stack trace and need to determine which file, function, and line caused the failure.",
-        "status": "Proven",
-        "note": "Polished effect description; tier unchanged.",
-        "combos": [
-          "Bisect Divination",
-          "Root Cause Revelation",
-          "Spectral Analysis"
-        ],
-        "trueName": "The Eye That Reads the Trace",
-        "kins": [
-          "bisect-debugging",
-          "root-cause-analysis",
-          "debug-subagent",
-          "simulate-instrumentation"
-        ]
-      }
-    ]
-  },
-  {
-    "id": "research",
-    "real": "Research",
-    "name": "School of Research",
-    "desc": "Skills related to research.",
-    "spells": [
-      {
-        "name": "Effective Web Search",
-        "skill": "effective-web-search",
-        "effect": "Web search discipline for technical research. Use when an agent needs to look up an error, library behavior, framework quirk, or bug. Enforces official-docs-first, version-aware research, and full GitHub issue follow-through. Prevents the failure mode where the agent latches onto the first outdated GitHub issue and treats it as truth.",
-        "status": "—"
-      }
-    ]
-  },
-  {
-    "id": "development",
-    "real": "Development & Tooling",
-    "name": "School of Tools",
-    "desc": "Tooling, utilities, and workflows for development tasks.",
-    "spells": [
-      {
-        "name": "New Skill Rite",
-        "skill": "add-new-skill-to-repository",
-        "effect": "Process for adding a new skill to GrimoireStack repository with proper documentation, installation support, and cross-platform verification.",
-        "status": "—"
-      },
-      {
-        "name": "Project Folder Architecture",
-        "skill": "project-folder-architecture",
-        "effect": ">",
-        "status": "New"
-      },
-      {
-        "name": "Rename & Recall",
-        "skill": "bulk-rename-and-update-references",
-        "effect": "Use when renaming many files where old names appear in content — discover references first to avoid broken links and stale cross-references.",
-        "status": "—"
-      },
-      {
-        "name": "Supporting File Bind",
-        "skill": "skill-development-with-supporting-files",
-        "effect": "Use when a skill depends on scripts, templates, or other supporting files — package them so installation copies the full set, not just SKILL.md.",
-        "status": "—"
-      },
-      {
-        "name": "Test Oracle",
-        "skill": "unit-test-debugging",
-        "effect": "Systematic workflow for fixing failing unit tests by first determining whether the tests or the code under test are the source of truth. Use when fixing test failures, debugging test suites, resolving \"tests are passing/failing unexpectedly,\" or when an agent keeps changing code to match failing tests without investigating root cause. Also use when improving weak passing tests that do not actually prove correctness.",
         "status": "New"
       }
     ]
