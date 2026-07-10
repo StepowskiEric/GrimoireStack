@@ -20,7 +20,10 @@ export function useFavorites() {
   });
 
   const isFavorited = useCallback(
-    (skill) => favorites.some((f) => f.skill === skill),
+    (...args) => {
+      const skill = args[1] ?? args[0];
+      return favorites.some((f) => f.skill === skill);
+    },
     [favorites]
   );
 

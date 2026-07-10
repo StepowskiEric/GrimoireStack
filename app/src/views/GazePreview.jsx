@@ -3,6 +3,8 @@ import { useSearchParams } from 'react-router-dom';
 import GrimoireEye from '../components/GrimoireEye.jsx';
 import { clamp01 } from '../utils/gaze.js';
 import VoidIncantations from '../components/VoidIncantations.jsx';
+import '../styles/components/gaze-preview.css';
+import '../styles/components/gaze.css';
 
 // Dev-only checkpoint harness for the Gaze work. Lets a human scrub the eye
 // across exact gaze bands without waiting for dwell or clicking through the

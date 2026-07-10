@@ -10,12 +10,13 @@ export default function FavoritesView({
   onSpellClick,
   isFavorited,
   onToggleFavorite,
+  onNavigate,
 }) {
   const allSpells = useMemo(() => grimoireIndex.flatEntries(), []);
 
   // Get all favorite spells
   const favoriteSpells = useMemo(() => {
-    return allSpells.filter(({ spell }) => favorites.includes(spell.name));
+    return allSpells.filter(({ spell }) => favorites.some((f) => f.skill === spell.skill));
   }, [allSpells, favorites]);
 
   // Get recently viewed spells
@@ -44,10 +45,19 @@ export default function FavoritesView({
           <span className="flex-1 h-px bg-gradient-to-r from-[rgba(138,154,106,0.25)] to-transparent" />
         </h3>
         {favoriteSpells.length === 0 ? (
-          <p className="font-['Cormorant_Garamond'] italic text-center text-[0.92rem] text-silver-mute py-5 px-3 relative">
+          <div className="text-center py-5 px-3">
             <span className="block text-[rgba(196,71,71,0.35)] text-[1.2rem] mb-1.5">⛧</span>
-            The circle is silent. No entity is yet bound to your service. Seal one with the star to keep it near.
-          </p>
+            <p className="font-['Cormorant_Garamond'] italic text-[0.92rem] text-silver-mute mb-3">
+              The circle is silent. No entity is yet bound to your service.
+            </p>
+            <button
+              type="button"
+              onClick={() => onNavigate?.('library')}
+              className="font-['Cinzel'] text-[0.68rem] font-bold uppercase tracking-widest text-accent border border-accent/40 rounded-sm px-3 py-1.5 transition-all duration-200 hover:bg-[rgba(138,154,106,0.12)] hover:border-accent/70"
+            >
+              Browse The Spine to bind spells
+            </button>
+          </div>
         ) : (
           <div className="flex flex-col gap-1.5">
             {favoriteSpells.map(({ spell, school }) => (
@@ -65,13 +75,13 @@ export default function FavoritesView({
                   <div className="text-[0.78rem] text-silver-mute">{school.name}</div>
                 </div>
                 <button
-                  className={`inline-flex items-center justify-center gap-1 rounded-full border px-2.5 py-1 font-['Cinzel'] text-[0.58rem] uppercase tracking-wider transition-all duration-200 ${isFavorited(spell.name) ? 'border-[rgba(212,175,55,0.5)] bg-[rgba(212,175,55,0.12)] text-gold-bright shadow-[0_0_6px_rgba(212,175,55,0.3)]' : 'border-[rgba(212,175,55,0.25)] bg-[rgba(42,26,10,0.75)] text-[rgba(212,175,55,0.55)] hover:bg-[rgba(196,71,71,0.12)] hover:border-[rgba(196,71,71,0.5)] hover:text-[#c47a7a]'}`}
+                  className={`inline-flex items-center justify-center gap-1 rounded-full border px-2.5 py-1 font-['Cinzel'] text-[0.58rem] uppercase tracking-wider transition-all duration-200 ${isFavorited(spell.name, spell.skill) ? 'border-[rgba(212,175,55,0.5)] bg-[rgba(212,175,55,0.12)] text-gold-bright shadow-[0_0_6px_rgba(212,175,55,0.3)]' : 'border-[rgba(212,175,55,0.25)] bg-[rgba(42,26,10,0.75)] text-[rgba(212,175,55,0.55)] hover:bg-[rgba(196,71,71,0.12)] hover:border-[rgba(196,71,71,0.5)] hover:text-[#c47a7a]'}`}
                   onClick={(e) => {
                     e.stopPropagation();
-                    onToggleFavorite(spell.name);
+                    onToggleFavorite(spell.name, spell.skill);
                   }}
                   type="button"
-                  aria-label={isFavorited(spell.name) ? 'Unbind' : 'Bind'}
+                  aria-label={isFavorited(spell.name, spell.skill) ? 'Unbind' : 'Bind'}
                   data-testid="warded-seal"
                 >
                   <Icon name="warded-seal" size={16} />
@@ -90,10 +100,19 @@ export default function FavoritesView({
           <span className="flex-1 h-px bg-gradient-to-r from-[rgba(138,154,106,0.25)] to-transparent" />
         </h3>
         {recentSpells.length === 0 ? (
-          <p className="font-['Cormorant_Garamond'] italic text-center text-[0.92rem] text-silver-mute py-5 px-3 relative">
+          <div className="text-center py-5 px-3">
             <span className="block text-[rgba(196,71,71,0.35)] text-[1.2rem] mb-1.5">⛧</span>
-            The trail is cold. No incantation has yet been opened in the Eye.
-          </p>
+            <p className="font-['Cormorant_Garamond'] italic text-[0.92rem] text-silver-mute mb-3">
+              The trail is cold. No incantation has yet been opened in the Eye.
+            </p>
+            <button
+              type="button"
+              onClick={() => onNavigate?.('library')}
+              className="font-['Cinzel'] text-[0.68rem] font-bold uppercase tracking-widest text-accent border border-accent/40 rounded-sm px-3 py-1.5 transition-all duration-200 hover:bg-[rgba(138,154,106,0.12)] hover:border-accent/70"
+            >
+              Browse The Spine to explore spells
+            </button>
+          </div>
         ) : (
           <div className="flex flex-col gap-1.5">
             {recentSpells.map(({ spell, school }) => (
@@ -127,10 +146,19 @@ export default function FavoritesView({
           const notesObj = marginalia?.notes || marginalia || {};
           const entries = Object.entries(notesObj);
           if (entries.length === 0) {
-            return <p className="font-['Cormorant_Garamond'] italic text-center text-[0.92rem] text-silver-mute py-5 px-3 relative">
+            return <div className="text-center py-5 px-3">
               <span className="block text-[rgba(196,71,71,0.35)] text-[1.2rem] mb-1.5">⛧</span>
-              The page is clean. No annotations have yet been inscribed in the margin.
-            </p>;
+              <p className="font-['Cormorant_Garamond'] italic text-[0.92rem] text-silver-mute mb-3">
+                The page is clean. No annotations have yet been inscribed in the margin.
+              </p>
+              <button
+                type="button"
+                onClick={() => onNavigate?.('library')}
+                className="font-['Cinzel'] text-[0.68rem] font-bold uppercase tracking-widest text-accent border border-accent/40 rounded-sm px-3 py-1.5 transition-all duration-200 hover:bg-[rgba(138,154,106,0.12)] hover:border-accent/70"
+              >
+                Browse The Spine to annotate spells
+              </button>
+            </div>;
           }
           return (
             <div className="flex flex-col gap-1.5">

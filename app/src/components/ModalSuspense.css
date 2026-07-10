@@ -1,0 +1,20 @@
+/* ModalSuspense — Suspense fallback for lazy-loaded modals/views
+   Migrated from App.css */
+
+.modal-suspense-fallback {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: radial-gradient(ellipse at center, rgba(8, 10, 6, 0.78) 0%, rgba(2, 2, 3, 0.96) 80%);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  font-family: 'Cinzel Decorative', serif;
+  font-size: 1.2rem;
+  color: #d4af37;
+  letter-spacing: 0.1em;
+  text-shadow: 0 0 20px rgba(212, 175, 55, 0.2);
+  animation: ritualToastIn 0.4s ease;
+}

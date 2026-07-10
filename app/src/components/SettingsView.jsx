@@ -13,7 +13,6 @@ const SECTIONS = [
   { id: 'language', nameKey: 'settingsLanguage', icon: 'warded-seal' },
   { id: 'data', nameKey: 'settingsData', icon: 'archive' },
   { id: 'display', nameKey: 'settingsDisplay', icon: 'eye-fragment' },
-  { id: 'agent', nameKey: 'settingsAgent', icon: 'oracle' },
   { id: 'about', nameKey: 'settingsAbout', icon: 'sigil' },
 ];
 
@@ -208,19 +207,6 @@ export default function SettingsView({
           </div>
         )}
 
-        {activeSection === 'agent' && (
-          <div>
-            <div className="relative flex items-center gap-2 mb-2">
-              <h3 className="section-title">Agent Mode</h3>
-            </div>
-            <p className="text-text-secondary text-[0.82rem]">
-              Uses <strong>page-agent</strong> with <strong>Groq</strong>
-              ({' '}<code>qwen/qwen3.6-27b</code>) to visually navigate to the
-              best skill card. The Groq API key is configured on the server
-              and does not need to be set here.
-            </p>
-          </div>
-        )}
 
         {activeSection === 'about' && (
           <div>

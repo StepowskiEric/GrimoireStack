@@ -7,7 +7,7 @@ import { pageCreak } from '../audio/sounds.js';
 import { grimoireIndex } from '../data/grimoireIndexInstance.js';
 import { cn } from '../utils/cn.js';
 
-const DEFAULT_FEATURED = ['debugging', 'reasoning', 'process', 'architecture', 'testing', 'creativity'];
+const DEFAULT_FEATURED = ['debugging', 'reasoning', 'execution', 'systems-and-architecture', 'testing', 'output-quality', 'orchestration', 'software-development', 'research'];
 const SCHOOL_MAP = grimoireIndex.getSchoolMap();
 
 function getDominantTier(spells) {
@@ -37,13 +37,13 @@ export default function SchoolCardGrid({
     return featuredSchools
       .map(id => SCHOOL_MAP.get(id))
       .filter(Boolean)
-      .slice(0, 6);
+      .slice(0, 9);
   }, [featuredSchools]);
 
   const handleToggleFeatured = (schoolId) => {
     setTempFeatured(prev => {
       if (prev.includes(schoolId)) return prev.filter(id => id !== schoolId);
-      if (prev.length < 6) return [...prev, schoolId];
+      if (prev.length < 9) return [...prev, schoolId];
       return prev;
     });
   };
@@ -107,7 +107,7 @@ export default function SchoolCardGrid({
       {/* Content */}
       {isEditing ? (
         <div className="py-1">
-          <p className="font-['Cormorant_Garamond'] italic text-[0.9rem] text-text-muted text-center mb-4.5">Select up to 6 featured schools:</p>
+          <p className="font-['Cormorant_Garamond'] italic text-[0.9rem] text-text-muted text-center mb-4.5">Select up to 9 featured schools:</p>
           <div className="grid grid-cols-[repeat(auto-fit,minmax(180px,1fr))] gap-2 mb-5 text-left">
             {Array.from(SCHOOL_MAP.values()).map(school => (
               <label
@@ -118,7 +118,7 @@ export default function SchoolCardGrid({
                   type="checkbox"
                   checked={tempFeatured.includes(school.id)}
                   onChange={() => handleToggleFeatured(school.id)}
-                  disabled={!tempFeatured.includes(school.id) && tempFeatured.length >= 6}
+                  disabled={!tempFeatured.includes(school.id) && tempFeatured.length >= 9}
                   className="accent-sickly"
                 />
                 <span className="text-[1.1rem] w-6 text-center"><SchoolSigil schoolId={school.id} size={20} /></span>

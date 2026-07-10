@@ -2,6 +2,7 @@ import { useState, useCallback } from 'react';
 import { schoolColors } from '../utils/schoolColors.js';
 import SchoolSigil from './SchoolSigil.tsx';
 import Icon from './Icon.jsx';
+import './ExportToast.css';
 
 export default function SpellDetailView({
   school,

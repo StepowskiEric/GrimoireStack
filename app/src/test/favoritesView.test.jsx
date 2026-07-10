@@ -107,7 +107,7 @@ describe('FavoritesView', () => {
   it('renders favorite spells by name', () => {
     renderWithLang(
       <FavoritesView
-        favorites={['Trace Sight']}
+        favorites={[{ name: 'Trace Sight', skill: 'log-trace-correlation' }]}
         recent={[]}
         marginalia={{}}
         onSpellClick={() => {}}
@@ -121,7 +121,7 @@ describe('FavoritesView', () => {
   it('shows the count of bound incantations', () => {
     renderWithLang(
       <FavoritesView
-        favorites={['Trace Sight', 'Bisect Divination']}
+        favorites={[{ name: 'Trace Sight', skill: 'log-trace-correlation' }, { name: 'Bisect Divination', skill: 'bisect-debugging' }]}
         recent={[]}
         marginalia={{}}
         onSpellClick={() => {}}
@@ -136,7 +136,7 @@ describe('FavoritesView', () => {
     const onSpellClick = vi.fn();
     renderWithLang(
       <FavoritesView
-        favorites={['Trace Sight']}
+        favorites={[{ name: 'Trace Sight', skill: 'log-trace-correlation' }]}
         recent={[]}
         marginalia={{}}
         onSpellClick={onSpellClick}
@@ -153,7 +153,7 @@ describe('FavoritesView', () => {
     const onToggleFavorite = vi.fn();
     renderWithLang(
       <FavoritesView
-        favorites={['Trace Sight']}
+        favorites={[{ name: 'Trace Sight', skill: 'log-trace-correlation' }]}
         recent={[]}
         marginalia={{}}
         onSpellClick={() => {}}
@@ -163,7 +163,7 @@ describe('FavoritesView', () => {
     );
     const starButtons = screen.getAllByLabelText(/Unbind|Bind/);
     fireEvent.click(starButtons[0]);
-    expect(onToggleFavorite).toHaveBeenCalledWith('Trace Sight');
+    expect(onToggleFavorite).toHaveBeenCalledWith('Trace Sight', 'log-trace-correlation');
   });
 
   it('renders recently viewed spells', () => {
@@ -183,7 +183,7 @@ describe('FavoritesView', () => {
   it('shows the school name under each spell', () => {
     renderWithLang(
       <FavoritesView
-        favorites={['Trace Sight']}
+        favorites={[{ name: 'Trace Sight', skill: 'log-trace-correlation' }]}
         recent={[]}
         marginalia={{}}
         onSpellClick={() => {}}
@@ -244,7 +244,7 @@ describe('FavoritesView', () => {
   it('favorites section uses role="button" for keyboard accessibility', () => {
     renderWithLang(
       <FavoritesView
-        favorites={['Trace Sight']}
+        favorites={[{ name: 'Trace Sight', skill: 'log-trace-correlation' }]}
         recent={[]}
         marginalia={{}}
         onSpellClick={() => {}}
@@ -261,7 +261,7 @@ describe('FavoritesView', () => {
     const onSpellClick = vi.fn();
     renderWithLang(
       <FavoritesView
-        favorites={['Trace Sight']}
+        favorites={[{ name: 'Trace Sight', skill: 'log-trace-correlation' }]}
         recent={[]}
         marginalia={{}}
         onSpellClick={onSpellClick}

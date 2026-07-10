@@ -42,18 +42,22 @@ vi.mock('../data/grimoireIndexInstance.js', () => ({
 import { grimoireIndex } from '../data/grimoireIndexInstance.js';
 
 const leftSpell = {
-  name: 'Trace Sight',
-  skill: 'log-trace-correlation',
-  effect: 'Maps stack traces to source code.',
-  status: 'Proven',
+  spell: {
+    name: 'Trace Sight',
+    skill: 'log-trace-correlation',
+    effect: 'Maps stack traces to source code.',
+    status: 'Proven',
+  },
   school: { id: 'debugging', name: 'School of Remediation', real: 'Debugging' },
 };
 
 const rightSpell = {
-  name: 'Bisect Divination',
-  skill: 'bisect-debugging',
-  effect: 'Binary searches commit history.',
-  status: 'Proven',
+  spell: {
+    name: 'Bisect Divination',
+    skill: 'bisect-debugging',
+    effect: 'Binary searches commit history.',
+    status: 'Proven',
+  },
   school: { id: 'debugging', name: 'School of Remediation', real: 'Debugging' },
 };
 
@@ -377,7 +381,7 @@ describe('CompareSpellsModal', () => {
       />
     );
     fireEvent.click(screen.getByText('Open Trace Sight'));
-    expect(onSelect).toHaveBeenCalledWith(leftSpell, expect.objectContaining({ id: 'debugging' }));
+    expect(onSelect).toHaveBeenCalledWith(leftSpell.spell, expect.objectContaining({ id: 'debugging' }));
   });
 
   it('shows empty state when picker search returns no results', () => {

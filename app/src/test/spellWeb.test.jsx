@@ -103,13 +103,20 @@ describe('SpellWeb', () => {
 
   it('renders spell names', () => {
     render(<SpellWeb onSpellClick={() => {}} />);
+    const debuggingBtn = screen.getByRole('button', { name: 'Debugging school' });
+    fireEvent.click(debuggingBtn);
     expect(screen.getByText('Trace Sight')).toBeInTheDocument();
     expect(screen.getByText('Bisect Divination')).toBeInTheDocument();
+
+    const reasoningBtn = screen.getByRole('button', { name: 'Reasoning school' });
+    fireEvent.click(reasoningBtn);
     expect(screen.getByText('Razor of Parsimony')).toBeInTheDocument();
   });
 
   it('shows tooltip details on spell hover', () => {
     render(<SpellWeb onSpellClick={() => {}} />);
+    const debuggingBtn = screen.getByRole('button', { name: 'Debugging school' });
+    fireEvent.click(debuggingBtn);
     const traceSight = screen.getByText('Trace Sight');
     fireEvent.mouseEnter(traceSight.closest('g'));
 

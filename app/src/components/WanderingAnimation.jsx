@@ -1,4 +1,8 @@
 import { useState, useEffect, useCallback } from 'react';
+import '../components/WanderingAnimation.css';
+import '../styles/components/atmosphere-corridor.css';
+import '../styles/components/atmosphere-crevice.css';
+import '../styles/components/reveal.css';
 
 const CHAMBERS = [
   {

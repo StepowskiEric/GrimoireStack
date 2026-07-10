@@ -6,7 +6,7 @@ import SpellCard from '../components/SpellCard.jsx';
 import GrimoireStackLayout from '../components/GrimoireStackLayout.jsx';
 import InstallPrompt from '../components/InstallPrompt.jsx';
 import ApprenticeWelcome from '../components/ApprenticeWelcome.jsx';
-import BestiaryCodex from '../components/BestiaryCodex.jsx';
+import LibraryContent from '../components/LibraryContent.jsx';
 import RecipeLabView from '../components/RecipeLabView.jsx';
 import StaleLinkBanner from '../components/StaleLinkBanner.jsx';
 import SettingsView from '../components/SettingsView.jsx';
@@ -148,87 +148,36 @@ describe('SpellCard', () => {
   });
 });
 
-// ── GrimoireStackLayout search results ────────────────
-describe('GrimoireStackLayout search results', () => {
-  const renderWithLang = (ui) => render(<BrowserRouter><LanguageProvider>{ui}</LanguageProvider></BrowserRouter>);
+// ── LibraryContent (merged Bestiary + Spine) ──────────
+describe('LibraryContent', () => {
+  const renderWithLang = (ui) => render(<LanguageProvider>{ui}</LanguageProvider>);
 
-  it('shows matching spells in the library view when searchQuery is set', () => {
-    const { container } = renderWithLang(
-      <GrimoireStackLayout
-        currentSchool="debugging"
+  it('shows SchoolCardGrid when no search or filters are active', () => {
+    renderWithLang(
+      <LibraryContent
+        featuredSchools={['debugging', 'testing']}
+        onFeaturedSchoolsChange={() => {}}
         onSchoolSelect={() => {}}
-        searchQuery="jest"
-        onSearchChange={() => {}}
-        totalMatches={searchSpells(multiSchool, 'jest').total}
         onSpellClick={() => {}}
         isFavorited={() => false}
         onToggleFavorite={() => {}}
-        favorites={[]}
-        recent={[]}
         marginalia={{}}
-        getVote={() => null}
-        castVote={() => {}}
-        aggregateFor={() => null}
-        castEnabled={false}
-        onToggleCast={() => {}}
-        onWizardOpen={() => {}}
-        onCompareOpen={() => {}}
-        onCastBones={() => {}}
-        onExportJson={() => {}}
-        onExportMarkdown={() => {}}
-        onShowShortcuts={() => {}}
-        schoolFilter={new Set()}
-        tierFilter={new Set()}
-        favoritesOnly={false}
-        onToggleSchool={() => {}}
-        onToggleTier={() => {}}
-        onToggleFavorites={() => {}}
-        onClearFilters={() => {}}
-        filterResults={{ bySchool: {}, total: 0 }}
-        featuredSchools={['debugging', 'reasoning', 'process', 'architecture', 'testing', 'creativity']}
+      />
+    );
+    // Default view should show "Featured" pill (SchoolCardGrid)
+    expect(screen.getByText('Featured')).toBeInTheDocument();
+  });
+
+  it('shows filtered results when a search query is entered', () => {
+    renderWithLang(
+      <LibraryContent
+        featuredSchools={['debugging', 'testing']}
         onFeaturedSchoolsChange={() => {}}
-      />
-    );
-
-    expect(screen.getAllByText('Testing').length).toBeGreaterThanOrEqual(1);
-    expect(container.querySelector('[data-testid="bestiary-index-row"]')).not.toBeNull();
-  });
-});
-
-// ── BestiaryCodex ────────────────────────────────────
-describe('BestiaryCodex', () => {
-  const renderWithLang = (ui) => render(<LanguageProvider>{ui}</LanguageProvider>);
-
-  it('renders the codex title and result count', () => {
-    renderWithLang(
-      <BestiaryCodex
+        onSchoolSelect={() => {}}
         onSpellClick={() => {}}
         isFavorited={() => false}
-        hasNote={() => false}
-      />
-    );
-    expect(screen.getByText('The Bestiary Codex')).toBeInTheDocument();
-    expect(screen.getByText(/entities/)).toBeInTheDocument();
-  });
-
-  it('lists every spell from the provided schools', () => {
-    renderWithLang(
-      <BestiaryCodex
-        onSpellClick={() => {}}
-        isFavorited={() => false}
-        hasNote={() => false}
-      />
-    );
-    expect(screen.getByText('Trace Sight')).toBeInTheDocument();
-    expect(screen.getByText('Jest Invocation')).toBeInTheDocument();
-  });
-
-  it('filters by search query', () => {
-    renderWithLang(
-      <BestiaryCodex
-        onSpellClick={() => {}}
-        isFavorited={() => false}
-        hasNote={() => false}
+        onToggleFavorite={() => {}}
+        marginalia={{}}
       />
     );
     const input = screen.getByPlaceholderText(/scry by name/i);
@@ -239,10 +188,14 @@ describe('BestiaryCodex', () => {
 
   it('shows the empty state when filters return nothing', () => {
     renderWithLang(
-      <BestiaryCodex
+      <LibraryContent
+        featuredSchools={['debugging', 'testing']}
+        onFeaturedSchoolsChange={() => {}}
+        onSchoolSelect={() => {}}
         onSpellClick={() => {}}
         isFavorited={() => false}
-        hasNote={() => false}
+        onToggleFavorite={() => {}}
+        marginalia={{}}
       />
     );
     const input = screen.getByPlaceholderText(/scry by name/i);
@@ -250,44 +203,41 @@ describe('BestiaryCodex', () => {
     expect(screen.getByText(/the abyss returns nothing/i)).toBeInTheDocument();
   });
 
-  it('calls onSpellClick when a row is clicked', () => {
+  it('calls onSpellClick when a filtered result row is clicked', () => {
     const onClick = vi.fn();
     renderWithLang(
-      <BestiaryCodex
+      <LibraryContent
+        featuredSchools={['debugging', 'testing']}
+        onFeaturedSchoolsChange={() => {}}
+        onSchoolSelect={() => {}}
         onSpellClick={onClick}
         isFavorited={() => false}
-        hasNote={() => false}
+        onToggleFavorite={() => {}}
+        marginalia={{}}
       />
     );
+    const input = screen.getByPlaceholderText(/scry by name/i);
+    fireEvent.change(input, { target: { value: 'trace' } });
     fireEvent.click(screen.getByText('Trace Sight'));
     expect(onClick).toHaveBeenCalledTimes(1);
     expect(onClick.mock.calls[0][0].skill).toBe('log-trace-correlation');
   });
 
-  it('renders a Clear button when filters are active', () => {
+  it('shows a Clear button when filters are active', () => {
     renderWithLang(
-      <BestiaryCodex
+      <LibraryContent
+        featuredSchools={['debugging', 'testing']}
+        onFeaturedSchoolsChange={() => {}}
+        onSchoolSelect={() => {}}
         onSpellClick={() => {}}
         isFavorited={() => false}
-        hasNote={() => false}
+        onToggleFavorite={() => {}}
+        marginalia={{}}
       />
     );
     const input = screen.getByPlaceholderText(/scry by name/i);
     fireEvent.change(input, { target: { value: 'jest' } });
-    expect(screen.getByText(/purge/i)).toBeInTheDocument();
-  });
-
-  it('shows tier badges', () => {
-    renderWithLang(
-      <BestiaryCodex
-        onSpellClick={() => {}}
-        isFavorited={() => false}
-        hasNote={() => false}
-      />
-    );
-    // "Proven" → "adept" tier; "New" → "apprentice" tier
-    // Badges show the compact label (e.g., "Adept" not "Adept Sigil")
-    expect(screen.getAllByText(/^Adept$|^Apprentice$/).length).toBeGreaterThanOrEqual(1);
+    expect(screen.getByText('Clear')).toBeInTheDocument();
   });
 });
 

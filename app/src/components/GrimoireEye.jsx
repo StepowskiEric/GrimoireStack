@@ -1,5 +1,6 @@
 /* eslint-disable react/no-array-index-key -- decorative procedural arrays; index is stable for the lifetime of the mount */
 import { useRef, useEffect } from 'react';
+import '../styles/components/grimoire-eye.css';
 
 export default function GrimoireEye({ mood = 'neutral', gaze = 0.25 } = {}) {
   const wrapperRef = useRef(null);
@@ -250,27 +251,44 @@ export default function GrimoireEye({ mood = 'neutral', gaze = 0.25 } = {}) {
     <div ref={wrapperRef} className="grimoire-eye-wrapper">
       {/* Background blinking eyes */}
       <svg className="bg-eyes-canvas" viewBox="0 0 100 100" preserveAspectRatio="none">
-        {bgEyes.slice(0, bgCount).map((eye, i) => (
-          <g key={i} className="bg-eye-group" style={{ animationDelay: `${eye.delay}s` }}>
-            <ellipse
-              cx={eye.x}
-              cy={eye.y}
-              rx={eye.size / 2}
-              ry={eye.size / 2}
-              fill={eye.color}
-              opacity={0.09 + gaze * 0.13}
-              className="bg-eye-lid"
-            />
-            <circle
-              cx={eye.x}
-              cy={eye.y}
-              r={eye.size * 0.15}
-              fill="#020203"
-              opacity={0.08 + gaze * 0.1}
-              className="bg-eye-pupil"
-            />
-          </g>
-        ))}
+        {bgEyes.slice(0, bgCount).map((eye, i) => {
+          const x = eye.x;
+          const y = eye.y;
+          const s = eye.size;
+          const eyePath = `M ${x},${y - s / 2} C ${x + s / 2},${y - s / 4} ${x + s / 2},${y + s / 4} ${x},${y + s / 2} C ${x - s / 2},${y + s / 4} ${x - s / 2},${y - s / 4} ${x},${y - s / 2}`;
+          return (
+            <g key={i} className="bg-eye-group" style={{ animationDelay: `${eye.delay}s` }}>
+              <path
+                d={eyePath}
+                fill="rgba(220,215,200,0.12)"
+                opacity={0.12 + gaze * 0.18}
+                className="bg-eye-lid"
+              />
+              <circle
+                cx={x}
+                cy={y}
+                r={s * 0.28}
+                fill={eye.color}
+                opacity={0.18 + gaze * 0.22}
+              />
+              <circle
+                cx={x}
+                cy={y}
+                r={s * 0.12}
+                fill="#020203"
+                opacity={0.22 + gaze * 0.18}
+                className="bg-eye-pupil"
+              />
+              <circle
+                cx={x - s * 0.08}
+                cy={y - s * 0.08}
+                r={s * 0.04}
+                fill="#ffffff"
+                opacity={0.25 + gaze * 0.2}
+              />
+            </g>
+          );
+        })}
       </svg>
 
       {/* The Great Eye */}

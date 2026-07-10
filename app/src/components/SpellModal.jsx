@@ -9,6 +9,11 @@ import Icon from './Icon.jsx';
 import SchoolSigil from './SchoolSigil.tsx';
 import FamiliarWhisper from './FamiliarWhisper.jsx';
 import { cn } from '../utils/cn.js';
+import { simpleMarkdownToHtml, escapeHtml } from '../utils/markdown.js';
+import { sanitizeHtml } from '../utils/sanitize.js';
+import './SpellModal.css';
+import './Marginalia.css';
+import '../components/IntakeOracle.css';
 
 function findSpell(name) {
   const entry = grimoireIndex.resolveByName(name);
@@ -51,163 +56,6 @@ async function fetchSkillMd(skillId) {
   }
 }
 
-function parseTables(html) {
-  const lines = html.split('\n');
-  const out = [];
-  let i = 0;
-  while (i < lines.length) {
-    const line = lines[i].trim();
-    if (line.startsWith('|') && line.endsWith('|')) {
-      const tableLines = [];
-      while (i < lines.length) {
-        const l = lines[i].trim();
-        if (l.startsWith('|') && l.endsWith('|')) {
-          tableLines.push(l);
-          i++;
-        } else {
-          break;
-        }
-      }
-      if (tableLines.length >= 2) {
-        const sep = tableLines[1].slice(1, -1);
-        const isSep = sep.split('|').every(c => /^[-:\s]+$/.test(c.trim()));
-        if (isSep) {
-          const headers = tableLines[0].slice(1, -1).split('|').map(h => h.trim());
-          const bodyRows = tableLines.slice(2).map(row => row.slice(1, -1).split('|').map(c => c.trim()));
-          const thead = `<thead><tr>${headers.map(h => `<th>${h}</th>`).join('')}</tr></thead>`;
-          const tbody = `<tbody>${bodyRows.map(r => `<tr>${r.map(c => `<td>${c}</td>`).join('')}</tr>`).join('')}</tbody>`;
-          out.push(`<table class="md-table">${thead}${tbody}</table>`);
-        } else {
-          tableLines.forEach(l => out.push(l));
-        }
-      } else {
-        tableLines.forEach(l => out.push(l));
-      }
-    } else {
-      out.push(lines[i]);
-      i++;
-    }
-  }
-  return out.join('\n');
-}
-
-function wrapLists(html) {
-  const lines = html.split('\n');
-  const out = [];
-  let inList = false;
-  let listType = 'ul';
-  for (const line of lines) {
-    const trimmed = line.trim();
-    if (trimmed.startsWith('<li')) {
-      if (!inList) {
-        inList = true;
-        listType = line.includes('class="check-item"') ? 'ul' : 'ul';
-        out.push(`<${listType}>`);
-      }
-      out.push(line);
-    } else {
-      if (inList) {
-        inList = false;
-        out.push(`</${listType}>`);
-      }
-      out.push(line);
-    }
-  }
-  if (inList) out.push(`</${listType}>`);
-  return out.join('\n');
-}
-
-function simpleMarkdownToHtml(md) {
-  const text = md.replace(/\r\n/g, '\n');
-
-  // Phase 1: Extract fenced code blocks to placeholders
-  const codeBlocks = [];
-  let html = text.replace(/```[\s\S]*?```/g, (m) => {
-    const content = m.slice(3, -3).replace(/^\w+\n/, '');
-    codeBlocks.push(`<pre><code>${escapeHtml(content)}</code></pre>`);
-    return `___CODE_BLOCK_${codeBlocks.length - 1}___`;
-  });
-
-  // Phase 2: Block-level elements
-  // Tables
-  html = parseTables(html);
-  // Blockquotes
-  html = html.replace(/^>\s+(.*)$/gm, '<blockquote>$1</blockquote>');
-  // Headers
-  html = html.replace(/^#{1,6}\s+(.*)$/gm, (m, t) => {
-    const level = m.match(/^#+/)[0].length;
-    return `<h${level}>${t}</h${level}>`;
-  });
-  // Horizontal rule
-  html = html.replace(/^---\s*$/gm, '<hr />');
-  // Unordered lists
-  html = html.replace(/^(\s*)-\s+(.*)$/gm, (m, indent, txt) => {
-    const depth = Math.floor(indent.length / 2);
-    return `<li data-depth="${depth}">${txt}</li>`;
-  });
-  // Ordered lists
-  html = html.replace(/^(\s*)\d+\.\s+(.*)$/gm, (m, indent, txt) => {
-    const depth = Math.floor(indent.length / 2);
-    return `<li data-depth="${depth}">${txt}</li>`;
-  });
-  // Checkboxes
-  html = html.replace(/^(\s*)-\s*\[([ xX])\]\s*(.*)$/gm, (m, indent, checked, txt) => {
-    const isChecked = checked.toLowerCase() === 'x';
-    return `<li class="check-item"><span class="check-box${isChecked ? ' checked' : ''}"></span>${txt}</li>`;
-  });
-  // Wrap consecutive list items
-  html = wrapLists(html);
-  // Paragraphs for remaining non-tag lines
-  html = html.split('\n').map(l => {
-    const t = l.trim();
-    if (!t) return '<br />';
-    if (t.startsWith('<') && !t.startsWith('<br')) return l;
-    return `<p>${t}</p>`;
-  }).join('\n');
-
-  // Phase 3: Inline elements
-  // Strikethrough
-  html = html.replace(/~~([^~]+)~~/g, '<del>$1</del>');
-  // Bold
-  html = html.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
-  // Italic
-  html = html.replace(/\*([^*]+)\*/g, '<em>$1</em>');
-  // Inline code
-  html = html.replace(/`([^`]+)`/g, '<code>$1</code>');
-  // Links
-  html = html.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2" target="_blank" rel="noopener noreferrer">$1</a>');
-
-  // Phase 4: Restore code blocks
-  html = html.replace(/___CODE_BLOCK_(\d+)___/g, (_, i) => codeBlocks[+i]);
-
-  return html;
-}
-
-function escapeHtml(text) {
-  return text
-    .replace(/&/g, '&amp;')
-    .replace(/</g, '&lt;')
-    .replace(/>/g, '&gt;')
-    .replace(/"/g, '&quot;');
-}
-
-function sanitizeHtml(html) {
-  // Simple regex-based sanitizer: strip dangerous tags, event handlers,
-  // and javascript: / data: URLs. The allowlist Sets that once lived here
-  // were never wired up; the regex chain below is the actual contract.
-  const sanitized = html
-    .replace(/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi, '')
-    .replace(/<iframe\b[^<]*(?:(?!<\/iframe>)<[^<]*)*<\/iframe>/gi, '')
-    .replace(/<object\b[^<]*(?:(?!<\/object>)<[^<]*)*<\/object>/gi, '')
-    .replace(/<embed\b[^<]*(?:(?!<\/embed>)<[^<]*)*<\/embed>/gi, '')
-    .replace(/<form\b[^<]*(?:(?!<\/form>)<[^<]*)*<\/form>/gi, '')
-    .replace(/on\w+="[^"]*"/gi, '')
-    .replace(/on\w+='[^']*'/gi, '')
-    .replace(/javascript:/gi, '')
-    .replace(/data:/gi, '');
-
-  return sanitized;
-}
 
 const INSCRIBE_AGENTS = [
   { id: 'claude', label: 'Claude Code', prefix: 'npx GrimoireStack install --agent claude' },
@@ -456,21 +304,9 @@ export default function SpellModal({ spell, school, onClose, marginalia, getVote
           <em>“That is not dead which can eternal lie, and with strange aeons even death may die.”</em>
         </p>
 
-        {/* Tentacle-carved title — symbol gripped by small tendrils */}
+
         <div className="modal-title-carved">
-          <svg className="modal-tendril modal-tendril--l" viewBox="0 0 40 60" aria-hidden="true">
-            <path d="M 40 0 C 28 12, 22 24, 26 36 C 28 44, 34 50, 38 56 C 40 58, 40 60, 40 60"
-              fill="none" stroke="rgba(40,48,28,0.85)" strokeWidth="3" strokeLinecap="round" />
-            <path d="M 40 0 C 28 12, 22 24, 26 36 C 28 44, 34 50, 38 56"
-              fill="none" stroke="rgba(20,22,18,0.6)" strokeWidth="1.4" strokeLinecap="round" />
-          </svg>
           <span className="modal-symbol"><SchoolSigil schoolId={school.id} size={28} /></span>
-          <svg className="modal-tendril modal-tendril--r" viewBox="0 0 40 60" aria-hidden="true">
-            <path d="M 0 0 C 12 12, 18 24, 14 36 C 12 44, 6 50, 2 56 C 0 58, 0 60, 0 60"
-              fill="none" stroke="rgba(40,48,28,0.85)" strokeWidth="3" strokeLinecap="round" />
-            <path d="M 0 0 C 12 12, 18 24, 14 36 C 12 44, 6 50, 2 56"
-              fill="none" stroke="rgba(20,22,18,0.6)" strokeWidth="1.4" strokeLinecap="round" />
-          </svg>
         </div>
         <div className="modal-school">
           {school.name} <span className="modal-school-real">({school.real})</span>
@@ -488,25 +324,6 @@ export default function SpellModal({ spell, school, onClose, marginalia, getVote
           Inscribed by the Scribe of the Unseen · First seen in the depths on {firstSeen}
         </div>
 
-        {/* View mode toggle */}
-        <div className="modal-view-toggle">
-          <button
-            type="button"
-            className={cn('px-3 py-1.5 border border-border text-text-muted text-[0.68rem] uppercase tracking-wider transition-colors', viewMode === 'plain' && 'border-border-hover text-text-primary bg-surface-raised')}
-            onClick={() => setViewMode('plain')}
-            aria-pressed={viewMode === 'plain'}
-          >
-            Plain English
-          </button>
-          <button
-            type="button"
-            className={cn('px-3 py-1.5 border border-border text-text-muted text-[0.68rem] uppercase tracking-wider transition-colors', viewMode === 'full' && 'border-border-hover text-text-primary bg-surface-raised')}
-            onClick={() => setViewMode('full')}
-            aria-pressed={viewMode === 'full'}
-          >
-            Full Grimoire Entry
-          </button>
-        </div>
 
         {viewMode === 'plain' ? (
           <>

@@ -4,7 +4,7 @@ import { axe } from 'vitest-axe';
 import { LanguageProvider } from '../i18n/LanguageContext';
 import ShortcutsModal from '../components/ShortcutsModal.jsx';
 import InstallPrompt from '../components/InstallPrompt.jsx';
-import BestiaryCodex from '../components/BestiaryCodex.jsx';
+import LibraryContent from '../components/LibraryContent.jsx';
 import StaleLinkBanner from '../components/StaleLinkBanner.jsx';
 
 const sampleSchools = [
@@ -60,12 +60,16 @@ describe('a11y', () => {
     expect(results).toHaveNoViolations();
   });
 
-  it('BestiaryCodex has no axe violations', async () => {
+  it('LibraryContent (idle) has no axe violations', async () => {
     const { container } = renderWithLang(
-      <BestiaryCodex
+      <LibraryContent
+        featuredSchools={['debugging', 'reasoning']}
+        onFeaturedSchoolsChange={() => {}}
+        onSchoolSelect={() => {}}
         onSpellClick={() => {}}
         isFavorited={() => false}
-        hasNote={() => false}
+        onToggleFavorite={() => {}}
+        marginalia={{}}
       />
     );
     const results = await axe(container);

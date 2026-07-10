@@ -1,0 +1,18 @@
+/* ModalEye — lid states
+   Migrated from App.css */
+
+.modal-eye--opened .modal-eye__lid--upper {
+  transform: translateY(-32px);
+}
+
+.modal-eye--opened .modal-eye__lid--lower {
+  transform: translateY(32px);
+}
+
+.modal-eye--reduced .modal-eye__lid--upper {
+  transform: translateY(-32px);
+}
+
+.modal-eye--reduced .modal-eye__lid--lower {
+  transform: translateY(32px);
+}

@@ -1,0 +1,19 @@
+/* ExportToast — transient binding-circle full / export feedback
+   Migrated from App.css */
+
+.export-toast {
+  position: fixed;
+  bottom: 80px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(26, 20, 10, 0.92);
+  border: 1px solid rgba(212, 175, 55, 0.3);
+  border-radius: 6px;
+  padding: 8px 18px;
+  font-family: 'Cinzel', serif;
+  font-size: 0.62rem;
+  color: #d4af37;
+  z-index: 9999;
+  pointer-events: none;
+  animation: ritualToastIn 0.3s ease;
+}

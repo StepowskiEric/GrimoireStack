@@ -60,15 +60,15 @@ const sections = [
 ];
 
 const schoolsSummary = [
-  { name: 'Debugging', desc: 'Diagnose, trace, and resolve issues in code and systems' },
-  { name: 'Reasoning', desc: 'Structured thinking, planning, and problem-solving protocols' },
-  { name: 'Process', desc: 'Workflow engineering, automation, and repeatable execution' },
-  { name: 'Architecture', desc: 'System design, structure, and architectural decisions' },
-  { name: 'Testing', desc: 'Test strategies, coverage, and quality assurance' },
-  { name: 'Creativity', desc: 'Design, writing, brainstorming, and generative work' },
+  { id: 'debugging', name: 'Debugging', desc: 'Diagnose, trace, and resolve issues in code and systems' },
+  { id: 'reasoning', name: 'Reasoning', desc: 'Structured thinking, planning, and problem-solving protocols' },
+  { id: 'execution', name: 'Process', desc: 'Workflow engineering, automation, and repeatable execution' },
+  { id: 'systems-and-architecture', name: 'Architecture', desc: 'System design, structure, and architectural decisions' },
+  { id: 'testing', name: 'Testing', desc: 'Test strategies, coverage, and quality assurance' },
+  { id: 'output-quality', name: 'Creativity', desc: 'Design, writing, brainstorming, and generative work' },
 ];
 
-export default function AboutView() {
+export default function AboutView({ onSchoolSelect }) {
   return (
     <div className="text-moonlight max-w-[680px] animate-[spineFadeIn_0.35s_ease-out]">
       {/* Hero */}
@@ -94,10 +94,6 @@ export default function AboutView() {
           (debugging, reasoning, architecture, testing, and so on). Each <strong className="text-gold-bright font-semibold">spell</strong> is one skill you can
           read about, try, or combine with others.
         </p>
-        <p className="text-[0.92rem] leading-relaxed text-parchment-dark mx-auto max-w-[560px]">
-          Nothing here tracks your progress or pushes a curriculum. It is a reference: browse,
-          search, take what you need.
-        </p>
       </div>
 
       {/* What are schools */}
@@ -112,10 +108,15 @@ export default function AboutView() {
         </p>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 mb-1">
           {schoolsSummary.map((school) => (
-            <div key={school.name} className="p-3 border border-[rgba(138,154,106,0.08)] border-l-2 border-l-[rgba(138,154,106,0.15)] rounded-sm bg-[rgba(8,10,16,0.4)] transition-all duration-200 hover:bg-[rgba(10,14,22,0.55)] hover:border-l-[rgba(138,154,106,0.3)] hover:shadow-[0_0_10px_rgba(138,154,106,0.04)]">
+            <button
+              key={school.id}
+              type="button"
+              onClick={() => onSchoolSelect?.(school.id)}
+              className="w-full text-left p-3 border border-[rgba(138,154,106,0.08)] border-l-2 border-l-[rgba(138,154,106,0.15)] rounded-sm bg-[rgba(8,10,16,0.4)] transition-all duration-200 hover:bg-[rgba(10,14,22,0.55)] hover:border-l-[rgba(138,154,106,0.3)] hover:shadow-[0_0_10px_rgba(138,154,106,0.04)]"
+            >
               <div className="font-['Cinzel'] text-[0.65rem] font-bold uppercase tracking-[0.08em] text-moonlight mb-1">{school.name}</div>
               <div className="text-[0.78rem] leading-snug text-silver-mute">{school.desc}</div>
-            </div>
+            </button>
           ))}
         </div>
       </div>

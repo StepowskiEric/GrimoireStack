@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from 'react';
 import { cn } from '../utils/cn.js';
+import './ModalEye.css';
 
 interface Props {
   size?: number;

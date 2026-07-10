@@ -3,10 +3,16 @@ import { grimoireIndex } from '../data/grimoireIndexInstance.js';
 import SchoolSigil from './SchoolSigil.tsx';
 import { cn } from '../utils/cn.js';
 
-const WIDTH = 1200;
-const HEIGHT = 800;
-const SCHOOL_RADIUS = 280;
-const SPELL_RADIUS = 120;
+const WIDTH = 1400;
+const HEIGHT = 900;
+const SCHOOL_RADIUS = 320;
+const SPELL_RADIUS = 110;
+const SPELL_FAN_SPREAD = Math.PI * 0.7;
+const SPELL_FAN_GAP = 0.18;
+
+function clamp(v, min, max) {
+  return Math.max(min, Math.min(max, v));
+}
 
 function layoutTree(schools) {
   const schoolCount = schools.length;
@@ -21,18 +27,20 @@ function layoutTree(schools) {
   for (const school of positionedSchools) {
     const spellCount = school.children.length;
     const baseAngle = school.angle;
-    const spread = Math.min(Math.PI * 0.8, spellCount * 0.15);
+    const spread = Math.min(SPELL_FAN_SPREAD, spellCount * SPELL_FAN_GAP);
 
     school.children.forEach((spell, i) => {
-      const spellAngle = baseAngle + (i - (spellCount - 1) / 2) * (spread / Math.max(1, spellCount - 1));
-      const distance = SCHOOL_RADIUS + SPELL_RADIUS + (i % 2) * 20;
-      const x = WIDTH / 2 + Math.cos(spellAngle) * distance;
-      const y = HEIGHT / 2 + Math.sin(spellAngle) * distance;
+      const spellAngle = spellCount === 1
+        ? baseAngle
+        : baseAngle + (i - (spellCount - 1) / 2) * (spread / Math.max(1, spellCount - 1));
+      const distance = SCHOOL_RADIUS + SPELL_RADIUS + (i % 2) * 24;
+      const x = clamp(WIDTH / 2 + Math.cos(spellAngle) * distance, 70, WIDTH - 70);
+      const y = clamp(HEIGHT / 2 + Math.sin(spellAngle) * distance, 70, HEIGHT - 70);
 
       positionedSpells.push({
         ...spell,
-        x: Math.max(60, Math.min(WIDTH - 60, x)),
-        y: Math.max(60, Math.min(HEIGHT - 60, y)),
+        x,
+        y,
         schoolX: school.x,
         schoolY: school.y,
       });
@@ -44,26 +52,27 @@ function layoutTree(schools) {
 
 function statusToOpacity(status) {
   if (status === 'Proven') return 1;
-  if (status === 'New') return 0.85;
-  return 0.7;
+  if (status === 'New') return 0.95;
+  return 0.92;
 }
 
 function tierToSize(tier) {
   switch (tier) {
-    case 'archmage': return 12;
-    case 'master': return 10;
-    case 'adept': return 8;
-    case 'apprentice': return 6;
-    default: return 5;
+    case 'archmage': return 30;
+    case 'master': return 28;
+    case 'adept': return 26;
+    case 'apprentice': return 24;
+    default: return 22;
   }
 }
 
-export default function SpellWeb({ onSpellClick }) {
+export default function SpellWeb({ onSpellClick, fullscreen }) {
   const [hover, setHover] = useState(null);
   const [selected, setSelected] = useState(null);
   const [expandedSchool, setExpandedSchool] = useState(null);
-  const svgRef = useRef(null);
+  const [showSchools, setShowSchools] = useState(false);
   const [viewBox, setViewBox] = useState({ x: 0, y: 0, width: WIDTH, height: HEIGHT });
+  const svgRef = useRef(null);
 
   const graph = useMemo(() => grimoireIndex.buildSpellWeb(), []);
   const { positionedSchools, positionedSpells } = useMemo(
@@ -77,11 +86,20 @@ export default function SpellWeb({ onSpellClick }) {
     return m;
   }, [positionedSpells]);
 
+  const visibleSpells = useMemo(() => {
+    if (!expandedSchool) return [];
+    return positionedSpells.filter(s => s.schoolId === expandedSchool);
+  }, [positionedSpells, expandedSchool]);
+
+  const visibleSpellIds = useMemo(() => new Set(visibleSpells.map(s => s.id)), [visibleSpells]);
+
   const visibleEdges = useMemo(() => {
-    if (!hover && !selected) return graph.comboEdges;
+    if (!hover && !selected) {
+      return graph.comboEdges.filter(e => visibleSpellIds.has(e.source) && visibleSpellIds.has(e.target));
+    }
     const focus = hover || selected;
     return graph.comboEdges.filter((e) => e.source === focus || e.target === focus);
-  }, [graph.comboEdges, hover, selected]);
+  }, [graph.comboEdges, hover, selected, visibleSpellIds]);
 
   const connectedSkills = useMemo(() => {
     const focus = hover || selected;
@@ -148,7 +166,7 @@ export default function SpellWeb({ onSpellClick }) {
                   />
                 ))}
                 {[18, 26, 34].map(r => (
-                  <circle key={r} cx="40" cy="40" r={r} fill="none" stroke="rgba(138,154,106,0.1)" strokeWidth="0.4" />
+                  <circle key={r} cx={40} cy={40} r={r} fill="none" stroke="rgba(138,154,106,0.1)" strokeWidth="0.4" />
                 ))}
               </svg>
             </div>
@@ -176,12 +194,13 @@ export default function SpellWeb({ onSpellClick }) {
         </div>
       </div>
 
-      <div className="panel overflow-hidden">
-        <div className="relative">
+      <div className="panel overflow-hidden" style={{ height: fullscreen ? '100%' : 'min(70vh, 700px)' }}>
+        <div className="relative w-full h-full">
           <svg
             ref={svgRef}
-            className="w-full h-auto"
+            className="w-full h-full"
             viewBox={`${viewBox.x} ${viewBox.y} ${viewBox.width} ${viewBox.height}`}
+            preserveAspectRatio="xMidYMid meet"
             role="img"
             aria-label="Spell relationship web"
           >
@@ -194,7 +213,13 @@ export default function SpellWeb({ onSpellClick }) {
                 <feGaussianBlur stdDeviation="3" result="blur" />
                 <feComposite in="SourceGraphic" in2="blur" operator="over" />
               </filter>
+              <filter id="nodeGlow" x="-50%" y="-50%" width="200%" height="200%">
+                <feGaussianBlur stdDeviation="2.5" result="blur" />
+                <feComposite in="SourceGraphic" in2="blur" operator="over" />
+              </filter>
             </defs>
+
+            <rect x={viewBox.x} y={viewBox.y} width={viewBox.width} height={viewBox.height} fill="url(#webBgGradient)" />
 
             {visibleEdges.map((e) => {
               const a = spellBySkill.get(e.source);
@@ -220,9 +245,9 @@ export default function SpellWeb({ onSpellClick }) {
                   <path
                     d={`M ${a.x} ${a.y} Q ${cx} ${cy} ${b.x} ${b.y}`}
                     fill="none"
-                    stroke={dim ? 'rgba(168,152,120,0.18)' : 'rgba(212,175,55,0.7)'}
-                    strokeWidth={dim ? 0.8 : 1.6 + e.weight * 0.8}
-                    opacity={dim ? 0.6 : 1}
+                    stroke={dim ? 'rgba(255,220,140,0.75)' : 'rgba(255,220,120,1)'}
+                    strokeWidth={dim ? 2.4 : 4 + e.weight}
+                    opacity={dim ? 0.95 : 1}
                     filter={!dim ? 'url(#tentacleGlow)' : undefined}
                   />
                   {!dim && e.weight > 1 && (
@@ -230,76 +255,106 @@ export default function SpellWeb({ onSpellClick }) {
                       <circle
                         cx={a.x + (b.x - a.x) * 0.3}
                         cy={a.y + (b.y - a.y) * 0.3}
-                        r={2 + e.weight * 0.3}
-                        fill="rgba(180,200,130,0.4)"
-                        stroke="rgba(8,8,6,0.9)"
-                        strokeWidth="0.6"
+                        r={3.2 + e.weight * 0.5}
+                        fill="rgba(255,245,210,0.98)"
+                        stroke="rgba(8,8,6,0.95)"
+                        strokeWidth="0.8"
                       />
                       <circle
                         cx={a.x + (b.x - a.x) * 0.7}
                         cy={a.y + (b.y - a.y) * 0.7}
-                        r={1.5 + e.weight * 0.2}
-                        fill="rgba(180,200,130,0.4)"
-                        stroke="rgba(8,8,6,0.9)"
-                        strokeWidth="0.6"
+                        r={2.8 + e.weight * 0.4}
+                        fill="rgba(255,245,210,0.98)"
+                        stroke="rgba(8,8,6,0.95)"
+                        strokeWidth="0.8"
                       />
                     </>
                   )}
                 </g>
               );
             })}
-            {positionedSchools.map((school) => (
-              <g key={school.id}>
-                <path
-                  d={`M ${WIDTH / 2} ${HEIGHT / 2} Q ${(WIDTH / 2 + school.x) / 2 + (school.y - HEIGHT / 2) * 0.1} ${(HEIGHT / 2 + school.y) / 2 - (school.x - WIDTH / 2) * 0.1} ${school.x} ${school.y}`}
-                  fill="none"
-                  stroke="rgba(138,154,106,0.35)"
-                  strokeWidth="2.5"
-                  strokeLinecap="round"
-                />
-                <g
-                  transform={`translate(${school.x}, ${school.y})`}
-                  className="cursor-pointer"
-                  style={expandedSchool === school.id ? { filter: 'drop-shadow(0 0 8px rgba(138,154,106,0.3))' } : undefined}
-                  onClick={() => handleSchoolClick(school.id)}
-                  role="button"
-                  tabIndex={0}
-                  aria-label={`${school.label} school`}
-                >
-                  <circle
-                    r={20}
-                    fill="rgba(20,15,10,0.95)"
-                    stroke="rgba(138,154,106,0.6)"
-                    strokeWidth="2"
+            {positionedSchools.map((school) => {
+              const angle = Math.atan2(school.y - HEIGHT / 2, school.x - WIDTH / 2);
+              const labelOffset = 72;
+              const labelX = school.x + Math.cos(angle) * labelOffset;
+              const labelY = school.y + Math.sin(angle) * labelOffset;
+              const textAnchor = Math.abs(Math.cos(angle)) < 0.3 ? 'middle' : Math.cos(angle) > 0 ? 'start' : 'end';
+              const dx = textAnchor === 'start' ? 10 : textAnchor === 'end' ? -10 : 0;
+              const dy = Math.sin(angle) > -0.3 ? 6 : -6;
+
+              return (
+                <g key={school.id}>
+                  <path
+                    d={`M ${WIDTH / 2} ${HEIGHT / 2} Q ${(WIDTH / 2 + school.x) / 2 + (school.y - HEIGHT / 2) * 0.1} ${(HEIGHT / 2 + school.y) / 2 - (school.x - WIDTH / 2) * 0.1} ${school.x} ${school.y}`}
+                    fill="none"
+                    stroke="rgba(220,235,180,0.95)"
+                    strokeWidth="4.2"
+                    strokeLinecap="round"
                   />
-                  <foreignObject x={-14} y={-14} width={28} height={28}>
-                    <SchoolSigil schoolId={school.id} size={28} />
-                  </foreignObject>
+                  <g
+                    transform={`translate(${school.x}, ${school.y})`}
+                    className="cursor-pointer"
+                    style={expandedSchool === school.id ? { filter: 'drop-shadow(0 0 18px rgba(138,154,106,0.75))' } : undefined}
+                    onClick={() => handleSchoolClick(school.id)}
+                    role="button"
+                    tabIndex={0}
+                    aria-label={`${school.label} school`}
+                  >
+                    <circle
+                      r={30}
+                      fill="rgba(12,10,8,0.95)"
+                      stroke="rgba(255,245,225,0.95)"
+                      strokeWidth="3"
+                    />
+                    <foreignObject x={-16} y={-16} width={32} height={32}>
+                      <SchoolSigil schoolId={school.id} size={32} />
+                    </foreignObject>
+                  </g>
+                  <rect
+                    x={textAnchor === 'start' ? labelX + dx - 6 : textAnchor === 'end' ? labelX + dx - school.label.length * 9.5 - 6 : labelX + dx - school.label.length * 4.75 - 6}
+                    y={labelY + dy - 18}
+                    width={school.label.length * 9.5 + 12}
+                    height={24}
+                    rx="4"
+                    fill="rgba(8,6,4,0.88)"
+                    style={{ pointerEvents: 'none' }}
+                  />
                   <text
-                    y={32}
-                    textAnchor="middle"
-                    fontSize={12}
-                    fill="#e8dcc5"
+                    x={labelX + dx}
+                    y={labelY + dy + 1}
+                    textAnchor={textAnchor}
+                    fontSize={18}
+                    fill="#fff8e8"
                     fontFamily="Cinzel, serif"
                     style={{ pointerEvents: 'none' }}
                   >
                     {school.label}
                   </text>
+                  <rect
+                    x={textAnchor === 'start' ? labelX + dx - 4 : textAnchor === 'end' ? labelX + dx - (school.label.length + 8) * 5.8 - 4 : labelX + dx - (school.label.length + 8) * 2.9 - 4}
+                    y={labelY + dy + 4}
+                    width={(school.label.length + 8) * 5.8 + 8}
+                    height={16}
+                    rx="3"
+                    fill="rgba(8,6,4,0.78)"
+                    style={{ pointerEvents: 'none' }}
+                  />
                   <text
-                    y={45}
-                    textAnchor="middle"
-                    fontSize={10}
-                    fill="#a09888"
+                    x={labelX + dx}
+                    y={labelY + dy + 20}
+                    textAnchor={textAnchor}
+                    fontSize={12}
+                    fill="#f0e6c8"
                     fontFamily="Cormorant Garamond, serif"
                     style={{ pointerEvents: 'none' }}
                   >
                     {school.spellCount} spells
                   </text>
                 </g>
-              </g>
-            ))}
+              );
+            })}
 
-            {positionedSpells.map((spell) => {
+            {visibleSpells.map((spell) => {
               const dim = connectedSkills && !connectedSkills.has(spell.id);
               const isFocus = spell.id === hover || spell.id === selected;
               const size = tierToSize(spell.tier);
@@ -309,7 +364,7 @@ export default function SpellWeb({ onSpellClick }) {
                   key={spell.id}
                   transform={`translate(${spell.x}, ${spell.y})`}
                   className="cursor-pointer"
-                  style={{ opacity: dim ? 0.4 : 1, filter: isFocus ? 'drop-shadow(0 0 6px rgba(240,216,120,0.4))' : undefined }}
+                  style={{ opacity: dim ? 0.95 : 1, filter: isFocus ? 'drop-shadow(0 0 14px rgba(240,216,120,0.9))' : 'drop-shadow(0 0 5px rgba(0,0,0,0.85))' }}
                   onMouseEnter={() => setHover(spell.id)}
                   onMouseLeave={() => setHover(null)}
                   onClick={() => {
@@ -325,24 +380,36 @@ export default function SpellWeb({ onSpellClick }) {
                     y1={0}
                     x2={spell.schoolX - spell.x}
                     y2={spell.schoolY - spell.y}
-                    stroke={dim ? 'rgba(168,152,120,0.05)' : 'rgba(138,154,106,0.15)'}
-                    strokeWidth={dim ? 0.3 : 0.8}
+                    stroke={dim ? 'rgba(220,235,180,0.55)' : 'rgba(220,235,180,0.95)'}
+                    strokeWidth={dim ? 1.2 : 2}
                     strokeDasharray="3,3"
                   />
 
                   <circle
-                    r={isFocus ? size + 5 : size + 2}
-                    fill={dim ? 'rgba(20,15,10,0.75)' : 'rgba(20,15,10,0.95)'}
-                    stroke={isFocus ? '#f0e4cc' : 'rgba(138,154,106,0.5)'}
-                    strokeWidth={isFocus ? 2.5 : 1.5}
+                    r={isFocus ? size + 7 : size + 4}
+                    fill={dim ? 'rgba(16,14,10,0.94)' : 'rgba(16,14,10,0.97)'}
+                    stroke={isFocus ? '#fff8e8' : 'rgba(255,245,225,0.95)'}
+                    strokeWidth={isFocus ? 3.2 : 2.2}
                     opacity={statusToOpacity(spell.tier)}
+                    filter="url(#nodeGlow)"
                   />
 
+                  <rect
+                    x={size + 6}
+                    y={-16}
+                    width={Math.max(60, spell.label.length * 9)}
+                    height={22}
+                    rx="4"
+                    fill="rgba(10,8,6,0.88)"
+                    stroke="rgba(255,245,225,0.12)"
+                    strokeWidth="1"
+                    style={{ pointerEvents: 'none' }}
+                  />
                   <text
-                    x={size + 8}
-                    y={4}
-                    fontSize={isFocus ? 13 : 11}
-                    fill={isFocus ? '#f0e4cc' : '#e8dcc5'}
+                    x={size + 14}
+                    y={5}
+                    fontSize={isFocus ? 17 : 15}
+                    fill={isFocus ? '#fff8e8' : '#fff8e8'}
                     fontFamily="Cinzel, serif"
                     style={{ pointerEvents: 'none' }}
                   >
@@ -352,10 +419,10 @@ export default function SpellWeb({ onSpellClick }) {
               );
             })}
             <g transform={`translate(${WIDTH / 2}, ${HEIGHT / 2})`}>
-              <circle r={28} fill="rgba(10,8,6,0.95)" stroke="rgba(138,154,106,0.4)" strokeWidth="2" />
-              <ellipse rx={20} ry={12} fill="rgba(138,154,106,0.2)" />
-              <circle r={8} fill="#020203" />
-              <circle r={3} fill="rgba(196,184,152,0.5)" />
+              <circle r={36} fill="rgba(10,8,6,0.95)" stroke="rgba(255,245,225,0.85)" strokeWidth="3" />
+              <ellipse rx={28} ry={16} fill="rgba(220,235,180,0.5)" />
+              <circle r={12} fill="#020203" />
+              <circle r={5} fill="rgba(240,230,200,0.95)" />
             </g>
           </svg>
 
@@ -379,23 +446,32 @@ export default function SpellWeb({ onSpellClick }) {
       </div>
 
       <div className="panel p-3.5 mt-4">
-        <div className="relative flex items-center gap-2 mb-2">
-          <h3 className="section-title">Schools</h3>
-        </div>
-        <div className="flex flex-wrap gap-2">
-          {positionedSchools.map(school => (
-            <button
-              key={school.id}
-              className={cn('flex items-center gap-2 border rounded-sm px-2.5 py-1.5 text-[0.68rem] font-semibold uppercase tracking-wider transition-all duration-200', expandedSchool === school.id ? 'border-border-hover bg-surface-raised text-text-primary' : 'border-border bg-surface text-text-muted hover:border-border-hover')}
-              onClick={() => handleSchoolClick(school.id)}
-              type="button"
-            >
-              <span className="text-sickly"><SchoolSigil schoolId={school.id} size={16} /></span>
-              <span>{school.label}</span>
-              <span className="text-text-muted">{school.spellCount}</span>
-            </button>
-          ))}
-        </div>
+        <button
+          className="flex items-center justify-between w-full gap-2"
+          onClick={() => setShowSchools(prev => !prev)}
+          type="button"
+        >
+          <h3 className="section-title mb-0">Schools</h3>
+          <span className="text-text-muted text-[0.78rem] transition-transform duration-200" style={{ transform: showSchools ? 'rotate(180deg)' : 'rotate(0deg)' }}>
+            ▼
+          </span>
+        </button>
+        {showSchools && (
+          <div className="flex flex-wrap gap-2 mt-3">
+            {positionedSchools.map(school => (
+              <button
+                key={school.id}
+                className={cn('flex items-center gap-2 border rounded-sm px-2.5 py-1.5 text-[0.68rem] font-semibold uppercase tracking-wider transition-all duration-200', expandedSchool === school.id ? 'border-border-hover bg-surface-raised text-text-primary' : 'border-border bg-surface text-text-muted hover:border-border-hover')}
+                onClick={() => handleSchoolClick(school.id)}
+                type="button"
+              >
+                <span className="text-sickly"><SchoolSigil schoolId={school.id} size={16} /></span>
+                <span>{school.label}</span>
+                <span className="text-text-muted">{school.spellCount}</span>
+              </button>
+            ))}
+          </div>
+        )}
       </div>
 
       <div className="mt-4 text-center text-text-muted text-[0.78rem]">

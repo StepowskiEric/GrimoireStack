@@ -6,7 +6,11 @@ import SchoolSigil from './SchoolSigil.tsx';
 import Icon from './Icon.jsx';
 import { cn } from '../utils/cn.js';
 
-export default function CompareSpellsModal({ left, right, onClose, onSelect, onPickSlot }) {
+export default function CompareSpellsModal({ left: leftProp, right: rightProp, onClose, onSelect, onPickSlot }) {
+  const left = leftProp?.spell ?? null;
+  const leftSchool = leftProp?.school ?? null;
+  const right = rightProp?.spell ?? null;
+  const rightSchool = rightProp?.school ?? null;
   const modalRef = useRef(null);
   const [pickerSlot, setPickerSlot] = useState(null); // 'left' | 'right' | null
   const [pickerQuery, setPickerQuery] = useState('');
@@ -80,7 +84,7 @@ export default function CompareSpellsModal({ left, right, onClose, onSelect, onP
                 >
                   {left ? (
                     <>
-                      <div className="text-[1.3rem] text-[rgba(212,175,55,0.7)]"><SchoolSigil schoolId={left.school.id} size={32} /></div>
+                      <div className="text-[1.3rem] text-[rgba(212,175,55,0.7)]"><SchoolSigil schoolId={leftSchool?.id} size={32} /></div>
                       <div className="mt-1 font-['Cormorant_Garamond'] text-[0.78rem] text-[#e8dcc4]">{left.name}</div>
                       <div className="mt-1 font-['Special_Elite'] text-[0.5rem] text-[rgba(168,152,120,0.4)]">〈 {left.skill} 〉</div>
                       <div className="mt-1 text-[0.55rem] text-[#5a4a3a]">Click to replace</div>
@@ -100,7 +104,7 @@ export default function CompareSpellsModal({ left, right, onClose, onSelect, onP
                 >
                   {right ? (
                     <>
-                      <div className="text-[1.3rem] text-[rgba(212,175,55,0.7)]"><SchoolSigil schoolId={right.school.id} size={32} /></div>
+                      <div className="text-[1.3rem] text-[rgba(212,175,55,0.7)]"><SchoolSigil schoolId={rightSchool?.id} size={32} /></div>
                       <div className="mt-1 font-['Cormorant_Garamond'] text-[0.78rem] text-[#e8dcc4]">{right.name}</div>
                       <div className="mt-1 font-['Special_Elite'] text-[0.5rem] text-[rgba(168,152,120,0.4)]">〈 {right.skill} 〉</div>
                       <div className="mt-1 text-[0.55rem] text-[#5a4a3a]">Click to replace</div>
@@ -131,14 +135,14 @@ export default function CompareSpellsModal({ left, right, onClose, onSelect, onP
                   <button
                     type="button"
                     className="rounded border border-[rgba(180,140,80,0.15)] bg-[rgba(26,20,10,0.6)] px-3.5 py-1.5 font-['Cinzel'] text-[0.55rem] text-[#a89878] transition-colors hover:border-border-hover hover:text-gold"
-                    onClick={() => onSelect?.(left, leftSchoolOf(left, all))}
+                    onClick={() => onSelect?.(left, leftSchool)}
                   >
                     Open {left.name}
                   </button>
                   <button
                     type="button"
                     className="rounded border border-[rgba(180,140,80,0.15)] bg-[rgba(26,20,10,0.6)] px-3.5 py-1.5 font-['Cinzel'] text-[0.55rem] text-[#a89878] transition-colors hover:border-border-hover hover:text-gold"
-                    onClick={() => onSelect?.(right, leftSchoolOf(right, all))}
+                    onClick={() => onSelect?.(right, rightSchool)}
                   >
                     Open {right.name}
                   </button>
@@ -198,9 +202,4 @@ export default function CompareSpellsModal({ left, right, onClose, onSelect, onP
       </div>
     </div>
   );
-}
-
-function leftSchoolOf(spell, all) {
-  if (!spell) return null;
-  return all.find((e) => e.spell.skill === spell.skill)?.school || null;
 }

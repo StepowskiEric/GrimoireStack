@@ -1,0 +1,54 @@
+@layer components {
+  .gaze-preview {
+    position: fixed;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    background: var(--abyss);
+    color: var(--moonlight, #c8d8e0);
+    font-family: 'Cormorant Garamond', serif;
+    z-index: 50;
+    overflow: hidden;
+  }
+  .gaze-preview .abyss-background {
+    z-index: -1;
+  }
+  .gaze-preview__stage {
+    flex: 1;
+    display: grid;
+    place-items: center;
+    min-height: 0;
+  }
+  .gaze-preview__controls {
+    display: flex;
+    align-items: center;
+    gap: 1.25rem;
+    padding: 1rem 1.5rem;
+    background: rgba(8, 10, 15, 0.72);
+    border-top: 1px solid rgba(127, 212, 255, 0.12);
+    backdrop-filter: blur(6px);
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  .gaze-preview__readout {
+    font-variant-numeric: tabular-nums;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    font-size: 0.85rem;
+    opacity: 0.8;
+  }
+  .gaze-preview__value {
+    color: #7fd4ff;
+    margin-left: 0.4rem;
+  }
+  .gaze-preview__slider {
+    flex: 1;
+    min-width: 200px;
+    max-width: 420px;
+    accent-color: #7fd4ff;
+  }
+  .gaze-preview__bands {
+    display: flex;
+    gap: 0.4rem;
+  }
+}

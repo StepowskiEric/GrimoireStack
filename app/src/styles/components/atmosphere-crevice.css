@@ -1,0 +1,55 @@
+@layer components {
+  .crevice-wall {
+    position: absolute;
+    top: -5%;
+    bottom: -5%;
+    width: 10%;
+    background: linear-gradient(
+      90deg,
+      rgba(40, 28, 16, 0.8) 0%,
+      rgba(60, 40, 25, 0.4) 30%,
+      transparent 100%
+    );
+    animation: creviceClose 2.5s ease forwards;
+  }
+  .crevice-wall--left {
+    left: 0;
+    background: linear-gradient(
+      90deg,
+      rgba(40, 28, 16, 0.8) 0%,
+      rgba(60, 40, 25, 0.4) 30%,
+      transparent 100%
+    );
+    box-shadow: inset -10px 0 20px rgba(0, 0, 0, 0.5);
+  }
+  .crevice-wall--right {
+    right: 0;
+    background: linear-gradient(
+      270deg,
+      rgba(40, 28, 16, 0.8) 0%,
+      rgba(60, 40, 25, 0.4) 30%,
+      transparent 100%
+    );
+    box-shadow: inset 10px 0 20px rgba(0, 0, 0, 0.5);
+  }
+  .crevice-glow {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(100, 70, 40, 0.2) 0%, transparent 70%);
+    animation: creviceGlow 2s ease-in-out infinite alternate;
+  }
+}
+
+@keyframes creviceClose {
+  0% { width: 10%; }
+  100% { width: 35%; }
+}
+@keyframes creviceGlow {
+  from { transform: translate(-50%, -50%) scale(1); opacity: 0.4; }
+  to { transform: translate(-50%, -50%) scale(1.5); opacity: 0.8; }
+}

@@ -1,0 +1,791 @@
+/* SpellModal — aged parchment modal shell and interior
+   Migrated from App.css Clusters 2/3/4/9/10 */
+
+/* ============================================================
+   Shell
+   ============================================================ */
+.modal-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: radial-gradient(ellipse at center, rgba(8, 10, 6, 0.78) 0%, rgba(2, 2, 3, 0.96) 80%);
+  z-index: 100;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  overflow: hidden;
+}
+.modal-overlay.open {
+  display: flex;
+}
+.modal-overlay.open.is-visible {
+  animation: overlayIn 0.28s ease both;
+}
+.modal-bg-eyes {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.modal {
+  background:
+    radial-gradient(ellipse at 15% 10%, rgba(90, 60, 30, 0.35) 0%, rgba(90, 60, 30, 0) 45%),
+    radial-gradient(ellipse at 85% 20%, rgba(70, 45, 20, 0.25) 0%, rgba(70, 45, 20, 0) 40%),
+    radial-gradient(ellipse at 20% 85%, rgba(80, 50, 25, 0.3) 0%, rgba(80, 50, 25, 0) 45%),
+    radial-gradient(ellipse at 80% 75%, rgba(60, 40, 18, 0.22) 0%, rgba(60, 40, 18, 0) 40%),
+    linear-gradient(168deg, #d8c8a0 0%, #c4b080 45%, #a89060 100%);
+  border: 1px solid rgba(60, 40, 20, 0.45);
+  border-radius: 6px;
+  max-width: 580px;
+  width: 100%;
+  max-height: 90vh;
+  overflow-y: auto;
+  padding: 42px 32px 32px;
+  position: relative;
+  box-shadow:
+    0 0 60px rgba(40, 20, 5, 0.55),
+    0 0 24px rgba(138, 154, 106, 0.06),
+    inset 0 0 60px rgba(40, 30, 15, 0.2);
+  animation: modalIn 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+  color: #2a1a08;
+}
+.modal::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  background:
+    radial-gradient(circle at 0% 0%, rgba(60, 40, 20, 0.35) 0%, rgba(60, 40, 20, 0) 35%),
+    radial-gradient(circle at 100% 0%, rgba(50, 35, 18, 0.28) 0%, rgba(50, 35, 18, 0) 32%),
+    radial-gradient(circle at 0% 100%, rgba(55, 38, 20, 0.32) 0%, rgba(55, 38, 20, 0) 35%),
+    radial-gradient(circle at 100% 100%, rgba(45, 30, 15, 0.25) 0%, rgba(45, 30, 15, 0) 32%),
+    url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="200" height="200"><filter id="n"><feTurbulence type="fractalNoise" baseFrequency="0.85" numOctaves="3" stitchTiles="stitch"/></filter><rect width="200" height="200" filter="url(%23n)" opacity="0.04"/></svg>');
+  opacity: 0;
+  animation: modalStainIn 0.55s ease 0.05s forwards;
+}
+.modal .modal-close {
+  position: absolute;
+  top: 14px;
+  right: 18px;
+  z-index: 3;
+  background: rgba(20, 22, 18, 0.7);
+  border: 1px solid rgba(138, 154, 106, 0.35);
+  min-width: 44px;
+  min-height: 44px;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  color: #d4c8a0;
+  font-size: 1.1rem;
+  cursor: pointer;
+  transition: all 0.3s;
+  font-family: 'IM Fell English', serif;
+  line-height: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.modal .modal-close:hover {
+  color: #8a9a6a;
+  border-color: rgba(138, 154, 106, 0.65);
+  background: rgba(20, 22, 18, 0.9);
+  box-shadow: 0 0 12px rgba(138, 154, 106, 0.4);
+}
+
+/* ============================================================
+   Keyframes
+   ============================================================ */
+@keyframes modalIn {
+  from {
+    opacity: 0;
+    transform: scale(0.94) translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+@keyframes modalStainIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+@keyframes overlayIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+@keyframes sealBreak {
+  0% {
+    transform: scale(1);
+    opacity: 1;
+    filter: drop-shadow(0 0 4px rgba(138, 154, 106, 0.4));
+  }
+  30% {
+    transform: scale(1.2) rotate(8deg);
+    filter: drop-shadow(0 0 12px rgba(138, 154, 106, 0.8)) brightness(1.4);
+  }
+  100% {
+    transform: scale(0.7) rotate(-12deg);
+    opacity: 0.4;
+    filter: drop-shadow(0 0 2px rgba(138, 154, 106, 0.2));
+  }
+}
+@keyframes ritualToastIn {
+  from {
+    opacity: 0;
+    transform: translate(-50%, 8px);
+  }
+  to {
+    opacity: 1;
+    transform: translate(-50%, 0);
+  }
+}
+
+/* ============================================================
+   Content
+   ============================================================ */
+.modal-whisper {
+  font-family: 'IM Fell English', serif;
+  font-size: 0.92rem;
+  line-height: 1.5;
+  color: rgba(138, 154, 106, 0.75);
+  text-align: center;
+  margin: 0 0 18px;
+  padding-bottom: 14px;
+  border-bottom: 1px solid rgba(20, 30, 12, 0.25);
+  font-style: italic;
+  text-shadow: 0 0 8px rgba(138, 154, 106, 0.15);
+}
+.modal-whisper em {
+  font-style: italic;
+}
+.modal-title-carved {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 6px 0 4px;
+}
+.modal .modal-symbol {
+  font-size: 2.4rem;
+  display: block;
+  color: #3a3018;
+  text-shadow: 0 0 18px rgba(138, 154, 106, 0.35);
+  flex-shrink: 0;
+}
+.modal .modal-school {
+  font-family: 'Cinzel', serif;
+  font-size: 0.65rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: #3a2a18;
+
+/* ============================================================
+   Sigils
+   ============================================================ */
+.sigil-mark {
+  font-size: 0.7rem;
+  color: #d4af37;
+}
+.sigil-label {
+  color: #e2d4b4;
+}
+.spell-card .spell-tier.sigil-tier {
+  margin-bottom: 8px;
+  align-self: flex-start;
+}
+  margin-bottom: 2px;
+  text-align: center;
+}
+.modal .modal-school .modal-school-real {
+  font-family: 'IM Fell English', serif;
+  text-transform: none;
+  letter-spacing: 0.02em;
+  font-size: 0.82rem;
+  color: #2a1a0a;
+  font-style: italic;
+}
+.modal .modal-title {
+  font-family: 'Cinzel', serif;
+  font-weight: 700;
+  font-size: 1.55rem;
+  color: #3a2010;
+  margin: 4px 0 4px;
+  text-align: center;
+  text-shadow: 0 0 24px rgba(138, 154, 106, 0.18), 0 1px 0 rgba(0, 0, 0, 0.3);
+  letter-spacing: 0.04em;
+}
+.modal .modal-true-name {
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  font-weight: 600;
+  font-size: 1.85rem;
+  color: #3a2010;
+  text-align: center;
+  margin: 6px 0 0;
+  letter-spacing: 0.005em;
+  text-shadow: 0 0 28px rgba(212, 175, 55, 0.22), 0 1px 0 rgba(0, 0, 0, 0.35);
+}
+.modal .modal-title--secondary {
+  font-family: 'Cinzel', serif;
+  font-style: italic;
+  font-weight: 400;
+  font-size: 0.85rem;
+  color: #5a4428;
+  margin: 2px 0 4px;
+  text-transform: lowercase;
+  letter-spacing: 0.06em;
+}
+.modal-incantation {
+  font-family: 'Special Elite', cursive;
+  font-size: 0.85rem;
+  color: #1a1408;
+  text-align: center;
+  margin: 0 auto 6px;
+  max-width: 90%;
+  padding: 6px 10px;
+  background: rgba(20, 30, 12, 0.18);
+  border: 1px solid rgba(20, 30, 12, 0.25);
+  border-radius: 3px;
+  box-shadow: inset 0 0 12px rgba(20, 30, 12, 0.15);
+}
+.modal-metadata {
+  font-family: 'Special Elite', cursive;
+  font-size: 0.62rem;
+  color: rgba(60, 52, 32, 0.7);
+  text-align: center;
+  margin: 0 0 18px;
+  letter-spacing: 0.04em;
+  font-style: italic;
+}
+.modal-grimoire-ref {
+  border-top: none;
+  position: relative;
+  text-align: center;
+  margin-top: 18px;
+  padding-top: 6px;
+}
+.modal-grimoire-ref::before {
+  content: "";
+  display: block;
+  height: 18px;
+  margin: 0 auto 14px;
+  width: 100%;
+  background:
+    radial-gradient(ellipse 40% 80% at 20% 50%, rgba(58, 78, 30, 0.55) 0%, rgba(58, 78, 30, 0) 70%),
+    radial-gradient(ellipse 6% 90% at 22% 0%, rgba(58, 78, 30, 0.6) 0%, rgba(58, 78, 30, 0) 80%),
+    radial-gradient(ellipse 6% 90% at 38% 0%, rgba(58, 78, 30, 0.55) 0%, rgba(58, 78, 30, 0) 80%),
+    radial-gradient(ellipse 6% 90% at 56% 0%, rgba(58, 78, 30, 0.6) 0%, rgba(58, 78, 30, 0) 80%),
+    radial-gradient(ellipse 6% 90% at 74% 0%, rgba(58, 78, 30, 0.55) 0%, rgba(58, 78, 30, 0) 80%),
+    radial-gradient(ellipse 6% 90% at 88% 0%, rgba(58, 78, 30, 0.6) 0%, rgba(58, 78, 30, 0) 80%);
+  filter: blur(0.4px);
+  opacity: 0.85;
+}
+.modal-grimoire-ref code {
+  font-family: 'Special Elite', cursive;
+  font-size: 0.72rem;
+  color: #3a2a18;
+  background: rgba(20, 30, 12, 0.2);
+  padding: 4px 12px;
+  border-radius: 3px;
+  border: 1px solid rgba(20, 30, 12, 0.25);
+  display: inline-block;
+}
+.modal .modal-section-title {
+  font-family: 'Cinzel', serif;
+  font-size: 0.6rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: #3a2010;
+  margin-bottom: 6px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.modal .modal-section-title::after {
+  content: "";
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(90deg, rgba(20, 30, 12, 0.4), rgba(20, 30, 12, 0));
+}
+.modal-effect {
+  font-family: 'IM Fell English', serif;
+  font-size: 1.02rem;
+  color: #1a1408;
+  line-height: 1.65;
+  margin-bottom: 18px;
+  font-style: italic;
+}
+.modal-detail-row {
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+  padding: 8px 0;
+  border-bottom: 1px solid rgba(20, 30, 12, 0.12);
+}
+.modal-detail-row:last-child {
+  border-bottom: none;
+}
+.modal-detail-label {
+  font-family: 'Cinzel', serif;
+  font-size: 0.55rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: #3a2010;
+  min-width: 80px;
+  padding-top: 2px;
+}
+.modal-detail-value {
+  font-family: 'IM Fell English', serif;
+  font-size: 0.96rem;
+  color: #2a1a08;
+  line-height: 1.5;
+}
+.modal-detail-value .tag {
+  display: inline-block;
+  font-family: 'Cinzel', serif;
+  font-size: 0.5rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  padding: 3px 9px;
+  border-radius: 6px;
+  border: 1px solid;
+  background: rgba(20, 30, 12, 0.18);
+}
+.modal-detail-value .tag.proven {
+  color: #8aaa6a;
+  border-color: rgba(138, 170, 106, 0.4);
+  background: rgba(138, 170, 106, 0.08);
+}
+.modal-detail-value .tag.new {
+  color: #c9c46a;
+  border-color: rgba(201, 196, 106, 0.4);
+  background: rgba(201, 196, 106, 0.08);
+}
+.modal-detail-value .tag.framework {
+  color: #9a8aaa;
+  border-color: rgba(154, 138, 170, 0.4);
+  background: rgba(154, 138, 170, 0.08);
+}
+.modal-detail-value .tag.hybrid {
+  color: #8ab8c9;
+  border-color: rgba(138, 184, 201, 0.4);
+  background: rgba(138, 184, 201, 0.08);
+}
+.modal-detail-value .tag.includes {
+  color: #c98a8a;
+  border-color: rgba(201, 138, 138, 0.4);
+  background: rgba(201, 138, 138, 0.08);
+}
+.modal-warning {
+  font-family: 'IM Fell English', serif;
+  font-size: 0.78rem;
+  font-style: italic;
+  color: rgba(138, 154, 106, 0.7);
+  text-align: center;
+  margin: 14px 0 4px;
+  text-shadow: 0 0 6px rgba(138, 154, 106, 0.2);
+}
+
+/* ============================================================
+   Actions
+   ============================================================ */
+.modal-actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 16px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+.modal-share-half {
+  margin: 0;
+  flex: 1;
+  min-width: 0;
+  max-width: 240px;
+}
+.modal .modal-share {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0;
+  font-family: 'Cinzel', serif;
+  font-size: 0.62rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  padding: 9px 16px;
+  border: 1px solid rgba(138, 154, 106, 0.4);
+  border-radius: 4px;
+  background: linear-gradient(180deg, rgba(26, 28, 18, 0.95), rgba(14, 16, 10, 0.95));
+  color: #c4d4a0;
+  font-weight: 600;
+  text-shadow: 0 0 6px rgba(138, 154, 106, 0.3);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+.modal .modal-share:hover {
+  border-color: rgba(138, 154, 106, 0.7);
+  color: #dde8b8;
+  background: linear-gradient(180deg, rgba(36, 40, 24, 0.95), rgba(18, 22, 12, 0.95));
+  box-shadow: 0 0 18px rgba(138, 154, 106, 0.25);
+}
+.modal-goo-seal {
+  display: inline-flex;
+  width: 16px;
+  height: 16px;
+  color: #8a9a6a;
+  filter: drop-shadow(0 0 4px rgba(138, 154, 106, 0.4));
+  transition: transform 0.3s, opacity 0.3s;
+}
+.modal-goo-seal svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+.modal .modal-share:hover .modal-goo-seal {
+  transform: rotate(15deg) scale(1.1);
+}
+.modal-goo-btn--broken .modal-goo-seal {
+  animation: sealBreak 0.6s ease forwards;
+}
+.modal-goo-label {
+  position: relative;
+  z-index: 1;
+}
+.modal-inscribe-group {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+.modal-inscribe {
+  border-color: rgba(138, 154, 106, 0.55);
+  background: linear-gradient(180deg, rgba(40, 48, 24, 0.95), rgba(20, 26, 12, 0.95));
+  color: #c4d4a0;
+  text-shadow: 0 0 6px rgba(138, 154, 106, 0.3);
+}
+.modal-inscribe:hover {
+  border-color: rgba(138, 154, 106, 0.85);
+  color: #dde8b8;
+  background: linear-gradient(180deg, rgba(54, 64, 30, 0.95), rgba(26, 34, 16, 0.95));
+  box-shadow: 0 0 18px rgba(138, 154, 106, 0.3);
+}
+.modal-inscribe-select {
+  font-family: 'Cinzel', serif;
+  font-size: 0.6rem;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  padding: 6px 10px;
+  border-radius: 4px;
+  border: 1px solid rgba(138, 154, 106, 0.45);
+  background: linear-gradient(180deg, rgba(20, 26, 12, 0.95), rgba(10, 14, 6, 0.95));
+  color: #c4d4a0;
+  text-shadow: 0 0 4px rgba(138, 154, 106, 0.2);
+  cursor: pointer;
+}
+.modal-inscribe-select:hover {
+  border-color: rgba(138, 154, 106, 0.7);
+  color: #dde8b8;
+}
+.modal-inscribe-select option {
+  background: #0a0a06;
+  color: #c4d4a0;
+}
+
+/* ============================================================
+   Sigils & spell star
+   ============================================================ */
+.sigil-mark {
+  font-size: 0.7rem;
+  color: #d4af37;
+}
+.sigil-label {
+  color: #e2d4b4;
+}
+.spell-card .spell-tier.sigil-tier {
+  margin-bottom: 8px;
+  align-self: flex-start;
+}
+.spell-star {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  background: rgba(42, 26, 10, 0.75);
+  border: 1px solid rgba(212, 175, 55, 0.25);
+  border-radius: 50%;
+  width: 44px;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.9rem;
+  color: rgba(212, 175, 55, 0.55);
+  cursor: pointer;
+  transition: all 0.25s ease;
+  padding: 0;
+  line-height: 1;
+}
+.spell-star:hover {
+  color: #d4af37;
+  border-color: rgba(212, 175, 55, 0.55);
+  background: rgba(42, 26, 10, 0.9);
+  transform: scale(1.15);
+}
+.spell-star.favorited {
+  color: #d4af37;
+  border-color: rgba(212, 175, 55, 0.65);
+  background: rgba(42, 26, 10, 0.9);
+  text-shadow: 0 0 10px rgba(212, 175, 55, 0.5);
+  box-shadow: 0 0 12px rgba(212, 175, 55, 0.2);
+}
+
+/* ============================================================
+   Modal variants / markdown content
+   ============================================================ */
+.modal-wide {
+  max-width: 720px;
+}
+.modal-full-entry {
+  max-height: 60vh;
+  overflow-y: auto;
+}
+.modal-full-entry::-webkit-scrollbar {
+  width: 6px;
+}
+.modal-full-entry::-webkit-scrollbar-thumb {
+  background: rgba(212, 175, 55, 0.2);
+  border-radius: 3px;
+}
+.modal-md-loading {
+  text-align: center;
+  padding: 30px 20px;
+  color: #8a7a5a;
+  font-style: italic;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+.md-loading-rune {
+  font-size: 2rem;
+  color: rgba(212, 175, 55, 0.3);
+  animation: orbPulse 2s ease-in-out infinite;
+}
+.modal-md-empty {
+  text-align: center;
+  padding: 24px 20px;
+  color: #6a4a2a;
+}
+.modal-md-empty p {
+  margin: 0 0 6px;
+  font-style: italic;
+}
+.modal-md-empty-hint {
+  font-size: 0.85rem;
+  color: #8a7a5a;
+}
+.modal-md-content {
+  font-family: 'IM Fell English', serif;
+  font-size: 0.95rem;
+  color: #d4c8a0;
+  line-height: 1.7;
+}
+.modal-md-content h6 {
+  font-family: 'Cinzel', serif;
+  color: #f3e8ce;
+  margin: 14px 0 8px;
+  line-height: 1.3;
+}
+.modal-md-content h1 {
+  font-size: 1.1rem;
+}
+.modal-md-content h2 {
+  font-size: 1rem;
+}
+.modal-md-content h3 {
+  font-size: 0.9rem;
+}
+.modal-md-content h4 {
+  font-size: 0.85rem;
+}
+.modal-md-content p {
+  margin: 0 0 10px;
+  color: #f0e4cc;
+}
+.modal-md-content ol {
+  margin: 0 0 10px 16px;
+  padding: 0;
+  color: #f0e4cc;
+}
+.modal-md-content li {
+  margin-bottom: 4px;
+  color: #f0e4cc;
+}
+.modal-md-content li.check-item {
+  list-style: none;
+  margin-left: -16px;
+  display: flex;
+  align-items: flex-start;
+  gap: 6px;
+}
+.modal-md-content .check-box {
+  width: 12px;
+  height: 12px;
+  border: 1px solid rgba(100, 70, 30, 0.35);
+  border-radius: 2px;
+  flex-shrink: 0;
+  margin-top: 3px;
+  display: inline-block;
+}
+.modal-md-content .check-box.checked {
+  background: rgba(106, 170, 106, 0.25);
+  border-color: rgba(106, 170, 106, 0.5);
+}
+.modal-md-content .check-box.checked::after {
+  content: '✓';
+  display: block;
+  text-align: center;
+  font-size: 0.65rem;
+  color: #4a8a4a;
+  line-height: 10px;
+}
+.modal-md-content pre {
+  background: rgba(15, 10, 6, 0.7);
+  border: 1px solid rgba(212, 175, 55, 0.1);
+  border-radius: 4px;
+  padding: 12px 14px;
+  overflow-x: auto;
+  margin: 8px 0 12px;
+}
+.modal-md-content pre code {
+  font-family: 'Special Elite', cursive;
+  font-size: 0.78rem;
+  color: #d4af37;
+  background: transparent;
+  padding: 0;
+  text-shadow: 0 0 4px rgba(212, 175, 55, 0.1);
+}
+.modal-md-content code {
+  font-family: 'Special Elite', cursive;
+  font-size: 0.82em;
+  background: rgba(0, 0, 0, 0.12);
+  padding: 1px 5px;
+  border-radius: 3px;
+  color: #3a2a1a;
+}
+.modal-md-content hr {
+  border: none;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(212, 175, 55, 0.2), transparent);
+  margin: 14px 0;
+}
+.modal-md-content a {
+  color: #8b1e1e;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  transition: color 0.3s;
+}
+.modal-md-content a:hover {
+  color: #d4af37;
+}
+.modal-md-content strong {
+  color: #4a2a1a;
+}
+.modal-md-content em {
+  color: #3a2a1a;
+}
+.modal-md-content blockquote {
+  border-left: 3px solid rgba(138, 154, 106, 0.45);
+  padding: 8px 14px;
+  margin: 10px 0;
+  background: rgba(20, 30, 12, 0.08);
+  border-radius: 0 4px 4px 0;
+  font-style: italic;
+  color: #3a2a18;
+}
+.modal-md-content del {
+  color: #7a5a4a;
+  text-decoration: line-through;
+}
+.modal-md-content table.md-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 10px 0;
+  font-size: 0.9rem;
+  color: #2a1a08;
+}
+.modal-md-content table.md-table td {
+  border: 1px solid rgba(20, 30, 12, 0.2);
+  padding: 6px 10px;
+  text-align: left;
+}
+.modal-md-content table.md-table th {
+  background: rgba(20, 30, 12, 0.12);
+  font-family: 'Cinzel', serif;
+  font-size: 0.65rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+.modal-md-content table.md-table tr:nth-child(even) {
+  background: rgba(20, 30, 12, 0.04);
+}
+
+/* ============================================================
+   Synergies
+   ============================================================ */
+.modal-synergies {
+  margin-top: 14px;
+  padding-top: 4px;
+}
+.modal-synergies .syn-title {
+  font-family: 'Cinzel', serif;
+  font-size: 0.55rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: #3a2010;
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.modal-synergies .syn-title::after {
+  content: "";
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(90deg, rgba(20, 30, 12, 0), rgba(20, 30, 12, 0.35), rgba(20, 30, 12, 0));
+}
+.modal-synergies .syn-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+.modal-synergies .syn-chip {
+  font-family: 'IM Fell English', serif;
+  font-size: 0.85rem;
+  color: #2a1a08;
+  padding: 4px 12px;
+  border: 1px solid rgba(20, 30, 12, 0.3);
+  border-radius: 14px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  background: rgba(20, 30, 12, 0.12);
+}
+.modal-synergies .syn-chip:hover {
+  border-color: rgba(138, 154, 106, 0.55);
+  color: #3a2010;
+  background: rgba(138, 154, 106, 0.15);
+  box-shadow: 0 0 10px rgba(138, 154, 106, 0.2);
+}

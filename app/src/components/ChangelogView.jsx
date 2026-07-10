@@ -1,21 +1,34 @@
 import { useState, useMemo } from 'react';
-import { getRecentlyUpdated, getNewlyAdded } from '../data/changeFeed.js';
+import { getRecentlyUpdated, getNewlyAdded, getUpdated } from '../data/changeFeed.js';
 
-function ChangelogEntry({ item }) {
+function ChangelogEntry({ item, onSpellClick }) {
+  const handleClick = () => {
+    if (onSpellClick) {
+      onSpellClick(item.spell, item.school);
+    }
+  };
+
   return (
-    <div className="panel p-3.5">
+    <button
+      type="button"
+      onClick={handleClick}
+      className="panel p-3.5 w-full text-left transition-all duration-200 hover:bg-[rgba(138,154,106,0.06)] hover:border-[rgba(138,154,106,0.18)] cursor-pointer"
+    >
       <div className="flex flex-wrap items-center gap-x-3 gap-y-1">
         <span className="font-['Cinzel'] text-[0.68rem] font-semibold tracking-wide text-text-primary">{item.name}</span>
         <span className="font-['Cinzel'] text-[0.6rem] uppercase tracking-widest text-text-muted">{item.school.real}</span>
         {item.status === 'New' && (
           <span className="font-['Cinzel'] text-[0.6rem] font-bold uppercase tracking-widest text-accent border border-accent/40 rounded-sm px-1.5 py-0.5" aria-hidden="true">New</span>
         )}
+        {item.status !== 'New' && item.isExplicit && (
+          <span className="font-['Cinzel'] text-[0.6rem] font-bold uppercase tracking-widest text-text-muted border border-border-hover rounded-sm px-1.5 py-0.5" aria-hidden="true">Updated</span>
+        )}
       </div>
       <div className="mt-1 font-['Cinzel'] text-[0.68rem] text-text-muted">{item.lastUpdated}</div>
       {item.note && (
         <div className="mt-1 text-text-secondary text-[0.82rem]">{item.note}</div>
       )}
-    </div>
+    </button>
   );
 }
 
@@ -62,13 +75,18 @@ function groupByDate(items) {
   return groups;
 }
 
-export default function ChangelogView() {
+export default function ChangelogView({ onSpellClick }) {
   const [showNewOnly, setShowNewOnly] = useState(false);
+  const [showUpdatedOnly, setShowUpdatedOnly] = useState(false);
   const [query, setQuery] = useState('');
   const [schoolFilter, setSchoolFilter] = useState('all');
   const [dateRange, setDateRange] = useState({ from: '', to: '' });
 
-  const allUpdates = useMemo(() => showNewOnly ? getNewlyAdded(50) : getRecentlyUpdated(50), [showNewOnly]);
+  const allUpdates = useMemo(() => {
+    if (showNewOnly) return getNewlyAdded(50);
+    if (showUpdatedOnly) return getUpdated(50);
+    return getRecentlyUpdated(50);
+  }, [showNewOnly, showUpdatedOnly]);
 
   const filtered = useMemo(() => {
     let items = allUpdates;
@@ -140,6 +158,13 @@ export default function ChangelogView() {
           >
             {showNewOnly ? 'Showing new only' : 'Show new only'}
           </button>
+          <button
+            type="button"
+            onClick={() => setShowUpdatedOnly((prev) => !prev)}
+            className={showUpdatedOnly ? 'section-title px-2.5 py-1.5 border border-accent/40 text-accent' : 'section-title px-2.5 py-1.5 border border-border hover:border-border-hover text-text-muted'}
+          >
+            {showUpdatedOnly ? 'Showing updated only' : 'Show updated only'}
+          </button>
 
           <input
             type="text"
@@ -172,21 +197,23 @@ export default function ChangelogView() {
             <fieldset className="border border-border rounded-sm p-2">
               <legend className="section-title px-1">Date Range</legend>
               <div className="flex flex-wrap items-center gap-2">
-                <input
-                  type="date"
-                  value={dateRange.from}
-                  onChange={(e) => setDateRange(prev => ({ ...prev, from: e.target.value }))}
-                  className="bg-surface-overlay border border-border text-text-primary text-[0.95rem] p-2 rounded-sm focus:outline-3 focus:outline-offset-2 focus:border-border-hover"
-                  aria-label="From date"
-                />
-                <span className="text-text-muted text-[0.82rem]">to</span>
-                <input
-                  type="date"
-                  value={dateRange.to}
-                  onChange={(e) => setDateRange(prev => ({ ...prev, to: e.target.value }))}
-                  className="bg-surface-overlay border border-border text-text-primary text-[0.95rem] p-2 rounded-sm focus:outline-3 focus:outline-offset-2 focus:border-border-hover"
-                  aria-label="To date"
-                />
+                <div className="flex items-center gap-2">
+                  <input
+                    type="date"
+                    value={dateRange.from}
+                    onChange={(e) => setDateRange(prev => ({ ...prev, from: e.target.value }))}
+                    className="bg-surface-overlay border border-border text-text-primary text-[0.95rem] p-2 rounded-sm focus:outline-3 focus:outline-offset-2 focus:border-border-hover"
+                    aria-label="From date"
+                  />
+                  <span className="text-text-muted text-[0.82rem]">to</span>
+                  <input
+                    type="date"
+                    value={dateRange.to}
+                    onChange={(e) => setDateRange(prev => ({ ...prev, to: e.target.value }))}
+                    className="bg-surface-overlay border border-border text-text-primary text-[0.95rem] p-2 rounded-sm focus:outline-3 focus:outline-offset-2 focus:border-border-hover"
+                    aria-label="To date"
+                  />
+                </div>
               </div>
             </fieldset>
           </div>
@@ -207,7 +234,7 @@ export default function ChangelogView() {
                 </div>
                 <div className="grid gap-2">
                   {grouped.today.map(item => (
-                    <ChangelogEntry key={item.skill} item={item} />
+                    <ChangelogEntry key={item.skill} item={item} onSpellClick={onSpellClick} />
                   ))}
                 </div>
               </section>
@@ -220,7 +247,7 @@ export default function ChangelogView() {
                 </div>
                 <div className="grid gap-2">
                   {grouped.thisWeek.map(item => (
-                    <ChangelogEntry key={item.skill} item={item} />
+                    <ChangelogEntry key={item.skill} item={item} onSpellClick={onSpellClick} />
                   ))}
                 </div>
               </section>
@@ -233,7 +260,7 @@ export default function ChangelogView() {
                 </div>
                 <div className="grid gap-2">
                   {grouped.thisMonth.map(item => (
-                    <ChangelogEntry key={item.skill} item={item} />
+                    <ChangelogEntry key={item.skill} item={item} onSpellClick={onSpellClick} />
                   ))}
                 </div>
               </section>
@@ -246,7 +273,7 @@ export default function ChangelogView() {
                 </div>
                 <div className="grid gap-2">
                   {grouped.older.map(item => (
-                    <ChangelogEntry key={item.skill} item={item} />
+                    <ChangelogEntry key={item.skill} item={item} onSpellClick={onSpellClick} />
                   ))}
                 </div>
               </section>

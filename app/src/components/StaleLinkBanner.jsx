@@ -2,6 +2,7 @@ import { useMemo } from 'react';
 import { grimoireIndex } from '../data/grimoireIndexInstance.js';
 import { useLanguage } from '../i18n/LanguageContext';
 import Icon from './Icon.jsx';
+import '../styles/components/notfound.css';
 
 export default function StaleLinkBanner({ skill, onDismiss, onSelectSkill }) {
   const { t } = useLanguage();

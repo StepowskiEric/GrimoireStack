@@ -71,6 +71,12 @@ export function getNewlyAdded(limit = 30) {
     .slice(0, limit);
 }
 
+export function getUpdated(limit = 30) {
+  return getRecentlyUpdated(limit)
+    .filter((item) => item.isExplicit && item.status !== 'New')
+    .slice(0, limit);
+}
+
 export function getAlphabeticalIndex() {
   return grimoireIndex.allEntries()
     .slice()

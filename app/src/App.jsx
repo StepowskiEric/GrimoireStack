@@ -12,7 +12,6 @@ import { useFavoritesSync } from './hooks/useFavoritesSync.js';
 import { useRecentlyViewed } from './hooks/useRecentlyViewed.js';
 import { useMarginalia } from './hooks/useMarginalia.js';
 import { useKeyboardShortcuts } from './hooks/useKeyboardShortcuts.js';
-import { useFilterState } from './hooks/useFilterState.js';
 import { useEyeMood } from './hooks/useEyeMood.js';
 import { LanguageProvider } from './i18n/LanguageContext';
 import { useSignals } from './hooks/useSignals.js';
@@ -22,6 +21,8 @@ import CompareSpellsModal from './components/CompareSpellsModal.jsx';
 import SpellModal from './components/SpellModal.jsx';
 import StaleLinkBanner from './components/StaleLinkBanner.jsx';
 import InstallPrompt from './components/InstallPrompt.jsx';
+import './components/ModalSuspense.css';
+import './components/ExportToast.css';
 
 const ShortcutsModal = lazy(() => import('./components/ShortcutsModal.jsx'));
 
@@ -31,7 +32,6 @@ export default function App() {
       <LanguageProvider>
         <ErrorBoundary>
           <Routes>
-            <Route path="/" element={<Navigate to="/about" replace />} />
             <Route path="/*" element={<AppInner />} />
           </Routes>
         </ErrorBoundary>
@@ -61,7 +61,6 @@ function AppInner() {
   const marginalia = useMarginalia();
   const { getVote, vote: castVote, aggregateFor } = useSignals();
 
-  const filter = useFilterState();
 
   const {
     modal,
@@ -186,7 +185,7 @@ function AppInner() {
         if (Array.isArray(parsed) && parsed.length > 0) return parsed;
       }
     } catch {}
-    return ['debugging', 'reasoning', 'process', 'architecture', 'testing', 'creativity'];
+    return ['debugging', 'reasoning', 'execution', 'systems-and-architecture', 'testing', 'output-quality', 'orchestration', 'software-development', 'research'];
   });
 
   return (
@@ -237,7 +236,6 @@ function AppInner() {
             handleSchoolSelect(id);
           }
         }}
-        searchQuery={filter.query}
         onSpellClick={handleSpellClick}
         isFavorited={isFavorited}
         onToggleFavorite={toggleFavorite}
@@ -258,7 +256,6 @@ function AppInner() {
         sync={sync}
         eyeMood={mood}
         onSpellView={recordView}
-        filterResults={filter.results}
         featuredSchools={featuredSchools}
         onFeaturedSchoolsChange={setFeaturedSchools}
       />
@@ -272,8 +269,8 @@ function AppInner() {
       {compareOpen && (
         <Suspense fallback={<div className="modal-suspense-fallback">Summoning...</div>}>
           <CompareSpellsModal
-            left={compareLeft?.spell}
-            right={compareRight?.spell}
+            left={compareLeft}
+            right={compareRight}
             onClose={() => {
               setCompareOpen(false);
               setCompareLeft(null);

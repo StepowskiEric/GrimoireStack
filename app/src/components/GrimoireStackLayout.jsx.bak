@@ -1,4 +1,4 @@
-import { useState, useCallback, useEffect, lazy, Suspense } from 'react';
+import { useState, useCallback, lazy, Suspense } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import SpellDetailView from './SpellDetailView.jsx';
 import SpellCard from './SpellCard.jsx';
@@ -16,12 +16,9 @@ import LanguageToggle from './LanguageToggle.jsx';
 import { grimoireIndex } from '../data/grimoireIndexInstance.js';
 import RitualPanel from './RitualPanel.jsx';
 import { useRitualOrchestrator } from '../hooks/useRitualOrchestrator.js';
-import '../styles/components/grimoire-eye.css';
-import '../styles/components/gaze.css';
 import { useGaze } from '../hooks/useGaze.js';
 import WanderingAnimation from './WanderingAnimation.jsx';
 import VoidIncantations from './VoidIncantations.jsx';
-import './ModalSuspense.css';
 
 const SCHOOL_MAP = grimoireIndex.getSchoolMap();
 
@@ -83,39 +80,17 @@ export default function GrimoireStackLayout({
   onShowShortcuts,
   sync,
   featuredSchools,
-  onFeaturedSchoolsChange,
   eyeMood = 'neutral',
   onSpellView,
 }) {
   const navigate = useNavigate();
   const location = useLocation();
   const [pageKey, setPageKey] = useState('home');
-  const [previousTab, setPreviousTab] = useState(null);
-  const [webOpen, setWebOpen] = useState(false);
   const handleTabSelect = useCallback((tab) => {
     const route = TAB_ROUTES[tab] || '/';
     setPageKey('home');
-    setPreviousTab(null);
     navigate(route);
   }, [navigate]);
-
-  const handleWebOpen = useCallback(() => {
-    setWebOpen(true);
-    handleTabSelect(TABS.SPELL_WEB);
-  }, [handleTabSelect]);
-
-  const handleWebClose = useCallback(() => {
-    setWebOpen(false);
-  }, []);
-
-  useEffect(() => {
-    if (!webOpen) return;
-    const onKey = (e) => {
-      if (e.key === 'Escape') handleWebClose();
-    };
-    document.addEventListener('keydown', onKey);
-    return () => document.removeEventListener('keydown', onKey);
-  }, [webOpen, handleWebClose]);
 
   const navigateToLibrary = useCallback(() => handleTabSelect(TABS.LIBRARY), [handleTabSelect]);
 
@@ -153,10 +128,9 @@ export default function GrimoireStackLayout({
   })();
 
   const handleSchoolCardClick = useCallback((schoolId) => {
-    setPreviousTab(activeTab);
     onSchoolSelect(schoolId);
     setPageKey('school-detail');
-  }, [onSchoolSelect, activeTab]);
+  }, [onSchoolSelect]);
 
   const handleSpellCardClick = useCallback((spell, school) => {
     onSpellClick(spell, school);
@@ -190,27 +164,22 @@ export default function GrimoireStackLayout({
     if (pageKey === 'school-detail' && activeSchool) {
       return (
         <div className="flex flex-col gap-4">
-          <div className="relative border border-[rgba(138,154,106,0.32)] bg-[rgba(8,10,16,0.7)] p-4 rounded-sm">
-            <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_20%,rgba(138,154,106,0.1),transparent_55%),radial-gradient(circle_at_70%_80%,rgba(100,70,20,0.08),transparent_55%)] pointer-events-none" aria-hidden="true" />
-            <div className="relative flex items-center gap-4">
-              <span className="text-sickly opacity-90 flex-shrink-0 relative">
-                <span className="absolute -inset-1 rounded-full border border-[rgba(212,175,55,0.35)]" aria-hidden="true" />
-                <span className="absolute -inset-2 rounded-full border border-dashed border-[rgba(138,154,106,0.18)]" aria-hidden="true" />
-                <SchoolSigil schoolId={activeSchool.id} size={32} />
-              </span>
-              <div className="min-w-0">
-                <h2 className="font-['Cinzel_Decorative'] font-black text-[1.2rem] text-gold-bright tracking-wider leading-tight" style={{ textShadow: '0 0 18px rgba(212,175,55,0.3), 0 2px 0 rgba(0,0,0,0.7)' }}>{activeSchool.real}</h2>
-                <p className="font-['Cinzel'] text-[0.6rem] uppercase tracking-[0.2em] text-silver-dim mt-0.5">{activeSchool.spells.length} {activeSchool.spells.length === 1 ? 'spell' : 'spells'} bound within this school</p>
-              </div>
-              <div className="ml-auto flex-shrink-0">
-                <button
-                  type="button"
-                  className="px-3 py-1.5 border border-[rgba(138,154,106,0.32)] bg-[rgba(8,10,16,0.6)] text-[0.6rem] font-['Cinzel'] uppercase tracking-wider text-silver-dim transition-colors hover:border-[rgba(138,154,106,0.55)] hover:text-text-primary"
-                  onClick={() => previousTab ? handleTabSelect(previousTab) : handleTabSelect(TABS.ABOUT)}
-                  aria-label="Back"
-                >
-                  ← Back
-                </button>
+          <div className="flex items-center gap-3">
+            <button
+              type="button"
+              className="px-3 py-2 border border-border text-text-muted text-[0.68rem] uppercase tracking-wider transition-colors hover:border-border-hover hover:text-text-primary"
+              onClick={() => handleTabSelect(TABS.LIBRARY)}
+              aria-label="Back to all schools"
+            >
+              ← All Schools
+            </button>
+            <div className="flex items-center gap-2">
+              <span className="text-sickly"><SchoolSigil schoolId={activeSchool.id} size={36} /></span>
+              <div>
+                <h2 className="font-['Cinzel'] text-[1rem] font-bold text-text-primary tracking-wide">{activeSchool.real}</h2>
+                <p className="text-text-muted text-[0.78rem]">
+                  {activeSchool.spells.length} {activeSchool.spells.length === 1 ? 'spell' : 'spells'}
+                </p>
               </div>
             </div>
           </div>
@@ -232,7 +201,7 @@ export default function GrimoireStackLayout({
     // Main tab content
     switch (activeTab) {
       case TABS.ABOUT:
-        return <AboutView onSchoolSelect={handleSchoolCardClick} />;
+        return <AboutView />;
       case TABS.LIBRARY:
         return (
           <LibraryContent
@@ -254,7 +223,6 @@ export default function GrimoireStackLayout({
             onSpellClick={handleSpellCardClick}
             isFavorited={isFavorited}
             onToggleFavorite={onToggleFavorite}
-            onNavigate={handleTabSelect}
           />
         );
       case TABS.RECIPE_LAB:
@@ -273,7 +241,7 @@ export default function GrimoireStackLayout({
         );
       case TABS.CHANGELOG:
         return (
-          <ChangelogView onSpellClick={handleSpellCardClick} />
+          <ChangelogView />
         );
       case TABS.SETTINGS:
         return (
@@ -404,7 +372,7 @@ export default function GrimoireStackLayout({
               <button
                 key={key}
                 className={`flex items-center gap-2.5 px-3 py-2 rounded-md text-left transition-all duration-200 ${activeTab === key ? 'bg-[rgba(138,154,106,0.12)] border border-[rgba(138,154,106,0.35)] shadow-[0_0_18px_rgba(138,154,106,0.1),inset_0_1px_0_rgba(138,154,106,0.05)]' : 'bg-[rgba(138,154,106,0.02)] border border-transparent hover:bg-[rgba(138,154,106,0.05)] hover:border-[rgba(138,154,106,0.1)] hover:shadow-[0_0_10px_rgba(138,154,106,0.04)]'}`}
-                onClick={() => key === TABS.SPELL_WEB ? handleWebOpen() : handleTabSelect(key)}
+                onClick={() => handleTabSelect(key)}
                 type="button"
               >
                 <span className="inline-flex items-center justify-center w-5 h-5 text-sickly flex-shrink-0"><Icon name={icon} size="18" /></span>
@@ -417,14 +385,15 @@ export default function GrimoireStackLayout({
             <div className="flex justify-center">
               <LanguageToggle />
             </div>
-            <div className="flex flex-col gap-2">
-              <button className="w-full inline-flex items-center justify-center gap-1.5 px-2.5 py-1.5 border border-border text-text-muted text-[0.68rem] uppercase tracking-wider transition-colors hover:border-border-hover hover:text-text-primary" onClick={onShowShortcuts} type="button">
+            <div className="w-full h-px bg-gradient-to-r from-transparent via-[rgba(138,154,106,0.12)] to-transparent" />
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
+              <button className="px-2.5 py-1.5 border border-border text-text-muted text-[0.68rem] uppercase tracking-wider transition-colors hover:border-border-hover hover:text-text-primary inline-flex items-center justify-center gap-1.5" onClick={onShowShortcuts} type="button">
                 <Icon name="sigil" size={14} /> Shortcuts
               </button>
-              <button className="w-full inline-flex items-center justify-center gap-1.5 px-2.5 py-1.5 border border-border text-text-muted text-[0.68rem] uppercase tracking-wider transition-colors hover:border-border-hover hover:text-text-primary" onClick={onExportJson} type="button">
+              <button className="px-2.5 py-1.5 border border-border text-text-muted text-[0.68rem] uppercase tracking-wider transition-colors hover:border-border-hover hover:text-text-primary inline-flex items-center justify-center gap-1.5" onClick={onExportJson} type="button">
                 <Icon name="archive" size={14} /> Export JSON
               </button>
-              <button className="w-full inline-flex items-center justify-center gap-1.5 px-2.5 py-1.5 border border-border text-text-muted text-[0.68rem] uppercase tracking-wider transition-colors hover:border-border-hover hover:text-text-primary" onClick={onExportMarkdown} type="button">
+              <button className="px-2.5 py-1.5 border border-border text-text-muted text-[0.68rem] uppercase tracking-wider transition-colors hover:border-border-hover hover:text-text-primary inline-flex items-center justify-center gap-1.5" onClick={onExportMarkdown} type="button">
                 <Icon name="clipboard" size={14} /> Export Markdown
               </button>
             </div>
@@ -470,33 +439,13 @@ export default function GrimoireStackLayout({
         </aside>
       </div>
 
-      {/* Spell Web fullscreen overlay */}
-      {webOpen && (
-        <div className="fixed inset-0 z-[200] bg-[rgba(5,5,8,0.97)] flex flex-col" role="dialog" aria-modal="true" aria-label="Spell Web">
-          <div className="flex items-center justify-between px-4 py-3 border-b border-[rgba(138,154,106,0.15)]">
-            <span className="font-['Cinzel'] text-sm font-semibold uppercase tracking-widest text-sickly">Spell Web</span>
-            <button
-              type="button"
-              onClick={handleWebClose}
-              className="inline-flex items-center justify-center w-8 h-8 rounded-md border border-[rgba(138,154,106,0.25)] text-silver hover:text-text-primary hover:border-[rgba(138,154,106,0.5)] transition-colors"
-              aria-label="Close Spell Web"
-            >
-              ✕
-            </button>
-          </div>
-          <div className="flex-1 overflow-hidden">
-            <SpellWeb onSpellClick={handleSpellCardClick} fullscreen />
-          </div>
-        </div>
-      )}
-
       {/* Mobile bottom nav */}
       <nav className="fixed bottom-0 left-0 right-0 flex justify-around py-2 bg-[rgba(5,5,8,0.95)] border-t border-[rgba(138,154,106,0.1)] z-[100] backdrop-blur-md md:hidden">
         {Object.entries(TAB_LABELS).map(([key, { name, icon }]) => (
           <button
             key={key}
             className={`flex flex-col items-center gap-1 px-3 py-2 rounded-md transition-all duration-200 ${activeTab === key ? 'bg-[rgba(138,154,106,0.08)]' : 'bg-transparent hover:bg-[rgba(138,154,106,0.05)]'}`}
-            onClick={() => key === TABS.SPELL_WEB ? handleWebOpen() : handleTabSelect(key)}
+            onClick={() => handleTabSelect(key)}
             type="button"
           >
             <span className="inline-flex items-center justify-center text-sickly"><Icon name={icon} size="20" /></span>

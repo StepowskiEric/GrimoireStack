@@ -3,6 +3,7 @@ import { WIZARD_DATA } from '../data/schools.js';
 import { grimoireIndex } from '../data/grimoireIndexInstance.js';
 import SchoolSigil from './SchoolSigil.tsx';
 import Icon from './Icon.jsx';
+import '../components/IntakeOracle.css';
 
 const CATEGORY_ICONS = {
   'bug': 'search',
