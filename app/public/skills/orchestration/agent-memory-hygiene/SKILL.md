@@ -7,17 +7,9 @@ description: "Use when memory persists across sessions — control what is store
 
 ## Purpose
 
-Use this skill when the agent must decide what to remember, what to forget, how long to trust stored context, and when to treat cached knowledge as stale.
+Memory is a double-edged tool. Good memory avoids repeated work; poor memory causes agents to act on stale facts, accumulate low-value context, over-trust cached beliefs, and treat revisitable decisions as permanent constraints.
 
-Memory is a double-edged tool for agents. Good memory enables continuity, avoids repeated work, and surfaces relevant prior context. Poor memory causes agents to:
-- act on stale facts as if they were current
-- accumulate low-value context that degrades retrieval quality
-- over-trust cached beliefs that should be re-verified
-- treat prior decisions as constraints when they should be revisited
-
-This skill provides a hygiene framework for managing what the agent stores, retrieves, trusts, and discards.
-
-Related to research on RAG (Retrieval-Augmented Generation) architectures, MemGPT/LangMem memory systems, and epistemic hygiene principles from philosophy of knowledge.
+This skill provides a hygiene framework for what the agent stores, retrieves, trusts, and discards.
 
 ---
 
@@ -138,44 +130,9 @@ When staleness signals are present:
 - [ ] Are there stored decisions whose rationale conditions have changed?
 - [ ] Is the memory store accumulating low-value context that should be pruned?
 
----
 
-## Memory Hygiene Template
 
-```md
-## Memory Operation
-<store / retrieve / review / prune>
-
-## Item
-<what is being stored or reviewed>
-
-## Category
-<durable fact / working context / provisional belief / decision + rationale>
-
-## Source
-<how was this established? direct observation / inference / stated by user / other>
-
-## Verified?
-<yes / no / partially>
-
-## Staleness Risk
-<low — stable domain / medium — somewhat volatile / high — volatile domain>
-
-## Expiration or Review Trigger
-<time window / event / condition that should prompt re-verification>
-
-## Current Trust Level
-<confirmed / probable / provisional / uncertain>
-
-## Staleness Check (for retrieval)
-- Created: <when>
-- Domain stability: <stable / volatile>
-- Contradicting evidence: <none / describe>
-- Should re-verify: yes / no — because: <reason>
-
-## Action
-<use as fact / use as prior with stated uncertainty / re-verify before using / discard>
-```
+> For the full template, see [`references/hygiene-template.md`](references/hygiene-template.md)
 
 ---
 

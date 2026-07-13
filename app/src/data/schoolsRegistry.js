@@ -53,7 +53,7 @@ const schools = [
       {
         "name": "Pre-Flight Verification",
         "skill": "pre-flight-intent-verification",
-        "effect": "Unified pre-action gate that prevents the #1 agent failure mode: confidently executing the wrong task. Fuses socratic-clarification (assumption surfacing), intent-specification-protocol (testable spec crystallization), and assumption-grounding (factual verification) into one mandatory gate before any significant task execution. Use when about to start a feature, bug fix, code change, refactor, or any task with ambiguity, blast radius, or irreversible side effects — especially when the request could be interpreted multiple ways, touches existing behavior, or the stakes of being wrong are non-trivial.",
+        "effect": "Pre-action gate before any significant task — surface the critical assumption, crystallize intent into testable spec, ground facts before acting. Use when a request has ambiguity, blast radius, or irreversible side effects.",
         "status": "New"
       },
       {
@@ -89,13 +89,13 @@ const schools = [
       {
         "name": "Subagent Composer",
         "skill": "subagent-composer",
-        "effect": "Compose high-context sub-agent briefs with skill loading, explicit boundaries, success criteria, and stop rules. Use when delegating work to sub-agents to eliminate first-pass failures from incomplete briefs. Covers skill selection, context levels, multi-agent coordination, and anti-patterns.",
+        "effect": "Compose high-context sub-agent briefs — skill loading, explicit boundaries, success criteria, stop rules. Use when delegating to sub-agents to eliminate first-pass failures from incomplete briefs.",
         "status": "—"
       },
       {
         "name": "Subagent Laws",
         "skill": "subagent-laws",
-        "effect": "Persistent, opinionated rules every sub-agent must follow regardless of task type. Loaded automatically by subagent-composer alongside task-specific skills. Use when composing sub-agent briefs to enforce scope discipline, test hygiene, code structure, and communication standards.",
+        "effect": "Standing behavioral constraints every sub-agent must follow. Loaded by subagent-composer as mandatory policy alongside task-specific skills. Use when composing briefs to enforce scope discipline, test integrity, and communication standards.",
         "status": "New"
       },
       {

@@ -7,15 +7,9 @@ description: "Use when a task is ambiguous or high-stakes — surface the most c
 
 ## Purpose
 
-Use this skill when the agent is about to execute an ambiguous or high-stakes task and needs to surface and resolve the most critical unknown assumptions before acting.
+Socratic method for agents: (1) identify what you think you know, (2) expose what you're assuming, (3) ask the one most important clarifying question, (4) gate action on the answer or explicitly accept the ambiguity.
 
-The Socratic method — derived from Socrates' practice of asking targeted questions to expose hidden assumptions — applied to agent behavior means:
-1. identify what the agent thinks it knows
-2. expose what it is actually assuming
-3. ask the one most important clarifying question
-4. gate action on the answer, or explicitly accept the ambiguity with reasoning
-
-This prevents the most common agent failure mode: confident wrong execution — acting with full competence in the wrong direction because an assumption was wrong and never questioned.
+This prevents confident wrong execution — acting with full competence in the wrong direction because an assumption was wrong and never questioned.
 
 ---
 

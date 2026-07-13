@@ -5,26 +5,11 @@ description: "Use when several strategies compete for limited reasoning budget �
 
 # Skill: Monte Carlo Tree Search for AI Agents
 
-## Purpose
+## Core Mechanics
 
-Use this skill when the agent faces a problem with multiple plausible strategies and must decide where to spend additional reasoning, testing, or tool-use budget.
+**MCTS-lite** for agents: not random rollouts but bounded probes — cheap tests, tool calls, mini-patches, or partial executions — scored against explicit criteria. Each round selects a promising branch, expands it, runs a bounded probe, scores the outcome, and propagates the signal upward.
 
-Monte Carlo Tree Search (MCTS) is a disciplined branch-allocation method.
-It does not treat all branches equally.
-It does not commit to the first good-looking path.
-
-Instead, it repeatedly:
-- selects a promising branch
-- expands it
-- runs a bounded probe or mini-simulation
-- scores what happened
-- propagates that signal upward
-- decides what deserves the next unit of effort
-
-For AI agents, this is usually best implemented as **MCTS-lite**:
-not random rollouts, but bounded reasoning steps, cheap tests, tool calls, mini-patches, or partial executions scored against explicit criteria.
-
-This is the search-budget equivalent of what Tree of Thoughts does for branch generation.
+This is the search-budget equivalent of Tree of Thoughts for branch generation.
 
 ---
 
@@ -186,96 +171,9 @@ Explains why a branch weakened, what assumption failed, and what mutation might 
 Use the smallest useful role split.
 Do not spawn multiple roles unless the task benefits from it.
 
----
 
-## Node Schema
 
-Represent each branch/node with the same structure.
-
-```md
-## Node
-- Node ID: <id>
-- Parent: <parent id or root>
-- Hypothesis: <what this branch believes>
-- Next action: <bounded next move>
-- Evidence so far:
-  - <evidence 1>
-  - <evidence 2>
-- Score:
-  - correctness evidence: low / medium / high
-  - progress: low / medium / high
-  - blast radius: low / medium / high
-  - reversibility: low / medium / high
-  - cleanliness: low / medium / high
-- Visits: <rough count>
-- Status: unexpanded / expanded / promising / weak / pruned / leading / winner
-- Why this status: <brief reason>
-```
-
----
-
-## MCTS-lite Template
-
-```md
-## Objective
-<what is being solved>
-
-## Constraints
-- <constraint>
-- <constraint>
-
-## Budget
-- Branch budget: <n>
-- Expansion budget: <n>
-- Tool/test budget: <n>
-- Stop condition: <what ends search>
-
-## Initial Branches
-
-### Branch A
-- Hypothesis:
-- First action:
-- Why it might work:
-- Initial risks:
-
-### Branch B
-- Hypothesis:
-- First action:
-- Why it might work:
-- Initial risks:
-
-### Branch C
-- Hypothesis:
-- First action:
-- Why it might work:
-- Initial risks:
-
-## Search Log
-
-### Round 1
-- Selected branch:
-- Reason selected:
-- Expansion performed:
-- Rollout / mini-sim:
-- Evidence observed:
-- Score update:
-- Keep / mutate / prune:
-
-### Round 2
-(repeat)
-
-## Final Branch Ranking
-| Branch | Evidence | Risk | Progress | Decision |
-|--------|----------|------|----------|----------|
-
-## Winning Branch
-- Why it won:
-- Why the others lost:
-- What should be done next:
-
-## Confidence
-<how strong the winner is and what residual uncertainty remains>
-```
+> For the node schema and MCTS-lite template, see [`references/mcts-node-schema.md`](references/mcts-node-schema.md)
 
 ---
 

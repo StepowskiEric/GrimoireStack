@@ -5,20 +5,15 @@ description: "Use when a multi-step task risks concern contamination — keep pl
 
 # Skill: Separation of Concerns for AI Agent Orchestration
 
-## Purpose
+## Core Rule
 
-Use this skill when the agent is orchestrating a multi-step task and needs to prevent different concerns from contaminating each other's reasoning, side effects, or state.
+Do not mix concerns. Applied to agent orchestration, this means:
+- **planning** is separate from **execution**
+- **diagnosis** is separate from **remediation**
+- **observation** is separate from **interpretation**
+- one sub-task's assumptions do not leak into another sub-task's state
 
-This skill is inspired by Dijkstra's *On the Role of Scientific Thought* (1974), which introduced Separation of Concerns as a principle for managing intellectual complexity, and its decades of application in software engineering.
-
-Applied to agent orchestration, Separation of Concerns means:
-- **planning concerns** are separate from **execution concerns**
-- **diagnosis concerns** are separate from **remediation concerns**
-- **observation concerns** are separate from **interpretation concerns**
-- one sub-task's assumptions and side effects do not silently leak into another sub-task's state
-
-This is not primarily about code architecture.
-It is about orchestration discipline: keeping each phase of a complex task intellectually clean so that errors in one phase do not corrupt others.
+This is about orchestration discipline: keeping each phase of a complex task intellectually clean so errors in one phase do not corrupt others.
 
 ---
 

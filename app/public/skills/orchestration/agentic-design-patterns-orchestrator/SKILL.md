@@ -5,37 +5,9 @@ description: "Use when treating a task as a single-shot reply would lose reliabi
 
 # Skill: Agentic Patterns Orchestrator for AI Agents
 
-## Purpose
-
-Use this skill when the agent must operate as a real workflow rather than a single-shot responder.
-
-This skill turns modern agentic design patterns into a practical operating model:
-- plan
-- route
-- use tools deliberately
-- reflect
-- coordinate sub-agents when justified
-- manage memory and context
-- recover from failure
-- keep humans in the loop when risk requires it
-
-The purpose is not to make the agent “more complex.”
-The purpose is to make it more:
-- reliable
-- maintainable
-- explainable
-- adaptable
-- capable on multi-step tasks
-
----
-
 ## Core Rule
 
-Do not treat all tasks as one-shot prompt/response problems.
-
-Choose the right pattern for the task.
-
-Patterns should be selected intentionally from a small toolkit:
+Do not treat all tasks as one-shot prompt/response problems. Choose the right pattern from a small toolkit:
 - prompt chaining
 - routing
 - planning
@@ -67,135 +39,18 @@ Do not use full orchestration for trivial low-stakes tasks.
 
 ## Pattern Selection Guide
 
-## 1) Prompt Chaining
-Use when the task has a natural sequence.
-
-Example:
-- gather inputs
-- transform
-- evaluate
-- finalize
-
-Good for:
-- structured document generation
-- analysis pipelines
-- staged reasoning
-- iterative refinement
-
----
-
-## 2) Routing
-Use when different task types need different handlers or specialists.
-
-Good for:
-- support triage
-- tool selection
-- choosing between styles of reasoning
-- sending work to different sub-agents
-
----
-
-## 3) Planning
-Use when:
-- the task is complex
-- steps depend on one another
-- the agent must avoid random action
-- execution order matters
-
-Rules:
-- build a plan
-- keep it editable
-- update it when evidence changes
-
----
-
-## 4) Reflection / Self-Correction
-Use when:
-- correctness matters
-- the first pass is likely imperfect
-- the task benefits from critique before final output
-
-Rules:
-- do not reflect endlessly
-- reflect with purpose
-- check against criteria, not vague self-doubt
-
----
-
-## 5) Tool Use
-Use when external information, execution, or state change is needed.
-
-Rules:
-- choose tools intentionally
-- know why the tool is needed
-- do not call tools performatively
-- validate tool outputs when stakes are high
-
----
-
-## 6) Memory Management
-Use when work spans time, context, or recurring preferences.
-
-Rules:
-- preserve useful state
-- avoid cluttering memory with junk
-- distinguish stable facts from temporary working state
-- retrieve before assuming
-
----
-
-## 7) Multi-Agent Collaboration
-Use only when decomposition creates real leverage.
-
-Good for:
-- parallel research
-- specialist tasks
-- large bounded subtasks
-- explicit reviewer/executor splits
-
-Avoid:
-- multi-agent sprawl for simple tasks
-- role duplication without benefit
-
----
-
-## 8) Exception Handling and Recovery
-Use when failure is plausible.
-
-Rules:
-- anticipate likely failure points
-- define fallback behavior
-- detect failure clearly
-- retry only when retry is rational
-
----
-
-## 9) Human-in-the-Loop
-Use when:
-- stakes are high
-- judgment is sensitive
-- policy/ethics/safety constraints matter
-- action is irreversible
-- user preference is essential
-
-Rules:
-- pause at the right point
-- ask for approval only where it adds value
-- avoid excessive human interruption
-
----
-
-## 10) Guardrails
-Use as the boundary system around the rest.
-
-Guardrails include:
-- scope control
-- risk limits
-- tool limits
-- ETTO checks
-- validation requirements
-- escalation triggers
-- refusal boundaries when needed
+| Pattern | Use When | Key Principle |
+|---------|----------|------|
+| Prompt Chaining | Sequential transformation (gather → transform → evaluate → finalize) | Each step's output is the next step's input |
+| Routing | Different task types need different handlers | Classify first, then dispatch |
+| Planning | Complex task with dependent steps | Build a plan, keep it editable, update on new evidence |
+| Reflection | First pass is likely imperfect | Check against criteria, not vague self-doubt |
+| Tool Use | External information or state change needed | Every tool call has a purpose |
+| Memory Management | Work spans sessions or recurring preferences | Distinguish stable facts from working state |
+| Multi-Agent Collaboration | Decomposition creates real leverage | Never for vanity or simple tasks |
+| Exception Handling | Failure is plausible | Detect clearly, retry only when rational |
+| Human-in-the-Loop | High stakes or irreversible action | Ask where it adds value, not performatively |
+| Guardrails | Boundary system around all patterns | Scope control, risk limits, escalation triggers |
 
 ---
 
@@ -231,41 +86,14 @@ For non-trivial tasks:
 
 ## Pattern Misuse to Avoid
 
-### 1) One-shot overuse
-The agent treats every task as immediate answer generation.
-
-Counter:
-Use planning, routing, or reflection where the task actually requires them.
-
-### 2) Pattern overload
-The agent uses every pattern for every task.
-
-Counter:
-Use the smallest useful orchestration.
-
-### 3) Reflection loops
-The agent critiques itself forever.
-
-Counter:
-Set explicit evaluation criteria and stopping rules.
-
-### 4) Multi-agent vanity
-The agent spawns specialists for work one agent could do faster and more clearly.
-
-Counter:
-Use multi-agent only when decomposition clearly helps.
-
-### 5) Memory pollution
-The agent stores too much low-value state.
-
-Counter:
-Preserve only durable, useful information.
-
-### 6) Tool theatrics
-The agent calls tools to look sophisticated rather than because they improve outcomes.
-
-Counter:
-Every tool call should have a purpose.
+| Anti-pattern | What it looks like | The fix |
+|-------------|-------------------|---------|
+| One-shot overuse | Every task is immediate answer generation | Use planning, routing, or reflection where the task requires them |
+| Pattern overload | Every pattern used for every task | Use the smallest useful orchestration |
+| Reflection loops | Endless self-critique | Set explicit evaluation criteria and stopping rules |
+| Multi-agent vanity | Spawning specialists for work one agent could do | Use multi-agent only when decomposition clearly helps |
+| Memory pollution | Storing too much low-value state | Preserve only durable, useful information |
+| Tool theatrics | Calling tools to look sophisticated | Every tool call has a purpose |
 
 ---
 
@@ -297,21 +125,7 @@ Every tool call should have a purpose.
 
 ---
 
-## Prompt Snippets
 
-### For general workflow
-“Do not treat this as a one-shot prompt. Choose the appropriate agentic patterns, explain the workflow, then execute with planning, verification, and stopping rules.”
-
-### For complex tasks
-“Use planning, deliberate tool use, and reflection. Add multi-agent collaboration only if it clearly improves the result.”
-
-### For reliability
-“Build this as an agentic workflow with guardrails, exception handling, and human approval points where risk justifies them.”
-
-### For orchestration design
-“Select the minimum set of patterns needed to make the system robust, maintainable, and effective.”
-
----
 
 ## Definition of Done
 

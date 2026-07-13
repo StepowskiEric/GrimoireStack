@@ -1,6 +1,6 @@
 ---
 name: pre-flight-intent-verification
-description: Unified pre-action gate that prevents the #1 agent failure mode: confidently executing the wrong task. Fuses socratic-clarification (assumption surfacing), intent-specification-protocol (testable spec crystallization), and assumption-grounding (factual verification) into one mandatory gate before any significant task execution. Use when about to start a feature, bug fix, code change, refactor, or any task with ambiguity, blast radius, or irreversible side effects — especially when the request could be interpreted multiple ways, touches existing behavior, or the stakes of being wrong are non-trivial.
+description: "Pre-action gate before any significant task — surface the critical assumption, crystallize intent into testable spec, ground facts before acting. Use when a request has ambiguity, blast radius, or irreversible side effects."
 ---
 
 # Pre-Flight Intent Verification
@@ -74,86 +74,9 @@ For each of the following that applies to the current task, state the assumption
 
 ## Artifact: `pre-flight-record.md`
 
-Create this file before Phase 2. Required structure:
+Create this file before Phase 2. 
 
-```md
-# Pre-Flight Record
-
-## Task as Stated
-
-<exact statement of the task>
-
----
-
-## Phase 1 — Clarify
-
-### What I Believe I Know
-
-- [confirmed] <fact>
-- [assumption] <inferred belief>
-
-### Critical Assumption
-
-Assumption: <highest-priority assumption>
-
-- If wrong, this would: <consequence>
-- Question asked: <the clarifying question>
-- Answer received: <answer / "ambiguity accepted: <reason>">
-
----
-
-## Phase 2 — Specify
-
-### Core Intent
-
-<one sentence>
-
-### Invariants (must NOT change)
-
-- <constraint>
-- <constraint>
-
-### Scenarios
-
-#### Scenario 1: [name]
-
-Given <preconditions>
-When <action>
-Then <expected result>
-
-#### Scenario 2: [edge case]
-
-Given <preconditions>
-When <action>
-Then <expected result>
-
-#### Scenario 3: [invariant check]
-
-Given <existing behavior context>
-When <action that would trigger old behavior>
-Then <old behavior still works exactly as before>
-
-### Gate Decision
-
-[ ] All scenarios concrete → proceed to Phase 3
-[ ] Ambiguity found → return to user
-
----
-
-## Phase 3 — Ground
-
-| Assumption | Check            | Result      |
-| ---------- | ---------------- | ----------- |
-| `<claim>`  | `<command used>` | PASS / FAIL |
-| `<claim>`  | `<command used>` | PASS / FAIL |
-
----
-
-## Gate Decision
-
-[ ] All phases green → EXECUTE
-[ ] Blocked: <reason>
-```
+> For the full template, see [`references/pre-flight-record-template.md`](references/pre-flight-record-template.md)
 
 ---
 
