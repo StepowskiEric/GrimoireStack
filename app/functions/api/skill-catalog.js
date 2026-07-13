@@ -3,1250 +3,50 @@
 
 export const SKILL_CATALOG = [
   {
-    "skill": "jury",
-    "name": "Jury",
-    "school": "Agent Orchestration",
-    "schoolName": "Agent Orchestration",
-    "status": "—",
-    "effect": "Argue, then structure the disagreement — spawn parallel perspectives with conflicting goals, force them to engage, output a conflict graph that reveals what actually matters. Use when reasonable options exist and the choice isn't obvious."
-  },
-  {
-    "skill": "agent-memory-hygiene",
-    "name": "Memory Hygiene",
-    "school": "Agent Orchestration",
-    "schoolName": "Agent Orchestration",
-    "status": "—",
-    "effect": "Use when memory persists across sessions — control what is stored, retrieved, trusted, and discarded to avoid stale-context actions."
-  },
-  {
-    "skill": "monte-carlo-tree-search",
-    "name": "Monte Carlo Tree Search",
-    "school": "Agent Orchestration",
-    "schoolName": "Agent Orchestration",
-    "status": "—",
-    "effect": "Use when several strategies compete for limited reasoning budget — allocate search effort to branches that earn it through probes and scoring."
-  },
-  {
-    "skill": "navigator",
-    "name": "Navigator",
-    "school": "Agent Orchestration",
-    "schoolName": "Agent Orchestration",
-    "status": "—",
-    "effect": "Map, distill, retrieve — Scout reads code, Thought-Retriever stores the reasoning trail so future sessions resume from where you stopped. Use when the codebase is large, unfamiliar, or the agent keeps re-asking the same questions."
-  },
-  {
-    "skill": "octopus",
-    "name": "Octopus Coordination",
-    "school": "Agent Orchestration",
-    "schoolName": "Agent Orchestration",
-    "status": "—",
-    "effect": "Coordinate parallel sub-agents with bounded concurrency — define shared contracts, delegate with auto-healing arms, retract on failure. Use when 3+ workstreams share a contract and parallel speedup beats coordination overhead."
-  },
-  {
-    "skill": "agentic-design-patterns-orchestrator-state-machine",
-    "name": "Orchestrator Gate",
-    "school": "Agent Orchestration",
-    "schoolName": "Agent Orchestration",
-    "status": "—",
-    "effect": "Use when the task is non-trivial and one-shot replies are insufficient — enforce a phased workflow with explicit gates between classify, plan, execute, reflect, and verify."
-  },
-  {
-    "skill": "agentic-design-patterns-orchestrator",
-    "name": "Orchestrator Pattern",
-    "school": "Agent Orchestration",
-    "schoolName": "Agent Orchestration",
-    "status": "—",
-    "effect": "Use when treating a task as a single-shot reply would lose reliability — adopt pattern-based orchestration with planning, routing, reflection, and recovery."
-  },
-  {
-    "skill": "pre-flight-intent-verification",
-    "name": "Pre-Flight Verification",
-    "school": "Agent Orchestration",
-    "schoolName": "Agent Orchestration",
-    "status": "New",
-    "effect": "Unified pre-action gate that prevents the #1 agent failure mode: confidently executing the wrong task. Fuses socratic-clarification (assumption surfacing), intent-specification-protocol (testable spec crystallization), and assumption-grounding (factual verification) into one mandatory gate before any significant task execution. Use when about to start a feature, bug fix, code change, refactor, or any task with ambiguity, blast radius, or irreversible side effects — especially when the request..."
-  },
-  {
-    "skill": "rashomon-triad-hybrid",
-    "name": "Rashomon Triad",
-    "school": "Agent Orchestration",
-    "schoolName": "Agent Orchestration",
-    "status": "—",
-    "effect": "Surface genuine disagreement — parallel perspectives with conflicting goals run independent abductive-deductive-inductive cycles, then argue via attack graph. Returns selection, composition, or conflict-surfacing output. Use for high-stakes trade-offs without a single correct answer."
-  },
-  {
-    "skill": "scout",
-    "name": "Scout Protocol",
-    "school": "Agent Orchestration",
-    "schoolName": "Agent Orchestration",
-    "status": "—",
-    "effect": "Fast context scout — a lightweight sub-agent reads files and returns only distilled, relevant context for the main model. Saves tokens, reduces distraction, and prevents the main model from getting lost in large codebases."
-  },
-  {
-    "skill": "separation-of-concerns",
-    "name": "Separation of Concerns",
-    "school": "Agent Orchestration",
-    "schoolName": "Agent Orchestration",
-    "status": "—",
-    "effect": "Use when a multi-step task risks concern contamination — keep planning, diagnosis, observation, and execution phases intellectually isolated."
-  },
-  {
-    "skill": "socratic-clarification",
-    "name": "Socratic Clarification",
-    "school": "Agent Orchestration",
-    "schoolName": "Agent Orchestration",
-    "status": "—",
-    "effect": "Use when a task is ambiguous or high-stakes — surface the most critical hidden assumption before committing to execution."
-  },
-  {
-    "skill": "sop-evolution-memory",
-    "name": "SOP Evolution",
-    "school": "Agent Orchestration",
-    "schoolName": "Agent Orchestration",
-    "status": "—",
-    "effect": "Use after repeated successes on a class of tasks — distill trajectories into reusable Standard Operating Procedures (SOPs). Future similar tasks load the SOP instead of the full history."
-  },
-  {
-    "skill": "subagent-composer",
-    "name": "Subagent Composer",
-    "school": "Agent Orchestration",
-    "schoolName": "Agent Orchestration",
-    "status": "—",
-    "effect": "Compose high-context sub-agent briefs with skill loading, explicit boundaries, success criteria, and stop rules. Use when delegating work to sub-agents to eliminate first-pass failures from incomplete briefs. Covers skill selection, context levels, multi-agent coordination, and anti-patterns."
-  },
-  {
-    "skill": "subagent-laws",
-    "name": "Subagent Laws",
-    "school": "Agent Orchestration",
-    "schoolName": "Agent Orchestration",
-    "status": "New",
-    "effect": "Persistent, opinionated rules every sub-agent must follow regardless of task type. Loaded automatically by subagent-composer alongside task-specific skills. Use when composing sub-agent briefs to enforce scope discipline, test hygiene, code structure, and communication standards."
-  },
-  {
-    "skill": "thought-retriever-coppermind",
-    "name": "Thought Retriever",
-    "school": "Agent Orchestration",
-    "schoolName": "Agent Orchestration",
-    "status": "—",
-    "effect": "Use when sub-agents must learn across sessions — store intermediate reasoning as retrievable thoughts in the Coppermind memory layers."
-  },
-  {
-    "skill": "weak-link-detection-multi-agent",
-    "name": "Weak Link Detection",
-    "school": "Agent Orchestration",
-    "schoolName": "Agent Orchestration",
-    "status": "—",
-    "effect": "Identify and isolate the weakest reasoning chain in multi-agent outputs before aggregation. Prevents error amplification when one agent fails. Use when aggregating outputs and one bad agent could poison the collective result."
-  },
-  {
-    "skill": "abductive-first-debugging",
-    "name": "Abductive Debugging",
-    "school": "Debugging",
-    "schoolName": "Debugging",
-    "status": "New",
-    "effect": "Generates multiple competing hypotheses, selects the one that best explains all observed symptoms — not the first plausible cause."
-  },
-  {
-    "skill": "bisect-debugging",
-    "name": "Bisect Debugging",
-    "school": "Debugging",
-    "schoolName": "Debugging",
-    "status": "Proven",
-    "effect": "Isolate the exact commit that introduced a bug using binary search through git history. The fastest way to find 'what changed' when tests used to pass."
-  },
-  {
-    "skill": "bug-inquisition",
-    "name": "Bug Inquisition",
-    "school": "Debugging",
-    "schoolName": "Debugging",
-    "status": "New",
-    "effect": "Deep root-cause debugging with mandatory context-gathering. Fuses root-cause analysis, specter, diagnose, debug-to-fix-pipeline, occam-root-cause, and reasoning-integrity-chain into one sequential protocol. Use when user says 'hard bug', 'stuck on debugging', 'can't figure out this error', 'stuck on bug', or 'bug inquisition'."
-  },
-  {
-    "skill": "bug-inquisition-conquest",
-    "name": "Bug Inquisition Conquest",
-    "school": "Debugging",
-    "schoolName": "Debugging",
-    "status": "New",
-    "effect": "Ultra-heavy root-cause debugging with relentless ongoing interrogation. Fuses bug-inquisition pre-flight with continuous adversarial self-grilling, evidence-ledger tracking, pre-mortem on every fix, confidence-gated phase transitions, and final adversarial review. Use for the hardest bugs where surface debugging has failed, when the bug is intermittent or environment-specific, or when the cost of a wrong fix is high. Triggers: 'deep bug', 'intermittent bug', 'heisenbug', 'ghost bug', 'bug inq..."
-  },
-  {
-    "skill": "explore-codebase",
-    "name": "Codebase Exploration",
-    "school": "Debugging",
-    "schoolName": "Debugging",
-    "status": "—",
-    "effect": "Structured exploration with progressive deepening: module structure → file roles → symbol resolution. Token-efficient for unfamiliar codebases."
-  },
-  {
-    "skill": "debug-subagent",
-    "name": "Debug Subagent",
-    "school": "Debugging",
-    "schoolName": "Debugging",
-    "status": "Proven",
-    "effect": "A dedicated debugging subagent that must be consulted before making code edits. Wraps debugger complexity behind natural-language queries and enforces 'debug before edit' workflow. Based on Debug2Fix research (+13-22% bug fix rate)."
-  },
-  {
-    "skill": "debug-to-fix-pipeline",
-    "name": "Debug to Fix Pipeline",
-    "school": "Debugging",
-    "schoolName": "Debugging",
-    "status": "Hybrid",
-    "effect": "6-phase pipeline that increases evidence quality each phase while cutting token waste. Sequences data → hypothesis → isolation → exploitation → repair → verification. Use when debugging is stalling, multi-file bugs need runtime state, or first patch attempt failed."
-  },
-  {
-    "skill": "debug-issue",
-    "name": "Debug Workflow",
-    "school": "Debugging",
-    "schoolName": "Debugging",
-    "status": "—",
-    "effect": "Forces the reproduce → isolate → fix → verify cycle. Graph-powered code navigation traces issues through the system along dataflow edges."
-  },
-  {
-    "skill": "environment-recovery",
-    "name": "Environment Recovery",
-    "school": "Debugging",
-    "schoolName": "Debugging",
-    "status": "New",
-    "effect": "Diagnose and fix broken development environments — missing tools, wrong versions, corrupted caches, full disks, permission drift, and dependency hell. The skill every other debugging skill assumes."
-  },
-  {
-    "skill": "escalation-ladder",
-    "name": "Escalation Ladder",
-    "school": "Debugging",
-    "schoolName": "Debugging",
-    "status": "New",
-    "effect": "Structured protocol for when an agent is stuck — escalating from self-recovery to user collaboration to full retreat. Fills the gap between trajectory-guard (detects stuck) and summarize (bails out)."
-  },
-  {
-    "skill": "iterative-patch-repair",
-    "name": "Iterative Patch Repair",
-    "school": "Debugging",
-    "schoolName": "Debugging",
-    "status": "Proven",
-    "effect": "Loop of generate patch → run test → capture runtime state → refine patch. Max N iterations with patch augmentation to avoid overfitting. Use when first patch attempt failed, bug has multiple plausible fixes, or test feedback reveals the fix was close but not quite right."
-  },
-  {
-    "skill": "log-trace-correlation",
-    "name": "Log Trace Correlation",
-    "school": "Debugging",
-    "schoolName": "Debugging",
-    "status": "Proven",
-    "effect": "Map error logs and stack traces to source code to identify root cause and suggest fixes. Use when you have an error log with a stack trace and need to determine which file, function, and line caused the failure."
-  },
-  {
-    "skill": "minimal-reproduction",
-    "name": "Minimal Reproduction",
-    "school": "Debugging",
-    "schoolName": "Debugging",
-    "status": "New",
-    "effect": "Write the smallest possible test that demonstrates the bug, then use it as ammunition for debugging."
-  },
-  {
-    "skill": "network-api-debugging",
-    "name": "Network API Debugging",
-    "school": "Debugging",
-    "schoolName": "Debugging",
-    "status": "New",
-    "effect": "Diagnose and fix network and API failures — CORS, auth token issues, rate limiting, redirect chains, WebSocket drops, and HTTP request/response mismatches."
-  },
-  {
-    "skill": "root-cause-analysis",
-    "name": "Root Cause Analysis",
-    "school": "Debugging",
-    "schoolName": "Debugging",
-    "status": "Framework",
-    "effect": "Distinguish symptoms from causes, verify causal chains, fix the underlying defect. Stops recurring regressions caused by workaround hacks. Use when a bug returns after being 'fixed', multiple symptoms share a cause, or a fix in one area breaks another."
-  },
-  {
-    "skill": "simulate-instrumentation",
-    "name": "Simulate Instrumentation",
-    "school": "Debugging",
-    "schoolName": "Debugging",
-    "status": "Proven",
-    "effect": "Auto-insert temporary print/logging statements at key points in the code, run the failing test, and feed the captured runtime state to the LLM."
-  },
-  {
-    "skill": "specter",
-    "name": "Spectral Debugging",
-    "school": "Debugging",
-    "schoolName": "Debugging",
-    "status": "—",
-    "effect": "Abduce the bug — generate competing hypotheses, locate code by structural relationship, then disconfirm until one survivor remains. Use when the crash site is not the cause, the bug is 'weird,' or your first instinct is suspect."
-  },
-  {
-    "skill": "purify-test-output",
-    "name": "Test Output Purification",
-    "school": "Debugging",
-    "schoolName": "Debugging",
-    "status": "Proven",
-    "effect": "Use when failing test output contains >50% framework noise (site-packages, node_modules) that drowns out user code, or when multiple tests fail and you need to isolate the most relevant failure first."
-  },
-  {
-    "skill": "time-traveling-debugger",
-    "name": "Time-Travel Debugger",
-    "school": "Debugging",
-    "schoolName": "Debugging",
-    "status": "MCP",
-    "effect": "When a bug occurs, record a deterministic execution trace forward, then replay it in reverse from the crash point to find the exact line where state first diverged. Spawns 'past self' and 'future self' that meet at the divergence."
-  },
-  {
-    "skill": "add-new-skill-to-repository",
-    "name": "Add New Skill",
-    "school": "Development & Tooling",
-    "schoolName": "Development & Tooling",
-    "status": "—",
-    "effect": "Process for adding a new skill to GrimoireStack repository with proper documentation, installation support, and cross-platform verification."
-  },
-  {
-    "skill": "bulk-rename-and-update-references",
-    "name": "Bulk Rename",
-    "school": "Development & Tooling",
-    "schoolName": "Development & Tooling",
-    "status": "—",
-    "effect": "Use when renaming many files where old names appear in content — discover references first to avoid broken links and stale cross-references."
-  },
-  {
-    "skill": "project-folder-architecture",
-    "name": "Project Folder Architecture",
-    "school": "Development & Tooling",
-    "schoolName": "Development & Tooling",
-    "status": "New",
-    "effect": ">"
-  },
-  {
-    "skill": "skill-development-with-supporting-files",
-    "name": "Skill Development with Supporting Files",
-    "school": "Development & Tooling",
-    "schoolName": "Development & Tooling",
-    "status": "—",
-    "effect": "Use when a skill depends on scripts, templates, or other supporting files — package them so installation copies the full set, not just SKILL.md."
-  },
-  {
-    "skill": "unit-test-debugging",
-    "name": "Test Oracle",
-    "school": "Development & Tooling",
-    "schoolName": "Development & Tooling",
-    "status": "New",
-    "effect": "Systematic workflow for fixing failing unit tests by first determining whether the tests or the code under test are the source of truth. Use when fixing test failures, debugging test suites, resolving \"tests are passing/failing unexpectedly,\" or when an agent keeps changing code to match failing tests without investigating root cause. Also use when improving weak passing tests that do not actually prove correctness."
-  },
-  {
-    "skill": "how-to-solve-it-analogy",
-    "name": "Analogy-Based Problem Solving",
-    "school": "Execution & Improvement",
-    "schoolName": "Execution & Improvement",
-    "status": "—",
-    "effect": "Use when the problem resembles one solved before — deliberately search for the best-matching analog, verify the structural mapping holds, then transfer the prior solution. Companion to first-principles thinking."
-  },
-  {
-    "skill": "assumption-grounding",
-    "name": "Assumption Grounding",
-    "school": "Execution & Improvement",
-    "schoolName": "Execution & Improvement",
-    "status": "—",
-    "effect": "Prevent hallucinated facts from compounding into costly errors. State every assumption explicitly, verify with the cheapest possible check, and only proceed on confirmation. Based on Chain-of-Verification research."
-  },
-  {
-    "skill": "blueprint",
-    "name": "Blueprint",
-    "school": "Execution & Improvement",
-    "schoolName": "Execution & Improvement",
-    "status": "—",
-    "effect": "Type the problem — codify messy situations into schema so contradictions, gaps, and silent assumptions become impossible to ignore. Use when vague problems keep being redefined or stakeholders talk past each other."
-  },
-  {
-    "skill": "checklist-manifesto",
-    "name": "Checklist Manifesto",
-    "school": "Execution & Improvement",
-    "schoolName": "Execution & Improvement",
-    "status": "—",
-    "effect": "Use when a high-stakes procedure demands more than expertise — build the smallest useful checklist, gate execution on checklist completion, stop cleanly and escalate if it cannot be cleared."
-  },
-  {
-    "skill": "cognitive-friction-governor",
-    "name": "Cognitive Friction Governor",
-    "school": "Execution & Improvement",
-    "schoolName": "Execution & Improvement",
-    "status": "—",
-    "effect": "Use when deliberation is miscalibrated — over-thinking trivial problems, under-thinking complex ones, or paralyzed by analysis. Assign deliberation budgets; step costs friction; budget exhausted forces decision."
-  },
-  {
-    "skill": "long-task-survival-kit",
-    "name": "Endurance Ward",
-    "school": "Execution & Improvement",
-    "schoolName": "Execution & Improvement",
-    "status": "—",
-    "effect": "Fuse of Assumption Grounding + Trajectory Guard + Context Budget Operator. Recurring checkpoint protocol that prevents agent decay on complex tasks: context overflow, failure spirals, and hallucinated facts."
-  },
-  {
-    "skill": "context-budget-operator",
-    "name": "Estimate token cost of files",
-    "school": "Execution & Improvement",
-    "schoolName": "Execution & Improvement",
-    "status": "—",
-    "effect": "Manage finite context windows explicitly. Track token budget, classify information needs, compress aggressively, and decide breadth-vs-depth based on remaining runway. Prevents silent context overflow and instruction dropout."
-  },
-  {
-    "skill": "iterative-spec-authoring",
-    "name": "Iterative Spec Authoring",
-    "school": "Execution & Improvement",
-    "schoolName": "Execution & Improvement",
-    "status": "—",
-    "effect": "Use when a spec must be defensible — author a detailed technical spec grounded in research, refine through up to 3 judge-LLM review cycles, then present to the user for final approval."
-  },
-  {
-    "skill": "working-effectively-with-legacy-code-state-machine",
-    "name": "Legacy Code Working",
-    "school": "Execution & Improvement",
-    "schoolName": "Execution & Improvement",
-    "status": "—",
-    "effect": "Use when changing brittle code with weak tests or unclear behavior — characterize legacy behavior, create seams, transform in bounded slices with anti-loop protection."
-  },
-  {
-    "skill": "legacy-rescue-protocol",
-    "name": "Legacy Rescue Protocol",
-    "school": "Execution & Improvement",
-    "schoolName": "Execution & Improvement",
-    "status": "—",
-    "effect": "Fuse of Working Effectively with Legacy Code + Refactoring State Machine. Characterize legacy behavior, create seams, then transform in bounded slices with anti-loop protection."
-  },
-  {
-    "skill": "keyword-agnostic-logic-locator",
-    "name": "Logic-Based Code Search",
-    "school": "Execution & Improvement",
-    "schoolName": "Execution & Improvement",
-    "status": "—",
-    "effect": "Use when grep and naming-based search fail — find code by structural relationships and logical queries via a Datalog-style knowledge graph over call graphs, data flows, and type hierarchies."
-  },
-  {
-    "skill": "ooda-loop-state-machine",
-    "name": "OODA Loop",
-    "school": "Execution & Improvement",
-    "schoolName": "Execution & Improvement",
-    "status": "—",
-    "effect": "Use when conditions are changing rapidly, adversarially, or unpredictably — Observe, Orient, Decide, Act, Loop. Maintains decision tempo against an environment that shifts between every move."
-  },
-  {
-    "skill": "pdca-deming",
-    "name": "PDCA Deming Cycle",
-    "school": "Execution & Improvement",
-    "schoolName": "Execution & Improvement",
-    "status": "—",
-    "effect": "Use when improving a process through a measurement-anchored cycle — plan with a measurable prediction, do, check actual vs predicted, then standardize or escalate. Do not standardize what was not measured."
-  },
-  {
-    "skill": "plan-with-judge",
-    "name": "Plan with Judge",
-    "school": "Execution & Improvement",
-    "schoolName": "Execution & Improvement",
-    "status": "—",
-    "effect": "Create an implementation plan in JSONL format, then iteratively improve it using a stronger user-specified model as a judge until the plan is approved."
-  },
-  {
-    "skill": "how-to-solve-it-state-machine",
-    "name": "Problem Solving Protocol",
-    "school": "Execution & Improvement",
-    "schoolName": "Execution & Improvement",
-    "status": "—",
-    "effect": "Use when solving a hard problem under uncertainty — frame the problem, gather evidence, explore via hypothesis, plan, reflect. Designed to prevent premature coding."
-  },
-  {
-    "skill": "process-reward-model-protocol",
-    "name": "Process Reward Model",
-    "school": "Execution & Improvement",
-    "schoolName": "Execution & Improvement",
-    "status": "—",
-    "effect": "Use when reasoning may have committed to a wrong path too early — self-assign process rewards per step and backtrack when cumulative reward drops below threshold."
-  },
-  {
-    "skill": "requirement-crystallization-protocol",
-    "name": "Requirement Crystallization",
-    "school": "Execution & Improvement",
-    "schoolName": "Execution & Improvement",
-    "status": "—",
-    "effect": "Fuse of Socratic Clarification + Intent Specification Protocol. Surfaces the critical assumption, then crystallizes vague requests into locked, testable specs before coding begins."
-  },
-  {
-    "skill": "retrospective",
-    "name": "Retrospective",
-    "school": "Execution & Improvement",
-    "schoolName": "Execution & Improvement",
-    "status": "—",
-    "effect": "Use this skill after an incident, shipped feature, completed project, or any significant outcome to systematically learn from what happened. The natural counterpart to pre-mortem: before execution you imagine failure; after execution you examine the real outcome."
-  },
-  {
-    "skill": "refactoring-state-machine",
-    "name": "Safe Refactor",
-    "school": "Execution & Improvement",
-    "schoolName": "Execution & Improvement",
-    "status": "—",
-    "effect": "Use when improving structure without drifting into endless cleanup — characterize behavior, transform in bounded slices, re-test. Stops refactor loops."
-  },
-  {
-    "skill": "philosophy-of-software-design-state-machine",
-    "name": "Software Design Philosophy",
-    "school": "Execution & Improvement",
-    "schoolName": "Execution & Improvement",
-    "status": "—",
-    "effect": "Use when managing complexity or designing modules — design deeper modules, avoid shallow abstraction sprawl, declare unknowns and blast radius, bound change scope, stop explicitly."
-  },
-  {
-    "skill": "speculative-drafting-verification",
-    "name": "Speculative Drafting",
-    "school": "Execution & Improvement",
-    "schoolName": "Execution & Improvement",
-    "status": "—",
-    "effect": "Use when a single candidate risks a local minimum — generate multiple solution branches in parallel, verify each against hard constraints, select the best."
-  },
-  {
-    "skill": "speculative-exploration-protocol",
-    "name": "Speculative Exploration",
-    "school": "Execution & Improvement",
-    "schoolName": "Execution & Improvement",
-    "status": "—",
-    "effect": "Use when the best reasoning path is unclear — branch into N candidates, score with process rewards, prune low-reward branches, then verify the best candidate against hard constraints. Prevents first-branch lock-in."
-  },
-  {
-    "skill": "step-level-verification-protocol",
-    "name": "Stepwise Verification",
-    "school": "Execution & Improvement",
-    "schoolName": "Execution & Improvement",
-    "status": "—",
-    "effect": "Use when multi-step reasoning risks error propagation — verify each step before proceeding so a wrong step doesn't cascade into a chain of unjustified conclusions."
-  },
-  {
-    "skill": "structured-feature-planning",
-    "name": "Structured Feature Planning",
-    "school": "Execution & Improvement",
-    "schoolName": "Execution & Improvement",
-    "status": "—",
-    "effect": "Use when implementing correctness-critical features — read files, search for patterns, self-review twice, then execute. Governing rule: never hallucinate when confused."
-  },
-  {
-    "skill": "summarize",
-    "name": "Summarize",
-    "school": "Execution & Improvement",
-    "schoolName": "Execution & Improvement",
-    "status": "New",
-    "effect": "Use when session quality is degraded, you need to hand off mid-work, or you must preserve context before a /new. Emergency stop + perfect handoff report so the next agent loses nothing."
-  },
-  {
-    "skill": "pragmatic-programmer-state-machine",
-    "name": "The Pragmatic Programmer — State Machine Protocol for AI Agents",
-    "school": "Execution & Improvement",
-    "schoolName": "Execution & Improvement",
-    "status": "—",
-    "effect": "Use when working pragmatically in a real system — bounded changes, reversible choices, automation over repeated toil, root-cause fixes over symptom patches, practical scope control."
-  },
-  {
-    "skill": "toyota-kata-state-machine",
-    "name": "Toyota Kata",
-    "school": "Execution & Improvement",
-    "schoolName": "Execution & Improvement",
-    "status": "—",
-    "effect": "Use when improving a system through disciplined iteration instead of one large speculative change — frame target, analyze current, attack one obstacle at a time, run a PDCA experiment, learn, repeat."
-  },
-  {
-    "skill": "trajectory-guard",
-    "name": "Trajectory Guard",
-    "school": "Execution & Improvement",
-    "schoolName": "Execution & Improvement",
-    "status": "—",
-    "effect": "Runtime meta-monitoring protocol that detects agent failure spirals — repetitive loops, specification drift, and stuck trajectories — and forcibly redirects strategy. Based on Wink (2602.17037) misbehavior taxonomy and PALADIN (2509.25238) recovery patterns."
-  },
-  {
-    "skill": "zero-defect-protocol",
-    "name": "Zero Defect Protocol",
-    "school": "Execution & Improvement",
-    "schoolName": "Execution & Improvement",
-    "status": "—",
-    "effect": "Use for mission-critical features where a single bug, security flaw, or misalignment could cause catastrophic failure — 14-phase protocol: data contracting, invariant mapping, red-team critique, pre-mortem before any code is written."
-  },
-  {
-    "skill": "adversarial-review",
-    "name": "Adversarial Review",
-    "school": "Judgment & Decision-Making",
-    "schoolName": "Judgment & Decision-Making",
-    "status": "New",
-    "effect": "Stress-tests proposals against a SEPARATE adversarial subagent. Not self-critique — tool-mediated review with no prior investment."
-  },
-  {
-    "skill": "advocatus-diaboli",
-    "name": "Advocatus Diaboli — Adversarial Review via Separate Sub-Agent",
-    "school": "Judgment & Decision-Making",
-    "schoolName": "Judgment & Decision-Making",
-    "status": "—",
-    "effect": "Use this skill when the main agent must stress-test a proposal, plan, code change, or decision against a SEPARATE adversarial sub-agent before committing. This is NOT self-critique (steelmanning). It is tool-mediated adversarial review using a genuinely different cognitive entity with no prior investment in the proposal."
-  },
-  {
-    "skill": "bayesian-updating",
-    "name": "Bayesian Updating",
-    "school": "Judgment & Decision-Making",
-    "schoolName": "Judgment & Decision-Making",
-    "status": "—",
-    "effect": "Use when beliefs must shift with evidence — explicit priors updated by likelihood, avoiding over- and under-reaction."
-  },
-  {
-    "skill": "cognitive-bias-auditor",
-    "name": "Cognitive Bias Auditor",
-    "school": "Judgment & Decision-Making",
-    "schoolName": "Judgment & Decision-Making",
-    "status": "—",
-    "effect": "Use when slow-mode reasoning risks bias contamination — explicit audit framework covering the 9 most common cognitive biases in agents."
-  },
-  {
-    "skill": "cognitive-bias-checklist",
-    "name": "Cognitive Bias Checklist",
-    "school": "Judgment & Decision-Making",
-    "schoolName": "Judgment & Decision-Making",
-    "status": "—",
-    "effect": "Use when slow-mode recommendations need bias audit — explicit checklist to catch contamination before finalizing."
-  },
-  {
-    "skill": "counterfactual-policy-testing",
-    "name": "Counterfactual Policy Testing",
-    "school": "Judgment & Decision-Making",
-    "schoolName": "Judgment & Decision-Making",
-    "status": "—",
-    "effect": "Use when a decision must beat its alternatives — compare against null, opposite, and partial counterfactuals before committing."
-  },
-  {
-    "skill": "problem-mode-router-cynefin",
-    "name": "Cynefin Compass",
-    "school": "Judgment & Decision-Making",
-    "schoolName": "Judgment & Decision-Making",
-    "status": "—",
-    "effect": "Use when choosing the wrong reasoning mode is the dominant risk — Cynefin-based routing before solving the problem."
-  },
-  {
-    "skill": "problem-mode-router-cynefin-state-machine",
-    "name": "Cynefin Decision Gate",
-    "school": "Judgment & Decision-Making",
-    "schoolName": "Judgment & Decision-Making",
-    "status": "—",
-    "effect": "Use when response style depends on problem type — enforce Cynefin domain classification as a hard gate before any tool use or execution."
-  },
-  {
-    "skill": "explore-vs-exploit-state-machine",
-    "name": "Explore vs Exploit",
-    "school": "Judgment & Decision-Making",
-    "schoolName": "Judgment & Decision-Making",
-    "status": "—",
-    "effect": "Use when the agent must choose between more searching and committing — explicit explore/exploit protocol with diminishing-returns stopping rule."
-  },
-  {
-    "skill": "explore-vs-exploit",
-    "name": "Explore vs Exploit Lens",
-    "school": "Judgment & Decision-Making",
-    "schoolName": "Judgment & Decision-Making",
-    "status": "—",
-    "effect": "Use when the agent must choose between more information and acting — deliberate explore/exploit choice instead of defaulting to either extreme."
-  },
-  {
-    "skill": "failure-analysis-protocol",
-    "name": "Failure Analysis Protocol",
-    "school": "Judgment & Decision-Making",
-    "schoolName": "Judgment & Decision-Making",
-    "status": "—",
-    "effect": "Fuse of Pre-Mortem + Inversion + Second-Order Thinking. Three failure lenses merged: invert success, narrate specific failures, trace cascading consequences. Strongest pre-commitment analysis."
-  },
-  {
-    "skill": "kahneman-thinking-fast-slow-software-agent",
-    "name": "Fast & Slow Thinking",
-    "school": "Judgment & Decision-Making",
-    "schoolName": "Judgment & Decision-Making",
-    "status": "—",
-    "effect": "Use when coding or debugging work needs calibrated reasoning — switch between fast pattern recognition and slow deliberation as stakes demand."
-  },
-  {
-    "skill": "first-principles",
-    "name": "First Principles",
-    "school": "Judgment & Decision-Making",
-    "schoolName": "Judgment & Decision-Making",
-    "status": "—",
-    "effect": "Use when conventional solutions fail or framing is inherited — decompose to axiomatic foundations and reason upward from what must be true."
-  },
-  {
-    "skill": "intent-specification-protocol",
-    "name": "Intent Specification Protocol",
-    "school": "Judgment & Decision-Making",
-    "schoolName": "Judgment & Decision-Making",
-    "status": "—",
-    "effect": "Crystallize vague user requests into precise, testable intent specifications. Replace vague words (fast, good, optimized) with measurable criteria. Now includes MCP server + companion script."
-  },
-  {
-    "skill": "inversion-mental-model",
-    "name": "Inversion Mental Model",
-    "school": "Judgment & Decision-Making",
-    "schoolName": "Judgment & Decision-Making",
-    "status": "—",
-    "effect": "Use when forward reasoning keeps missing risks — model failure paths before recommending the success path."
-  },
-  {
-    "skill": "inversion-mental-model-state-machine",
-    "name": "Inversion Protocol",
-    "school": "Judgment & Decision-Making",
-    "schoolName": "Judgment & Decision-Making",
-    "status": "—",
-    "effect": "Use when risk reasoning needs defensive discipline — enforce failure-mode mapping and guardrail derivation before recommending success paths."
-  },
-  {
-    "skill": "metacognitive-monitoring",
-    "name": "Metacognitive Monitoring",
-    "school": "Judgment & Decision-Making",
-    "schoolName": "Judgment & Decision-Making",
-    "status": "—",
-    "effect": "Use when confidence calibration matters more than raw accuracy — explicit KEEP/WITHDRAW decisions tied to measured withdrawal delta."
-  },
-  {
-    "skill": "occams-razor",
-    "name": "Occam's Razor",
-    "school": "Judgment & Decision-Making",
-    "schoolName": "Judgment & Decision-Making",
-    "status": "New",
-    "effect": "Apply Occam's Razor to favor the simplest sufficient explanation or solution. Forces the agent to try the simplest thing that fits the evidence before escalating to more complex alternatives. Prevents over-engineering, premature abstraction, and scope creep."
-  },
-  {
-    "skill": "pre-mortem",
-    "name": "Pre-Mortem",
-    "school": "Judgment & Decision-Making",
-    "schoolName": "Judgment & Decision-Making",
-    "status": "—",
-    "effect": "Use when a plan must surface real risks before commitment — assume failure has occurred and narrate backward to root causes."
-  },
-  {
-    "skill": "pre-mortem-state-machine",
-    "name": "Pre-Mortem Protocol",
-    "school": "Judgment & Decision-Making",
-    "schoolName": "Judgment & Decision-Making",
-    "status": "—",
-    "effect": "Use when a plan needs validation before execution — pre-mortem protocol with artifact gating, narrative failure modeling, and risk-adjusted plan revision."
-  },
-  {
-    "skill": "recognition-primed-triage",
-    "name": "Recognition-Primed Triage",
-    "school": "Judgment & Decision-Making",
-    "schoolName": "Judgment & Decision-Making",
-    "status": "—",
-    "effect": "Use when fast judgment is required under incomplete information — pattern recognition, mental simulation, and immediate next move."
-  },
-  {
-    "skill": "recognition-primed-triage-state-machine",
-    "name": "Recognition-Primed Triage (Protocol)",
-    "school": "Judgment & Decision-Making",
-    "schoolName": "Judgment & Decision-Making",
-    "status": "—",
-    "effect": "Use when urgent triage demands speed without recklessness — gated incident-response protocol with simulation and bounded first action."
-  },
-  {
-    "skill": "reference-class-forecasting",
-    "name": "Reference Class Forecasting",
-    "school": "Judgment & Decision-Making",
-    "schoolName": "Judgment & Decision-Making",
-    "status": "—",
-    "effect": "Use when estimating timelines or success probability — anchor to similar past projects before reasoning from the specifics."
-  },
-  {
-    "skill": "second-order-thinking",
-    "name": "Second-Order Thinking",
-    "school": "Judgment & Decision-Making",
-    "schoolName": "Judgment & Decision-Making",
-    "status": "—",
-    "effect": "Use when a decision's downstream effects matter more than the obvious one — chain consequences past first-order until the system-level outcome is clear."
-  },
-  {
-    "skill": "six-thinking-hats",
-    "name": "Six Thinking Hats",
-    "school": "Judgment & Decision-Making",
-    "schoolName": "Judgment & Decision-Making",
-    "status": "—",
-    "effect": "Use when a decision risks collapsed thinking — separate fact, intuition, caution, optimism, creativity, and process into six discrete rounds."
-  },
-  {
-    "skill": "steelmanning",
-    "name": "Steelmanning",
-    "school": "Judgment & Decision-Making",
-    "schoolName": "Judgment & Decision-Making",
-    "status": "—",
-    "effect": "Use when a recommendation needs stress-testing — construct the strongest opposing case before committing."
-  },
-  {
-    "skill": "task-intake-protocol",
-    "name": "Task Intake Protocol",
-    "school": "Judgment & Decision-Making",
-    "schoolName": "Judgment & Decision-Making",
-    "status": "—",
-    "effect": "Universal preflight gate combining Cynefin problem classification, ETTO rigor calibration, and Recognition-Primed Triage into a single 3-phase decision. Classify the problem, set the evidence bar, take the first action."
-  },
-  {
-    "skill": "thoroughness-check-etto",
-    "name": "Thoroughness Check",
-    "school": "Judgment & Decision-Making",
-    "schoolName": "Judgment & Decision-Making",
-    "status": "—",
-    "effect": "Use when the agent must decide how much rigor a task deserves — classify the efficiency-vs-thoroughness balance before acting."
-  },
-  {
-    "skill": "thoroughness-check-etto-state-machine",
-    "name": "Thoroughness Check Protocol",
-    "school": "Judgment & Decision-Making",
-    "schoolName": "Judgment & Decision-Making",
-    "status": "—",
-    "effect": "Use as universal preflight before meaningful tasks — gating ETTO classification into executable controls on rigor, evidence, and tools."
-  },
-  {
-    "skill": "unsafe-control-actions-hazard-analysis",
-    "name": "Unsafe Control Actions Analysis",
-    "school": "Judgment & Decision-Making",
-    "schoolName": "Judgment & Decision-Making",
-    "status": "—",
-    "effect": "Use this skill when the agent is about to recommend or perform an action that could create serious harm, instability, or irreversible damage."
-  },
-  {
-    "skill": "active-inference-agent",
-    "name": "Active Inference Agent",
-    "school": "MCP Servers",
-    "schoolName": "MCP Servers",
-    "status": "—",
-    "effect": ">"
-  },
-  {
-    "skill": "evolutionary-tool-composer",
-    "name": "Evolutionary Tool Composer",
-    "school": "MCP Servers",
-    "schoolName": "MCP Servers",
-    "status": "—",
-    "effect": ">"
-  },
-  {
-    "skill": "local-llm-tooling",
-    "name": "Local LLM Tooling",
-    "school": "Mlops",
-    "schoolName": "Mlops",
-    "status": "—",
-    "effect": "Skills for running, prompting, and extracting structured output from local LLMs (e.g., Ollama, llama.cpp)."
-  },
-  {
-    "skill": "bounded-self-revision",
-    "name": "Bounded Self-Revision",
-    "school": "Output Quality",
-    "schoolName": "Output Quality",
-    "status": "—",
-    "effect": "Use when an initial draft needs polish but not endless revision — capped self-critique passes that terminate on improvement or budget exhaustion."
-  },
-  {
-    "skill": "cognitive-load-operator-state-machine",
-    "name": "Cognitive Load Operator",
-    "school": "Output Quality",
-    "schoolName": "Output Quality",
-    "status": "—",
-    "effect": "Use when an output risks dense overload — inspect complexity and replace high-load structures with lower-load equivalents."
-  },
-  {
-    "skill": "compression-as-understanding",
-    "name": "Compression as Understanding",
-    "school": "Output Quality",
-    "schoolName": "Output Quality",
-    "status": "—",
-    "effect": "Use when depth of understanding must be verified, not assumed — compress to the shortest representation and test whether it reconstructs the original."
-  },
-  {
-    "skill": "documentation-craft",
-    "name": "Documentation Craft",
-    "school": "Output Quality",
-    "schoolName": "Output Quality",
-    "status": "—",
-    "effect": "Use when writing technical documentation — multi-phase pipeline from outline to verified explanation, audience-driven and source-grounded."
-  },
-  {
-    "skill": "large-documentation-navigation",
-    "name": "Documentation Navigation",
-    "school": "Output Quality",
-    "schoolName": "Output Quality",
-    "status": "—",
-    "effect": "Use when a documentation corpus becomes unscannable — layered navigation driven by user situation rather than category labels."
-  },
-  {
-    "skill": "feynman-technique",
-    "name": "Feynman Technique",
-    "school": "Output Quality",
-    "schoolName": "Output Quality",
-    "status": "—",
-    "effect": "Use when explanation gaps reveal understanding gaps — explain from scratch in plain language and identify where the explanation breaks."
-  },
-  {
-    "skill": "mece-pyramid-principle",
-    "name": "MECE Pyramid Principle",
-    "school": "Output Quality",
-    "schoolName": "Output Quality",
-    "status": "—",
-    "effect": "Use when structuring a complex output — enforce mutually exclusive, collectively exhaustive categories under a single governing thought."
-  },
-  {
-    "skill": "self-consistency",
-    "name": "Self-Consistency",
-    "school": "Output Quality",
-    "schoolName": "Output Quality",
-    "status": "—",
-    "effect": "Use when a conclusion must be confirmed, not assumed — generate independent reasoning paths and check whether they converge."
-  },
-  {
-    "skill": "self-verify-pipeline",
-    "name": "Self-Verify Pipeline",
-    "school": "Output Quality",
-    "schoolName": "Output Quality",
-    "status": "—",
-    "effect": "Use when outputs risk unverified confidence — escalating verification chain of bounded revision, claim decomposition, and tool-grounded critique."
-  },
-  {
-    "skill": "stakeholder-communication",
-    "name": "Stakeholder Communication",
-    "school": "Output Quality",
-    "schoolName": "Output Quality",
-    "status": "—",
-    "effect": "Use when a human must act on the agent's output — calibrate certainty, separate fact from inference, and avoid overpromising or undue alarm."
-  },
-  {
-    "skill": "tool-interactive-critic",
-    "name": "Tool-Interactive Critic",
-    "school": "Output Quality",
-    "schoolName": "Output Quality",
-    "status": "—",
-    "effect": "Use when an initial draft needs post-generation verification — external tools critique the output before it is trusted."
-  },
-  {
-    "skill": "tree-of-thoughts",
-    "name": "Tree of Thoughts",
-    "school": "Output Quality",
-    "schoolName": "Output Quality",
-    "status": "—",
-    "effect": "Use when the first reasoning path may be wrong — branch, evaluate, and prune candidate solutions before committing."
-  },
-  {
-    "skill": "chaos-detector",
-    "name": "Chaos Detector",
-    "school": "Reasoning & Problem Solving",
-    "schoolName": "Reasoning & Problem Solving",
-    "status": "—",
-    "effect": "Use when multi-agent or extended reasoning looks unstable — compute empirical Lyapunov exponents over token trajectories and flag when small perturbations are amplifying into divergent conclusions."
-  },
-  {
-    "skill": "claim-verification-reasoning",
-    "name": "Claim Verification",
-    "school": "Reasoning & Problem Solving",
-    "schoolName": "Reasoning & Problem Solving",
-    "status": "—",
-    "effect": "Use when multi-step reasoning contains unverified claims — atomic decomposition with confidence labels and tool-grounded verification."
-  },
-  {
-    "skill": "context-density-operator",
-    "name": "Context Density Operator",
-    "school": "Reasoning & Problem Solving",
-    "schoolName": "Reasoning & Problem Solving",
-    "status": "—",
-    "effect": "Use when context is bloated with low-signal content — maximize decision-relevant information per token via hierarchical memory, on-demand detail expansion, and redundant-context pruning."
-  },
-  {
-    "skill": "context-rot-pruner",
-    "name": "Context Rot Pruner",
-    "school": "Reasoning & Problem Solving",
-    "schoolName": "Reasoning & Problem Solving",
-    "status": "—",
-    "effect": "Apply exponential decay to context messages so old, unreferenced content loses weight and gets pruned before the context window overflows. Extends useful context life by 2-3x."
-  },
-  {
-    "skill": "cot-pruning-reasoning",
-    "name": "CoT Pruning",
-    "school": "Reasoning & Problem Solving",
-    "schoolName": "Reasoning & Problem Solving",
-    "status": "—",
-    "effect": "Use when chain-of-thought is consuming budget without changing conclusions — two-pass prune retains only the steps that move the answer (coarse step-level, then fine token-level)."
-  },
-  {
-    "skill": "faithfulness-aware-reasoning",
-    "name": "Faithfulness-Aware Reasoning",
-    "school": "Reasoning & Problem Solving",
-    "schoolName": "Reasoning & Problem Solving",
-    "status": "—",
-    "effect": "Use when reasoning reads plausibly but should not be trusted — detect and prevent faithfulness hallucinations where claims aren't logically entailed by the premises."
-  },
-  {
-    "skill": "hallucination-anchor-chain",
-    "name": "Hallucination Anchor Chain",
-    "school": "Reasoning & Problem Solving",
-    "schoolName": "Reasoning & Problem Solving",
-    "status": "—",
-    "effect": "Use when factual claims risk hallucination — anchor every claim to a verified source. Unanchored claims are marked unverified and hidden. Builds a verifiable chain of evidence."
-  },
-  {
-    "skill": "prism",
-    "name": "Prism",
-    "school": "Reasoning & Problem Solving",
-    "schoolName": "Reasoning & Problem Solving",
-    "status": "—",
-    "effect": "Calibrate, compress, verify — force numeric confidence on each claim, compress to its essence, then verify the compression reconstructs the original. If it doesn't, you don't understand it."
-  },
-  {
-    "skill": "reasoning-integrity-chain",
-    "name": "Reasoning Integrity Chain",
-    "school": "Reasoning & Problem Solving",
-    "schoolName": "Reasoning & Problem Solving",
-    "status": "—",
-    "effect": "Use when multi-step reasoning risks hallucination — escalating 4-phase verification chain (faithfulness, claims, contradiction, selective halt)."
-  },
-  {
-    "skill": "selective-halt-reasoning",
-    "name": "Selective Halt",
-    "school": "Reasoning & Problem Solving",
-    "schoolName": "Reasoning & Problem Solving",
-    "status": "—",
-    "effect": "Use when reasoning is generating waste — monitor for semantic stabilization and halt early when consecutive steps converge on equivalent conclusions, instead of running to a fixed budget."
-  },
-  {
-    "skill": "self-contradiction-trap",
-    "name": "Self-Contradiction Detection",
-    "school": "Reasoning & Problem Solving",
-    "schoolName": "Reasoning & Problem Solving",
-    "status": "—",
-    "effect": "Maintain a belief store of claims made during a session. Detect when new claims contradict existing ones, and force resolution before continuing. Prevents agents from contradicting themselves."
-  },
-  {
-    "skill": "token-budget-operator",
-    "name": "Token Budget Operator",
-    "school": "Reasoning & Problem Solving",
-    "schoolName": "Reasoning & Problem Solving",
-    "status": "—",
-    "effect": "Master token-efficiency protocol that orchestrates context compression, CoT pruning, selective halting, and SOP capture in sequence. For long-horizon tasks where token burn is the bottleneck."
-  },
-  {
-    "skill": "reasoning-verification-hybrid",
-    "name": "Verification Hybrid",
-    "school": "Reasoning & Problem Solving",
-    "schoolName": "Reasoning & Problem Solving",
-    "status": "—",
-    "effect": "Use when reasoning conclusions must survive challenge — claim verification, backward contradiction, and calibrated confidence."
-  },
-  {
-    "skill": "effective-web-search",
-    "name": "Effective Web Search",
-    "school": "Research",
-    "schoolName": "Research",
-    "status": "—",
-    "effect": "Web search discipline for technical research. Use when an agent needs to look up an error, library behavior, framework quirk, or bug. Enforces official-docs-first, version-aware research, and full GitHub issue follow-through. Prevents the failure mode where the agent latches onto the first outdated GitHub issue and treats it as truth."
-  },
-  {
-    "skill": "api-surface-anchoring",
-    "name": "API Surface Anchoring",
-    "school": "Software Development",
-    "schoolName": "Software Development",
-    "status": "—",
-    "effect": "Use when using any external library, SDK, or API you are not 100% sure of, libraries released after your LLM's training cutoff, or niche/low-training-count libraries."
-  },
-  {
-    "skill": "api-design-backward-compatibility",
-    "name": "Backward Compatible API Design",
-    "school": "Software Development",
-    "schoolName": "Software Development",
-    "status": "—",
-    "effect": "Use when APIs, schemas, or contracts must evolve without breaking clients — contract-first design and additive-only change discipline."
-  },
-  {
-    "skill": "code-review-excellence",
-    "name": "Code Review Excellence",
-    "school": "Software Development",
-    "schoolName": "Software Development",
-    "status": "New",
-    "effect": "Provides constructive feedback, catches bugs early, and fosters knowledge sharing while maintaining team morale."
-  },
-  {
-    "skill": "coordinated-change",
-    "name": "Coordinated Change",
-    "school": "Software Development",
-    "schoolName": "Software Development",
-    "status": "New",
-    "effect": "Use when a fix or feature requires touching 2+ files that must stay consistent — types, implementation, tests, schema, config."
-  },
-  {
-    "skill": "critical-system-interrogation",
-    "name": "Critical System Interrogation",
-    "school": "Software Development",
-    "schoolName": "Software Development",
-    "status": "New",
-    "effect": "Use when stress-testing a critical system path (auth pipelines, payment flows, data validation) for correctness, race conditions, security flaws, and architectural integrity."
-  },
-  {
-    "skill": "pre-deployment-gate",
-    "name": "Deployment Gate",
-    "school": "Software Development",
-    "schoolName": "Software Development",
-    "status": "—",
-    "effect": "Use before deploying any code to production or before pushing AI-authored code."
-  },
-  {
-    "skill": "dev-diagnostics-mcp",
-    "name": "Dev Diagnostics MCP",
-    "school": "Software Development",
-    "schoolName": "Software Development",
-    "status": "—",
-    "effect": "Use when running diagnostics across multiple tools (eslint, tsc, vitest, pytest, biome, ruff) or comparing before/after fix diagnostics for contamination."
-  },
-  {
-    "skill": "codebase-divide-conquer-search",
-    "name": "Divide & Search",
-    "school": "Software Development",
-    "schoolName": "Software Development",
-    "status": "—",
-    "effect": "Use when the codebase is too large to fit in context (>50K tokens), grep produces too many candidates, you need to find code by behavior not by name, or the search target could be in any of several modules."
-  },
-  {
-    "skill": "git-surgery",
-    "name": "Git Surgery",
-    "school": "Software Development",
-    "schoolName": "Software Development",
-    "status": "—",
-    "effect": "Use when the repo is in a state you don't fully understand, git status output scares you, or you need to recover from a local git disaster."
-  },
-  {
-    "skill": "code-knowledge-graph-mcp",
-    "name": "Knowledge Graph MCP",
-    "school": "Software Development",
-    "schoolName": "Software Development",
-    "status": "—",
-    "effect": "MCP server with structured symbol and call-graph queries. Navigate code by structure, not by string search."
-  },
-  {
-    "skill": "lint-battalion",
-    "name": "Lint Battalion",
-    "school": "Software Development",
-    "schoolName": "Software Development",
-    "status": "—",
-    "effect": "Use when facing 50+ linter errors that are mostly mechanical, accumulated lint debt after a rule change or migration, or pre-commit cleanup where auto-fix did not resolve everything."
-  },
-  {
-    "skill": "native-data-fetching",
-    "name": "Native Data Fetching",
-    "school": "Software Development",
-    "schoolName": "Software Development",
-    "status": "New",
-    "effect": "Covers fetch API, React Query, SWR, error handling, caching, offline support, and Expo Router data loaders."
-  },
-  {
-    "skill": "llm-pre-push-review",
-    "name": "Pre-Push Review",
-    "school": "Software Development",
-    "schoolName": "Software Development",
-    "status": "—",
-    "effect": "Use before pushing AI-authored code — checklist and protocol for catching systematic LLM coding failures: overcorrection, hallucinated logic, silent vulnerabilities, missing edge cases, context-ignorant reviews."
-  },
-  {
-    "skill": "review-changes",
-    "name": "Review Changes",
-    "school": "Software Development",
-    "schoolName": "Software Development",
-    "status": "—",
-    "effect": "Structured review checklist for evaluating code changes systematically rather than reading through aimlessly."
-  },
-  {
-    "skill": "review-ladder-plus",
-    "name": "Review Ladder Plus",
-    "school": "Software Development",
-    "schoolName": "Software Development",
-    "status": "—",
-    "effect": "Use after completing any non-trivial coding task, before merging code that touches security/auth/data/concurrency, or when upgrading from casual self-review to production-grade QA."
-  },
-  {
-    "skill": "refactor-safely",
-    "name": "Safe Refactor",
-    "school": "Software Development",
-    "schoolName": "Software Development",
-    "status": "—",
-    "effect": "Characterization testing to capture existing behavior, then bounded changes with immediate verification. Safe transformation of untested code."
-  },
-  {
-    "skill": "super-review-typescript",
-    "name": "TypeScript Super Review",
-    "school": "Software Development",
-    "schoolName": "Software Development",
-    "status": "New",
-    "effect": "Use when reviewing AI-authored TypeScript — targets the five LLM-specific failure modes: security vulnerabilities, hallucinated APIs, logic errors, type-safety violations, architectural decay."
-  },
-  {
-    "skill": "verified-api-workflow",
-    "name": "Verified API Workflow",
-    "school": "Software Development",
-    "schoolName": "Software Development",
-    "status": "—",
-    "effect": "Use when writing code that calls external libraries/APIs — every external API call must be traceable to a doc you actually checked."
-  },
-  {
-    "skill": "verified-synthesize",
-    "name": "Verified Synthesis",
-    "school": "Software Development",
-    "schoolName": "Software Development",
-    "status": "—",
-    "effect": "Use when code correctness must be proven, not tested — critical bugs, pre-refactor spec locking, or API contracts requiring formal verification."
-  },
-  {
-    "skill": "verify-before-integrate",
-    "name": "Verify Before Integrate",
-    "school": "Software Development",
-    "schoolName": "Software Development",
-    "status": "—",
-    "effect": "Use when integrating research or external docs into code — verify the actual system behavior rather than matching abstract terminology."
-  },
-  {
     "skill": "accelerate-ai",
-    "name": "Accelerate AI",
+    "name": "Accelerate for AI Delivery and Reliability Agents",
     "school": "Systems & Architecture",
-    "schoolName": "Systems & Architecture",
+    "schoolName": "School of Architecture",
     "status": "—",
     "effect": "Use when delivery is slow or risky — improve engineering throughput and reliability by strengthening feedback, lowering batch risk, and shortening recovery time. Covers CI/CD, release engineering, platform work, and incident recovery."
-  },
-  {
-    "skill": "architecture-evolution-review",
-    "name": "Architecture Evolution Review",
-    "school": "Systems & Architecture",
-    "schoolName": "Systems & Architecture",
-    "status": "New",
-    "effect": "Review the repository as a living system. Detect architectural drift, feature erosion, and long-term maintenance risks before they become expensive."
   },
   {
     "skill": "maintain-architecture",
     "name": "Architecture Maintenance",
     "school": "Systems & Architecture",
-    "schoolName": "Systems & Architecture",
-    "status": "New",
+    "schoolName": "School of Architecture",
+    "status": "—",
     "effect": "Review completed work for architectural quality, maintainability, feature ownership, and long-term scalability."
   },
   {
     "skill": "cross-domain-analogy-generator",
     "name": "Cross-Domain Analogy Generator",
     "school": "Systems & Architecture",
-    "schoolName": "Systems & Architecture",
+    "schoolName": "School of Architecture",
     "status": "—",
     "effect": "Use when stuck on a problem — break fixation by mapping the structure to biology, music, traffic, or another foreign domain and transferring insights. Generates novel solutions when standard approaches fail."
   },
   {
     "skill": "designing-data-intensive-applications-ai",
-    "name": "Data System Principles",
+    "name": "Designing Data-Intensive Applications for AI Agents",
     "school": "Systems & Architecture",
-    "schoolName": "Systems & Architecture",
+    "schoolName": "School of Architecture",
     "status": "—",
     "effect": "Use when reasoning about data systems — storage choices, replication, consistency, partitioning, queues, failure modes, and operational tradeoffs. Covers backend architecture, event systems, schema changes, distributed debugging."
   },
   {
     "skill": "domain-driven-design",
-    "name": "Domain-Driven Design",
+    "name": "Domain-Driven Design for AI Agents",
     "school": "Systems & Architecture",
-    "schoolName": "Systems & Architecture",
+    "schoolName": "School of Architecture",
     "status": "—",
     "effect": "Use when architecture must reflect the business domain — bounded contexts, ubiquitous language, aggregates, context maps, domain events, anti-corruption layers. Forces separation of concerns at the right seams."
   },
   {
     "skill": "everything-as-code-conceptualizer",
-    "name": "Everything as Code",
+    "name": "Everything-as-Code Conceptualizer",
     "school": "Systems & Architecture",
-    "schoolName": "Systems & Architecture",
+    "schoolName": "School of Architecture",
     "status": "—",
     "effect": "Use when messy human problems resist analysis — codify the system as pseudocode to reveal hidden assumptions, missing decisions, and edge cases that natural-language descriptions obscure."
   },
@@ -1254,23 +54,31 @@ export const SKILL_CATALOG = [
     "skill": "plan-feature-architecture",
     "name": "Feature Architecture Planning",
     "school": "Systems & Architecture",
-    "schoolName": "Systems & Architecture",
-    "status": "New",
+    "schoolName": "School of Architecture",
+    "status": "—",
     "effect": "Plan the architecture of a feature before implementation. Decide ownership, placement, module boundaries, dependencies, and project impact before writing code."
   },
   {
     "skill": "improve-codebase-architecture",
-    "name": "Improve Codebase Architecture",
+    "name": "Improving existing codebase structure",
     "school": "Systems & Architecture",
-    "schoolName": "Systems & Architecture",
-    "status": "New",
+    "schoolName": "School of Architecture",
+    "status": "—",
     "effect": "Finds deepening opportunities informed by the domain language in CONTEXT.md and decisions in docs/adr/."
   },
   {
-    "skill": "release-it-stability",
-    "name": "Release It Stability",
+    "skill": "architecture-evolution-review",
+    "name": "Mission",
     "school": "Systems & Architecture",
-    "schoolName": "Systems & Architecture",
+    "schoolName": "School of Architecture",
+    "status": "—",
+    "effect": "Review the repository as a living system. Detect architectural drift, feature erosion, and long-term maintenance risks before they become expensive."
+  },
+  {
+    "skill": "release-it-stability",
+    "name": "Release It! Stability Patterns for AI Agents",
+    "school": "Systems & Architecture",
+    "schoolName": "School of Architecture",
     "status": "—",
     "effect": "Use when reasoning about distributed-system resilience — circuit breakers, bulkheads, timeouts, load shedding, steady-state hygiene for production failure modes. Stops cascading failures before they spread."
   },
@@ -1278,55 +86,55 @@ export const SKILL_CATALOG = [
     "skill": "security-review-protocol",
     "name": "Security Review Protocol",
     "school": "Systems & Architecture",
-    "schoolName": "Systems & Architecture",
+    "schoolName": "School of Architecture",
     "status": "—",
     "effect": "Fuse of Security Threat Modeling (STRIDE) + Unsafe Control Actions + Vibe Coding Security Hardening. Three security lenses merged: attack surface analysis, hazardous operation checking, and LLM-specific vulnerability audit."
   },
   {
-    "skill": "sre-error-budget",
-    "name": "SRE Error Budget",
-    "school": "Systems & Architecture",
-    "schoolName": "Systems & Architecture",
-    "status": "—",
-    "effect": "Use when reasoning about reliability vs velocity — SLOs, error budgets, toil budgets, and change-velocity governance. Spend the budget on speed when healthy; freeze changes when depleted."
-  },
-  {
     "skill": "security-threat-modeling",
-    "name": "STRIDE Threat Modeling",
+    "name": "Security Threat Modeling for AI Agents",
     "school": "Systems & Architecture",
-    "schoolName": "Systems & Architecture",
+    "schoolName": "School of Architecture",
     "status": "—",
     "effect": "Use when handling auth, secrets, user input, or sensitive data — STRIDE threat analysis, attack-surface mapping, trust-boundary reasoning, and attacker-perspective review before shipping security-relevant changes."
   },
   {
-    "skill": "system-architecture-audit",
-    "name": "System Architecture Audit",
+    "skill": "sre-error-budget",
+    "name": "SRE / Error Budget Thinking for AI Agents",
     "school": "Systems & Architecture",
-    "schoolName": "Systems & Architecture",
+    "schoolName": "School of Architecture",
+    "status": "—",
+    "effect": "Use when reasoning about reliability vs velocity — SLOs, error budgets, toil budgets, and change-velocity governance. Spend the budget on speed when healthy; freeze changes when depleted."
+  },
+  {
+    "skill": "system-architecture-audit",
+    "name": "System Architecture Audit for AI Agents",
+    "school": "Systems & Architecture",
+    "schoolName": "School of Architecture",
     "status": "—",
     "effect": "Use when auditing an existing system for architectural weaknesses — 4-phase audit fusing Thinking in Systems, DDD, DDIA, and Release It. Reveals structural problems before they cascade."
   },
   {
     "skill": "team-topologies-ai",
-    "name": "Team Topologies",
+    "name": "Team Topologies for Multi-Agent Software Systems",
     "school": "Systems & Architecture",
-    "schoolName": "Systems & Architecture",
+    "schoolName": "School of Architecture",
     "status": "—",
     "effect": "Use when organizing work across multiple agents or teams — stream-aligned, platform, enabling, and complicated-subsystem boundaries with explicit interaction modes. Prevents God Agents and platform empires."
   },
   {
     "skill": "the-goal-theory-of-constraints-ai",
-    "name": "Theory of Constraints",
+    "name": "The Goal for AI Engineering Agents",
     "school": "Systems & Architecture",
-    "schoolName": "Systems & Architecture",
+    "schoolName": "School of Architecture",
     "status": "—",
     "effect": "Use when throughput is capped or work piles up — find the one constraint, ignore non-constraints, exploit then elevate it, repeat when it moves. Stops micro-optimization that does not move total throughput."
   },
   {
     "skill": "thinking-in-systems-state-machine",
-    "name": "Thinking in Systems",
+    "name": "Thinking in Systems — State Machine Protocol for AI Agents",
     "school": "Systems & Architecture",
-    "schoolName": "Systems & Architecture",
+    "schoolName": "School of Architecture",
     "status": "—",
     "effect": "Use when tasks involve feedback loops, delayed effects, or multi-step cascades — model stocks, flows, delays, leverage points, and blast radius before touching the system. State-machine protocol, not a mindset."
   },
@@ -1334,64 +142,1256 @@ export const SKILL_CATALOG = [
     "skill": "vibe-coding-security-hardening",
     "name": "Vibe Coding Security Hardening",
     "school": "Systems & Architecture",
-    "schoolName": "Systems & Architecture",
+    "schoolName": "School of Architecture",
     "status": "—",
     "effect": "Use before deploying AI-generated apps — systematic checklist for the vulnerabilities LLMs reliably introduce: exposed secrets, missing RLS, broken auth, injection flaws, insecure defaults."
   },
   {
-    "skill": "skill-ab-evaluation",
-    "name": "A/B Skill Evaluation",
-    "school": "Testing & Evaluation",
-    "schoolName": "Testing & Evaluation",
+    "skill": "chaos-detector",
+    "name": "Chaos Detector",
+    "school": "Reasoning & Faithfulness",
+    "schoolName": "School of Cognition",
     "status": "—",
-    "effect": "A/B evaluate any GrimoireStack skill against a baseline using isolated subagents, 5 trials each, and an objective rubric. Measures real % improvement without touching current projects."
+    "effect": "Use when multi-agent or extended reasoning looks unstable — compute empirical Lyapunov exponents over token trajectories and flag when small perturbations are amplifying into divergent conclusions."
+  },
+  {
+    "skill": "claim-verification-reasoning",
+    "name": "Claim Verification Reasoning",
+    "school": "Reasoning & Faithfulness",
+    "schoolName": "School of Cognition",
+    "status": "—",
+    "effect": "Use when multi-step reasoning contains unverified claims — atomic decomposition with confidence labels and tool-grounded verification."
+  },
+  {
+    "skill": "context-density-operator",
+    "name": "Context Density Operator",
+    "school": "Reasoning & Faithfulness",
+    "schoolName": "School of Cognition",
+    "status": "—",
+    "effect": "Use when context is bloated with low-signal content — maximize decision-relevant information per token via hierarchical memory, on-demand detail expansion, and redundant-context pruning."
+  },
+  {
+    "skill": "context-rot-pruner",
+    "name": "Context Rot Pruner",
+    "school": "Reasoning & Faithfulness",
+    "schoolName": "School of Cognition",
+    "status": "—",
+    "effect": "Apply exponential decay to context messages so old, unreferenced content loses weight and gets pruned before the context window overflows. Extends useful context life by 2-3x."
+  },
+  {
+    "skill": "cot-pruning-reasoning",
+    "name": "CoT Pruning Reasoning",
+    "school": "Reasoning & Faithfulness",
+    "schoolName": "School of Cognition",
+    "status": "—",
+    "effect": "Use when chain-of-thought is consuming budget without changing conclusions — two-pass prune retains only the steps that move the answer (coarse step-level, then fine token-level)."
+  },
+  {
+    "skill": "faithfulness-aware-reasoning",
+    "name": "Faithfulness-Aware Reasoning",
+    "school": "Reasoning & Faithfulness",
+    "schoolName": "School of Cognition",
+    "status": "—",
+    "effect": "Use when reasoning reads plausibly but should not be trusted — detect and prevent faithfulness hallucinations where claims aren't logically entailed by the premises."
+  },
+  {
+    "skill": "hallucination-anchor-chain",
+    "name": "Hallucination Anchor Chain",
+    "school": "Reasoning & Faithfulness",
+    "schoolName": "School of Cognition",
+    "status": "—",
+    "effect": "Use when factual claims risk hallucination — anchor every claim to a verified source. Unanchored claims are marked unverified and hidden. Builds a verifiable chain of evidence."
+  },
+  {
+    "skill": "prism",
+    "name": "Prism",
+    "school": "Reasoning & Faithfulness",
+    "schoolName": "School of Cognition",
+    "status": "—",
+    "effect": "Calibrate, compress, verify — force numeric confidence on each claim, compress to its essence, then verify the compression reconstructs the original. If it doesn't, you don't understand it."
+  },
+  {
+    "skill": "reasoning-integrity-chain",
+    "name": "Reasoning Integrity Chain for AI Agents",
+    "school": "Reasoning & Faithfulness",
+    "schoolName": "School of Cognition",
+    "status": "—",
+    "effect": "Use when multi-step reasoning risks hallucination — escalating 4-phase verification chain (faithfulness, claims, contradiction, selective halt)."
+  },
+  {
+    "skill": "reasoning-verification-hybrid",
+    "name": "Reasoning Verification Hybrid",
+    "school": "Reasoning & Faithfulness",
+    "schoolName": "School of Cognition",
+    "status": "—",
+    "effect": "Use when reasoning conclusions must survive challenge — claim verification, backward contradiction, and calibrated confidence."
+  },
+  {
+    "skill": "selective-halt-reasoning",
+    "name": "Selective Halt Reasoning",
+    "school": "Reasoning & Faithfulness",
+    "schoolName": "School of Cognition",
+    "status": "—",
+    "effect": "Use when reasoning is generating waste — monitor for semantic stabilization and halt early when consecutive steps converge on equivalent conclusions, instead of running to a fixed budget."
+  },
+  {
+    "skill": "self-contradiction-trap",
+    "name": "Self-Contradiction Trap",
+    "school": "Reasoning & Faithfulness",
+    "schoolName": "School of Cognition",
+    "status": "—",
+    "effect": "Maintain a belief store of claims made during a session. Detect when new claims contradict existing ones, and force resolution before continuing. Prevents agents from contradicting themselves."
+  },
+  {
+    "skill": "token-budget-operator",
+    "name": "Token Budget Operator",
+    "school": "Reasoning & Faithfulness",
+    "schoolName": "School of Cognition",
+    "status": "—",
+    "effect": "Master token-efficiency protocol that orchestrates context compression, CoT pruning, selective halting, and SOP capture in sequence. For long-horizon tasks where token burn is the bottleneck."
+  },
+  {
+    "skill": "active-inference-agent",
+    "name": "Active Inference Agent",
+    "school": "MCP Servers",
+    "schoolName": "School of Conduits",
+    "status": "—",
+    "effect": ">"
+  },
+  {
+    "skill": "evolutionary-tool-composer",
+    "name": "Evolutionary Tool Composer",
+    "school": "MCP Servers",
+    "schoolName": "School of Conduits",
+    "status": "—",
+    "effect": ">"
+  },
+  {
+    "skill": "agent-memory-hygiene",
+    "name": "Agent Memory Hygiene for AI Agents",
+    "school": "Agent Orchestration",
+    "schoolName": "School of Confluence",
+    "status": "—",
+    "effect": "Use when memory persists across sessions — control what is stored, retrieved, trusted, and discarded to avoid stale-context actions."
+  },
+  {
+    "skill": "agentic-design-patterns-orchestrator-state-machine",
+    "name": "Agentic Patterns Orchestrator — State Machine Protocol for AI Agents",
+    "school": "Agent Orchestration",
+    "schoolName": "School of Confluence",
+    "status": "—",
+    "effect": "Use when the task is non-trivial and one-shot replies are insufficient — enforce a phased workflow with explicit gates between classify, plan, execute, reflect, and verify."
+  },
+  {
+    "skill": "agentic-design-patterns-orchestrator",
+    "name": "Agentic Patterns Orchestrator for AI Agents",
+    "school": "Agent Orchestration",
+    "schoolName": "School of Confluence",
+    "status": "—",
+    "effect": "Use when treating a task as a single-shot reply would lose reliability — adopt pattern-based orchestration with planning, routing, reflection, and recovery."
+  },
+  {
+    "skill": "jury",
+    "name": "Jury",
+    "school": "Agent Orchestration",
+    "schoolName": "School of Confluence",
+    "status": "—",
+    "effect": "Argue, then structure the disagreement — spawn parallel perspectives with conflicting goals, force them to engage, output a conflict graph that reveals what actually matters. Use when reasonable options exist and the choice isn't obvious."
+  },
+  {
+    "skill": "monte-carlo-tree-search",
+    "name": "Monte Carlo Tree Search for AI Agents",
+    "school": "Agent Orchestration",
+    "schoolName": "School of Confluence",
+    "status": "—",
+    "effect": "Use when several strategies compete for limited reasoning budget — allocate search effort to branches that earn it through probes and scoring."
+  },
+  {
+    "skill": "navigator",
+    "name": "Navigator",
+    "school": "Agent Orchestration",
+    "schoolName": "School of Confluence",
+    "status": "—",
+    "effect": "Map, distill, retrieve — Scout reads code, Thought-Retriever stores the reasoning trail so future sessions resume from where you stopped. Use when the codebase is large, unfamiliar, or the agent keeps re-asking the same questions."
+  },
+  {
+    "skill": "octopus",
+    "name": "Octopus — Distributed Multi-Agent Orchestration",
+    "school": "Agent Orchestration",
+    "schoolName": "School of Confluence",
+    "status": "—",
+    "effect": "Coordinate parallel sub-agents with bounded concurrency — define shared contracts, delegate with auto-healing arms, retract on failure. Use when 3+ workstreams share a contract and parallel speedup beats coordination overhead."
+  },
+  {
+    "skill": "pre-flight-intent-verification",
+    "name": "Pre-Flight Intent Verification",
+    "school": "Agent Orchestration",
+    "schoolName": "School of Confluence",
+    "status": "—",
+    "effect": "Pre-action gate before any significant task — surface the critical assumption, crystallize intent into testable spec, ground facts before acting. Use when a request has ambiguity, blast radius, or irreversible side effects."
+  },
+  {
+    "skill": "rashomon-triad-hybrid",
+    "name": "Rashomon-Triad Hybrid",
+    "school": "Agent Orchestration",
+    "schoolName": "School of Confluence",
+    "status": "—",
+    "effect": "Surface genuine disagreement — parallel perspectives with conflicting goals run independent abductive-deductive-inductive cycles, then argue via attack graph. Returns selection, composition, or conflict-surfacing output. Use for high-stakes trade-offs without a single correct answer."
+  },
+  {
+    "skill": "scout",
+    "name": "Scout",
+    "school": "Agent Orchestration",
+    "schoolName": "School of Confluence",
+    "status": "—",
+    "effect": "Fast context scout — a lightweight sub-agent reads files and returns only distilled, relevant context for the main model. Saves tokens, reduces distraction, and prevents the main model from getting lost in large codebases."
+  },
+  {
+    "skill": "separation-of-concerns",
+    "name": "Separation of Concerns for AI Agent Orchestration",
+    "school": "Agent Orchestration",
+    "schoolName": "School of Confluence",
+    "status": "—",
+    "effect": "Use when a multi-step task risks concern contamination — keep planning, diagnosis, observation, and execution phases intellectually isolated."
+  },
+  {
+    "skill": "socratic-clarification",
+    "name": "Socratic Clarification Protocol for AI Agents",
+    "school": "Agent Orchestration",
+    "schoolName": "School of Confluence",
+    "status": "—",
+    "effect": "Use when a task is ambiguous or high-stakes — surface the most critical hidden assumption before committing to execution."
+  },
+  {
+    "skill": "sop-evolution-memory",
+    "name": "SOP Evolution Memory",
+    "school": "Agent Orchestration",
+    "schoolName": "School of Confluence",
+    "status": "—",
+    "effect": "Use after repeated successes on a class of tasks — distill trajectories into reusable Standard Operating Procedures (SOPs). Future similar tasks load the SOP instead of the full history."
+  },
+  {
+    "skill": "subagent-composer",
+    "name": "Sub-Agent Composer — High-Context Delegation",
+    "school": "Agent Orchestration",
+    "schoolName": "School of Confluence",
+    "status": "—",
+    "effect": "Compose high-context sub-agent briefs — skill loading, explicit boundaries, success criteria, stop rules. Use when delegating to sub-agents to eliminate first-pass failures from incomplete briefs."
+  },
+  {
+    "skill": "subagent-laws",
+    "name": "Sub-Agent Laws",
+    "school": "Agent Orchestration",
+    "schoolName": "School of Confluence",
+    "status": "—",
+    "effect": "Standing behavioral constraints every sub-agent must follow. Loaded by subagent-composer as mandatory policy alongside task-specific skills. Use when composing briefs to enforce scope discipline, test integrity, and communication standards."
+  },
+  {
+    "skill": "thought-retriever-coppermind",
+    "name": "Thought-Retriever with Coppermind",
+    "school": "Agent Orchestration",
+    "schoolName": "School of Confluence",
+    "status": "—",
+    "effect": "Use when sub-agents must learn across sessions — store intermediate reasoning as retrievable thoughts in the Coppermind memory layers."
+  },
+  {
+    "skill": "weak-link-detection-multi-agent",
+    "name": "Weak-Link Detection for Multi-Agent Systems",
+    "school": "Agent Orchestration",
+    "schoolName": "School of Confluence",
+    "status": "—",
+    "effect": "Identify and isolate the weakest reasoning chain in multi-agent outputs before aggregation. Prevents error amplification when one agent fails. Use when aggregating outputs and one bad agent could poison the collective result."
+  },
+  {
+    "skill": "llm-pre-push-review",
+    "name": "1. Run existing tests",
+    "school": "Software Development",
+    "schoolName": "School of Crafting",
+    "status": "—",
+    "effect": "Use before pushing AI-authored code — checklist and protocol for catching systematic LLM coding failures: overcorrection, hallucinated logic, silent vulnerabilities, missing edge cases, context-ignorant reviews."
+  },
+  {
+    "skill": "pre-deployment-gate",
+    "name": "1. Tests",
+    "school": "Software Development",
+    "schoolName": "School of Crafting",
+    "status": "—",
+    "effect": "Use before deploying any code to production or before pushing AI-authored code."
+  },
+  {
+    "skill": "api-design-backward-compatibility",
+    "name": "API Design and Backward Compatibility",
+    "school": "Software Development",
+    "schoolName": "School of Crafting",
+    "status": "—",
+    "effect": "Use when APIs, schemas, or contracts must evolve without breaking clients — contract-first design and additive-only change discipline."
+  },
+  {
+    "skill": "api-surface-anchoring",
+    "name": "API Surface Anchoring",
+    "school": "Software Development",
+    "schoolName": "School of Crafting",
+    "status": "—",
+    "effect": "Use when using any external library, SDK, or API you are not 100% sure of, libraries released after your LLM's training cutoff, or niche/low-training-count libraries."
+  },
+  {
+    "skill": "codebase-divide-conquer-search",
+    "name": "Codebase Divide-and-Conquer Search",
+    "school": "Software Development",
+    "schoolName": "School of Crafting",
+    "status": "—",
+    "effect": "Use when the codebase is too large to fit in context (>50K tokens), grep produces too many candidates, you need to find code by behavior not by name, or the search target could be in any of several modules."
+  },
+  {
+    "skill": "coordinated-change",
+    "name": "Coordinated Change",
+    "school": "Software Development",
+    "schoolName": "School of Crafting",
+    "status": "—",
+    "effect": "Use when a fix or feature requires touching 2+ files that must stay consistent — types, implementation, tests, schema, config."
+  },
+  {
+    "skill": "critical-system-interrogation",
+    "name": "Critical System Interrogation",
+    "school": "Software Development",
+    "schoolName": "School of Crafting",
+    "status": "—",
+    "effect": "Use when stress-testing a critical system path (auth pipelines, payment flows, data validation) for correctness, race conditions, security flaws, and architectural integrity."
+  },
+  {
+    "skill": "native-data-fetching",
+    "name": "Data fetching in a React/Expo app",
+    "school": "Software Development",
+    "schoolName": "School of Crafting",
+    "status": "—",
+    "effect": "Covers fetch API, React Query, SWR, error handling, caching, offline support, and Expo Router data loaders."
+  },
+  {
+    "skill": "dev-diagnostics-mcp",
+    "name": "Dev Diagnostics MCP",
+    "school": "Software Development",
+    "schoolName": "School of Crafting",
+    "status": "—",
+    "effect": "Use when running diagnostics across multiple tools (eslint, tsc, vitest, pytest, biome, ruff) or comparing before/after fix diagnostics for contamination."
+  },
+  {
+    "skill": "lint-battalion",
+    "name": "ESLint",
+    "school": "Software Development",
+    "schoolName": "School of Crafting",
+    "status": "—",
+    "effect": "Use when facing 50+ linter errors that are mostly mechanical, accumulated lint debt after a rule change or migration, or pre-commit cleanup where auto-fix did not resolve everything."
+  },
+  {
+    "skill": "code-review-excellence",
+    "name": "General quality or correctness doubts",
+    "school": "Software Development",
+    "schoolName": "School of Crafting",
+    "status": "—",
+    "effect": "Provides constructive feedback, catches bugs early, and fosters knowledge sharing while maintaining team morale."
+  },
+  {
+    "skill": "git-surgery",
+    "name": "Identify the detached commits",
+    "school": "Software Development",
+    "schoolName": "School of Crafting",
+    "status": "—",
+    "effect": "Use when the repo is in a state you don't fully understand, git status output scares you, or you need to recover from a local git disaster."
+  },
+  {
+    "skill": "code-knowledge-graph-mcp",
+    "name": "Knowledge Graph",
+    "school": "Software Development",
+    "schoolName": "School of Crafting",
+    "status": "—",
+    "effect": "MCP server with structured symbol and call-graph queries. Navigate code by structure, not by string search."
+  },
+  {
+    "skill": "review-ladder-plus",
+    "name": "Review Ladder Plus",
+    "school": "Software Development",
+    "schoolName": "School of Crafting",
+    "status": "—",
+    "effect": "Use after completing any non-trivial coding task, before merging code that touches security/auth/data/concurrency, or when upgrading from casual self-review to production-grade QA."
+  },
+  {
+    "skill": "review-changes",
+    "name": "Review Lens",
+    "school": "Software Development",
+    "schoolName": "School of Crafting",
+    "status": "—",
+    "effect": "Structured review checklist for evaluating code changes systematically rather than reading through aimlessly."
+  },
+  {
+    "skill": "refactor-safely",
+    "name": "Safe Refactor",
+    "school": "Software Development",
+    "schoolName": "School of Crafting",
+    "status": "—",
+    "effect": "Characterization testing to capture existing behavior, then bounded changes with immediate verification. Safe transformation of untested code."
+  },
+  {
+    "skill": "super-review-typescript",
+    "name": "Super Review TypeScript",
+    "school": "Software Development",
+    "schoolName": "School of Crafting",
+    "status": "—",
+    "effect": "Use when reviewing AI-authored TypeScript — targets the five LLM-specific failure modes: security vulnerabilities, hallucinated APIs, logic errors, type-safety violations, architectural decay."
+  },
+  {
+    "skill": "verified-api-workflow",
+    "name": "Verified API Workflow",
+    "school": "Software Development",
+    "schoolName": "School of Crafting",
+    "status": "—",
+    "effect": "Use when writing code that calls external libraries/APIs — every external API call must be traceable to a doc you actually checked."
+  },
+  {
+    "skill": "verified-synthesize",
+    "name": "Verified Code Synthesizer",
+    "school": "Software Development",
+    "schoolName": "School of Crafting",
+    "status": "—",
+    "effect": "Use when code correctness must be proven, not tested — critical bugs, pre-refactor spec locking, or API contracts requiring formal verification."
+  },
+  {
+    "skill": "verify-before-integrate",
+    "name": "Verify Before Integrate",
+    "school": "Software Development",
+    "schoolName": "School of Crafting",
+    "status": "—",
+    "effect": "Use when integrating research or external docs into code — verify the actual system behavior rather than matching abstract terminology."
+  },
+  {
+    "skill": "philosophy-of-software-design-state-machine",
+    "name": "A Philosophy of Software Design — State Machine Protocol for AI Agents",
+    "school": "Execution & Improvement",
+    "schoolName": "School of Execution",
+    "status": "—",
+    "effect": "Use when managing complexity or designing modules — design deeper modules, avoid shallow abstraction sprawl, declare unknowns and blast radius, bound change scope, stop explicitly."
+  },
+  {
+    "skill": "how-to-solve-it-analogy",
+    "name": "Analogy and Transfer Reasoning for AI Agents",
+    "school": "Execution & Improvement",
+    "schoolName": "School of Execution",
+    "status": "—",
+    "effect": "Use when the problem resembles one solved before — deliberately search for the best-matching analog, verify the structural mapping holds, then transfer the prior solution. Companion to first-principles thinking."
+  },
+  {
+    "skill": "blueprint",
+    "name": "Blueprint",
+    "school": "Execution & Improvement",
+    "schoolName": "School of Execution",
+    "status": "—",
+    "effect": "Type the problem — codify messy situations into schema so contradictions, gaps, and silent assumptions become impossible to ignore. Use when vague problems keep being redefined or stakeholders talk past each other."
+  },
+  {
+    "skill": "checklist-manifesto",
+    "name": "Checklist Manifesto — State Machine Protocol for AI Agents",
+    "school": "Execution & Improvement",
+    "schoolName": "School of Execution",
+    "status": "—",
+    "effect": "Use when a high-stakes procedure demands more than expertise — build the smallest useful checklist, gate execution on checklist completion, stop cleanly and escalate if it cannot be cleared."
+  },
+  {
+    "skill": "cognitive-friction-governor",
+    "name": "Cognitive Friction Governor",
+    "school": "Execution & Improvement",
+    "schoolName": "School of Execution",
+    "status": "—",
+    "effect": "Use when deliberation is miscalibrated — over-thinking trivial problems, under-thinking complex ones, or paralyzed by analysis. Assign deliberation budgets; step costs friction; budget exhausted forces decision."
+  },
+  {
+    "skill": "context-budget-operator",
+    "name": "Estimate token cost of files",
+    "school": "Execution & Improvement",
+    "schoolName": "School of Execution",
+    "status": "—",
+    "effect": "Manage finite context windows explicitly. Track token budget, classify information needs, compress aggressively, and decide breadth-vs-depth based on remaining runway. Prevents silent context overflow and instruction dropout."
+  },
+  {
+    "skill": "how-to-solve-it-state-machine",
+    "name": "How to Solve It — State Machine Protocol for AI Agents",
+    "school": "Execution & Improvement",
+    "schoolName": "School of Execution",
+    "status": "—",
+    "effect": "Use when solving a hard problem under uncertainty — frame the problem, gather evidence, explore via hypothesis, plan, reflect. Designed to prevent premature coding."
+  },
+  {
+    "skill": "iterative-spec-authoring",
+    "name": "Iterative Spec Authoring",
+    "school": "Execution & Improvement",
+    "schoolName": "School of Execution",
+    "status": "—",
+    "effect": "Use when a spec must be defensible — author a detailed technical spec grounded in research, refine through up to 3 judge-LLM review cycles, then present to the user for final approval."
+  },
+  {
+    "skill": "keyword-agnostic-logic-locator",
+    "name": "Keyword-Agnostic Logic Locator",
+    "school": "Execution & Improvement",
+    "schoolName": "School of Execution",
+    "status": "—",
+    "effect": "Use when grep and naming-based search fail — find code by structural relationships and logical queries via a Datalog-style knowledge graph over call graphs, data flows, and type hierarchies."
+  },
+  {
+    "skill": "legacy-rescue-protocol",
+    "name": "Legacy Rescue Protocol",
+    "school": "Execution & Improvement",
+    "schoolName": "School of Execution",
+    "status": "—",
+    "effect": "Fuse of Working Effectively with Legacy Code + Refactoring State Machine. Characterize legacy behavior, create seams, then transform in bounded slices with anti-loop protection."
+  },
+  {
+    "skill": "long-task-survival-kit",
+    "name": "Long Task Survival Kit",
+    "school": "Execution & Improvement",
+    "schoolName": "School of Execution",
+    "status": "—",
+    "effect": "Fuse of Assumption Grounding + Trajectory Guard + Context Budget Operator. Recurring checkpoint protocol that prevents agent decay on complex tasks: context overflow, failure spirals, and hallucinated facts."
+  },
+  {
+    "skill": "ooda-loop-state-machine",
+    "name": "OODA Loop — State Machine Protocol for AI Agents",
+    "school": "Execution & Improvement",
+    "schoolName": "School of Execution",
+    "status": "—",
+    "effect": "Use when conditions are changing rapidly, adversarially, or unpredictably — Observe, Orient, Decide, Act, Loop. Maintains decision tempo against an environment that shifts between every move."
+  },
+  {
+    "skill": "pdca-deming",
+    "name": "PDCA / Shewhart Cycle — State Machine Protocol for AI Agents",
+    "school": "Execution & Improvement",
+    "schoolName": "School of Execution",
+    "status": "—",
+    "effect": "Use when improving a process through a measurement-anchored cycle — plan with a measurable prediction, do, check actual vs predicted, then standardize or escalate. Do not standardize what was not measured."
+  },
+  {
+    "skill": "plan-with-judge",
+    "name": "Plan with Judge",
+    "school": "Execution & Improvement",
+    "schoolName": "School of Execution",
+    "status": "—",
+    "effect": "Create an implementation plan in JSONL format, then iteratively improve it using a stronger user-specified model as a judge until the plan is approved."
+  },
+  {
+    "skill": "process-reward-model-protocol",
+    "name": "Process Reward Model Protocol",
+    "school": "Execution & Improvement",
+    "schoolName": "School of Execution",
+    "status": "—",
+    "effect": "Use when reasoning may have committed to a wrong path too early — self-assign process rewards per step and backtrack when cumulative reward drops below threshold."
+  },
+  {
+    "skill": "refactoring-state-machine",
+    "name": "Refactoring — State Machine Protocol for AI Agents",
+    "school": "Execution & Improvement",
+    "schoolName": "School of Execution",
+    "status": "—",
+    "effect": "Use when improving structure without drifting into endless cleanup — characterize behavior, transform in bounded slices, re-test. Stops refactor loops."
+  },
+  {
+    "skill": "requirement-crystallization-protocol",
+    "name": "Requirement Crystallization Protocol",
+    "school": "Execution & Improvement",
+    "schoolName": "School of Execution",
+    "status": "—",
+    "effect": "Fuse of Socratic Clarification + Intent Specification Protocol. Surfaces the critical assumption, then crystallizes vague requests into locked, testable specs before coding begins."
+  },
+  {
+    "skill": "retrospective",
+    "name": "Retrospective — After-Action Learning from Real Outcomes",
+    "school": "Execution & Improvement",
+    "schoolName": "School of Execution",
+    "status": "—",
+    "effect": "Use this skill after an incident, shipped feature, completed project, or any significant outcome to systematically learn from what happened. The natural counterpart to pre-mortem: before execution you imagine failure; after execution you examine the real outcome."
+  },
+  {
+    "skill": "speculative-drafting-verification",
+    "name": "Speculative Drafting with Verification",
+    "school": "Execution & Improvement",
+    "schoolName": "School of Execution",
+    "status": "—",
+    "effect": "Use when a single candidate risks a local minimum — generate multiple solution branches in parallel, verify each against hard constraints, select the best."
+  },
+  {
+    "skill": "speculative-exploration-protocol",
+    "name": "Speculative Exploration Protocol for AI Agents",
+    "school": "Execution & Improvement",
+    "schoolName": "School of Execution",
+    "status": "—",
+    "effect": "Use when the best reasoning path is unclear — branch into N candidates, score with process rewards, prune low-reward branches, then verify the best candidate against hard constraints. Prevents first-branch lock-in."
+  },
+  {
+    "skill": "step-level-verification-protocol",
+    "name": "Step-Level Verification Protocol",
+    "school": "Execution & Improvement",
+    "schoolName": "School of Execution",
+    "status": "—",
+    "effect": "Use when multi-step reasoning risks error propagation — verify each step before proceeding so a wrong step doesn't cascade into a chain of unjustified conclusions."
+  },
+  {
+    "skill": "structured-feature-planning",
+    "name": "Structured Feature Planning",
+    "school": "Execution & Improvement",
+    "schoolName": "School of Execution",
+    "status": "—",
+    "effect": "Use when implementing correctness-critical features — read files, search for patterns, self-review twice, then execute. Governing rule: never hallucinate when confused."
+  },
+  {
+    "skill": "summarize",
+    "name": "Summarize — Emergency Stop + Handoff Report",
+    "school": "Execution & Improvement",
+    "schoolName": "School of Execution",
+    "status": "—",
+    "effect": "Use when session quality is degraded, you need to hand off mid-work, or you must preserve context before a /new. Emergency stop + perfect handoff report so the next agent loses nothing."
+  },
+  {
+    "skill": "pragmatic-programmer-state-machine",
+    "name": "The Pragmatic Programmer — State Machine Protocol for AI Agents",
+    "school": "Execution & Improvement",
+    "schoolName": "School of Execution",
+    "status": "—",
+    "effect": "Use when working pragmatically in a real system — bounded changes, reversible choices, automation over repeated toil, root-cause fixes over symptom patches, practical scope control."
+  },
+  {
+    "skill": "toyota-kata-state-machine",
+    "name": "Toyota Kata — State Machine Protocol for Continuous-Improvement AI Agents",
+    "school": "Execution & Improvement",
+    "schoolName": "School of Execution",
+    "status": "—",
+    "effect": "Use when improving a system through disciplined iteration instead of one large speculative change — frame target, analyze current, attack one obstacle at a time, run a PDCA experiment, learn, repeat."
+  },
+  {
+    "skill": "trajectory-guard",
+    "name": "Trajectory Guard — Detect and Recover from Failure Spirals",
+    "school": "Execution & Improvement",
+    "schoolName": "School of Execution",
+    "status": "—",
+    "effect": "Runtime meta-monitoring protocol that detects agent failure spirals — repetitive loops, specification drift, and stuck trajectories — and forcibly redirects strategy. Based on Wink (2602.17037) misbehavior taxonomy and PALADIN (2509.25238) recovery patterns."
+  },
+  {
+    "skill": "assumption-grounding",
+    "name": "Verify a batch of assumptions from a file",
+    "school": "Execution & Improvement",
+    "schoolName": "School of Execution",
+    "status": "—",
+    "effect": "Prevent hallucinated facts from compounding into costly errors. State every assumption explicitly, verify with the cheapest possible check, and only proceed on confirmation. Based on Chain-of-Verification research."
+  },
+  {
+    "skill": "working-effectively-with-legacy-code-state-machine",
+    "name": "Working Effectively with Legacy Code — State Machine Protocol for AI Agents",
+    "school": "Execution & Improvement",
+    "schoolName": "School of Execution",
+    "status": "—",
+    "effect": "Use when changing brittle code with weak tests or unclear behavior — characterize legacy behavior, create seams, transform in bounded slices with anti-loop protection."
+  },
+  {
+    "skill": "zero-defect-protocol",
+    "name": "Zero-Defect Protocol",
+    "school": "Execution & Improvement",
+    "schoolName": "School of Execution",
+    "status": "—",
+    "effect": "Use for mission-critical features where a single bug, security flaw, or misalignment could cause catastrophic failure — 14-phase protocol: data contracting, invariant mapping, red-team critique, pre-mortem before any code is written."
+  },
+  {
+    "skill": "advocatus-diaboli",
+    "name": "Advocatus Diaboli — Adversarial Review via Separate Sub-Agent",
+    "school": "Judgment & Decision-Making",
+    "schoolName": "School of Judgment",
+    "status": "—",
+    "effect": "Use this skill when the main agent must stress-test a proposal, plan, code change, or decision against a SEPARATE adversarial sub-agent before committing. This is NOT self-critique (steelmanning). It is tool-mediated adversarial review using a genuinely different cognitive entity with no prior investment in the proposal."
+  },
+  {
+    "skill": "bayesian-updating",
+    "name": "Bayesian Belief Updating for AI Agents",
+    "school": "Judgment & Decision-Making",
+    "schoolName": "School of Judgment",
+    "status": "—",
+    "effect": "Use when beliefs must shift with evidence — explicit priors updated by likelihood, avoiding over- and under-reaction."
+  },
+  {
+    "skill": "cognitive-bias-auditor",
+    "name": "Cognitive Bias Auditor",
+    "school": "Judgment & Decision-Making",
+    "schoolName": "School of Judgment",
+    "status": "—",
+    "effect": "Use when slow-mode reasoning risks bias contamination — explicit audit framework covering the 9 most common cognitive biases in agents."
+  },
+  {
+    "skill": "cognitive-bias-checklist",
+    "name": "Cognitive Bias Checklist for AI Agents",
+    "school": "Judgment & Decision-Making",
+    "schoolName": "School of Judgment",
+    "status": "—",
+    "effect": "Use when slow-mode recommendations need bias audit — explicit checklist to catch contamination before finalizing."
+  },
+  {
+    "skill": "counterfactual-policy-testing",
+    "name": "Counterfactual Policy Testing",
+    "school": "Judgment & Decision-Making",
+    "schoolName": "School of Judgment",
+    "status": "—",
+    "effect": "Use when a decision must beat its alternatives — compare against null, opposite, and partial counterfactuals before committing."
+  },
+  {
+    "skill": "explore-vs-exploit-state-machine",
+    "name": "Explore vs Exploit — State Machine Protocol for AI Agents",
+    "school": "Judgment & Decision-Making",
+    "schoolName": "School of Judgment",
+    "status": "—",
+    "effect": "Use when the agent must choose between more searching and committing — explicit explore/exploit protocol with diminishing-returns stopping rule."
+  },
+  {
+    "skill": "explore-vs-exploit",
+    "name": "Explore vs Exploit for AI Agents",
+    "school": "Judgment & Decision-Making",
+    "schoolName": "School of Judgment",
+    "status": "—",
+    "effect": "Use when the agent must choose between more information and acting — deliberate explore/exploit choice instead of defaulting to either extreme."
+  },
+  {
+    "skill": "failure-analysis-protocol",
+    "name": "Failure Analysis Protocol",
+    "school": "Judgment & Decision-Making",
+    "schoolName": "School of Judgment",
+    "status": "—",
+    "effect": "Fuse of Pre-Mortem + Inversion + Second-Order Thinking. Three failure lenses merged: invert success, narrate specific failures, trace cascading consequences. Strongest pre-commitment analysis."
+  },
+  {
+    "skill": "first-principles",
+    "name": "First Principles Thinking for AI Agents",
+    "school": "Judgment & Decision-Making",
+    "schoolName": "School of Judgment",
+    "status": "—",
+    "effect": "Use when conventional solutions fail or framing is inherited — decompose to axiomatic foundations and reason upward from what must be true."
+  },
+  {
+    "skill": "intent-specification-protocol",
+    "name": "Intent Specification Protocol",
+    "school": "Judgment & Decision-Making",
+    "schoolName": "School of Judgment",
+    "status": "—",
+    "effect": "Crystallize vague user requests into precise, testable intent specifications. Replace vague words (fast, good, optimized) with measurable criteria. Now includes MCP server + companion script."
+  },
+  {
+    "skill": "inversion-mental-model-state-machine",
+    "name": "Inversion — State Machine Protocol for AI Agents",
+    "school": "Judgment & Decision-Making",
+    "schoolName": "School of Judgment",
+    "status": "—",
+    "effect": "Use when risk reasoning needs defensive discipline — enforce failure-mode mapping and guardrail derivation before recommending success paths."
+  },
+  {
+    "skill": "inversion-mental-model",
+    "name": "Inversion for AI Agents",
+    "school": "Judgment & Decision-Making",
+    "schoolName": "School of Judgment",
+    "status": "—",
+    "effect": "Use when forward reasoning keeps missing risks — model failure paths before recommending the success path."
+  },
+  {
+    "skill": "metacognitive-monitoring",
+    "name": "Metacognitive Monitoring — Know When You Don't Know",
+    "school": "Judgment & Decision-Making",
+    "schoolName": "School of Judgment",
+    "status": "—",
+    "effect": "Use when confidence calibration matters more than raw accuracy — explicit KEEP/WITHDRAW decisions tied to measured withdrawal delta."
+  },
+  {
+    "skill": "occams-razor",
+    "name": "Occam's Razor for AI Agents",
+    "school": "Judgment & Decision-Making",
+    "schoolName": "School of Judgment",
+    "status": "—",
+    "effect": "Apply Occam's Razor to favor the simplest sufficient explanation or solution. Forces the agent to try the simplest thing that fits the evidence before escalating to more complex alternatives. Prevents over-engineering, premature abstraction, and scope creep."
+  },
+  {
+    "skill": "pre-mortem-state-machine",
+    "name": "Pre-Mortem — State Machine Protocol for AI Agents",
+    "school": "Judgment & Decision-Making",
+    "schoolName": "School of Judgment",
+    "status": "—",
+    "effect": "Use when a plan needs validation before execution — pre-mortem protocol with artifact gating, narrative failure modeling, and risk-adjusted plan revision."
+  },
+  {
+    "skill": "pre-mortem",
+    "name": "Pre-Mortem for AI Agents",
+    "school": "Judgment & Decision-Making",
+    "schoolName": "School of Judgment",
+    "status": "—",
+    "effect": "Use when a plan must surface real risks before commitment — assume failure has occurred and narrate backward to root causes."
+  },
+  {
+    "skill": "problem-mode-router-cynefin",
+    "name": "Problem-Mode Router (Cynefin)",
+    "school": "Judgment & Decision-Making",
+    "schoolName": "School of Judgment",
+    "status": "—",
+    "effect": "Use when choosing the wrong reasoning mode is the dominant risk — Cynefin-based routing before solving the problem."
+  },
+  {
+    "skill": "problem-mode-router-cynefin-state-machine",
+    "name": "Problem-Mode Router (Cynefin) — State Machine Protocol for AI Agents",
+    "school": "Judgment & Decision-Making",
+    "schoolName": "School of Judgment",
+    "status": "—",
+    "effect": "Use when response style depends on problem type — enforce Cynefin domain classification as a hard gate before any tool use or execution."
+  },
+  {
+    "skill": "recognition-primed-triage",
+    "name": "Recognition-Primed Triage",
+    "school": "Judgment & Decision-Making",
+    "schoolName": "School of Judgment",
+    "status": "—",
+    "effect": "Use when fast judgment is required under incomplete information — pattern recognition, mental simulation, and immediate next move."
+  },
+  {
+    "skill": "recognition-primed-triage-state-machine",
+    "name": "Recognition-Primed Triage — State Machine Protocol for AI Agents",
+    "school": "Judgment & Decision-Making",
+    "schoolName": "School of Judgment",
+    "status": "—",
+    "effect": "Use when urgent triage demands speed without recklessness — gated incident-response protocol with simulation and bounded first action."
+  },
+  {
+    "skill": "reference-class-forecasting",
+    "name": "Reference Class Forecasting for AI Agents",
+    "school": "Judgment & Decision-Making",
+    "schoolName": "School of Judgment",
+    "status": "—",
+    "effect": "Use when estimating timelines or success probability — anchor to similar past projects before reasoning from the specifics."
+  },
+  {
+    "skill": "second-order-thinking",
+    "name": "Second-Order Thinking for AI Agents",
+    "school": "Judgment & Decision-Making",
+    "schoolName": "School of Judgment",
+    "status": "—",
+    "effect": "Use when a decision's downstream effects matter more than the obvious one — chain consequences past first-order until the system-level outcome is clear."
+  },
+  {
+    "skill": "six-thinking-hats",
+    "name": "Six Thinking Hats for AI Agents",
+    "school": "Judgment & Decision-Making",
+    "schoolName": "School of Judgment",
+    "status": "—",
+    "effect": "Use when a decision risks collapsed thinking — separate fact, intuition, caution, optimism, creativity, and process into six discrete rounds."
+  },
+  {
+    "skill": "steelmanning",
+    "name": "Steelmanning for AI Agents",
+    "school": "Judgment & Decision-Making",
+    "schoolName": "School of Judgment",
+    "status": "—",
+    "effect": "Use when a recommendation needs stress-testing — construct the strongest opposing case before committing."
+  },
+  {
+    "skill": "adversarial-review",
+    "name": "Stress-testing a plan, design, or proposal",
+    "school": "Judgment & Decision-Making",
+    "schoolName": "School of Judgment",
+    "status": "—",
+    "effect": "Stress-tests proposals against a SEPARATE adversarial subagent. Not self-critique — tool-mediated review with no prior investment."
+  },
+  {
+    "skill": "task-intake-protocol",
+    "name": "Task Intake Protocol",
+    "school": "Judgment & Decision-Making",
+    "schoolName": "School of Judgment",
+    "status": "—",
+    "effect": "Universal preflight gate combining Cynefin problem classification, ETTO rigor calibration, and Recognition-Primed Triage into a single 3-phase decision. Classify the problem, set the evidence bar, take the first action."
+  },
+  {
+    "skill": "kahneman-thinking-fast-slow-software-agent",
+    "name": "Thinking Fast and Slow for Software Engineering Agents",
+    "school": "Judgment & Decision-Making",
+    "schoolName": "School of Judgment",
+    "status": "—",
+    "effect": "Use when coding or debugging work needs calibrated reasoning — switch between fast pattern recognition and slow deliberation as stakes demand."
+  },
+  {
+    "skill": "thoroughness-check-etto",
+    "name": "Thoroughness Check (ETTO Principle) for AI Agents",
+    "school": "Judgment & Decision-Making",
+    "schoolName": "School of Judgment",
+    "status": "—",
+    "effect": "Use when the agent must decide how much rigor a task deserves — classify the efficiency-vs-thoroughness balance before acting."
+  },
+  {
+    "skill": "thoroughness-check-etto-state-machine",
+    "name": "Thoroughness Check (ETTO) — State Machine Protocol for AI Agents",
+    "school": "Judgment & Decision-Making",
+    "schoolName": "School of Judgment",
+    "status": "—",
+    "effect": "Use as universal preflight before meaningful tasks — gating ETTO classification into executable controls on rigor, evidence, and tools."
+  },
+  {
+    "skill": "unsafe-control-actions-hazard-analysis",
+    "name": "Unsafe Control Actions / Hazard Analysis",
+    "school": "Judgment & Decision-Making",
+    "schoolName": "School of Judgment",
+    "status": "—",
+    "effect": "Use this skill when the agent is about to recommend or perform an action that could create serious harm, instability, or irreversible damage."
+  },
+  {
+    "skill": "test-driven-development",
+    "name": "Code with no tests — need to add tests first",
+    "school": "Testing & Measurement",
+    "schoolName": "School of Measurement",
+    "status": "—",
+    "effect": "Red-green-refactor loop. Write the test first, watch it fail, write the minimal fix, then refactor."
   },
   {
     "skill": "e2e-crosscheck",
     "name": "E2E Cross-Check Protocol",
-    "school": "Testing & Evaluation",
-    "schoolName": "Testing & Evaluation",
+    "school": "Testing & Measurement",
+    "schoolName": "School of Measurement",
     "status": "—",
     "effect": "Bidirectional cross-reference between E2E test selectors/assertions and source code. Verifies every test identifier still matches the code, every text assertion still renders, every navigation route still resolves, and every UI state/error path has test coverage. Catches silent failures: dead identifiers, drifted UI text, stale routes, orphaned tests, and ambiguous selectors. Run after refactoring, UI text changes, navigation restructuring, or any time E2E tests may have diverged from the cod..."
   },
   {
     "skill": "e2e-testing-philosophy-and-architecture",
     "name": "E2E Testing Philosophy & Architecture — Reference",
-    "school": "Testing & Evaluation",
-    "schoolName": "Testing & Evaluation",
+    "school": "Testing & Measurement",
+    "schoolName": "School of Measurement",
     "status": "—",
     "effect": "Comprehensive reference for E2E testing mindset, architecture, and strategy — nothing framework-specific. Covers testing epistemology, 3-layer BDR architecture, risk-based prioritization, data realism principles, anti-patterns, heuristics, and suite management."
   },
   {
     "skill": "empirical-justification",
     "name": "Empirical Justification",
-    "school": "Testing & Evaluation",
-    "schoolName": "Testing & Evaluation",
+    "school": "Testing & Measurement",
+    "schoolName": "School of Measurement",
     "status": "—",
     "effect": "Gather empirical evidence — usage telemetry, A/B results, regression counts — to justify retiring, refining, or promoting a skill. Use when a skill change is contested or high-stakes."
   },
   {
+    "skill": "skill-ab-evaluation",
+    "name": "Good: per-run copied snapshot",
+    "school": "Testing & Measurement",
+    "schoolName": "School of Measurement",
+    "status": "—",
+    "effect": "A/B evaluate any GrimoireStack skill against a baseline using isolated subagents, 5 trials each, and an objective rubric. Measures real % improvement without touching current projects."
+  },
+  {
     "skill": "mobile-e2e-testing-enterprise-guide",
     "name": "Mobile E2E Testing: The Hunter's Mindset",
-    "school": "Testing & Evaluation",
-    "schoolName": "Testing & Evaluation",
+    "school": "Testing & Measurement",
+    "schoolName": "School of Measurement",
     "status": "—",
     "effect": "Hunter's mindset for mobile E2E testing — think like a professional tester: what to test, how to catch real bugs, verify flows work, and avoid traps. Use when planning tests, reviewing coverage, debugging flakiness, or needing adversarial/edge-case ideas."
   },
   {
     "skill": "e2e-test-premortem",
     "name": "Premortem: E2E Test Audit Protocol",
-    "school": "Testing & Evaluation",
-    "schoolName": "Testing & Evaluation",
+    "school": "Testing & Measurement",
+    "schoolName": "School of Measurement",
     "status": "—",
     "effect": "Premortem for E2E test changes. Run after writing or modifying E2E tests to audit coverage gaps, data realism, failure-mode coverage, and assertion quality before declaring done. Also run before writing E2E tests to map the flow and identify blind spots first."
   },
   {
-    "skill": "test-driven-development",
-    "name": "Test-Driven Development",
-    "school": "Testing & Evaluation",
-    "schoolName": "Testing & Evaluation",
-    "status": "New",
-    "effect": "Red-green-refactor loop. Write the test first, watch it fail, write the minimal fix, then refactor."
+    "skill": "local-llm-tooling",
+    "name": "Local LLM Tooling Skill",
+    "school": "Mlops",
+    "schoolName": "School of Mlops",
+    "status": "—",
+    "effect": "Skills for running, prompting, and extracting structured output from local LLMs (e.g., Ollama, llama.cpp)."
+  },
+  {
+    "skill": "bounded-self-revision",
+    "name": "Bounded Self-Revision",
+    "school": "Output Quality",
+    "schoolName": "School of Refinement",
+    "status": "—",
+    "effect": "Use when an initial draft needs polish but not endless revision — capped self-critique passes that terminate on improvement or budget exhaustion."
+  },
+  {
+    "skill": "cognitive-load-operator-state-machine",
+    "name": "Cognitive Load Operator — State Machine Protocol for AI Agents",
+    "school": "Output Quality",
+    "schoolName": "School of Refinement",
+    "status": "—",
+    "effect": "Use when an output risks dense overload — inspect complexity and replace high-load structures with lower-load equivalents."
+  },
+  {
+    "skill": "compression-as-understanding",
+    "name": "Compression-as-Understanding",
+    "school": "Output Quality",
+    "schoolName": "School of Refinement",
+    "status": "—",
+    "effect": "Use when depth of understanding must be verified, not assumed — compress to the shortest representation and test whether it reconstructs the original."
+  },
+  {
+    "skill": "documentation-craft",
+    "name": "Documentation Craft — Structured Technical Writing",
+    "school": "Output Quality",
+    "schoolName": "School of Refinement",
+    "status": "—",
+    "effect": "Use when writing technical documentation — multi-phase pipeline from outline to verified explanation, audience-driven and source-grounded."
+  },
+  {
+    "skill": "feynman-technique",
+    "name": "Feynman Technique for AI Agents",
+    "school": "Output Quality",
+    "schoolName": "School of Refinement",
+    "status": "—",
+    "effect": "Use when explanation gaps reveal understanding gaps — explain from scratch in plain language and identify where the explanation breaks."
+  },
+  {
+    "skill": "large-documentation-navigation",
+    "name": "Large Documentation Navigation",
+    "school": "Output Quality",
+    "schoolName": "School of Refinement",
+    "status": "—",
+    "effect": "Use when a documentation corpus becomes unscannable — layered navigation driven by user situation rather than category labels."
+  },
+  {
+    "skill": "mece-pyramid-principle",
+    "name": "MECE / Pyramid Principle for AI Agents",
+    "school": "Output Quality",
+    "schoolName": "School of Refinement",
+    "status": "—",
+    "effect": "Use when structuring a complex output — enforce mutually exclusive, collectively exhaustive categories under a single governing thought."
+  },
+  {
+    "skill": "self-verify-pipeline",
+    "name": "Self Verify Pipeline",
+    "school": "Output Quality",
+    "schoolName": "School of Refinement",
+    "status": "—",
+    "effect": "Use when outputs risk unverified confidence — escalating verification chain of bounded revision, claim decomposition, and tool-grounded critique."
+  },
+  {
+    "skill": "self-consistency",
+    "name": "Self-Consistency Check for AI Agents",
+    "school": "Output Quality",
+    "schoolName": "School of Refinement",
+    "status": "—",
+    "effect": "Use when a conclusion must be confirmed, not assumed — generate independent reasoning paths and check whether they converge."
+  },
+  {
+    "skill": "stakeholder-communication",
+    "name": "Stakeholder Communication and Uncertainty Calibration",
+    "school": "Output Quality",
+    "schoolName": "School of Refinement",
+    "status": "—",
+    "effect": "Use when a human must act on the agent's output — calibrate certainty, separate fact from inference, and avoid overpromising or undue alarm."
+  },
+  {
+    "skill": "tool-interactive-critic",
+    "name": "Tool-Interactive Critic",
+    "school": "Output Quality",
+    "schoolName": "School of Refinement",
+    "status": "—",
+    "effect": "Use when an initial draft needs post-generation verification — external tools critique the output before it is trusted."
+  },
+  {
+    "skill": "tree-of-thoughts",
+    "name": "Tree of Thoughts for AI Agents",
+    "school": "Output Quality",
+    "schoolName": "School of Refinement",
+    "status": "—",
+    "effect": "Use when the first reasoning path may be wrong — branch, evaluate, and prune candidate solutions before committing."
+  },
+  {
+    "skill": "simulate-instrumentation",
+    "name": "Before (buggy)",
+    "school": "Debugging",
+    "schoolName": "School of Remediation",
+    "status": "—",
+    "effect": "Auto-insert temporary print/logging statements at key points in the code, run the failing test, and feed the captured runtime state to the LLM."
+  },
+  {
+    "skill": "bisect-debugging",
+    "name": "Bisect Debugging",
+    "school": "Debugging",
+    "schoolName": "School of Remediation",
+    "status": "—",
+    "effect": "Isolate the exact commit that introduced a bug using binary search through git history. The fastest way to find 'what changed' when tests used to pass."
+  },
+  {
+    "skill": "bug-inquisition",
+    "name": "Bug Inquisition",
+    "school": "Debugging",
+    "schoolName": "School of Remediation",
+    "status": "—",
+    "effect": "Deep root-cause debugging with mandatory context-gathering. Fuses root-cause analysis, specter, diagnose, debug-to-fix-pipeline, occam-root-cause, and reasoning-integrity-chain into one sequential protocol. Use when user says 'hard bug', 'stuck on debugging', 'can't figure out this error', 'stuck on bug', or 'bug inquisition'."
+  },
+  {
+    "skill": "bug-inquisition-conquest",
+    "name": "Bug Inquisition — Conquest Mode",
+    "school": "Debugging",
+    "schoolName": "School of Remediation",
+    "status": "—",
+    "effect": "Ultra-heavy root-cause debugging with relentless ongoing interrogation. Fuses bug-inquisition pre-flight with continuous adversarial self-grilling, evidence-ledger tracking, pre-mortem on every fix, confidence-gated phase transitions, and final adversarial review. Use for the hardest bugs where surface debugging has failed, when the bug is intermittent or environment-specific, or when the cost of a wrong fix is high. Triggers: 'deep bug', 'intermittent bug', 'heisenbug', 'ghost bug', 'bug inq..."
+  },
+  {
+    "skill": "explore-codebase",
+    "name": "Codebase Walk",
+    "school": "Debugging",
+    "schoolName": "School of Remediation",
+    "status": "—",
+    "effect": "Structured exploration with progressive deepening: module structure → file roles → symbol resolution. Token-efficient for unfamiliar codebases."
+  },
+  {
+    "skill": "debug-subagent",
+    "name": "Debug Subagent",
+    "school": "Debugging",
+    "schoolName": "School of Remediation",
+    "status": "—",
+    "effect": "A dedicated debugging subagent that must be consulted before making code edits. Wraps debugger complexity behind natural-language queries and enforces 'debug before edit' workflow. Based on Debug2Fix research (+13-22% bug fix rate)."
+  },
+  {
+    "skill": "debug-issue",
+    "name": "Debug Workflow",
+    "school": "Debugging",
+    "schoolName": "School of Remediation",
+    "status": "—",
+    "effect": "Forces the reproduce → isolate → fix → verify cycle. Graph-powered code navigation traces issues through the system along dataflow edges."
+  },
+  {
+    "skill": "debug-to-fix-pipeline",
+    "name": "Debug-to-Fix Pipeline for AI Agents",
+    "school": "Debugging",
+    "schoolName": "School of Remediation",
+    "status": "—",
+    "effect": "6-phase pipeline that increases evidence quality each phase while cutting token waste. Sequences data → hypothesis → isolation → exploitation → repair → verification. Use when debugging is stalling, multi-file bugs need runtime state, or first patch attempt failed."
+  },
+  {
+    "skill": "environment-recovery",
+    "name": "Environment Recovery",
+    "school": "Debugging",
+    "schoolName": "School of Remediation",
+    "status": "—",
+    "effect": "Diagnose and fix broken development environments — missing tools, wrong versions, corrupted caches, full disks, permission drift, and dependency hell. The skill every other debugging skill assumes."
+  },
+  {
+    "skill": "escalation-ladder",
+    "name": "Escalation Ladder",
+    "school": "Debugging",
+    "schoolName": "School of Remediation",
+    "status": "—",
+    "effect": "Structured protocol for when an agent is stuck — escalating from self-recovery to user collaboration to full retreat. Fills the gap between trajectory-guard (detects stuck) and summarize (bails out)."
+  },
+  {
+    "skill": "iterative-patch-repair",
+    "name": "Iterative Patch Repair",
+    "school": "Debugging",
+    "schoolName": "School of Remediation",
+    "status": "—",
+    "effect": "Loop of generate patch → run test → capture runtime state → refine patch. Max N iterations with patch augmentation to avoid overfitting. Use when first patch attempt failed, bug has multiple plausible fixes, or test feedback reveals the fix was close but not quite right."
+  },
+  {
+    "skill": "log-trace-correlation",
+    "name": "Log Trace Correlation",
+    "school": "Debugging",
+    "schoolName": "School of Remediation",
+    "status": "—",
+    "effect": "Map error logs and stack traces to source code to identify root cause and suggest fixes. Use when you have an error log with a stack trace and need to determine which file, function, and line caused the failure."
+  },
+  {
+    "skill": "minimal-reproduction",
+    "name": "Minimal Reproduction",
+    "school": "Debugging",
+    "schoolName": "School of Remediation",
+    "status": "—",
+    "effect": "Write the smallest possible test that demonstrates the bug, then use it as ammunition for debugging."
+  },
+  {
+    "skill": "abductive-first-debugging",
+    "name": "Multiple plausible causes, unsure which is real",
+    "school": "Debugging",
+    "schoolName": "School of Remediation",
+    "status": "—",
+    "effect": "Generates multiple competing hypotheses, selects the one that best explains all observed symptoms — not the first plausible cause."
+  },
+  {
+    "skill": "network-api-debugging",
+    "name": "Network / API Debugging",
+    "school": "Debugging",
+    "schoolName": "School of Remediation",
+    "status": "—",
+    "effect": "Diagnose and fix network and API failures — CORS, auth token issues, rate limiting, redirect chains, WebSocket drops, and HTTP request/response mismatches."
+  },
+  {
+    "skill": "purify-test-output",
+    "name": "Or from file: python purify_test_output.py --file /tmp/raw_output.txt",
+    "school": "Debugging",
+    "schoolName": "School of Remediation",
+    "status": "—",
+    "effect": "Use when failing test output contains >50% framework noise (site-packages, node_modules) that drowns out user code, or when multiple tests fail and you need to isolate the most relevant failure first."
+  },
+  {
+    "skill": "root-cause-analysis",
+    "name": "Root Cause Analysis for AI Agents",
+    "school": "Debugging",
+    "schoolName": "School of Remediation",
+    "status": "—",
+    "effect": "Distinguish symptoms from causes, verify causal chains, fix the underlying defect. Stops recurring regressions caused by workaround hacks. Use when a bug returns after being 'fixed', multiple symptoms share a cause, or a fix in one area breaks another."
+  },
+  {
+    "skill": "specter",
+    "name": "Specter",
+    "school": "Debugging",
+    "schoolName": "School of Remediation",
+    "status": "—",
+    "effect": "Abduce the bug — generate competing hypotheses, locate code by structural relationship, then disconfirm until one survivor remains. Use when the crash site is not the cause, the bug is 'weird,' or your first instinct is suspect."
+  },
+  {
+    "skill": "time-traveling-debugger",
+    "name": "Time-Traveling Debugger",
+    "school": "Debugging",
+    "schoolName": "School of Remediation",
+    "status": "—",
+    "effect": "When a bug occurs, record a deterministic execution trace forward, then replay it in reverse from the crash point to find the exact line where state first diverged. Spawns 'past self' and 'future self' that meet at the divergence."
+  },
+  {
+    "skill": "effective-web-search",
+    "name": "Effective Web Search",
+    "school": "Research",
+    "schoolName": "School of Research",
+    "status": "—",
+    "effect": "Web search discipline for technical research. Use when an agent needs to look up an error, library behavior, framework quirk, or bug. Enforces official-docs-first, version-aware research, and full GitHub issue follow-through. Prevents the failure mode where the agent latches onto the first outdated GitHub issue and treats it as truth."
+  },
+  {
+    "skill": "add-new-skill-to-repository",
+    "name": "Add New Skill to GrimoireStack Repository",
+    "school": "Development & Tooling",
+    "schoolName": "School of Tools",
+    "status": "—",
+    "effect": "Process for adding a new skill to GrimoireStack repository with proper documentation, installation support, and cross-platform verification."
+  },
+  {
+    "skill": "bulk-rename-and-update-references",
+    "name": "Bulk Rename Files and Update Cross-References",
+    "school": "Development & Tooling",
+    "schoolName": "School of Tools",
+    "status": "—",
+    "effect": "Use when renaming many files where old names appear in content — discover references first to avoid broken links and stale cross-references."
+  },
+  {
+    "skill": "skill-development-with-supporting-files",
+    "name": "Developing Skills with Supporting Files",
+    "school": "Development & Tooling",
+    "schoolName": "School of Tools",
+    "status": "—",
+    "effect": "Use when a skill depends on scripts, templates, or other supporting files — package them so installation copies the full set, not just SKILL.md."
+  },
+  {
+    "skill": "project-folder-architecture",
+    "name": "Project Folder Architecture",
+    "school": "Development & Tooling",
+    "schoolName": "School of Tools",
+    "status": "—",
+    "effect": ">"
+  },
+  {
+    "skill": "unit-test-debugging",
+    "name": "Unit Test Debugging",
+    "school": "Development & Tooling",
+    "schoolName": "School of Tools",
+    "status": "—",
+    "effect": "Systematic workflow for fixing failing unit tests by first determining whether the tests or the code under test are the source of truth. Use when fixing test failures, debugging test suites, resolving \"tests are passing/failing unexpectedly,\" or when an agent keeps changing code to match failing tests without investigating root cause. Also use when improving weak passing tests that do not actually prove correctness."
   }
 ];

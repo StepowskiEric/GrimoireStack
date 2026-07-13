@@ -13,7 +13,7 @@ priority: high
 tags: [debugging, time-travel, reverse-execution, trace, state-divergence, bytecode]
 ---
 
-# ⚡ The Time-Traveling Debugger
+# Time-Traveling Debugger
 
 ## Overview
 

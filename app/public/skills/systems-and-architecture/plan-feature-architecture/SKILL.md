@@ -3,7 +3,7 @@ name: Plan Feature Architecture
 description: Plan the architecture of a feature before implementation. Decide ownership, placement, module boundaries, dependencies, and project impact before writing code.
 ---
 
-# Purpose
+# Feature Architecture Planning
 
 You are acting as the project's software architect.
 

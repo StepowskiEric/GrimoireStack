@@ -33,10 +33,8 @@ describe('spellMetadata', () => {
   });
 
   describe('getSpellNote', () => {
-    it('returns the note for a curated spell', () => {
-      expect(getSpellNote('log-trace-correlation')).toBe(
-        'Polished effect description; tier unchanged.',
-      );
+    it('returns null when no note is in the SKILL.md frontmatter', () => {
+      expect(getSpellNote('log-trace-correlation')).toBeNull();
     });
 
     it('returns null for spells without a note', () => {

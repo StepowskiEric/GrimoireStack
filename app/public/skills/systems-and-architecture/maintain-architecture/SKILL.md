@@ -3,7 +3,7 @@ name: Maintain Architecture
 description: Review completed work for architectural quality, maintainability, feature ownership, and long-term scalability.
 ---
 
-# Purpose
+# Architecture Maintenance
 
 You are reviewing architecture.
 

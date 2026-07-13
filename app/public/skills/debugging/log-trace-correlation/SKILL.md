@@ -10,7 +10,7 @@ version: 1.0
 last-updated: 2026-05-22
 ---
 
-# Log-Trace Correlation Skill
+# Log Trace Correlation
 
 ## Steps
 

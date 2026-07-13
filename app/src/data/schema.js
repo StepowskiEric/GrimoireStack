@@ -14,8 +14,6 @@
  * @property {string} [status]
  * @property {string} [note]
  * @property {string[]} [combos]
- * @property {string} [trueName]     — poetic 2–4 word canonical incantation handle
- * @property {string[]} [kins]      — skill IDs of related spells (familiar system)
  */
 
 /**
@@ -68,19 +66,6 @@ export function validateSpell(candidate) {
   }
   if (spell.combos && !Array.isArray(spell.combos)) {
     throw new Error('Spell.combos must be an array of strings');
-  }
-  if (spell.trueName !== undefined && typeof spell.trueName !== 'string') {
-    throw new Error('Spell.trueName must be a string when present');
-  }
-  if (spell.kins !== undefined) {
-    if (!Array.isArray(spell.kins)) {
-      throw new Error('Spell.kins must be an array of strings when present');
-    }
-    for (const k of spell.kins) {
-      if (typeof k !== 'string' || !k.trim()) {
-        throw new Error('Spell.kins entries must be non-empty strings');
-      }
-    }
   }
   return spell;
 }

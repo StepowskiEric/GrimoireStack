@@ -19,7 +19,6 @@ vi.mock('../data/grimoireIndexInstance.js', () => {
       getStats: () => ({ totalSchools: 2, totalSpells: 0 }),
       resolveBySkill: () => null,
       resolveByName: () => null,
-      resolveKinsForSpell: () => [],
       searchSpells: () => emptySearch,
       filterSpells: () => emptySearch,
       similarTo: () => [],

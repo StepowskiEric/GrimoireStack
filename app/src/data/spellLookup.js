@@ -50,36 +50,11 @@ export function createSpellLookup(core) {
     return entry ? entry.spell.name : null;
   };
 
-  /**
-   * Resolve a spell's hand-curated `kins` (array of skill IDs) into the
-   * canonical {spell, school} entries the UI consumes. Skips ids that
-   * don't resolve; caps results at `max` so the UI can't be overwhelmed
-   * by a heavily-edited spell.
-   *
-   * Returns [] when the spell has no kins or the array is empty — the
-   * caller should treat that as "no familiar" and render nothing.
-   *
-   * Cap is enforced independently of the curated-overlay warning at
-   * registry build time (`validateRecords` in emit-schools.mjs). Both
-   * `MAX_WHISPERS` here and `MAX_KINS_PER_SPELL` in derive.mjs share
-   * the same value by convention.
-   */
-  const MAX_WHISPERS = 3;
-  const resolveKinsForSpell = (spell, max = MAX_WHISPERS) => {
-    if (!(spell && Array.isArray(spell.kins)) || spell.kins.length === 0) return [];
-    return spell.kins
-      .map((id) => bySkill.get(id))
-      .filter(Boolean)
-      .slice(0, max)
-      .map((entry) => ({ spell: entry.spell, school: entry.school }));
-  };
-
   return {
     resolveBySkill,
     resolveByName,
     resolveComboSpells,
     getSchoolForSkill,
     getSpellNameBySkill,
-    resolveKinsForSpell,
   };
 }

@@ -138,21 +138,11 @@ describe('SpellCard', () => {
     expect(card.style.display).not.toBe('none');
   });
 
-  it('renders trueName as the headline when distinct from name', () => {
-    const trueNamed = { ...sampleSpell, trueName: 'The Eye That Reads the Trace' };
-    const { container } = render(<SpellCard spell={trueNamed} matched={null} />);
-    const trueNameEl = container.querySelector('.spell-true-name');
-    expect(trueNameEl).not.toBeNull();
-    expect(trueNameEl.textContent).toBe('The Eye That Reads the Trace');
-    expect(container.querySelector('.spell-name--secondary').textContent).toBe('Trace Sight');
-    expect(container.firstChild.className).toContain('has-true-name');
-  });
-
-  it('omits the trueName block when trueName matches name or is absent', () => {
+  it('renders the spell name as the card title', () => {
     const { container } = render(<SpellCard spell={sampleSpell} matched={null} />);
-    expect(container.querySelector('.spell-true-name')).toBeNull();
-    expect(container.querySelector('.spell-name--secondary')).toBeNull();
-    expect(container.firstChild.className).not.toContain('has-true-name');
+    const nameEl = container.querySelector('.spell-name');
+    expect(nameEl).not.toBeNull();
+    expect(nameEl.textContent).toBe('Trace Sight');
   });
 
   it('fires onClick when clicked', () => {

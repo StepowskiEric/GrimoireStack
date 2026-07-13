@@ -3,12 +3,11 @@
  *
  * Steps:
  *   1. Discover skills in the filesystem (reuses scripts/lib/helpers.mjs)
- *   2. Load the hand-maintained curated overlay (displayName/status/note/combos)
- *   3. Parse frontmatter and derive display name / effect / lastUpdated
- *   4. Emit app/src/data/schoolsRegistry.js
- *   5. Emit app/src/data/spellMetadata.js (data only)
+ *   2. Parse frontmatter and derive display name / effect / lastUpdated
+ *   3. Emit app/src/data/schoolsRegistry.js
+ *   4. Emit app/src/data/spellMetadata.js (data only)
  *
- * Reads:  repo skills/, app/src/data/curatedOverlay.js
+ * Reads:  repo skills/
  * Writes: app/src/data/schoolsRegistry.js, app/src/data/spellMetadata.js
  */
 
@@ -18,25 +17,18 @@ import { APP_DIR, REPO_ROOT } from '../../../scripts/lib/constants.mjs';
 import { discoverSkills } from '../../../scripts/lib/helpers.mjs';
 import { deriveDisplayName, deriveEffect, fileMtime, isoDate } from './derive.mjs';
 import { buildExplicit, renderMetadataSource } from './emit-metadata.mjs';
-import { buildSchools, renderSchoolsSource, validateRecords } from './emit-schools.mjs';
+import { buildSchools, renderSchoolsSource } from './emit-schools.mjs';
 import { parseFrontmatter } from './frontmatter.mjs';
 
 const SCHOOLS_REGISTRY = path.join(APP_DIR, 'src', 'data', 'schoolsRegistry.js');
 const SPELL_METADATA = path.join(APP_DIR, 'src', 'data', 'spellMetadata.js');
-const CURATED_OVERLAY = path.join(APP_DIR, 'src', 'data', 'curatedOverlay.js');
 
 async function main() {
-  const [discovered, overlay] = await Promise.all([discoverSkills(), loadOverlay()]);
-  const records = await parseAll(discovered, overlay);
+  const discovered = await discoverSkills();
+  const records = await parseAll(discovered);
   const deduped = dedupRecords(records);
 
-  // Loud validation: catch curatedOverlay typos and over-eager kin lists
-  // before they become silent runtime skips. Warnings only — does not fail
-  // the build, since resolveKinsForSpell filters unresolved ids at runtime.
-  const allSkillIds = new Set(deduped.map((r) => r.skill));
-  validateRecords(deduped, allSkillIds);
-
-  await Promise.all([writeSchools(deduped, overlay), writeMetadata(deduped)]);
+  await Promise.all([writeSchools(deduped), writeMetadata(deduped)]);
   console.log(
     `[registry] wrote ${deduped.length} skills across ${new Set(deduped.map((r) => r.topic)).size} topics`,
   );
@@ -59,50 +51,27 @@ function dedupRecords(records) {
   return [...bySkill.values()];
 }
 
-async function loadOverlay() {
-  try {
-    const url = new URL(`file://${CURATED_OVERLAY}`);
-    const mod = await import(url.href);
-    return {
-      spells: mod.CURATED_OVERLAY || {},
-      schools: mod.CURATED_SCHOOLS || {},
-    };
-  } catch (err) {
-    console.warn(`[registry] no curated overlay (${err.message}); using built-in defaults`);
-    return { spells: {}, schools: {} };
-  }
+async function parseAll(discovered) {
+  return Promise.all(discovered.map((s) => parseOne(s)));
 }
 
-async function parseAll(discovered, overlay) {
-  return Promise.all(discovered.map((s) => parseOne(s, overlay)));
-}
-
-async function parseOne(s, overlay) {
+async function parseOne(s) {
   const [content, mtime] = await Promise.all([fs.readFile(s.src, 'utf8'), fileMtime(s.src)]);
   const { meta, body, hasFrontmatter } = parseFrontmatter(content);
-  const curated = overlay.spells[s.skillId] || {};
   return {
     skill: s.skillId,
     topic: s.topic,
-    name: curated.displayName || deriveDisplayName(meta, s.skillId, body),
+    name: deriveDisplayName(meta, s.skillId, body),
     effect: deriveEffect(meta, body, hasFrontmatter),
-    status: curated.status || meta.status || '—',
-    note: curated.note || meta.note || null,
-    combos: curated.combos || (Array.isArray(meta.combos) ? meta.combos : null),
-    trueName:
-      typeof curated.trueName === 'string' && curated.trueName.trim()
-        ? curated.trueName.trim()
-        : null,
-    kins:
-      Array.isArray(curated.kins) && curated.kins.length > 0
-        ? curated.kins.filter((k) => typeof k === 'string' && k.trim())
-        : null,
+    status: meta.status || '—',
+    note: meta.note || null,
+    combos: Array.isArray(meta.combos) ? meta.combos : null,
     lastUpdated: meta['last-updated'] || isoDate(mtime),
   };
 }
 
-async function writeSchools(records, overlay) {
-  const schools = buildSchools(records, overlay);
+async function writeSchools(records) {
+  const schools = buildSchools(records);
   const source = renderSchoolsSource(schools);
   await fs.writeFile(SCHOOLS_REGISTRY, source, 'utf8');
   const rel = path.relative(REPO_ROOT, SCHOOLS_REGISTRY);

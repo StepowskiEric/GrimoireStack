@@ -1,4 +1,3 @@
-import { hasDistinctTrueName } from '../data/spellDisplay.js';
 import { getSpellTier, TIER_META } from '../data/tiers.js';
 import Icon from './Icon.jsx';
 import './ExportToast.css';
@@ -38,19 +37,16 @@ export default function SpellCard({
     }
   };
 
-  const hasTrueName = hasDistinctTrueName(spell);
-  const cardTitle = hasTrueName ? `${spell.trueName} (${spell.name})` : spell.name;
-
   return (
     <div
       data-testid="spell-card"
-      className={`relative overflow-hidden rounded-sm border border-[rgba(120,90,40,0.25)] bg-gradient-to-br from-[#f2e6c8] to-[#e6d5a8] p-4 transition-all duration-200 ${matched === true ? 'glow border-[rgba(212,175,55,0.35)] shadow-[0_0_20px_rgba(212,175,55,0.1),0_0_40px_rgba(212,175,55,0.05),inset_0_0_30px_rgba(212,175,55,0.04)]' : ''} ${matched === false ? 'dim opacity-35 grayscale-[80%] pointer-events-none' : 'hover:border-[rgba(212,175,55,0.3)] hover:-translate-y-0.5 hover:shadow-[0_8px_25px_rgba(0,0,0,0.35),0_0_15px_rgba(212,175,55,0.06)] active:scale-[0.98]'}${hasTrueName ? ' has-true-name' : ''}`}
+      className={`relative overflow-hidden rounded-sm border border-[rgba(120,90,40,0.25)] bg-gradient-to-br from-[#f2e6c8] to-[#e6d5a8] p-4 transition-all duration-200 ${matched === true ? 'glow border-[rgba(212,175,55,0.35)] shadow-[0_0_20px_rgba(212,175,55,0.1),0_0_40px_rgba(212,175,55,0.05),inset_0_0_30px_rgba(212,175,55,0.04)]' : ''} ${matched === false ? 'dim opacity-35 grayscale-[80%] pointer-events-none' : 'hover:border-[rgba(212,175,55,0.3)] hover:-translate-y-0.5 hover:shadow-[0_8px_25px_rgba(0,0,0,0.35),0_0_15px_rgba(212,175,55,0.06)] active:scale-[0.98]'}`}
       data-skill={spell.skill}
       onClick={onClick}
       onKeyDown={handleKeyDown}
       role="button"
       tabIndex={0}
-      aria-label={`${cardTitle}, ${tierInfo.label}, ${spell.effect}`}
+      aria-label={`${spell.name}, ${tierInfo.label}, ${spell.effect}`}
       title={tierInfo.title}
       style={{ cursor: 'pointer', display: matched === false ? 'none' : undefined }}
     >
@@ -99,26 +95,9 @@ export default function SpellCard({
           </button>
         )}
       </div>
-      {hasTrueName ? (
-        <>
-          <div
-            className="spell-true-name font-['Cormorant_Garamond'] text-[1.18rem] font-semibold leading-tight text-[#3e2712]"
-            style={{ textShadow: '0 0 8px rgba(160,120,60,0.1)' }}
-          >
-            {spell.trueName}
-          </div>
-          <div
-            data-testid="spell-name--secondary"
-            className="spell-name--secondary font-['Cinzel'] text-[0.72rem] font-normal italic text-[#6b4a2a] mt-0.5 lowercase tracking-wider"
-          >
-            {spell.name}
-          </div>
-        </>
-      ) : (
-        <div className="spell-name font-['Cinzel'] text-[1rem] font-semibold leading-tight text-[#3e2712]">
-          {spell.name}
-        </div>
-      )}
+      <div className="spell-name font-['Cinzel'] text-[1rem] font-semibold leading-tight text-[#3e2712]">
+        {spell.name}
+      </div>
       <div className="font-['Special_Elite'] text-[0.7rem] text-[#5a3d22] my-0.5">
         〈 {spell.skill} 〉
       </div>

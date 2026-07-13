@@ -209,38 +209,21 @@ describe('getSpellTier is the canonical tier function', () => {
   });
 });
 
-describe('search matches trueName', () => {
-  const trueNamedEntries = [
-    {
-      spell: {
-        name: 'Trace Sight',
-        skill: 'log-trace-correlation',
-        effect: 'Maps stack traces to source code and suggests fixes.',
-        status: 'Proven',
-        trueName: 'The Eye That Reads the Trace',
-      },
-      school: { id: 'debugging', name: 'School of Remediation' },
-    },
-    {
-      spell: { name: 'Razor of Parsimony', skill: 'occams-razor', effect: 'Plain.' },
-      school: { id: 'reasoning', name: 'School of Cognition' },
-    },
-  ];
-
-  it('matches by the curated trueName when present', () => {
-    const result = searchSpellsOnEntries(trueNamedEntries, 'Eye That Reads');
+describe('search matches by name and skill', () => {
+  it('matches by name', () => {
+    const result = searchSpellsOnEntries(sampleEntries, 'Trace Sight');
     expect(result.total).toBe(1);
     expect(result.bySchool.debugging[0]).toContain('log-trace-correlation');
   });
 
-  it('still matches by name when trueName is present', () => {
-    const result = searchSpellsOnEntries(trueNamedEntries, 'Trace Sight');
+  it('matches by skill id', () => {
+    const result = searchSpellsOnEntries(sampleEntries, 'bisect-debugging');
     expect(result.total).toBe(1);
   });
 
-  it('filter narrows by trueName text', () => {
-    const result = filterSpellsOnEntries(trueNamedEntries, {
-      query: 'Reads the Trace',
+  it('filter narrows by effect text', () => {
+    const result = filterSpellsOnEntries(sampleEntries, {
+      query: 'commit',
       isFavorited: () => false,
     });
     expect(result.total).toBe(1);

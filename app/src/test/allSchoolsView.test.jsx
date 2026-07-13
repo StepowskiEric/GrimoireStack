@@ -18,49 +18,15 @@ function renderWithProviders(ui) {
   return render(<LanguageProvider>{ui}</LanguageProvider>);
 }
 
-describe('AllSchoolsView — trueName search inclusion', () => {
-  it('keeps a school in the results when only the trueName token matches', () => {
+describe('AllSchoolsView — search', () => {
+  it('filters by canonical name', () => {
     mockSchoolMap.clear();
     mockSchoolMap.set('debugging', {
       id: 'debugging',
       name: 'School of Remediation',
       real: 'Debugging',
       desc: 'Incantations to banish bugs.',
-      spells: [
-        {
-          name: 'Trace Sight',
-          skill: 'log-trace-correlation',
-          effect: 'Reads stack traces.',
-          trueName: 'The Eye That Reads',
-        },
-      ],
-    });
-    mockSchoolMap.set('reasoning', {
-      id: 'reasoning',
-      name: 'School of Cognition',
-      real: 'Reasoning',
-      desc: 'Incantations for clear thought.',
-      spells: [{ name: 'Razor of Parsimony', skill: 'occams-razor', effect: 'Favors simplicity.' }],
-    });
-
-    renderWithProviders(<AllSchoolsView onSchoolSelect={() => {}} searchQuery="Eye That Reads" />);
-
-    // The Debugging school contains the matching trueName token — kept.
-    expect(screen.getByText('Debugging')).toBeInTheDocument();
-    // The Reasoning school has no trueName match — filtered out.
-    expect(screen.queryByText('Reasoning')).not.toBeInTheDocument();
-  });
-
-  it('filters by canonical name when trueName is absent', () => {
-    mockSchoolMap.clear();
-    mockSchoolMap.set('debugging', {
-      id: 'debugging',
-      name: 'School of Remediation',
-      real: 'Debugging',
-      desc: 'Incantations to banish bugs.',
-      spells: [
-        { name: 'Trace Sight', skill: 'log-trace-correlation', effect: 'Reads stack traces.' },
-      ],
+      spells: [{ name: 'Trace Sight', skill: 'log-trace-correlation', effect: 'Reads stack traces.' }],
     });
     mockSchoolMap.set('reasoning', {
       id: 'reasoning',
@@ -75,7 +41,7 @@ describe('AllSchoolsView — trueName search inclusion', () => {
     expect(screen.getByText('Reasoning')).toBeInTheDocument();
   });
 
-  it('still matches by skill id when trueName is absent', () => {
+  it('matches by skill id', () => {
     mockSchoolMap.clear();
     mockSchoolMap.set('debugging', {
       id: 'debugging',

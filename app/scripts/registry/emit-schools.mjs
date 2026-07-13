@@ -2,8 +2,7 @@
  * emit-schools.mjs — Build the schools[] array from skill records.
  *
  * Inputs: an array of parsed skills (each with skill id, topic,
- * display name, effect, status, note, combos) plus the curated
- * overlay (hand-maintained themed names, statuses, notes, combos).
+ * display name, effect, status, note, combos).
  *
  * Returns: a JSON-serializable schools array sorted by school name,
  * with spells sorted alphabetically by name within each school.
@@ -11,20 +10,18 @@
  * Pure function — no file I/O. The caller writes the result.
  */
 
-import { MAX_KINS_PER_SPELL } from './derive.mjs';
 import { TOPIC_META } from './topic-meta.mjs';
 
 /**
  * @param {Array<{skill, topic, name, effect, status, note, combos}>} skills
- * @param {{spells: object, schools: object}} overlay
  * @returns {Array}
  */
-export function buildSchools(skills, overlay) {
+export function buildSchools(skills) {
   const byTopic = groupBy(skills, (s) => s.topic);
 
   const schools = [];
   for (const [topic, topicSkills] of byTopic) {
-    const theme = overlay.schools[topic] || TOPIC_META[topic] || deriveTopicMeta(topic);
+    const theme = TOPIC_META[topic] || deriveTopicMeta(topic);
     topicSkills.sort((a, b) => a.name.localeCompare(b.name));
     schools.push({
       id: theme.id,
@@ -42,8 +39,6 @@ function toSpell(s) {
   const spell = { name: s.name, skill: s.skill, effect: s.effect, status: s.status };
   if (s.note) spell.note = s.note;
   if (s.combos) spell.combos = s.combos;
-  if (s.trueName) spell.trueName = s.trueName;
-  if (s.kins && s.kins.length > 0) spell.kins = s.kins;
   return spell;
 }
 
@@ -68,57 +63,6 @@ function groupBy(arr, keyFn) {
     map.get(key).push(item);
   }
   return map;
-}
-
-/**
- * Validate curated kins data at registry build time.
- *
- * Logs stderr warnings for:
- *   - Any spell with more kins than the UI renders (silent truncation)
- *   - Any kin id that does not resolve to a known skill (typo, absorbed,
- *     or stale entry from the curated overlay)
- *
- * Does not throw — the registry must still build so the runtime filter
- * (`resolveKinsForSpell` in spellLookup.js) can skip unresolved ids
- * gracefully. Warnings go to stderr so they surface in CI logs without
- * failing the build.
- *
- * Returns a structured report so the caller can assert on it in tests.
- *
- * @param {Array<{skill: string, kins?: string[]}>} records
- * @param {Set<string>} allSkillIds
- * @param {{ logger?: (msg: string) => void }} [opts]
- * @returns {{ overCap: Array<{skill: string, count: number}>, unresolved: Array<{from: string, to: string}> }}
- */
-export function validateRecords(records, allSkillIds, opts = {}) {
-  const logger = opts.logger || console.warn;
-  const overCap = [];
-  const unresolved = [];
-
-  for (const r of records) {
-    if (!Array.isArray(r.kins) || r.kins.length === 0) continue;
-
-    if (r.kins.length > MAX_KINS_PER_SPELL) {
-      overCap.push({ skill: r.skill, count: r.kins.length });
-      logger(
-        `[registry] skill "${r.skill}" has ${r.kins.length} kins ` +
-          `but the FamiliarWhisper UI renders at most ${MAX_KINS_PER_SPELL}. ` +
-          `Trim the curatedOverlay.kins list, or the extra entries are inert.`,
-      );
-    }
-
-    for (const kinId of r.kins) {
-      if (!allSkillIds.has(kinId)) {
-        unresolved.push({ from: r.skill, to: kinId });
-        logger(
-          `[registry] skill "${r.skill}" has unresolved kin "${kinId}". ` +
-            `Check curatedOverlay.kins — typo, or the kin was absorbed into another skill.`,
-        );
-      }
-    }
-  }
-
-  return { overCap, unresolved };
 }
 
 export function renderSchoolsSource(schools) {
