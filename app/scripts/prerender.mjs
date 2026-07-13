@@ -10,7 +10,7 @@ import { mkdir, readFile, stat, writeFile } from 'node:fs/promises';
 import { dirname, join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
-import schools from '../src/data/schools.js';
+import schools from '../src/data/schools.ts';
 import { injectSpellMeta } from './prerender-helpers.mjs';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));

@@ -7,7 +7,7 @@ import {
   GAZE_BANDS,
   gazeStage,
   ritualProgress,
-} from './gaze.js';
+} from './gaze.ts';
 
 describe('clamp01', () => {
   it('bounds to 0..1', () => {

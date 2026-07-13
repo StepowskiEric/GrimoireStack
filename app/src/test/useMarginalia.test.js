@@ -1,6 +1,6 @@
 import { act, renderHook } from '@testing-library/react';
 import { beforeEach, describe, expect, it } from 'vitest';
-import { useMarginalia } from '../hooks/useMarginalia.js';
+import { useMarginalia } from '../hooks/useMarginalia.ts';
 
 describe('useMarginalia', () => {
   beforeEach(() => {

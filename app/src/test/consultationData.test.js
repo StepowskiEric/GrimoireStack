@@ -7,8 +7,8 @@ import {
   SEANCE_MAX_SANITY,
   SEANCE_QUESTIONS,
   SEANCE_SIGILS,
-} from '../data/consultationData.js';
-import { grimoireIndex } from '../data/grimoireIndexInstance.js';
+} from '../data/consultationData.ts';
+import { grimoireIndex } from '../data/grimoireIndexInstance.ts';
 
 describe('consultationData — sigils', () => {
   it('has exactly 6 sigils', () => {

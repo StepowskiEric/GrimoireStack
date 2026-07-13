@@ -1,6 +1,6 @@
 import { act, renderHook } from '@testing-library/react';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
-import { useGaze } from './useGaze.js';
+import { useGaze } from './useGaze.ts';
 
 describe('useGaze', () => {
   beforeEach(() => {

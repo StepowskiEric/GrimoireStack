@@ -1,6 +1,6 @@
 import { act, fireEvent, render, screen } from '@testing-library/react';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
-import LanguageToggle from '../components/LanguageToggle.jsx';
+import LanguageToggle from '../components/LanguageToggle.tsx';
 import { LanguageProvider, useLanguage } from '../i18n/LanguageContext';
 
 function LangProbe() {

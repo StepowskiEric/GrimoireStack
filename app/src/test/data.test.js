@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import schools, { WIZARD_DATA } from '../data/schools.js';
+import schools, { WIZARD_DATA } from '../data/schools.ts';
 
 describe('schools data', () => {
   it('exports an array of schools', () => {

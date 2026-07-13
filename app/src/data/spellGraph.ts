@@ -6,9 +6,9 @@
  * deduplication and filter semantics live in one place.
  */
 
-import { buildComboEdges } from './comboEdgeBuilder.js';
-import type { SpellCore } from './spellCore.js';
-import type { SpellLookup } from './spellLookup.js';
+import { buildComboEdges } from './comboEdgeBuilder.ts';
+import type { SpellCore } from './spellCore.ts';
+import type { SpellLookup } from './spellLookup.ts';
 
 export interface SpellGraphNode {
   id: string;

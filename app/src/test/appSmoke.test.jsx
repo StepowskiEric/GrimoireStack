@@ -3,7 +3,7 @@ import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
 // Mock the grimoire index — keeps the test fast and independent of the
 // real registry, while exposing the methods App.jsx reads on mount.
-vi.mock('../data/grimoireIndexInstance.js', () => {
+vi.mock('../data/grimoireIndexInstance.ts', () => {
   const debug = { id: 'debugging', real: 'Debugging', name: 'School of Remediation', spells: [] };
   const reason = { id: 'reasoning', real: 'Reasoning', name: 'School of Cognition', spells: [] };
   const map = new Map([
@@ -29,7 +29,7 @@ vi.mock('../data/grimoireIndexInstance.js', () => {
   };
 });
 
-import App from '../App.jsx';
+import App from '../App.tsx';
 
 function renderApp() {
   // App.jsx already provides its own BrowserRouter + LanguageProvider.

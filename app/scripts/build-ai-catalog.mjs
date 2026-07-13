@@ -12,18 +12,18 @@ import { dirname, resolve } from 'path';
 import { fileURLToPath } from 'url';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
-const REGISTRY_PATH = resolve(__dirname, '../src/data/schoolsRegistry.js');
+const REGISTRY_PATH = resolve(__dirname, '../src/data/schoolsRegistry.ts');
 const OUTPUT_PATH = resolve(__dirname, '../functions/api/skill-catalog.js');
 
 const registryContent = readFileSync(REGISTRY_PATH, 'utf-8');
 
-// Extract the schools array from the JS module.
-// The file is: comments + `const schools = [` + data + `];` + `export default schools;`
+// Extract the schools array from the TS module.
+// The file is: comments + `const schools: Array<{...}> = [` + data + `];` + `export default schools;`
 // We need to extract just the array literal.
-const startMarker = 'const schools = [';
-const startIdx = registryContent.indexOf(startMarker);
+const startMarker = '= [';
+const startIdx = registryContent.lastIndexOf(startMarker);
 if (startIdx === -1) throw new Error('Could not find schools array in registry');
-const arrayStart = startIdx + startMarker.length - 1; // point at '['
+const arrayStart = startIdx + 2; // point at '['
 const endIdx = registryContent.lastIndexOf('];');
 if (endIdx === -1) throw new Error('Could not find end of schools array');
 const arrayContent = registryContent.slice(arrayStart, endIdx + 1); // "[...]"

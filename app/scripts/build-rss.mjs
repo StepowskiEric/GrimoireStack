@@ -6,8 +6,8 @@
 import { mkdir, stat, writeFile } from 'node:fs/promises';
 import { dirname, join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { getRecentlyUpdated } from '../src/data/changeFeed.js';
-import schools from '../src/data/schools.js';
+import { getRecentlyUpdated } from '../src/data/changeFeed.ts';
+import schools from '../src/data/schools.ts';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const APP_ROOT = resolve(__dirname, '..');

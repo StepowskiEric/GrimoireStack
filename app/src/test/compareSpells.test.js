@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { compareSpells } from '../utils/markdownExport.js';
+import { compareSpells } from '../utils/markdownExport.ts';
 
 const spellA = {
   name: 'Trace Sight',

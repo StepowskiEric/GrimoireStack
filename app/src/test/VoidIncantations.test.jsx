@@ -1,12 +1,12 @@
 import { fireEvent, render, screen } from '@testing-library/react';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
-import VoidIncantations from '../components/VoidIncantations.jsx';
+import VoidIncantations from '../components/VoidIncantations.tsx';
 
 // Isolate the component: reuse the single resident page-agent via the hook,
 // which we mock so no real page-agent import (or network) happens in tests.
 const mockRunAgent = vi.fn();
 
-vi.mock('../hooks/useAgentMode.js', () => ({
+vi.mock('../hooks/useAgentMode.ts', () => ({
   useAgentMode: () => ({ runAgent: mockRunAgent }),
 }));
 

@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { getOptionById } from '../data/consultationData.js';
+import { getOptionById } from '../data/consultationData.ts';
 import {
   converged,
   decideResult,
@@ -8,7 +8,7 @@ import {
   sanityAfterTap,
   scoreSelections,
   shouldSwapToDarker,
-} from '../data/consultationScoring.js';
+} from '../data/consultationScoring.ts';
 
 const resolveOption = (schoolId, optionId) => {
   const found = getOptionById(schoolId, optionId);

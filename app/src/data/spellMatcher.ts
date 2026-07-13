@@ -6,8 +6,8 @@
  * so those rules live in one place.
  */
 
-import type { Spell, School } from './schema.js';
-import type { SpellCore } from './spellCore.js';
+import type { Spell, School } from './schema.ts';
+import type { SpellCore } from './spellCore.ts';
 
 export interface SpellMatcher {
   similarTo: (query: string, limit?: number) => { spell: Spell; school: School }[];

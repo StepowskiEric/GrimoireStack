@@ -1,6 +1,6 @@
 import { act, renderHook } from '@testing-library/react';
 import { afterEach, describe, expect, it, vi } from 'vitest';
-import { buildIncantationPrompt, useAgentMode } from '../hooks/useAgentMode.js';
+import { buildIncantationPrompt, useAgentMode } from '../hooks/useAgentMode.ts';
 
 const mockExecute = vi.fn();
 

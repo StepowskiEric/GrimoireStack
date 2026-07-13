@@ -1,16 +1,16 @@
 import { act, renderHook } from '@testing-library/react';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
-import { useEldritchCast } from '../hooks/useEldritchCast.js';
+import { useEldritchCast } from '../hooks/useEldritchCast.ts';
 
 // Mock audio functions
-vi.mock('../audio/sounds.js', () => ({
+vi.mock('../audio/sounds.ts', () => ({
   castTear: vi.fn(),
   castBoom: vi.fn(),
   castScratch: vi.fn(),
   castThud: vi.fn(),
 }));
 
-import { castBoom, castScratch, castTear, castThud } from '../audio/sounds.js';
+import { castBoom, castScratch, castTear, castThud } from '../audio/sounds.ts';
 
 beforeEach(() => {
   vi.clearAllMocks();

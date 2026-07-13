@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { escapeHtml, sanitizeHtml } from '../utils/sanitize.js';
+import { escapeHtml, sanitizeHtml } from '../utils/sanitize.ts';
 
 describe('sanitizeHtml', () => {
   it('strips script tags', () => {

@@ -6,7 +6,7 @@
  * `createGrimoireIndex(schools)` directly outside of tests.
  */
 
-import { createGrimoireIndex } from './grimoireIndex.js';
-import schools from './schools.js';
+import { createGrimoireIndex } from './grimoireIndex.ts';
+import schools from './schools.ts';
 
 export const grimoireIndex = createGrimoireIndex(schools);

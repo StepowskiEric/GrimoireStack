@@ -1,6 +1,6 @@
 import { fireEvent, render, screen } from '@testing-library/react';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
-import CompareSpellsModal from '../components/CompareSpellsModal.jsx';
+import CompareSpellsModal from '../components/CompareSpellsModal.tsx';
 
 // Mock the grimoireIndex module
 const mockEntries = [
@@ -33,13 +33,13 @@ const mockEntries = [
   },
 ];
 
-vi.mock('../data/grimoireIndexInstance.js', () => ({
+vi.mock('../data/grimoireIndexInstance.ts', () => ({
   grimoireIndex: {
     allEntries: () => mockEntries,
   },
 }));
 
-import { grimoireIndex } from '../data/grimoireIndexInstance.js';
+import { grimoireIndex } from '../data/grimoireIndexInstance.ts';
 
 const leftSpell = {
   spell: {

@@ -1,6 +1,6 @@
 import { act, fireEvent, render, screen } from '@testing-library/react';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
-import SpellModal from '../components/SpellModal.jsx';
+import SpellModal from '../components/SpellModal.tsx';
 
 const sampleSpell = {
   name: 'Trace Sight',

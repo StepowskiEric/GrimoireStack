@@ -8,7 +8,7 @@
  * public interface.
  */
 
-import { validateSchools, type School, type Spell } from './schema.js';
+import { validateSchools, type School, type Spell } from './schema.ts';
 
 export interface SpellEntry {
   spell: Spell;

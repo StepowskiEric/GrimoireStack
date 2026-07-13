@@ -1,6 +1,6 @@
 import { act, renderHook } from '@testing-library/react';
 import { describe, expect, it, vi } from 'vitest';
-import { useFavorites } from '../hooks/useFavorites.js';
+import { useFavorites } from '../hooks/useFavorites.ts';
 
 describe('useFavorites', () => {
   beforeEach(() => {

@@ -1,6 +1,6 @@
 import { fireEvent, render, screen } from '@testing-library/react';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
-import ErrorBoundary from '../components/ErrorBoundary.jsx';
+import ErrorBoundary from '../components/ErrorBoundary.tsx';
 
 // Component that throws on render
 function ThrowError({ message = 'Test error' }) {

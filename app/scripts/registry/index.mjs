@@ -20,8 +20,8 @@ import { buildExplicit, renderMetadataSource } from './emit-metadata.mjs';
 import { buildSchools, renderSchoolsSource } from './emit-schools.mjs';
 import { parseFrontmatter } from './frontmatter.mjs';
 
-const SCHOOLS_REGISTRY = path.join(APP_DIR, 'src', 'data', 'schoolsRegistry.js');
-const SPELL_METADATA = path.join(APP_DIR, 'src', 'data', 'spellMetadata.js');
+const SCHOOLS_REGISTRY = path.join(APP_DIR, 'src', 'data', 'schoolsRegistry.ts');
+const SPELL_METADATA = path.join(APP_DIR, 'src', 'data', 'spellMetadata.ts');
 
 async function main() {
   const discovered = await discoverSkills();

@@ -17,7 +17,7 @@ const SHELL = `<!DOCTYPE html>
 </head>
 <body>
 <div id="root"></div>
-<script type="module" src="/assets/main.js"></script>
+<script type="module" src="/assets/main.ts"></script>
 </body>
 </html>`;
 
@@ -69,7 +69,7 @@ describe('injectSpellMeta', () => {
 
   it('preserves existing shell content (script tags, etc.)', () => {
     const out = injectSpellMeta(SHELL, meta);
-    expect(out).toContain('<script type="module" src="/assets/main.js"></script>');
+    expect(out).toContain('<script type="module" src="/assets/main.ts"></script>');
     expect(out).toContain('<link rel="icon" type="image/png" href="/favicon.png">');
     expect(out).toContain('<div id="root"></div>');
   });

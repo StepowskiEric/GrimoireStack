@@ -84,7 +84,7 @@ describe('renderSchoolsSource', () => {
         spells: [{ name: 'Trace Sight', skill: 'log-trace-correlation', effect: 'X', status: '—' }],
       },
     ]);
-    expect(source).toMatch(/^const schools = /m);
+    expect(source).toMatch(/^const schools/m);
     expect(source).toMatch(/export default schools;\s*$/);
     expect(source).toMatch(/AUTO-GENERATED/);
   });

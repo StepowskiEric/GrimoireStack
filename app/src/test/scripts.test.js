@@ -80,13 +80,13 @@ describe('skill.mjs add', () => {
   beforeAll(async () => {
     tmpDir = await createTmpDir();
     tmpSkillDir = path.join(tmpDir, TEST_TOPIC, TEST_SKILL_ID);
-    tmpSchoolsFile = path.join(tmpDir, 'schools.js');
-    tmpMetaFile = path.join(tmpDir, 'spellMetadata.js');
+    tmpSchoolsFile = path.join(tmpDir, 'schools.ts');
+    tmpMetaFile = path.join(tmpDir, 'spellMetadata.ts');
     tmpPublicDir = path.join(tmpDir, 'public', 'skills');
 
     // Copy the real data files to temp dir
-    await copyFile(path.join(APP_DIR, 'src', 'data', 'schools.js'), tmpSchoolsFile);
-    await copyFile(path.join(APP_DIR, 'src', 'data', 'spellMetadata.js'), tmpMetaFile);
+    await copyFile(path.join(APP_DIR, 'src', 'data', 'schools.ts'), tmpSchoolsFile);
+    await copyFile(path.join(APP_DIR, 'src', 'data', 'spellMetadata.ts'), tmpMetaFile);
   });
 
   afterAll(async () => {
@@ -160,7 +160,7 @@ describe('registry/index.mjs', () => {
     run(`node ${path.join(APP_DIR, 'scripts', 'registry', 'index.mjs')}`);
 
     // Import the freshly-generated registry
-    const regPath = path.join(APP_DIR, 'src', 'data', 'schoolsRegistry.js');
+    const regPath = path.join(APP_DIR, 'src', 'data', 'schoolsRegistry.ts');
     const url = new URL(`file://${regPath}`);
     const mod = await import(url.href);
     const schools = mod.default;
@@ -190,11 +190,11 @@ describe('registry/index.mjs', () => {
 
   it('emits a spellMetadata.js with a date for every known skill', async () => {
     const { getSpellLastUpdated } = await import(
-      path.join(APP_DIR, 'src', 'data', 'changeFeed.js')
+      path.join(APP_DIR, 'src', 'data', 'changeFeed.ts')
     );
 
     // Every skill in the registry should have a non-null lastUpdated
-    const regPath = path.join(APP_DIR, 'src', 'data', 'schoolsRegistry.js');
+    const regPath = path.join(APP_DIR, 'src', 'data', 'schoolsRegistry.ts');
     const regUrl = new URL(`file://${regPath}`);
     const reg = await import(regUrl.href);
     for (const school of reg.default) {

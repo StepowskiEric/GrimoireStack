@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
-import { buildComboEdges } from '../data/comboEdgeBuilder.js';
-import { createSpellCore } from '../data/spellCore.js';
-import { createSpellLookup } from '../data/spellLookup.js';
+import { buildComboEdges } from '../data/comboEdgeBuilder.ts';
+import { createSpellCore } from '../data/spellCore.ts';
+import { createSpellLookup } from '../data/spellLookup.ts';
 
 const SCHOOLS = [
   {

@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { getSpellTier, TIER_META } from '../data/tiers.js';
+import { getSpellTier, TIER_META } from '../data/tiers.ts';
 
 describe('getSpellTier', () => {
   it('returns faded for empty status', () => {

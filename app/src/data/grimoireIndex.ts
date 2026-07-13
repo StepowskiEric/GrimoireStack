@@ -6,16 +6,16 @@
  * real logic lives in the facet modules.
  */
 
-import { filterSpellsOnEntries, searchSpellsOnEntries } from '../spellSearch.js';
-import { createSpellCore } from './spellCore.js';
-import { createSpellGraph } from './spellGraph.js';
-import { createSpellLookup } from './spellLookup.js';
-import { createSpellMatcher } from './spellMatcher.js';
-import { createSpellWeb } from './spellWeb.js';
-import type { School, Spell } from './schema.js';
-import type { SpellCore } from './spellCore.js';
-import type { SpellLookup } from './spellLookup.js';
-import type { SpellMatcher } from './spellMatcher.js';
+import { filterSpellsOnEntries, searchSpellsOnEntries } from '../spellSearch.ts';
+import { createSpellCore } from './spellCore.ts';
+import { createSpellGraph } from './spellGraph.ts';
+import { createSpellLookup } from './spellLookup.ts';
+import { createSpellMatcher } from './spellMatcher.ts';
+import { createSpellWeb } from './spellWeb.ts';
+import type { School, Spell } from './schema.ts';
+import type { SpellCore } from './spellCore.ts';
+import type { SpellLookup } from './spellLookup.ts';
+import type { SpellMatcher } from './spellMatcher.ts';
 
 export interface SearchResult {
   bySchool: Record<string, unknown>;

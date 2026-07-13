@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { getSpellSearchableText } from '../data/spellDisplay.js';
+import { getSpellSearchableText } from '../data/spellDisplay.ts';
 
 describe('getSpellSearchableText', () => {
   it('returns empty string for null/undefined spells', () => {

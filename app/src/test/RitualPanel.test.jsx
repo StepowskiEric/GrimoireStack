@@ -1,6 +1,6 @@
 import { fireEvent, render, screen } from '@testing-library/react';
 import { describe, expect, it, vi } from 'vitest';
-import RitualPanel from '../components/RitualPanel.jsx';
+import RitualPanel from '../components/RitualPanel.tsx';
 
 function makeRitual(overrides = {}) {
   return {

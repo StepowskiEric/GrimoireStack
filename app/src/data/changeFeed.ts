@@ -5,8 +5,8 @@
  * computes changelog views (recently updated, per-spell date/note lookups).
  */
 
-import { grimoireIndex } from './grimoireIndexInstance.js';
-import { EXPLICIT } from './spellMetadata.js';
+import { grimoireIndex } from './grimoireIndexInstance.ts';
+import { EXPLICIT } from './spellMetadata.ts';
 
 const EXPLICIT_MAP = EXPLICIT as Record<string, { lastUpdated?: string; note?: string } | undefined>;
 
@@ -48,8 +48,8 @@ export function isExplicitlyUpdated(skill: string): boolean {
 export interface ChangeFeedItem {
   skill: string;
   name: string;
-  spell: unknown;
-  school: unknown;
+  spell: any;
+  school: any;
   lastUpdated: string | null;
   isExplicit: boolean;
   note: string | null;

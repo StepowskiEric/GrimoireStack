@@ -1,6 +1,6 @@
 import { act, renderHook, waitFor } from '@testing-library/react';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
-import { useFavoritesSync } from '../hooks/useFavoritesSync.js';
+import { useFavoritesSync } from '../hooks/useFavoritesSync.ts';
 
 function mockSyncApi(handler) {
   globalThis.fetch = vi.fn(async (url, opts) => {

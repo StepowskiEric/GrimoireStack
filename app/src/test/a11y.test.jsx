@@ -1,10 +1,10 @@
 import { render } from '@testing-library/react';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { axe } from 'vitest-axe';
-import InstallPrompt from '../components/InstallPrompt.jsx';
-import LibraryContent from '../components/LibraryContent.jsx';
-import ShortcutsModal from '../components/ShortcutsModal.jsx';
-import StaleLinkBanner from '../components/StaleLinkBanner.jsx';
+import InstallPrompt from '../components/InstallPrompt.tsx';
+import LibraryContent from '../components/LibraryContent.tsx';
+import ShortcutsModal from '../components/ShortcutsModal.tsx';
+import StaleLinkBanner from '../components/StaleLinkBanner.tsx';
 import { LanguageProvider } from '../i18n/LanguageContext';
 
 const sampleSchools = [
@@ -26,7 +26,7 @@ const sampleSchools = [
   },
 ];
 
-vi.mock('../data/grimoireIndexInstance.js', () => {
+vi.mock('../data/grimoireIndexInstance.ts', () => {
   const trace = {
     name: 'Trace Sight',
     skill: 'log-trace-correlation',

@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
-import { createGrimoireIndex } from '../data/grimoireIndex.js';
-import { grimoireIndex } from '../data/grimoireIndexInstance.js';
+import { createGrimoireIndex } from '../data/grimoireIndex.ts';
+import { grimoireIndex } from '../data/grimoireIndexInstance.ts';
 
 const TEST_SCHOOLS = [
   {

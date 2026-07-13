@@ -6,7 +6,7 @@ import {
   loadFavorites,
   loadMarginalia,
   loadRecent,
-} from '../utils/exporter.js';
+} from '../utils/exporter.ts';
 
 const mockStorage = {};
 

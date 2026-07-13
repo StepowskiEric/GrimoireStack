@@ -1,6 +1,6 @@
 import { act, renderHook } from '@testing-library/react';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
-import { useRitual } from '../hooks/useRitual.js';
+import { useRitual } from '../hooks/useRitual.ts';
 
 const mockFetch = vi.fn();
 global.fetch = mockFetch;

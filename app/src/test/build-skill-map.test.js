@@ -23,7 +23,7 @@ describe('build-skill-map output', () => {
   });
 
   it('every catalog spell in schools.js has a _map.json entry', async () => {
-    const { default: schools } = await import('../data/schools.js');
+    const { default: schools } = await import('../data/schools.ts');
     const catalogSkills = schools.flatMap((s) => s.spells.map((sp) => sp.skill));
     const missing = catalogSkills.filter((s) => !map[s]);
     expect(missing).toEqual([]);

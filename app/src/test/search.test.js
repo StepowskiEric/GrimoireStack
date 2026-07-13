@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
-import { getSpellTier } from '../data/tiers.js';
-import { filterSpellsOnEntries, searchSpellsOnEntries } from '../spellSearch.js';
+import { getSpellTier } from '../data/tiers.ts';
+import { filterSpellsOnEntries, searchSpellsOnEntries } from '../spellSearch.ts';
 
 // Flat-entry fixtures (canonical shape for the implementation under test).
 const sampleEntries = [

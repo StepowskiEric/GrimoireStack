@@ -1,13 +1,13 @@
 import { fireEvent, render, screen, within } from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
-import CommuneView from '../components/CommuneView.jsx';
-import { SEANCE_QUESTIONS } from '../data/consultationData.js';
+import CommuneView from '../components/CommuneView.tsx';
+import { SEANCE_QUESTIONS } from '../data/consultationData.ts';
 import { LanguageProvider } from '../i18n/LanguageContext';
 
 // Stub the audio module so the dynamic import inside CommuneView's
 // effect does not actually try to schedule audio during tests.
-vi.mock('../audio/sounds.js', () => ({
+vi.mock('../audio/sounds.ts', () => ({
   startWhispers: vi.fn(),
   setAudioEnabled: vi.fn(),
 }));

@@ -1,6 +1,6 @@
 import { renderHook } from '@testing-library/react';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
-import { useKeyboardShortcuts } from '../hooks/useKeyboardShortcuts.js';
+import { useKeyboardShortcuts } from '../hooks/useKeyboardShortcuts.ts';
 
 function keydown(key, opts = {}) {
   const e = new KeyboardEvent('keydown', { key, bubbles: true, cancelable: true, ...opts });

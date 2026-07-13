@@ -6,8 +6,8 @@
  * internal indexes.
  */
 
-import type { Spell, School } from './schema.js';
-import type { SpellCore } from './spellCore.js';
+import type { Spell, School } from './schema.ts';
+import type { SpellCore } from './spellCore.ts';
 
 export interface SpellLookup {
   resolveBySkill: (skill: string) => { spell: Spell; school: School } | null;

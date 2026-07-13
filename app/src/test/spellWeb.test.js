@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { createGrimoireIndex } from '../data/grimoireIndex.js';
+import { createGrimoireIndex } from '../data/grimoireIndex.ts';
 
 /**
  * spellWeb tests — buildSpellWeb tree structure and combo edges.

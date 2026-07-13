@@ -1,5 +1,5 @@
 import { render, screen } from '@testing-library/react';
-import ChangelogView from '../components/ChangelogView.jsx';
+import ChangelogView from '../components/ChangelogView.tsx';
 
 // Mock the spellMetadata module
 const mockRecentlyUpdated = [
@@ -32,7 +32,7 @@ const mockRecentlyUpdated = [
   },
 ];
 
-vi.mock('../data/changeFeed.js', () => ({
+vi.mock('../data/changeFeed.ts', () => ({
   getRecentlyUpdated: (limit) =>
     mockRecentlyUpdated.slice(0, limit || mockRecentlyUpdated.length > 0),
   getSpellLastUpdated: (skill) => {

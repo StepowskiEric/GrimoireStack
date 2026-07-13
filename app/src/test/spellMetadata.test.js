@@ -4,7 +4,7 @@ import {
   getSpellLastUpdated,
   getSpellNote,
   isExplicitlyUpdated,
-} from '../data/changeFeed.js';
+} from '../data/changeFeed.ts';
 
 describe('spellMetadata', () => {
   describe('getSpellLastUpdated', () => {
@@ -84,7 +84,7 @@ describe('spellMetadata', () => {
     // spellMetadata.js but the schools[] entry was missing, making the
     // skill invisible to the changelog (which iterates schools[]).
     it('every explicit spellMetadata entry has a matching schools[] spell', async () => {
-      const { default: schools } = await import('../data/schools.js');
+      const { default: schools } = await import('../data/schools.ts');
       const catalogSkills = new Set(schools.flatMap((s) => s.spells.map((sp) => sp.skill)));
       // Extract just the skill keys from EXPLICIT (we re-read the file to avoid
       // a circular import that would require restructuring the module).
@@ -92,7 +92,7 @@ describe('spellMetadata', () => {
       const path = await import('node:path');
       const url = await import('node:url');
       const here = path.dirname(url.fileURLToPath(import.meta.url));
-      const src = fs.readFileSync(path.resolve(here, '..', 'data', 'spellMetadata.js'), 'utf8');
+      const src = fs.readFileSync(path.resolve(here, '..', 'data', 'spellMetadata.ts'), 'utf8');
       const explicitKeys = new Set(
         Array.from(src.matchAll(/'([a-z0-9-]+)':\s*\{\s*lastUpdated:/g)).map((m) => m[1]),
       );

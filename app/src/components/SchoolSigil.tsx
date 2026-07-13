@@ -1,5 +1,5 @@
-import { getSchoolSigil } from '../data/schoolSigils.jsx';
-import { cn } from '../utils/cn.js';
+import { getSchoolSigil } from '../data/schoolSigils.tsx';
+import { cn } from '../utils/cn.ts';
 
 interface Props {
   schoolId: string;

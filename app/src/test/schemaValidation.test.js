@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { validateSchool, validateSchools, validateSpell } from '../data/schema.js';
+import { validateSchool, validateSchools, validateSpell } from '../data/schema.ts';
 
 const baseSpell = () => ({
   name: 'Trace Sight',

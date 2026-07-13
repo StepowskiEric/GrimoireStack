@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "node ../scripts/sync-all.mjs && node scripts/registry/index.mjs && node scripts/build-skill-map.mjs && node scripts/build-ai-catalog.mjs && npm run typecheck && vite build && node scripts/prerender.mjs && node scripts/build-sitemap.mjs && node scripts/build-rss.mjs",
+    "build": "node ../scripts/sync-all.mjs && node scripts/registry/index.mjs && node scripts/build-skill-map.mjs && node scripts/build-ai-catalog.mjs && npm run typecheck && vite build && npx tsx scripts/prerender.mjs && npx tsx scripts/build-sitemap.mjs && npx tsx scripts/build-rss.mjs",
     "build:sync": "node ../scripts/sync-all.mjs",
     "build:registry": "node scripts/registry/index.mjs",
     "build:vite": "vite build",

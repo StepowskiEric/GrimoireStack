@@ -1,5 +1,5 @@
 import { fireEvent, render, screen } from '@testing-library/react';
-import SpellWeb from '../components/SpellWeb.jsx';
+import SpellWeb from '../components/SpellWeb.tsx';
 
 // Mock the grimoireIndex module
 const mockSchools = [
@@ -128,7 +128,7 @@ const mockWeb = {
   findSchoolNode: (schoolId) => null,
 };
 
-vi.mock('../data/grimoireIndexInstance.js', () => ({
+vi.mock('../data/grimoireIndexInstance.ts', () => ({
   grimoireIndex: {
     buildSpellWeb: () => mockWeb,
     resolveBySkill: (skillId) => {

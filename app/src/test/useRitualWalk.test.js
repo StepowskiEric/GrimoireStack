@@ -1,6 +1,6 @@
 import { act, renderHook } from '@testing-library/react';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
-import { useRitualWalk } from '../hooks/useRitualWalk.js';
+import { useRitualWalk } from '../hooks/useRitualWalk.ts';
 
 let perfNow = 0;
 beforeEach(() => {

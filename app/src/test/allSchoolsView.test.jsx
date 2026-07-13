@@ -3,7 +3,7 @@ import { describe, expect, it, vi } from 'vitest';
 import { LanguageProvider } from '../i18n/LanguageContext';
 
 const mockSchoolMap = new Map();
-vi.mock('../data/grimoireIndexInstance.js', () => ({
+vi.mock('../data/grimoireIndexInstance.ts', () => ({
   get grimoireIndex() {
     return {
       getSchoolMap: () => mockSchoolMap,
@@ -12,7 +12,7 @@ vi.mock('../data/grimoireIndexInstance.js', () => ({
   },
 }));
 
-import AllSchoolsView from '../components/AllSchoolsView.jsx';
+import AllSchoolsView from '../components/AllSchoolsView.tsx';
 
 function renderWithProviders(ui) {
   return render(<LanguageProvider>{ui}</LanguageProvider>);

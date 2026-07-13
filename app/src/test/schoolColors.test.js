@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { schoolColors } from '../utils/schoolColors.js';
+import { schoolColors } from '../utils/schoolColors.ts';
 
 describe('schoolColors', () => {
   it('returns an object with all expected color keys', () => {

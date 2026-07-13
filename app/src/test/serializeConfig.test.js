@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { serializeConfig, serializeMarkdown } from '../utils/serializeConfig.js';
+import { serializeConfig, serializeMarkdown } from '../utils/serializeConfig.ts';
 
 /**
  * serializeConfig tests — pure serialization, no DOM, no localStorage.

@@ -1,6 +1,6 @@
 import { fireEvent, render, screen } from '@testing-library/react';
 import { describe, expect, it, vi } from 'vitest';
-import FavoritesView from '../components/FavoritesView.jsx';
+import FavoritesView from '../components/FavoritesView.tsx';
 import { LanguageProvider } from '../i18n/LanguageContext';
 
 const sampleSchools = [
@@ -39,7 +39,7 @@ const flatEntries = [
   ...manyTestSchool.spells.map((sp) => ({ spell: sp, school: manyTestSchool })),
 ];
 
-vi.mock('../data/grimoireIndexInstance.js', () => ({
+vi.mock('../data/grimoireIndexInstance.ts', () => ({
   grimoireIndex: {
     flatEntries: () => flatEntries,
   },

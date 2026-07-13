@@ -1,14 +1,14 @@
 import { useMemo } from 'react';
-import { getSchoolSigil } from '../data/schoolSigils.jsx';
-import { useEldritchCast } from '../hooks/useEldritchCast.js';
-import { cn } from '../utils/cn.js';
+import { getSchoolSigil } from '../data/schoolSigils.tsx';
+import { useEldritchCast } from '../hooks/useEldritchCast.ts';
+import { cn } from '../utils/cn.ts';
 import { generateCastVeins } from '../utils/castVeins.ts';
 import EyeDefs from './EyeDefs.tsx';
 import SchoolSigil from './SchoolSigil.tsx';
 
 interface Props {
   spell: { name: string; effect: string; status?: string };
-  school: { id: string; name: string; real: string; symbol: string };
+  school: { id: string; name: string; real: string; symbol?: string };
   onComplete: () => void;
 }
 

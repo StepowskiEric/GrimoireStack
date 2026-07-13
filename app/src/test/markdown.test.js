@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { escapeHtml, parseTables, simpleMarkdownToHtml, wrapLists } from '../utils/markdown.js';
+import { escapeHtml, parseTables, simpleMarkdownToHtml, wrapLists } from '../utils/markdown.ts';
 
 describe('escapeHtml', () => {
   it('escapes & < > and "', () => {

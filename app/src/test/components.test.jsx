@@ -1,14 +1,14 @@
 import { act, fireEvent, render, screen } from '@testing-library/react';
 import { BrowserRouter } from 'react-router-dom';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
-import ApprenticeWelcome from '../components/ApprenticeWelcome.jsx';
-import GrimoireStackLayout from '../components/GrimoireStackLayout.jsx';
-import InstallPrompt from '../components/InstallPrompt.jsx';
-import LibraryContent from '../components/LibraryContent.jsx';
-import RecipeLabView from '../components/RecipeLabView.jsx';
-import SettingsView from '../components/SettingsView.jsx';
-import SpellCard from '../components/SpellCard.jsx';
-import StaleLinkBanner from '../components/StaleLinkBanner.jsx';
+import ApprenticeWelcome from '../components/ApprenticeWelcome.tsx';
+import GrimoireStackLayout from '../components/GrimoireStackLayout.tsx';
+import InstallPrompt from '../components/InstallPrompt.tsx';
+import LibraryContent from '../components/LibraryContent.tsx';
+import RecipeLabView from '../components/RecipeLabView.tsx';
+import SettingsView from '../components/SettingsView.tsx';
+import SpellCard from '../components/SpellCard.tsx';
+import StaleLinkBanner from '../components/StaleLinkBanner.tsx';
 import { LanguageProvider } from '../i18n/LanguageContext';
 
 const sampleSpell = {
@@ -44,7 +44,7 @@ const multiSchool = [
   },
 ];
 
-vi.mock('../data/grimoireIndexInstance.js', () => {
+vi.mock('../data/grimoireIndexInstance.ts', () => {
   const trace = {
     name: 'Trace Sight',
     skill: 'log-trace-correlation',

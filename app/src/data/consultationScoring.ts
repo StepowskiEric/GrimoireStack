@@ -12,7 +12,7 @@ import {
   SEANCE_CONVERGENCE_RUN,
   SEANCE_DARKNESS_THRESHOLD,
   SEANCE_MAX_SANITY,
-} from './consultationData.js';
+} from './consultationData.ts';
 
 const ALT_WEIGHT = 0.5;
 
