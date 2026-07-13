@@ -2,6 +2,8 @@ import { useMemo } from 'react';
 import { getSchoolSigil } from '../data/schoolSigils.jsx';
 import { useEldritchCast } from '../hooks/useEldritchCast.js';
 import { cn } from '../utils/cn.js';
+import { generateCastVeins } from '../utils/castVeins.ts';
+import EyeDefs from './EyeDefs.tsx';
 import SchoolSigil from './SchoolSigil.tsx';
 
 interface Props {
@@ -16,22 +18,7 @@ export default function LidlessEyeCast({ spell, school, onComplete }: Props) {
 
   // Seed vein geometry once per mount so Math.random() doesn't cause
   // visual jitter on every re-render during the animation phase.
-  const veins = useMemo(
-    () =>
-      Array.from({ length: 8 }, (_, i) => {
-        const a = (i / 8) * Math.PI * 2;
-        const inner = 8 + Math.random() * 4;
-        const outer = 50 + Math.random() * 8;
-        const x1 = 120 + Math.cos(a) * inner;
-        const y1 = 80 + Math.sin(a) * inner * 0.7;
-        const midX = 120 + Math.cos(a) * (outer * 0.6);
-        const midY = 80 + Math.sin(a) * (outer * 0.6) * 0.7;
-        const x2 = 120 + Math.cos(a) * outer;
-        const y2 = 80 + Math.sin(a) * outer * 0.7;
-        return { x1, y1, midX, midY, x2, y2 };
-      }),
-    [],
-  );
+  const veins = useMemo(() => generateCastVeins(), []);
 
   // Reduced motion: simple cross-fade
   if (reduced) {
@@ -111,32 +98,7 @@ export default function LidlessEyeCast({ spell, school, onComplete }: Props) {
           viewBox="0 0 240 160"
           preserveAspectRatio="xMidYMid meet"
         >
-          <defs>
-            <radialGradient id="cast-iris-grad" cx="50%" cy="50%" r="50%">
-              <stop offset="0%" stopColor="#5a4a3a" stopOpacity="0.6" />
-              <stop offset="60%" stopColor="#2a1a1a" stopOpacity="0.8" />
-              <stop offset="100%" stopColor="#0a0608" stopOpacity="0.95" />
-            </radialGradient>
-            <radialGradient id="cast-pupil-grad" cx="45%" cy="40%" r="55%">
-              <stop offset="0%" stopColor="#1a0a0a" />
-              <stop offset="100%" stopColor="#000000" />
-            </radialGradient>
-            <radialGradient id="cast-blood-grad" cx="50%" cy="50%" r="55%">
-              <stop offset="0%" stopColor="#c44545" stopOpacity="0.95" />
-              <stop offset="60%" stopColor="#8a1a1a" stopOpacity="0.9" />
-              <stop offset="100%" stopColor="#4a0a0a" stopOpacity="0.7" />
-            </radialGradient>
-            <filter id="cast-glow">
-              <feGaussianBlur stdDeviation="2" result="blur" />
-              <feMerge>
-                <feMergeNode in="blur" />
-                <feMergeNode in="SourceGraphic" />
-              </feMerge>
-            </filter>
-            <clipPath id="cast-iris-clip">
-              <ellipse cx="120" cy="80" rx="55" ry="38" />
-            </clipPath>
-          </defs>
+          <EyeDefs />
 
           {/* Sclera */}
           <ellipse

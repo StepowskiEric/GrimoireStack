@@ -22,7 +22,46 @@ export const SEANCE_CONVERGENCE_RUN = 2;
 export const SEANCE_DARKNESS_THRESHOLD = 2; // Sanity <= this swaps to darker pool
 
 // ── Sigils (Q1 — Domain Sigils) ───────────────────────
-export const SEANCE_SIGILS = [
+
+// ── Types ─────────────────────────────────────────────
+
+export interface SeanceSigil {
+  id: string;
+  schoolId: string;
+  crypticName: string;
+  crypticLine: string;
+  plainLabel: string;
+}
+
+export interface SeanceOption {
+  id: string;
+  label: string;
+  sigilGlyph: string;
+  primary: string;
+  alt: string;
+  reason: string;
+}
+
+export interface SeanceQuestion {
+  id: string;
+  question: string;
+  clarification: string;
+  options: SeanceOption[];
+}
+
+export interface SeanceQuestionPool {
+  narrowing: SeanceQuestion[];
+  darker: SeanceQuestion[];
+}
+
+export interface FoundOption {
+  option: SeanceOption;
+  question: SeanceQuestion;
+  pool: 'narrowing' | 'darker';
+}
+
+
+export const SEANCE_SIGILS: SeanceSigil[] = [
   {
     id: 'sigil-remediation',
     schoolId: 'debugging',
@@ -74,7 +113,9 @@ export const SEANCE_SIGILS = [
 //   - alt:     the second-best, surfaced as the Beasthood alternate
 //   - reason:  a one-sentence eldritch justification
 //
-export const SEANCE_QUESTIONS = {
+
+
+export const SEANCE_QUESTIONS: Record<string, SeanceQuestionPool> = {
   debugging: {
     narrowing: [
       {
@@ -1530,12 +1571,14 @@ export const SEANCE_QUESTIONS = {
  * @param {string} optionId
  * @returns {{option: object, question: object, pool: string}|null}
  */
-export function getOptionById(schoolId, optionId) {
+
+
+export function getOptionById(schoolId: string, optionId: string): FoundOption | null {
   const pools = SEANCE_QUESTIONS[schoolId];
   if (!pools) return null;
-  for (const pool of ['narrowing', 'darker']) {
+  for (const pool of ['narrowing', 'darker'] as const) {
     for (const question of pools[pool] || []) {
-      const option = question.options.find((o) => o.id === optionId);
+      const option = question.options.find((o: SeanceOption) => o.id === optionId);
       if (option) return { option, question, pool };
     }
   }

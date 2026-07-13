@@ -208,7 +208,7 @@ export const SKILL_CATALOG = [
     "school": "Reasoning & Faithfulness",
     "schoolName": "School of Cognition",
     "status": "—",
-    "effect": "Calibrate, compress, verify — force numeric confidence on each claim, compress to its essence, then verify the compression reconstructs the original. If it doesn't, you don't understand it."
+    "effect": "Calibrate, compress, verify — force numeric confidence on each claim, compress to its essence, then verify the compression reconstructs the original. Use when you need to verify understanding before acting, catch overconfidence, or distill a complex situation to its core."
   },
   {
     "skill": "reasoning-integrity-chain",
@@ -723,6 +723,14 @@ export const SKILL_CATALOG = [
     "effect": "Use when the best reasoning path is unclear — branch into N candidates, score with process rewards, prune low-reward branches, then verify the best candidate against hard constraints. Prevents first-branch lock-in."
   },
   {
+    "skill": "split-large-files",
+    "name": "Split Large Files — Boundary-Driven Extraction Protocol",
+    "school": "Execution & Improvement",
+    "schoolName": "School of Execution",
+    "status": "—",
+    "effect": "Split large files along change boundaries, not line counts. Investigate before extracting, require strong architectural signals, and reject splits that increase coupling."
+  },
+  {
     "skill": "step-level-verification-protocol",
     "name": "Step-Level Verification Protocol",
     "school": "Execution & Improvement",
@@ -1048,7 +1056,7 @@ export const SKILL_CATALOG = [
     "school": "Testing & Measurement",
     "schoolName": "School of Measurement",
     "status": "—",
-    "effect": "Bidirectional cross-reference between E2E test selectors/assertions and source code. Verifies every test identifier still matches the code, every text assertion still renders, every navigation route still resolves, and every UI state/error path has test coverage. Catches silent failures: dead identifiers, drifted UI text, stale routes, orphaned tests, and ambiguous selectors. Run after refactoring, UI text changes, navigation restructuring, or any time E2E tests may have diverged from the cod..."
+    "effect": "Bidirectional audit between E2E test selectors/assertions and source code. Reconciles every test identifier, text assertion, and navigation route against the current code, and flags untested UI states and error paths. Run after refactoring, UI text changes, navigation restructuring, or before any major release."
   },
   {
     "skill": "e2e-testing-philosophy-and-architecture",
@@ -1056,7 +1064,7 @@ export const SKILL_CATALOG = [
     "school": "Testing & Measurement",
     "schoolName": "School of Measurement",
     "status": "—",
-    "effect": "Comprehensive reference for E2E testing mindset, architecture, and strategy — nothing framework-specific. Covers testing epistemology, 3-layer BDR architecture, risk-based prioritization, data realism principles, anti-patterns, heuristics, and suite management."
+    "effect": "Reference for E2E testing mindset, architecture, and strategy. Covers testing epistemology, 3-layer BDR architecture, risk-based prioritization, data realism principles, anti-patterns, heuristics, and suite management."
   },
   {
     "skill": "empirical-justification",
@@ -1080,7 +1088,7 @@ export const SKILL_CATALOG = [
     "school": "Testing & Measurement",
     "schoolName": "School of Measurement",
     "status": "—",
-    "effect": "Hunter's mindset for mobile E2E testing — think like a professional tester: what to test, how to catch real bugs, verify flows work, and avoid traps. Use when planning tests, reviewing coverage, debugging flakiness, or needing adversarial/edge-case ideas."
+    "effect": "Hunter's mindset for mobile E2E testing — what to test, how to catch real bugs, and avoid traps. Use when planning tests, reviewing coverage, debugging flakiness, or needing adversarial/edge-case ideas."
   },
   {
     "skill": "e2e-test-premortem",
