@@ -28,6 +28,16 @@ Skills for executing technical work in a bounded, disciplined way.
 
 ---
 
+### `execution/split-large-files.md` · [protocol]
+
+**What it is:** A boundary-driven extraction protocol that splits large files along change boundaries, not line counts. Investigates before extracting, requires strong architectural signals, and rejects splits that increase coupling. Includes an explicit "do not split" decision gate and recognizes naturally broad but cohesive modules (state machines, schemas, registries, reducers, protocol definitions, orchestration modules).
+
+**Use it when:** A file exceeds ~500 lines and you suspect it mixes independently changeable responsibilities, different callers consume disjoint parts of the module, or a section changes for different business reasons.
+
+**Best for:** File extraction, module boundary identification, preventing over-splitting, recognizing cohesive large files that should stay intact.
+
+---
+
 ### `execution/working-effectively-with-legacy-code-state-machine.md` · [protocol]
 
 **What it is:** A protocol for making brittle code safe to change before trying to improve it. Forces characterization testing, seam creation, and explicit stopping to prevent rewrite gambling and cleanup drift.

@@ -5,6 +5,7 @@
 node_modules/
 # App build/output artifacts
 app/dist/
+app/.wrangler/
 app/remotion/out/
 app-dist/
 site/
@@ -40,6 +41,9 @@ refactor-target.md
 
 # Personal tool artifacts
 .rpiv/
+
+# Agent instructions (per-user, not repo)
+AGENTS.md
 
 # Debug/trace outputs
 trace_*.jsonl

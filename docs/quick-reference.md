@@ -7,6 +7,7 @@
 | how-to-solve-it-state-machine | execution/ | Hard problems, debugging | |
 | ooda-loop-state-machine | execution/ | Fast-changing situations | |
 | refactoring-state-machine | execution/ | Code restructuring | |
+| split-large-files | execution/ | Boundary-driven file extraction | Investigates before splitting, requires strong signals, includes "do not split" gate |
 | working-effectively-with-legacy-code-state-machine | execution/ | Legacy code changes | |
 | checklist-manifesto | execution/ | Procedural safety | |
 | pdca-deming | execution/ | Iterative improvement | |

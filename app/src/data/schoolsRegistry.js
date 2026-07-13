@@ -169,7 +169,7 @@ const schools = [
       {
         "name": "Prism",
         "skill": "prism",
-        "effect": "Calibrate, compress, verify — force numeric confidence on each claim, compress to its essence, then verify the compression reconstructs the original. If it doesn't, you don't understand it.",
+        "effect": "Calibrate, compress, verify — force numeric confidence on each claim, compress to its essence, then verify the compression reconstructs the original. Use when you need to verify understanding before acting, catch overconfidence, or distill a complex situation to its core.",
         "status": "—"
       },
       {
@@ -589,6 +589,12 @@ const schools = [
         "status": "—"
       },
       {
+        "name": "Split Large Files — Boundary-Driven Extraction Protocol",
+        "skill": "split-large-files",
+        "effect": "Split large files along change boundaries, not line counts. Investigate before extracting, require strong architectural signals, and reject splits that increase coupling.",
+        "status": "—"
+      },
+      {
         "name": "Step-Level Verification Protocol",
         "skill": "step-level-verification-protocol",
         "effect": "Use when multi-step reasoning risks error propagation — verify each step before proceeding so a wrong step doesn't cascade into a chain of unjustified conclusions.",
@@ -847,13 +853,13 @@ const schools = [
       {
         "name": "E2E Cross-Check Protocol",
         "skill": "e2e-crosscheck",
-        "effect": "Bidirectional cross-reference between E2E test selectors/assertions and source code. Verifies every test identifier still matches the code, every text assertion still renders, every navigation route still resolves, and every UI state/error path has test coverage. Catches silent failures: dead identifiers, drifted UI text, stale routes, orphaned tests, and ambiguous selectors. Run after refactoring, UI text changes, navigation restructuring, or any time E2E tests may have diverged from the code they test.",
+        "effect": "Bidirectional audit between E2E test selectors/assertions and source code. Reconciles every test identifier, text assertion, and navigation route against the current code, and flags untested UI states and error paths. Run after refactoring, UI text changes, navigation restructuring, or before any major release.",
         "status": "—"
       },
       {
         "name": "E2E Testing Philosophy & Architecture — Reference",
         "skill": "e2e-testing-philosophy-and-architecture",
-        "effect": "Comprehensive reference for E2E testing mindset, architecture, and strategy — nothing framework-specific. Covers testing epistemology, 3-layer BDR architecture, risk-based prioritization, data realism principles, anti-patterns, heuristics, and suite management.",
+        "effect": "Reference for E2E testing mindset, architecture, and strategy. Covers testing epistemology, 3-layer BDR architecture, risk-based prioritization, data realism principles, anti-patterns, heuristics, and suite management.",
         "status": "—"
       },
       {
@@ -871,7 +877,7 @@ const schools = [
       {
         "name": "Mobile E2E Testing: The Hunter's Mindset",
         "skill": "mobile-e2e-testing-enterprise-guide",
-        "effect": "Hunter's mindset for mobile E2E testing — think like a professional tester: what to test, how to catch real bugs, verify flows work, and avoid traps. Use when planning tests, reviewing coverage, debugging flakiness, or needing adversarial/edge-case ideas.",
+        "effect": "Hunter's mindset for mobile E2E testing — what to test, how to catch real bugs, and avoid traps. Use when planning tests, reviewing coverage, debugging flakiness, or needing adversarial/edge-case ideas.",
         "status": "—"
       },
       {

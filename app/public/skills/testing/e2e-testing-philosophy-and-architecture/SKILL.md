@@ -1,7 +1,7 @@
 ---
 name: e2e-testing-philosophy-and-architecture
 category: testing
-description: "Comprehensive reference for E2E testing mindset, architecture, and strategy — nothing framework-specific. Covers testing epistemology, 3-layer BDR architecture, risk-based prioritization, data realism principles, anti-patterns, heuristics, and suite management."
+description: "Reference for E2E testing mindset, architecture, and strategy. Covers testing epistemology, 3-layer BDR architecture, risk-based prioritization, data realism principles, anti-patterns, heuristics, and suite management."
 version: 1.0
 ---
 
@@ -23,30 +23,27 @@ version: 1.0
 
 ## III. Think Like a User
 
-- **Test outcomes, not implementation.** Never assert on internal state, CSS classes, or intermediate API responses. Assert on what the user sees and can do.
+- **Test outcomes, not implementation.** Assert on what the user sees and can do.
 - **Assume the user will:** have no/wrong data, lose connectivity, be on a slow device, get interrupted, double-tap, navigate backwards, enter absurd input.
 - **Map failure modes before writing the happy path.** The happy path is table stakes.
-- **Realism is a feature:** Empty databases give false confidence. Use seed endpoints with multi-archetype data (trial/active/churned/admin/no-data). Run against production-like environments, not localhost.
-- **Postmortems write tests:** Every incident should produce a permanent E2E test that catches it before the fix ships (incident-aware CI/CD).
+- **Realism is a feature:** Empty databases give false confidence. Use seed endpoints with multi-archetype data (trial/active/churned/admin/no-data). Run against production-like environments.
+- **Postmortems write tests:** Every incident should produce a permanent E2E test that catches it before the fix ships.
 
 ## IV. Architecture: Three-Layer Model (BDR Methodology)
 
 ### Layer 1 — Technical (Page Objects)
-- Selectors + raw UI interactions only.
-- No business rules, no assertions, no cross-page orchestration.
+- Selectors + raw UI interactions only. No business rules, no assertions, no cross-page orchestration.
 - Change selectors here once; no test touches them.
 
 ### Layer 2 — Action (Flows)
-- Business-process orchestration using Page Objects.
-- Models real business entities (CartFlow, CheckoutFlow, AuthFlow).
+- Business-process orchestration using Page Objects. Models real business entities (CartFlow, CheckoutFlow, AuthFlow).
 - Never touches selectors or DOM.
 
 ### Layer 3 — Specification (Tests)
-- Business intent expressed in user-story form.
-- Composes flows to demonstrate scenarios.
+- Business intent expressed in user-story form. Composes flows to demonstrate scenarios.
 - Knows nothing about implementation.
 
-**Boundary rule:** Spec → Flow → POM. Each layer talks only to the layer directly below. Never skip, never reach up.
+**Boundary rule:** Spec → Flow → POM. Each layer talks only to the layer directly below.
 
 ## V. Risk-Based Prioritization
 
@@ -78,10 +75,10 @@ version: 1.0
 
 ## VII. Heuristics Toolbox
 
-- **Oracle problem:** Compare against known-good system, validate invariants, check consistency rules — not hardcoded expected values.
+- **Oracle problem:** Compare against known-good system, validate invariants, check consistency rules.
 - **Boundary analysis:** Test every partition edge (empty, single, max, overflow, negative, expired).
 - **Pairwise / all-pairs:** Cover every interaction between any two variables (~15 tests vs 243 for full combinatorial).
-- **Tour heuristic:** Navigate through every major screen and function in a single flow — catches navigation/state bugs.
+- **Tour heuristic:** Navigate through every major screen and function in a single flow.
 - **Error guessing:** Trained intuition from experience with similar APIs, configs, and failure patterns.
 - **State transition testing:** Model flow as a state machine; test every valid AND invalid transition.
 

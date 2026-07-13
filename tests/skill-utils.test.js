@@ -71,7 +71,7 @@ describe('skill-utils', () => {
 
   describe('supportedAgents', () => {
     it('returns all expected agents', () => {
-      expect(skillUtils.supportedAgents()).toEqual(['codex', 'hermes', 'claude', 'antigravity', 'copilot', 'pi']);
+      expect(skillUtils.supportedAgents()).toEqual(['codex', 'hermes', 'claude', 'antigravity', 'copilot', 'pi', 'omp', 'factory']);
     });
   });
 
@@ -146,14 +146,14 @@ describe('skill-utils', () => {
 describe('CLI contract', () => {
   it('prints help for help command', async () => {
     const { stdout } = await execFileAsync('node', ['bin/install.js', 'help'], { cwd: repoRoot });
-    expect(stdout).toContain("GrimoireStack — install agent skill files");
+    expect(stdout).toContain('grimoirestack — install agent skill files');
     expect(stdout).toContain('--agent');
   });
 
   it('lists skills for list command', async () => {
     const { stdout } = await execFileAsync('node', ['bin/install.js', 'list'], { cwd: repoRoot });
-    expect(stdout).toContain("GrimoireStack (");
-    expect(stdout).toContain('Execution — how-to-do-the-work protocols');
+    expect(stdout).toContain('GrimoireStack (');
+    expect(stdout).toContain('abductive-first-debugging');
   });
 
   it('rejects invalid command with help text', async () => {

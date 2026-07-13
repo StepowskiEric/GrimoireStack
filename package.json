@@ -36,7 +36,8 @@
   ],
   "license": "MIT",
   "scripts": {
-    "test": "vitest run"
+    "test": "vitest run tests/",
+    "test:app": "cd app && npm test"
   },
   "dependencies": {
     "prompts": "^2.4.2",

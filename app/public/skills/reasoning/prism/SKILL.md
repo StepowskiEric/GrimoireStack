@@ -1,11 +1,6 @@
 ---
 name: prism
-description: Calibrate, compress, verify — force numeric confidence on each claim, compress to its essence, then verify the compression reconstructs the original. If it doesn't, you don't understand it.
-triggers:
-  - Want to verify understanding before acting
-  - Confident claim that feels wrong
-  - Need to reduce a complex situation to its core
-  - "I'm not sure if I really understand this or just think I do"
+description: "Calibrate, compress, verify — force numeric confidence on each claim, compress to its essence, then verify the compression reconstructs the original. Use when you need to verify understanding before acting, catch overconfidence, or distill a complex situation to its core."
 ---
 
 # Prism
@@ -24,7 +19,7 @@ Three steps. **Calibrate** every claim with numeric confidence and a disconfirmi
 - **Speculative brainstorming.** Prism locks claims to evidence; you need flexibility early.
 - **Pure factual lookup.** There's nothing to compress when the answer is a single fact.
 
-## Phase 1 — Calibrate (Metacognitive Monitoring)
+## Phase 1 — Calibrate
 
 For each claim, state:
 
@@ -40,7 +35,7 @@ Rules:
 - Every claim needs at least one specific disconfirming observation
 - When confidence changes, explicitly note the new evidence
 
-**Done when** every claim has numeric confidence, evidence, and a named disconfirming observation. Confidences sum to no false certainty — at least one claim should be <0.7.
+**Done when** every claim has numeric confidence, evidence, and a named disconfirming observation. At least one claim should be <0.7.
 
 ## Phase 2 — Compress
 

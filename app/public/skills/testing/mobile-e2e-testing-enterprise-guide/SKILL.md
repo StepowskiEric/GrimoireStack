@@ -1,7 +1,7 @@
 ---
 name: mobile-e2e-testing-enterprise-guide
 category: testing
-description: "Hunter's mindset for mobile E2E testing — think like a professional tester: what to test, how to catch real bugs, verify flows work, and avoid traps. Use when planning tests, reviewing coverage, debugging flakiness, or needing adversarial/edge-case ideas."
+description: "Hunter's mindset for mobile E2E testing — what to test, how to catch real bugs, and avoid traps. Use when planning tests, reviewing coverage, debugging flakiness, or needing adversarial/edge-case ideas."
 version: 1.0
 ---
 
@@ -9,13 +9,11 @@ version: 1.0
 
 A **hunter** is curious (where's the trail?), skeptical (that's not what it seems), and empathetic (how does the prey think?). They think adversarially, know their own limits, use structured tools, and don't waste energy over-hunting.
 
-This skill is all reference — consult it whenever you need to think like a tester, not like a developer.
+This skill is reference plus a starting sequence — consult it whenever you need to think like a tester.
 
 ---
 
 ## The Three Attitudes
-
-These aren't personality traits — they're practiced skills.
 
 - **Curiosity** — "what if?" scenarios beyond the obvious path. Network drops *here*? User taps twice? Phone rotates mid-flow?
 - **Skepticism** — "it works on my machine" is not evidence. Assume hidden failure modes until proved otherwise.
@@ -26,10 +24,10 @@ These aren't personality traits — they're practiced skills.
 ## The Five Mindsets
 
 ### Mindset 1: Prove the system, not the code
-Unit tests prove logic. E2E tests prove the *user's experience*. Fail when a real user would be blocked, not when an implementation detail changes.
+Unit tests prove logic. E2E tests prove the *user's experience*. Fail when a real user would be blocked.
 
 ### Mindset 2: Maintenance is the real cost
-Writing takes hours. Keeping green for a year takes orders of magnitude more. Every test must earn its keep — protect revenue, protect a critical action, or catch what lower layers can't. If none, delete it.
+Writing takes hours. Keeping green for a year takes orders of magnitude more. Every test must earn its keep — protect revenue, protect a critical action, or catch what lower layers can't.
 
 ### Mindset 3: Accept the myth
 True E2E coverage across all devices, networks, and OS versions is **unattainable**. You're running critical-path integration tests labelled E2E. Be precise about which subset of the infinite permutation space you cover.
@@ -42,14 +40,9 @@ An all-green suite that still ships bugs E2E should have caught is **false confi
 
 ---
 
-## Heuristic Models (Overview)
+## Heuristic Models
 
-Professional testers use structured heuristics to find blind spots. The full tables are in [`reference/ref.md`](reference/ref.md), but the two key mnemonics are:
-
-- **HICCUPPS** — test oracles: 8 ways to recognize correct vs broken behavior (History, Image, Comparable products, Claims, Users, Product consistency, Purpose, Statutes).
-- **SFDPOT** — coverage dimensions: 6 areas where bugs hide (Structure, Function, Data, Platform, Operations, Time).
-
-Before writing any test, ask: "How will I know if the app is wrong here?" (oracle) and "Which dimensions have I not checked?" (coverage).
+Before writing any test, ask: "How will I know if the app is wrong here?" (oracle) and "Which dimensions have I not checked?" (coverage). The two key mnemonics — **HICCUPPS** (oracles) and **SFDPOT** (coverage dimensions) — are defined in [`reference/ref.md`](reference/ref.md).
 
 ---
 
@@ -79,7 +72,7 @@ Your own brain is the biggest threat to good testing. These biases are proven to
 | **Sunk cost** | You keep a flaky test because you already wrote it |
 | **Optimism** | You underestimate how often things fail |
 
-**Counter:** structured heuristics (HICCUPPS, SFDPOT) and peer review of test design, not just test code.
+**Counter:** structured heuristics and peer review of test design, not just test code.
 
 Full table with counter-strategies in [`reference/ref.md`](reference/ref.md).
 

@@ -18,10 +18,11 @@
  *        npx wrangler kv namespace create FAVORITES
  *      Paste the returned `id` into `wrangler.toml` under the
  *      `[[kv_namespaces]] binding = "FAVORITES"` block.
- *   2. (Optional) Rate-limit binding SYNC_WRITES is configured via the
- *      Cloudflare dashboard — see comment in wrangler.toml. The function
- *      works without it (writes are unthrottled).
- *   3. No secret env vars.
+ *   2. No secret env vars.
+ *
+ * Rate limiting: Write operations (put/delete) are throttled to 10 per
+ * 60s per sync code using KV itself (key prefix "rl:"). This works
+ * without any Cloudflare binding beyond the FAVORITES namespace.
  *
  * Free tier (2026): 100K reads/day, 1K writes/day, 1 GB storage,
  * 25 MiB max value. Per https://developers.cloudflare.com/kv/platform/limits/
@@ -106,15 +107,23 @@ export async function onRequest(context) {
     return json({ error: `Invalid sync code (must be ${CODE_LEN} chars from ${ALPHABET})` }, 400);
   }
 
-  // Rate limiting note: a SYNC_WRITES RateLimiter binding (10 puts/deletes
-  // per minute per code) was the intended defense against abuse. Pages
-  // does not support [[ratelimits]] / [[unsafe.bindings]] in wrangler.toml
-  // and the Cloudflare API does not expose a rate_limit binding field for
-  // Pages projects as of 2026-07. The binding can be added manually via
-  // the dashboard (Pages > grimoirestack > Settings > Bindings > Add >
-  // Rate limiting) but until that exists, every successful request to
-  // this function is unthrottled. KV's 1K writes/day free tier remains
-  // the natural ceiling for casual abuse.
+  // KV-based write rate limiting: 10 PUT/DELETE ops per 60s per sync code.
+  // Uses the FAVORITES KV namespace itself (key prefix "rl:") with KV's
+  // expirationTtl to auto-clean stale windows. This works without any
+  // Cloudflare binding beyond the KV namespace we already have.
+  const WRITE_LIMIT = 10;
+  const WRITE_WINDOW_SEC = 60;
+
+  if (op === 'put' || op === 'delete') {
+    const rlKey = `rl:${code}`;
+    const rlRaw = await env.FAVORITES.get(rlKey);
+    const rlCount = rlRaw ? parseInt(rlRaw, 10) : 0;
+    if (rlCount >= WRITE_LIMIT) {
+      return json({ error: 'Rate limit exceeded (max 10 writes per minute per sync code)' }, 429);
+    }
+    // Increment; set TTL on first write to auto-expire the window
+    await env.FAVORITES.put(rlKey, String(rlCount + 1), { expirationTtl: WRITE_WINDOW_SEC });
+  }
 
   try {
     if (op === 'get') {
