@@ -21,6 +21,7 @@ import '../styles/components/gaze.css';
 import { useGaze } from '../hooks/useGaze.js';
 import WanderingAnimation from './WanderingAnimation.jsx';
 import VoidIncantations from './VoidIncantations.jsx';
+import SchoolCardGrid from './SchoolCardGrid.jsx';
 import './ModalSuspense.css';
 
 const SCHOOL_MAP = grimoireIndex.getSchoolMap();

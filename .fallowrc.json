@@ -1,0 +1,65 @@
+{
+  "$schema": "https://raw.githubusercontent.com/fallow-rs/fallow/main/schema.json",
+  "entry": [
+    "app/src/main.jsx",
+    "bin/install.js",
+    "app/functions/api/**/*.js"
+  ],
+  "ignorePatterns": [
+    "app/public/skills/**",
+    "app/dist/**",
+    "app/remotion/**",
+    "app/functions/api/skill-catalog.js",
+    "app/src/data/schoolsRegistry.js",
+    "app/src/data/spellMetadata.js",
+    "app/src/data/curatedOverlay.js",
+    "app/src/test/**",
+    "app/tests/e2e/**",
+    "specs/**",
+    "app/public/sw.js"
+  ],
+  "ignoreExports": [
+    { "file": "app/src/test/**", "exports": ["*"] },
+    { "file": "app/src/data/schools.js", "exports": ["WIZARD_DATA"] },
+    { "file": "app/src/utils/sanitize.js", "exports": ["escapeHtml"] }
+  ],
+  "ignoreExportsUsedInFile": true,
+  "ignoreDependencies": [
+    "@cloudflare/workers-types",
+    "@types/react",
+    "@types/react-dom",
+    "page-agent",
+    "wrangler",
+    "vitest",
+    "eslint",
+    "@eslint/js",
+    "globals",
+    "typescript-eslint",
+    "eslint-plugin-import",
+    "eslint-plugin-react",
+    "eslint-plugin-react-hooks",
+    "eslint-plugin-jsx-a11y",
+    "@biomejs/biome",
+    "tailwindcss",
+    "@tailwindcss/vite",
+    "vitest-axe",
+    "@axe-core/playwright",
+    "axe-core"
+  ],
+  "rules": {
+    "unused-files": "warn",
+    "unused-exports": "warn",
+    "unused-types": "off",
+    "unused-dependencies": "warn",
+    "circular-dependency": "warn",
+    "unresolved-imports": "error",
+    "duplicate-exports": "error"
+  },
+  "duplicates": {
+    "minOccurrences": 3
+  },
+  "health": {
+    "maxCyclomatic": 20,
+    "maxCognitive": 15
+  }
+}

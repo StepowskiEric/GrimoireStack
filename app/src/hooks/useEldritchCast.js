@@ -145,5 +145,3 @@ export function useEldritchCast({ onComplete }) {
 
   return { phase, reduced, canSkip, handleSkip };
 }
-
-export default useEldritchCast;

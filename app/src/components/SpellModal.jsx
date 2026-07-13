@@ -9,11 +9,11 @@ import Icon from './Icon.jsx';
 import SchoolSigil from './SchoolSigil.tsx';
 import FamiliarWhisper from './FamiliarWhisper.jsx';
 import { cn } from '../utils/cn.js';
-import { simpleMarkdownToHtml, escapeHtml } from '../utils/markdown.js';
+import { simpleMarkdownToHtml } from '../utils/markdown.js';
 import { sanitizeHtml } from '../utils/sanitize.js';
 import './SpellModal.css';
 import './Marginalia.css';
-import '../components/IntakeOracle.css';
+import './IntakeOracle.css';
 
 function findSpell(name) {
   const entry = grimoireIndex.resolveByName(name);

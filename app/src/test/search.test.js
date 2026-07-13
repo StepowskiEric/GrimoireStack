@@ -138,23 +138,6 @@ describe('filterSpellsOnEntries (canonical)', () => {
   });
 });
 
-describe('Adapter: searchSpells / filterSpells (thin wrappers)', () => {
-  it('searchSpells adapter produces identical results to searchSpellsOnEntries', async () => {
-    const { searchSpells } = await import('../search.js');
-    const canonical = searchSpellsOnEntries(sampleEntries, 'trace');
-    const adapted = searchSpells(sampleSchools, 'trace');
-    expect(adapted).toEqual(canonical);
-  });
-
-  it('filterSpells adapter produces identical results to filterSpellsOnEntries', async () => {
-    const { filterSpells } = await import('../search.js');
-    const opts = { query: 'razor', tierFilter: new Set(['faded']), isFavorited: () => false };
-    const canonical = filterSpellsOnEntries(sampleEntries, opts);
-    const adapted = filterSpells(sampleSchools, opts);
-    expect(adapted).toEqual(canonical);
-  });
-});
-
 describe('getSpellTier is the canonical tier function', () => {
   it('returns correct tier for a Proven spell with no combos', () => {
     const sample = sampleEntries[0].spell;

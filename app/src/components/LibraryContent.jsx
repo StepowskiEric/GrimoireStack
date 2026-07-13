@@ -38,7 +38,6 @@ export default function LibraryContent({
   onSchoolSelect,
   onSpellClick,
   isFavorited,
-  onToggleFavorite,
   marginalia,
 }) {
   const [query, setQuery] = useState('');

@@ -16,7 +16,6 @@
 import {
   SEANCE_DARKNESS_THRESHOLD,
   SEANCE_MAX_SANITY,
-  SEANCE_MAX_QUESTIONS,
   SEANCE_CONVERGENCE_RUN,
 } from './consultationData.js';
 
@@ -139,15 +138,6 @@ export function sanityAfterTap(currentSanity) {
  */
 export function insightAfterTap(currentInsight) {
   return currentInsight + 1;
-}
-
-/**
- * Has the consultation reached the question cap?
- * @param {number} questionIndex  — zero-based; index of the question about to be asked
- * @returns {boolean}
- */
-export function reachedMaxQuestions(questionIndex) {
-  return questionIndex >= SEANCE_MAX_QUESTIONS;
 }
 
 /**

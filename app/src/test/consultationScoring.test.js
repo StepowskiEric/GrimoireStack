@@ -5,7 +5,6 @@ import {
   shouldSwapToDarker,
   sanityAfterTap,
   insightAfterTap,
-  reachedMaxQuestions,
   decideResult,
   nextState,
 } from '../data/consultationScoring.js';
@@ -39,14 +38,6 @@ describe('consultationScoring — shouldSwapToDarker', () => {
     expect(shouldSwapToDarker(2)).toBe(true);
     expect(shouldSwapToDarker(1)).toBe(true);
     expect(shouldSwapToDarker(0)).toBe(true);
-  });
-});
-
-describe('consultationScoring — reachedMaxQuestions', () => {
-  it('is false below the cap, true at or above', () => {
-    expect(reachedMaxQuestions(0)).toBe(false);
-    expect(reachedMaxQuestions(4)).toBe(false);
-    expect(reachedMaxQuestions(5)).toBe(true);
   });
 });
 

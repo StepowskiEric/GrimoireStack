@@ -61,10 +61,6 @@ export function getRecentlyUpdated(limit = 12) {
     .slice(0, limit);
 }
 
-export function getChangeFeed(limit = 30) {
-  return getRecentlyUpdated(limit);
-}
-
 export function getNewlyAdded(limit = 30) {
   return getRecentlyUpdated(limit)
     .filter((item) => item.status === 'New')
@@ -75,10 +71,4 @@ export function getUpdated(limit = 30) {
   return getRecentlyUpdated(limit)
     .filter((item) => item.isExplicit && item.status !== 'New')
     .slice(0, limit);
-}
-
-export function getAlphabeticalIndex() {
-  return grimoireIndex.allEntries()
-    .slice()
-    .sort((a, b) => a.spell.name.localeCompare(b.spell.name));
 }

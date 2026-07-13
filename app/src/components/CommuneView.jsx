@@ -9,7 +9,7 @@ import SigilSvg from './consultation/SigilSvg.jsx';
 import TentacleSvg from './consultation/TentacleSvg.jsx';
 import Icon from './Icon.jsx';
 import { cn } from '../utils/cn.js';
-import '../components/RitualPanel.css';
+import './RitualPanel.css';
 
 /**
  * CommuneView — the Séance, a new tab in the bottom nav.

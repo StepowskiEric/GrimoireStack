@@ -65,7 +65,3 @@ export function createGrimoireIndex(schools) {
     [Symbol.iterator]: core.iterate,
   };
 }
-
-export const GRIMOIRE_INDEX_FALLBACK = {
-  school: { id: 'unknown', name: 'Unknown School' },
-};

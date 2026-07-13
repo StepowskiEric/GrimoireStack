@@ -68,7 +68,7 @@ export function wrapLists(html) {
   const lines = html.split('\n');
   const out = [];
   let inList = false;
-  let listType = 'ul';
+  const listType = 'ul';
   for (const line of lines) {
     const trimmed = line.trim();
     if (trimmed.startsWith('<li')) {

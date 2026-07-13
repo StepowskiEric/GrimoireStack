@@ -4,8 +4,6 @@ import {
   getSpellNote,
   isExplicitlyUpdated,
   getRecentlyUpdated,
-  getChangeFeed,
-  getAlphabeticalIndex,
 } from '../data/changeFeed.js';
 
 describe('spellMetadata', () => {
@@ -83,14 +81,6 @@ describe('spellMetadata', () => {
     });
   });
 
-  describe('getChangeFeed', () => {
-    it('returns the same shape as getRecentlyUpdated', () => {
-      const feed = getChangeFeed(5);
-      expect(Array.isArray(feed)).toBe(true);
-      expect(feed.length).toBeLessThanOrEqual(5);
-    });
-  });
-
   describe('coverage', () => {
     // These guard against the bug where a new skill was added to
     // spellMetadata.js but the schools[] entry was missing, making the
@@ -113,24 +103,6 @@ describe('spellMetadata', () => {
       );
       const orphans = [...explicitKeys].filter(k => !catalogSkills.has(k));
       expect(orphans).toEqual([]);
-    });
-  });
-
-  describe('getAlphabeticalIndex', () => {
-    it('returns all spells sorted by name', () => {
-      const items = getAlphabeticalIndex();
-      expect(items.length).toBeGreaterThan(0);
-      for (let i = 1; i < items.length; i++) {
-        expect(
-          items[i - 1].spell.name.localeCompare(items[i].spell.name) <= 0
-        ).toBe(true);
-      }
-    });
-
-    it('each entry has spell and school', () => {
-      const items = getAlphabeticalIndex();
-      expect(items[0]).toHaveProperty('spell');
-      expect(items[0]).toHaveProperty('school');
     });
   });
 });

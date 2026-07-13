@@ -1,25 +1,13 @@
 import { getSpellTier } from './data/tiers.js';
-import { toFlatEntries } from './data/spellCore.js';
 import { getSpellSearchableText } from './data/spellDisplay.js';
 
 /**
  * spellSearch — text search and filter over the spell catalog.
  *
  * Canonical implementation: searchSpellsOnEntries / filterSpellsOnEntries
- * operate on flat {spell, school} entries. The public searchSpells /
- * filterSpells are thin adapters that normalize raw schools[] into
- * flat entries and delegate. This eliminates the previous duplication
- * between the schools[] and entries[] code paths.
+ * operate on flat {spell, school} entries. This eliminates the previous
+ * duplication between the schools[] and entries[] code paths.
  */
-
-/**
- * Search spells by text query across all schools (adapter).
- * Normalizes raw schools[] to flat entries, then delegates to
- * searchSpellsOnEntries.
- */
-export function searchSpells(schools, query) {
-  return searchSpellsOnEntries(toFlatEntries(schools), query);
-}
 
 /**
  * Search over flat {spell, school} entries (canonical).
@@ -40,15 +28,6 @@ export function searchSpellsOnEntries(entries, query) {
   }
 
   return { bySchool, total };
-}
-
-/**
- * Filter spells by an optional text query plus optional school / tier / favorites filters (adapter).
- * Normalizes raw schools[] to flat entries, then delegates to
- * filterSpellsOnEntries.
- */
-export function filterSpells(schools, opts = {}) {
-  return filterSpellsOnEntries(toFlatEntries(schools), opts);
 }
 
 /**

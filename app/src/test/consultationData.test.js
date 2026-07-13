@@ -6,8 +6,6 @@ import {
   SEANCE_MAX_QUESTIONS,
   SEANCE_CONVERGENCE_RUN,
   SEANCE_DARKNESS_THRESHOLD,
-  getSigilForSchool,
-  getQuestionById,
   getOptionById,
 } from '../data/consultationData.js';
 import { grimoireIndex } from '../data/grimoireIndexInstance.js';
@@ -163,27 +161,6 @@ describe('consultationData — constants', () => {
 });
 
 describe('consultationData — helpers', () => {
-  it('getSigilForSchool returns the matching sigil', () => {
-    const sigil = getSigilForSchool('debugging');
-    expect(sigil).not.toBeNull();
-    expect(sigil.schoolId).toBe('debugging');
-  });
-
-  it('getSigilForSchool returns null for unknown school', () => {
-    expect(getSigilForSchool('not-a-school')).toBeNull();
-  });
-
-  it('getQuestionById finds a narrowing question', () => {
-    const found = getQuestionById('debugging', 'dbg-n1');
-    expect(found).not.toBeNull();
-    expect(found.pool).toBe('narrowing');
-    expect(found.question.id).toBe('dbg-n1');
-  });
-
-  it('getQuestionById returns null for unknown id', () => {
-    expect(getQuestionById('debugging', 'not-a-question')).toBeNull();
-  });
-
   it('getOptionById returns the option, question, and pool', () => {
     const found = getOptionById('debugging', 'dbg-n1-a');
     expect(found).not.toBeNull();

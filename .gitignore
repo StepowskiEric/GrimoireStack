@@ -46,6 +46,9 @@ trace_*.jsonl
 divergence.json
 SUPER_REVIEW_REPORT.md
 
+# Fallow codebase analysis cache
+.fallow/
+
 # Playwright / test artifacts
 app/test-results/
 app/playwright-report/

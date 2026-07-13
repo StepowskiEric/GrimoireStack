@@ -517,31 +517,6 @@ export const SEANCE_QUESTIONS = {
 // ── Helpers ───────────────────────────────────────────
 
 /**
- * Look up the sigil for a school.
- * @param {string} schoolId
- * @returns {object|null}
- */
-export function getSigilForSchool(schoolId) {
-  return SEANCE_SIGILS.find((s) => s.schoolId === schoolId) || null;
-}
-
-/**
- * Look up a question by its id within a school's pools.
- * @param {string} schoolId
- * @param {string} questionId
- * @returns {{question: object, pool: 'narrowing' | 'darker'}|null}
- */
-export function getQuestionById(schoolId, questionId) {
-  const pools = SEANCE_QUESTIONS[schoolId];
-  if (!pools) return null;
-  for (const pool of ['narrowing', 'darker']) {
-    const found = (pools[pool] || []).find((q) => q.id === questionId);
-    if (found) return { question: found, pool };
-  }
-  return null;
-}
-
-/**
  * Look up an option by its id within a school.
  * @param {string} schoolId
  * @param {string} optionId

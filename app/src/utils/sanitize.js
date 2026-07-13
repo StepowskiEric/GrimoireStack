@@ -42,4 +42,5 @@ export function sanitizeHtml(html) {
  * @param {string} text — raw text
  * @returns {string} HTML-escaped text
  */
+
 export { escapeHtml } from './markdown.js';

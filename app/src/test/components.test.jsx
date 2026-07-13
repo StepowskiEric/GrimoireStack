@@ -10,7 +10,6 @@ import LibraryContent from '../components/LibraryContent.jsx';
 import RecipeLabView from '../components/RecipeLabView.jsx';
 import StaleLinkBanner from '../components/StaleLinkBanner.jsx';
 import SettingsView from '../components/SettingsView.jsx';
-import { searchSpells } from '../search.js';
 
 const sampleSpell = {
   name: 'Trace Sight',

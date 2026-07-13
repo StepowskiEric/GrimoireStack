@@ -268,5 +268,3 @@ const schoolSigils = {
 export function getSchoolSigil(schoolId) {
   return schoolSigils[schoolId] || DebuggingSigil;
 }
-
-export default schoolSigils;

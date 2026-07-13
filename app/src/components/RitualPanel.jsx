@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import Icon from './Icon.jsx';
-import '../components/RitualPanel.css';
+import './RitualPanel.css';
 
 /**
  * RitualPanel — the Problem Intake Ritual UI.
