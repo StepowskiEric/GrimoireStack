@@ -6,7 +6,7 @@ import './styles/tailwind.css';
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
     <App />
-  </React.StrictMode>
+  </React.StrictMode>,
 );
 
 if ('serviceWorker' in navigator && import.meta.env.PROD) {

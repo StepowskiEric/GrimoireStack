@@ -11,8 +11,8 @@
  * Pure function — no file I/O. The caller writes the result.
  */
 
-import { TOPIC_META } from './topic-meta.mjs';
 import { MAX_KINS_PER_SPELL } from './derive.mjs';
+import { TOPIC_META } from './topic-meta.mjs';
 
 /**
  * @param {Array<{skill, topic, name, effect, status, note, combos}>} skills
@@ -20,7 +20,7 @@ import { MAX_KINS_PER_SPELL } from './derive.mjs';
  * @returns {Array}
  */
 export function buildSchools(skills, overlay) {
-  const byTopic = groupBy(skills, s => s.topic);
+  const byTopic = groupBy(skills, (s) => s.topic);
 
   const schools = [];
   for (const [topic, topicSkills] of byTopic) {
@@ -50,7 +50,7 @@ function toSpell(s) {
 function deriveTopicMeta(topic) {
   const titleCased = topic
     .split('-')
-    .map(w => w.charAt(0).toUpperCase() + w.slice(1))
+    .map((w) => w.charAt(0).toUpperCase() + w.slice(1))
     .join(' ');
   return {
     id: topic,
@@ -102,8 +102,8 @@ export function validateRecords(records, allSkillIds, opts = {}) {
       overCap.push({ skill: r.skill, count: r.kins.length });
       logger(
         `[registry] skill "${r.skill}" has ${r.kins.length} kins ` +
-        `but the FamiliarWhisper UI renders at most ${MAX_KINS_PER_SPELL}. ` +
-        `Trim the curatedOverlay.kins list, or the extra entries are inert.`,
+          `but the FamiliarWhisper UI renders at most ${MAX_KINS_PER_SPELL}. ` +
+          `Trim the curatedOverlay.kins list, or the extra entries are inert.`,
       );
     }
 
@@ -112,7 +112,7 @@ export function validateRecords(records, allSkillIds, opts = {}) {
         unresolved.push({ from: r.skill, to: kinId });
         logger(
           `[registry] skill "${r.skill}" has unresolved kin "${kinId}". ` +
-          `Check curatedOverlay.kins — typo, or the kin was absorbed into another skill.`,
+            `Check curatedOverlay.kins — typo, or the kin was absorbed into another skill.`,
         );
       }
     }

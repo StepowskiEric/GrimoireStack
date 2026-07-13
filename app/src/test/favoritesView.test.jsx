@@ -1,7 +1,7 @@
-import { describe, it, expect, vi } from 'vitest';
-import { render, screen, fireEvent } from '@testing-library/react';
-import { LanguageProvider } from '../i18n/LanguageContext';
+import { fireEvent, render, screen } from '@testing-library/react';
+import { describe, expect, it, vi } from 'vitest';
 import FavoritesView from '../components/FavoritesView.jsx';
+import { LanguageProvider } from '../i18n/LanguageContext';
 
 const sampleSchools = [
   {
@@ -35,8 +35,8 @@ const manyTestSchool = {
 };
 
 const flatEntries = [
-  ...sampleSchools.flatMap(s => s.spells.map(sp => ({ spell: sp, school: s }))),
-  ...manyTestSchool.spells.map(sp => ({ spell: sp, school: manyTestSchool })),
+  ...sampleSchools.flatMap((s) => s.spells.map((sp) => ({ spell: sp, school: s }))),
+  ...manyTestSchool.spells.map((sp) => ({ spell: sp, school: manyTestSchool })),
 ];
 
 vi.mock('../data/grimoireIndexInstance.js', () => ({
@@ -57,7 +57,7 @@ describe('FavoritesView', () => {
         onSpellClick={() => {}}
         isFavorited={() => false}
         onToggleFavorite={() => {}}
-      />
+      />,
     );
     expect(screen.getByText('The Vault')).toBeInTheDocument();
   });
@@ -71,7 +71,7 @@ describe('FavoritesView', () => {
         onSpellClick={() => {}}
         isFavorited={() => false}
         onToggleFavorite={() => {}}
-      />
+      />,
     );
     expect(screen.getByText(/The circle is silent/)).toBeInTheDocument();
   });
@@ -85,7 +85,7 @@ describe('FavoritesView', () => {
         onSpellClick={() => {}}
         isFavorited={() => false}
         onToggleFavorite={() => {}}
-      />
+      />,
     );
     expect(screen.getByText(/The trail is cold/)).toBeInTheDocument();
   });
@@ -99,7 +99,7 @@ describe('FavoritesView', () => {
         onSpellClick={() => {}}
         isFavorited={() => false}
         onToggleFavorite={() => {}}
-      />
+      />,
     );
     expect(screen.getByText(/The page is clean/)).toBeInTheDocument();
   });
@@ -113,7 +113,7 @@ describe('FavoritesView', () => {
         onSpellClick={() => {}}
         isFavorited={() => true}
         onToggleFavorite={() => {}}
-      />
+      />,
     );
     expect(screen.getByText('Trace Sight')).toBeInTheDocument();
   });
@@ -121,13 +121,16 @@ describe('FavoritesView', () => {
   it('shows the count of bound incantations', () => {
     renderWithLang(
       <FavoritesView
-        favorites={[{ name: 'Trace Sight', skill: 'log-trace-correlation' }, { name: 'Bisect Divination', skill: 'bisect-debugging' }]}
+        favorites={[
+          { name: 'Trace Sight', skill: 'log-trace-correlation' },
+          { name: 'Bisect Divination', skill: 'bisect-debugging' },
+        ]}
         recent={[]}
         marginalia={{}}
         onSpellClick={() => {}}
         isFavorited={() => true}
         onToggleFavorite={() => {}}
-      />
+      />,
     );
     expect(screen.getByText(/Bound Incantations \(2\)/)).toBeInTheDocument();
   });
@@ -142,7 +145,7 @@ describe('FavoritesView', () => {
         onSpellClick={onSpellClick}
         isFavorited={() => true}
         onToggleFavorite={() => {}}
-      />
+      />,
     );
     fireEvent.click(screen.getByText('Trace Sight'));
     expect(onSpellClick).toHaveBeenCalledTimes(1);
@@ -159,7 +162,7 @@ describe('FavoritesView', () => {
         onSpellClick={() => {}}
         isFavorited={() => true}
         onToggleFavorite={onToggleFavorite}
-      />
+      />,
     );
     const starButtons = screen.getAllByLabelText(/Unbind|Bind/);
     fireEvent.click(starButtons[0]);
@@ -175,7 +178,7 @@ describe('FavoritesView', () => {
         onSpellClick={() => {}}
         isFavorited={() => false}
         onToggleFavorite={() => {}}
-      />
+      />,
     );
     expect(screen.getByText('Razor of Parsimony')).toBeInTheDocument();
   });
@@ -189,7 +192,7 @@ describe('FavoritesView', () => {
         onSpellClick={() => {}}
         isFavorited={() => false}
         onToggleFavorite={() => {}}
-      />
+      />,
     );
     expect(screen.getByText('School of Remediation')).toBeInTheDocument();
   });
@@ -203,7 +206,7 @@ describe('FavoritesView', () => {
         onSpellClick={() => {}}
         isFavorited={() => false}
         onToggleFavorite={() => {}}
-      />
+      />,
     );
     expect(screen.getByText('Trace Sight')).toBeInTheDocument();
     expect(screen.getByText('Very useful for prod incidents')).toBeInTheDocument();
@@ -218,7 +221,7 @@ describe('FavoritesView', () => {
         onSpellClick={() => {}}
         isFavorited={() => false}
         onToggleFavorite={() => {}}
-      />
+      />,
     );
     expect(screen.getByText('Trace Sight')).toBeInTheDocument();
     expect(screen.getByText('My note')).toBeInTheDocument();
@@ -234,7 +237,7 @@ describe('FavoritesView', () => {
         onSpellClick={() => {}}
         isFavorited={() => false}
         onToggleFavorite={() => {}}
-      />
+      />,
     );
     expect(screen.getByText('Spell 0')).toBeInTheDocument();
     expect(screen.getByText('Spell 9')).toBeInTheDocument();
@@ -250,7 +253,7 @@ describe('FavoritesView', () => {
         onSpellClick={() => {}}
         isFavorited={() => false}
         onToggleFavorite={() => {}}
-      />
+      />,
     );
     const item = screen.getByText('Trace Sight').closest('[role="button"]');
     expect(item).toBeInTheDocument();
@@ -267,7 +270,7 @@ describe('FavoritesView', () => {
         onSpellClick={onSpellClick}
         isFavorited={() => false}
         onToggleFavorite={() => {}}
-      />
+      />,
     );
     const item = screen.getByText('Trace Sight').closest('[role="button"]');
     fireEvent.keyDown(item, { key: 'Enter' });
@@ -279,11 +282,11 @@ describe('FavoritesView', () => {
       <FavoritesView
         favorites={[]}
         recent={[]}
-        marginalia={{ 'Trace Sight': 12345 }}
+        marginalia={{ 'Trace Sight': 12_345 }}
         onSpellClick={() => {}}
         isFavorited={() => false}
         onToggleFavorite={() => {}}
-      />
+      />,
     );
     expect(screen.getByText('Trace Sight')).toBeInTheDocument();
   });

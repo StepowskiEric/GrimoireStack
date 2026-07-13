@@ -1,5 +1,9 @@
-import { describe, it, expect } from 'vitest';
-import { buildSchools, renderSchoolsSource, validateRecords } from '../../scripts/registry/emit-schools.mjs';
+import { describe, expect, it } from 'vitest';
+import {
+  buildSchools,
+  renderSchoolsSource,
+  validateRecords,
+} from '../../scripts/registry/emit-schools.mjs';
 
 const baseRecord = () => ({
   skill: 'log-trace-correlation',
@@ -17,11 +21,13 @@ const baseRecord = () => ({
 describe('buildSchools — trueName / kins emission', () => {
   it('emits trueName and kins when present on a record', () => {
     const schools = buildSchools(
-      [{
-        ...baseRecord(),
-        trueName: 'The Eye That Reads',
-        kins: ['bisect-debugging', 'root-cause-analysis'],
-      }],
+      [
+        {
+          ...baseRecord(),
+          trueName: 'The Eye That Reads',
+          kins: ['bisect-debugging', 'root-cause-analysis'],
+        },
+      ],
       { spells: {}, schools: {} },
     );
     expect(schools).toHaveLength(1);
@@ -56,13 +62,15 @@ describe('buildSchools — trueName / kins emission', () => {
 
   it('still emits note and combos alongside the new fields', () => {
     const schools = buildSchools(
-      [{
-        ...baseRecord(),
-        note: 'compact summary',
-        combos: ['Bisect Divination', 'Root Cause Revelation'],
-        trueName: 'The Eye',
-        kins: ['bisect-debugging'],
-      }],
+      [
+        {
+          ...baseRecord(),
+          note: 'compact summary',
+          combos: ['Bisect Divination', 'Root Cause Revelation'],
+          trueName: 'The Eye',
+          kins: ['bisect-debugging'],
+        },
+      ],
       { spells: {}, schools: {} },
     );
     const spell = schools[0].spells[0];
@@ -76,11 +84,13 @@ describe('buildSchools — trueName / kins emission', () => {
     // Run JSON.parse(JSON.stringify(...)) to confirm the emitted object is
     // pure data — no Maps, no Symbols — and survives serialization.
     const schools = buildSchools(
-      [{
-        ...baseRecord(),
-        trueName: 'The Eye',
-        kins: ['bisect-debugging'],
-      }],
+      [
+        {
+          ...baseRecord(),
+          trueName: 'The Eye',
+          kins: ['bisect-debugging'],
+        },
+      ],
       { spells: {}, schools: {} },
     );
     const round = JSON.parse(JSON.stringify(schools));
@@ -91,13 +101,15 @@ describe('buildSchools — trueName / kins emission', () => {
 
 describe('renderSchoolsSource', () => {
   it('emits an ESM module that default-exports the schools array', () => {
-    const source = renderSchoolsSource([{
-      id: 'debugging',
-      real: 'Debugging',
-      name: 'School of Remediation',
-      desc: 'Tests',
-      spells: [{ name: 'Trace Sight', skill: 'log-trace-correlation', effect: 'X', status: '—' }],
-    }]);
+    const source = renderSchoolsSource([
+      {
+        id: 'debugging',
+        real: 'Debugging',
+        name: 'School of Remediation',
+        desc: 'Tests',
+        spells: [{ name: 'Trace Sight', skill: 'log-trace-correlation', effect: 'X', status: '—' }],
+      },
+    ]);
     expect(source).toMatch(/^const schools = /m);
     expect(source).toMatch(/export default schools;\s*$/);
     expect(source).toMatch(/AUTO-GENERATED/);
@@ -144,7 +156,7 @@ describe('validateRecords — kin integrity at build time', () => {
   it('flags spells whose curated kins list exceeds the UI cap', () => {
     const records = [
       { skill: 'a', kins: ['b', 'c', 'd', 'e', 'f'] }, // 5 kins, cap is 3
-      { skill: 'b', kins: ['a'] },                     // 1 kin, fine
+      { skill: 'b', kins: ['a'] }, // 1 kin, fine
     ];
     const allIds = new Set(['a', 'b', 'c', 'd', 'e', 'f']);
     const logger = makeLogger();
@@ -156,9 +168,7 @@ describe('validateRecords — kin integrity at build time', () => {
   });
 
   it('reports both over-cap and unresolved in the same spell', () => {
-    const records = [
-      { skill: 'a', kins: ['b', 'c', 'd', 'ghost', 'also-ghost'] },
-    ];
+    const records = [{ skill: 'a', kins: ['b', 'c', 'd', 'ghost', 'also-ghost'] }];
     const allIds = new Set(['a', 'b', 'c', 'd']);
     const logger = makeLogger();
     const report = validateRecords(records, allIds, { logger: logger.log });
@@ -171,11 +181,7 @@ describe('validateRecords — kin integrity at build time', () => {
   });
 
   it('skips records whose kins field is not an array', () => {
-    const records = [
-      { skill: 'a' },
-      { skill: 'b', kins: null },
-      { skill: 'c', kins: undefined },
-    ];
+    const records = [{ skill: 'a' }, { skill: 'b', kins: null }, { skill: 'c', kins: undefined }];
     const allIds = new Set(['a', 'b', 'c']);
     const logger = makeLogger();
     const report = validateRecords(records, allIds, { logger: logger.log });

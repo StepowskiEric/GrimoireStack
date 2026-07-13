@@ -1,16 +1,16 @@
 import { useCallback, useMemo, useReducer } from 'react';
 import {
-  SEANCE_MAX_SANITY,
-  SEANCE_MAX_QUESTIONS,
-  SEANCE_CONVERGENCE_RUN,
-  SEANCE_QUESTIONS,
   getOptionById,
+  SEANCE_CONVERGENCE_RUN,
+  SEANCE_MAX_QUESTIONS,
+  SEANCE_MAX_SANITY,
+  SEANCE_QUESTIONS,
 } from '../data/consultationData.js';
 import {
+  converged,
   decideResult,
   nextState,
   scoreSelections,
-  converged,
   shouldSwapToDarker,
 } from '../data/consultationScoring.js';
 
@@ -45,9 +45,9 @@ const initialState = {
   sanity: SEANCE_MAX_SANITY,
   insight: 0,
   schoolId: null,
-  selections: [],         // ordered list of Selection
-  snapshots: [],          // cumulative topSkill after each selection
-  result: null,           // { primary, alt, beasthood, reason } when stage === 'result'
+  selections: [], // ordered list of Selection
+  snapshots: [], // cumulative topSkill after each selection
+  result: null, // { primary, alt, beasthood, reason } when stage === 'result'
 };
 
 function reducer(state, action) {
@@ -56,7 +56,7 @@ function reducer(state, action) {
       if (state.stage !== STAGE.SIGIL) return state;
       const ns = nextState(
         { sanity: state.sanity, insight: state.insight, questionIndex: 0 },
-        'sigil'
+        'sigil',
       );
       return {
         ...state,
@@ -81,7 +81,7 @@ function reducer(state, action) {
       const pool = action.pool; // 'narrowing' | 'darker'
       const ns = nextState(
         { sanity: state.sanity, insight: state.insight, questionIndex: 0 },
-        pool
+        pool,
       );
       const newSelections = [
         ...state.selections,
@@ -93,10 +93,7 @@ function reducer(state, action) {
           sanityAfter: ns.sanity,
         },
       ];
-      const snapshots = [
-        ...state.snapshots,
-        scoreSelections(newSelections, { resolveOption }),
-      ];
+      const snapshots = [...state.snapshots, scoreSelections(newSelections, { resolveOption })];
 
       // Decide if the consultation ends.
       // Convergence: requires at least 3 narrowing picks AND the top 2
@@ -108,12 +105,7 @@ function reducer(state, action) {
       const isForced = ns.sanity <= 0;
 
       if (isForced || isConverged || isAtMax) {
-        const result = decideResult(
-          snapshots[snapshots.length - 1],
-          newSelections,
-          { resolveOption },
-          ns.sanity
-        );
+        const result = decideResult(snapshots.at(-1), newSelections, { resolveOption }, ns.sanity);
         return {
           ...state,
           stage: STAGE.RESULT,
@@ -150,9 +142,7 @@ function resolveOption(schoolId, optionId) {
 // How many narrowing or darker picks have been made (used for indexing
 // the current question from the school's pool).
 function countNarrowingPicks(selections) {
-  return selections.filter(
-    (s) => s.pool === 'narrowing' || s.pool === 'darker'
-  ).length;
+  return selections.filter((s) => s.pool === 'narrowing' || s.pool === 'darker').length;
 }
 
 export function useConsultation() {

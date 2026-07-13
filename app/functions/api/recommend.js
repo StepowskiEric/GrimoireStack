@@ -20,10 +20,7 @@
 
 import { SKILL_CATALOG } from './skill-catalog.js';
 
-const ALLOWED_ORIGINS = [
-  'https://grimoirestack.com',
-  'https://www.grimoirestack.com',
-];
+const ALLOWED_ORIGINS = ['https://grimoirestack.com', 'https://www.grimoirestack.com'];
 
 function corsHeaders(request) {
   const origin = request.headers.get('Origin') || '';
@@ -43,15 +40,71 @@ const MAX_QUERY_LENGTH = 500;
 // app/src/data/spellMatcher.js. Kept short and identical so the
 // server's local matches align with what the client falls back to.
 const STOPWORDS = new Set([
-  'a','an','the','i','im','ive','id','is','it','of','to','and','or','but',
-  'my','in','on','for','with','this','that','those','these','be','been',
-  'was','were','are','am','do','does','did','have','has','had','you','your',
-  'me','we','us','our','so','just','very','really','about','what','how',
-  'when','where','why','which','than','then','too','any','some','no','not',
+  'a',
+  'an',
+  'the',
+  'i',
+  'im',
+  'ive',
+  'id',
+  'is',
+  'it',
+  'of',
+  'to',
+  'and',
+  'or',
+  'but',
+  'my',
+  'in',
+  'on',
+  'for',
+  'with',
+  'this',
+  'that',
+  'those',
+  'these',
+  'be',
+  'been',
+  'was',
+  'were',
+  'are',
+  'am',
+  'do',
+  'does',
+  'did',
+  'have',
+  'has',
+  'had',
+  'you',
+  'your',
+  'me',
+  'we',
+  'us',
+  'our',
+  'so',
+  'just',
+  'very',
+  'really',
+  'about',
+  'what',
+  'how',
+  'when',
+  'where',
+  'why',
+  'which',
+  'than',
+  'then',
+  'too',
+  'any',
+  'some',
+  'no',
+  'not',
 ]);
 
 function tokenizeQuery(query) {
-  const cleaned = String(query || '').toLowerCase().replace(/[^a-z0-9\s-]/g, ' ');
+  const cleaned = String(query || '')
+    .toLowerCase()
+    .replace(/[^a-z0-9\s-]/g, ' ');
   const out = [];
   for (const raw of cleaned.split(/\s+/)) {
     if (raw && !STOPWORDS.has(raw) && raw.length > 1) out.push(raw);
@@ -68,11 +121,12 @@ function formatSkillId(id) {
 
 function localMatch(query, limit = 5) {
   const tokens = tokenizeQuery(query);
-  if (!tokens.length) return [];
+  if (tokens.length === 0) return [];
 
   const scored = [];
   for (const skill of SKILL_CATALOG) {
-    const haystack = `${skill.name} ${skill.skill} ${skill.effect} ${skill.school} ${skill.schoolName || ''} ${skill.status || ''}`.toLowerCase();
+    const haystack =
+      `${skill.name} ${skill.skill} ${skill.effect} ${skill.school} ${skill.schoolName || ''} ${skill.status || ''}`.toLowerCase();
     let score = 0;
     for (const tok of tokens) {
       if (haystack.includes(tok)) score += 2;
@@ -105,9 +159,10 @@ function cacheKey(query) {
 
 async function runAiInference(env, query) {
   const candidates = localMatch(query, 20).map((r) => r.skill);
-  const pool = candidates.length > 0
-    ? SKILL_CATALOG.filter((s) => candidates.includes(s.skill))
-    : SKILL_CATALOG;
+  const pool =
+    candidates.length > 0
+      ? SKILL_CATALOG.filter((s) => candidates.includes(s.skill))
+      : SKILL_CATALOG;
   const skillIds = pool.map((s) => s.skill);
   const validIds = new Set(skillIds);
   const idToSkill = new Map(pool.map((s) => [s.skill, s]));
@@ -115,7 +170,7 @@ async function runAiInference(env, query) {
   const res = await fetch('https://api.groq.com/openai/v1/chat/completions', {
     method: 'POST',
     headers: {
-      'Authorization': `Bearer ${env.GROQ_API_KEY}`,
+      Authorization: `Bearer ${env.GROQ_API_KEY}`,
       'Content-Type': 'application/json',
     },
     body: JSON.stringify({
@@ -167,24 +222,24 @@ User problem: ${query}`,
   } catch {
     const match = text.match(/\[[\s\S]*\]/);
     if (match) {
-      try { rankedIds = JSON.parse(match[0]); } catch {}
+      try {
+        rankedIds = JSON.parse(match[0]);
+      } catch {}
     }
   }
 
   // Filter to valid IDs only, then build result objects from catalog data.
   const filtered = rankedIds.filter((id) => validIds.has(id));
-  return filtered
-    .slice(0, 5)
-    .map((id, i) => {
-      const s = idToSkill.get(id);
-      return {
-        skill: s.skill,
-        name: formatSkillId(s.skill),
-        school: s.school,
-        score: Math.max(0.1, 1 - i * 0.15),
-        reason: s.effect,
-      };
-    });
+  return filtered.slice(0, 5).map((id, i) => {
+    const s = idToSkill.get(id);
+    return {
+      skill: s.skill,
+      name: formatSkillId(s.skill),
+      school: s.school,
+      score: Math.max(0.1, 1 - i * 0.15),
+      reason: s.effect,
+    };
+  });
 }
 
 const MAX_INTERVIEW_ROUNDS = 15;
@@ -201,7 +256,8 @@ const INTERVIEW_TOOLS = [
         properties: {
           question: {
             type: 'string',
-            description: 'A specific, targeted question about their problem. Avoid generic questions.',
+            description:
+              'A specific, targeted question about their problem. Avoid generic questions.',
           },
           choices: {
             type: 'array',
@@ -219,7 +275,8 @@ const INTERVIEW_TOOLS = [
     type: 'function',
     function: {
       name: 'finish_interview',
-      description: 'Call this when you are at least 90% confident you understand the user problem well enough to recommend a skill. Provide a brief summary and 3-5 search keywords.',
+      description:
+        'Call this when you are at least 90% confident you understand the user problem well enough to recommend a skill. Provide a brief summary and 3-5 search keywords.',
       parameters: {
         type: 'object',
         properties: {
@@ -232,7 +289,8 @@ const INTERVIEW_TOOLS = [
             items: { type: 'string' },
             minItems: 3,
             maxItems: 5,
-            description: 'Search keywords that describe the user problem, from most to least specific.',
+            description:
+              'Search keywords that describe the user problem, from most to least specific.',
           },
         },
         required: ['summary', 'keywords'],
@@ -248,9 +306,12 @@ const INTERVIEW_TOOLS = [
  */
 function parsePlainTextQuestion(text) {
   if (!text) return null;
-  const lines = text.split('\n').map((l) => l.trim()).filter(Boolean);
+  const lines = text
+    .split('\n')
+    .map((l) => l.trim())
+    .filter(Boolean);
   // Find the first line that's not a numbered choice — that's the question
-  const choiceRe = /^\d+[\.\)]\s+(.+)/;
+  const choiceRe = /^\d+[.)]\s+(.+)/;
   const questionLines = [];
   const choices = [];
   let inChoices = false;
@@ -265,7 +326,7 @@ function parsePlainTextQuestion(text) {
   }
   if (questionLines.length > 0 && choices.length >= 2) {
     // Pad or trim to exactly 3 choices
-    while (choices.length < 3) choices.push(choices[choices.length - 1]);
+    while (choices.length < 3) choices.push(choices.at(-1));
     return { question: questionLines.join(' '), choices: choices.slice(0, 3) };
   }
   return null;
@@ -279,8 +340,12 @@ function processToolCalls(toolCalls, query) {
   const tc = toolCalls[0];
   if (tc.function.name === 'ask_question') {
     let args;
-    try { args = JSON.parse(tc.function.arguments); } catch { args = null; }
-    if (args && args.question && Array.isArray(args.choices) && args.choices.length === 3) {
+    try {
+      args = JSON.parse(tc.function.arguments);
+    } catch {
+      args = null;
+    }
+    if (args?.question && Array.isArray(args.choices) && args.choices.length === 3) {
       return { type: 'question', question: args.question, choices: args.choices };
     }
     return { type: 'results', results: localMatch(query, 3) };
@@ -288,8 +353,12 @@ function processToolCalls(toolCalls, query) {
 
   if (tc.function.name === 'finish_interview') {
     let args;
-    try { args = JSON.parse(tc.function.arguments); } catch { args = null; }
-    if (args && args.summary && Array.isArray(args.keywords)) {
+    try {
+      args = JSON.parse(tc.function.arguments);
+    } catch {
+      args = null;
+    }
+    if (args?.summary && Array.isArray(args.keywords)) {
       const combinedQuery = `${query} ${args.keywords.join(' ')} ${args.summary}`;
       return { type: 'results', results: localMatch(combinedQuery, 3) };
     }
@@ -310,9 +379,7 @@ function processToolCalls(toolCalls, query) {
  */
 async function runInterviewInference(env, query, history, useOpenRouter) {
   const apiKey = useOpenRouter ? env.OPENROUTER_API_KEY : env.GROQ_API_KEY;
-  const baseUrl = useOpenRouter
-    ? 'https://openrouter.ai/api/v1'
-    : 'https://api.groq.com/openai/v1';
+  const baseUrl = useOpenRouter ? 'https://openrouter.ai/api/v1' : 'https://api.groq.com/openai/v1';
   const models = useOpenRouter
     ? ['openrouter/free', 'cohere/north-mini-code:free']
     : ['qwen/qwen3.6-27b'];
@@ -338,7 +405,9 @@ GRILLING RULES:
   messages.push({ role: 'user', content: `User's problem: ${query}` });
 
   for (const turn of history.slice(-2)) {
-    const qText = turn.question?.question || (typeof turn.question === 'string' ? turn.question : JSON.stringify(turn.question));
+    const qText =
+      turn.question?.question ||
+      (typeof turn.question === 'string' ? turn.question : JSON.stringify(turn.question));
     messages.push({ role: 'assistant', content: qText });
     messages.push({ role: 'user', content: turn.answer });
   }
@@ -348,7 +417,7 @@ GRILLING RULES:
     const res = await fetch(`${baseUrl}/chat/completions`, {
       method: 'POST',
       headers: {
-        'Authorization': `Bearer ${apiKey}`,
+        Authorization: `Bearer ${apiKey}`,
         'Content-Type': 'application/json',
         ...extraHeaders,
       },
@@ -374,12 +443,13 @@ GRILLING RULES:
     const modelId = models[mi];
 
     // First attempt with this model
-    const tc = history.length < 3 && useOpenRouter
-      ? { type: 'function', function: { name: 'ask_question' } }
-      : 'auto';
-    let data = await makeRequest(modelId, tc);
-    let choice = data.choices?.[0]?.message;
-    let toolCalls = choice?.tool_calls;
+    const tc =
+      history.length < 3 && useOpenRouter
+        ? { type: 'function', function: { name: 'ask_question' } }
+        : 'auto';
+    const data = await makeRequest(modelId, tc);
+    const choice = data.choices?.[0]?.message;
+    const toolCalls = choice?.tool_calls;
 
     // If tool calls found, process them
     if (toolCalls && toolCalls.length > 0) {
@@ -403,7 +473,7 @@ GRILLING RULES:
 
 async function populateCache(cache, key, results, corsH) {
   try {
-    if (!results || !results.length) return;
+    if (results?.length === 0) return;
     const response = jsonResponse({ results, source: 'ai' }, 200, corsH);
     response.headers.set('Cache-Control', `public, max-age=${CACHE_TTL_SECONDS}`);
     await cache.put(key, response);
@@ -442,9 +512,15 @@ export async function onRequest(context) {
   if (env.FAVORITES) {
     const clientIp = request.headers.get('cf-connecting-ip') || 'unknown';
     const rateKey = `ratelimit:${clientIp}`;
-    const current = parseInt((await env.FAVORITES.get(rateKey)) || '0', 10);
+    const current = Number.parseInt((await env.FAVORITES.get(rateKey)) || '0', 10);
     if (current >= RATE_LIMIT) {
-      return jsonResponse({ error: `Rate limit exceeded (${RATE_LIMIT} req/${RATE_WINDOW_SECONDS}s). Try again later.` }, 429, corsH);
+      return jsonResponse(
+        {
+          error: `Rate limit exceeded (${RATE_LIMIT} req/${RATE_WINDOW_SECONDS}s). Try again later.`,
+        },
+        429,
+        corsH,
+      );
     }
     // Atomic increment with TTL — if the key already has a TTL, this extends it.
     // KV is eventually consistent so a few extra requests may slip through under
@@ -473,7 +549,7 @@ export async function onRequest(context) {
     const history = Array.isArray(body.history) ? body.history.slice(0, MAX_INTERVIEW_ROUNDS) : [];
     try {
       const aiTimeout = new Promise((_, reject) =>
-        setTimeout(() => reject(new Error('AI timeout')), 20000),
+        setTimeout(() => reject(new Error('AI timeout')), 20_000),
       );
       const result = await Promise.race([
         runInterviewInference(env, query, history, useOpenRouter),
@@ -483,7 +559,10 @@ export async function onRequest(context) {
         return jsonResponse({ ...result, source: 'ai' }, 200, corsH);
       }
     } catch (err) {
-      console.log('[recommend] interview inference failed', err?.message?.slice(0, 500) || 'unknown error');
+      console.log(
+        '[recommend] interview inference failed',
+        err?.message?.slice(0, 500) || 'unknown error',
+      );
       const localResults = localMatch(query, 3);
       return jsonResponse({ type: 'results', results: localResults, source: 'local' }, 200, corsH);
     }
@@ -517,10 +596,7 @@ export async function onRequest(context) {
       const aiTimeout = new Promise((_, reject) =>
         setTimeout(() => reject(new Error('AI timeout')), 5000),
       );
-      const aiResults = await Promise.race([
-        runAiInference(env, query),
-        aiTimeout,
-      ]);
+      const aiResults = await Promise.race([runAiInference(env, query), aiTimeout]);
       if (aiResults.length > 0) {
         if (cache && typeof waitUntil === 'function') {
           waitUntil(populateCache(cache, key, aiResults, corsH));

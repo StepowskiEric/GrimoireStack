@@ -6,10 +6,7 @@
  * secret, so users don't need to provide their own key.
  */
 
-const ALLOWED_ORIGINS = [
-  'https://grimoirestack.com',
-  'https://www.grimoirestack.com',
-];
+const ALLOWED_ORIGINS = ['https://grimoirestack.com', 'https://www.grimoirestack.com'];
 
 function corsHeaders(request) {
   const origin = request.headers.get('Origin') || '';
@@ -63,25 +60,29 @@ export async function onRequest(context) {
   const hasTools = Array.isArray(body.tools) && body.tools.length > 0;
   const toolChoice = body.tool_choice;
 
-  console.log(`[groq-proxy:${requestId}] Request: model=${model}, tools=${hasTools}, tool_choice=${JSON.stringify(toolChoice)}, messages=${messages.length}, lastMsg=${(messages[messages.length - 1]?.content || '').slice(0, 120)}`);
+  console.log(
+    `[groq-proxy:${requestId}] Request: model=${model}, tools=${hasTools}, tool_choice=${JSON.stringify(toolChoice)}, messages=${messages.length}, lastMsg=${(messages.at(-1)?.content || '').slice(0, 120)}`,
+  );
 
   // Forward the full body, preserving tools, tool_choice,
   // parallel_tool_calls, temperature, max_tokens, etc.
   // Strip fields that Groq does not support (page-agent's model
   // patcher adds enable_thinking for Qwen, but Groq rejects it).
   const groqBody = { ...body, model };
-  delete groqBody.enable_thinking;
-  delete groqBody.thinking;
-  delete groqBody.reasoning_effort;
-  delete groqBody.verbosity;
+  groqBody.enable_thinking = undefined;
+  groqBody.thinking = undefined;
+  groqBody.reasoning_effort = undefined;
+  groqBody.verbosity = undefined;
 
   try {
-    console.log(`[groq-proxy:${requestId}] Sending to Groq: ${JSON.stringify({ model, hasTools, toolChoice, msgCount: groqBody.messages?.length })}`);
+    console.log(
+      `[groq-proxy:${requestId}] Sending to Groq: ${JSON.stringify({ model, hasTools, toolChoice, msgCount: groqBody.messages?.length })}`,
+    );
 
     const groqRes = await fetch('https://api.groq.com/openai/v1/chat/completions', {
       method: 'POST',
       headers: {
-        'Authorization': `Bearer ${env.GROQ_API_KEY}`,
+        Authorization: `Bearer ${env.GROQ_API_KEY}`,
         'Content-Type': 'application/json',
       },
       body: JSON.stringify(groqBody),
@@ -89,8 +90,14 @@ export async function onRequest(context) {
 
     if (!groqRes.ok) {
       const errBody = await groqRes.text().catch(() => '');
-      console.log(`[groq-proxy:${requestId}] Groq returned ${groqRes.status}: ${errBody.slice(0, 300)}`);
-      return json({ error: 'Groq API error', detail: errBody.slice(0, 500) }, groqRes.status, corsH);
+      console.log(
+        `[groq-proxy:${requestId}] Groq returned ${groqRes.status}: ${errBody.slice(0, 300)}`,
+      );
+      return json(
+        { error: 'Groq API error', detail: errBody.slice(0, 500) },
+        groqRes.status,
+        corsH,
+      );
     }
 
     const groqData = await groqRes.json();
@@ -99,7 +106,9 @@ export async function onRequest(context) {
     const hasToolCalls = Array.isArray(toolCalls) && toolCalls.length > 0;
     const content = (groqData.choices?.[0]?.message?.content || '').slice(0, 100);
 
-    console.log(`[groq-proxy:${requestId}] Groq response: finish_reason=${finishReason}, tool_calls=${hasToolCalls ? toolCalls.length : 0}, content_preview="${content}"`);
+    console.log(
+      `[groq-proxy:${requestId}] Groq response: finish_reason=${finishReason}, tool_calls=${hasToolCalls ? toolCalls.length : 0}, content_preview="${content}"`,
+    );
 
     // Pass through the Groq response as-is (OpenAI-compatible format)
     return new Response(JSON.stringify(groqData), {

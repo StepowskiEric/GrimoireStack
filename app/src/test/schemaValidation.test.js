@@ -1,5 +1,5 @@
-import { describe, it, expect } from 'vitest';
-import { validateSpell, validateSchool, validateSchools } from '../data/schema.js';
+import { describe, expect, it } from 'vitest';
+import { validateSchool, validateSchools, validateSpell } from '../data/schema.js';
 
 const baseSpell = () => ({
   name: 'Trace Sight',
@@ -20,9 +20,15 @@ describe('validateSpell — trueName', () => {
   });
 
   it('throws when trueName is not a string', () => {
-    expect(() => validateSpell({ ...baseSpell(), trueName: 42 })).toThrow(/trueName must be a string/);
-    expect(() => validateSpell({ ...baseSpell(), trueName: null })).toThrow(/trueName must be a string/);
-    expect(() => validateSpell({ ...baseSpell(), trueName: { word: 'no' } })).toThrow(/trueName must be a string/);
+    expect(() => validateSpell({ ...baseSpell(), trueName: 42 })).toThrow(
+      /trueName must be a string/,
+    );
+    expect(() => validateSpell({ ...baseSpell(), trueName: null })).toThrow(
+      /trueName must be a string/,
+    );
+    expect(() => validateSpell({ ...baseSpell(), trueName: { word: 'no' } })).toThrow(
+      /trueName must be a string/,
+    );
   });
 });
 
@@ -33,7 +39,10 @@ describe('validateSpell — kins', () => {
   });
 
   it('accepts an array of non-empty string ids', () => {
-    const spell = validateSpell({ ...baseSpell(), kins: ['bisect-debugging', 'root-cause-analysis'] });
+    const spell = validateSpell({
+      ...baseSpell(),
+      kins: ['bisect-debugging', 'root-cause-analysis'],
+    });
     expect(spell.kins).toEqual(['bisect-debugging', 'root-cause-analysis']);
   });
 
@@ -43,15 +52,23 @@ describe('validateSpell — kins', () => {
   });
 
   it('throws when kins is not an array', () => {
-    expect(() => validateSpell({ ...baseSpell(), kins: 'bisect-debugging' })).toThrow(/kins must be an array/);
+    expect(() => validateSpell({ ...baseSpell(), kins: 'bisect-debugging' })).toThrow(
+      /kins must be an array/,
+    );
     expect(() => validateSpell({ ...baseSpell(), kins: 42 })).toThrow(/kins must be an array/);
     expect(() => validateSpell({ ...baseSpell(), kins: null })).toThrow(/kins must be an array/);
   });
 
   it('throws when any kin entry is not a non-empty string', () => {
-    expect(() => validateSpell({ ...baseSpell(), kins: ['ok', ''] })).toThrow(/kins entries must be non-empty strings/);
-    expect(() => validateSpell({ ...baseSpell(), kins: ['ok', '   '] })).toThrow(/kins entries must be non-empty strings/);
-    expect(() => validateSpell({ ...baseSpell(), kins: ['ok', 42] })).toThrow(/kins entries must be non-empty strings/);
+    expect(() => validateSpell({ ...baseSpell(), kins: ['ok', ''] })).toThrow(
+      /kins entries must be non-empty strings/,
+    );
+    expect(() => validateSpell({ ...baseSpell(), kins: ['ok', '   '] })).toThrow(
+      /kins entries must be non-empty strings/,
+    );
+    expect(() => validateSpell({ ...baseSpell(), kins: ['ok', 42] })).toThrow(
+      /kins entries must be non-empty strings/,
+    );
   });
 });
 
@@ -60,20 +77,20 @@ describe('validateSchool / validateSchools — passthrough', () => {
     const school = validateSchool({
       id: 'debugging',
       name: 'Debugging',
-      spells: [
-        { ...baseSpell(), trueName: 'The Eye', kins: ['bisect-debugging'] },
-      ],
+      spells: [{ ...baseSpell(), trueName: 'The Eye', kins: ['bisect-debugging'] }],
     });
     expect(school.spells[0].trueName).toBe('The Eye');
     expect(school.spells[0].kins).toEqual(['bisect-debugging']);
   });
 
   it('still rejects a malformed spell inside a school', () => {
-    expect(() => validateSchool({
-      id: 'debugging',
-      name: 'Debugging',
-      spells: [{ ...baseSpell(), kins: 'not-an-array' }],
-    })).toThrow(/kins must be an array/);
+    expect(() =>
+      validateSchool({
+        id: 'debugging',
+        name: 'Debugging',
+        spells: [{ ...baseSpell(), kins: 'not-an-array' }],
+      }),
+    ).toThrow(/kins must be an array/);
   });
 
   it('validateSchools runs over the whole array', () => {

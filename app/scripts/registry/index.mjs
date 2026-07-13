@@ -14,36 +14,32 @@
 
 import { promises as fs } from 'fs';
 import path from 'path';
-import { REPO_ROOT, APP_DIR } from '../../../scripts/lib/constants.mjs';
+import { APP_DIR, REPO_ROOT } from '../../../scripts/lib/constants.mjs';
 import { discoverSkills } from '../../../scripts/lib/helpers.mjs';
-import { parseFrontmatter } from './frontmatter.mjs';
 import { deriveDisplayName, deriveEffect, fileMtime, isoDate } from './derive.mjs';
-import { buildSchools, renderSchoolsSource, validateRecords } from './emit-schools.mjs';
 import { buildExplicit, renderMetadataSource } from './emit-metadata.mjs';
+import { buildSchools, renderSchoolsSource, validateRecords } from './emit-schools.mjs';
+import { parseFrontmatter } from './frontmatter.mjs';
 
 const SCHOOLS_REGISTRY = path.join(APP_DIR, 'src', 'data', 'schoolsRegistry.js');
 const SPELL_METADATA = path.join(APP_DIR, 'src', 'data', 'spellMetadata.js');
 const CURATED_OVERLAY = path.join(APP_DIR, 'src', 'data', 'curatedOverlay.js');
 
 async function main() {
-  const [discovered, overlay] = await Promise.all([
-    discoverSkills(),
-    loadOverlay(),
-  ]);
+  const [discovered, overlay] = await Promise.all([discoverSkills(), loadOverlay()]);
   const records = await parseAll(discovered, overlay);
   const deduped = dedupRecords(records);
 
   // Loud validation: catch curatedOverlay typos and over-eager kin lists
   // before they become silent runtime skips. Warnings only — does not fail
   // the build, since resolveKinsForSpell filters unresolved ids at runtime.
-  const allSkillIds = new Set(deduped.map(r => r.skill));
+  const allSkillIds = new Set(deduped.map((r) => r.skill));
   validateRecords(deduped, allSkillIds);
 
-  await Promise.all([
-    writeSchools(deduped, overlay),
-    writeMetadata(deduped),
-  ]);
-  console.log(`[registry] wrote ${deduped.length} skills across ${new Set(deduped.map(r => r.topic)).size} topics`);
+  await Promise.all([writeSchools(deduped, overlay), writeMetadata(deduped)]);
+  console.log(
+    `[registry] wrote ${deduped.length} skills across ${new Set(deduped.map((r) => r.topic)).size} topics`,
+  );
 }
 
 /**
@@ -78,14 +74,11 @@ async function loadOverlay() {
 }
 
 async function parseAll(discovered, overlay) {
-  return Promise.all(discovered.map(s => parseOne(s, overlay)));
+  return Promise.all(discovered.map((s) => parseOne(s, overlay)));
 }
 
 async function parseOne(s, overlay) {
-  const [content, mtime] = await Promise.all([
-    fs.readFile(s.src, 'utf8'),
-    fileMtime(s.src),
-  ]);
+  const [content, mtime] = await Promise.all([fs.readFile(s.src, 'utf8'), fileMtime(s.src)]);
   const { meta, body, hasFrontmatter } = parseFrontmatter(content);
   const curated = overlay.spells[s.skillId] || {};
   return {
@@ -96,8 +89,14 @@ async function parseOne(s, overlay) {
     status: curated.status || meta.status || '—',
     note: curated.note || meta.note || null,
     combos: curated.combos || (Array.isArray(meta.combos) ? meta.combos : null),
-    trueName: typeof curated.trueName === 'string' && curated.trueName.trim() ? curated.trueName.trim() : null,
-    kins: Array.isArray(curated.kins) && curated.kins.length > 0 ? curated.kins.filter(k => typeof k === 'string' && k.trim()) : null,
+    trueName:
+      typeof curated.trueName === 'string' && curated.trueName.trim()
+        ? curated.trueName.trim()
+        : null,
+    kins:
+      Array.isArray(curated.kins) && curated.kins.length > 0
+        ? curated.kins.filter((k) => typeof k === 'string' && k.trim())
+        : null,
     lastUpdated: meta['last-updated'] || isoDate(mtime),
   };
 }
@@ -118,7 +117,7 @@ async function writeMetadata(records) {
   console.log(`[registry] wrote ${Object.keys(explicit).length} metadata entries to ${rel}`);
 }
 
-main().catch(err => {
+main().catch((err) => {
   console.error('[registry] failed:', err);
   process.exit(1);
 });

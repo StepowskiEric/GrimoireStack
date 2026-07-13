@@ -1,7 +1,7 @@
-import { useState, useCallback } from 'react';
+import { useCallback, useState } from 'react';
+import { grimoireIndex } from '../data/grimoireIndexInstance.js';
 import { useRitual } from './useRitual.js';
 import { useRitualWalk } from './useRitualWalk.js';
-import { grimoireIndex } from '../data/grimoireIndexInstance.js';
 
 /**
  * useRitualOrchestrator — encapsulates all ritual-related state and callbacks.
@@ -21,7 +21,10 @@ export function useRitualOrchestrator({ onSpellClick, navigateToLibrary }) {
       console.log('[orchestrator] walk complete', { target });
       const resolved = grimoireIndex.resolveBySkill(target.skill);
       if (resolved) {
-        console.log('[orchestrator] resolved spell', { name: resolved.spell.name, skill: resolved.spell.skill });
+        console.log('[orchestrator] resolved spell', {
+          name: resolved.spell.name,
+          skill: resolved.spell.skill,
+        });
         onSpellClick?.(resolved.spell, resolved.school);
       } else {
         console.error('[orchestrator] could not resolve skill', { skill: target.skill });
@@ -43,17 +46,23 @@ export function useRitualOrchestrator({ onSpellClick, navigateToLibrary }) {
     },
   });
 
-  const handleRitualConverge = useCallback((r) => {
-    console.log('[orchestrator] handleRitualConverge', { r });
-    const resolved = grimoireIndex.resolveBySkill(r.skill);
-    if (resolved) {
-      console.log('[orchestrator] resolved spell for converge', { name: resolved.spell.name, skill: resolved.spell.skill });
-      onSpellClick?.(resolved.spell, resolved.school);
-    } else {
-      console.error('[orchestrator] could not resolve skill for converge', { skill: r.skill });
-    }
-    setActivePanel(null);
-  }, [onSpellClick]);
+  const handleRitualConverge = useCallback(
+    (r) => {
+      console.log('[orchestrator] handleRitualConverge', { r });
+      const resolved = grimoireIndex.resolveBySkill(r.skill);
+      if (resolved) {
+        console.log('[orchestrator] resolved spell for converge', {
+          name: resolved.spell.name,
+          skill: resolved.spell.skill,
+        });
+        onSpellClick?.(resolved.spell, resolved.school);
+      } else {
+        console.error('[orchestrator] could not resolve skill for converge', { skill: r.skill });
+      }
+      setActivePanel(null);
+    },
+    [onSpellClick],
+  );
 
   const openOracle = useCallback(() => {
     setActivePanel('oracle');

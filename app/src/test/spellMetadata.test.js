@@ -1,9 +1,9 @@
-import { describe, it, expect } from 'vitest';
+import { describe, expect, it } from 'vitest';
 import {
+  getRecentlyUpdated,
   getSpellLastUpdated,
   getSpellNote,
   isExplicitlyUpdated,
-  getRecentlyUpdated,
 } from '../data/changeFeed.js';
 
 describe('spellMetadata', () => {
@@ -35,7 +35,7 @@ describe('spellMetadata', () => {
   describe('getSpellNote', () => {
     it('returns the note for a curated spell', () => {
       expect(getSpellNote('log-trace-correlation')).toBe(
-        'Polished effect description; tier unchanged.'
+        'Polished effect description; tier unchanged.',
       );
     });
 
@@ -87,21 +87,18 @@ describe('spellMetadata', () => {
     // skill invisible to the changelog (which iterates schools[]).
     it('every explicit spellMetadata entry has a matching schools[] spell', async () => {
       const { default: schools } = await import('../data/schools.js');
-      const catalogSkills = new Set(schools.flatMap(s => s.spells.map(sp => sp.skill)));
+      const catalogSkills = new Set(schools.flatMap((s) => s.spells.map((sp) => sp.skill)));
       // Extract just the skill keys from EXPLICIT (we re-read the file to avoid
       // a circular import that would require restructuring the module).
       const fs = await import('node:fs');
       const path = await import('node:path');
       const url = await import('node:url');
       const here = path.dirname(url.fileURLToPath(import.meta.url));
-      const src = fs.readFileSync(
-        path.resolve(here, '..', 'data', 'spellMetadata.js'),
-        'utf8',
-      );
+      const src = fs.readFileSync(path.resolve(here, '..', 'data', 'spellMetadata.js'), 'utf8');
       const explicitKeys = new Set(
-        Array.from(src.matchAll(/'([a-z0-9-]+)':\s*\{\s*lastUpdated:/g)).map(m => m[1])
+        Array.from(src.matchAll(/'([a-z0-9-]+)':\s*\{\s*lastUpdated:/g)).map((m) => m[1]),
       );
-      const orphans = [...explicitKeys].filter(k => !catalogSkills.has(k));
+      const orphans = [...explicitKeys].filter((k) => !catalogSkills.has(k));
       expect(orphans).toEqual([]);
     });
   });

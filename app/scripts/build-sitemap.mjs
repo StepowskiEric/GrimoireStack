@@ -3,7 +3,7 @@
  * Run after `vite build`. Wire from `npm run build`.
  */
 
-import { writeFile, stat } from 'node:fs/promises';
+import { stat, writeFile } from 'node:fs/promises';
 import { dirname, join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
@@ -22,14 +22,7 @@ async function main() {
   });
 
   const spellPaths = schools.flatMap((s) => s.spells.map((sp) => `/s/${sp.skill}`));
-  const appPaths = [
-    '/about',
-    '/rituals',
-    '/bestiary',
-    '/spellweb',
-    '/changelog',
-    '/commune',
-  ];
+  const appPaths = ['/about', '/rituals', '/bestiary', '/spellweb', '/changelog', '/commune'];
   const paths = [...spellPaths, ...appPaths];
   const xml = buildSitemapXml({ origin: ORIGIN, paths });
   await writeFile(join(distDir, 'sitemap.xml'), xml, 'utf8');

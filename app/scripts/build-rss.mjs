@@ -3,12 +3,11 @@
  * Run after `vite build`. Wire from `npm run build`.
  */
 
-import { writeFile, mkdir, stat } from 'node:fs/promises';
+import { mkdir, stat, writeFile } from 'node:fs/promises';
 import { dirname, join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
-
-import schools from '../src/data/schools.js';
 import { getRecentlyUpdated } from '../src/data/changeFeed.js';
+import schools from '../src/data/schools.js';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const APP_ROOT = resolve(__dirname, '..');
@@ -31,9 +30,7 @@ function buildRssXml(items) {
 
   const rssItems = items
     .map((e) => {
-      const pubDate = e.lastUpdated
-        ? new Date(e.lastUpdated + 'T12:00:00Z').toUTCString()
-        : now;
+      const pubDate = e.lastUpdated ? new Date(e.lastUpdated + 'T12:00:00Z').toUTCString() : now;
       const link = `${escapeXml(base)}/s/${escapeXml(e.skill)}`;
       const desc = e.note
         ? `${escapeXml(e.spell?.effect || '')} — ${escapeXml(e.note)}`

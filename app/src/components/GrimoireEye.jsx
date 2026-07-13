@@ -1,5 +1,5 @@
 /* eslint-disable react/no-array-index-key -- decorative procedural arrays; index is stable for the lifetime of the mount */
-import { useRef, useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 import '../styles/components/grimoire-eye.css';
 
 export default function GrimoireEye({ mood = 'neutral', gaze = 0.25 } = {}) {
@@ -22,20 +22,18 @@ export default function GrimoireEye({ mood = 'neutral', gaze = 0.25 } = {}) {
   }, [mood, gaze]);
   // Slice 06 — chromatic-aberration fringe on the void edge. Computed at render
   // time (only changes when `gaze` prop changes), never per animation frame.
-  const reducedMotion = typeof window !== 'undefined' && window.matchMedia
-    && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const reducedMotion = window?.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
   const abT = !reducedMotion && gaze >= 0.4 ? Math.sqrt((gaze - 0.4) / 0.6) : 0; // 0..1, eased
-  const abOff = 1 + abT;          // 1..2 px offset
-  const abOp = abT * 0.08;        // 0..0.08 (subtle, cosmic)
-  const pupilAberration = abOp > 0
-    ? `drop-shadow(${abOff.toFixed(2)}px 0 0 rgba(74,108,255,${abOp.toFixed(3)})) ` +
-      `drop-shadow(${(-abOff).toFixed(2)}px 0 0 rgba(176,74,138,${abOp.toFixed(3)}))`
-    : 'none';
+  const abOff = 1 + abT; // 1..2 px offset
+  const abOp = abT * 0.08; // 0..0.08 (subtle, cosmic)
+  const pupilAberration =
+    abOp > 0
+      ? `drop-shadow(${abOff.toFixed(2)}px 0 0 rgba(74,108,255,${abOp.toFixed(3)})) ` +
+        `drop-shadow(${(-abOff).toFixed(2)}px 0 0 rgba(176,74,138,${abOp.toFixed(3)}))`
+      : 'none';
 
   // Slice 07 — background eyes swarm: density scales with gaze (20 → 60, capped).
   const bgCount = Math.min(60, Math.round(20 + gaze * 40));
-
-
 
   // Single rAF loop — writes ALL animated properties directly to DOM.
   // No React state involved, so zero React re-renders from animation frames.
@@ -54,8 +52,7 @@ export default function GrimoireEye({ mood = 'neutral', gaze = 0.25 } = {}) {
     let starsGroupEl = null;
     let starsInnerEl = null;
     const vesselEls = [];
-    const prefersReduced = typeof window !== 'undefined' && window.matchMedia
-      && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const prefersReduced = window?.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
 
     const queryElements = () => {
       containerEl = wrapper.querySelector('.great-eye-container');
@@ -70,7 +67,9 @@ export default function GrimoireEye({ mood = 'neutral', gaze = 0.25 } = {}) {
     };
 
     const animate = () => {
-      if (!svgEl) { queryElements(); }
+      if (!svgEl) {
+        queryElements();
+      }
 
       const t = Date.now() / 1000;
       const currentMood = moodRef.current;
@@ -82,7 +81,6 @@ export default function GrimoireEye({ mood = 'neutral', gaze = 0.25 } = {}) {
       const glowBoost = isOverwhelmed ? 0.5 : isCurious ? 0.15 : 0;
       const vesselBoost = isOverwhelmed ? 0.4 : isNeglectful ? -0.2 : 0;
       const breathFreq = 1;
-
 
       // Container breathing scale
       if (containerEl) {
@@ -139,7 +137,7 @@ export default function GrimoireEye({ mood = 'neutral', gaze = 0.25 } = {}) {
         const py = prefersReduced ? 0 : -((mouse.y - 0.5) * 12) * 1.5;
         starsGroupEl.setAttribute(
           'transform',
-          `translate(200,140) rotate(${rot}) translate(${px},${py})`
+          `translate(200,140) rotate(${rot}) translate(${px},${py})`,
         );
       }
       if (starsInnerEl) {
@@ -195,17 +193,23 @@ export default function GrimoireEye({ mood = 'neutral', gaze = 0.25 } = {}) {
       if (!overlay) return;
       overlay.style.transform = 'scaleY(1)';
       overlay.style.opacity = '1';
-      blinkTimeout = setTimeout(() => {
-        overlay.style.transform = 'scaleY(0)';
-        overlay.style.opacity = '0';
-      }, 150 + Math.random() * 200);
+      blinkTimeout = setTimeout(
+        () => {
+          overlay.style.transform = 'scaleY(0)';
+          overlay.style.opacity = '0';
+        },
+        150 + Math.random() * 200,
+      );
     };
 
     const schedule = () => {
-      scheduleTimeout = setTimeout(() => {
-        doBlink();
-        schedule();
-      }, 3000 + Math.random() * 5000);
+      scheduleTimeout = setTimeout(
+        () => {
+          doBlink();
+          schedule();
+        },
+        3000 + Math.random() * 5000,
+      );
     };
 
     const initialTimeout = setTimeout(schedule, 2000);
@@ -225,11 +229,17 @@ export default function GrimoireEye({ mood = 'neutral', gaze = 0.25 } = {}) {
         y: 8 + Math.random() * 84,
         size: base ? 0.8 + Math.random() * 2.5 : 1.0 + Math.random() * 3.0,
         color: base
-          ? (Math.random() < 0.4 ? '#7a3a5a' : Math.random() < 0.3 ? '#7fd4ff' : '#5a6a8a')
-          : (Math.random() < 0.5 ? '#7a3a5a' : '#7fd4ff'),
+          ? Math.random() < 0.4
+            ? '#7a3a5a'
+            : Math.random() < 0.3
+              ? '#7fd4ff'
+              : '#5a6a8a'
+          : Math.random() < 0.5
+            ? '#7a3a5a'
+            : '#7fd4ff',
         delay: Math.random() * 6,
       };
-    })
+    }),
   ).current;
 
   // Starfield — static data generated once via ref
@@ -244,7 +254,7 @@ export default function GrimoireEye({ mood = 'neutral', gaze = 0.25 } = {}) {
         color: Math.random() < 0.5 ? '#aebfff' : '#cfd8ff',
         opacity: 0.04 + Math.random() * 0.08,
       };
-    })
+    }),
   ).current;
 
   return (
@@ -264,13 +274,7 @@ export default function GrimoireEye({ mood = 'neutral', gaze = 0.25 } = {}) {
                 opacity={0.12 + gaze * 0.18}
                 className="bg-eye-lid"
               />
-              <circle
-                cx={x}
-                cy={y}
-                r={s * 0.28}
-                fill={eye.color}
-                opacity={0.18 + gaze * 0.22}
-              />
+              <circle cx={x} cy={y} r={s * 0.28} fill={eye.color} opacity={0.18 + gaze * 0.22} />
               <circle
                 cx={x}
                 cy={y}
@@ -293,10 +297,7 @@ export default function GrimoireEye({ mood = 'neutral', gaze = 0.25 } = {}) {
 
       {/* The Great Eye */}
       <div ref={containerRef} className="great-eye-container">
-        <svg
-          viewBox="0 0 400 280"
-          className="great-eye-svg"
-        >
+        <svg viewBox="0 0 400 280" className="great-eye-svg">
           <defs>
             <radialGradient id="scleraGrad" cx="50%" cy="50%" r="50%">
               <stop offset="0%" stopColor="#05060c" stopOpacity="0.9" />
@@ -326,15 +327,40 @@ export default function GrimoireEye({ mood = 'neutral', gaze = 0.25 } = {}) {
           </defs>
 
           {/* Outer glow rings */}
-          <ellipse cx="200" cy="140" rx="220" ry="140"
-            fill="none" stroke="url(#ringGrad)" strokeWidth="0.5" opacity="0.3"
-            className="eye-ring-spin-slow" />
-          <ellipse cx="200" cy="140" rx="205" ry="130"
-            fill="none" stroke="url(#ringGrad)" strokeWidth="0.8" opacity="0.2"
-            className="eye-ring-spin-reverse" />
-          <ellipse cx="200" cy="140" rx="190" ry="120"
-            fill="none" stroke="rgba(127,212,255,0.15)" strokeWidth="0.5" opacity="0.15"
-            strokeDasharray="4 8" className="eye-ring-spin-medium" />
+          <ellipse
+            cx="200"
+            cy="140"
+            rx="220"
+            ry="140"
+            fill="none"
+            stroke="url(#ringGrad)"
+            strokeWidth="0.5"
+            opacity="0.3"
+            className="eye-ring-spin-slow"
+          />
+          <ellipse
+            cx="200"
+            cy="140"
+            rx="205"
+            ry="130"
+            fill="none"
+            stroke="url(#ringGrad)"
+            strokeWidth="0.8"
+            opacity="0.2"
+            className="eye-ring-spin-reverse"
+          />
+          <ellipse
+            cx="200"
+            cy="140"
+            rx="190"
+            ry="120"
+            fill="none"
+            stroke="rgba(127,212,255,0.15)"
+            strokeWidth="0.5"
+            opacity="0.15"
+            strokeDasharray="4 8"
+            className="eye-ring-spin-medium"
+          />
 
           {/* Sclera */}
           <path
@@ -352,11 +378,12 @@ export default function GrimoireEye({ mood = 'neutral', gaze = 0.25 } = {}) {
               const startY = 140 + Math.sin(startAngle) * 85;
               const mainEndX = startX + Math.cos(startAngle) * (60 + ((i * 3.7) % 40));
               const mainEndY = startY + Math.sin(startAngle) * (40 + ((i * 2.3) % 25));
-              const mainMidX = startX + Math.cos(startAngle) * 30 + ((i * 4.1) % 20 - 10);
-              const mainMidY = startY + Math.sin(startAngle) * 20 + ((i * 3.3) % 15 - 7);
+              const mainMidX = startX + Math.cos(startAngle) * 30 + (((i * 4.1) % 20) - 10);
+              const mainMidY = startY + Math.sin(startAngle) * 20 + (((i * 3.3) % 15) - 7);
 
               return (
-                <path key={i}
+                <path
+                  key={i}
                   d={`M ${startX},${startY} Q ${mainMidX},${mainMidY} ${mainEndX},${mainEndY}`}
                   fill="none"
                   stroke="rgba(138,30,30,0.12)"
@@ -371,36 +398,70 @@ export default function GrimoireEye({ mood = 'neutral', gaze = 0.25 } = {}) {
           {/* Iris */}
           <g id="eye-iris-group">
             <ellipse cx="200" cy="140" rx="125" ry="82" fill="url(#irisGrad)" />
-            <ellipse cx="200" cy="140" rx="125" ry="82"
+            <ellipse
+              cx="200"
+              cy="140"
+              rx="125"
+              ry="82"
               fill="none"
               stroke="rgba(201,210,232,0.2)"
               strokeWidth="2"
-              className="eye-iris-ring" />
+              className="eye-iris-ring"
+            />
 
             {/* Non-Euclidean iris rings — count + contrast scale with gaze */}
             <g id="eye-rings-group">
-              <ellipse cx="200" cy="140" rx="72" ry="66"
-                fill="none" stroke="#c9d2e8" strokeWidth="0.8"
-                strokeOpacity={0.10 + gaze * 0.25}
-                transform="rotate(0 200 140)" className="eye-ring eye-ring--a" />
+              <ellipse
+                cx="200"
+                cy="140"
+                rx="72"
+                ry="66"
+                fill="none"
+                stroke="#c9d2e8"
+                strokeWidth="0.8"
+                strokeOpacity={0.1 + gaze * 0.25}
+                transform="rotate(0 200 140)"
+                className="eye-ring eye-ring--a"
+              />
               {gaze >= 0.55 && (
-                <ellipse cx="200" cy="140" rx="112" ry="42"
-                  fill="none" stroke="#c9d2e8" strokeWidth="0.7"
+                <ellipse
+                  cx="200"
+                  cy="140"
+                  rx="112"
+                  ry="42"
+                  fill="none"
+                  stroke="#c9d2e8"
+                  strokeWidth="0.7"
                   strokeOpacity={0.07 + gaze * 0.22}
-                  transform="rotate(24 200 140)" className="eye-ring eye-ring--b" />
+                  transform="rotate(24 200 140)"
+                  className="eye-ring eye-ring--b"
+                />
               )}
               {gaze >= 0.8 && (
-                <ellipse cx="200" cy="140" rx="84" ry="60"
-                  fill="none" stroke="#c9d2e8" strokeWidth="0.6"
-                  strokeOpacity={0.05 + gaze * 0.20}
-                  transform="rotate(-34 200 140)" className="eye-ring eye-ring--c" />
+                <ellipse
+                  cx="200"
+                  cy="140"
+                  rx="84"
+                  ry="60"
+                  fill="none"
+                  stroke="#c9d2e8"
+                  strokeWidth="0.6"
+                  strokeOpacity={0.05 + gaze * 0.2}
+                  transform="rotate(-34 200 140)"
+                  className="eye-ring eye-ring--c"
+                />
               )}
             </g>
 
-            <ellipse cx="200" cy="140" rx="45" ry="28"
+            <ellipse
+              cx="200"
+              cy="140"
+              rx="45"
+              ry="28"
               fill="none"
               stroke="rgba(2,2,5,0.4)"
-              strokeWidth="1.5" />
+              strokeWidth="1.5"
+            />
 
             {/* Pupil — depthless void */}
             <g id="eye-pupil-group" style={{ filter: pupilAberration }}>
@@ -408,19 +469,50 @@ export default function GrimoireEye({ mood = 'neutral', gaze = 0.25 } = {}) {
                 d="M 200,104 C 215,104 218,140 218,140 C 218,140 215,176 200,176 C 185,176 182,140 182,140 C 182,140 185,104 200,104 Z"
                 fill="url(#pupilGrad)"
               />
-              <ellipse cx="200" cy="140" rx="12" ry="20"
+              <ellipse
+                cx="200"
+                cy="140"
+                rx="12"
+                ry="20"
                 fill="rgba(120,150,255,0.12)"
-                className="eye-pupil-glow" />
+                className="eye-pupil-glow"
+              />
             </g>
           </g>
 
           {/* Starfield + nebula — deeper layer, parallax opposite the iris */}
           <g id="eye-stars-group" transform="translate(200,140)">
             <g id="eye-stars-inner">
-              <ellipse cx="-4" cy="3" rx="14" ry="10" fill="#1b1f4a" opacity="0.5" filter="url(#voidBlur)" className="eye-nebula" />
-              <ellipse cx="6" cy="-4" rx="9" ry="7" fill="#3a2a5a" opacity="0.42" filter="url(#voidBlur)" className="eye-nebula eye-nebula--b" />
+              <ellipse
+                cx="-4"
+                cy="3"
+                rx="14"
+                ry="10"
+                fill="#1b1f4a"
+                opacity="0.5"
+                filter="url(#voidBlur)"
+                className="eye-nebula"
+              />
+              <ellipse
+                cx="6"
+                cy="-4"
+                rx="9"
+                ry="7"
+                fill="#3a2a5a"
+                opacity="0.42"
+                filter="url(#voidBlur)"
+                className="eye-nebula eye-nebula--b"
+              />
               {stars.map((s, i) => (
-                <circle key={i} cx={s.dx} cy={s.dy} r={s.r} fill={s.color} opacity={s.opacity} className="eye-star" />
+                <circle
+                  key={i}
+                  cx={s.dx}
+                  cy={s.dy}
+                  r={s.r}
+                  fill={s.color}
+                  opacity={s.opacity}
+                  className="eye-star"
+                />
               ))}
             </g>
           </g>
@@ -446,11 +538,12 @@ export default function GrimoireEye({ mood = 'neutral', gaze = 0.25 } = {}) {
             const t = i / 15;
             const baseX = 40 + t * 320;
             const baseY = 15 + Math.sin(t * Math.PI) * 12;
-            const tipX = baseX + ((i * 7) % 30 - 15);
+            const tipX = baseX + (((i * 7) % 30) - 15);
             const tipY = baseY - 30 - ((i * 5) % 15);
             return (
-              <path key={`top-${i}`}
-                d={`M ${baseX},${baseY} Q ${baseX + ((i * 3) % 20 - 10)},${baseY - 18} ${tipX},${tipY}`}
+              <path
+                key={`top-${i}`}
+                d={`M ${baseX},${baseY} Q ${baseX + (((i * 3) % 20) - 10)},${baseY - 18} ${tipX},${tipY}`}
                 fill="none"
                 stroke="rgba(150,185,230,0.15)"
                 strokeWidth="1.5"
@@ -463,11 +556,12 @@ export default function GrimoireEye({ mood = 'neutral', gaze = 0.25 } = {}) {
             const t = i / 13;
             const baseX = 50 + t * 300;
             const baseY = 260 + Math.sin(t * Math.PI) * 10;
-            const tipX = baseX + ((i * 5) % 25 - 12);
+            const tipX = baseX + (((i * 5) % 25) - 12);
             const tipY = baseY + 25 + ((i * 3) % 12);
             return (
-              <path key={`bot-${i}`}
-                d={`M ${baseX},${baseY} Q ${baseX + ((i * 4) % 18 - 9)},${baseY + 15} ${tipX},${tipY}`}
+              <path
+                key={`bot-${i}`}
+                d={`M ${baseX},${baseY} Q ${baseX + (((i * 4) % 18) - 9)},${baseY + 15} ${tipX},${tipY}`}
                 fill="none"
                 stroke="rgba(122,58,90,0.12)"
                 strokeWidth="1.2"

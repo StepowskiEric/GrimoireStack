@@ -16,7 +16,9 @@ export const ALPHABET = 'abcdefghjkmnpqrstuvwxyz23456789';
 export const CODE_LEN = 16;
 
 export function isValidSyncCode(value) {
-  return typeof value === 'string'
-    && value.length === CODE_LEN
-    && value.split('').every((c) => ALPHABET.includes(c));
+  return (
+    typeof value === 'string' &&
+    value.length === CODE_LEN &&
+    value.split('').every((c) => ALPHABET.includes(c))
+  );
 }

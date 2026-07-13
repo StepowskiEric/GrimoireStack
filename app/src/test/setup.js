@@ -37,6 +37,10 @@ if (typeof globalThis.scrollTo === 'undefined') {
 }
 
 // jsdom does not implement Window.prototype.scrollTo(); silence repeated warnings.
-if (typeof window !== 'undefined' && typeof window.scrollTo === 'function' && window.scrollTo.toString().includes('Not implemented')) {
+if (
+  typeof window !== 'undefined' &&
+  typeof window.scrollTo === 'function' &&
+  window.scrollTo.toString().includes('Not implemented')
+) {
   window.scrollTo = () => {};
 }

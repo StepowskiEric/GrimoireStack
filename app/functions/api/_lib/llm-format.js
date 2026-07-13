@@ -20,7 +20,7 @@ export function normalizeTools(tools) {
   return tools
     .map((t) => {
       if (!t || typeof t !== 'object') return null;
-      const fn = t.type === 'function' ? t.function : t.function ?? (t.name ? t : null);
+      const fn = t.type === 'function' ? t.function : (t.function ?? (t.name ? t : null));
       if (!fn?.name) return null;
       return {
         type: 'function',
@@ -73,7 +73,7 @@ export function toChatCompletion(response, model) {
     }
   }
 
-  if (!content && !toolCalls) {
+  if (!(content || toolCalls)) {
     return emptyResponse(model);
   }
 
@@ -85,7 +85,7 @@ export function toChatCompletion(response, model) {
   // prompt-only models; trust the parsed structure.
   const resolvedFinishReason = toolCalls
     ? 'tool_calls'
-    : (finishReason === 'tool_calls' ? 'stop' : finishReason) ?? 'stop';
+    : ((finishReason === 'tool_calls' ? 'stop' : finishReason) ?? 'stop');
 
   return {
     ok: true,

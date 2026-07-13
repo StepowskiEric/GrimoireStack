@@ -1,5 +1,5 @@
-import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
-import { render, screen, fireEvent, act } from '@testing-library/react';
+import { act, fireEvent, render, screen } from '@testing-library/react';
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import SpellModal from '../components/SpellModal.jsx';
 
 const sampleSpell = {
@@ -17,7 +17,9 @@ const sampleSchool = {
 
 describe('SpellModal title — trueName rendering', () => {
   it('renders only the canonical name when no trueName is present', () => {
-    const { container } = render(<SpellModal spell={sampleSpell} school={sampleSchool} onClose={() => {}} />);
+    const { container } = render(
+      <SpellModal spell={sampleSpell} school={sampleSchool} onClose={() => {}} />,
+    );
     expect(container.querySelector('[data-testid="spell-modal-true-name"]')).toBeNull();
     expect(container.querySelector('[data-testid="spell-modal-title-secondary"]')).toBeNull();
     const title = container.querySelector('[data-testid="spell-modal-title"]');
@@ -26,7 +28,9 @@ describe('SpellModal title — trueName rendering', () => {
 
   it('elevates trueName to headline and demotes name to secondary when distinct', () => {
     const trued = { ...sampleSpell, trueName: 'The Eye That Reads the Trace' };
-    const { container } = render(<SpellModal spell={trued} school={sampleSchool} onClose={() => {}} />);
+    const { container } = render(
+      <SpellModal spell={trued} school={sampleSchool} onClose={() => {}} />,
+    );
     const trueNameEl = container.querySelector('[data-testid="spell-modal-true-name"]');
     expect(trueNameEl).not.toBeNull();
     expect(trueNameEl.textContent).toBe('The Eye That Reads the Trace');
@@ -39,17 +43,25 @@ describe('SpellModal title — trueName rendering', () => {
 
   it('falls back to name when trueName equals name', () => {
     const sameName = { ...sampleSpell, trueName: 'Trace Sight' };
-    const { container } = render(<SpellModal spell={sameName} school={sampleSchool} onClose={() => {}} />);
+    const { container } = render(
+      <SpellModal spell={sameName} school={sampleSchool} onClose={() => {}} />,
+    );
     expect(container.querySelector('[data-testid="spell-modal-true-name"]')).toBeNull();
     expect(container.querySelector('[data-testid="spell-modal-title-secondary"]')).toBeNull();
-    expect(container.querySelector('[data-testid="spell-modal-title"]').textContent).toBe('Trace Sight');
+    expect(container.querySelector('[data-testid="spell-modal-title"]').textContent).toBe(
+      'Trace Sight',
+    );
   });
 
   it('falls back to name when trueName is whitespace only', () => {
     const blankTrueName = { ...sampleSpell, trueName: '   ' };
-    const { container } = render(<SpellModal spell={blankTrueName} school={sampleSchool} onClose={() => {}} />);
+    const { container } = render(
+      <SpellModal spell={blankTrueName} school={sampleSchool} onClose={() => {}} />,
+    );
     expect(container.querySelector('[data-testid="spell-modal-true-name"]')).toBeNull();
-    expect(container.querySelector('[data-testid="spell-modal-title"]').textContent).toBe('Trace Sight');
+    expect(container.querySelector('[data-testid="spell-modal-title"]').textContent).toBe(
+      'Trace Sight',
+    );
   });
 });
 
@@ -74,24 +86,30 @@ describe('SpellModal action buttons', () => {
   it('restores the Inscribe button text after copy', async () => {
     render(<SpellModal spell={sampleSpell} school={sampleSchool} onClose={() => {}} />);
     const inscribeBtn = screen.getByRole('button', { name: /inscribe to your workshop/i });
-    await act(async () => { fireEvent.click(inscribeBtn); });
+    await act(async () => {
+      fireEvent.click(inscribeBtn);
+    });
     expect(inscribeBtn.textContent).toBe('Incantation Inscribed');
     expect(navigator.clipboard.writeText).toHaveBeenCalledWith(
-      'npx GrimoireStack install --agent claude --skill log-trace-correlation'
+      'npx GrimoireStack install --agent claude --skill log-trace-correlation',
     );
     // After the timeout, the original text must be restored
-    await act(() => new Promise(r => setTimeout(r, 2100)));
+    await act(() => new Promise((r) => setTimeout(r, 2100)));
     expect(inscribeBtn.textContent).toBe('Inscribe to your Workshop');
   });
 
   it('changes the copied command when a different agent is selected', async () => {
     render(<SpellModal spell={sampleSpell} school={sampleSchool} onClose={() => {}} />);
     const select = screen.getByLabelText(/select target agent/i);
-    await act(async () => { fireEvent.change(select, { target: { value: 'factory-droid' } }); });
+    await act(async () => {
+      fireEvent.change(select, { target: { value: 'factory-droid' } });
+    });
     const inscribeBtn = screen.getByRole('button', { name: /inscribe to your workshop/i });
-    await act(async () => { fireEvent.click(inscribeBtn); });
+    await act(async () => {
+      fireEvent.click(inscribeBtn);
+    });
     expect(navigator.clipboard.writeText).toHaveBeenCalledWith(
-      'Copy log-trace-correlation/SKILL.md into ~/.factory/skills/log-trace-correlation/'
+      'Copy log-trace-correlation/SKILL.md into ~/.factory/skills/log-trace-correlation/',
     );
   });
 
@@ -99,7 +117,9 @@ describe('SpellModal action buttons', () => {
     vi.spyOn(navigator.clipboard, 'writeText').mockRejectedValue(new Error('blocked'));
     render(<SpellModal spell={sampleSpell} school={sampleSchool} onClose={() => {}} />);
     const inscribeBtn = screen.getByRole('button', { name: /inscribe to your workshop/i });
-    await act(async () => { fireEvent.click(inscribeBtn); });
+    await act(async () => {
+      fireEvent.click(inscribeBtn);
+    });
     expect(inscribeBtn.textContent).toBe('Copy failed');
   });
 });

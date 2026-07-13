@@ -1,5 +1,5 @@
-import { describe, it, expect, vi, beforeEach } from 'vitest';
-import { render, screen, fireEvent } from '@testing-library/react';
+import { fireEvent, render, screen } from '@testing-library/react';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
 import VoidIncantations from '../components/VoidIncantations.jsx';
 
 // Isolate the component: reuse the single resident page-agent via the hook,
@@ -35,7 +35,7 @@ describe('VoidIncantations', () => {
     fireEvent.click(screen.getByRole('button', { name: 'Utter' }));
 
     expect(mockRunAgent).toHaveBeenCalledWith(
-      expect.objectContaining({ incantation: 'open the divination panel' })
+      expect.objectContaining({ incantation: 'open the divination panel' }),
     );
   });
 

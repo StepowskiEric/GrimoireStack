@@ -1,8 +1,8 @@
-import { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import GrimoireEye from '../components/GrimoireEye.jsx';
-import { clamp01 } from '../utils/gaze.js';
 import VoidIncantations from '../components/VoidIncantations.jsx';
+import { clamp01 } from '../utils/gaze.js';
 import '../styles/components/gaze-preview.css';
 import '../styles/components/gaze.css';
 
@@ -33,7 +33,11 @@ export default function GazePreview() {
       <div className="gaze-veil" aria-hidden="true" />
       {/* Cosmic tendrils at peak gaze — Slice 09 */}
       <div className="gaze-tentacles" aria-hidden="true">
-        <svg className="gaze-tentacles__svg" viewBox="0 0 1000 420" preserveAspectRatio="xMidYMin slice">
+        <svg
+          className="gaze-tentacles__svg"
+          viewBox="0 0 1000 420"
+          preserveAspectRatio="xMidYMin slice"
+        >
           <defs>
             <linearGradient id="tentacleGrad" x1="0" y1="0" x2="0" y2="1">
               <stop offset="0%" stopColor="#4a6cff" stopOpacity="0.85" />
@@ -44,7 +48,13 @@ export default function GazePreview() {
               <feGaussianBlur stdDeviation="1.4" />
             </filter>
           </defs>
-          <g filter="url(#tentacleSoft)" fill="none" stroke="url(#tentacleGrad)" strokeWidth="2.2" strokeLinecap="round">
+          <g
+            filter="url(#tentacleSoft)"
+            fill="none"
+            stroke="url(#tentacleGrad)"
+            strokeWidth="2.2"
+            strokeLinecap="round"
+          >
             <path d="M 180 0 C 150 70, 210 140, 170 210 S 140 300, 190 350" />
             <path d="M 400 0 C 430 60, 360 130, 405 200 S 440 290, 395 345" />
             <path d="M 620 0 C 590 65, 655 135, 610 205 S 580 295, 630 348" />

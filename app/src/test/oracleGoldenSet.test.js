@@ -1,4 +1,4 @@
-import { describe, it, expect } from 'vitest';
+import { describe, expect, it } from 'vitest';
 import { SKILL_CATALOG } from '../../functions/api/skill-catalog.js';
 
 /**
@@ -123,15 +123,71 @@ const GOLDEN_SET = [
 
 // ── Local matcher (replica of recommend.js localMatch) ──
 const STOPWORDS = new Set([
-  'a','an','the','i','im','ive','id','is','it','of','to','and','or','but',
-  'my','in','on','for','with','this','that','those','these','be','been',
-  'was','were','are','am','do','does','did','have','has','had','you','your',
-  'me','we','us','our','so','just','very','really','about','what','how',
-  'when','where','why','which','than','then','too','any','some','no','not',
+  'a',
+  'an',
+  'the',
+  'i',
+  'im',
+  'ive',
+  'id',
+  'is',
+  'it',
+  'of',
+  'to',
+  'and',
+  'or',
+  'but',
+  'my',
+  'in',
+  'on',
+  'for',
+  'with',
+  'this',
+  'that',
+  'those',
+  'these',
+  'be',
+  'been',
+  'was',
+  'were',
+  'are',
+  'am',
+  'do',
+  'does',
+  'did',
+  'have',
+  'has',
+  'had',
+  'you',
+  'your',
+  'me',
+  'we',
+  'us',
+  'our',
+  'so',
+  'just',
+  'very',
+  'really',
+  'about',
+  'what',
+  'how',
+  'when',
+  'where',
+  'why',
+  'which',
+  'than',
+  'then',
+  'too',
+  'any',
+  'some',
+  'no',
+  'not',
 ]);
 
 function tokenizeQuery(query) {
-  const cleaned = String(query || '').toLowerCase().replace(/[^a-z0-9\s-]/g, ' ');
+  const cleaned = String(query || '')
+    .toLowerCase()
+    .replace(/[^a-z0-9\s-]/g, ' ');
   const out = [];
   for (const raw of cleaned.split(/\s+/)) {
     if (raw && !STOPWORDS.has(raw) && raw.length > 1) out.push(raw);
@@ -141,10 +197,11 @@ function tokenizeQuery(query) {
 
 function localMatch(query, limit = 5) {
   const tokens = tokenizeQuery(query);
-  if (!tokens.length) return [];
+  if (tokens.length === 0) return [];
   const scored = [];
   for (const skill of SKILL_CATALOG) {
-    const haystack = `${skill.name} ${skill.skill} ${skill.effect} ${skill.school} ${skill.schoolName || ''} ${skill.status || ''}`.toLowerCase();
+    const haystack =
+      `${skill.name} ${skill.skill} ${skill.effect} ${skill.school} ${skill.schoolName || ''} ${skill.status || ''}`.toLowerCase();
     let score = 0;
     for (const tok of tokens) {
       if (haystack.includes(tok)) score += 2;

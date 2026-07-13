@@ -234,7 +234,7 @@
     transform: scale(.97);
   }
   .ritual-choice--other {
-    border-style: dashed !important;
+    border-style: dashed;
     opacity: .7;
   }
   .ritual-other-form {

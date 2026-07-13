@@ -1,4 +1,4 @@
-import { test, expect } from '@playwright/test';
+import { expect, test } from '@playwright/test';
 
 const WELCOME_KEY = 'grimoire-welcome-dismissed';
 
@@ -29,7 +29,7 @@ test.describe('client-side state persistence', () => {
     await expect(page.locator('.grimoirestack-layout')).toBeVisible({ timeout: 10_000 });
 
     // Pre-populate favorites via localStorage
-    const testFavs = JSON.stringify([{skill: 'test-skill'}, {skill: 'another-skill'}]);
+    const testFavs = JSON.stringify([{ skill: 'test-skill' }, { skill: 'another-skill' }]);
     await page.evaluate((val) => {
       localStorage.setItem('grimoire-favorites', val);
     }, testFavs);

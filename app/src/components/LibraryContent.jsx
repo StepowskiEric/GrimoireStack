@@ -1,10 +1,10 @@
-import { useState, useMemo, useCallback } from 'react';
-import { TIER_META, getSpellTier } from '../data/tiers.js';
+import { useCallback, useMemo, useState } from 'react';
 import { getSpellLastUpdated } from '../data/changeFeed.js';
 import { grimoireIndex } from '../data/grimoireIndexInstance.js';
+import { getSpellTier, TIER_META } from '../data/tiers.js';
+import { cn } from '../utils/cn.js';
 import SchoolCardGrid from './SchoolCardGrid.jsx';
 import SchoolSigil from './SchoolSigil.tsx';
-import { cn } from '../utils/cn.js';
 
 const TIER_ORDER = ['archmage', 'master', 'adept', 'apprentice', 'faded'];
 
@@ -61,7 +61,7 @@ export default function LibraryContent({
       if (!notes || typeof notes !== 'object') return false;
       return Boolean(notes[skill] && String(notes[skill]).trim());
     },
-    [marginalia]
+    [marginalia],
   );
 
   const hasActiveFilters =
@@ -77,11 +77,12 @@ export default function LibraryContent({
     const q = query.trim().toLowerCase();
     let list = all;
     if (q) {
-      list = list.filter(({ spell, school }) =>
-        spell.name.toLowerCase().includes(q) ||
-        spell.skill.toLowerCase().includes(q) ||
-        spell.effect.toLowerCase().includes(q) ||
-        school.name.toLowerCase().includes(q)
+      list = list.filter(
+        ({ spell, school }) =>
+          spell.name.toLowerCase().includes(q) ||
+          spell.skill.toLowerCase().includes(q) ||
+          spell.effect.toLowerCase().includes(q) ||
+          school.name.toLowerCase().includes(q),
       );
     }
     if (schoolFilter.size > 0) {
@@ -103,7 +104,18 @@ export default function LibraryContent({
       list = list.filter(({ spell }) => hasNote(spell.skill));
     }
     return list;
-  }, [all, query, schoolFilter, tierFilter, statusFilter, combosOnly, favoritesOnly, annotatedOnly, isFavorited, hasNote]);
+  }, [
+    all,
+    query,
+    schoolFilter,
+    tierFilter,
+    statusFilter,
+    combosOnly,
+    favoritesOnly,
+    annotatedOnly,
+    isFavorited,
+    hasNote,
+  ]);
 
   const sorted = useMemo(() => {
     const arr = [...filtered];
@@ -134,7 +146,8 @@ export default function LibraryContent({
   const toggleSchool = useCallback((id) => {
     setSchoolFilter((prev) => {
       const next = new Set(prev);
-      if (next.has(id)) next.delete(id); else next.add(id);
+      if (next.has(id)) next.delete(id);
+      else next.add(id);
       return next;
     });
     setPage(0);
@@ -143,7 +156,8 @@ export default function LibraryContent({
   const toggleTier = useCallback((key) => {
     setTierFilter((prev) => {
       const next = new Set(prev);
-      if (next.has(key)) next.delete(key); else next.add(key);
+      if (next.has(key)) next.delete(key);
+      else next.add(key);
       return next;
     });
     setPage(0);
@@ -166,11 +180,19 @@ export default function LibraryContent({
       <div className="panel p-3.5 mb-4">
         <div className="flex flex-col gap-2 md:flex-row md:items-center md:justify-between">
           <div className="relative flex-1">
-            <span className="absolute inset-y-0 left-2.5 flex items-center text-sickly" aria-hidden="true">⟐</span>
+            <span
+              className="absolute inset-y-0 left-2.5 flex items-center text-sickly"
+              aria-hidden="true"
+            >
+              ⟐
+            </span>
             <input
               type="text"
               value={query}
-              onChange={(e) => { setQuery(e.target.value); setPage(0); }}
+              onChange={(e) => {
+                setQuery(e.target.value);
+                setPage(0);
+              }}
               placeholder="Scry by name, skill, effect, or school…"
               aria-label="Search the library"
               className="w-full bg-surface-overlay border border-border text-text-primary placeholder:text-text-muted text-[0.95rem] pl-8 pr-2 py-2 rounded-sm focus:outline-3 focus:outline-offset-2 focus:border-border-hover"
@@ -207,7 +229,9 @@ export default function LibraryContent({
         {filtersVisible && (
           <div className="mt-3 space-y-3">
             <div>
-              <div className="section-title mb-1.5" aria-hidden="true">School</div>
+              <div className="section-title mb-1.5" aria-hidden="true">
+                School
+              </div>
               <div className="flex flex-wrap gap-2">
                 {Array.from(schoolMap.values()).map((s) => {
                   const active = schoolFilter.has(s.id);
@@ -215,12 +239,19 @@ export default function LibraryContent({
                     <button
                       key={s.id}
                       type="button"
-                      className={cn('flex items-center gap-1.5 border rounded-sm px-2 py-1.5 text-[0.68rem] font-semibold uppercase tracking-wider transition-all duration-200', active ? 'border-border-hover bg-surface-raised text-text-primary' : 'border-border bg-surface text-text-muted hover:border-border-hover')}
+                      className={cn(
+                        'flex items-center gap-1.5 border rounded-sm px-2 py-1.5 text-[0.68rem] font-semibold uppercase tracking-wider transition-all duration-200',
+                        active
+                          ? 'border-border-hover bg-surface-raised text-text-primary'
+                          : 'border-border bg-surface text-text-muted hover:border-border-hover',
+                      )}
                       onClick={() => toggleSchool(s.id)}
                       aria-pressed={active}
                       title={s.real}
                     >
-                      <span className="text-sickly" aria-hidden="true"><SchoolSigil schoolId={s.id} size={14} /></span>
+                      <span className="text-sickly" aria-hidden="true">
+                        <SchoolSigil schoolId={s.id} size={14} />
+                      </span>
                       <span>{s.real}</span>
                     </button>
                   );
@@ -229,7 +260,9 @@ export default function LibraryContent({
             </div>
 
             <div>
-              <div className="section-title mb-1.5" aria-hidden="true">Tier</div>
+              <div className="section-title mb-1.5" aria-hidden="true">
+                Tier
+              </div>
               <div className="flex flex-wrap gap-2">
                 {TIER_ORDER.map((key) => {
                   const meta = TIER_META[key];
@@ -240,7 +273,12 @@ export default function LibraryContent({
                     <button
                       key={key}
                       type="button"
-                      className={cn('flex items-center gap-1.5 border rounded-sm px-2 py-1.5 text-[0.68rem] font-semibold uppercase tracking-wider transition-all duration-200', active ? style : 'border-border bg-surface text-text-muted hover:border-border-hover')}
+                      className={cn(
+                        'flex items-center gap-1.5 border rounded-sm px-2 py-1.5 text-[0.68rem] font-semibold uppercase tracking-wider transition-all duration-200',
+                        active
+                          ? style
+                          : 'border-border bg-surface text-text-muted hover:border-border-hover',
+                      )}
                       onClick={() => toggleTier(key)}
                       aria-pressed={active}
                       title={meta.title}
@@ -255,21 +293,30 @@ export default function LibraryContent({
 
             <div className="grid gap-3 md:grid-cols-2">
               <div>
-                <div className="section-title mb-1.5" aria-hidden="true">Status</div>
+                <div className="section-title mb-1.5" aria-hidden="true">
+                  Status
+                </div>
                 {/* eslint-disable-next-line jsx-a11y/no-onchange */}
                 <select
                   className="w-full bg-surface-overlay border border-border text-text-primary text-[0.95rem] p-2 rounded-sm focus:outline-3 focus:outline-offset-2 focus:border-border-hover"
                   value={statusFilter}
-                  onChange={(e) => { setStatusFilter(e.target.value); setPage(0); }}
+                  onChange={(e) => {
+                    setStatusFilter(e.target.value);
+                    setPage(0);
+                  }}
                   aria-label="Filter by status"
                 >
-                  {STATUS_OPTIONS.map(opt => (
-                    <option key={opt.id} value={opt.id}>{opt.label}</option>
+                  {STATUS_OPTIONS.map((opt) => (
+                    <option key={opt.id} value={opt.id}>
+                      {opt.label}
+                    </option>
                   ))}
                 </select>
               </div>
               <div>
-                <div className="section-title mb-1.5" aria-hidden="true">Sort</div>
+                <div className="section-title mb-1.5" aria-hidden="true">
+                  Sort
+                </div>
                 {/* eslint-disable-next-line jsx-a11y/no-onchange */}
                 <select
                   className="w-full bg-surface-overlay border border-border text-text-primary text-[0.95rem] p-2 rounded-sm focus:outline-3 focus:outline-offset-2 focus:border-border-hover"
@@ -277,8 +324,10 @@ export default function LibraryContent({
                   onChange={(e) => setSortBy(e.target.value)}
                   aria-label="Sort entries"
                 >
-                  {SORT_OPTIONS.map(opt => (
-                    <option key={opt.id} value={opt.id}>{opt.label}</option>
+                  {SORT_OPTIONS.map((opt) => (
+                    <option key={opt.id} value={opt.id}>
+                      {opt.label}
+                    </option>
                   ))}
                 </select>
               </div>
@@ -289,7 +338,10 @@ export default function LibraryContent({
                 <input
                   type="checkbox"
                   checked={combosOnly}
-                  onChange={(e) => { setCombosOnly(e.target.checked); setPage(0); }}
+                  onChange={(e) => {
+                    setCombosOnly(e.target.checked);
+                    setPage(0);
+                  }}
                 />
                 <span>Synergies</span>
               </label>
@@ -297,7 +349,10 @@ export default function LibraryContent({
                 <input
                   type="checkbox"
                   checked={favoritesOnly}
-                  onChange={(e) => { setFavoritesOnly(e.target.checked); setPage(0); }}
+                  onChange={(e) => {
+                    setFavoritesOnly(e.target.checked);
+                    setPage(0);
+                  }}
                 />
                 <span>Favorited</span>
               </label>
@@ -305,7 +360,10 @@ export default function LibraryContent({
                 <input
                   type="checkbox"
                   checked={annotatedOnly}
-                  onChange={(e) => { setAnnotatedOnly(e.target.checked); setPage(0); }}
+                  onChange={(e) => {
+                    setAnnotatedOnly(e.target.checked);
+                    setPage(0);
+                  }}
                 />
                 <span>Annotated</span>
               </label>
@@ -352,30 +410,49 @@ export default function LibraryContent({
                   const compactLabel = tierMeta.label.split(' ')[0];
                   return (
                     <tr
-                      key={school.id + '::' + spell.skill}
+                      key={`${school.id}::${spell.skill}`}
                       data-testid="bestiary-row"
                       className="cursor-pointer transition-all duration-200 hover:bg-surface-raised"
                       onClick={() => onSpellClick?.(spell, school)}
                       role="button"
                       tabIndex={0}
-                      onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') onSpellClick?.(spell, school); }}
+                      onKeyDown={(e) => {
+                        if (e.key === 'Enter' || e.key === ' ') onSpellClick?.(spell, school);
+                      }}
                     >
                       <td className="px-3 py-2.5 border-b border-border">
-                        <div className="font-['Cinzel'] text-[0.68rem] font-semibold tracking-wide text-text-primary">{spell.name}</div>
+                        <div className="font-['Cinzel'] text-[0.68rem] font-semibold tracking-wide text-text-primary">
+                          {spell.name}
+                        </div>
                         <div className="flex flex-wrap items-center gap-2 mt-1">
-                          <span className="text-sickly"><SchoolSigil schoolId={school.id} size={16} /></span>
+                          <span className="text-sickly">
+                            <SchoolSigil schoolId={school.id} size={16} />
+                          </span>
                           {statusStr !== 'Common' ? (
-                            <span data-testid="bestiary-status" className="font-['Cinzel'] text-[0.6rem] uppercase tracking-widest text-accent border border-accent/40 rounded-sm px-1.5 py-0.5">{statusStr}</span>
+                            <span
+                              data-testid="bestiary-status"
+                              className="font-['Cinzel'] text-[0.6rem] uppercase tracking-widest text-accent border border-accent/40 rounded-sm px-1.5 py-0.5"
+                            >
+                              {statusStr}
+                            </span>
                           ) : null}
                           {comboCount > 0 ? (
-                            <span data-testid="bestiary-combos" className="font-['Cinzel'] text-[0.6rem] uppercase tracking-widest text-text-muted border border-border rounded-sm px-1.5 py-0.5">{comboCount}</span>
+                            <span
+                              data-testid="bestiary-combos"
+                              className="font-['Cinzel'] text-[0.6rem] uppercase tracking-widest text-text-muted border border-border rounded-sm px-1.5 py-0.5"
+                            >
+                              {comboCount}
+                            </span>
                           ) : null}
                         </div>
                       </td>
                       <td className="px-3 py-2.5 border-b border-border">
                         <span
                           data-testid="bestiary-tier"
-                          className={cn('inline-flex items-center gap-1.5 border rounded-sm px-2 py-1 text-[0.68rem] font-semibold uppercase tracking-wider', TIER_STYLES[tier] || 'border-border text-text-muted')}
+                          className={cn(
+                            'inline-flex items-center gap-1.5 border rounded-sm px-2 py-1 text-[0.68rem] font-semibold uppercase tracking-wider',
+                            TIER_STYLES[tier] || 'border-border text-text-muted',
+                          )}
                           title={tierMeta.title}
                         >
                           <span aria-hidden="true">⟐</span>
@@ -403,7 +480,9 @@ export default function LibraryContent({
               >
                 ← Earlier
               </button>
-              <span className="font-['Cinzel'] text-[0.74rem] text-text-muted tracking-widest">{safePage + 1} / {pageCount}</span>
+              <span className="font-['Cinzel'] text-[0.74rem] text-text-muted tracking-widest">
+                {safePage + 1} / {pageCount}
+              </span>
               <button
                 type="button"
                 className="font-['Cinzel'] text-[0.7rem] uppercase tracking-widest border border-border text-text-muted px-2.5 py-1 rounded-sm cursor-pointer transition-all duration-200 hover:border-border-hover hover:text-text-primary disabled:opacity-35 disabled:cursor-not-allowed"

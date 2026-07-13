@@ -1,7 +1,7 @@
-import { useState, useCallback } from 'react';
+import { useCallback, useState } from 'react';
 import { schoolColors } from '../utils/schoolColors.js';
-import SchoolSigil from './SchoolSigil.tsx';
 import Icon from './Icon.jsx';
+import SchoolSigil from './SchoolSigil.tsx';
 import './ExportToast.css';
 
 export default function SpellDetailView({
@@ -33,20 +33,25 @@ export default function SpellDetailView({
 
     return (
       <div className="panel p-4" style={colors.cssVars}>
-        <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-[rgba(196,71,71,0.5)] to-transparent" aria-hidden="true" />
-        <button
-          className="section-title mb-3"
-          onClick={handleBackToSchool}
-          type="button"
-        >
+        <div
+          className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-[rgba(196,71,71,0.5)] to-transparent"
+          aria-hidden="true"
+        />
+        <button className="section-title mb-3" onClick={handleBackToSchool} type="button">
           ← Back to {school.real}
         </button>
 
         <div className="flex flex-col items-center gap-2 text-center">
-          <span className="text-sickly"><SchoolSigil schoolId={school.id} size={42} /></span>
-          <h2 className="font-['Cinzel_Decorative'] text-[1.25rem] font-bold text-text-primary tracking-wide">{activeSpell.name}</h2>
+          <span className="text-sickly">
+            <SchoolSigil schoolId={school.id} size={42} />
+          </span>
+          <h2 className="font-['Cinzel_Decorative'] text-[1.25rem] font-bold text-text-primary tracking-wide">
+            {activeSpell.name}
+          </h2>
           <div className="flex flex-wrap items-center justify-center gap-2">
-            <span className="font-['Cinzel'] text-[0.68rem] uppercase tracking-widest text-text-muted">{tierName}</span>
+            <span className="font-['Cinzel'] text-[0.68rem] uppercase tracking-widest text-text-muted">
+              {tierName}
+            </span>
             {activeSpell.status && (
               <span className="font-['Cinzel'] text-[0.6rem] uppercase tracking-widest text-accent border border-accent/40 rounded-sm px-1.5 py-0.5">
                 {activeSpell.status}
@@ -78,7 +83,12 @@ export default function SpellDetailView({
             </div>
             <div className="flex flex-wrap gap-2">
               {activeSpell.combos.map((combo) => (
-                <span key={combo} className="font-['Cinzel'] text-[0.68rem] uppercase tracking-widest text-text-muted border border-border rounded-sm px-2 py-1">{combo}</span>
+                <span
+                  key={combo}
+                  className="font-['Cinzel'] text-[0.68rem] uppercase tracking-widest text-text-muted border border-border rounded-sm px-2 py-1"
+                >
+                  {combo}
+                </span>
               ))}
             </div>
           </div>
@@ -86,7 +96,11 @@ export default function SpellDetailView({
 
         <div className="mt-5">
           <button
-            className={favorited ? 'section-title px-3 py-2 border border-accent/40 text-accent' : 'section-title px-3 py-2 border border-border hover:border-border-hover text-text-muted'}
+            className={
+              favorited
+                ? 'section-title px-3 py-2 border border-accent/40 text-accent'
+                : 'section-title px-3 py-2 border border-border hover:border-border-hover text-text-muted'
+            }
             onClick={() => {
               const result = onToggleFavorite(activeSpell.name, activeSpell.skill);
               if (result === false) {
@@ -125,20 +139,25 @@ export default function SpellDetailView({
   // School view with spell list
   return (
     <div className="panel p-4" style={colors.cssVars}>
-      <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-[rgba(196,71,71,0.5)] to-transparent" aria-hidden="true" />
-      <button
-        className="section-title mb-3"
-        onClick={onBack}
-        type="button"
-      >
+      <div
+        className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-[rgba(196,71,71,0.5)] to-transparent"
+        aria-hidden="true"
+      />
+      <button className="section-title mb-3" onClick={onBack} type="button">
         ← Back to The Spine
       </button>
 
       <div className="flex flex-col items-center gap-2 text-center">
-        <span className="text-sickly"><SchoolSigil schoolId={school.id} size={48} /></span>
-        <h2 className="font-['Cinzel_Decorative'] text-[1.25rem] font-bold text-text-primary tracking-wide">{school.real}</h2>
+        <span className="text-sickly">
+          <SchoolSigil schoolId={school.id} size={48} />
+        </span>
+        <h2 className="font-['Cinzel_Decorative'] text-[1.25rem] font-bold text-text-primary tracking-wide">
+          {school.real}
+        </h2>
         <p className="text-text-secondary text-[0.95rem]">{school.desc}</p>
-        <div className="font-['Cinzel'] text-[0.68rem] uppercase tracking-widest text-text-muted">{school.spells.length} incantations</div>
+        <div className="font-['Cinzel'] text-[0.68rem] uppercase tracking-widest text-text-muted">
+          {school.spells.length} incantations
+        </div>
       </div>
 
       <div className="mt-4 grid gap-2">
@@ -149,10 +168,18 @@ export default function SpellDetailView({
             onClick={() => handleSpellSelect(spell)}
             type="button"
           >
-            <div className="font-['Cinzel'] text-[0.68rem] font-semibold tracking-wide text-text-primary">{spell.name}</div>
-            <div className="text-text-secondary text-[0.82rem]">{spell.effect.slice(0, 120)}{spell.effect.length > 120 ? '...' : ''}</div>
+            <div className="font-['Cinzel'] text-[0.68rem] font-semibold tracking-wide text-text-primary">
+              {spell.name}
+            </div>
+            <div className="text-text-secondary text-[0.82rem]">
+              {spell.effect.slice(0, 120)}
+              {spell.effect.length > 120 ? '...' : ''}
+            </div>
             {spell.status && spell.status !== '—' && (
-              <span className="mt-1 inline-block font-['Cinzel'] text-[0.6rem] uppercase tracking-widest text-accent border border-accent/40 rounded-sm px-1.5 py-0.5" data-testid="spell-status">
+              <span
+                className="mt-1 inline-block font-['Cinzel'] text-[0.6rem] uppercase tracking-widest text-accent border border-accent/40 rounded-sm px-1.5 py-0.5"
+                data-testid="spell-status"
+              >
                 {spell.status}
               </span>
             )}

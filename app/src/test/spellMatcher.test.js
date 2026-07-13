@@ -1,4 +1,4 @@
-import { describe, it, expect } from 'vitest';
+import { describe, expect, it } from 'vitest';
 import { createGrimoireIndex } from '../data/grimoireIndex.js';
 
 /**
@@ -15,9 +15,25 @@ const TWO_SCHOOLS = [
     real: 'Debugging',
     desc: 'Bug fixes.',
     spells: [
-      { name: 'Trace Sight', skill: 'log-trace-correlation', effect: 'Maps stack traces to source.', status: 'Proven', combos: ['Bisect Divination'] },
-      { name: 'Bisect Divination', skill: 'bisect-debugging', effect: 'Binary search commit history.', status: 'Proven' },
-      { name: 'Test Weave', skill: 'jest-testing', effect: 'Write correct Jest tests.', status: 'New' },
+      {
+        name: 'Trace Sight',
+        skill: 'log-trace-correlation',
+        effect: 'Maps stack traces to source.',
+        status: 'Proven',
+        combos: ['Bisect Divination'],
+      },
+      {
+        name: 'Bisect Divination',
+        skill: 'bisect-debugging',
+        effect: 'Binary search commit history.',
+        status: 'Proven',
+      },
+      {
+        name: 'Test Weave',
+        skill: 'jest-testing',
+        effect: 'Write correct Jest tests.',
+        status: 'New',
+      },
     ],
   },
   {
@@ -26,8 +42,19 @@ const TWO_SCHOOLS = [
     real: 'Reasoning',
     desc: 'Thinking tools.',
     spells: [
-      { name: 'Razor of Parsimony', skill: 'occams-razor', effect: 'Simplest explanation wins.', status: 'Proven', combos: ['Tree of Thoughts', 'Rashomon Triad'] },
-      { name: 'Tree of Thoughts', skill: 'tree-of-thoughts', effect: 'Branch reasoning paths.', status: 'Proven' },
+      {
+        name: 'Razor of Parsimony',
+        skill: 'occams-razor',
+        effect: 'Simplest explanation wins.',
+        status: 'Proven',
+        combos: ['Tree of Thoughts', 'Rashomon Triad'],
+      },
+      {
+        name: 'Tree of Thoughts',
+        skill: 'tree-of-thoughts',
+        effect: 'Branch reasoning paths.',
+        status: 'Proven',
+      },
       { name: 'Thought-Weave', skill: 'thought-weave', effect: 'Weave thoughts together.' },
     ],
   },
@@ -60,7 +87,7 @@ describe('similarTo', () => {
     // 'trace' appears in both 'Trace Sight' (substring) and 'log-trace-correlation' (token)
     // Substring hit on 'Trace Sight' scores 5, token hit on 'log-trace-correlation' scores 1
     expect(results.length).toBeGreaterThanOrEqual(1);
-    const skills = results.map(r => r.spell.skill);
+    const skills = results.map((r) => r.spell.skill);
     expect(skills).toContain('log-trace-correlation');
   });
 
@@ -99,7 +126,7 @@ describe('similarTo', () => {
     const idx = makeIndex();
     const upper = idx.similarTo('TRACE', 4);
     const lower = idx.similarTo('trace', 4);
-    expect(upper.map(r => r.spell.skill)).toEqual(lower.map(r => r.spell.skill));
+    expect(upper.map((r) => r.spell.skill)).toEqual(lower.map((r) => r.spell.skill));
   });
 });
 
@@ -143,8 +170,8 @@ describe('matchProblem', () => {
     // With the bonus, Tree of Thoughts should outrank Thought-Weave
     const idx = makeIndex();
     const results = idx.matchProblem('weave', { limit: 4 });
-    const provenResult = results.find(r => r.spell.skill === 'tree-of-thoughts');
-    const plainResult = results.find(r => r.spell.skill === 'thought-weave');
+    const provenResult = results.find((r) => r.spell.skill === 'tree-of-thoughts');
+    const plainResult = results.find((r) => r.spell.skill === 'thought-weave');
     if (provenResult && plainResult) {
       expect(provenResult.score).toBeGreaterThan(plainResult.score);
     }
@@ -178,7 +205,7 @@ describe('matchProblem', () => {
     const results = idx.matchProblem('the write tests', { limit: 5 });
     // 'write' should match 'Test Weave'; 'the' and 'tests' should not
     expect(results.length).toBeGreaterThanOrEqual(1);
-    const skills = results.map(r => r.spell.skill);
+    const skills = results.map((r) => r.spell.skill);
     expect(skills).toContain('jest-testing');
   });
 });

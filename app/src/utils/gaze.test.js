@@ -1,12 +1,12 @@
-import { describe, it, expect } from 'vitest';
+import { describe, expect, it } from 'vitest';
 import {
-  clamp01,
-  dwellRamp,
-  ritualProgress,
-  computeGaze,
   bandGaze,
-  gazeStage,
+  clamp01,
+  computeGaze,
+  dwellRamp,
   GAZE_BANDS,
+  gazeStage,
+  ritualProgress,
 } from './gaze.js';
 
 describe('clamp01', () => {
@@ -16,7 +16,7 @@ describe('clamp01', () => {
     expect(clamp01(0.4)).toBe(0.4);
   });
   it('coerces non-numbers to 0', () => {
-    expect(clamp01(NaN)).toBe(0);
+    expect(clamp01(Number.NaN)).toBe(0);
     expect(clamp01(undefined)).toBe(0);
     expect(clamp01('x')).toBe(0);
   });

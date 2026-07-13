@@ -53,48 +53,126 @@ export default function TentacleSvg({ sanity }) {
 
       {/* Top-left tentacles */}
       <g className={cn('seance-tentacles__arm', 'seance-tentacles__arm--tl')}>
-        <path d="M -5 -5 Q 10 12 6 32 T 12 60" stroke="url(#tentacle-grad-top)" strokeWidth="5" fill="none" strokeLinecap="round" />
-        <path d="M -2 -2 Q 15 10 18 30 T 16 50" stroke="url(#tentacle-grad-top)" strokeWidth="3" fill="none" strokeLinecap="round" opacity="0.8" />
+        <path
+          d="M -5 -5 Q 10 12 6 32 T 12 60"
+          stroke="url(#tentacle-grad-top)"
+          strokeWidth="5"
+          fill="none"
+          strokeLinecap="round"
+        />
+        <path
+          d="M -2 -2 Q 15 10 18 30 T 16 50"
+          stroke="url(#tentacle-grad-top)"
+          strokeWidth="3"
+          fill="none"
+          strokeLinecap="round"
+          opacity="0.8"
+        />
         <circle cx="12" cy="60" r="3.5" fill="rgba(220,80,60,0.7)" />
         <circle cx="16" cy="50" r="2.5" fill="rgba(200,70,55,0.6)" />
       </g>
 
       {/* Top-right tentacles */}
       <g className={cn('seance-tentacles__arm', 'seance-tentacles__arm--tr')}>
-        <path d="M 105 -5 Q 95 15 99 35 T 94 62" stroke="url(#tentacle-grad-top)" strokeWidth="4.5" fill="none" strokeLinecap="round" />
-        <path d="M 102 -2 Q 90 12 88 33 T 92 52" stroke="url(#tentacle-grad-top)" strokeWidth="2.5" fill="none" strokeLinecap="round" opacity="0.75" />
+        <path
+          d="M 105 -5 Q 95 15 99 35 T 94 62"
+          stroke="url(#tentacle-grad-top)"
+          strokeWidth="4.5"
+          fill="none"
+          strokeLinecap="round"
+        />
+        <path
+          d="M 102 -2 Q 90 12 88 33 T 92 52"
+          stroke="url(#tentacle-grad-top)"
+          strokeWidth="2.5"
+          fill="none"
+          strokeLinecap="round"
+          opacity="0.75"
+        />
         <circle cx="94" cy="62" r="3" fill="rgba(210,75,55,0.65)" />
       </g>
 
       {/* Bottom-left tentacles */}
       <g className={cn('seance-tentacles__arm', 'seance-tentacles__arm--bl')}>
-        <path d="M -5 105 Q 11 93 7 72 T 13 45" stroke="url(#tentacle-grad-bottom)" strokeWidth="6" fill="none" strokeLinecap="round" />
-        <path d="M -2 102 Q 16 94 19 74 T 17 44" stroke="url(#tentacle-grad-bottom)" strokeWidth="3.5" fill="none" strokeLinecap="round" opacity="0.8" />
+        <path
+          d="M -5 105 Q 11 93 7 72 T 13 45"
+          stroke="url(#tentacle-grad-bottom)"
+          strokeWidth="6"
+          fill="none"
+          strokeLinecap="round"
+        />
+        <path
+          d="M -2 102 Q 16 94 19 74 T 17 44"
+          stroke="url(#tentacle-grad-bottom)"
+          strokeWidth="3.5"
+          fill="none"
+          strokeLinecap="round"
+          opacity="0.8"
+        />
         <circle cx="13" cy="45" r="4" fill="rgba(180,60,70,0.75)" />
         <circle cx="17" cy="44" r="2.5" fill="rgba(190,65,65,0.6)" />
       </g>
 
       {/* Bottom-right tentacles */}
       <g className={cn('seance-tentacles__arm', 'seance-tentacles__arm--br')}>
-        <path d="M 105 105 Q 93 91 97 70 T 92 42" stroke="url(#tentacle-grad-bottom)" strokeWidth="5" fill="none" strokeLinecap="round" />
-        <path d="M 102 102 Q 89 94 87 73 T 91 44" stroke="url(#tentacle-grad-bottom)" strokeWidth="3" fill="none" strokeLinecap="round" opacity="0.7" />
+        <path
+          d="M 105 105 Q 93 91 97 70 T 92 42"
+          stroke="url(#tentacle-grad-bottom)"
+          strokeWidth="5"
+          fill="none"
+          strokeLinecap="round"
+        />
+        <path
+          d="M 102 102 Q 89 94 87 73 T 91 44"
+          stroke="url(#tentacle-grad-bottom)"
+          strokeWidth="3"
+          fill="none"
+          strokeLinecap="round"
+          opacity="0.7"
+        />
         <circle cx="92" cy="42" r="3.5" fill="rgba(170,55,65,0.7)" />
       </g>
 
       {/* Left edge tentacles */}
       <g className={cn('seance-tentacles__arm', 'seance-tentacles__arm--l')}>
-        <path d="M -5 26 Q 7 29 8 35 T 6 44" stroke="url(#tentacle-grad-left)" strokeWidth="3.5" fill="none" strokeLinecap="round" />
-        <path d="M -3 29 Q 9 31 10 37 T 8 46" stroke="url(#tentacle-grad-left)" strokeWidth="2" fill="none" strokeLinecap="round" opacity="0.6" />
+        <path
+          d="M -5 26 Q 7 29 8 35 T 6 44"
+          stroke="url(#tentacle-grad-left)"
+          strokeWidth="3.5"
+          fill="none"
+          strokeLinecap="round"
+        />
+        <path
+          d="M -3 29 Q 9 31 10 37 T 8 46"
+          stroke="url(#tentacle-grad-left)"
+          strokeWidth="2"
+          fill="none"
+          strokeLinecap="round"
+          opacity="0.6"
+        />
       </g>
 
       {/* Right edge tentacles */}
       <g className={cn('seance-tentacles__arm', 'seance-tentacles__arm--r')}>
-        <path d="M 105 24 Q 93 28 92 34 T 94 43" stroke="url(#tentacle-grad-right)" strokeWidth="3.5" fill="none" strokeLinecap="round" />
-        <path d="M 103 27 Q 91 30 90 36 T 92 45" stroke="url(#tentacle-grad-right)" strokeWidth="2" fill="none" strokeLinecap="round" opacity="0.6" />
+        <path
+          d="M 105 24 Q 93 28 92 34 T 94 43"
+          stroke="url(#tentacle-grad-right)"
+          strokeWidth="3.5"
+          fill="none"
+          strokeLinecap="round"
+        />
+        <path
+          d="M 103 27 Q 91 30 90 36 T 92 45"
+          stroke="url(#tentacle-grad-right)"
+          strokeWidth="2"
+          fill="none"
+          strokeLinecap="round"
+          opacity="0.6"
+        />
       </g>
 
       {/* Sucker details — more at lower sanity */}
-      {(sanity <= 2) && (
+      {sanity <= 2 && (
         <>
           <circle cx="8" cy="45" r="2" fill="rgba(220,100,70,0.5)" />
           <circle cx="7" cy="52" r="1.5" fill="rgba(210,90,60,0.45)" />
@@ -106,7 +184,7 @@ export default function TentacleSvg({ sanity }) {
           <circle cx="97" cy="86" r="1.5" fill="rgba(175,60,45,0.42)" />
         </>
       )}
-      {(sanity <= 1) && (
+      {sanity <= 1 && (
         <>
           <circle cx="10" cy="33" r="1.3" fill="rgba(230,110,80,0.45)" />
           <circle cx="9" cy="40" r="1" fill="rgba(220,100,70,0.4)" />

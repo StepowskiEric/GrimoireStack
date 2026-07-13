@@ -1,5 +1,5 @@
-import { describe, it, expect, vi, beforeEach } from 'vitest';
-import { renderHook, act } from '@testing-library/react';
+import { act, renderHook } from '@testing-library/react';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { useRitual } from '../hooks/useRitual.js';
 
 const mockFetch = vi.fn();
@@ -24,7 +24,7 @@ describe('useRitual', () => {
 
   it('transitions to consulting on start, then questioning on question response', async () => {
     mockFetch.mockResolvedValueOnce(
-      mockResponse({ type: 'question', question: 'What is your goal?', choices: ['A', 'B', 'C'] })
+      mockResponse({ type: 'question', question: 'What is your goal?', choices: ['A', 'B', 'C'] }),
     );
 
     const { result } = renderHook(() => useRitual());
@@ -41,9 +41,7 @@ describe('useRitual', () => {
   it('transitions to converged when API returns results', async () => {
     const onConverge = vi.fn();
     const results = [{ skill: 'test-skill', name: 'Test', school: 'testing' }];
-    mockFetch.mockResolvedValueOnce(
-      mockResponse({ type: 'results', results })
-    );
+    mockFetch.mockResolvedValueOnce(mockResponse({ type: 'results', results }));
 
     const { result } = renderHook(() => useRitual({ onConverge }));
     await act(async () => {
@@ -68,9 +66,7 @@ describe('useRitual', () => {
   });
 
   it('transitions to error on non-ok response', async () => {
-    mockFetch.mockResolvedValueOnce(
-      mockResponse({ error: 'Bad request' }, 400)
-    );
+    mockFetch.mockResolvedValueOnce(mockResponse({ error: 'Bad request' }, 400));
 
     const { result } = renderHook(() => useRitual());
     await act(async () => {
@@ -81,9 +77,7 @@ describe('useRitual', () => {
   });
 
   it('transitions to error on unexpected response type', async () => {
-    mockFetch.mockResolvedValueOnce(
-      mockResponse({ type: 'unknown' })
-    );
+    mockFetch.mockResolvedValueOnce(mockResponse({ type: 'unknown' }));
 
     const { result } = renderHook(() => useRitual());
     await act(async () => {
@@ -96,7 +90,7 @@ describe('useRitual', () => {
   it('sends history on subsequent answer calls', async () => {
     // First call returns a question
     mockFetch.mockResolvedValueOnce(
-      mockResponse({ type: 'question', question: 'Pick one?', choices: ['X', 'Y', 'Z'] })
+      mockResponse({ type: 'question', question: 'Pick one?', choices: ['X', 'Y', 'Z'] }),
     );
 
     const { result } = renderHook(() => useRitual());
@@ -107,7 +101,7 @@ describe('useRitual', () => {
 
     // Second call returns results
     mockFetch.mockResolvedValueOnce(
-      mockResponse({ type: 'results', results: [{ skill: 's', name: 'S', school: 'sc' }] })
+      mockResponse({ type: 'results', results: [{ skill: 's', name: 'S', school: 'sc' }] }),
     );
 
     await act(async () => {
@@ -124,27 +118,35 @@ describe('useRitual', () => {
 
   it('increments round on each answer', async () => {
     mockFetch.mockResolvedValue(
-      mockResponse({ type: 'question', question: 'Q?', choices: ['A', 'B', 'C'] })
+      mockResponse({ type: 'question', question: 'Q?', choices: ['A', 'B', 'C'] }),
     );
 
     const { result } = renderHook(() => useRitual());
-    await act(async () => { result.current.start('q'); });
+    await act(async () => {
+      result.current.start('q');
+    });
     expect(result.current.round).toBe(0);
 
-    await act(async () => { result.current.answer('A'); });
+    await act(async () => {
+      result.current.answer('A');
+    });
     expect(result.current.round).toBe(1);
 
-    await act(async () => { result.current.answer('B'); });
+    await act(async () => {
+      result.current.answer('B');
+    });
     expect(result.current.round).toBe(2);
   });
 
   it('reset returns to idle with cleared state', async () => {
     mockFetch.mockResolvedValueOnce(
-      mockResponse({ type: 'question', question: 'Q?', choices: ['A', 'B', 'C'] })
+      mockResponse({ type: 'question', question: 'Q?', choices: ['A', 'B', 'C'] }),
     );
 
     const { result } = renderHook(() => useRitual());
-    await act(async () => { result.current.start('q'); });
+    await act(async () => {
+      result.current.start('q');
+    });
     expect(result.current.state).toBe('questioning');
 
     act(() => result.current.reset());
@@ -159,7 +161,9 @@ describe('useRitual', () => {
 
   it('does nothing when start is called with empty query', async () => {
     const { result } = renderHook(() => useRitual());
-    await act(async () => { result.current.start(''); });
+    await act(async () => {
+      result.current.start('');
+    });
     expect(result.current.state).toBe('idle');
     expect(mockFetch).not.toHaveBeenCalled();
   });

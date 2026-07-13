@@ -15,9 +15,7 @@ export function useGaze(ritual) {
   useEffect(() => {
     const tick = () => {
       const dwellSec = (Date.now() - mountRef.current) / 1000;
-      const next = bandGaze(
-        computeGaze({ dwellSec, state: ritualState, round: ritualRound })
-      );
+      const next = bandGaze(computeGaze({ dwellSec, state: ritualState, round: ritualRound }));
       setGaze((prev) => (prev === next ? prev : next));
     };
 

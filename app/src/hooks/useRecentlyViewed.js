@@ -19,13 +19,16 @@ export function useRecentlyViewed() {
     },
   });
 
-  const record = useCallback((name, skill) => {
-    setRecent((prev) => {
-      const filtered = prev.filter((e) => e.skill !== skill);
-      const next = [{ name, skill, viewedAt: Date.now() }, ...filtered];
-      return next.slice(0, MAX_ENTRIES);
-    });
-  }, [setRecent]);
+  const record = useCallback(
+    (name, skill) => {
+      setRecent((prev) => {
+        const filtered = prev.filter((e) => e.skill !== skill);
+        const next = [{ name, skill, viewedAt: Date.now() }, ...filtered];
+        return next.slice(0, MAX_ENTRIES);
+      });
+    },
+    [setRecent],
+  );
 
   const clear = useCallback(() => {
     setRecent([]);

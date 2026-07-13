@@ -58,14 +58,18 @@ export function buildArticleLdJson({ name, descriptionText, skill, origin }) {
  */
 export function injectSpellMeta(shellHtml, { name, effect, skill, origin }) {
   const safeName = escapeHtml(name);
-  const descriptionText = (effect && effect !== 'No description provided.')
-    ? effect
-    : fallbackDescription(name, skill);
+  const descriptionText =
+    effect && effect !== 'No description provided.' ? effect : fallbackDescription(name, skill);
   const safeEffect = escapeHtml(truncateDescription(descriptionText));
   const safePath = `/s/${encodeURIComponent(skill)}`;
   const originTrimmed = String(origin).replace(/\/$/, '');
 
-  const ldJson = buildArticleLdJson({ name, descriptionText: truncateDescription(descriptionText), skill, origin });
+  const ldJson = buildArticleLdJson({
+    name,
+    descriptionText: truncateDescription(descriptionText),
+    skill,
+    origin,
+  });
 
   const title = `<title>GrimoireStack \u2014 ${safeName}</title>`;
   const description = `<meta name="description" content="${safeEffect}">`;

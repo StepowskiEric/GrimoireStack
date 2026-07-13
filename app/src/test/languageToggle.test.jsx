@@ -1,11 +1,15 @@
-import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
-import { render, screen, fireEvent, act } from '@testing-library/react';
+import { act, fireEvent, render, screen } from '@testing-library/react';
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import LanguageToggle from '../components/LanguageToggle.jsx';
 import { LanguageProvider, useLanguage } from '../i18n/LanguageContext';
 
 function LangProbe() {
   const { lang, t } = useLanguage();
-  return <span data-testid="probe">{lang}|{t('appTitle')}</span>;
+  return (
+    <span data-testid="probe">
+      {lang}|{t('appTitle')}
+    </span>
+  );
 }
 
 describe('LanguageToggle', () => {
@@ -22,18 +26,22 @@ describe('LanguageToggle', () => {
       <LanguageProvider>
         <LanguageToggle />
         <LangProbe />
-      </LanguageProvider>
+      </LanguageProvider>,
     );
     const toggle = screen.getByRole('button', { name: /switch to themed/i });
     expect(toggle.textContent).toContain('Plain');
     expect(screen.getByTestId('probe').textContent).toBe('plain|Agent Skills Catalog');
 
-    await act(async () => { fireEvent.click(toggle); });
+    await act(async () => {
+      fireEvent.click(toggle);
+    });
     expect(toggle.textContent).toContain('Grimoire');
     expect(screen.getByTestId('probe').textContent).toBe('grimoire|GrimoireStack');
     expect(localStorage.getItem('grimoire-lang')).toBe('grimoire');
 
-    await act(async () => { fireEvent.click(toggle); });
+    await act(async () => {
+      fireEvent.click(toggle);
+    });
     expect(toggle.textContent).toContain('Plain');
     expect(screen.getByTestId('probe').textContent).toBe('plain|Agent Skills Catalog');
     expect(localStorage.getItem('grimoire-lang')).toBe('plain');
@@ -44,12 +52,14 @@ describe('LanguageToggle', () => {
     render(
       <LanguageProvider>
         <LanguageToggle />
-      </LanguageProvider>
+      </LanguageProvider>,
     );
     const toggle = screen.getByRole('button', { name: /switch to plain english/i });
     expect(toggle.textContent).toContain('Grimoire');
 
-    await act(async () => { fireEvent.click(toggle); });
+    await act(async () => {
+      fireEvent.click(toggle);
+    });
     expect(toggle.textContent).toContain('Plain');
     expect(localStorage.getItem('grimoire-lang')).toBe('plain');
   });

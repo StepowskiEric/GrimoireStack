@@ -1,4 +1,4 @@
-import { useReducer, useCallback, useEffect, useRef } from 'react';
+import { useCallback, useEffect, useReducer, useRef } from 'react';
 
 const IDLE = 'idle';
 const DIMMING = 'dimming';
@@ -9,7 +9,8 @@ const DONE = 'done';
 function walkReducer(state, action) {
   switch (state.phase) {
     case IDLE:
-      if (action.type === 'START') return { phase: DIMMING, targetSkill: action.skill, scrollProgress: 0 };
+      if (action.type === 'START')
+        return { phase: DIMMING, targetSkill: action.skill, scrollProgress: 0 };
       break;
     case DIMMING:
       if (action.type === 'TIMEOUT') return { ...state, phase: WALKING };
@@ -88,14 +89,23 @@ export function useRitualWalk({ onComplete, navigateToLibrary }) {
     return () => clearTimeout(timer);
   }, [s.phase, s.targetSkill]);
 
-  const start = useCallback((skill) => {
-    dispatch({ type: 'START', skill });
-    navigateToLibrary?.();
-  }, [navigateToLibrary]);
+  const start = useCallback(
+    (skill) => {
+      dispatch({ type: 'START', skill });
+      navigateToLibrary?.();
+    },
+    [navigateToLibrary],
+  );
 
   const reset = useCallback(() => {
     dispatch({ type: 'RESET' });
   }, []);
 
-  return { phase: s.phase, targetSkill: s.targetSkill, scrollProgress: s.scrollProgress, start, reset };
+  return {
+    phase: s.phase,
+    targetSkill: s.targetSkill,
+    scrollProgress: s.scrollProgress,
+    start,
+    reset,
+  };
 }

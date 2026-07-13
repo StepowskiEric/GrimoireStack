@@ -33,13 +33,14 @@ const mockRecentlyUpdated = [
 ];
 
 vi.mock('../data/changeFeed.js', () => ({
-  getRecentlyUpdated: (limit) => mockRecentlyUpdated.slice(0, limit || mockRecentlyUpdated.length),
+  getRecentlyUpdated: (limit) =>
+    mockRecentlyUpdated.slice(0, limit || mockRecentlyUpdated.length > 0),
   getSpellLastUpdated: (skill) => {
-    const item = mockRecentlyUpdated.find(i => i.skill === skill);
+    const item = mockRecentlyUpdated.find((i) => i.skill === skill);
     return item ? item.lastUpdated : null;
   },
   getSpellNote: (skill) => {
-    const item = mockRecentlyUpdated.find(i => i.skill === skill);
+    const item = mockRecentlyUpdated.find((i) => i.skill === skill);
     return item ? item.note : null;
   },
 }));

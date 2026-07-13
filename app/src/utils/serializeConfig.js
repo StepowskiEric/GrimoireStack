@@ -6,7 +6,9 @@
  */
 
 function escapeMd(s) {
-  return String(s ?? '').replace(/\|/g, '\\|').replace(/\n/g, ' ');
+  return String(s ?? '')
+    .replace(/\|/g, '\\|')
+    .replace(/\n/g, ' ');
 }
 
 /**
@@ -48,7 +50,7 @@ export function serializeMarkdown({ favorites = [], marginalia = {}, recent = []
   lines.push('');
 
   lines.push('## Favorites');
-  if (!favorites.length) {
+  if (favorites.length === 0) {
     lines.push('_None yet — star spells to bind them here._');
   } else {
     for (const f of favorites) {
@@ -60,7 +62,7 @@ export function serializeMarkdown({ favorites = [], marginalia = {}, recent = []
   lines.push('');
 
   lines.push('## Recently viewed');
-  if (!recent.length) {
+  if (recent.length === 0) {
     lines.push('_Empty._');
   } else {
     for (const r of recent) {
@@ -73,7 +75,7 @@ export function serializeMarkdown({ favorites = [], marginalia = {}, recent = []
 
   lines.push('## Marginalia');
   const margKeys = Object.keys(marginalia);
-  if (!margKeys.length) {
+  if (margKeys.length === 0) {
     lines.push('_No notes scribbled yet._');
   } else {
     for (const skill of margKeys) {

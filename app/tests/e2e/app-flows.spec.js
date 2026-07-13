@@ -1,5 +1,5 @@
-import { test, expect } from '@playwright/test';
-import { gotoReady, closeModal } from './helpers.js';
+import { expect, test } from '@playwright/test';
+import { closeModal, gotoReady } from './helpers.js';
 
 const SETTINGS_TAB = 'Settings';
 const VAULT_TAB = 'The Vault';
@@ -166,9 +166,9 @@ test.describe('recipe lab', () => {
     await gotoReady(page);
     await page.getByRole('button', { name: RITUALS_TAB }).click();
 
-    const pager = page.locator('.recipe-lab-view__pager');
+    const _pager = page.locator('.recipe-lab-view__pager');
     const pageCountText = await page.locator('.recipe-lab-view__count').textContent();
-    if (!pageCountText || !pageCountText.includes('page 1 of')) {
+    if (!pageCountText?.includes('page 1 of')) {
       test.skip(true, 'Not enough spells to trigger pagination');
       return;
     }
@@ -222,7 +222,6 @@ test.describe('commune', () => {
     await expect(page).toHaveURL(/\/commune/);
   });
 });
-
 
 test.describe('keyboard interactions', () => {
   test('escape closes spell modal', async ({ page }) => {

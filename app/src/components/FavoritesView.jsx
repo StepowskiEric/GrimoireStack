@@ -1,7 +1,7 @@
 import { useMemo } from 'react';
-import SchoolSigil from './SchoolSigil.tsx';
-import Icon from './Icon.jsx';
 import { grimoireIndex } from '../data/grimoireIndexInstance.js';
+import Icon from './Icon.jsx';
+import SchoolSigil from './SchoolSigil.tsx';
 
 export default function FavoritesView({
   favorites,
@@ -21,17 +21,19 @@ export default function FavoritesView({
 
   // Get recently viewed spells
   const recentSpells = useMemo(() => {
-    const recentNames = recent.map(r => r.name);
+    const recentNames = recent.map((r) => r.name);
     return recentNames
-      .map(name => allSpells.find(({ spell }) => spell.name === name))
+      .map((name) => allSpells.find(({ spell }) => spell.name === name))
       .filter(Boolean)
       .slice(0, 10);
   }, [allSpells, recent]);
 
   return (
     <div className="py-1">
-      <h2 className="font-['Cinzel_Decorative'] text-[1.25rem] font-bold text-center text-moonlight tracking-wide mt-1 mb-4.5"
-        style={{ textShadow: '0 0 12px rgba(138,154,106,0.15)' }}>
+      <h2
+        className="font-['Cinzel_Decorative'] text-[1.25rem] font-bold text-center text-moonlight tracking-wide mt-1 mb-4.5"
+        style={{ textShadow: '0 0 12px rgba(138,154,106,0.15)' }}
+      >
         <span className="text-[rgba(196,71,71,0.5)] text-[0.7rem] align-middle mx-2.5">✦</span>
         The Vault
         <span className="text-[rgba(196,71,71,0.5)] text-[0.7rem] align-middle mx-2.5">✦</span>
@@ -39,7 +41,10 @@ export default function FavoritesView({
 
       {/* Favorites section */}
       <div className="mb-5.5 p-3.5 border border-[rgba(138,154,106,0.15)] rounded-sm bg-gradient-to-b from-[rgba(8,12,18,0.6)] to-[rgba(4,6,10,0.8)] relative">
-        <div className="absolute top-0 left-3.5 right-3.5 h-px bg-gradient-to-r from-transparent via-[rgba(138,154,106,0.35)] to-transparent" aria-hidden="true" />
+        <div
+          className="absolute top-0 left-3.5 right-3.5 h-px bg-gradient-to-r from-transparent via-[rgba(138,154,106,0.35)] to-transparent"
+          aria-hidden="true"
+        />
         <h3 className="font-['Cinzel'] text-[0.7rem] font-bold uppercase tracking-widest text-sickly mb-3 flex items-center gap-2">
           Bound Incantations ({favoriteSpells.length})
           <span className="flex-1 h-px bg-gradient-to-r from-[rgba(138,154,106,0.25)] to-transparent" />
@@ -67,11 +72,20 @@ export default function FavoritesView({
                 onClick={() => onSpellClick(spell, school)}
                 role="button"
                 tabIndex={0}
-                onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); onSpellClick(spell, school); } }}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    onSpellClick(spell, school);
+                  }
+                }}
               >
-                <span className="inline-flex items-center justify-center w-8 h-8 text-[1.4rem] bg-[rgba(8,12,18,0.6)] border border-[rgba(138,154,106,0.15)] rounded-sm flex-shrink-0"><SchoolSigil schoolId={school.id} size={22} /></span>
+                <span className="inline-flex items-center justify-center w-8 h-8 text-[1.4rem] bg-[rgba(8,12,18,0.6)] border border-[rgba(138,154,106,0.15)] rounded-sm flex-shrink-0">
+                  <SchoolSigil schoolId={school.id} size={22} />
+                </span>
                 <div className="flex-1 min-w-0">
-                  <div className="font-['Cinzel'] text-[0.78rem] font-bold text-moonlight leading-tight">{spell.name}</div>
+                  <div className="font-['Cinzel'] text-[0.78rem] font-bold text-moonlight leading-tight">
+                    {spell.name}
+                  </div>
                   <div className="text-[0.78rem] text-silver-mute">{school.name}</div>
                 </div>
                 <button
@@ -94,7 +108,10 @@ export default function FavoritesView({
 
       {/* Recently viewed section */}
       <div className="mb-5.5 p-3.5 border border-[rgba(138,154,106,0.15)] rounded-sm bg-gradient-to-b from-[rgba(8,12,18,0.6)] to-[rgba(4,6,10,0.8)] relative">
-        <div className="absolute top-0 left-3.5 right-3.5 h-px bg-gradient-to-r from-transparent via-[rgba(138,154,106,0.35)] to-transparent" aria-hidden="true" />
+        <div
+          className="absolute top-0 left-3.5 right-3.5 h-px bg-gradient-to-r from-transparent via-[rgba(138,154,106,0.35)] to-transparent"
+          aria-hidden="true"
+        />
         <h3 className="font-['Cinzel'] text-[0.7rem] font-bold uppercase tracking-widest text-sickly mb-3 flex items-center gap-2">
           Trail of Recent Summons
           <span className="flex-1 h-px bg-gradient-to-r from-[rgba(138,154,106,0.25)] to-transparent" />
@@ -122,11 +139,20 @@ export default function FavoritesView({
                 onClick={() => onSpellClick(spell, school)}
                 role="button"
                 tabIndex={0}
-                onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); onSpellClick(spell, school); } }}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    onSpellClick(spell, school);
+                  }
+                }}
               >
-                <span className="inline-flex items-center justify-center w-8 h-8 text-[1.4rem] bg-[rgba(8,12,18,0.6)] border border-[rgba(138,154,106,0.15)] rounded-sm flex-shrink-0"><SchoolSigil schoolId={school.id} size={22} /></span>
+                <span className="inline-flex items-center justify-center w-8 h-8 text-[1.4rem] bg-[rgba(8,12,18,0.6)] border border-[rgba(138,154,106,0.15)] rounded-sm flex-shrink-0">
+                  <SchoolSigil schoolId={school.id} size={22} />
+                </span>
                 <div className="flex-1 min-w-0">
-                  <div className="font-['Cinzel'] text-[0.78rem] font-bold text-moonlight leading-tight">{spell.name}</div>
+                  <div className="font-['Cinzel'] text-[0.78rem] font-bold text-moonlight leading-tight">
+                    {spell.name}
+                  </div>
                   <div className="text-[0.78rem] text-silver-mute">{school.name}</div>
                 </div>
               </div>
@@ -137,7 +163,10 @@ export default function FavoritesView({
 
       {/* Marginalia section */}
       <div className="mb-5.5 p-3.5 border border-[rgba(138,154,106,0.15)] rounded-sm bg-gradient-to-b from-[rgba(8,12,18,0.6)] to-[rgba(4,6,10,0.8)] relative">
-        <div className="absolute top-0 left-3.5 right-3.5 h-px bg-gradient-to-r from-transparent via-[rgba(138,154,106,0.35)] to-transparent" aria-hidden="true" />
+        <div
+          className="absolute top-0 left-3.5 right-3.5 h-px bg-gradient-to-r from-transparent via-[rgba(138,154,106,0.35)] to-transparent"
+          aria-hidden="true"
+        />
         <h3 className="font-['Cinzel'] text-[0.7rem] font-bold uppercase tracking-widest text-sickly mb-3 flex items-center gap-2">
           Marginalia: Your Annotations
           <span className="flex-1 h-px bg-gradient-to-r from-[rgba(138,154,106,0.25)] to-transparent" />
@@ -146,26 +175,35 @@ export default function FavoritesView({
           const notesObj = marginalia?.notes || marginalia || {};
           const entries = Object.entries(notesObj);
           if (entries.length === 0) {
-            return <div className="text-center py-5 px-3">
-              <span className="block text-[rgba(196,71,71,0.35)] text-[1.2rem] mb-1.5">⛧</span>
-              <p className="font-['Cormorant_Garamond'] italic text-[0.92rem] text-silver-mute mb-3">
-                The page is clean. No annotations have yet been inscribed in the margin.
-              </p>
-              <button
-                type="button"
-                onClick={() => onNavigate?.('library')}
-                className="font-['Cinzel'] text-[0.68rem] font-bold uppercase tracking-widest text-accent border border-accent/40 rounded-sm px-3 py-1.5 transition-all duration-200 hover:bg-[rgba(138,154,106,0.12)] hover:border-accent/70"
-              >
-                Browse The Spine to annotate spells
-              </button>
-            </div>;
+            return (
+              <div className="text-center py-5 px-3">
+                <span className="block text-[rgba(196,71,71,0.35)] text-[1.2rem] mb-1.5">⛧</span>
+                <p className="font-['Cormorant_Garamond'] italic text-[0.92rem] text-silver-mute mb-3">
+                  The page is clean. No annotations have yet been inscribed in the margin.
+                </p>
+                <button
+                  type="button"
+                  onClick={() => onNavigate?.('library')}
+                  className="font-['Cinzel'] text-[0.68rem] font-bold uppercase tracking-widest text-accent border border-accent/40 rounded-sm px-3 py-1.5 transition-all duration-200 hover:bg-[rgba(138,154,106,0.12)] hover:border-accent/70"
+                >
+                  Browse The Spine to annotate spells
+                </button>
+              </div>
+            );
           }
           return (
             <div className="flex flex-col gap-1.5">
               {entries.map(([spellName, note]) => (
-                <div key={spellName} className="flex flex-col gap-1.5 p-3 border border-[rgba(138,154,106,0.18)] rounded-sm bg-gradient-to-br from-[rgba(20,30,12,0.4)] to-[rgba(8,12,4,0.6)]">
-                  <div className="font-['Cinzel'] text-[0.68rem] font-bold text-sickly tracking-wide">{spellName}</div>
-                  <div className="font-['Cormorant_Garamond'] italic text-[0.85rem] text-parchment-dark leading-relaxed">{typeof note === 'string' ? note : ''}</div>
+                <div
+                  key={spellName}
+                  className="flex flex-col gap-1.5 p-3 border border-[rgba(138,154,106,0.18)] rounded-sm bg-gradient-to-br from-[rgba(20,30,12,0.4)] to-[rgba(8,12,4,0.6)]"
+                >
+                  <div className="font-['Cinzel'] text-[0.68rem] font-bold text-sickly tracking-wide">
+                    {spellName}
+                  </div>
+                  <div className="font-['Cormorant_Garamond'] italic text-[0.85rem] text-parchment-dark leading-relaxed">
+                    {typeof note === 'string' ? note : ''}
+                  </div>
                 </div>
               ))}
             </div>

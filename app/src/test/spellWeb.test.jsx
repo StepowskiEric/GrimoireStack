@@ -1,4 +1,4 @@
-import { render, screen, fireEvent } from '@testing-library/react';
+import { fireEvent, render, screen } from '@testing-library/react';
 import SpellWeb from '../components/SpellWeb.jsx';
 
 // Mock the grimoireIndex module
@@ -9,8 +9,18 @@ const mockSchools = [
     name: 'School of Remediation',
     desc: 'Incantations to banish bugs.',
     spells: [
-      { name: 'Trace Sight', skill: 'log-trace-correlation', effect: 'Maps stack traces.', status: 'Proven' },
-      { name: 'Bisect Divination', skill: 'bisect-debugging', effect: 'Binary searches.', status: 'Proven' },
+      {
+        name: 'Trace Sight',
+        skill: 'log-trace-correlation',
+        effect: 'Maps stack traces.',
+        status: 'Proven',
+      },
+      {
+        name: 'Bisect Divination',
+        skill: 'bisect-debugging',
+        effect: 'Binary searches.',
+        status: 'Proven',
+      },
     ],
   },
   {
@@ -19,7 +29,12 @@ const mockSchools = [
     name: 'School of Cognition',
     desc: 'Mental models.',
     spells: [
-      { name: 'Razor of Parsimony', skill: 'occams-razor', effect: 'Favors simplest.', status: 'New' },
+      {
+        name: 'Razor of Parsimony',
+        skill: 'occams-razor',
+        effect: 'Favors simplest.',
+        status: 'New',
+      },
     ],
   },
 ];
@@ -33,8 +48,26 @@ const mockWeb = {
       name: 'School of Remediation',
       spellCount: 2,
       children: [
-        { id: 'log-trace-correlation', type: 'spell', label: 'Trace Sight', schoolId: 'debugging', schoolName: 'Debugging', tier: 'Proven', comboCount: 0, effect: 'Maps stack traces.' },
-        { id: 'bisect-debugging', type: 'spell', label: 'Bisect Divination', schoolId: 'debugging', schoolName: 'Debugging', tier: 'Proven', comboCount: 0, effect: 'Binary searches.' },
+        {
+          id: 'log-trace-correlation',
+          type: 'spell',
+          label: 'Trace Sight',
+          schoolId: 'debugging',
+          schoolName: 'Debugging',
+          tier: 'Proven',
+          comboCount: 0,
+          effect: 'Maps stack traces.',
+        },
+        {
+          id: 'bisect-debugging',
+          type: 'spell',
+          label: 'Bisect Divination',
+          schoolId: 'debugging',
+          schoolName: 'Debugging',
+          tier: 'Proven',
+          comboCount: 0,
+          effect: 'Binary searches.',
+        },
       ],
     },
     {
@@ -44,14 +77,50 @@ const mockWeb = {
       name: 'School of Cognition',
       spellCount: 1,
       children: [
-        { id: 'occams-razor', type: 'spell', label: 'Razor of Parsimony', schoolId: 'reasoning', schoolName: 'Reasoning', tier: 'New', comboCount: 0, effect: 'Favors simplest.' },
+        {
+          id: 'occams-razor',
+          type: 'spell',
+          label: 'Razor of Parsimony',
+          schoolId: 'reasoning',
+          schoolName: 'Reasoning',
+          tier: 'New',
+          comboCount: 0,
+          effect: 'Favors simplest.',
+        },
       ],
     },
   ],
   spellNodes: [
-    { id: 'log-trace-correlation', type: 'spell', label: 'Trace Sight', schoolId: 'debugging', schoolName: 'Debugging', tier: 'Proven', comboCount: 0, effect: 'Maps stack traces.' },
-    { id: 'bisect-debugging', type: 'spell', label: 'Bisect Divination', schoolId: 'debugging', schoolName: 'Debugging', tier: 'Proven', comboCount: 0, effect: 'Binary searches.' },
-    { id: 'occams-razor', type: 'spell', label: 'Razor of Parsimony', schoolId: 'reasoning', schoolName: 'Reasoning', tier: 'New', comboCount: 0, effect: 'Favors simplest.' },
+    {
+      id: 'log-trace-correlation',
+      type: 'spell',
+      label: 'Trace Sight',
+      schoolId: 'debugging',
+      schoolName: 'Debugging',
+      tier: 'Proven',
+      comboCount: 0,
+      effect: 'Maps stack traces.',
+    },
+    {
+      id: 'bisect-debugging',
+      type: 'spell',
+      label: 'Bisect Divination',
+      schoolId: 'debugging',
+      schoolName: 'Debugging',
+      tier: 'Proven',
+      comboCount: 0,
+      effect: 'Binary searches.',
+    },
+    {
+      id: 'occams-razor',
+      type: 'spell',
+      label: 'Razor of Parsimony',
+      schoolId: 'reasoning',
+      schoolName: 'Reasoning',
+      tier: 'New',
+      comboCount: 0,
+      effect: 'Favors simplest.',
+    },
   ],
   comboEdges: [],
   schoolMap: new Map(),
@@ -63,10 +132,13 @@ vi.mock('../data/grimoireIndexInstance.js', () => ({
   grimoireIndex: {
     buildSpellWeb: () => mockWeb,
     resolveBySkill: (skillId) => {
-      const spell = mockWeb.spellNodes.find(s => s.id === skillId);
+      const spell = mockWeb.spellNodes.find((s) => s.id === skillId);
       if (!spell) return null;
-      const school = mockSchools.find(s => s.id === spell.schoolId);
-      return { spell: { name: spell.label, skill: spell.id, effect: spell.effect, status: spell.tier }, school };
+      const school = mockSchools.find((s) => s.id === spell.schoolId);
+      return {
+        spell: { name: spell.label, skill: spell.id, effect: spell.effect, status: spell.tier },
+        school,
+      };
     },
   },
 }));

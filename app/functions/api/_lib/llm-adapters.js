@@ -13,9 +13,7 @@
 // Keeping the per-model quirks in one table replaces four scattered
 // `if (model === ...)` branches in the proxy handler.
 
-
 const ADAPTERS = {
-
   // glm-4.7-flash is a reasoning model that defaults to burning the
   // entire output budget on chain-of-thought. Disable thinking so
   // agentic callers (page-agent) see direct content. Reasoning

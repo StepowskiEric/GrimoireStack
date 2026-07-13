@@ -1,11 +1,11 @@
-import { describe, it, expect, beforeEach, vi } from 'vitest';
 import { render } from '@testing-library/react';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { axe } from 'vitest-axe';
-import { LanguageProvider } from '../i18n/LanguageContext';
-import ShortcutsModal from '../components/ShortcutsModal.jsx';
 import InstallPrompt from '../components/InstallPrompt.jsx';
 import LibraryContent from '../components/LibraryContent.jsx';
+import ShortcutsModal from '../components/ShortcutsModal.jsx';
 import StaleLinkBanner from '../components/StaleLinkBanner.jsx';
+import { LanguageProvider } from '../i18n/LanguageContext';
 
 const sampleSchools = [
   {
@@ -13,7 +13,9 @@ const sampleSchools = [
     real: 'Debugging',
     name: 'School of Remediation',
     desc: '',
-    spells: [{ name: 'Trace Sight', skill: 'log-trace-correlation', effect: 'x', status: 'Proven' }],
+    spells: [
+      { name: 'Trace Sight', skill: 'log-trace-correlation', effect: 'x', status: 'Proven' },
+    ],
   },
   {
     id: 'reasoning',
@@ -25,10 +27,27 @@ const sampleSchools = [
 ];
 
 vi.mock('../data/grimoireIndexInstance.js', () => {
-  const trace = { name: 'Trace Sight', skill: 'log-trace-correlation', effect: 'x', status: 'Proven' };
+  const trace = {
+    name: 'Trace Sight',
+    skill: 'log-trace-correlation',
+    effect: 'x',
+    status: 'Proven',
+  };
   const razor = { name: 'Razor', skill: 'occams-razor', effect: 'y', status: 'New' };
-  const debugging = { id: 'debugging', real: 'Debugging', name: 'School of Remediation', desc: '', spells: [trace] };
-  const reasoning = { id: 'reasoning', real: 'Reasoning', name: 'School of Cognition', desc: '', spells: [razor] };
+  const debugging = {
+    id: 'debugging',
+    real: 'Debugging',
+    name: 'School of Remediation',
+    desc: '',
+    spells: [trace],
+  };
+  const reasoning = {
+    id: 'reasoning',
+    real: 'Reasoning',
+    name: 'School of Cognition',
+    desc: '',
+    spells: [razor],
+  };
   const mockSchools = [debugging, reasoning];
   const mockFlat = [];
   for (const s of mockSchools) for (const sp of s.spells) mockFlat.push({ spell: sp, school: s });
@@ -70,7 +89,7 @@ describe('a11y', () => {
         isFavorited={() => false}
         onToggleFavorite={() => {}}
         marginalia={{}}
-      />
+      />,
     );
     const results = await axe(container);
     expect(results).toHaveNoViolations();
@@ -84,11 +103,7 @@ describe('a11y', () => {
 
   it('StaleLinkBanner has no axe violations', async () => {
     const { container } = renderWithLang(
-      <StaleLinkBanner
-        skill="no-such-typo"
-        onDismiss={() => {}}
-        onSelectSkill={() => {}}
-      />
+      <StaleLinkBanner skill="no-such-typo" onDismiss={() => {}} onSelectSkill={() => {}} />,
     );
     const results = await axe(container, {
       rules: { region: { enabled: false } },

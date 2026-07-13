@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import './WanderingAnimation.css';
 import '../styles/components/atmosphere-corridor.css';
 import '../styles/components/atmosphere-crevice.css';
@@ -95,12 +95,24 @@ export default function WanderingAnimation({ skillName, onComplete }) {
         {/* Chamber 3: hall of watchers */}
         {chamber.id === 'watchers' && (
           <>
-            <div className="watcher watcher--1"><div className="watcher-pupil" /></div>
-            <div className="watcher watcher--2"><div className="watcher-pupil" /></div>
-            <div className="watcher watcher--3"><div className="watcher-pupil" /></div>
-            <div className="watcher watcher--4"><div className="watcher-pupil" /></div>
-            <div className="watcher watcher--5"><div className="watcher-pupil" /></div>
-            <div className="watcher watcher--6"><div className="watcher-pupil" /></div>
+            <div className="watcher watcher--1">
+              <div className="watcher-pupil" />
+            </div>
+            <div className="watcher watcher--2">
+              <div className="watcher-pupil" />
+            </div>
+            <div className="watcher watcher--3">
+              <div className="watcher-pupil" />
+            </div>
+            <div className="watcher watcher--4">
+              <div className="watcher-pupil" />
+            </div>
+            <div className="watcher watcher--5">
+              <div className="watcher-pupil" />
+            </div>
+            <div className="watcher watcher--6">
+              <div className="watcher-pupil" />
+            </div>
           </>
         )}
 

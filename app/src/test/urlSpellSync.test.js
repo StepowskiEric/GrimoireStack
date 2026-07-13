@@ -1,9 +1,5 @@
-import { describe, it, expect } from 'vitest';
-import {
-  parseSpellFromLocation,
-  buildShareUrl,
-  buildPathForSpell,
-} from '../utils/urlSpellSync.js';
+import { describe, expect, it } from 'vitest';
+import { buildPathForSpell, buildShareUrl, parseSpellFromLocation } from '../utils/urlSpellSync.js';
 
 describe('parseSpellFromLocation', () => {
   it('reads skill from ?s= query', () => {

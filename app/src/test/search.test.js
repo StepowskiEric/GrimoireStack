@@ -1,13 +1,45 @@
-import { describe, it, expect } from 'vitest';
-import { searchSpellsOnEntries, filterSpellsOnEntries } from '../spellSearch.js';
+import { describe, expect, it } from 'vitest';
 import { getSpellTier } from '../data/tiers.js';
+import { filterSpellsOnEntries, searchSpellsOnEntries } from '../spellSearch.js';
 
 // Flat-entry fixtures (canonical shape for the implementation under test).
 const sampleEntries = [
-  { spell: { name: 'Trace Sight', skill: 'log-trace-correlation', effect: 'Maps stack traces to source code and suggests fixes.', status: 'Proven' }, school: { id: 'debugging', name: 'School of Remediation' } },
-  { spell: { name: 'Bisect Divination', skill: 'bisect-debugging', effect: 'Binary searches commit history for the regression commit.', status: 'Proven' }, school: { id: 'debugging', name: 'School of Remediation' } },
-  { spell: { name: 'Razor of Parsimony', skill: 'occams-razor', effect: 'Favors the simplest sufficient explanation.', status: '—' }, school: { id: 'reasoning', name: 'School of Cognition' } },
-  { spell: { name: 'Thought-Weave', skill: 'tree-of-thoughts', effect: 'Branches multiple reasoning paths in parallel.', status: '—' }, school: { id: 'reasoning', name: 'School of Cognition' } },
+  {
+    spell: {
+      name: 'Trace Sight',
+      skill: 'log-trace-correlation',
+      effect: 'Maps stack traces to source code and suggests fixes.',
+      status: 'Proven',
+    },
+    school: { id: 'debugging', name: 'School of Remediation' },
+  },
+  {
+    spell: {
+      name: 'Bisect Divination',
+      skill: 'bisect-debugging',
+      effect: 'Binary searches commit history for the regression commit.',
+      status: 'Proven',
+    },
+    school: { id: 'debugging', name: 'School of Remediation' },
+  },
+  {
+    spell: {
+      name: 'Razor of Parsimony',
+      skill: 'occams-razor',
+      effect: 'Favors the simplest sufficient explanation.',
+      status: '—',
+    },
+    school: { id: 'reasoning', name: 'School of Cognition' },
+  },
+  {
+    spell: {
+      name: 'Thought-Weave',
+      skill: 'tree-of-thoughts',
+      effect: 'Branches multiple reasoning paths in parallel.',
+      status: '—',
+    },
+    school: { id: 'reasoning', name: 'School of Cognition' },
+  },
 ];
 
 // Raw-schools fixtures (used only for adapter verification).
@@ -16,16 +48,36 @@ const sampleSchools = [
     id: 'debugging',
     name: 'School of Remediation',
     spells: [
-      { name: 'Trace Sight', skill: 'log-trace-correlation', effect: 'Maps stack traces to source code and suggests fixes.', status: 'Proven' },
-      { name: 'Bisect Divination', skill: 'bisect-debugging', effect: 'Binary searches commit history for the regression commit.', status: 'Proven' },
+      {
+        name: 'Trace Sight',
+        skill: 'log-trace-correlation',
+        effect: 'Maps stack traces to source code and suggests fixes.',
+        status: 'Proven',
+      },
+      {
+        name: 'Bisect Divination',
+        skill: 'bisect-debugging',
+        effect: 'Binary searches commit history for the regression commit.',
+        status: 'Proven',
+      },
     ],
   },
   {
     id: 'reasoning',
     name: 'School of Cognition',
     spells: [
-      { name: 'Razor of Parsimony', skill: 'occams-razor', effect: 'Favors the simplest sufficient explanation.', status: '—' },
-      { name: 'Thought-Weave', skill: 'tree-of-thoughts', effect: 'Branches multiple reasoning paths in parallel.', status: '—' },
+      {
+        name: 'Razor of Parsimony',
+        skill: 'occams-razor',
+        effect: 'Favors the simplest sufficient explanation.',
+        status: '—',
+      },
+      {
+        name: 'Thought-Weave',
+        skill: 'tree-of-thoughts',
+        effect: 'Branches multiple reasoning paths in parallel.',
+        status: '—',
+      },
     ],
   },
 ];
@@ -94,14 +146,20 @@ describe('filterSpellsOnEntries (canonical)', () => {
   });
 
   it('narrows by school filter', () => {
-    const result = filterSpellsOnEntries(sampleEntries, { schoolFilter: new Set(['reasoning']), isFavorited: () => false });
+    const result = filterSpellsOnEntries(sampleEntries, {
+      schoolFilter: new Set(['reasoning']),
+      isFavorited: () => false,
+    });
     expect(result.total).toBe(2);
     expect(result.bySchool).toHaveProperty('reasoning');
     expect(result.bySchool).not.toHaveProperty('debugging');
   });
 
   it('narrows by tier filter', () => {
-    const result = filterSpellsOnEntries(sampleEntries, { tierFilter: new Set(['master']), isFavorited: () => false });
+    const result = filterSpellsOnEntries(sampleEntries, {
+      tierFilter: new Set(['master']),
+      isFavorited: () => false,
+    });
     // 'bisect-debugging' has status 'Proven' so tier = 'adept' (Proven, no combo)
     // 'log-trace-correlation' has 'Proven' so tier = 'adept'
     // No master tier in this sample
@@ -109,7 +167,10 @@ describe('filterSpellsOnEntries (canonical)', () => {
   });
 
   it('narrows by favorites only', () => {
-    const result = filterSpellsOnEntries(sampleEntries, { favoritesOnly: true, isFavorited: favFn });
+    const result = filterSpellsOnEntries(sampleEntries, {
+      favoritesOnly: true,
+      isFavorited: favFn,
+    });
     expect(result.total).toBe(1);
     expect(result.bySchool.debugging[0]).toContain('log-trace-correlation');
   });
@@ -133,7 +194,10 @@ describe('filterSpellsOnEntries (canonical)', () => {
   });
 
   it('returns empty for empty school filter set', () => {
-    const result = filterSpellsOnEntries(sampleEntries, { schoolFilter: new Set(), isFavorited: () => false });
+    const result = filterSpellsOnEntries(sampleEntries, {
+      schoolFilter: new Set(),
+      isFavorited: () => false,
+    });
     expect(result.total).toBe(0);
   });
 });

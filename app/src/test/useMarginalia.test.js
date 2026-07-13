@@ -1,5 +1,5 @@
-import { describe, it, expect, beforeEach } from 'vitest';
-import { renderHook, act } from '@testing-library/react';
+import { act, renderHook } from '@testing-library/react';
+import { beforeEach, describe, expect, it } from 'vitest';
 import { useMarginalia } from '../hooks/useMarginalia.js';
 
 describe('useMarginalia', () => {
@@ -18,7 +18,7 @@ describe('useMarginalia', () => {
       result.current.setNote('log-trace-correlation', 'This was useful for the prod incident');
     });
     expect(result.current.getNote('log-trace-correlation')).toBe(
-      'This was useful for the prod incident'
+      'This was useful for the prod incident',
     );
   });
 

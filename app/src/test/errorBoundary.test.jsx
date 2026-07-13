@@ -1,5 +1,5 @@
-import { describe, it, expect, vi, beforeEach } from 'vitest';
-import { render, screen, fireEvent } from '@testing-library/react';
+import { fireEvent, render, screen } from '@testing-library/react';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
 import ErrorBoundary from '../components/ErrorBoundary.jsx';
 
 // Component that throws on render
@@ -23,7 +23,7 @@ describe('ErrorBoundary', () => {
     render(
       <ErrorBoundary>
         <GoodChild />
-      </ErrorBoundary>
+      </ErrorBoundary>,
     );
     expect(screen.getByText('Hello from child')).toBeInTheDocument();
   });
@@ -32,7 +32,7 @@ describe('ErrorBoundary', () => {
     render(
       <ErrorBoundary>
         <ThrowError message="Something broke" />
-      </ErrorBoundary>
+      </ErrorBoundary>,
     );
     expect(screen.getByText('The Scroll Has Torn')).toBeInTheDocument();
     expect(screen.getByText(/Something went wrong while rendering/)).toBeInTheDocument();
@@ -42,7 +42,7 @@ describe('ErrorBoundary', () => {
     render(
       <ErrorBoundary>
         <ThrowError message="Detailed error info" />
-      </ErrorBoundary>
+      </ErrorBoundary>,
     );
     expect(screen.getByText('Detailed error info')).toBeInTheDocument();
   });
@@ -51,7 +51,7 @@ describe('ErrorBoundary', () => {
     render(
       <ErrorBoundary>
         <ThrowError />
-      </ErrorBoundary>
+      </ErrorBoundary>,
     );
     const alert = screen.getByRole('alert');
     expect(alert).toBeInTheDocument();
@@ -61,7 +61,7 @@ describe('ErrorBoundary', () => {
     render(
       <ErrorBoundary>
         <ThrowError />
-      </ErrorBoundary>
+      </ErrorBoundary>,
     );
     const alert = screen.getByRole('alert');
     expect(alert).toHaveAttribute('aria-live', 'assertive');
@@ -71,7 +71,7 @@ describe('ErrorBoundary', () => {
     render(
       <ErrorBoundary>
         <ThrowError />
-      </ErrorBoundary>
+      </ErrorBoundary>,
     );
     expect(screen.getByRole('button', { name: /Rebind the Scroll/ })).toBeInTheDocument();
   });
@@ -86,7 +86,7 @@ describe('ErrorBoundary', () => {
     render(
       <ErrorBoundary>
         <ThrowError />
-      </ErrorBoundary>
+      </ErrorBoundary>,
     );
 
     fireEvent.click(screen.getByRole('button', { name: /Rebind the Scroll/ }));
@@ -97,7 +97,7 @@ describe('ErrorBoundary', () => {
     render(
       <ErrorBoundary>
         <ThrowError message="logged error" />
-      </ErrorBoundary>
+      </ErrorBoundary>,
     );
     expect(consoleSpy).toHaveBeenCalled();
     // componentDidCatch calls console.error with (error, info)
@@ -120,7 +120,7 @@ describe('ErrorBoundary', () => {
     const { container } = render(
       <ErrorBoundary>
         <ThrowNoMessage />
-      </ErrorBoundary>
+      </ErrorBoundary>,
     );
 
     expect(screen.getByText('The Scroll Has Torn')).toBeInTheDocument();
@@ -132,7 +132,7 @@ describe('ErrorBoundary', () => {
     const { rerender } = render(
       <ErrorBoundary>
         <ThrowError />
-      </ErrorBoundary>
+      </ErrorBoundary>,
     );
 
     expect(screen.getByText('The Scroll Has Torn')).toBeInTheDocument();
@@ -143,7 +143,7 @@ describe('ErrorBoundary', () => {
     rerender(
       <ErrorBoundary>
         <GoodChild />
-      </ErrorBoundary>
+      </ErrorBoundary>,
     );
 
     // Still shows error fallback (expected React behavior)
@@ -154,7 +154,7 @@ describe('ErrorBoundary', () => {
     render(
       <ErrorBoundary>
         <ThrowError />
-      </ErrorBoundary>
+      </ErrorBoundary>,
     );
     // The ⟐ symbol appears in the rune span and the button
     const runes = screen.getAllByText('⟐', { exact: false });
@@ -165,7 +165,7 @@ describe('ErrorBoundary', () => {
     const { container } = render(
       <ErrorBoundary>
         <div>Safe content</div>
-      </ErrorBoundary>
+      </ErrorBoundary>,
     );
     expect(container.querySelector('.grimoire-error')).toBeNull();
     expect(screen.getByText('Safe content')).toBeInTheDocument();

@@ -1,5 +1,5 @@
-import { test, expect } from '@playwright/test';
-import { gotoReady, closeModal, checkA11y } from './helpers.js';
+import { expect, test } from '@playwright/test';
+import { checkA11y, gotoReady } from './helpers.js';
 
 test.describe('accessibility baseline', () => {
   test('home page is accessible', async ({ page }) => {

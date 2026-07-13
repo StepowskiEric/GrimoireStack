@@ -1,14 +1,14 @@
-import { useState, useRef, useCallback, useEffect } from 'react';
-import { castTear, castBoom, castScratch, castThud } from '../audio/sounds.js';
+import { useCallback, useEffect, useRef, useState } from 'react';
+import { castBoom, castScratch, castTear, castThud } from '../audio/sounds.js';
 
 // Phase boundaries (ms from start). The phase is derived from elapsed
 // time, not stored in state separately — single source of truth.
 const PHASES = [
-  { name: 'wake',  end: 600  },
+  { name: 'wake', end: 600 },
   { name: 'bleed', end: 1100 },
   { name: 'sigil', end: 2000 },
-  { name: 'name',  end: 2700 },
-  { name: 'hold',  end: 3100 },
+  { name: 'name', end: 2700 },
+  { name: 'hold', end: 3100 },
   { name: 'close', end: 3800 },
 ];
 
@@ -17,10 +17,10 @@ const CLOSE_DURATION = 700;
 const SKIP_AFTER = 2000;
 
 const SOUND_AT = {
-  bleed: 1100,  // castTear at start of bleed
-  sigil: 1100,  // castBoom at start of sigil
-  name:  2000,  // castScratch at start of name
-  close: 3100,  // castThud at start of close
+  bleed: 1100, // castTear at start of bleed
+  sigil: 1100, // castBoom at start of sigil
+  name: 2000, // castScratch at start of name
+  close: 3100, // castThud at start of close
 };
 
 function prefersReducedMotion() {
@@ -118,7 +118,7 @@ export function useEldritchCast({ onComplete }) {
     // Mark completed immediately so the rAF tick cannot also fire completion
     completedRef.current = true;
     // Jump to close phase: shift offset so elapsed lands at TOTAL - CLOSE_DURATION
-    offsetRef.current = (TOTAL - CLOSE_DURATION) - (performance.now() - startRef.current);
+    offsetRef.current = TOTAL - CLOSE_DURATION - (performance.now() - startRef.current);
     if (offsetRef.current < 0) offsetRef.current = 0;
     setPhase('close');
     if (!playedSoundsRef.current.has('close')) {

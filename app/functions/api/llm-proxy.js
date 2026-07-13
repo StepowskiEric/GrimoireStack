@@ -11,13 +11,10 @@
  */
 
 import { DEFAULT_LLM_MODEL } from '../../src/lib/llm-defaults.js';
-import { normalizeTools, toChatCompletion } from './_lib/llm-format.js';
 import { buildBindingInputs } from './_lib/llm-adapters.js';
+import { normalizeTools, toChatCompletion } from './_lib/llm-format.js';
 
-const ALLOWED_ORIGINS = [
-  'https://grimoirestack.com',
-  'https://www.grimoirestack.com',
-];
+const ALLOWED_ORIGINS = ['https://grimoirestack.com', 'https://www.grimoirestack.com'];
 
 function corsHeaders(request) {
   const origin = request.headers.get('Origin') || '';
@@ -63,8 +60,7 @@ export async function onRequest(context) {
     return json({ error: 'Missing messages array' }, 400, corsH);
   }
 
-  const model =
-    typeof body.model === 'string' && body.model ? body.model : DEFAULT_LLM_MODEL;
+  const model = typeof body.model === 'string' && body.model ? body.model : DEFAULT_LLM_MODEL;
   const tools = normalizeTools(body.tools);
   const temperature = typeof body.temperature === 'number' ? body.temperature : 0.7;
   const maxTokens = typeof body.max_tokens === 'number' ? body.max_tokens : 4096;

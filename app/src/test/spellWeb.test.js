@@ -1,4 +1,4 @@
-import { describe, it, expect } from 'vitest';
+import { describe, expect, it } from 'vitest';
 import { createGrimoireIndex } from '../data/grimoireIndex.js';
 
 /**
@@ -14,9 +14,26 @@ const WEB_SCHOOLS = [
     real: 'Debugging',
     desc: 'Bug fixes.',
     spells: [
-      { name: 'Trace Sight', skill: 'trace', effect: 'Stack traces.', status: 'Proven', combos: ['Bisect Divination', 'Log Reader'] },
-      { name: 'Bisect Divination', skill: 'bisect', effect: 'Binary search.', status: 'Proven', combos: ['Trace Sight', 'Commit Scry'] },
-      { name: 'Commit Scry', skill: 'commit', effect: 'Read commits.', combos: ['Bisect Divination'] },
+      {
+        name: 'Trace Sight',
+        skill: 'trace',
+        effect: 'Stack traces.',
+        status: 'Proven',
+        combos: ['Bisect Divination', 'Log Reader'],
+      },
+      {
+        name: 'Bisect Divination',
+        skill: 'bisect',
+        effect: 'Binary search.',
+        status: 'Proven',
+        combos: ['Trace Sight', 'Commit Scry'],
+      },
+      {
+        name: 'Commit Scry',
+        skill: 'commit',
+        effect: 'Read commits.',
+        combos: ['Bisect Divination'],
+      },
       { name: 'Log Reader', skill: 'logs', effect: 'Parse logs.', combos: ['Trace Sight'] },
       { name: 'Watcher', skill: 'watcher', effect: 'Watches.', combos: ['Trace Sight'] },
     ],
@@ -27,8 +44,20 @@ const WEB_SCHOOLS = [
     real: 'Testing',
     desc: 'Prove correctness.',
     spells: [
-      { name: 'Jest Weave', skill: 'jest', effect: 'Write tests.', status: 'New', combos: ['Mock Shell'] },
-      { name: 'Mock Shell', skill: 'mock', effect: 'Fake dependencies.', status: 'New', combos: ['Jest Weave'] },
+      {
+        name: 'Jest Weave',
+        skill: 'jest',
+        effect: 'Write tests.',
+        status: 'New',
+        combos: ['Mock Shell'],
+      },
+      {
+        name: 'Mock Shell',
+        skill: 'mock',
+        effect: 'Fake dependencies.',
+        status: 'New',
+        combos: ['Jest Weave'],
+      },
     ],
   },
 ];
@@ -44,7 +73,7 @@ describe('buildSpellWeb', () => {
     const idx = makeIndex();
     const web = idx.buildSpellWeb();
     expect(web.schools.length).toBe(2);
-    const ids = web.schools.map(s => s.id);
+    const ids = web.schools.map((s) => s.id);
     expect(ids).toContain('debugging');
     expect(ids).toContain('testing');
   });
@@ -58,7 +87,7 @@ describe('buildSpellWeb', () => {
   it('populates school children with spell nodes', () => {
     const idx = makeIndex();
     const web = idx.buildSpellWeb();
-    const dbg = web.schools.find(s => s.id === 'debugging');
+    const dbg = web.schools.find((s) => s.id === 'debugging');
     expect(dbg.children.length).toBe(5);
     expect(dbg.spellCount).toBe(5);
   });
@@ -66,7 +95,7 @@ describe('buildSpellWeb', () => {
   it('sets spell node properties', () => {
     const idx = makeIndex();
     const web = idx.buildSpellWeb();
-    const trace = web.spellNodes.find(n => n.id === 'trace');
+    const trace = web.spellNodes.find((n) => n.id === 'trace');
     expect(trace.label).toBe('Trace Sight');
     expect(trace.schoolId).toBe('debugging');
     expect(trace.schoolName).toBe('Debugging');
@@ -76,7 +105,7 @@ describe('buildSpellWeb', () => {
   it('sets school node properties', () => {
     const idx = makeIndex();
     const web = idx.buildSpellWeb();
-    const dbg = web.schools.find(s => s.id === 'debugging');
+    const dbg = web.schools.find((s) => s.id === 'debugging');
     expect(dbg.label).toBe('Debugging');
     expect(dbg.name).toBe('School of Remediation');
     expect(dbg.type).toBe('school');
@@ -87,9 +116,10 @@ describe('buildSpellWeb', () => {
     const web = idx.buildSpellWeb();
     // trace↔bisect: trace lists "Bisect Divination" + bisect lists "Trace Sight" = weight 2
     // watcher↔trace: watcher lists "Trace Sight" only = weight 1
-    const traceBisect = web.comboEdges.find(e =>
-      (e.source === 'trace' && e.target === 'bisect') ||
-      (e.source === 'bisect' && e.target === 'trace')
+    const traceBisect = web.comboEdges.find(
+      (e) =>
+        (e.source === 'trace' && e.target === 'bisect') ||
+        (e.source === 'bisect' && e.target === 'trace'),
     );
     expect(traceBisect).toBeDefined();
     expect(traceBisect.weight).toBe(2);
@@ -132,7 +162,7 @@ describe('buildSpellWeb', () => {
     const idx = makeIndex(schools);
     const web = idx.buildSpellWeb();
     // No edge should reference 'ghost' since its combo target doesn't exist
-    const ghostEdge = web.comboEdges.find(e => e.source === 'ghost' || e.target === 'ghost');
+    const ghostEdge = web.comboEdges.find((e) => e.source === 'ghost' || e.target === 'ghost');
     expect(ghostEdge).toBeUndefined();
   });
 

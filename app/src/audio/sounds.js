@@ -28,7 +28,9 @@ function pageCreak() {
       pageCreakAudio.currentTime = 0;
     }
     pageCreakAudio.play();
-  } catch (e) { console.warn('[audio]', e); }
+  } catch (e) {
+    console.warn('[audio]', e);
+  }
 }
 
 function startAmbience() {
@@ -44,31 +46,50 @@ function startAmbience() {
     ambMaster.connect(audioCtx.destination);
     ambienceNodes.push(ambMaster);
     const drone1 = audioCtx.createOscillator();
-    drone1.type = 'sine'; drone1.frequency.value = 52;
-    const drone1G = audioCtx.createGain(); drone1G.gain.value = 0.4;
-    drone1.connect(drone1G); drone1G.connect(ambMaster); drone1.start();
+    drone1.type = 'sine';
+    drone1.frequency.value = 52;
+    const drone1G = audioCtx.createGain();
+    drone1G.gain.value = 0.4;
+    drone1.connect(drone1G);
+    drone1G.connect(ambMaster);
+    drone1.start();
     ambienceNodes.push(drone1);
     const drone2 = audioCtx.createOscillator();
-    drone2.type = 'sine'; drone2.frequency.value = 55.3;
-    const drone2G = audioCtx.createGain(); drone2G.gain.value = 0.3;
-    drone2.connect(drone2G); drone2G.connect(ambMaster); drone2.start();
+    drone2.type = 'sine';
+    drone2.frequency.value = 55.3;
+    const drone2G = audioCtx.createGain();
+    drone2G.gain.value = 0.3;
+    drone2.connect(drone2G);
+    drone2G.connect(ambMaster);
+    drone2.start();
     ambienceNodes.push(drone2);
     const drone3 = audioCtx.createOscillator();
-    drone3.type = 'sine'; drone3.frequency.value = 31;
-    const drone3G = audioCtx.createGain(); drone3G.gain.value = 0.2;
-    drone3.connect(drone3G); drone3G.connect(ambMaster); drone3.start();
+    drone3.type = 'sine';
+    drone3.frequency.value = 31;
+    const drone3G = audioCtx.createGain();
+    drone3G.gain.value = 0.2;
+    drone3.connect(drone3G);
+    drone3G.connect(ambMaster);
+    drone3.start();
     ambienceNodes.push(drone3);
     const airLen = audioCtx.sampleRate * 4;
     const airBuf = audioCtx.createBuffer(1, airLen, audioCtx.sampleRate);
     const airCh = airBuf.getChannelData(0);
     for (let i = 0; i < airLen; i++) airCh[i] = Math.random() * 2 - 1;
     const airSrc = audioCtx.createBufferSource();
-    airSrc.buffer = airBuf; airSrc.loop = true;
+    airSrc.buffer = airBuf;
+    airSrc.loop = true;
     const airBP = audioCtx.createBiquadFilter();
-    airBP.type = 'bandpass'; airBP.frequency.value = 400; airBP.Q.value = 0.3;
-    const airG = audioCtx.createGain(); airG.gain.value = 0.3;
-    airSrc.connect(airBP); airBP.connect(airG); airG.connect(ambMaster);
-    airSrc.start(); ambienceNodes.push(airSrc);
+    airBP.type = 'bandpass';
+    airBP.frequency.value = 400;
+    airBP.Q.value = 0.3;
+    const airG = audioCtx.createGain();
+    airG.gain.value = 0.3;
+    airSrc.connect(airBP);
+    airBP.connect(airG);
+    airG.connect(ambMaster);
+    airSrc.start();
+    ambienceNodes.push(airSrc);
     function scheduleCrackle() {
       if (!ambienceStarted) return;
       const nextCrackle = 2 + Math.random() * 8;
@@ -84,18 +105,26 @@ function startAmbience() {
           const cSrc = audioCtx.createBufferSource();
           cSrc.buffer = cBuf;
           const cBP = audioCtx.createBiquadFilter();
-          cBP.type = 'bandpass'; cBP.frequency.value = 2000 + Math.random() * 1500; cBP.Q.value = 2;
+          cBP.type = 'bandpass';
+          cBP.frequency.value = 2000 + Math.random() * 1500;
+          cBP.Q.value = 2;
           const cG = audioCtx.createGain();
           cG.gain.setValueAtTime(0.15 + Math.random() * 0.1, cNow);
           cG.gain.exponentialRampToValueAtTime(0.001, cNow + cDur);
-          cSrc.connect(cBP); cBP.connect(cG); cG.connect(ambMaster);
+          cSrc.connect(cBP);
+          cBP.connect(cG);
+          cG.connect(ambMaster);
           cSrc.start(cNow);
-        } catch (e) { console.warn('[audio crackle]', e); }
+        } catch (e) {
+          console.warn('[audio crackle]', e);
+        }
         if (ambienceStarted) scheduleCrackle();
       }, nextCrackle * 1000);
     }
     scheduleCrackle();
-  } catch (e) { console.warn('[audio]', e); }
+  } catch (e) {
+    console.warn('[audio]', e);
+  }
 }
 
 // Tear down the running ambience. All nodes are stopped and disconnected;
@@ -106,7 +135,9 @@ function stopAmbience() {
     try {
       if (typeof node.stop === 'function') node.stop();
       if (typeof node.disconnect === 'function') node.disconnect();
-    } catch (e) { console.warn('[audio stop]', e); }
+    } catch (e) {
+      console.warn('[audio stop]', e);
+    }
   }
   ambienceNodes.length = 0;
 }
@@ -143,10 +174,14 @@ function castTear() {
     g.gain.setValueAtTime(0, now);
     g.gain.linearRampToValueAtTime(0.4, now + 0.02);
     g.gain.exponentialRampToValueAtTime(0.001, now + dur);
-    src.connect(bp); bp.connect(g); g.connect(master);
+    src.connect(bp);
+    bp.connect(g);
+    g.connect(master);
     src.start(now);
     src.stop(now + dur + 0.02);
-  } catch (e) { console.warn('[audio]', e); }
+  } catch (e) {
+    console.warn('[audio]', e);
+  }
 }
 
 function castBoom() {
@@ -165,8 +200,10 @@ function castBoom() {
     og.gain.setValueAtTime(0, now);
     og.gain.linearRampToValueAtTime(0.5, now + 0.008);
     og.gain.exponentialRampToValueAtTime(0.001, now + 0.6);
-    osc.connect(og); og.connect(master);
-    osc.start(now); osc.stop(now + 0.65);
+    osc.connect(og);
+    og.connect(master);
+    osc.start(now);
+    osc.stop(now + 0.65);
     const nDur = 0.25;
     const nLen = Math.floor(nDur * ctx.sampleRate);
     const nBuf = ctx.createBuffer(1, nLen, ctx.sampleRate);
@@ -180,9 +217,13 @@ function castBoom() {
     const ng = ctx.createGain();
     ng.gain.setValueAtTime(0.3, now);
     ng.gain.exponentialRampToValueAtTime(0.001, now + nDur);
-    nSrc.connect(lp); lp.connect(ng); ng.connect(master);
+    nSrc.connect(lp);
+    lp.connect(ng);
+    ng.connect(master);
     nSrc.start(now);
-  } catch (e) { console.warn('[audio]', e); }
+  } catch (e) {
+    console.warn('[audio]', e);
+  }
 }
 
 function castScratch() {
@@ -208,10 +249,14 @@ function castScratch() {
       const g = ctx.createGain();
       g.gain.setValueAtTime(0.15 + Math.random() * 0.08, t);
       g.gain.exponentialRampToValueAtTime(0.001, t + dur);
-      src.connect(hp); hp.connect(g); g.connect(master);
+      src.connect(hp);
+      hp.connect(g);
+      g.connect(master);
       src.start(t);
     }
-  } catch (e) { console.warn('[audio]', e); }
+  } catch (e) {
+    console.warn('[audio]', e);
+  }
 }
 
 function castThud() {
@@ -236,10 +281,14 @@ function castThud() {
     g.gain.setValueAtTime(0, now);
     g.gain.linearRampToValueAtTime(0.6, now + 0.005);
     g.gain.exponentialRampToValueAtTime(0.001, now + dur);
-    src.connect(lp); lp.connect(g); g.connect(master);
+    src.connect(lp);
+    lp.connect(g);
+    g.connect(master);
     src.start(now);
     src.stop(now + dur + 0.02);
-  } catch (e) { console.warn('[audio]', e); }
+  } catch (e) {
+    console.warn('[audio]', e);
+  }
 }
 
 // ── Background whispers ────────────────────────────────
@@ -257,9 +306,9 @@ const WHISPER_URLS = [
   '/whispering_7.mp3',
 ];
 
-const WHISPER_FIRST_DELAY_MS = 18000;
-const WHISPER_MIN_GAP_MS = 30000;
-const WHISPER_MAX_GAP_MS = 90000;
+const WHISPER_FIRST_DELAY_MS = 18_000;
+const WHISPER_MIN_GAP_MS = 30_000;
+const WHISPER_MAX_GAP_MS = 90_000;
 const WHISPER_VOLUME = 0.18;
 
 let whispersStarted = false;
@@ -276,7 +325,9 @@ function playOneWhisper() {
     const audio = new Audio(url);
     audio.volume = WHISPER_VOLUME;
     audio.play().catch(() => {});
-  } catch (e) { console.warn('[audio]', e); }
+  } catch (e) {
+    console.warn('[audio]', e);
+  }
 }
 
 function scheduleNextWhisper() {

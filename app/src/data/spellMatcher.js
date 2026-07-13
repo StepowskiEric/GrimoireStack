@@ -7,11 +7,65 @@
  */
 
 const PROBLEM_STOPWORDS = new Set([
-  'a','an','the','i','im','ive','id','is','it','of','to','and','or','but',
-  'my','in','on','for','with','this','that','those','these','be','been',
-  'was','were','are','am','do','does','did','have','has','had','you','your',
-  'me','we','us','our','so','just','very','really','about','what','how',
-  'when','where','why','which','than','then','too','any','some','no','not',
+  'a',
+  'an',
+  'the',
+  'i',
+  'im',
+  'ive',
+  'id',
+  'is',
+  'it',
+  'of',
+  'to',
+  'and',
+  'or',
+  'but',
+  'my',
+  'in',
+  'on',
+  'for',
+  'with',
+  'this',
+  'that',
+  'those',
+  'these',
+  'be',
+  'been',
+  'was',
+  'were',
+  'are',
+  'am',
+  'do',
+  'does',
+  'did',
+  'have',
+  'has',
+  'had',
+  'you',
+  'your',
+  'me',
+  'we',
+  'us',
+  'our',
+  'so',
+  'just',
+  'very',
+  'really',
+  'about',
+  'what',
+  'how',
+  'when',
+  'where',
+  'why',
+  'which',
+  'than',
+  'then',
+  'too',
+  'any',
+  'some',
+  'no',
+  'not',
 ]);
 
 function tokenizeProblem(text) {
@@ -57,24 +111,29 @@ export function createSpellMatcher(core) {
   // haystack (name + skill + effect + school name + real name + status).
   const matchProblem = (query, { limit = 5 } = {}) => {
     const tokens = tokenizeProblem(query);
-    if (!tokens.length) return [];
+    if (tokens.length === 0) return [];
 
     const scored = [];
     for (const entry of iterate()) {
       const { spell, school } = entry;
       const haystack = (
-        spell.name + ' ' +
-        spell.skill + ' ' +
-        spell.effect + ' ' +
-        school.name + ' ' +
-        school.real + ' ' +
+        spell.name +
+        ' ' +
+        spell.skill +
+        ' ' +
+        spell.effect +
+        ' ' +
+        school.name +
+        ' ' +
+        school.real +
+        ' ' +
         (spell.status || '')
       ).toLowerCase();
       let score = 0;
       for (const tok of tokens) {
         if (haystack.includes(tok)) score += 2;
       }
-      if (Array.isArray(spell.combos) && spell.combos.length) score += 0.5;
+      if (Array.isArray(spell.combos) && spell.combos.length > 0) score += 0.5;
       if (spell.status === 'Proven') score += 0.5;
       if (score > 0) scored.push({ spell, school, score });
     }

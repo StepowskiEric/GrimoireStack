@@ -1,4 +1,4 @@
-import { describe, it, expect } from 'vitest';
+import { describe, expect, it } from 'vitest';
 import { serializeConfig, serializeMarkdown } from '../utils/serializeConfig.js';
 
 /**
@@ -9,8 +9,8 @@ import { serializeConfig, serializeMarkdown } from '../utils/serializeConfig.js'
  */
 
 const SAMPLE_FAVS = [
-  { name: 'Trace Sight', skill: 'log-trace-correlation', addedAt: 1718000000000 },
-  { name: 'Bisect Divination', skill: 'bisect-debugging', addedAt: 1718000001000 },
+  { name: 'Trace Sight', skill: 'log-trace-correlation', addedAt: 1_718_000_000_000 },
+  { name: 'Bisect Divination', skill: 'bisect-debugging', addedAt: 1_718_000_001_000 },
 ];
 
 const SAMPLE_MARG = {
@@ -19,8 +19,8 @@ const SAMPLE_MARG = {
 };
 
 const SAMPLE_RECENT = [
-  { name: 'Trace Sight', skill: 'log-trace-correlation', viewedAt: 1718000000000 },
-  { name: 'Tree of Thoughts', skill: 'tree-of-thoughts', viewedAt: 1717999999000 },
+  { name: 'Trace Sight', skill: 'log-trace-correlation', viewedAt: 1_718_000_000_000 },
+  { name: 'Tree of Thoughts', skill: 'tree-of-thoughts', viewedAt: 1_717_999_999_000 },
 ];
 
 // ── serializeConfig (JSON) ─────────────────────────────
@@ -42,28 +42,36 @@ describe('serializeConfig', () => {
   });
 
   it('includes favorites', () => {
-    const parsed = JSON.parse(serializeConfig({ favorites: SAMPLE_FAVS, marginalia: {}, recent: [] }));
+    const parsed = JSON.parse(
+      serializeConfig({ favorites: SAMPLE_FAVS, marginalia: {}, recent: [] }),
+    );
     expect(parsed.favorites.length).toBe(2);
     expect(parsed.favorites[0].skill).toBe('log-trace-correlation');
   });
 
   it('includes marginalia', () => {
-    const parsed = JSON.parse(serializeConfig({ favorites: [], marginalia: SAMPLE_MARG, recent: [] }));
+    const parsed = JSON.parse(
+      serializeConfig({ favorites: [], marginalia: SAMPLE_MARG, recent: [] }),
+    );
     expect(parsed.marginalia['log-trace-correlation']).toBe('Maps stack traces to source code');
   });
 
   it('includes recent', () => {
-    const parsed = JSON.parse(serializeConfig({ favorites: [], marginalia: {}, recent: SAMPLE_RECENT }));
+    const parsed = JSON.parse(
+      serializeConfig({ favorites: [], marginalia: {}, recent: SAMPLE_RECENT }),
+    );
     expect(parsed.recent.length).toBe(2);
   });
 
   it('accepts meta override', () => {
-    const parsed = JSON.parse(serializeConfig({
-      favorites: [],
-      marginalia: {},
-      recent: [],
-      meta: { source: 'Test' },
-    }));
+    const parsed = JSON.parse(
+      serializeConfig({
+        favorites: [],
+        marginalia: {},
+        recent: [],
+        meta: { source: 'Test' },
+      }),
+    );
     expect(parsed.meta.source).toBe('Test');
   });
 
@@ -80,8 +88,16 @@ describe('serializeConfig', () => {
   });
 
   it('is pure — same input produces same output', () => {
-    const a = serializeConfig({ favorites: SAMPLE_FAVS, marginalia: SAMPLE_MARG, recent: SAMPLE_RECENT });
-    const b = serializeConfig({ favorites: SAMPLE_FAVS, marginalia: SAMPLE_MARG, recent: SAMPLE_RECENT });
+    const a = serializeConfig({
+      favorites: SAMPLE_FAVS,
+      marginalia: SAMPLE_MARG,
+      recent: SAMPLE_RECENT,
+    });
+    const b = serializeConfig({
+      favorites: SAMPLE_FAVS,
+      marginalia: SAMPLE_MARG,
+      recent: SAMPLE_RECENT,
+    });
     expect(a).toBe(b);
   });
 
@@ -193,8 +209,16 @@ describe('serializeMarkdown', () => {
   });
 
   it('is pure — same input produces same output', () => {
-    const a = serializeMarkdown({ favorites: SAMPLE_FAVS, marginalia: SAMPLE_MARG, recent: SAMPLE_RECENT });
-    const b = serializeMarkdown({ favorites: SAMPLE_FAVS, marginalia: SAMPLE_MARG, recent: SAMPLE_RECENT });
+    const a = serializeMarkdown({
+      favorites: SAMPLE_FAVS,
+      marginalia: SAMPLE_MARG,
+      recent: SAMPLE_RECENT,
+    });
+    const b = serializeMarkdown({
+      favorites: SAMPLE_FAVS,
+      marginalia: SAMPLE_MARG,
+      recent: SAMPLE_RECENT,
+    });
     expect(a).toBe(b);
   });
 });

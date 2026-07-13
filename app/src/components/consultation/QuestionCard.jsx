@@ -10,9 +10,13 @@ import OptionButton from './OptionButton.jsx';
 export default function QuestionCard({ question, pool, onTap, disabled }) {
   return (
     <div className="flex flex-col gap-4" data-pool={pool}>
-      <h2 className="font-['Cinzel_Decorative'] text-[1.1rem] font-bold text-text-primary tracking-wide text-center">{question.question}</h2>
+      <h2 className="font-['Cinzel_Decorative'] text-[1.1rem] font-bold text-text-primary tracking-wide text-center">
+        {question.question}
+      </h2>
       {question.clarification && (
-        <p className="text-text-muted text-[0.82rem] text-center italic">{question.clarification}</p>
+        <p className="text-text-muted text-[0.82rem] text-center italic">
+          {question.clarification}
+        </p>
       )}
       <div className="grid gap-2" role="list">
         {question.options.map((option) => (

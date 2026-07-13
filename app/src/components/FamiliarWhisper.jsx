@@ -19,15 +19,16 @@ import Icon from './Icon.jsx';
  * to this prop, so we don't need new plumbing at the App.jsx level.
  */
 export default function FamiliarWhisper({ spell, onNavigate }) {
-  const kins = useMemo(
-    () => grimoireIndex.resolveKinsForSpell(spell),
-    [spell]
-  );
+  const kins = useMemo(() => grimoireIndex.resolveKinsForSpell(spell), [spell]);
 
   if (kins.length === 0) return null;
 
   return (
-    <div className="inline-flex items-center gap-2 mt-4.5 group" role="group" aria-label="Familiar and its kin">
+    <div
+      className="inline-flex items-center gap-2 mt-4.5 group"
+      role="group"
+      aria-label="Familiar and its kin"
+    >
       <button
         type="button"
         className="w-8 h-8 rounded-full bg-gradient-to-br from-[rgba(60,70,42,.55)] to-[rgba(10,8,6,.95)] border border-[rgba(138,154,106,.28)] text-[rgba(196,184,152,.7)] shadow-[inset_0_0_0_1px_rgba(8,8,6,.6),0_0_14px_rgba(138,154,106,.18)] transition-all duration-200 flex-shrink-0 group-hover:scale-110 group-hover:-rotate-3 group-hover:border-[rgba(196,184,152,.55)] group-hover:shadow-[inset_0_0_0_1px_rgba(8,8,6,.6),0_0_22px_rgba(212,175,55,.32)]"
@@ -38,7 +39,9 @@ export default function FamiliarWhisper({ spell, onNavigate }) {
       </button>
 
       <div className="flex flex-col items-start gap-1 overflow-hidden transition-all duration-200 max-w-0 opacity-0 group-hover:max-w-[520px] group-hover:opacity-100">
-        <span className="font-body italic text-[0.78rem] text-text-muted mb-1">Its kin whispers…</span>
+        <span className="font-body italic text-[0.78rem] text-text-muted mb-1">
+          Its kin whispers…
+        </span>
         {kins.map((entry, idx) => (
           <button
             key={entry.spell.skill}
@@ -48,7 +51,9 @@ export default function FamiliarWhisper({ spell, onNavigate }) {
             style={{ transitionDelay: `${idx * 60}ms` }}
           >
             <span className="italic">{getSpellHeadline(entry.spell)}</span>
-            <span className="text-text-muted text-[0.72rem] normal tracking-wide">· {entry.school.real}</span>
+            <span className="text-text-muted text-[0.72rem] normal tracking-wide">
+              · {entry.school.real}
+            </span>
           </button>
         ))}
       </div>

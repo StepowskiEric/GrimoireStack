@@ -24,17 +24,20 @@ export function useFavorites() {
       const skill = args[1] ?? args[0];
       return favorites.some((f) => f.skill === skill);
     },
-    [favorites]
+    [favorites],
   );
 
-  const toggleFavorite = useCallback((spellName, skill) => {
-    setFavorites((prev) => {
-      const exists = prev.some((f) => f.skill === skill);
-      if (exists) return prev.filter((f) => f.skill !== skill);
-      return [...prev, { name: spellName, skill, addedAt: Date.now() }];
-    });
-    return true;
-  }, [setFavorites]);
+  const toggleFavorite = useCallback(
+    (spellName, skill) => {
+      setFavorites((prev) => {
+        const exists = prev.some((f) => f.skill === skill);
+        if (exists) return prev.filter((f) => f.skill !== skill);
+        return [...prev, { name: spellName, skill, addedAt: Date.now() }];
+      });
+      return true;
+    },
+    [setFavorites],
+  );
 
   const findFavoriteSpell = useCallback((skill) => {
     const entry = grimoireIndex.resolveBySkill(skill);

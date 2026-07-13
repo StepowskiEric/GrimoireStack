@@ -1,4 +1,4 @@
-import { describe, it, expect } from 'vitest';
+import { describe, expect, it } from 'vitest';
 import { createGrimoireIndex } from '../data/grimoireIndex.js';
 
 /**
@@ -15,9 +15,26 @@ const GRAPH_SCHOOLS = [
     real: 'Debugging',
     desc: 'Bug fixes.',
     spells: [
-      { name: 'Trace Sight', skill: 'trace', effect: 'Stack traces.', status: 'Proven', combos: ['Bisect Divination', 'Log Reader'] },
-      { name: 'Bisect Divination', skill: 'bisect', effect: 'Binary search.', status: 'Proven', combos: ['Trace Sight', 'Commit Scry'] },
-      { name: 'Commit Scry', skill: 'commit', effect: 'Read commits.', combos: ['Bisect Divination'] },
+      {
+        name: 'Trace Sight',
+        skill: 'trace',
+        effect: 'Stack traces.',
+        status: 'Proven',
+        combos: ['Bisect Divination', 'Log Reader'],
+      },
+      {
+        name: 'Bisect Divination',
+        skill: 'bisect',
+        effect: 'Binary search.',
+        status: 'Proven',
+        combos: ['Trace Sight', 'Commit Scry'],
+      },
+      {
+        name: 'Commit Scry',
+        skill: 'commit',
+        effect: 'Read commits.',
+        combos: ['Bisect Divination'],
+      },
       { name: 'Log Reader', skill: 'logs', effect: 'Parse logs.', combos: ['Trace Sight'] },
       { name: 'Watcher', skill: 'watcher', effect: 'Watches.', combos: ['Trace Sight'] },
     ],
@@ -28,8 +45,20 @@ const GRAPH_SCHOOLS = [
     real: 'Testing',
     desc: 'Prove correctness.',
     spells: [
-      { name: 'Jest Weave', skill: 'jest', effect: 'Write tests.', status: 'New', combos: ['Mock Shell'] },
-      { name: 'Mock Shell', skill: 'mock', effect: 'Fake dependencies.', status: 'New', combos: ['Jest Weave'] },
+      {
+        name: 'Jest Weave',
+        skill: 'jest',
+        effect: 'Write tests.',
+        status: 'New',
+        combos: ['Mock Shell'],
+      },
+      {
+        name: 'Mock Shell',
+        skill: 'mock',
+        effect: 'Fake dependencies.',
+        status: 'New',
+        combos: ['Jest Weave'],
+      },
     ],
   },
 ];
@@ -58,9 +87,10 @@ describe('buildGraph', () => {
     const idx = makeIndex();
     const graph = idx.buildGraph();
     // trace↔bisect: trace lists bisect + bisect lists trace = weight 2
-    const traceBisect = graph.edges.find(e =>
-      (e.source === 'trace' && e.target === 'bisect') ||
-      (e.source === 'bisect' && e.target === 'trace')
+    const traceBisect = graph.edges.find(
+      (e) =>
+        (e.source === 'trace' && e.target === 'bisect') ||
+        (e.source === 'bisect' && e.target === 'trace'),
     );
     expect(traceBisect).toBeDefined();
     expect(traceBisect.weight).toBe(2);
@@ -90,7 +120,7 @@ describe('buildGraph', () => {
     const idx = makeIndex(schools);
     const graph = idx.buildGraph();
     // ghost has a combo to a nonexistent spell — no edge should be created
-    const ghostEdge = graph.edges.find(e => e.source === 'ghost' || e.target === 'ghost');
+    const ghostEdge = graph.edges.find((e) => e.source === 'ghost' || e.target === 'ghost');
     expect(ghostEdge).toBeUndefined();
   });
 
@@ -107,15 +137,17 @@ describe('buildGraph', () => {
     const idx = makeIndex();
     const graph = idx.buildGraph({ skillFilter: new Set(['debugging']) });
     // jest↔mock edge should be gone (both are testing)
-    const jestMock = graph.edges.find(e =>
-      (e.source === 'jest' && e.target === 'mock') ||
-      (e.source === 'mock' && e.target === 'jest')
+    const jestMock = graph.edges.find(
+      (e) =>
+        (e.source === 'jest' && e.target === 'mock') ||
+        (e.source === 'mock' && e.target === 'jest'),
     );
     expect(jestMock).toBeUndefined();
     // trace↔bisect should remain (both debugging)
-    const traceBisect = graph.edges.find(e =>
-      (e.source === 'trace' && e.target === 'bisect') ||
-      (e.source === 'bisect' && e.target === 'trace')
+    const traceBisect = graph.edges.find(
+      (e) =>
+        (e.source === 'trace' && e.target === 'bisect') ||
+        (e.source === 'bisect' && e.target === 'trace'),
     );
     expect(traceBisect).toBeDefined();
   });
@@ -123,7 +155,7 @@ describe('buildGraph', () => {
   it('sets schoolId and schoolName on nodes', () => {
     const idx = makeIndex();
     const graph = idx.buildGraph();
-    const trace = graph.nodes.find(n => n.id === 'trace');
+    const trace = graph.nodes.find((n) => n.id === 'trace');
     expect(trace).toBeDefined();
     expect(trace.schoolId).toBe('debugging');
     expect(trace.schoolName).toBe('School of Remediation');
@@ -132,13 +164,13 @@ describe('buildGraph', () => {
   it('computes comboCount from spell.combos', () => {
     const idx = makeIndex();
     const graph = idx.buildGraph();
-    const trace = graph.nodes.find(n => n.id === 'trace');
+    const trace = graph.nodes.find((n) => n.id === 'trace');
     expect(trace).toBeDefined();
     expect(trace.comboCount).toBe(2); // trace has 2 combos
-    const commit = graph.nodes.find(n => n.id === 'commit');
+    const commit = graph.nodes.find((n) => n.id === 'commit');
     expect(commit).toBeDefined();
     expect(commit.comboCount).toBe(1);
-    const watcher = graph.nodes.find(n => n.id === 'watcher');
+    const watcher = graph.nodes.find((n) => n.id === 'watcher');
     expect(watcher).toBeDefined();
     expect(watcher.comboCount).toBe(1);
   });
@@ -146,9 +178,9 @@ describe('buildGraph', () => {
   it('derives tier from spell.status', () => {
     const idx = makeIndex();
     const graph = idx.buildGraph();
-    const trace = graph.nodes.find(n => n.id === 'trace');
+    const trace = graph.nodes.find((n) => n.id === 'trace');
     expect(trace.tier).toBe('Proven');
-    const jest = graph.nodes.find(n => n.id === 'jest');
+    const jest = graph.nodes.find((n) => n.id === 'jest');
     expect(jest.tier).toBe('New');
   });
 });

@@ -11,7 +11,9 @@ import SchoolSigil from '../SchoolSigil.tsx';
 export default function SigilPicker({ onPick }) {
   return (
     <div className="flex flex-col items-center gap-4" data-stage="sigil">
-      <h2 className="font-['Cinzel_Decorative'] text-[1.25rem] font-bold text-text-primary tracking-wide text-center">Choose the Sigil That Calls You</h2>
+      <h2 className="font-['Cinzel_Decorative'] text-[1.25rem] font-bold text-text-primary tracking-wide text-center">
+        Choose the Sigil That Calls You
+      </h2>
       <p className="text-text-muted text-[0.82rem] text-center italic">
         Six domains. Six wounds. Touch the one that answers.
       </p>
@@ -27,7 +29,9 @@ export default function SigilPicker({ onPick }) {
             <span className="text-sickly" aria-hidden="true">
               <SchoolSigil schoolId={sigil.schoolId} size={42} animated />
             </span>
-            <span className="font-['Cinzel'] text-[0.78rem] font-semibold text-text-primary">{sigil.crypticName}</span>
+            <span className="font-['Cinzel'] text-[0.78rem] font-semibold text-text-primary">
+              {sigil.crypticName}
+            </span>
             <span className="text-text-muted text-[0.7rem]">{sigil.plainLabel}</span>
             <span className="text-text-muted text-[0.68rem] italic">{sigil.crypticLine}</span>
           </button>

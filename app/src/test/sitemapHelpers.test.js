@@ -1,9 +1,11 @@
-import { describe, it, expect } from 'vitest';
+import { describe, expect, it } from 'vitest';
 import { buildSitemapXml, escapeXml } from '../../scripts/sitemap-helpers.mjs';
 
 describe('escapeXml', () => {
   it('escapes special characters', () => {
-    expect(escapeXml('a & b <c> "d" \'e\'')).toBe('a &amp; b &lt;c&gt; &quot;d&quot; &apos;e&apos;');
+    expect(escapeXml('a & b <c> "d" \'e\'')).toBe(
+      'a &amp; b &lt;c&gt; &quot;d&quot; &apos;e&apos;',
+    );
   });
 });
 

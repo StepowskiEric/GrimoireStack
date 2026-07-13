@@ -1,5 +1,5 @@
-import { describe, it, expect, vi } from 'vitest';
-import { renderHook, act } from '@testing-library/react';
+import { act, renderHook } from '@testing-library/react';
+import { describe, expect, it, vi } from 'vitest';
 import { useFavorites } from '../hooks/useFavorites.js';
 
 describe('useFavorites', () => {
@@ -49,7 +49,7 @@ describe('useFavorites', () => {
   it('loads favorites from localStorage on mount', () => {
     localStorage.setItem(
       'grimoire-favorites',
-      JSON.stringify([{ name: 'Debug Familiar', skill: 'debug-subagent', addedAt: Date.now() }])
+      JSON.stringify([{ name: 'Debug Familiar', skill: 'debug-subagent', addedAt: Date.now() }]),
     );
     const { result } = renderHook(() => useFavorites());
     expect(result.current.favorites).toHaveLength(1);

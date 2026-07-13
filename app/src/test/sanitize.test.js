@@ -1,5 +1,5 @@
-import { describe, it, expect } from 'vitest';
-import { sanitizeHtml, escapeHtml } from '../utils/sanitize.js';
+import { describe, expect, it } from 'vitest';
+import { escapeHtml, sanitizeHtml } from '../utils/sanitize.js';
 
 describe('sanitizeHtml', () => {
   it('strips script tags', () => {
@@ -31,11 +31,15 @@ describe('sanitizeHtml', () => {
   });
 
   it('strips javascript: URIs', () => {
-    expect(sanitizeHtml('<a href="javascript:alert(1)">link</a>')).toBe('<a href="alert(1)">link</a>');
+    expect(sanitizeHtml('<a href="javascript:alert(1)">link</a>')).toBe(
+      '<a href="alert(1)">link</a>',
+    );
   });
 
   it('removes data: prefix from URIs', () => {
-    expect(sanitizeHtml('<img src="data:image/svg+xml,...">')).toBe('<img src="image/svg+xml,...">');
+    expect(sanitizeHtml('<img src="data:image/svg+xml,...">')).toBe(
+      '<img src="image/svg+xml,...">',
+    );
   });
 
   it('preserves safe HTML', () => {

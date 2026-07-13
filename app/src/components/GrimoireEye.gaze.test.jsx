@@ -1,5 +1,5 @@
-import { describe, it, expect, vi, beforeAll, afterEach } from 'vitest';
-import { render, cleanup } from '@testing-library/react';
+import { cleanup, render } from '@testing-library/react';
+import { afterEach, beforeAll, describe, expect, it, vi } from 'vitest';
 import GrimoireEye from './GrimoireEye.jsx';
 
 // GrimoireEye drives its animation through requestAnimationFrame; stub it so

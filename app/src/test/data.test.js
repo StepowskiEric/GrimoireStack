@@ -1,6 +1,5 @@
-import { describe, it, expect } from 'vitest';
-import schools from '../data/schools.js';
-import { WIZARD_DATA } from '../data/schools.js';
+import { describe, expect, it } from 'vitest';
+import schools, { WIZARD_DATA } from '../data/schools.js';
 
 describe('schools data', () => {
   it('exports an array of schools', () => {
@@ -60,21 +59,23 @@ describe('schools data', () => {
       for (const spell of school.spells) {
         if (!Array.isArray(spell.kins)) continue;
         for (const k of spell.kins) {
-          const found = schools.some(s => s.spells.some(sp => sp.skill === k));
-          expect(found, `kin "${k}" on spell "${spell.skill}" must exist in the catalog`).toBe(true);
+          const found = schools.some((s) => s.spells.some((sp) => sp.skill === k));
+          expect(found, `kin "${k}" on spell "${spell.skill}" must exist in the catalog`).toBe(
+            true,
+          );
         }
       }
     }
   });
 
   it('has unique school IDs', () => {
-    const ids = schools.map(s => s.id);
+    const ids = schools.map((s) => s.id);
     expect(new Set(ids).size).toBe(ids.length);
   });
 
   it('has unique spell name values within each school', () => {
     for (const school of schools) {
-      const names = school.spells.map(s => s.name);
+      const names = school.spells.map((s) => s.name);
       expect(new Set(names).size).toBe(names.length);
     }
   });
@@ -114,7 +115,7 @@ describe('WIZARD_DATA', () => {
   });
 
   it('has unique category IDs', () => {
-    const ids = WIZARD_DATA.map(c => c.id);
+    const ids = WIZARD_DATA.map((c) => c.id);
     expect(new Set(ids).size).toBe(ids.length);
   });
 

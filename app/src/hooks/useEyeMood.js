@@ -1,4 +1,4 @@
-import { useRef, useEffect, useCallback } from 'react';
+import { useCallback, useEffect, useRef } from 'react';
 import { useLocalStorageState } from './useLocalStorageState.js';
 
 export const EYE_MOODS = Object.freeze({
@@ -38,15 +38,18 @@ export function useEyeMood() {
     currentMoodRef.current = mood;
   }, [mood]);
 
-  const recordView = useCallback((skillId) => {
-    if (!skillId) return;
-    viewedSkillsRef.current.add(skillId);
-    const now = Date.now();
-    setLastInteraction(now);
-    // Just interacted — idle is 0, mood can't be neglectful
-    const next = computeMood(viewedSkillsRef.current.size, 0);
-    setMood(next);
-  }, [setMood, setLastInteraction]);
+  const recordView = useCallback(
+    (skillId) => {
+      if (!skillId) return;
+      viewedSkillsRef.current.add(skillId);
+      const now = Date.now();
+      setLastInteraction(now);
+      // Just interacted — idle is 0, mood can't be neglectful
+      const next = computeMood(viewedSkillsRef.current.size, 0);
+      setMood(next);
+    },
+    [setMood, setLastInteraction],
+  );
 
   // On mount: reset session state if returning after prolonged absence
   useEffect(() => {

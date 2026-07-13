@@ -1,10 +1,11 @@
-import { describe, it, expect } from 'vitest';
-import { simpleMarkdownToHtml, parseTables, wrapLists, escapeHtml } from '../utils/markdown.js';
+import { describe, expect, it } from 'vitest';
+import { escapeHtml, parseTables, simpleMarkdownToHtml, wrapLists } from '../utils/markdown.js';
 
 describe('escapeHtml', () => {
   it('escapes & < > and "', () => {
-    expect(escapeHtml('<script>alert("x&y")</script>'))
-      .toBe('&lt;script&gt;alert(&quot;x&amp;y&quot;)&lt;/script&gt;');
+    expect(escapeHtml('<script>alert("x&y")</script>')).toBe(
+      '&lt;script&gt;alert(&quot;x&amp;y&quot;)&lt;/script&gt;',
+    );
   });
 
   it('returns empty string for empty input', () => {
@@ -79,7 +80,9 @@ describe('simpleMarkdownToHtml', () => {
 
   it('converts links', () => {
     const result = simpleMarkdownToHtml('[click](https://example.com)');
-    expect(result).toContain('<a href="https://example.com" target="_blank" rel="noopener noreferrer">click</a>');
+    expect(result).toContain(
+      '<a href="https://example.com" target="_blank" rel="noopener noreferrer">click</a>',
+    );
   });
 
   it('converts fenced code blocks', () => {

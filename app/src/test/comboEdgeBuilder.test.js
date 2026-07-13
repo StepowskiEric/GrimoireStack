@@ -1,4 +1,4 @@
-import { describe, it, expect } from 'vitest';
+import { describe, expect, it } from 'vitest';
 import { buildComboEdges } from '../data/comboEdgeBuilder.js';
 import { createSpellCore } from '../data/spellCore.js';
 import { createSpellLookup } from '../data/spellLookup.js';
@@ -10,9 +10,26 @@ const SCHOOLS = [
     real: 'Debugging',
     desc: 'Bug fixes.',
     spells: [
-      { name: 'Trace Sight', skill: 'trace', effect: 'Stack traces.', status: 'Proven', combos: ['Bisect Divination', 'Log Reader'] },
-      { name: 'Bisect Divination', skill: 'bisect', effect: 'Binary search.', status: 'Proven', combos: ['Trace Sight', 'Commit Scry'] },
-      { name: 'Commit Scry', skill: 'commit', effect: 'Read commits.', combos: ['Bisect Divination'] },
+      {
+        name: 'Trace Sight',
+        skill: 'trace',
+        effect: 'Stack traces.',
+        status: 'Proven',
+        combos: ['Bisect Divination', 'Log Reader'],
+      },
+      {
+        name: 'Bisect Divination',
+        skill: 'bisect',
+        effect: 'Binary search.',
+        status: 'Proven',
+        combos: ['Trace Sight', 'Commit Scry'],
+      },
+      {
+        name: 'Commit Scry',
+        skill: 'commit',
+        effect: 'Read commits.',
+        combos: ['Bisect Divination'],
+      },
       { name: 'Log Reader', skill: 'logs', effect: 'Parse logs.', combos: ['Trace Sight'] },
       { name: 'Watcher', skill: 'watcher', effect: 'Watches.', combos: ['Trace Sight'] },
     ],
@@ -23,8 +40,20 @@ const SCHOOLS = [
     real: 'Testing',
     desc: 'Prove correctness.',
     spells: [
-      { name: 'Jest Weave', skill: 'jest', effect: 'Write tests.', status: 'New', combos: ['Mock Shell'] },
-      { name: 'Mock Shell', skill: 'mock', effect: 'Fake dependencies.', status: 'New', combos: ['Jest Weave'] },
+      {
+        name: 'Jest Weave',
+        skill: 'jest',
+        effect: 'Write tests.',
+        status: 'New',
+        combos: ['Mock Shell'],
+      },
+      {
+        name: 'Mock Shell',
+        skill: 'mock',
+        effect: 'Fake dependencies.',
+        status: 'New',
+        combos: ['Jest Weave'],
+      },
     ],
   },
 ];
@@ -49,7 +78,7 @@ describe('buildComboEdges', () => {
     const traceBisect = edges.find(
       (e) =>
         (e.source === 'trace' && e.target === 'bisect') ||
-        (e.source === 'bisect' && e.target === 'trace')
+        (e.source === 'bisect' && e.target === 'trace'),
     );
     expect(traceBisect).toBeDefined();
     expect(traceBisect.weight).toBe(2);
@@ -62,7 +91,7 @@ describe('buildComboEdges', () => {
     const watcherTrace = edges.find(
       (e) =>
         (e.source === 'watcher' && e.target === 'trace') ||
-        (e.source === 'trace' && e.target === 'watcher')
+        (e.source === 'trace' && e.target === 'watcher'),
     );
     expect(watcherTrace).toBeDefined();
     expect(watcherTrace.weight).toBe(1);
@@ -76,9 +105,7 @@ describe('buildComboEdges', () => {
         name: 'School of Loops',
         real: 'Loops',
         desc: '',
-        spells: [
-          { name: 'Echo', skill: 'echo', effect: 'Loop.', combos: ['Echo'] },
-        ],
+        spells: [{ name: 'Echo', skill: 'echo', effect: 'Loop.', combos: ['Echo'] }],
       },
     ];
     const core = createSpellCore(schools);

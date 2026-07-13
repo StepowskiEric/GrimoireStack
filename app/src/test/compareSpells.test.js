@@ -1,4 +1,4 @@
-import { describe, it, expect } from 'vitest';
+import { describe, expect, it } from 'vitest';
 import { compareSpells } from '../utils/markdownExport.js';
 
 const spellA = {
@@ -37,7 +37,7 @@ describe('compareSpells', () => {
 
   it('marks different fields as not matching', () => {
     const rows = compareSpells(spellA, spellB);
-    const nameRow = rows.find(r => r.key === 'name');
+    const nameRow = rows.find((r) => r.key === 'name');
     expect(nameRow.same).toBe(false);
     expect(nameRow.left).toBe('Trace Sight');
     expect(nameRow.right).toBe('Bisect Divination');
@@ -45,7 +45,7 @@ describe('compareSpells', () => {
 
   it('normalizes arrays to comma-separated strings', () => {
     const rows = compareSpells(spellA, spellB);
-    const comboRow = rows.find(r => r.key === 'combos');
+    const comboRow = rows.find((r) => r.key === 'combos');
     expect(comboRow.left).toBe('Bisect Divination, Root Cause Revelation');
     expect(comboRow.right).toBe('Trace Sight');
   });
@@ -53,7 +53,7 @@ describe('compareSpells', () => {
   it('handles null inputs gracefully', () => {
     const rows = compareSpells(null, spellB);
     expect(rows.length).toBeGreaterThan(0);
-    const nameRow = rows.find(r => r.key === 'name');
+    const nameRow = rows.find((r) => r.key === 'name');
     expect(nameRow.left).toBe('');
     expect(nameRow.right).toBe('Bisect Divination');
   });

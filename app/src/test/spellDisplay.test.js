@@ -1,7 +1,11 @@
-import { describe, it, expect } from 'vitest';
-import { hasDistinctTrueName, getSpellHeadline, getSpellSearchableText } from '../data/spellDisplay.js';
-import { createSpellLookup } from '../data/spellLookup.js';
+import { describe, expect, it } from 'vitest';
 import { createSpellCore } from '../data/spellCore.js';
+import {
+  getSpellHeadline,
+  getSpellSearchableText,
+  hasDistinctTrueName,
+} from '../data/spellDisplay.js';
+import { createSpellLookup } from '../data/spellLookup.js';
 
 describe('hasDistinctTrueName', () => {
   it('returns false when spell is null/undefined', () => {
@@ -29,7 +33,9 @@ describe('hasDistinctTrueName', () => {
   });
 
   it('returns true when trueName is a non-empty distinct string', () => {
-    expect(hasDistinctTrueName({ name: 'Trace Sight', trueName: 'The Eye That Reads the Trace' })).toBe(true);
+    expect(
+      hasDistinctTrueName({ name: 'Trace Sight', trueName: 'The Eye That Reads the Trace' }),
+    ).toBe(true);
   });
 });
 
@@ -57,8 +63,16 @@ describe('resolveKinsForSpell', () => {
       name: 'Debugging',
       spells: [
         { name: 'Trace Sight', skill: 'log-trace-correlation', effect: 'Reads the trace.' },
-        { name: 'Bisect Divination', skill: 'bisect-debugging', effect: 'Halves the search space.' },
-        { name: 'Debug Familiar', skill: 'debug-subagent', effect: 'A dedicated debugging familiar.' },
+        {
+          name: 'Bisect Divination',
+          skill: 'bisect-debugging',
+          effect: 'Halves the search space.',
+        },
+        {
+          name: 'Debug Familiar',
+          skill: 'debug-subagent',
+          effect: 'A dedicated debugging familiar.',
+        },
       ],
     },
   ]);
@@ -85,7 +99,10 @@ describe('resolveKinsForSpell', () => {
   });
 
   it('skips ids that do not resolve', () => {
-    const result = lookup.resolveKinsForSpell({ skill: 'log-trace', kins: ['nope', 'bisect-debugging'] });
+    const result = lookup.resolveKinsForSpell({
+      skill: 'log-trace',
+      kins: ['nope', 'bisect-debugging'],
+    });
     expect(result).toHaveLength(1);
     expect(result[0].spell.skill).toBe('bisect-debugging');
   });
@@ -99,10 +116,13 @@ describe('resolveKinsForSpell', () => {
   });
 
   it('respects a custom max', () => {
-    const result = lookup.resolveKinsForSpell({
-      skill: 'log-trace',
-      kins: ['bisect-debugging', 'debug-subagent', 'log-trace-correlation'],
-    }, 2);
+    const result = lookup.resolveKinsForSpell(
+      {
+        skill: 'log-trace',
+        kins: ['bisect-debugging', 'debug-subagent', 'log-trace-correlation'],
+      },
+      2,
+    );
     expect(result).toHaveLength(2);
   });
 

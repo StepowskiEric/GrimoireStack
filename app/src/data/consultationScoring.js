@@ -14,9 +14,9 @@
  */
 
 import {
+  SEANCE_CONVERGENCE_RUN,
   SEANCE_DARKNESS_THRESHOLD,
   SEANCE_MAX_SANITY,
-  SEANCE_CONVERGENCE_RUN,
 } from './consultationData.js';
 
 const ALT_WEIGHT = 0.5;
@@ -71,8 +71,8 @@ export function scoreSelections(selections, { resolveOption }) {
     .sort((a, b) => b.score - a.score);
   return {
     bySkill,
-    topSkill: ranked.length ? ranked[0].skill : null,
-    topScore: ranked.length ? ranked[0].score : 0,
+    topSkill: ranked.length > 0 ? ranked[0].skill : null,
+    topScore: ranked.length > 0 ? ranked[0].score : 0,
     rankedSkills: ranked,
   };
 }
@@ -186,15 +186,14 @@ export function decideResult(scoring, selections, deps, finalSanity) {
   }
 
   // Second-best skill from the cumulative map (the natural alt).
-  const rankedAlt = [...scoring.bySkill.entries()]
-    .filter(([skill]) => skill !== scoring.topSkill)
-    .sort((a, b) => b[1] - a[1])[0]?.[0] || null;
+  const rankedAlt =
+    [...scoring.bySkill.entries()]
+      .filter(([skill]) => skill !== scoring.topSkill)
+      .sort((a, b) => b[1] - a[1])[0]?.[0] || null;
 
   const normalPrimary = scoring.topSkill;
   const normalAlt =
-    sourceOption && sourceOption.alt !== scoring.topSkill
-      ? sourceOption.alt
-      : rankedAlt;
+    sourceOption && sourceOption.alt !== scoring.topSkill ? sourceOption.alt : rankedAlt;
 
   return {
     primary: beasthood ? normalAlt : normalPrimary,

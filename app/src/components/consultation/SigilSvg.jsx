@@ -12,18 +12,18 @@ const SIGIL_SEED_BASE = 6;
 
 // Color ramp through eldritch palette: gold → sickly amber → blood → void purple.
 const STROKE_PALETTE = [
-  'rgba(196, 68, 68, 0.9)',   // sanity 0 — blood red
-  'rgba(170, 55, 55, 0.88)',  // sanity 1 — deep blood
-  'rgba(160, 90, 40, 0.85)',  // sanity 2 — rust
-  'rgba(180, 140, 50, 0.8)',  // sanity 3 — sickly amber
+  'rgba(196, 68, 68, 0.9)', // sanity 0 — blood red
+  'rgba(170, 55, 55, 0.88)', // sanity 1 — deep blood
+  'rgba(160, 90, 40, 0.85)', // sanity 2 — rust
+  'rgba(180, 140, 50, 0.8)', // sanity 3 — sickly amber
   'rgba(200, 165, 60, 0.75)', // sanity 4 — dim gold
-  'rgba(212, 175, 55, 0.7)',  // sanity 5 — gold
+  'rgba(212, 175, 55, 0.7)', // sanity 5 — gold
 ];
 
 const GLOW_PALETTE = [
   'rgba(100, 30, 120, 0.35)', // sanity 0 — void purple
-  'rgba(140, 40, 40, 0.30)',  // sanity 1 — blood glow
-  'rgba(160, 70, 30, 0.25)',  // sanity 2 — rust glow
+  'rgba(140, 40, 40, 0.30)', // sanity 1 — blood glow
+  'rgba(160, 70, 30, 0.25)', // sanity 2 — rust glow
   'rgba(120, 140, 50, 0.20)', // sanity 3 — sickly green-gold
   'rgba(180, 155, 50, 0.15)', // sanity 4 — dim gold
   'rgba(212, 175, 55, 0.10)', // sanity 5 — gold
@@ -96,7 +96,7 @@ export default function SigilSvg({ sanity }) {
         />
         {/* Cross-hatch cracks (intensified at low sanity) */}
         {sanity <= 3 && (
-          <g stroke={stroke} strokeOpacity={0.3 + (sanity * 0.1)}>
+          <g stroke={stroke} strokeOpacity={0.3 + sanity * 0.1}>
             <path d="M 80 60 L 90 70 M 160 60 L 150 70" />
             <path d="M 80 180 L 90 170 M 160 180 L 150 170" />
             <path d="M 50 100 L 65 105 M 190 100 L 175 105" />

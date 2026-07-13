@@ -1,24 +1,30 @@
-import { describe, it, expect, vi, beforeEach } from 'vitest';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
 import {
   exportAsJson,
   exportAsMarkdown,
+  importConfig,
   loadFavorites,
   loadMarginalia,
   loadRecent,
-  importConfig,
 } from '../utils/exporter.js';
 
 const mockStorage = {};
 
 beforeEach(() => {
-  Object.keys(mockStorage).forEach(k => delete mockStorage[k]);
+  Object.keys(mockStorage).forEach((k) => delete mockStorage[k]);
   if (typeof window !== 'undefined') {
     Object.defineProperty(window, 'localStorage', {
       value: {
         getItem: (key) => mockStorage[key] ?? null,
-        setItem: (key, val) => { mockStorage[key] = String(val); },
-        removeItem: (key) => { delete mockStorage[key]; },
-        clear: () => { Object.keys(mockStorage).forEach(k => delete mockStorage[k]); },
+        setItem: (key, val) => {
+          mockStorage[key] = String(val);
+        },
+        removeItem: (key) => {
+          delete mockStorage[key];
+        },
+        clear: () => {
+          Object.keys(mockStorage).forEach((k) => delete mockStorage[k]);
+        },
       },
       writable: true,
     });

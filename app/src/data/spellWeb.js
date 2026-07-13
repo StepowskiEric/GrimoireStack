@@ -62,7 +62,7 @@ export function createSpellWeb(core, lookup) {
       spellNodes,
       comboEdges,
       schoolMap: webSchoolMap,
-      findSpellNode: (skillId) => spellNodes.find(n => n.id === skillId) || null,
+      findSpellNode: (skillId) => spellNodes.find((n) => n.id === skillId) || null,
       findSchoolNode: (schoolId) => webSchoolMap.get(schoolId) || null,
     };
   };

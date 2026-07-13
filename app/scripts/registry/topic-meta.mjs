@@ -7,13 +7,13 @@
  */
 
 export const TOPIC_META = {
-  'debugging': {
+  debugging: {
     id: 'debugging',
     real: 'Debugging',
     name: 'School of Remediation',
     desc: 'Incantations to banish bugs and restore order to broken code.',
   },
-  'execution': {
+  execution: {
     id: 'execution',
     real: 'Execution & Improvement',
     name: 'School of Execution',
@@ -25,7 +25,7 @@ export const TOPIC_META = {
     name: 'School of Judgment',
     desc: 'Incantations for routing decisions, weighing tradeoffs, and routing problems to the right approach.',
   },
-  'orchestration': {
+  orchestration: {
     id: 'orchestration',
     real: 'Agent Orchestration',
     name: 'School of Confluence',
@@ -37,7 +37,7 @@ export const TOPIC_META = {
     name: 'School of Refinement',
     desc: 'Incantations for improving, verifying, and stress-testing output before it ships.',
   },
-  'reasoning': {
+  reasoning: {
     id: 'reasoning',
     real: 'Reasoning & Faithfulness',
     name: 'School of Cognition',
@@ -55,19 +55,19 @@ export const TOPIC_META = {
     name: 'School of Architecture',
     desc: 'Design rituals for systems that endure across dimensions of scale, time, and team boundaries.',
   },
-  'discovery': {
+  discovery: {
     id: 'discovery',
     real: 'Algorithm & Tool Discovery',
     name: 'School of Discovery',
     desc: 'Algorithms and automated tools that find solutions beyond human intuition.',
   },
-  'planning': {
+  planning: {
     id: 'planning',
     real: 'Planning & Estimation',
     name: 'School of Foresight',
     desc: 'Rituals for estimating timelines, surfacing risks, and creating disciplined plans.',
   },
-  'learning': {
+  learning: {
     id: 'learning',
     real: 'Learning & Documentation',
     name: 'School of Lore',
@@ -91,7 +91,7 @@ export const TOPIC_META = {
     name: 'School of Many Minds',
     desc: 'Patterns for distributing work across multiple cooperating agents.',
   },
-  'risk': {
+  risk: {
     id: 'risk',
     real: 'Risk & Safety',
     name: 'School of Warding',
@@ -103,13 +103,13 @@ export const TOPIC_META = {
     name: 'School of Clarity',
     desc: 'Rituals for managing finite attention and reducing overhead.',
   },
-  'testing': {
+  testing: {
     id: 'testing',
     real: 'Testing & Measurement',
     name: 'School of Measurement',
     desc: 'Empirical measurement of skill effectiveness and code quality.',
   },
-  'development': {
+  development: {
     id: 'development',
     real: 'Development & Tooling',
     name: 'School of Tools',

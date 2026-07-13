@@ -1,6 +1,6 @@
-import { useState, useEffect, useCallback, useRef } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { grimoireIndex } from '../data/grimoireIndexInstance.js';
-import { parseSpellFromLocation, buildPathForSpell } from '../utils/urlSpellSync.js';
+import { buildPathForSpell, parseSpellFromLocation } from '../utils/urlSpellSync.js';
 
 function pushSpellUrl(skill) {
   if (typeof window === 'undefined') return;
@@ -32,48 +32,66 @@ export function useSpellInteraction(castEnabled) {
     document.body.style.overflow = '';
   }, []);
 
-  const openModal = useCallback((spell, school) => {
-    console.log('[spellInteraction] openModal', { spell: spell ? { name: spell.name, skill: spell.skill } : spell, school: school ? { id: school.id, name: school.name } : school });
-    if (!spell || !spell.skill) {
-      console.error('[spellInteraction] openModal called with invalid spell', { spell, school });
-      return;
-    }
-    setModal({ spell, school });
-    setNotFoundSkill(null);
-    userOpenedRef.current = true;
-    lockBody();
-    pushSpellUrl(spell.skill);
-  }, [lockBody]);
-
-  const closeModal = useCallback((nextSpell, nextSchool) => {
-    if (nextSpell && nextSchool) {
-      setModal({ spell: nextSpell, school: nextSchool });
-      userOpenedRef.current = true;
-      pushSpellUrl(nextSpell.skill);
-    } else {
-      setModal(null);
-      unlockBody();
-      userOpenedRef.current = false;
-      pushRootUrl();
-    }
-  }, [unlockBody]);
-
-  const handleSpellClick = useCallback((spell, school) => {
-    console.log('[spellInteraction] handleSpellClick', { spell: spell ? { name: spell.name, skill: spell.skill } : spell, school: school ? { id: school.id, name: school.name } : school });
-    if (!spell || !spell.skill) {
-      console.error('[spellInteraction] handleSpellClick called with invalid spell', { spell, school });
-      return;
-    }
-    const key = `${spell.skill}::${school.id}`;
-    if (castEnabled) {
-      if (castingKeyRef.current !== key) {
-        castingKeyRef.current = key;
-        setCasting({ spell, school });
+  const openModal = useCallback(
+    (spell, school) => {
+      console.log('[spellInteraction] openModal', {
+        spell: spell ? { name: spell.name, skill: spell.skill } : spell,
+        school: school ? { id: school.id, name: school.name } : school,
+      });
+      if (!spell?.skill) {
+        console.error('[spellInteraction] openModal called with invalid spell', { spell, school });
+        return;
       }
-    } else {
-      openModal(spell, school);
-    }
-  }, [castEnabled, openModal]);
+      setModal({ spell, school });
+      setNotFoundSkill(null);
+      userOpenedRef.current = true;
+      lockBody();
+      pushSpellUrl(spell.skill);
+    },
+    [lockBody],
+  );
+
+  const closeModal = useCallback(
+    (nextSpell, nextSchool) => {
+      if (nextSpell && nextSchool) {
+        setModal({ spell: nextSpell, school: nextSchool });
+        userOpenedRef.current = true;
+        pushSpellUrl(nextSpell.skill);
+      } else {
+        setModal(null);
+        unlockBody();
+        userOpenedRef.current = false;
+        pushRootUrl();
+      }
+    },
+    [unlockBody],
+  );
+
+  const handleSpellClick = useCallback(
+    (spell, school) => {
+      console.log('[spellInteraction] handleSpellClick', {
+        spell: spell ? { name: spell.name, skill: spell.skill } : spell,
+        school: school ? { id: school.id, name: school.name } : school,
+      });
+      if (!spell?.skill) {
+        console.error('[spellInteraction] handleSpellClick called with invalid spell', {
+          spell,
+          school,
+        });
+        return;
+      }
+      const key = `${spell.skill}::${school.id}`;
+      if (castEnabled) {
+        if (castingKeyRef.current !== key) {
+          castingKeyRef.current = key;
+          setCasting({ spell, school });
+        }
+      } else {
+        openModal(spell, school);
+      }
+    },
+    [castEnabled, openModal],
+  );
 
   // Cast completion is an event, not a state transition. The LidlessEyeCast
   // component calls onComplete when the close phase finishes — we open the

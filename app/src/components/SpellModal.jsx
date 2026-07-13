@@ -1,16 +1,16 @@
 /* eslint-disable react/no-array-index-key -- fixed-size decorative modal background eyes */
 
-import { useEffect, useRef, useState, useCallback, useMemo } from 'react';
-import { TIER_META, getSpellTier } from '../data/tiers.js';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { grimoireIndex } from '../data/grimoireIndexInstance.js';
 import { hasDistinctTrueName } from '../data/spellDisplay.js';
-import { buildShareUrl } from '../utils/urlSpellSync.js';
-import Icon from './Icon.jsx';
-import SchoolSigil from './SchoolSigil.tsx';
-import FamiliarWhisper from './FamiliarWhisper.jsx';
+import { getSpellTier, TIER_META } from '../data/tiers.js';
 import { cn } from '../utils/cn.js';
 import { simpleMarkdownToHtml } from '../utils/markdown.js';
 import { sanitizeHtml } from '../utils/sanitize.js';
+import { buildShareUrl } from '../utils/urlSpellSync.js';
+import FamiliarWhisper from './FamiliarWhisper.jsx';
+import Icon from './Icon.jsx';
+import SchoolSigil from './SchoolSigil.tsx';
 import './SpellModal.css';
 import './Marginalia.css';
 import './IntakeOracle.css';
@@ -56,22 +56,30 @@ async function fetchSkillMd(skillId) {
   }
 }
 
-
 const INSCRIBE_AGENTS = [
   { id: 'claude', label: 'Claude Code', prefix: 'npx GrimoireStack install --agent claude' },
   { id: 'codex', label: 'OpenAI Codex', prefix: 'npx GrimoireStack install --agent codex' },
   { id: 'copilot', label: 'VS Code Copilot', prefix: 'npx GrimoireStack install --agent copilot' },
   { id: 'hermes', label: 'Hermes', prefix: 'npx GrimoireStack install --agent hermes' },
-  { id: 'antigravity', label: 'Antigravity', prefix: 'npx GrimoireStack install --agent antigravity' },
+  {
+    id: 'antigravity',
+    label: 'Antigravity',
+    prefix: 'npx GrimoireStack install --agent antigravity',
+  },
   { id: 'factory-droid', label: 'Factory Droid', prefix: 'Copy skill to ~/.factory/skills/' },
 ];
 
-export default function SpellModal({ spell, school, onClose, marginalia, getVote, castVote, aggregateFor }) {
+export default function SpellModal({
+  spell,
+  school,
+  onClose,
+  marginalia,
+  getVote,
+  castVote,
+  aggregateFor,
+}) {
   // Stable per-day timestamp so the metadata line doesn't flicker on re-render
-  const firstSeen = useMemo(
-    () => new Date().toISOString().slice(0, 10),
-    []
-  );
+  const firstSeen = useMemo(() => new Date().toISOString().slice(0, 10), []);
 
   const [viewMode, setViewMode] = useState('plain'); // 'plain' | 'full'
   const [mdContent, setMdContent] = useState(null);
@@ -83,7 +91,11 @@ export default function SpellModal({ spell, school, onClose, marginalia, getVote
 
   const statusStr = spell?.status && spell?.status !== '—' ? spell?.status : 'Common';
   const statusClass = (spell?.status || 'common').toLowerCase().replace(/[^a-z]/g, '') || 'common';
-  const { label, className: tierClass, title: tierTitle } = TIER_META[getSpellTier(spell || { skill: '' })];
+  const {
+    label,
+    className: tierClass,
+    title: tierTitle,
+  } = TIER_META[getSpellTier(spell || { skill: '' })];
   const modalRef = useRef(null);
 
   const loadMd = useCallback(async () => {
@@ -113,22 +125,27 @@ export default function SpellModal({ spell, school, onClose, marginalia, getVote
     setMdLoading(false);
     setNote(marginalia?.getNote(spell.skill) || '');
     setNoteStatus('');
-    fetchSkillMap().then(map => {
-      if (map[spell.skill]) {
-        setViewMode('full');
-        // loadMd will be triggered by the viewMode effect below
-      } else {
+    fetchSkillMap()
+      .then((map) => {
+        if (map[spell.skill]) {
+          setViewMode('full');
+          // loadMd will be triggered by the viewMode effect below
+        } else {
+          setViewMode('plain');
+        }
+      })
+      .catch((error) => {
+        console.warn('Failed to fetch skill map:', error);
         setViewMode('plain');
-      }
-    }).catch(error => {
-      console.warn('Failed to fetch skill map:', error);
-      setViewMode('plain');
-    });
+      });
   }, [spell, spell?.skill, marginalia]);
 
-  useEffect(() => () => {
-    if (noteTimerRef.current) clearTimeout(noteTimerRef.current);
-  }, []);
+  useEffect(
+    () => () => {
+      if (noteTimerRef.current) clearTimeout(noteTimerRef.current);
+    },
+    [],
+  );
 
   const handleNoteChange = (e) => {
     if (!spell) return;
@@ -155,15 +172,25 @@ export default function SpellModal({ spell, school, onClose, marginalia, getVote
   useEffect(() => {
     const modal = modalRef.current;
     if (!modal) return;
-    const focusable = modal.querySelectorAll('button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])');
+    const focusable = [...modal.querySelectorAll(
+      'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])',
+    )];
     const first = focusable[0];
-    const last = focusable[focusable.length - 1];
+    const last = focusable.at(-1);
     first?.focus();
     const handler = (e) => {
-      if (e.key === 'Escape') { onClose(); return; }
-      if (e.key !== 'Tab' || !focusable.length) return;
-      if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last?.focus(); }
-      else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first?.focus(); }
+      if (e.key === 'Escape') {
+        onClose();
+        return;
+      }
+      if (e.key !== 'Tab' || focusable.length === 0) return;
+      if (e.shiftKey && document.activeElement === first) {
+        e.preventDefault();
+        last?.focus();
+      } else if (!e.shiftKey && document.activeElement === last) {
+        e.preventDefault();
+        first?.focus();
+      }
     };
     modal.addEventListener('keydown', handler);
     return () => modal.removeEventListener('keydown', handler);
@@ -172,24 +199,40 @@ export default function SpellModal({ spell, school, onClose, marginalia, getVote
   const hasFullEntry = useRef(false);
   useEffect(() => {
     if (!spell) return;
-    fetchSkillMap().then(map => {
-      hasFullEntry.current = !!map[spell.skill];
-    }).catch(() => {
-      hasFullEntry.current = false;
-    });
+    fetchSkillMap()
+      .then((map) => {
+        hasFullEntry.current = !!map[spell.skill];
+      })
+      .catch(() => {
+        hasFullEntry.current = false;
+      });
   }, [spell, spell?.skill]);
 
   if (!spell) return null;
 
   return (
     // eslint-disable-next-line jsx-a11y/click-events-have-key-events, jsx-a11y/no-static-element-interactions
-    <div className="modal-overlay open flex" onClick={(e) => { if (e.target === e.currentTarget) onClose(); }} data-testid="spell-modal-overlay">
+    <div
+      className="modal-overlay open flex"
+      onClick={(e) => {
+        if (e.target === e.currentTarget) onClose();
+      }}
+      data-testid="spell-modal-overlay"
+    >
       {/* Background peering eyes — drift + occasional blink, decorative */}
       <div className="modal-bg-eyes" aria-hidden="true">
         {Array.from({ length: 7 }).map((_, i) => (
           <span key={i} className={`modal-bg-eye modal-bg-eye--${i + 1}`}>
             <svg viewBox="0 0 40 24" xmlns="http://www.w3.org/2000/svg">
-              <ellipse cx="20" cy="12" rx="18" ry="10" fill="#0a0a0a" stroke="rgba(196,184,152,0.18)" strokeWidth="0.6" />
+              <ellipse
+                cx="20"
+                cy="12"
+                rx="18"
+                ry="10"
+                fill="#0a0a0a"
+                stroke="rgba(196,184,152,0.18)"
+                strokeWidth="0.6"
+              />
               <ellipse cx="20" cy="12" rx="11" ry="8" fill="rgba(138,154,106,0.35)" />
               <ellipse cx="20" cy="12" rx="4.5" ry="3.2" fill="#020203" />
               <ellipse cx="20" cy="12" rx="1.2" ry="1.2" fill="rgba(196,184,152,0.45)" />
@@ -198,30 +241,83 @@ export default function SpellModal({ spell, school, onClose, marginalia, getVote
         ))}
       </div>
 
-      <div className="modal modal-wide" ref={modalRef} role="dialog" aria-modal="true" aria-label={`${spell.name} spell details`} data-testid="spell-modal-dialog">
+      <div
+        className="modal modal-wide"
+        ref={modalRef}
+        role="dialog"
+        aria-modal="true"
+        aria-label={`${spell.name} spell details`}
+        data-testid="spell-modal-dialog"
+      >
         {/* Corner tentacle claws — tapered, multi-curved, with prominent
             suckers, dorsal spines, and a grasping hook at the tip. */}
         {['tl', 'tr', 'bl', 'br'].map((corner) => {
-          const mirror = corner === 'tr' ? 'translate(160,0) scale(-1,1)'
-            : corner === 'bl' ? 'translate(0,160) scale(1,-1)'
-            : corner === 'br' ? 'translate(160,160) scale(-1,-1)'
-            : null;
+          const mirror =
+            corner === 'tr'
+              ? 'translate(160,0) scale(-1,1)'
+              : corner === 'bl'
+                ? 'translate(0,160) scale(1,-1)'
+                : corner === 'br'
+                  ? 'translate(160,160) scale(-1,-1)'
+                  : null;
           return (
-            <svg key={corner} className={`modal-tentacle modal-tentacle--${corner}`} viewBox="0 0 160 160" aria-hidden="true">
+            <svg
+              key={corner}
+              className={`modal-tentacle modal-tentacle--${corner}`}
+              viewBox="0 0 160 160"
+              aria-hidden="true"
+            >
               <g transform={mirror || undefined}>
                 {/* Secondary smaller tendril — behind main, doesn't curl */}
-                <path d="M 0 55 C 14 62, 30 78, 38 98 C 44 116, 38 134, 24 138"
-                  fill="none" stroke="rgba(8,8,6,0.85)" strokeWidth="7" strokeLinecap="round" />
-                <path d="M 0 55 C 14 62, 30 78, 38 98 C 44 116, 38 134, 24 138"
-                  fill="none" stroke="rgba(30,34,22,0.7)" strokeWidth="3" strokeLinecap="round" />
+                <path
+                  d="M 0 55 C 14 62, 30 78, 38 98 C 44 116, 38 134, 24 138"
+                  fill="none"
+                  stroke="rgba(8,8,6,0.85)"
+                  strokeWidth="7"
+                  strokeLinecap="round"
+                />
+                <path
+                  d="M 0 55 C 14 62, 30 78, 38 98 C 44 116, 38 134, 24 138"
+                  fill="none"
+                  stroke="rgba(30,34,22,0.7)"
+                  strokeWidth="3"
+                  strokeLinecap="round"
+                />
                 {/* Small suckers on the secondary tendril */}
-                <circle cx="22" cy="74" r="2.2" fill="rgba(180,200,130,0.4)" stroke="rgba(8,8,6,0.9)" strokeWidth="0.6" />
-                <circle cx="34" cy="98" r="1.8" fill="rgba(180,200,130,0.4)" stroke="rgba(8,8,6,0.9)" strokeWidth="0.6" />
-                <circle cx="36" cy="122" r="1.4" fill="rgba(180,200,130,0.4)" stroke="rgba(8,8,6,0.9)" strokeWidth="0.6" />
+                <circle
+                  cx="22"
+                  cy="74"
+                  r="2.2"
+                  fill="rgba(180,200,130,0.4)"
+                  stroke="rgba(8,8,6,0.9)"
+                  strokeWidth="0.6"
+                />
+                <circle
+                  cx="34"
+                  cy="98"
+                  r="1.8"
+                  fill="rgba(180,200,130,0.4)"
+                  stroke="rgba(8,8,6,0.9)"
+                  strokeWidth="0.6"
+                />
+                <circle
+                  cx="36"
+                  cy="122"
+                  r="1.4"
+                  fill="rgba(180,200,130,0.4)"
+                  stroke="rgba(8,8,6,0.9)"
+                  strokeWidth="0.6"
+                />
 
                 {/* Dorsal spines — small triangular spikes along the outer edge
                     of the main tentacle. Reads as "predatory" not "plant". */}
-                <g className="t-spines" fill="rgba(38,44,22,0.95)" stroke="rgba(6,6,4,0.9)" strokeWidth="0.5" strokeLinejoin="round">
+                <g
+                  className="t-spines"
+                  fill="rgba(38,44,22,0.95)"
+                  stroke="rgba(6,6,4,0.9)"
+                  strokeWidth="0.5"
+                  strokeLinejoin="round"
+                >
                   <path d="M 30 4 L 38 -5 L 44 10 Z" />
                   <path d="M 56 14 L 68 4 L 78 28 Z" />
                   <path d="M 84 32 L 100 22 L 110 50 Z" />
@@ -230,16 +326,41 @@ export default function SpellModal({ spell, school, onClose, marginalia, getVote
                 </g>
 
                 {/* Main tentacle — 5 layered strokes for organic taper */}
-                <path d="M 0 0 C 30 6, 60 18, 85 40 C 110 62, 125 90, 118 115 C 110 138, 85 145, 70 130 C 58 118, 65 100, 82 98 C 100 98, 112 112, 105 130"
-                  fill="none" stroke="rgba(4,4,3,0.98)" strokeWidth="24" strokeLinecap="round" />
-                <path d="M 0 0 C 30 6, 60 18, 85 40 C 110 62, 125 90, 118 115 C 110 138, 85 145, 70 130 C 58 118, 65 100, 82 98 C 100 98, 112 112, 105 130"
-                  fill="none" stroke="rgba(18,20,14,0.95)" strokeWidth="17" strokeLinecap="round" />
-                <path d="M 0 0 C 30 6, 60 18, 85 40 C 110 62, 125 90, 118 115 C 110 138, 85 145, 70 130 C 58 118, 65 100, 82 98 C 100 98, 112 112, 105 130"
-                  fill="none" stroke="rgba(32,38,24,0.95)" strokeWidth="11" strokeLinecap="round" />
-                <path d="M 0 0 C 30 6, 60 18, 85 40 C 110 62, 125 90, 118 115 C 110 138, 85 145, 70 130 C 58 118, 65 100, 82 98 C 100 98, 112 112, 105 130"
-                  fill="none" stroke="rgba(60,70,42,0.9)" strokeWidth="5" strokeLinecap="round" />
-                <path d="M 0 0 C 30 6, 60 18, 85 40 C 110 62, 125 90, 118 115"
-                  fill="none" stroke="rgba(110,130,70,0.55)" strokeWidth="1.6" strokeLinecap="round" />
+                <path
+                  d="M 0 0 C 30 6, 60 18, 85 40 C 110 62, 125 90, 118 115 C 110 138, 85 145, 70 130 C 58 118, 65 100, 82 98 C 100 98, 112 112, 105 130"
+                  fill="none"
+                  stroke="rgba(4,4,3,0.98)"
+                  strokeWidth="24"
+                  strokeLinecap="round"
+                />
+                <path
+                  d="M 0 0 C 30 6, 60 18, 85 40 C 110 62, 125 90, 118 115 C 110 138, 85 145, 70 130 C 58 118, 65 100, 82 98 C 100 98, 112 112, 105 130"
+                  fill="none"
+                  stroke="rgba(18,20,14,0.95)"
+                  strokeWidth="17"
+                  strokeLinecap="round"
+                />
+                <path
+                  d="M 0 0 C 30 6, 60 18, 85 40 C 110 62, 125 90, 118 115 C 110 138, 85 145, 70 130 C 58 118, 65 100, 82 98 C 100 98, 112 112, 105 130"
+                  fill="none"
+                  stroke="rgba(32,38,24,0.95)"
+                  strokeWidth="11"
+                  strokeLinecap="round"
+                />
+                <path
+                  d="M 0 0 C 30 6, 60 18, 85 40 C 110 62, 125 90, 118 115 C 110 138, 85 145, 70 130 C 58 118, 65 100, 82 98 C 100 98, 112 112, 105 130"
+                  fill="none"
+                  stroke="rgba(60,70,42,0.9)"
+                  strokeWidth="5"
+                  strokeLinecap="round"
+                />
+                <path
+                  d="M 0 0 C 30 6, 60 18, 85 40 C 110 62, 125 90, 118 115"
+                  fill="none"
+                  stroke="rgba(110,130,70,0.55)"
+                  strokeWidth="1.6"
+                  strokeLinecap="round"
+                />
 
                 {/* Suckers along the underside — concentric rings: dark outer
                     rim, pale sickly flesh, dark center hole. Clearly anatomical. */}
@@ -286,44 +407,68 @@ export default function SpellModal({ spell, school, onClose, marginalia, getVote
                 </g>
 
                 {/* Grasping hook at the tip — small curved claw */}
-                <path d="M 102 128 C 112 130, 122 138, 120 150 C 118 158, 108 160, 102 154 C 96 148, 100 138, 108 136"
-                  fill="rgba(8,8,6,0.95)" stroke="rgba(4,4,3,1)" strokeWidth="0.8" />
-                <path d="M 102 128 C 112 130, 122 138, 120 150"
-                  fill="none" stroke="rgba(120,140,80,0.4)" strokeWidth="0.8" />
+                <path
+                  d="M 102 128 C 112 130, 122 138, 120 150 C 118 158, 108 160, 102 154 C 96 148, 100 138, 108 136"
+                  fill="rgba(8,8,6,0.95)"
+                  stroke="rgba(4,4,3,1)"
+                  strokeWidth="0.8"
+                />
+                <path
+                  d="M 102 128 C 112 130, 122 138, 120 150"
+                  fill="none"
+                  stroke="rgba(120,140,80,0.4)"
+                  strokeWidth="0.8"
+                />
               </g>
             </svg>
           );
         })}
 
-        <button type="button" className="modal-close" onClick={onClose} aria-label="Close spell details">
+        <button
+          type="button"
+          className="modal-close"
+          onClick={onClose}
+          aria-label="Close spell details"
+        >
           <Icon name="close" size={18} />
         </button>
 
         {/* Eldritch whisper — Cthulhu-mythos preamble at the top of the scroll */}
         <p className="modal-whisper">
-          <em>“That is not dead which can eternal lie, and with strange aeons even death may die.”</em>
+          <em>
+            “That is not dead which can eternal lie, and with strange aeons even death may die.”
+          </em>
         </p>
 
-
         <div className="modal-title-carved">
-          <span className="modal-symbol"><SchoolSigil schoolId={school.id} size={28} /></span>
+          <span className="modal-symbol">
+            <SchoolSigil schoolId={school.id} size={28} />
+          </span>
         </div>
         <div className="modal-school">
           {school.name} <span className="modal-school-real">({school.real})</span>
         </div>
         {hasDistinctTrueName(spell) ? (
           <>
-            <div className="modal-true-name" data-testid="spell-modal-true-name">{spell.trueName}</div>
-            <div className="modal-title modal-title--secondary" data-testid="spell-modal-title-secondary">{spell.name}</div>
+            <div className="modal-true-name" data-testid="spell-modal-true-name">
+              {spell.trueName}
+            </div>
+            <div
+              className="modal-title modal-title--secondary"
+              data-testid="spell-modal-title-secondary"
+            >
+              {spell.name}
+            </div>
           </>
         ) : (
-          <div className="modal-title" data-testid="spell-modal-title">{spell.name}</div>
+          <div className="modal-title" data-testid="spell-modal-title">
+            {spell.name}
+          </div>
         )}
         <div className="modal-incantation">〈 {spell.skill} 〉</div>
         <div className="modal-metadata">
           Inscribed by the Scribe of the Unseen · First seen in the depths on {firstSeen}
         </div>
-
 
         {viewMode === 'plain' ? (
           <>
@@ -346,7 +491,9 @@ export default function SpellModal({ spell, school, onClose, marginalia, getVote
               <div className="modal-detail-label">Arcane Tier</div>
               <div className="modal-detail-value">
                 <span className={`sigil-tier ${tierClass}`} title={tierTitle}>
-                  <span className="sigil-mark" aria-hidden="true">⟐</span>
+                  <span className="sigil-mark" aria-hidden="true">
+                    ⟐
+                  </span>
                   <span className="sigil-label">{label}</span>
                 </span>
               </div>
@@ -360,15 +507,21 @@ export default function SpellModal({ spell, school, onClose, marginalia, getVote
               <div className="modal-synergies">
                 <div className="syn-title">Synergistic Pairings</div>
                 <div className="syn-grid">
-                  {spell.combos.map(comboName => {
+                  {spell.combos.map((comboName) => {
                     const found = findSpell(comboName);
                     return (
-                      <span key={comboName} className="syn-chip"
+                      <span
+                        key={comboName}
+                        className="syn-chip"
                         onClick={() => found && onClose(found.spell, found.school)}
-                        onKeyDown={(e) => { if ((e.key === 'Enter' || e.key === ' ') && found) onClose(found.spell, found.school); }}
+                        onKeyDown={(e) => {
+                          if ((e.key === 'Enter' || e.key === ' ') && found)
+                            onClose(found.spell, found.school);
+                        }}
                         role="button"
                         tabIndex={0}
-                        title={found ? `Open ${comboName}` : ''}>
+                        title={found ? `Open ${comboName}` : ''}
+                      >
                         {comboName}
                       </span>
                     );
@@ -394,42 +547,50 @@ export default function SpellModal({ spell, school, onClose, marginalia, getVote
                 aria-label="Personal notes for this spell"
                 spellCheck="false"
               />
-              <div className="marginalia-status" aria-live="polite">{noteStatus}</div>
+              <div className="marginalia-status" aria-live="polite">
+                {noteStatus}
+              </div>
             </div>
 
-            {getVote && aggregateFor ? (() => {
-              const userVote = getVote(spell.skill);
-              const agg = aggregateFor(spell);
-              return (
-                <div className="signal-section" aria-label="Community signal">
-                  <div className="signal-row">
-                    <span className="signal-question">Did this help?</span>
-                    <div className="signal-buttons">
-                      <button
-                        type="button"
-                        className={cn('signal-btn', 'signal-up', userVote === 'up' && 'active')}
-                        onClick={() => castVote?.(spell.skill, 'up')}
-                        aria-label="This spell helped me"
-                        title="This helped"
-                      >
-                        <span aria-hidden="true">▲</span>
-                        <span className="signal-count">{agg.up}</span>
-                      </button>
-                      <button
-                        type="button"
-                        className={cn('signal-btn', 'signal-down', userVote === 'down' && 'active')}
-                        onClick={() => castVote?.(spell.skill, 'down')}
-                        aria-label="This spell did not help"
-                        title="Did not help"
-                      >
-                        <span aria-hidden="true">▼</span>
-                        <span className="signal-count">{agg.down}</span>
-                      </button>
+            {getVote && aggregateFor
+              ? (() => {
+                  const userVote = getVote(spell.skill);
+                  const agg = aggregateFor(spell);
+                  return (
+                    <div className="signal-section" aria-label="Community signal">
+                      <div className="signal-row">
+                        <span className="signal-question">Did this help?</span>
+                        <div className="signal-buttons">
+                          <button
+                            type="button"
+                            className={cn('signal-btn', 'signal-up', userVote === 'up' && 'active')}
+                            onClick={() => castVote?.(spell.skill, 'up')}
+                            aria-label="This spell helped me"
+                            title="This helped"
+                          >
+                            <span aria-hidden="true">▲</span>
+                            <span className="signal-count">{agg.up}</span>
+                          </button>
+                          <button
+                            type="button"
+                            className={cn(
+                              'signal-btn',
+                              'signal-down',
+                              userVote === 'down' && 'active',
+                            )}
+                            onClick={() => castVote?.(spell.skill, 'down')}
+                            aria-label="This spell did not help"
+                            title="Did not help"
+                          >
+                            <span aria-hidden="true">▼</span>
+                            <span className="signal-count">{agg.down}</span>
+                          </button>
+                        </div>
+                      </div>
                     </div>
-                  </div>
-                </div>
-              );
-            })() : null}
+                  );
+                })()
+              : null}
           </>
         ) : (
           <div className="modal-full-entry" role="region" aria-label="Spell description">
@@ -441,7 +602,9 @@ export default function SpellModal({ spell, school, onClose, marginalia, getVote
             ) : mdContent === '' ? (
               <div className="modal-md-empty">
                 <p>No full grimoire entry found for this incantation.</p>
-                <p className="modal-md-empty-hint">The scroll may still be in the scribe's hands.</p>
+                <p className="modal-md-empty-hint">
+                  The scroll may still be in the scribe's hands.
+                </p>
               </div>
             ) : (
               // eslint-disable-next-line react/no-danger
@@ -453,43 +616,64 @@ export default function SpellModal({ spell, school, onClose, marginalia, getVote
         <FamiliarWhisper spell={spell} onNavigate={onClose} />
 
         <div className="modal-grimoire-ref">
-          <code>〈 grimoirestack:{school.id}/{spell.skill} 〉</code>
+          <code>
+            〈 grimoirestack:{school.id}/{spell.skill} 〉
+          </code>
         </div>
 
         <p className="modal-warning">Speak not of this to those who sleep.</p>
 
         <div className="modal-actions">
-          <button type="button" className={cn('modal-share modal-share-half modal-goo-btn', 'w-full')} onClick={(e) => {
-            const url = buildShareUrl(window.location.origin, spell.skill);
-            const btn = e.currentTarget;
-            const restore = () => { btn.innerHTML = btn.dataset.originalHtml; };
-            if (!btn.dataset.originalHtml) btn.dataset.originalHtml = btn.innerHTML;
-            if (navigator.share) {
-              navigator.share({ title: spell.name, text: spell.effect, url }).catch(() => {
-                // Fallback to clipboard if share fails
-                navigator.clipboard.writeText(url).then(() => {
-                  btn.textContent = 'Link Copied!';
-                  btn.classList.add('modal-goo-btn--broken');
-                  setTimeout(restore, 2000);
-                }).catch(() => {
-                  btn.textContent = 'Copy failed';
-                  setTimeout(restore, 2000);
+          <button
+            type="button"
+            className={cn('modal-share modal-share-half modal-goo-btn', 'w-full')}
+            onClick={(e) => {
+              const url = buildShareUrl(window.location.origin, spell.skill);
+              const btn = e.currentTarget;
+              const restore = () => {
+                btn.innerHTML = btn.dataset.originalHtml;
+              };
+              if (!btn.dataset.originalHtml) btn.dataset.originalHtml = btn.innerHTML;
+              if (navigator.share) {
+                navigator.share({ title: spell.name, text: spell.effect, url }).catch(() => {
+                  // Fallback to clipboard if share fails
+                  navigator.clipboard
+                    .writeText(url)
+                    .then(() => {
+                      btn.textContent = 'Link Copied!';
+                      btn.classList.add('modal-goo-btn--broken');
+                      setTimeout(restore, 2000);
+                    })
+                    .catch(() => {
+                      btn.textContent = 'Copy failed';
+                      setTimeout(restore, 2000);
+                    });
                 });
-              });
-            } else if (navigator.clipboard) {
-              navigator.clipboard.writeText(url).then(() => {
-                btn.textContent = 'Link Copied!';
-                btn.classList.add('modal-goo-btn--broken');
-                setTimeout(restore, 2000);
-              }).catch(() => {
-                btn.textContent = 'Copy failed';
-                setTimeout(restore, 2000);
-              });
-            }
-          }}
+              } else if (navigator.clipboard) {
+                navigator.clipboard
+                  .writeText(url)
+                  .then(() => {
+                    btn.textContent = 'Link Copied!';
+                    btn.classList.add('modal-goo-btn--broken');
+                    setTimeout(restore, 2000);
+                  })
+                  .catch(() => {
+                    btn.textContent = 'Copy failed';
+                    setTimeout(restore, 2000);
+                  });
+              }
+            }}
           >
             <span className="modal-goo-seal" aria-hidden="true">
-              <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" strokeWidth="1.2" /><circle cx="12" cy="12" r="5" fill="none" stroke="currentColor" strokeWidth="0.8" /><path d="M 12 4 L 13 11 L 20 12 L 13 13 L 12 20 L 11 13 L 4 12 L 11 11 Z" fill="currentColor" opacity="0.6" /></svg>
+              <svg viewBox="0 0 24 24">
+                <circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" strokeWidth="1.2" />
+                <circle cx="12" cy="12" r="5" fill="none" stroke="currentColor" strokeWidth="0.8" />
+                <path
+                  d="M 12 4 L 13 11 L 20 12 L 13 13 L 12 20 L 11 13 L 4 12 L 11 11 Z"
+                  fill="currentColor"
+                  opacity="0.6"
+                />
+              </svg>
             </span>
             <span className="modal-goo-label">Share</span>
           </button>
@@ -501,34 +685,69 @@ export default function SpellModal({ spell, school, onClose, marginalia, getVote
               onChange={(e) => setInscribeAgent(e.target.value)}
               aria-label="Select target agent"
             >
-              {INSCRIBE_AGENTS.map(agent => (
-                <option key={agent.id} value={agent.id}>{agent.label}</option>
+              {INSCRIBE_AGENTS.map((agent) => (
+                <option key={agent.id} value={agent.id}>
+                  {agent.label}
+                </option>
               ))}
             </select>
-            <button type="button" className={cn('modal-share modal-share-half modal-inscribe modal-goo-btn', 'w-full')} onClick={(e) => {
-              const agent = INSCRIBE_AGENTS.find(a => a.id === inscribeAgent);
-              const cmd = agent.id === 'factory-droid'
-                ? `Copy ${spell.skill}/SKILL.md into ~/.factory/skills/${spell.skill}/`
-                : `${agent.prefix} --skill ${spell.skill}`;
-              const btn = e.currentTarget;
-              const restore = () => { btn.innerHTML = btn.dataset.originalHtml; btn.classList.remove('modal-goo-btn--broken'); };
-              if (!btn.dataset.originalHtml) btn.dataset.originalHtml = btn.innerHTML;
-              if (!navigator.clipboard) {
-                btn.textContent = 'Copy unsupported';
-                setTimeout(restore, 2000);
-                return;
-              }
-              navigator.clipboard.writeText(cmd).then(() => {
-                btn.textContent = 'Incantation Inscribed';
-                btn.classList.add('modal-goo-btn--broken');
-                setTimeout(restore, 2000);
-              }).catch(() => {
-                btn.textContent = 'Copy failed';
-                setTimeout(restore, 2000);
-              });
-            }}>
+            <button
+              type="button"
+              className={cn('modal-share modal-share-half modal-inscribe modal-goo-btn', 'w-full')}
+              onClick={(e) => {
+                const agent = INSCRIBE_AGENTS.find((a) => a.id === inscribeAgent);
+                const cmd =
+                  agent.id === 'factory-droid'
+                    ? `Copy ${spell.skill}/SKILL.md into ~/.factory/skills/${spell.skill}/`
+                    : `${agent.prefix} --skill ${spell.skill}`;
+                const btn = e.currentTarget;
+                const restore = () => {
+                  btn.innerHTML = btn.dataset.originalHtml;
+                  btn.classList.remove('modal-goo-btn--broken');
+                };
+                if (!btn.dataset.originalHtml) btn.dataset.originalHtml = btn.innerHTML;
+                if (!navigator.clipboard) {
+                  btn.textContent = 'Copy unsupported';
+                  setTimeout(restore, 2000);
+                  return;
+                }
+                navigator.clipboard
+                  .writeText(cmd)
+                  .then(() => {
+                    btn.textContent = 'Incantation Inscribed';
+                    btn.classList.add('modal-goo-btn--broken');
+                    setTimeout(restore, 2000);
+                  })
+                  .catch(() => {
+                    btn.textContent = 'Copy failed';
+                    setTimeout(restore, 2000);
+                  });
+              }}
+            >
               <span className="modal-goo-seal" aria-hidden="true">
-                <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" strokeWidth="1.2" /><circle cx="12" cy="12" r="5" fill="none" stroke="currentColor" strokeWidth="0.8" /><path d="M 12 4 L 13 11 L 20 12 L 13 13 L 12 20 L 11 13 L 4 12 L 11 11 Z" fill="currentColor" opacity="0.6" /></svg>
+                <svg viewBox="0 0 24 24">
+                  <circle
+                    cx="12"
+                    cy="12"
+                    r="9"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="1.2"
+                  />
+                  <circle
+                    cx="12"
+                    cy="12"
+                    r="5"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="0.8"
+                  />
+                  <path
+                    d="M 12 4 L 13 11 L 20 12 L 13 13 L 12 20 L 11 13 L 4 12 L 11 11 Z"
+                    fill="currentColor"
+                    opacity="0.6"
+                  />
+                </svg>
               </span>
               <span className="modal-goo-label">Inscribe to your Workshop</span>
             </button>

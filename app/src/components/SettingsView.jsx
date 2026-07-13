@@ -1,10 +1,10 @@
 import { useState } from 'react';
-import { useLanguage } from '../i18n/LanguageContext';
 import { useFavorites } from '../hooks/useFavorites.js';
-import { useRecentlyViewed } from '../hooks/useRecentlyViewed.js';
 import { useMarginalia } from '../hooks/useMarginalia.js';
-import { importConfig } from '../utils/exporter.js';
+import { useRecentlyViewed } from '../hooks/useRecentlyViewed.js';
+import { useLanguage } from '../i18n/LanguageContext';
 import { cn } from '../utils/cn.js';
+import { importConfig } from '../utils/exporter.js';
 import Icon from './Icon.jsx';
 
 const GITHUB_REPO_URL = 'https://github.com/StepowskiEric/GrimoireStack';
@@ -36,19 +36,28 @@ export default function SettingsView({
   return (
     <div className="py-1">
       <div className="text-center mb-4">
-        <h2 className="font-['Cinzel_Decorative'] text-[1.25rem] font-bold text-text-primary tracking-wide">{t('settingsTitle')}</h2>
+        <h2 className="font-['Cinzel_Decorative'] text-[1.25rem] font-bold text-text-primary tracking-wide">
+          {t('settingsTitle')}
+        </h2>
         <p className="text-text-secondary text-[0.82rem] mt-1">{t('settingsSub')}</p>
       </div>
 
       <div className="flex flex-wrap justify-center gap-2 mb-4">
-        {SECTIONS.map(section => (
+        {SECTIONS.map((section) => (
           <button
             key={section.id}
-            className={cn('flex items-center gap-2 px-3 py-2 border rounded-sm text-[0.68rem] font-semibold uppercase tracking-wider transition-all duration-200', activeSection === section.id ? 'border-border-hover bg-surface-raised text-text-primary' : 'border-border bg-surface text-text-muted hover:border-border-hover')}
+            className={cn(
+              'flex items-center gap-2 px-3 py-2 border rounded-sm text-[0.68rem] font-semibold uppercase tracking-wider transition-all duration-200',
+              activeSection === section.id
+                ? 'border-border-hover bg-surface-raised text-text-primary'
+                : 'border-border bg-surface text-text-muted hover:border-border-hover',
+            )}
             onClick={() => setActiveSection(section.id)}
             type="button"
           >
-            <span className="text-sickly"><Icon name={section.icon} size={18} /></span>
+            <span className="text-sickly">
+              <Icon name={section.icon} size={18} />
+            </span>
             <span>{t(section.nameKey)}</span>
           </button>
         ))}
@@ -61,7 +70,9 @@ export default function SettingsView({
               <h3 className="section-title">{t('settingsVoiceTitle')}</h3>
             </div>
             <p className="text-text-secondary text-[0.82rem] mb-3">{t('settingsVoiceSub')}</p>
-            <label className="block text-text-primary text-[0.82rem] mb-1" htmlFor="lang-select">{t('settingsLanguageLabel')}</label>
+            <label className="block text-text-primary text-[0.82rem] mb-1" htmlFor="lang-select">
+              {t('settingsLanguageLabel')}
+            </label>
             {/* eslint-disable-next-line jsx-a11y/no-onchange */}
             <select
               id="lang-select"
@@ -69,7 +80,9 @@ export default function SettingsView({
               value={lang}
               onChange={(e) => setLang(e.target.value)}
             >
-              <option value="grimoire">{t('languageGrimoire')} ({t('settingsThemed')})</option>
+              <option value="grimoire">
+                {t('languageGrimoire')} ({t('settingsThemed')})
+              </option>
               <option value="plain">{t('languagePlain')}</option>
             </select>
           </div>
@@ -155,7 +168,11 @@ export default function SettingsView({
                   error={sync.error}
                   onSyncNow={sync.syncNow}
                   onDisconnect={async () => {
-                    if (confirm('Disconnect cross-device sync? Your local circle stays; the cloud copy will remain until overwritten by another code.')) {
+                    if (
+                      confirm(
+                        'Disconnect cross-device sync? Your local circle stays; the cloud copy will remain until overwritten by another code.',
+                      )
+                    ) {
                       sync.disableSync();
                     }
                   }}
@@ -185,28 +202,19 @@ export default function SettingsView({
             <p className="text-text-secondary text-[0.82rem] mb-3">{t('settingsSightSub')}</p>
             <div className="panel-raised p-3 mb-2">
               <label className="flex items-center gap-2 text-text-primary text-[0.82rem]">
-                <input
-                  type="checkbox"
-                  checked={audioEnabled}
-                  onChange={onToggleAudio}
-                />
+                <input type="checkbox" checked={audioEnabled} onChange={onToggleAudio} />
                 <span>{t('settingsEnableSounds')}</span>
               </label>
               <p className="text-text-muted text-[0.78rem] mt-1">{t('settingsSoundsHint')}</p>
             </div>
             <div className="panel-raised p-3">
               <label className="flex items-center gap-2 text-text-primary text-[0.82rem]">
-                <input
-                  type="checkbox"
-                  checked={castEnabled}
-                  onChange={onToggleCast}
-                />
+                <input type="checkbox" checked={castEnabled} onChange={onToggleCast} />
                 <span>{t('castToggleLabel')}</span>
               </label>
             </div>
           </div>
         )}
-
 
         {activeSection === 'about' && (
           <div>
@@ -215,7 +223,11 @@ export default function SettingsView({
             </div>
             <p className="text-text-secondary text-[0.82rem] mb-3">{t('settingsAboutBody')}</p>
             <div className="flex flex-wrap gap-2">
-              <button className="section-title px-3 py-2 border border-border-hover text-text-primary hover:bg-surface-raised" onClick={onShowShortcuts} type="button">
+              <button
+                className="section-title px-3 py-2 border border-border-hover text-text-primary hover:bg-surface-raised"
+                onClick={onShowShortcuts}
+                type="button"
+              >
                 {t('shortcutsTitle')}
               </button>
               <a
@@ -263,7 +275,12 @@ function SyncStatus({ code, status, lastSyncedAt, error, onSyncNow, onDisconnect
   return (
     <div className="panel p-3">
       <div className="flex flex-wrap items-center gap-2">
-        <code className="flex-1 bg-surface-overlay border border-border text-text-primary text-[0.82rem] p-2 rounded-sm" data-testid="sync-code">{display}</code>
+        <code
+          className="flex-1 bg-surface-overlay border border-border text-text-primary text-[0.82rem] p-2 rounded-sm"
+          data-testid="sync-code"
+        >
+          {display}
+        </code>
         <button
           className="section-title px-2.5 py-2 border border-border text-text-muted hover:border-border-hover"
           type="button"
@@ -282,7 +299,10 @@ function SyncStatus({ code, status, lastSyncedAt, error, onSyncNow, onDisconnect
         </button>
       </div>
       <p
-        className={cn('mt-2 text-[0.78rem]', status === 'error' ? 'text-danger' : 'text-text-muted')}
+        className={cn(
+          'mt-2 text-[0.78rem]',
+          status === 'error' ? 'text-danger' : 'text-text-muted',
+        )}
         role="status"
         aria-live="polite"
       >

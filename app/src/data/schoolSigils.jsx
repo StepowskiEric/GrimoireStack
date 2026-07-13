@@ -21,18 +21,16 @@ function P({ d, delay = 0 }) {
 // Helper: a line that draws on activation
 function L({ x1, y1, x2, y2, delay = 0 }) {
   return (
-    <line
-      x1={x1} y1={y1} x2={x2} y2={y2}
-      {...baseProps}
-      style={{ transitionDelay: `${delay}s` }}
-    />
+    <line x1={x1} y1={y1} x2={x2} y2={y2} {...baseProps} style={{ transitionDelay: `${delay}s` }} />
   );
 }
 // Helper: a circle stroke that draws on activation
 function C({ cx, cy, r, delay = 0, filled = false }) {
   return (
     <circle
-      cx={cx} cy={cy} r={r}
+      cx={cx}
+      cy={cy}
+      r={r}
       fill={filled ? 'currentColor' : 'none'}
       stroke="currentColor"
       strokeWidth={1.4}
@@ -103,15 +101,30 @@ function ArchitectureSigil() {
 function DiscoverySigil() {
   // 7 outer + 7 inner points, outer R=10, inner r=4.1, center (12,12)
   const pts = [
-    [12, 2],     [14.3, 7.7],   [19.8, 7.5],   [15.8, 11.5],
-    [17.7, 17.5],[12, 14.5],    [6.3, 17.5],   [8.2, 11.5],
-    [4.2, 7.5],  [9.7, 7.7],    [12, 2],       [14.3, 7.7],
-    [19.8, 7.5], [15.8, 11.5],  [17.7, 17.5],  [12, 14.5],
-    [6.3, 17.5], [8.2, 11.5],   [4.2, 7.5],    [9.7, 7.7],
+    [12, 2],
+    [14.3, 7.7],
+    [19.8, 7.5],
+    [15.8, 11.5],
+    [17.7, 17.5],
+    [12, 14.5],
+    [6.3, 17.5],
+    [8.2, 11.5],
+    [4.2, 7.5],
+    [9.7, 7.7],
+    [12, 2],
+    [14.3, 7.7],
+    [19.8, 7.5],
+    [15.8, 11.5],
+    [17.7, 17.5],
+    [12, 14.5],
+    [6.3, 17.5],
+    [8.2, 11.5],
+    [4.2, 7.5],
+    [9.7, 7.7],
   ];
   // Build a {7/2} heptagram — skip-2 connection: 0→2→4→6→1→3→5→0
   const seq = [0, 2, 4, 6, 1, 3, 5];
-  const points = seq.map(i => pts[i].join(',')).join(' ');
+  const points = seq.map((i) => pts[i].join(',')).join(' ');
   return <P d={`M ${points.split(' ').slice(0, 7).join(' L ')} Z`} delay={0} />;
 }
 
@@ -125,7 +138,7 @@ function DocumentationSigil() {
       <L x1={12} y1={6} x2={12} y2={18} delay={0.12} />
       {/* Page lines, left */}
       <L x1={6} y1={10} x2={10} y2={10.5} delay={0.22} />
-      <L x1={6} y1={13} x2={10} y2={13.5} delay={0.30} />
+      <L x1={6} y1={13} x2={10} y2={13.5} delay={0.3} />
       {/* Page lines, right */}
       <L x1={14} y1={10.5} x2={18} y2={10} delay={0.38} />
       <L x1={14} y1={13.5} x2={18} y2={13} delay={0.46} />
@@ -156,12 +169,18 @@ function LearningSigil() {
 // 10. Anti-Hallucination — octagon with a center dot (verity seal)
 function AntiHallucinationSigil() {
   const pts = [
-    [20.3, 8.6], [15.4, 3.7], [8.6, 3.7], [3.7, 8.6],
-    [3.7, 15.4], [8.6, 20.3], [15.4, 20.3], [20.3, 15.4],
+    [20.3, 8.6],
+    [15.4, 3.7],
+    [8.6, 3.7],
+    [3.7, 8.6],
+    [3.7, 15.4],
+    [8.6, 20.3],
+    [15.4, 20.3],
+    [20.3, 15.4],
   ];
   return (
     <>
-      <P d={`M ${pts.map(p => p.join(',')).join(' L ')} Z`} delay={0} />
+      <P d={`M ${pts.map((p) => p.join(',')).join(' L ')} Z`} delay={0} />
       <C cx={12} cy={12} r={1.6} filled delay={0.14} />
     </>
   );
@@ -174,12 +193,12 @@ function SoftwareDevSigil() {
       {/* Diagonal 1 (top-left to bottom-right) */}
       <L x1={5} y1={19} x2={19} y2={5} delay={0} />
       {/* Hammer head at top-right end */}
-      <L x1={17} y1={7} x2={21} y2={3} delay={0.10} />
-      <L x1={19} y1={5} x2={21} y2={7} delay={0.10} />
+      <L x1={17} y1={7} x2={21} y2={3} delay={0.1} />
+      <L x1={19} y1={5} x2={21} y2={7} delay={0.1} />
       {/* Diagonal 2 (top-right to bottom-left) */}
-      <L x1={19} y1={19} x2={5} y2={5} delay={0.20} />
+      <L x1={19} y1={19} x2={5} y2={5} delay={0.2} />
       {/* Chisel head at bottom-left end */}
-      <L x1={3} y1={7} x2={7} y2={3} delay={0.30} />
+      <L x1={3} y1={7} x2={7} y2={3} delay={0.3} />
     </>
   );
 }
@@ -210,7 +229,7 @@ function RiskSigil() {
     [2.5, 9.5],
     [9.9, 8.1],
   ];
-  return <P d={`M ${pts.map(p => p.join(',')).join(' L ')} Z`} delay={0} />;
+  return <P d={`M ${pts.map((p) => p.join(',')).join(' L ')} Z`} delay={0} />;
 }
 
 // 14. Cognitive Load — two opposing triangles (hexagram fragment)
@@ -232,7 +251,7 @@ function TestingSigil() {
       {/* Vertical post */}
       <L x1={12} y1={3} x2={12} y2={18} delay={0} />
       {/* Horizontal beam */}
-      <L x1={4} y1={8} x2={20} y2={8} delay={0.10} />
+      <L x1={4} y1={8} x2={20} y2={8} delay={0.1} />
       {/* Base */}
       <L x1={9} y1={18} x2={15} y2={18} delay={0.18} />
       {/* Left cup */}

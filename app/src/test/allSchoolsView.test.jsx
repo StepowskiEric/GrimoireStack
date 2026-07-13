@@ -1,5 +1,5 @@
-import { describe, it, expect, vi } from 'vitest';
 import { render, screen } from '@testing-library/react';
+import { describe, expect, it, vi } from 'vitest';
 import { LanguageProvider } from '../i18n/LanguageContext';
 
 const mockSchoolMap = new Map();
@@ -27,7 +27,12 @@ describe('AllSchoolsView — trueName search inclusion', () => {
       real: 'Debugging',
       desc: 'Incantations to banish bugs.',
       spells: [
-        { name: 'Trace Sight', skill: 'log-trace-correlation', effect: 'Reads stack traces.', trueName: 'The Eye That Reads' },
+        {
+          name: 'Trace Sight',
+          skill: 'log-trace-correlation',
+          effect: 'Reads stack traces.',
+          trueName: 'The Eye That Reads',
+        },
       ],
     });
     mockSchoolMap.set('reasoning', {
@@ -35,14 +40,10 @@ describe('AllSchoolsView — trueName search inclusion', () => {
       name: 'School of Cognition',
       real: 'Reasoning',
       desc: 'Incantations for clear thought.',
-      spells: [
-        { name: 'Razor of Parsimony', skill: 'occams-razor', effect: 'Favors simplicity.' },
-      ],
+      spells: [{ name: 'Razor of Parsimony', skill: 'occams-razor', effect: 'Favors simplicity.' }],
     });
 
-    renderWithProviders(
-      <AllSchoolsView onSchoolSelect={() => {}} searchQuery="Eye That Reads" />
-    );
+    renderWithProviders(<AllSchoolsView onSchoolSelect={() => {}} searchQuery="Eye That Reads" />);
 
     // The Debugging school contains the matching trueName token — kept.
     expect(screen.getByText('Debugging')).toBeInTheDocument();
@@ -66,14 +67,10 @@ describe('AllSchoolsView — trueName search inclusion', () => {
       name: 'School of Cognition',
       real: 'Reasoning',
       desc: 'Incantations for clear thought.',
-      spells: [
-        { name: 'Razor of Parsimony', skill: 'occams-razor', effect: 'Favors simplicity.' },
-      ],
+      spells: [{ name: 'Razor of Parsimony', skill: 'occams-razor', effect: 'Favors simplicity.' }],
     });
 
-    renderWithProviders(
-      <AllSchoolsView onSchoolSelect={() => {}} searchQuery="Parsimony" />
-    );
+    renderWithProviders(<AllSchoolsView onSchoolSelect={() => {}} searchQuery="Parsimony" />);
     expect(screen.queryByText('Debugging')).not.toBeInTheDocument();
     expect(screen.getByText('Reasoning')).toBeInTheDocument();
   });
@@ -85,13 +82,11 @@ describe('AllSchoolsView — trueName search inclusion', () => {
       name: 'School of Remediation',
       real: 'Debugging',
       desc: 'x',
-      spells: [
-        { name: 'A', skill: 'log-trace-correlation', effect: 'b' },
-      ],
+      spells: [{ name: 'A', skill: 'log-trace-correlation', effect: 'b' }],
     });
 
     renderWithProviders(
-      <AllSchoolsView onSchoolSelect={() => {}} searchQuery="log-trace-correlation" />
+      <AllSchoolsView onSchoolSelect={() => {}} searchQuery="log-trace-correlation" />,
     );
     expect(screen.getByText('Debugging')).toBeInTheDocument();
   });
@@ -106,9 +101,7 @@ describe('AllSchoolsView — trueName search inclusion', () => {
       spells: [{ name: 'X', skill: 'x', effect: 'x' }],
     });
 
-    renderWithProviders(
-      <AllSchoolsView onSchoolSelect={() => {}} searchQuery="banish" />
-    );
+    renderWithProviders(<AllSchoolsView onSchoolSelect={() => {}} searchQuery="banish" />);
     expect(screen.getByText('Debugging')).toBeInTheDocument();
   });
 
@@ -123,7 +116,7 @@ describe('AllSchoolsView — trueName search inclusion', () => {
     });
 
     renderWithProviders(
-      <AllSchoolsView onSchoolSelect={() => {}} searchQuery="zzz-no-match-zzz" />
+      <AllSchoolsView onSchoolSelect={() => {}} searchQuery="zzz-no-match-zzz" />,
     );
     expect(screen.queryByText('Debugging')).not.toBeInTheDocument();
     expect(screen.getByText(/abyss returns no wardens/i)).toBeInTheDocument();
@@ -146,9 +139,7 @@ describe('AllSchoolsView — trueName search inclusion', () => {
       spells: [{ name: 'Y', skill: 'y', effect: 'y' }],
     });
 
-    renderWithProviders(
-      <AllSchoolsView onSchoolSelect={() => {}} searchQuery="" />
-    );
+    renderWithProviders(<AllSchoolsView onSchoolSelect={() => {}} searchQuery="" />);
     expect(screen.getByText('Debugging')).toBeInTheDocument();
     expect(screen.getByText('Reasoning')).toBeInTheDocument();
   });

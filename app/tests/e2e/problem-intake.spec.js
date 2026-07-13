@@ -1,5 +1,5 @@
-import { test, expect } from '@playwright/test';
-import { gotoReady, closeModal } from './helpers.js';
+import { expect, test } from '@playwright/test';
+import { closeModal, gotoReady } from './helpers.js';
 
 test.describe('Problem Intake modal — dual-mode discovery', () => {
   test('opens intake modal from the orb consult link', async ({ page }) => {
@@ -7,7 +7,7 @@ test.describe('Problem Intake modal — dual-mode discovery', () => {
 
     // The "Consult the Witch Doctor / Skill Recommender" link opens the intake modal
     const consultLink = page.getByRole('link', { name: /Consult the/i });
-    if (await consultLink.count() > 0) {
+    if ((await consultLink.count()) > 0) {
       await consultLink.click();
       await expect(page.locator('.intake-modal')).toBeVisible();
       await closeModal(page, '.intake-modal');
@@ -18,7 +18,7 @@ test.describe('Problem Intake modal — dual-mode discovery', () => {
     await gotoReady(page);
 
     const consultLink = page.getByRole('link', { name: /Consult the/i });
-    if (await consultLink.count() === 0) return;
+    if ((await consultLink.count()) === 0) return;
 
     await consultLink.click();
     await expect(page.locator('.intake-modal')).toBeVisible();
@@ -31,7 +31,7 @@ test.describe('Problem Intake modal — dual-mode discovery', () => {
     await gotoReady(page);
 
     const consultLink = page.getByRole('link', { name: /Consult the/i });
-    if (await consultLink.count() === 0) return;
+    if ((await consultLink.count()) === 0) return;
 
     await consultLink.click();
     await expect(page.locator('.intake-modal')).toBeVisible();
@@ -48,7 +48,7 @@ test.describe('Problem Intake modal — dual-mode discovery', () => {
     await gotoReady(page);
 
     const consultLink = page.getByRole('link', { name: /Consult the/i });
-    if (await consultLink.count() === 0) return;
+    if ((await consultLink.count()) === 0) return;
 
     await consultLink.click();
     await expect(page.locator('.intake-modal')).toBeVisible();
@@ -67,7 +67,7 @@ test.describe('Problem Intake modal — dual-mode discovery', () => {
     await gotoReady(page);
 
     const consultLink = page.getByRole('link', { name: /Consult the/i });
-    if (await consultLink.count() === 0) return;
+    if ((await consultLink.count()) === 0) return;
 
     await consultLink.click();
     await expect(page.locator('.intake-modal')).toBeVisible();
@@ -85,7 +85,7 @@ test.describe('Problem Intake modal — dual-mode discovery', () => {
     await gotoReady(page);
 
     const consultLink = page.getByRole('link', { name: /Consult the/i });
-    if (await consultLink.count() === 0) return;
+    if ((await consultLink.count()) === 0) return;
 
     await consultLink.click();
     await expect(page.locator('.intake-modal')).toBeVisible();
@@ -102,7 +102,7 @@ test.describe('Problem Intake modal — dual-mode discovery', () => {
     await gotoReady(page);
 
     const consultLink = page.getByRole('link', { name: /Consult the/i });
-    if (await consultLink.count() === 0) return;
+    if ((await consultLink.count()) === 0) return;
 
     await consultLink.click();
     await expect(page.locator('.intake-modal')).toBeVisible();
@@ -118,7 +118,7 @@ test.describe('Problem Intake modal — dual-mode discovery', () => {
     await gotoReady(page);
 
     const consultLink = page.getByRole('link', { name: /Consult the/i });
-    if (await consultLink.count() === 0) return;
+    if ((await consultLink.count()) === 0) return;
 
     await consultLink.click();
     await expect(page.locator('.intake-modal')).toBeVisible();
@@ -140,7 +140,7 @@ test.describe('Problem Intake modal — dual-mode discovery', () => {
     await gotoReady(page);
 
     const consultLink = page.getByRole('link', { name: /Consult the/i });
-    if (await consultLink.count() === 0) return;
+    if ((await consultLink.count()) === 0) return;
 
     await consultLink.click();
     await expect(page.locator('.intake-modal')).toBeVisible();
@@ -157,7 +157,7 @@ test.describe('Problem Intake modal — dual-mode discovery', () => {
     await gotoReady(page);
 
     const consultLink = page.getByRole('link', { name: /Consult the/i });
-    if (await consultLink.count() === 0) return;
+    if ((await consultLink.count()) === 0) return;
 
     await consultLink.click();
     await expect(page.locator('.intake-modal')).toBeVisible();
@@ -178,7 +178,7 @@ test.describe('Problem Intake modal — dual-mode discovery', () => {
     await gotoReady(page);
 
     const consultLink = page.getByRole('link', { name: /Consult the/i });
-    if (await consultLink.count() === 0) return;
+    if ((await consultLink.count()) === 0) return;
 
     await consultLink.click();
     await expect(page.locator('.intake-modal')).toBeVisible();
@@ -191,7 +191,7 @@ test.describe('Problem Intake modal — dual-mode discovery', () => {
     await gotoReady(page);
 
     const consultLink = page.getByRole('link', { name: /Consult the/i });
-    if (await consultLink.count() === 0) return;
+    if ((await consultLink.count()) === 0) return;
 
     await consultLink.click();
     await expect(page.locator('.intake-modal')).toBeVisible();
@@ -210,7 +210,7 @@ test.describe('Problem Intake modal — dual-mode discovery', () => {
     await gotoReady(page);
 
     const consultLink = page.getByRole('link', { name: /Consult the/i });
-    if (await consultLink.count() === 0) return;
+    if ((await consultLink.count()) === 0) return;
 
     await consultLink.click();
     await expect(page.locator('.intake-modal')).toBeVisible();
@@ -224,7 +224,7 @@ test.describe('Problem Intake modal — dual-mode discovery', () => {
     await gotoReady(page);
 
     const consultLink = page.getByRole('link', { name: /Consult the/i });
-    if (await consultLink.count() === 0) return;
+    if ((await consultLink.count()) === 0) return;
 
     await consultLink.click();
     await expect(page.locator('.intake-modal')).toBeVisible();

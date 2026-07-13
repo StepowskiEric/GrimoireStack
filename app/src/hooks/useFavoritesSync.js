@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
-import { useLocalStorageState } from './useLocalStorageState.js';
-import { useFavorites } from './useFavorites.js';
 import { ALPHABET, CODE_LEN, isValidSyncCode } from '../data/sync-codes.js';
+import { useFavorites } from './useFavorites.js';
+import { useLocalStorageState } from './useLocalStorageState.js';
 
 const SYNC_CODE_KEY = 'grimoire-sync-code';
 const SYNC_API_URL = '/api/favorites-sync';
@@ -69,7 +69,9 @@ export function useFavoritesSync() {
   const favoritesRef = useRef(favorites);
   const prevCodeRef = useRef(code);
 
-  useEffect(() => { favoritesRef.current = favorites; });
+  useEffect(() => {
+    favoritesRef.current = favorites;
+  });
 
   const syncToggleFavorite = useCallback(
     (name, skill) => {
@@ -78,7 +80,7 @@ export function useFavoritesSync() {
       setDirty(true);
       return true;
     },
-    [toggleFavorite]
+    [toggleFavorite],
   );
 
   const enableSync = useCallback(() => {
@@ -95,7 +97,9 @@ export function useFavoritesSync() {
 
   const disableSync = useCallback(() => {
     if (typeof window !== 'undefined') {
-      try { window.localStorage.removeItem(SYNC_CODE_KEY); } catch {}
+      try {
+        window.localStorage.removeItem(SYNC_CODE_KEY);
+      } catch {}
     }
     setCodeValue(null);
     initializedRef.current = false;

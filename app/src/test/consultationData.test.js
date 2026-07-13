@@ -1,12 +1,12 @@
-import { describe, it, expect } from 'vitest';
+import { describe, expect, it } from 'vitest';
 import {
-  SEANCE_SIGILS,
-  SEANCE_QUESTIONS,
-  SEANCE_MAX_SANITY,
-  SEANCE_MAX_QUESTIONS,
+  getOptionById,
   SEANCE_CONVERGENCE_RUN,
   SEANCE_DARKNESS_THRESHOLD,
-  getOptionById,
+  SEANCE_MAX_QUESTIONS,
+  SEANCE_MAX_SANITY,
+  SEANCE_QUESTIONS,
+  SEANCE_SIGILS,
 } from '../data/consultationData.js';
 import { grimoireIndex } from '../data/grimoireIndexInstance.js';
 
@@ -37,16 +37,12 @@ describe('consultationData — sigils', () => {
 
   it('every sigil schoolId resolves in grimoireIndex', () => {
     for (const sigil of SEANCE_SIGILS) {
-      const school = grimoireIndex.getSchoolForSkill(
-        grimoireIndex.allEntries()[0].spell.skill
-      );
+      const school = grimoireIndex.getSchoolForSkill(grimoireIndex.allEntries()[0].spell.skill);
       // We only need to confirm the schoolId is a known school.
       // The seam: pick a known skill from that school, then look it up.
       // Easier: just confirm there's at least one spell in the registry
       // whose schoolId matches.
-      const found = grimoireIndex
-        .allEntries()
-        .some((e) => e.school.id === sigil.schoolId);
+      const found = grimoireIndex.allEntries().some((e) => e.school.id === sigil.schoolId);
       expect(found, `sigil ${sigil.id} schoolId ${sigil.schoolId} not in registry`).toBe(true);
       // Suppress unused warning.
       void school;
@@ -59,10 +55,9 @@ describe('consultationData — questions', () => {
 
   it('has questions for every sigil school', () => {
     for (const sigil of SEANCE_SIGILS) {
-      expect(
-        schoolsWithQuestions,
-        `school ${sigil.schoolId} has no question bank`
-      ).toContain(sigil.schoolId);
+      expect(schoolsWithQuestions, `school ${sigil.schoolId} has no question bank`).toContain(
+        sigil.schoolId,
+      );
     }
   });
 
@@ -71,7 +66,7 @@ describe('consultationData — questions', () => {
       const narrowing = SEANCE_QUESTIONS[schoolId].narrowing;
       expect(
         Array.isArray(narrowing) && narrowing.length >= 3,
-        `${schoolId} narrowing pool has fewer than 3 questions`
+        `${schoolId} narrowing pool has fewer than 3 questions`,
       ).toBe(true);
     }
   });
@@ -79,10 +74,9 @@ describe('consultationData — questions', () => {
   it('every school has a darker pool with at least 1 question', () => {
     for (const schoolId of schoolsWithQuestions) {
       const darker = SEANCE_QUESTIONS[schoolId].darker;
-      expect(
-        Array.isArray(darker) && darker.length >= 1,
-        `${schoolId} darker pool is empty`
-      ).toBe(true);
+      expect(Array.isArray(darker) && darker.length > 0, `${schoolId} darker pool is empty`).toBe(
+        true,
+      );
     }
   });
 

@@ -6,8 +6,8 @@
  * Run as part of `npm run build` so the map always reflects the actual files.
  */
 
-import { writeFile, readdir } from 'node:fs/promises';
-import { join, relative, posix } from 'node:path';
+import { readdir, writeFile } from 'node:fs/promises';
+import { join, posix, relative } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const __dirname = fileURLToPath(new URL('.', import.meta.url));
@@ -32,7 +32,7 @@ async function walk(dir) {
   for (const entry of entries) {
     const full = join(dir, entry.name);
     if (entry.isDirectory()) {
-      files.push(...await walk(full));
+      files.push(...(await walk(full)));
     } else if (entry.name.endsWith('.md') && entry.name !== '_map.json') {
       files.push(full);
     }
@@ -57,7 +57,10 @@ async function main() {
 
   const sorted = Object.keys(map)
     .sort()
-    .reduce((acc, key) => { acc[key] = map[key]; return acc; }, {});
+    .reduce((acc, key) => {
+      acc[key] = map[key];
+      return acc;
+    }, {});
 
   await writeFile(OUT, JSON.stringify(sorted, null, 2) + '\n', 'utf8');
   console.log(`[skill-map] wrote ${Object.keys(sorted).length} entries to ${OUT}`);

@@ -30,12 +30,15 @@ export function deriveEffect(meta /* , body, hasFrontmatter */) {
 export function humanize(skillId) {
   return skillId
     .split('-')
-    .map(w => /^[A-Z]{2,}$/.test(w) ? w : w.charAt(0).toUpperCase() + w.slice(1))
+    .map((w) => (/^[A-Z]{2,}$/.test(w) ? w : w.charAt(0).toUpperCase() + w.slice(1)))
     .join(' ');
 }
 
 export function fileMtime(filePath) {
-  return fs.stat(filePath).then(s => s.mtime).catch(() => new Date());
+  return fs
+    .stat(filePath)
+    .then((s) => s.mtime)
+    .catch(() => new Date());
 }
 
 export function isoDate(d) {

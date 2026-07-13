@@ -13,13 +13,27 @@ import './RitualPanel.css';
  * Visual urgency: each round darkens the panel and narrows the eye.
  */
 export default function RitualPanel({ ritual, onConverge }) {
-  console.log('[RitualPanel] render', { ritual: ritual ? { state: ritual.state, round: ritual.round, hasQuestion: !!ritual.question, choicesCount: ritual.choices?.length, resultsCount: ritual.results?.length } : 'undefined' });
+  console.log('[RitualPanel] render', {
+    ritual: ritual
+      ? {
+          state: ritual.state,
+          round: ritual.round,
+          hasQuestion: !!ritual.question,
+          choicesCount: ritual.choices?.length,
+          resultsCount: ritual.results?.length,
+        }
+      : 'undefined',
+  });
   const [input, setInput] = useState('');
   const [otherOpen, setOtherOpen] = useState(false);
   const [otherInput, setOtherInput] = useState('');
   if (!ritual) {
     console.error('[RitualPanel] ritual is undefined');
-    return <div className="ritual-panel"><p className="ritual-error">The ritual has not been prepared.</p></div>;
+    return (
+      <div className="ritual-panel">
+        <p className="ritual-error">The ritual has not been prepared.</p>
+      </div>
+    );
   }
   const { state, question, choices, results, round, error } = ritual;
 
@@ -64,11 +78,7 @@ export default function RitualPanel({ ritual, onConverge }) {
             }}
           />
           <div className="ritual-actions">
-            <button
-              type="submit"
-              className="ritual-submit"
-              disabled={!input.trim()}
-            >
+            <button type="submit" className="ritual-submit" disabled={!input.trim()}>
               Begin the Inquisition
             </button>
           </div>
@@ -109,12 +119,8 @@ export default function RitualPanel({ ritual, onConverge }) {
   if (state === 'questioning') {
     return (
       <div className="ritual-panel" data-round={round} key={round}>
-        <div className="ritual-question-round">
-          Question {round + 1}
-        </div>
-        <div className="ritual-question">
-          {question}
-        </div>
+        <div className="ritual-question-round">Question {round + 1}</div>
+        <div className="ritual-question">{question}</div>
         <div className="ritual-choices">
           {choices.map((choice, i) => (
             <button
@@ -124,9 +130,7 @@ export default function RitualPanel({ ritual, onConverge }) {
               onClick={() => handleChoice(choice)}
               style={{ animationDelay: `${i * 60}ms` }}
             >
-              <span className="ritual-choice-letter">
-                {String.fromCharCode(65 + i)}
-              </span>
+              <span className="ritual-choice-letter">{String.fromCharCode(65 + i)}</span>
               <span className="ritual-choice-text">{choice}</span>
             </button>
           ))}
@@ -166,7 +170,10 @@ export default function RitualPanel({ ritual, onConverge }) {
               <button
                 type="button"
                 className="ritual-other-cancel"
-                onClick={() => { setOtherOpen(false); setOtherInput(''); }}
+                onClick={() => {
+                  setOtherOpen(false);
+                  setOtherInput('');
+                }}
               >
                 Back
               </button>
@@ -181,9 +188,7 @@ export default function RitualPanel({ ritual, onConverge }) {
   if (state === 'converged') {
     return (
       <div className="ritual-panel ritual-panel--converged" data-round={round}>
-        <div className="ritual-converged-header">
-          The Oracle Has Spoken
-        </div>
+        <div className="ritual-converged-header">The Oracle Has Spoken</div>
         <div className="ritual-results">
           {results.map((r, i) => (
             <button

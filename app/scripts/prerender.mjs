@@ -6,7 +6,7 @@
  * Run after `vite build`. Wire from `npm run build`.
  */
 
-import { readFile, writeFile, mkdir, stat } from 'node:fs/promises';
+import { mkdir, readFile, stat, writeFile } from 'node:fs/promises';
 import { dirname, join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
@@ -30,7 +30,9 @@ async function exists(p) {
 async function main() {
   const indexPath = join(DIST, 'index.html');
   if (!(await exists(indexPath))) {
-    console.error(`[prerender] dist/index.html not found at ${indexPath}. Run \`vite build\` first.`);
+    console.error(
+      `[prerender] dist/index.html not found at ${indexPath}. Run \`vite build\` first.`,
+    );
     process.exit(1);
   }
   const shell = await readFile(indexPath, 'utf8');

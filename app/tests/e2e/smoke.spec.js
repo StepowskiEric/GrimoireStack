@@ -1,5 +1,5 @@
-import { test, expect } from '@playwright/test';
-import { gotoReady, closeModal } from './helpers.js';
+import { expect, test } from '@playwright/test';
+import { closeModal, gotoReady } from './helpers.js';
 
 test.describe('app shell', () => {
   test('renders the main layout and navigation', async ({ page }) => {

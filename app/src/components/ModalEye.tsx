@@ -44,11 +44,7 @@ export default function ModalEye({ size = 48, className }: Props) {
 
   return (
     <svg
-      className={cn(
-        className,
-        opened && 'modal-eye--opened',
-        reduced && 'modal-eye--reduced',
-      )}
+      className={cn(className, opened && 'modal-eye--opened', reduced && 'modal-eye--reduced')}
       width={w}
       height={h}
       viewBox="0 0 240 160"
@@ -74,7 +70,15 @@ export default function ModalEye({ size = 48, className }: Props) {
       </defs>
 
       {/* Sclera */}
-      <ellipse cx="120" cy="80" rx="105" ry="65" fill="#0a0808" stroke="rgba(196,184,152,0.18)" strokeWidth="0.8" />
+      <ellipse
+        cx="120"
+        cy="80"
+        rx="105"
+        ry="65"
+        fill="#0a0808"
+        stroke="rgba(196,184,152,0.18)"
+        strokeWidth="0.8"
+      />
 
       {/* Iris */}
       <ellipse cx="120" cy="80" rx="50" ry="34" fill="url(#modal-eye-iris)" />
@@ -86,7 +90,17 @@ export default function ModalEye({ size = 48, className }: Props) {
         const y1 = 80 + Math.sin(a) * 11;
         const x2 = 120 + Math.cos(a) * 46;
         const y2 = 80 + Math.sin(a) * 30;
-        return <line key={i} x1={x1} y1={y1} x2={x2} y2={y2} stroke="rgba(196,184,152,0.07)" strokeWidth="0.6" />;
+        return (
+          <line
+            key={i}
+            x1={x1}
+            y1={y1}
+            x2={x2}
+            y2={y2}
+            stroke="rgba(196,184,152,0.07)"
+            strokeWidth="0.6"
+          />
+        );
       })}
 
       {/* Pupil */}

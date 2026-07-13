@@ -39,10 +39,10 @@
 
 import { ALPHABET, CODE_LEN, isValidSyncCode } from '../../src/data/sync-codes.js';
 
-const MAX_FAVORITES = 5000;     // soft cap; KV limit is 25 MiB
+const MAX_FAVORITES = 5000; // soft cap; KV limit is 25 MiB
 const MAX_NAME_LEN = 120;
 const MAX_SKILL_LEN = 120;
-const MAX_PAYLOAD = 1_000_000;  // 1 MB hard ceiling per request
+const MAX_PAYLOAD = 1_000_000; // 1 MB hard ceiling per request
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
@@ -63,12 +63,17 @@ function json(data, status = 200) {
 function isValidFavoritesShape(data) {
   if (!Array.isArray(data)) return false;
   if (data.length > MAX_FAVORITES) return false;
-  return data.every((f) =>
-    f !== null
-    && typeof f === 'object'
-    && typeof f.name === 'string' && f.name.length > 0 && f.name.length <= MAX_NAME_LEN
-    && typeof f.skill === 'string' && f.skill.length > 0 && f.skill.length <= MAX_SKILL_LEN
-    && (typeof f.addedAt === 'number' || typeof f.addedAt === 'string')
+  return data.every(
+    (f) =>
+      f !== null &&
+      typeof f === 'object' &&
+      typeof f.name === 'string' &&
+      f.name.length > 0 &&
+      f.name.length <= MAX_NAME_LEN &&
+      typeof f.skill === 'string' &&
+      f.skill.length > 0 &&
+      f.skill.length <= MAX_SKILL_LEN &&
+      (typeof f.addedAt === 'number' || typeof f.addedAt === 'string'),
   );
 }
 
@@ -91,7 +96,7 @@ export async function onRequest(context) {
   } catch {
     return json({ error: 'Invalid JSON body' }, 400);
   }
-  if (body && body.data && JSON.stringify(body.data).length > MAX_PAYLOAD) {
+  if (body?.data && JSON.stringify(body.data).length > MAX_PAYLOAD) {
     return json({ error: 'Payload too large' }, 413);
   }
 
@@ -118,7 +123,11 @@ export async function onRequest(context) {
         return json({ data: null });
       }
       let parsed;
-      try { parsed = JSON.parse(raw); } catch { return json({ error: 'Corrupt cloud data' }, 500); }
+      try {
+        parsed = JSON.parse(raw);
+      } catch {
+        return json({ error: 'Corrupt cloud data' }, 500);
+      }
       if (!isValidFavoritesShape(parsed)) {
         return json({ error: 'Corrupt cloud data' }, 500);
       }

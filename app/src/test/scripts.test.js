@@ -8,12 +8,12 @@
  *   cd app && npx vitest run src/test/scripts.test.js
  */
 
-import { describe, it, expect, beforeAll, afterAll, beforeEach } from 'vitest';
 import { execSync } from 'node:child_process';
-import { promises as fs } from 'fs';
-import path from 'path';
-import { fileURLToPath } from 'url';
-import os from 'os';
+import { promises as fs } from 'node:fs';
+import os from 'node:os';
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
+import { afterAll, beforeAll, beforeEach, describe, expect, it } from 'vitest';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const REPO_ROOT = path.resolve(__dirname, '..', '..', '..');
@@ -35,14 +35,22 @@ function run(cmd, cwd = REPO_ROOT) {
 
 function runNoThrow(cmd, cwd = REPO_ROOT) {
   try {
-    return { stdout: execSync(cmd, { cwd, encoding: 'utf8', stdio: ['pipe', 'pipe', 'pipe'] }), ok: true };
+    return {
+      stdout: execSync(cmd, { cwd, encoding: 'utf8', stdio: ['pipe', 'pipe', 'pipe'] }),
+      ok: true,
+    };
   } catch (err) {
     return { stdout: err.stdout || '', stderr: err.stderr || '', ok: false };
   }
 }
 
 async function fileExists(p) {
-  try { await fs.access(p); return true; } catch { return false; }
+  try {
+    await fs.access(p);
+    return true;
+  } catch {
+    return false;
+  }
 }
 
 async function readJson(p) {
@@ -77,14 +85,8 @@ describe('skill.mjs add', () => {
     tmpPublicDir = path.join(tmpDir, 'public', 'skills');
 
     // Copy the real data files to temp dir
-    await copyFile(
-      path.join(APP_DIR, 'src', 'data', 'schools.js'),
-      tmpSchoolsFile
-    );
-    await copyFile(
-      path.join(APP_DIR, 'src', 'data', 'spellMetadata.js'),
-      tmpMetaFile
-    );
+    await copyFile(path.join(APP_DIR, 'src', 'data', 'schools.js'), tmpSchoolsFile);
+    await copyFile(path.join(APP_DIR, 'src', 'data', 'spellMetadata.js'), tmpMetaFile);
   });
 
   afterAll(async () => {
@@ -130,7 +132,7 @@ describe('skill.mjs remove', () => {
   });
 
   it('validates skill ID is provided', () => {
-    const result = runNoThrow(`node scripts/skill.mjs remove`);
+    const result = runNoThrow('node scripts/skill.mjs remove');
     expect(result.ok).toBe(false);
   });
 });
@@ -142,7 +144,7 @@ describe('skill.mjs remove', () => {
 describe('sync-all.mjs', () => {
   it('reports up to date when no changes', async () => {
     // Use --dry to avoid mutating production files
-    const out = run(`node scripts/sync-all.mjs --dry`);
+    const out = run('node scripts/sync-all.mjs --dry');
     // Should say "No new skills" when nothing has changed
     expect(out).toContain('No new skills');
   });
@@ -164,7 +166,7 @@ describe('registry/index.mjs', () => {
     const schools = mod.default;
 
     expect(Array.isArray(schools)).toBe(true);
-    expect(schools.length).toBeGreaterThan(5);  // 12 schools today
+    expect(schools.length).toBeGreaterThan(5); // 12 schools today
 
     // Total spell count should be substantial
     const totalSpells = schools.reduce((n, s) => n + s.spells.length, 0);

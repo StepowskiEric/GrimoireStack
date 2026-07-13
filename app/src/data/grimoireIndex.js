@@ -17,12 +17,12 @@
  * lives in spellSearch.js and search.js for the static site and tests.
  */
 
+import { filterSpellsOnEntries, searchSpellsOnEntries } from '../spellSearch.js';
 import { createSpellCore } from './spellCore.js';
+import { createSpellGraph } from './spellGraph.js';
 import { createSpellLookup } from './spellLookup.js';
 import { createSpellMatcher } from './spellMatcher.js';
-import { createSpellGraph } from './spellGraph.js';
 import { createSpellWeb } from './spellWeb.js';
-import { searchSpellsOnEntries, filterSpellsOnEntries } from '../spellSearch.js';
 
 export function createGrimoireIndex(schools) {
   const core = createSpellCore(schools);

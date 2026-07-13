@@ -1,14 +1,14 @@
-import { describe, it, expect } from 'vitest';
-import {
-  scoreSelections,
-  converged,
-  shouldSwapToDarker,
-  sanityAfterTap,
-  insightAfterTap,
-  decideResult,
-  nextState,
-} from '../data/consultationScoring.js';
+import { describe, expect, it } from 'vitest';
 import { getOptionById } from '../data/consultationData.js';
+import {
+  converged,
+  decideResult,
+  insightAfterTap,
+  nextState,
+  sanityAfterTap,
+  scoreSelections,
+  shouldSwapToDarker,
+} from '../data/consultationScoring.js';
 
 const resolveOption = (schoolId, optionId) => {
   const found = getOptionById(schoolId, optionId);
@@ -59,7 +59,7 @@ describe('consultationScoring — scoreSelections', () => {
           sanityAfter: 4,
         },
       ],
-      { resolveOption }
+      { resolveOption },
     );
     expect(out.topSkill).toBeNull();
   });
@@ -67,10 +67,22 @@ describe('consultationScoring — scoreSelections', () => {
   it('accumulates primary + alt weights across selections', () => {
     const out = scoreSelections(
       [
-        { schoolId: 'debugging', questionId: 'dbg-n1', optionId: 'dbg-n1-a', pool: 'narrowing', sanityAfter: 4 },
-        { schoolId: 'debugging', questionId: 'dbg-n3', optionId: 'dbg-n3-a', pool: 'narrowing', sanityAfter: 3 },
+        {
+          schoolId: 'debugging',
+          questionId: 'dbg-n1',
+          optionId: 'dbg-n1-a',
+          pool: 'narrowing',
+          sanityAfter: 4,
+        },
+        {
+          schoolId: 'debugging',
+          questionId: 'dbg-n3',
+          optionId: 'dbg-n3-a',
+          pool: 'narrowing',
+          sanityAfter: 3,
+        },
       ],
-      { resolveOption }
+      { resolveOption },
     );
     // dbg-n1-a: primary=log-trace-correlation, alt=purify-test-output
     // dbg-n3-a: primary=iterative-patch-repair, alt=simulate-instrumentation
@@ -86,10 +98,22 @@ describe('consultationScoring — scoreSelections', () => {
   it('repeated picks of the same option accumulate', () => {
     const out = scoreSelections(
       [
-        { schoolId: 'debugging', questionId: 'dbg-n1', optionId: 'dbg-n1-a', pool: 'narrowing', sanityAfter: 4 },
-        { schoolId: 'debugging', questionId: 'dbg-n2', optionId: 'dbg-n2-c', pool: 'narrowing', sanityAfter: 3 }, // alt = purify-test-output
+        {
+          schoolId: 'debugging',
+          questionId: 'dbg-n1',
+          optionId: 'dbg-n1-a',
+          pool: 'narrowing',
+          sanityAfter: 4,
+        },
+        {
+          schoolId: 'debugging',
+          questionId: 'dbg-n2',
+          optionId: 'dbg-n2-c',
+          pool: 'narrowing',
+          sanityAfter: 3,
+        }, // alt = purify-test-output
       ],
-      { resolveOption }
+      { resolveOption },
     );
     // dbg-n2-c: primary=minimal-reproduction, alt=purify-test-output
     // Both options have alt = purify-test-output
@@ -105,41 +129,21 @@ describe('consultationScoring — converged', () => {
   });
 
   it('is true when the last n snapshots all have the same top', () => {
-    expect(
-      converged(
-        [{ topSkill: 'a' }, { topSkill: 'a' }, { topSkill: 'a' }],
-        2
-      )
-    ).toBe(true);
+    expect(converged([{ topSkill: 'a' }, { topSkill: 'a' }, { topSkill: 'a' }], 2)).toBe(true);
   });
 
   it('is false when the last n snapshots have a different top', () => {
-    expect(
-      converged(
-        [{ topSkill: 'a' }, { topSkill: 'b' }, { topSkill: 'a' }],
-        2
-      )
-    ).toBe(false);
+    expect(converged([{ topSkill: 'a' }, { topSkill: 'b' }, { topSkill: 'a' }], 2)).toBe(false);
   });
 
   it('is false when any top is null', () => {
-    expect(
-      converged(
-        [{ topSkill: 'a' }, { topSkill: null }, { topSkill: null }],
-        2
-      )
-    ).toBe(false);
+    expect(converged([{ topSkill: 'a' }, { topSkill: null }, { topSkill: null }], 2)).toBe(false);
   });
 });
 
 describe('consultationScoring — decideResult', () => {
   it('returns null fields when no top skill', () => {
-    const out = decideResult(
-      { bySkill: new Map(), topSkill: null },
-      [],
-      { resolveOption },
-      3
-    );
+    const out = decideResult({ bySkill: new Map(), topSkill: null }, [], { resolveOption }, 3);
     expect(out.primary).toBeNull();
     expect(out.alt).toBeNull();
     expect(out.beasthood).toBe(false);
@@ -155,11 +159,23 @@ describe('consultationScoring — decideResult', () => {
         topSkill: 'log-trace-correlation',
       },
       [
-        { schoolId: 'debugging', questionId: 'dbg-n1', optionId: 'dbg-n1-a', pool: 'narrowing', sanityAfter: 4 },
-        { schoolId: 'debugging', questionId: 'dbg-n2', optionId: 'dbg-n2-c', pool: 'narrowing', sanityAfter: 3 },
+        {
+          schoolId: 'debugging',
+          questionId: 'dbg-n1',
+          optionId: 'dbg-n1-a',
+          pool: 'narrowing',
+          sanityAfter: 4,
+        },
+        {
+          schoolId: 'debugging',
+          questionId: 'dbg-n2',
+          optionId: 'dbg-n2-c',
+          pool: 'narrowing',
+          sanityAfter: 3,
+        },
       ],
       { resolveOption },
-      3
+      3,
     );
     expect(out.primary).toBe('log-trace-correlation');
     expect(out.alt).toBe('purify-test-output');
@@ -177,11 +193,23 @@ describe('consultationScoring — decideResult', () => {
         topSkill: 'log-trace-correlation',
       },
       [
-        { schoolId: 'debugging', questionId: 'dbg-n1', optionId: 'dbg-n1-a', pool: 'narrowing', sanityAfter: 4 },
-        { schoolId: 'debugging', questionId: 'dbg-n2', optionId: 'dbg-n2-c', pool: 'narrowing', sanityAfter: 3 },
+        {
+          schoolId: 'debugging',
+          questionId: 'dbg-n1',
+          optionId: 'dbg-n1-a',
+          pool: 'narrowing',
+          sanityAfter: 4,
+        },
+        {
+          schoolId: 'debugging',
+          questionId: 'dbg-n2',
+          optionId: 'dbg-n2-c',
+          pool: 'narrowing',
+          sanityAfter: 3,
+        },
       ],
       { resolveOption },
-      0
+      0,
     );
     expect(out.beasthood).toBe(true);
     // The alt of dbg-n1-a is purify-test-output. That becomes the primary.

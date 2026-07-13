@@ -36,18 +36,26 @@ export function parseTables(html) {
       }
       if (tableLines.length >= 2) {
         const sep = tableLines[1].slice(1, -1);
-        const isSep = sep.split('|').every(c => /^[-:\s]+$/.test(c.trim()));
+        const isSep = sep.split('|').every((c) => /^[-:\s]+$/.test(c.trim()));
         if (isSep) {
-          const headers = tableLines[0].slice(1, -1).split('|').map(h => h.trim());
-          const bodyRows = tableLines.slice(2).map(row => row.slice(1, -1).split('|').map(c => c.trim()));
-          const thead = `<thead><tr>${headers.map(h => `<th>${h}</th>`).join('')}</tr></thead>`;
-          const tbody = `<tbody>${bodyRows.map(r => `<tr>${r.map(c => `<td>${c}</td>`).join('')}</tr>`).join('')}</tbody>`;
+          const headers = tableLines[0]
+            .slice(1, -1)
+            .split('|')
+            .map((h) => h.trim());
+          const bodyRows = tableLines.slice(2).map((row) =>
+            row
+              .slice(1, -1)
+              .split('|')
+              .map((c) => c.trim()),
+          );
+          const thead = `<thead><tr>${headers.map((h) => `<th>${h}</th>`).join('')}</tr></thead>`;
+          const tbody = `<tbody>${bodyRows.map((r) => `<tr>${r.map((c) => `<td>${c}</td>`).join('')}</tr>`).join('')}</tbody>`;
           out.push(`<table class="md-table">${thead}${tbody}</table>`);
         } else {
-          tableLines.forEach(l => out.push(l));
+          tableLines.forEach((l) => out.push(l));
         }
       } else {
-        tableLines.forEach(l => out.push(l));
+        tableLines.forEach((l) => out.push(l));
       }
     } else {
       out.push(lines[i]);
@@ -118,32 +126,38 @@ export function simpleMarkdownToHtml(md) {
     return `<h${level}>${t}</h${level}>`;
   });
   html = html.replace(/^---\s*$/gm, '<hr />');
-  html = html.replace(/^(\s*)-\s+(.*)$/gm, (m, indent, txt) => {
+  html = html.replace(/^(\s*)-\s+(.*)$/gm, (_m, indent, txt) => {
     const depth = Math.floor(indent.length / 2);
     return `<li data-depth="${depth}">${txt}</li>`;
   });
-  html = html.replace(/^(\s*)\d+\.\s+(.*)$/gm, (m, indent, txt) => {
+  html = html.replace(/^(\s*)\d+\.\s+(.*)$/gm, (_m, indent, txt) => {
     const depth = Math.floor(indent.length / 2);
     return `<li data-depth="${depth}">${txt}</li>`;
   });
-  html = html.replace(/^(\s*)-\s*\[([ xX])\]\s*(.*)$/gm, (m, indent, checked, txt) => {
+  html = html.replace(/^(\s*)-\s*\[([ xX])\]\s*(.*)$/gm, (_m, _indent, checked, txt) => {
     const isChecked = checked.toLowerCase() === 'x';
     return `<li class="check-item"><span class="check-box${isChecked ? ' checked' : ''}"></span>${txt}</li>`;
   });
   html = wrapLists(html);
-  html = html.split('\n').map(l => {
-    const t = l.trim();
-    if (!t) return '<br />';
-    if (t.startsWith('<') && !t.startsWith('<br')) return l;
-    return `<p>${t}</p>`;
-  }).join('\n');
+  html = html
+    .split('\n')
+    .map((l) => {
+      const t = l.trim();
+      if (!t) return '<br />';
+      if (t.startsWith('<') && !t.startsWith('<br')) return l;
+      return `<p>${t}</p>`;
+    })
+    .join('\n');
 
   // Phase 3: Inline elements
   html = html.replace(/~~([^~]+)~~/g, '<del>$1</del>');
   html = html.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
   html = html.replace(/\*([^*]+)\*/g, '<em>$1</em>');
   html = html.replace(/`([^`]+)`/g, '<code>$1</code>');
-  html = html.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2" target="_blank" rel="noopener noreferrer">$1</a>');
+  html = html.replace(
+    /\[([^\]]+)\]\(([^)]+)\)/g,
+    '<a href="$2" target="_blank" rel="noopener noreferrer">$1</a>',
+  );
 
   // Phase 4: Restore code blocks
   html = html.replace(/___CODE_BLOCK_(\d+)___/g, (_, i) => codeBlocks[+i]);

@@ -1,5 +1,5 @@
-import { describe, it, expect, beforeEach } from 'vitest';
-import { renderHook, act } from '@testing-library/react';
+import { act, renderHook } from '@testing-library/react';
+import { beforeEach, describe, expect, it } from 'vitest';
 import { useRecentlyViewed } from '../hooks/useRecentlyViewed.js';
 
 describe('useRecentlyViewed', () => {
@@ -59,7 +59,7 @@ describe('useRecentlyViewed', () => {
   it('loads from localStorage on mount', () => {
     localStorage.setItem(
       'grimoire-recent',
-      JSON.stringify([{ name: 'X', skill: 'x', viewedAt: 1 }])
+      JSON.stringify([{ name: 'X', skill: 'x', viewedAt: 1 }]),
     );
     const { result } = renderHook(() => useRecentlyViewed());
     expect(result.current.recent).toHaveLength(1);

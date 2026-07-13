@@ -1,6 +1,6 @@
-import { describe, it, expect, vi, beforeAll, afterEach } from 'vitest';
-import { render, screen, cleanup, fireEvent } from '@testing-library/react';
+import { cleanup, fireEvent, render, screen } from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
+import { afterEach, beforeAll, describe, expect, it, vi } from 'vitest';
 import GazePreview from './GazePreview.jsx';
 
 // GrimoireEye drives its animation through requestAnimationFrame; stub it so

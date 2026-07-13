@@ -1,5 +1,9 @@
-import { describe, it, expect } from 'vitest';
-import { injectSpellMeta, escapeHtml, truncateDescription } from '../../scripts/prerender-helpers.mjs';
+import { describe, expect, it } from 'vitest';
+import {
+  escapeHtml,
+  injectSpellMeta,
+  truncateDescription,
+} from '../../scripts/prerender-helpers.mjs';
 
 const SHELL = `<!DOCTYPE html>
 <html lang="en">
@@ -40,8 +44,12 @@ describe('injectSpellMeta', () => {
     expect(out).toContain('<meta property="og:title" content="Trace Sight — GrimoireStack">');
     expect(out).toContain('<meta property="og:description"');
     expect(out).toContain('<meta property="og:type" content="article">');
-    expect(out).toContain('<meta property="og:url" content="https://grimoirestack.dev/s/log-trace-correlation">');
-    expect(out).toContain('<meta property="og:image" content="https://grimoirestack.dev/og-image.png">');
+    expect(out).toContain(
+      '<meta property="og:url" content="https://grimoirestack.dev/s/log-trace-correlation">',
+    );
+    expect(out).toContain(
+      '<meta property="og:image" content="https://grimoirestack.dev/og-image.png">',
+    );
   });
 
   it('adds Twitter card tags', () => {
@@ -54,7 +62,9 @@ describe('injectSpellMeta', () => {
 
   it('adds a canonical link', () => {
     const out = injectSpellMeta(SHELL, meta);
-    expect(out).toContain('<link rel="canonical" href="https://grimoirestack.dev/s/log-trace-correlation">');
+    expect(out).toContain(
+      '<link rel="canonical" href="https://grimoirestack.dev/s/log-trace-correlation">',
+    );
   });
 
   it('preserves existing shell content (script tags, etc.)', () => {

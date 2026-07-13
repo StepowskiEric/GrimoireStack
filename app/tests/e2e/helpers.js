@@ -1,5 +1,5 @@
-import { devices, expect } from '@playwright/test';
 import AxeBuilder from '@axe-core/playwright';
+import { devices, expect } from '@playwright/test';
 
 export const MOBILE_DEVICES = {
   'iPhone SE': devices['iPhone SE'],

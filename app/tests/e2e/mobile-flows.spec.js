@@ -1,14 +1,14 @@
-import { test, expect } from '@playwright/test';
-import { gotoReady, closeModal } from './helpers.js';
+import { expect, test } from '@playwright/test';
+import { closeModal, gotoReady } from './helpers.js';
 
-const SETTINGS_TAB = 'Settings';
+const _SETTINGS_TAB = 'Settings';
 const VAULT_TAB = 'The Vault';
 const RITUALS_TAB = 'The Crucible';
 const BESTIARY_TAB = 'The Bestiary';
-const SPELL_WEB_TAB = 'Spell Web';
-const CHANGELOG_TAB = 'Changelog';
+const _SPELL_WEB_TAB = 'Spell Web';
+const _CHANGELOG_TAB = 'Changelog';
 const ABOUT_TAB = 'The Tome';
-const SEANCE_TAB = 'The Séance';
+const _SEANCE_TAB = 'The Séance';
 
 test.use({ viewport: { width: 375, height: 667 } });
 

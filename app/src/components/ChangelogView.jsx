@@ -1,5 +1,5 @@
-import { useState, useMemo } from 'react';
-import { getRecentlyUpdated, getNewlyAdded, getUpdated } from '../data/changeFeed.js';
+import { useMemo, useState } from 'react';
+import { getNewlyAdded, getRecentlyUpdated, getUpdated } from '../data/changeFeed.js';
 
 function ChangelogEntry({ item, onSpellClick }) {
   const handleClick = () => {
@@ -15,19 +15,31 @@ function ChangelogEntry({ item, onSpellClick }) {
       className="panel p-3.5 w-full text-left transition-all duration-200 hover:bg-[rgba(138,154,106,0.06)] hover:border-[rgba(138,154,106,0.18)] cursor-pointer"
     >
       <div className="flex flex-wrap items-center gap-x-3 gap-y-1">
-        <span className="font-['Cinzel'] text-[0.68rem] font-semibold tracking-wide text-text-primary">{item.name}</span>
-        <span className="font-['Cinzel'] text-[0.6rem] uppercase tracking-widest text-text-muted">{item.school.real}</span>
+        <span className="font-['Cinzel'] text-[0.68rem] font-semibold tracking-wide text-text-primary">
+          {item.name}
+        </span>
+        <span className="font-['Cinzel'] text-[0.6rem] uppercase tracking-widest text-text-muted">
+          {item.school.real}
+        </span>
         {item.status === 'New' && (
-          <span className="font-['Cinzel'] text-[0.6rem] font-bold uppercase tracking-widest text-accent border border-accent/40 rounded-sm px-1.5 py-0.5" aria-hidden="true">New</span>
+          <span
+            className="font-['Cinzel'] text-[0.6rem] font-bold uppercase tracking-widest text-accent border border-accent/40 rounded-sm px-1.5 py-0.5"
+            aria-hidden="true"
+          >
+            New
+          </span>
         )}
         {item.status !== 'New' && item.isExplicit && (
-          <span className="font-['Cinzel'] text-[0.6rem] font-bold uppercase tracking-widest text-text-muted border border-border-hover rounded-sm px-1.5 py-0.5" aria-hidden="true">Updated</span>
+          <span
+            className="font-['Cinzel'] text-[0.6rem] font-bold uppercase tracking-widest text-text-muted border border-border-hover rounded-sm px-1.5 py-0.5"
+            aria-hidden="true"
+          >
+            Updated
+          </span>
         )}
       </div>
       <div className="mt-1 font-['Cinzel'] text-[0.68rem] text-text-muted">{item.lastUpdated}</div>
-      {item.note && (
-        <div className="mt-1 text-text-secondary text-[0.82rem]">{item.note}</div>
-      )}
+      {item.note && <div className="mt-1 text-text-secondary text-[0.82rem]">{item.note}</div>}
     </button>
   );
 }
@@ -93,22 +105,23 @@ export default function ChangelogView({ onSpellClick }) {
 
     if (query.trim()) {
       const q = query.trim().toLowerCase();
-      items = items.filter(item =>
-        item.name.toLowerCase().includes(q) ||
-        item.skill.toLowerCase().includes(q) ||
-        (item.note && item.note.toLowerCase().includes(q))
+      items = items.filter(
+        (item) =>
+          item.name.toLowerCase().includes(q) ||
+          item.skill.toLowerCase().includes(q) ||
+          item.note?.toLowerCase().includes(q),
       );
     }
 
     if (schoolFilter !== 'all') {
-      items = items.filter(item => item.school.id === schoolFilter);
+      items = items.filter((item) => item.school.id === schoolFilter);
     }
 
     if (dateRange.from) {
-      items = items.filter(item => item.lastUpdated >= dateRange.from);
+      items = items.filter((item) => item.lastUpdated >= dateRange.from);
     }
     if (dateRange.to) {
-      items = items.filter(item => item.lastUpdated <= dateRange.to);
+      items = items.filter((item) => item.lastUpdated <= dateRange.to);
     }
 
     return items;
@@ -123,27 +136,62 @@ export default function ChangelogView({ onSpellClick }) {
           <div className="flex items-center gap-3">
             <div className="text-sickly" aria-hidden="true">
               <svg viewBox="0 0 80 80" className="h-12 w-12">
-                <circle cx="40" cy="40" r="36" fill="none" stroke="rgba(138,154,106,0.18)" strokeWidth="0.8" />
-                <circle cx="40" cy="40" r="28" fill="none" stroke="rgba(138,154,106,0.12)" strokeWidth="0.6" strokeDasharray="3 4" />
-                <path d="M 25 20 L 55 20 L 55 60 L 25 60 Z" fill="none" stroke="rgba(138,154,106,0.2)" strokeWidth="0.8" />
-                <path d="M 30 30 L 50 30 M 30 40 L 50 40 M 30 50 L 45 50" stroke="rgba(138,154,106,0.15)" strokeWidth="0.5" />
+                <circle
+                  cx="40"
+                  cy="40"
+                  r="36"
+                  fill="none"
+                  stroke="rgba(138,154,106,0.18)"
+                  strokeWidth="0.8"
+                />
+                <circle
+                  cx="40"
+                  cy="40"
+                  r="28"
+                  fill="none"
+                  stroke="rgba(138,154,106,0.12)"
+                  strokeWidth="0.6"
+                  strokeDasharray="3 4"
+                />
+                <path
+                  d="M 25 20 L 55 20 L 55 60 L 25 60 Z"
+                  fill="none"
+                  stroke="rgba(138,154,106,0.2)"
+                  strokeWidth="0.8"
+                />
+                <path
+                  d="M 30 30 L 50 30 M 30 40 L 50 40 M 30 50 L 45 50"
+                  stroke="rgba(138,154,106,0.15)"
+                  strokeWidth="0.5"
+                />
               </svg>
             </div>
             <div>
-              <h2 className="font-['Cinzel_Decorative'] text-[1.25rem] font-bold text-text-primary tracking-wide">Changelog</h2>
+              <h2 className="font-['Cinzel_Decorative'] text-[1.25rem] font-bold text-text-primary tracking-wide">
+                Changelog
+              </h2>
               <p className="text-text-secondary text-[0.82rem]">
-                Recent inscriptions and updates to the grimoire. Filter by school or date to track changes.
+                Recent inscriptions and updates to the grimoire. Filter by school or date to track
+                changes.
               </p>
             </div>
           </div>
           <div className="flex items-center gap-4">
             <div className="text-center">
-              <div className="font-['Cinzel'] text-[0.9rem] font-bold text-text-primary">{filtered.length}</div>
-              <div className="font-['Cinzel'] text-[0.6rem] uppercase tracking-widest text-text-muted">Updates</div>
+              <div className="font-['Cinzel'] text-[0.9rem] font-bold text-text-primary">
+                {filtered.length}
+              </div>
+              <div className="font-['Cinzel'] text-[0.6rem] uppercase tracking-widest text-text-muted">
+                Updates
+              </div>
             </div>
             <div className="text-center">
-              <div className="font-['Cinzel'] text-[0.9rem] font-bold text-text-primary">{allUpdates.length}</div>
-              <div className="font-['Cinzel'] text-[0.6rem] uppercase tracking-widest text-text-muted">Total</div>
+              <div className="font-['Cinzel'] text-[0.9rem] font-bold text-text-primary">
+                {allUpdates.length}
+              </div>
+              <div className="font-['Cinzel'] text-[0.6rem] uppercase tracking-widest text-text-muted">
+                Total
+              </div>
             </div>
           </div>
         </div>
@@ -154,14 +202,22 @@ export default function ChangelogView({ onSpellClick }) {
           <button
             type="button"
             onClick={() => setShowNewOnly((prev) => !prev)}
-            className={showNewOnly ? 'section-title px-2.5 py-1.5 border border-accent/40 text-accent' : 'section-title px-2.5 py-1.5 border border-border hover:border-border-hover text-text-muted'}
+            className={
+              showNewOnly
+                ? 'section-title px-2.5 py-1.5 border border-accent/40 text-accent'
+                : 'section-title px-2.5 py-1.5 border border-border hover:border-border-hover text-text-muted'
+            }
           >
             {showNewOnly ? 'Showing new only' : 'Show new only'}
           </button>
           <button
             type="button"
             onClick={() => setShowUpdatedOnly((prev) => !prev)}
-            className={showUpdatedOnly ? 'section-title px-2.5 py-1.5 border border-accent/40 text-accent' : 'section-title px-2.5 py-1.5 border border-border hover:border-border-hover text-text-muted'}
+            className={
+              showUpdatedOnly
+                ? 'section-title px-2.5 py-1.5 border border-accent/40 text-accent'
+                : 'section-title px-2.5 py-1.5 border border-border hover:border-border-hover text-text-muted'
+            }
           >
             {showUpdatedOnly ? 'Showing updated only' : 'Show updated only'}
           </button>
@@ -178,7 +234,9 @@ export default function ChangelogView({ onSpellClick }) {
 
         <div className="mt-3 grid gap-3 md:grid-cols-2">
           <div>
-            <label className="section-title mb-1 block" htmlFor="school-filter">School</label>
+            <label className="section-title mb-1 block" htmlFor="school-filter">
+              School
+            </label>
             {/* eslint-disable-next-line jsx-a11y/no-onchange */}
             <select
               id="school-filter"
@@ -187,8 +245,10 @@ export default function ChangelogView({ onSpellClick }) {
               className="w-full bg-surface-overlay border border-border text-text-primary text-[0.95rem] p-2 rounded-sm focus:outline-3 focus:outline-offset-2 focus:border-border-hover"
               aria-label="Filter by school"
             >
-              {SCHOOLS.map(school => (
-                <option key={school.id} value={school.id}>{school.label}</option>
+              {SCHOOLS.map((school) => (
+                <option key={school.id} value={school.id}>
+                  {school.label}
+                </option>
               ))}
             </select>
           </div>
@@ -201,7 +261,7 @@ export default function ChangelogView({ onSpellClick }) {
                   <input
                     type="date"
                     value={dateRange.from}
-                    onChange={(e) => setDateRange(prev => ({ ...prev, from: e.target.value }))}
+                    onChange={(e) => setDateRange((prev) => ({ ...prev, from: e.target.value }))}
                     className="bg-surface-overlay border border-border text-text-primary text-[0.95rem] p-2 rounded-sm focus:outline-3 focus:outline-offset-2 focus:border-border-hover"
                     aria-label="From date"
                   />
@@ -209,7 +269,7 @@ export default function ChangelogView({ onSpellClick }) {
                   <input
                     type="date"
                     value={dateRange.to}
-                    onChange={(e) => setDateRange(prev => ({ ...prev, to: e.target.value }))}
+                    onChange={(e) => setDateRange((prev) => ({ ...prev, to: e.target.value }))}
                     className="bg-surface-overlay border border-border text-text-primary text-[0.95rem] p-2 rounded-sm focus:outline-3 focus:outline-offset-2 focus:border-border-hover"
                     aria-label="To date"
                   />
@@ -223,7 +283,9 @@ export default function ChangelogView({ onSpellClick }) {
       <div>
         {filtered.length === 0 ? (
           <div className="panel p-4 text-center">
-            <p className="text-text-muted italic">The chronicle holds no entries for this search.</p>
+            <p className="text-text-muted italic">
+              The chronicle holds no entries for this search.
+            </p>
           </div>
         ) : (
           <div className="grid gap-4">
@@ -233,7 +295,7 @@ export default function ChangelogView({ onSpellClick }) {
                   <h3 className="section-title">Today</h3>
                 </div>
                 <div className="grid gap-2">
-                  {grouped.today.map(item => (
+                  {grouped.today.map((item) => (
                     <ChangelogEntry key={item.skill} item={item} onSpellClick={onSpellClick} />
                   ))}
                 </div>
@@ -246,7 +308,7 @@ export default function ChangelogView({ onSpellClick }) {
                   <h3 className="section-title">This Week</h3>
                 </div>
                 <div className="grid gap-2">
-                  {grouped.thisWeek.map(item => (
+                  {grouped.thisWeek.map((item) => (
                     <ChangelogEntry key={item.skill} item={item} onSpellClick={onSpellClick} />
                   ))}
                 </div>
@@ -259,7 +321,7 @@ export default function ChangelogView({ onSpellClick }) {
                   <h3 className="section-title">This Month</h3>
                 </div>
                 <div className="grid gap-2">
-                  {grouped.thisMonth.map(item => (
+                  {grouped.thisMonth.map((item) => (
                     <ChangelogEntry key={item.skill} item={item} onSpellClick={onSpellClick} />
                   ))}
                 </div>
@@ -272,7 +334,7 @@ export default function ChangelogView({ onSpellClick }) {
                   <h3 className="section-title">Older</h3>
                 </div>
                 <div className="grid gap-2">
-                  {grouped.older.map(item => (
+                  {grouped.older.map((item) => (
                     <ChangelogEntry key={item.skill} item={item} onSpellClick={onSpellClick} />
                   ))}
                 </div>

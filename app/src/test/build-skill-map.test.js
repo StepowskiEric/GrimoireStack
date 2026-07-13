@@ -1,6 +1,6 @@
-import { describe, it, expect, beforeAll } from 'vitest';
 import { readFileSync } from 'node:fs';
 import { join } from 'node:path';
+import { beforeAll, describe, expect, it } from 'vitest';
 
 const MAP_PATH = join(process.cwd(), 'public', 'skills', '_map.json');
 
@@ -24,8 +24,8 @@ describe('build-skill-map output', () => {
 
   it('every catalog spell in schools.js has a _map.json entry', async () => {
     const { default: schools } = await import('../data/schools.js');
-    const catalogSkills = schools.flatMap(s => s.spells.map(sp => sp.skill));
-    const missing = catalogSkills.filter(s => !map[s]);
+    const catalogSkills = schools.flatMap((s) => s.spells.map((sp) => sp.skill));
+    const missing = catalogSkills.filter((s) => !map[s]);
     expect(missing).toEqual([]);
   });
 
@@ -38,6 +38,8 @@ describe('build-skill-map output', () => {
 
   it('includes skills with YAML frontmatter name field', () => {
     // super-review-typescript has frontmatter with name: super-review-typescript
-    expect(map['super-review-typescript']).toBe('/skills/software-development/super-review-typescript/SKILL.md');
+    expect(map['super-review-typescript']).toBe(
+      '/skills/software-development/super-review-typescript/SKILL.md',
+    );
   });
 });

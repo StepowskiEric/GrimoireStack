@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
 /**
  * useLocalStorageState — shared primitive for localStorage-backed React state.
@@ -16,15 +16,17 @@ import { useState, useEffect } from 'react';
  * @returns {{ value: T, setValue: (updater: T | ((prev: T) => T)) => void }}
  */
 export function useLocalStorageState({ key, initial, parse, onChange }) {
-  const parseValue = parse || ((raw, fallback) => {
-    if (!raw) return fallback;
-    try {
-      const v = JSON.parse(raw);
-      return (v !== null && typeof v === 'object' && !Array.isArray(v)) ? v : fallback;
-    } catch {
-      return fallback;
-    }
-  });
+  const parseValue =
+    parse ||
+    ((raw, fallback) => {
+      if (!raw) return fallback;
+      try {
+        const v = JSON.parse(raw);
+        return v !== null && typeof v === 'object' && !Array.isArray(v) ? v : fallback;
+      } catch {
+        return fallback;
+      }
+    });
 
   const [value, setValue] = useState(() => {
     if (typeof window === 'undefined') return initial();
@@ -33,7 +35,9 @@ export function useLocalStorageState({ key, initial, parse, onChange }) {
 
   useEffect(() => {
     if (typeof window === 'undefined') return;
-    try { window.localStorage.setItem(key, JSON.stringify(value)); } catch {}
+    try {
+      window.localStorage.setItem(key, JSON.stringify(value));
+    } catch {}
     onChange?.(value);
   }, [key, value, onChange]);
 

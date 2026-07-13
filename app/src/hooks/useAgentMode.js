@@ -25,14 +25,18 @@ export function useAgentMode() {
     let prompt;
     if (bestSkill) {
       prompt = `The user is looking for the skill "${bestSkill.name}" (${bestSkill.skill}). Scroll to that skill card in the library, then click it to open the spell. After it opens, briefly explain in one sentence what the skill does so the user understands why it matched.`;
-    } else if (incantation && incantation.trim()) {
+    } else if (incantation?.trim()) {
       prompt = buildIncantationPrompt(incantation.trim());
     } else {
       console.log('[useAgentMode] runAgent skipped: no bestSkill or incantation');
       return false;
     }
 
-    console.log('[useAgentMode] Starting agent run', { mode: bestSkill ? 'skill' : 'incantation', proxyUrl: PROXY_BASE_URL, model: PROXY_MODEL });
+    console.log('[useAgentMode] Starting agent run', {
+      mode: bestSkill ? 'skill' : 'incantation',
+      proxyUrl: PROXY_BASE_URL,
+      model: PROXY_MODEL,
+    });
 
     try {
       const { PageAgent } = await import('page-agent');
@@ -44,20 +48,25 @@ export function useAgentMode() {
         apiKey: 'skip-auth',
         language: 'en-US',
       });
-      console.log('[useAgentMode] PageAgent instance created', { baseURL: PROXY_BASE_URL, model: PROXY_MODEL });
+      console.log('[useAgentMode] PageAgent instance created', {
+        baseURL: PROXY_BASE_URL,
+        model: PROXY_MODEL,
+      });
       agentRef.current = agent;
 
       // Show the page-agent floating panel for visual feedback
       console.log('[useAgentMode] Showing panel...');
       agent.panel.show();
 
-
       console.log('[useAgentMode] Calling agent.execute()...');
       const result = await agent.execute(prompt);
       const success = result?.success === true;
       return success;
     } catch (err) {
-      console.log('[useAgentMode] agent.execute() failed', { message: err.message, stack: err.stack?.slice(0, 300) });
+      console.log('[useAgentMode] agent.execute() failed', {
+        message: err.message,
+        stack: err.stack?.slice(0, 300),
+      });
       onError?.(err?.message || 'Agent failed to navigate');
       return false;
     } finally {

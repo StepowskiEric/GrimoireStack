@@ -19,9 +19,7 @@ export function buildSitemapXml({ origin, paths = [] }) {
   const base = String(origin).replace(/\/$/, '');
   const allPaths = ['/', ...paths.filter((p) => p && p !== '/')];
   const urls = allPaths
-    .map(
-      (p) => `  <url>\n    <loc>${escapeXml(base + p)}</loc>\n  </url>`
-    )
+    .map((p) => `  <url>\n    <loc>${escapeXml(base + p)}</loc>\n  </url>`)
     .join('\n');
   return `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">

@@ -50,9 +50,9 @@ export function useKeyboardShortcuts(handlers, enabled = true) {
       // j/k navigate between visible cards
       if (e.key === 'j' || e.key === 'k' || e.key === 'ArrowDown' || e.key === 'ArrowUp') {
         const cards = Array.from(
-          document.querySelectorAll('.spell-card:not([style*="display: none"])')
+          document.querySelectorAll('.spell-card:not([style*="display: none"])'),
         ).filter((el) => el.tabIndex >= 0);
-        if (!cards.length) return;
+        if (cards.length === 0) return;
         const current = document.activeElement;
         const idx = cards.indexOf(current);
         let next = idx;

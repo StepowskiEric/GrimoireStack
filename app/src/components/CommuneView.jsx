@@ -1,14 +1,14 @@
 import { useEffect, useRef } from 'react';
 import { useConsultation } from '../hooks/useConsultation.js';
-import SigilPicker from './consultation/SigilPicker.jsx';
-import QuestionCard from './consultation/QuestionCard.jsx';
-import SanityMeter from './consultation/SanityMeter.jsx';
+import { cn } from '../utils/cn.js';
 import InsightMeter from './consultation/InsightMeter.jsx';
+import QuestionCard from './consultation/QuestionCard.jsx';
 import ResultCard from './consultation/ResultCard.jsx';
+import SanityMeter from './consultation/SanityMeter.jsx';
+import SigilPicker from './consultation/SigilPicker.jsx';
 import SigilSvg from './consultation/SigilSvg.jsx';
 import TentacleSvg from './consultation/TentacleSvg.jsx';
 import Icon from './Icon.jsx';
-import { cn } from '../utils/cn.js';
 import './RitualPanel.css';
 
 /**
@@ -71,7 +71,9 @@ export default function CommuneView({ onSpellClick, audioEnabled = false }) {
       <TentacleSvg sanity={sanity} />
 
       <header className="text-center max-w-[520px] mx-auto z-[2]">
-        <h1 className="font-['Cinzel_Decorative'] text-[1.25rem] font-bold text-text-primary tracking-wide">The Séance</h1>
+        <h1 className="font-['Cinzel_Decorative'] text-[1.25rem] font-bold text-text-primary tracking-wide">
+          The Séance
+        </h1>
         <p className="text-text-secondary text-[0.82rem] mt-1">
           Six domains. Six wounds. Find the incantation that names what ails you.
         </p>
@@ -83,9 +85,7 @@ export default function CommuneView({ onSpellClick, audioEnabled = false }) {
       </div>
 
       <main className="w-full max-w-[680px]">
-        {stage === 'sigil' && (
-          <SigilPicker onPick={pickSigil} />
-        )}
+        {stage === 'sigil' && <SigilPicker onPick={pickSigil} />}
 
         {stage === 'asking' && currentQuestion && (
           <QuestionCard
@@ -97,17 +97,17 @@ export default function CommuneView({ onSpellClick, audioEnabled = false }) {
         )}
 
         {stage === 'result' && result && (
-          <ResultCard
-            result={result}
-            onRevealSpell={onRevealSpell}
-            onReset={reset}
-          />
+          <ResultCard result={result} onRevealSpell={onRevealSpell} onReset={reset} />
         )}
       </main>
 
       <footer className="flex justify-center mt-2">
         {stage !== 'sigil' && (
-          <button type="button" className="inline-flex items-center gap-1.5 px-3 py-1.5 border border-border text-text-muted text-[0.68rem] uppercase tracking-wider transition-colors hover:border-border-hover hover:text-text-primary" onClick={reset}>
+          <button
+            type="button"
+            className="inline-flex items-center gap-1.5 px-3 py-1.5 border border-border text-text-muted text-[0.68rem] uppercase tracking-wider transition-colors hover:border-border-hover hover:text-text-primary"
+            onClick={reset}
+          >
             <Icon name="close" size={14} /> Abandon the Ritual
           </button>
         )}

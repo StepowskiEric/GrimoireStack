@@ -66,13 +66,20 @@ export function createSpellLookup(core) {
    */
   const MAX_WHISPERS = 3;
   const resolveKinsForSpell = (spell, max = MAX_WHISPERS) => {
-    if (!spell || !Array.isArray(spell.kins) || spell.kins.length === 0) return [];
+    if (!(spell && Array.isArray(spell.kins)) || spell.kins.length === 0) return [];
     return spell.kins
-      .map(id => bySkill.get(id))
+      .map((id) => bySkill.get(id))
       .filter(Boolean)
       .slice(0, max)
-      .map(entry => ({ spell: entry.spell, school: entry.school }));
+      .map((entry) => ({ spell: entry.spell, school: entry.school }));
   };
 
-  return { resolveBySkill, resolveByName, resolveComboSpells, getSchoolForSkill, getSpellNameBySkill, resolveKinsForSpell };
+  return {
+    resolveBySkill,
+    resolveByName,
+    resolveComboSpells,
+    getSchoolForSkill,
+    getSpellNameBySkill,
+    resolveKinsForSpell,
+  };
 }

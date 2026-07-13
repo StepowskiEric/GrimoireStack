@@ -1,7 +1,7 @@
-import { test, expect } from '@playwright/test';
-import { gotoReady, closeModal } from './helpers.js';
+import { expect, test } from '@playwright/test';
+import { closeModal, gotoReady } from './helpers.js';
 
-const VAULT_TAB = 'The Vault';
+const _VAULT_TAB = 'The Vault';
 
 test.describe('search — home page', () => {
   test('typing in search shows filtered results', async ({ page }) => {
@@ -21,7 +21,7 @@ test.describe('search — home page', () => {
 
     const searchInput = page.locator('.pupil-search__input');
     await searchInput.fill('test');
-    
+
     // Match count should appear
     await expect(page.locator('.pupil-search__matches')).toBeVisible();
   });
@@ -47,10 +47,12 @@ test.describe('search — no results', () => {
 
     const searchInput = page.locator('.pupil-search__input');
     await searchInput.fill('zzznonexistent');
-    
+
     // Look for a button that opens the witch doctor
-    const witchDoctorBtn = page.getByRole('button', { name: /Witch Doctor|no results|try something else/i });
-    if (await witchDoctorBtn.count() > 0) {
+    const witchDoctorBtn = page.getByRole('button', {
+      name: /Witch Doctor|no results|try something else/i,
+    });
+    if ((await witchDoctorBtn.count()) > 0) {
       await witchDoctorBtn.click();
       await expect(page.locator('.witch-doctor-modal, .modal')).toBeVisible();
       await closeModal(page, '.modal');
@@ -64,7 +66,7 @@ test.describe('school navigation', () => {
 
     // Click first school card
     await page.locator('.spine-card').first().click();
-    
+
     // Should show school detail view
     await expect(page.locator('.school-detail')).toBeVisible();
     await expect(page.locator('.school-detail__grid')).toBeVisible();
@@ -131,7 +133,7 @@ test.describe('All Schools view', () => {
 
     // Click "All Schools" pill - use a more flexible selector
     const allSchoolsBtn = page.getByRole('button', { name: /All Schools/i });
-    if (await allSchoolsBtn.count() > 0) {
+    if ((await allSchoolsBtn.count()) > 0) {
       await allSchoolsBtn.click();
       await expect(page.locator('.bestiary-index')).toBeVisible();
     }
@@ -141,11 +143,11 @@ test.describe('All Schools view', () => {
     await gotoReady(page);
 
     const allSchoolsBtn = page.getByRole('button', { name: /All Schools/i });
-    if (await allSchoolsBtn.count() > 0) {
+    if ((await allSchoolsBtn.count()) > 0) {
       await allSchoolsBtn.click();
-      
+
       const searchInput = page.locator('.bestiary-codex__search-input');
-      if (await searchInput.count() > 0) {
+      if ((await searchInput.count()) > 0) {
         await searchInput.fill('debug');
         await expect(page.locator('.bestiary-index__row').first()).toBeVisible();
       }
@@ -156,10 +158,10 @@ test.describe('All Schools view', () => {
     await gotoReady(page);
 
     const allSchoolsBtn = page.getByRole('button', { name: /All Schools/i });
-    if (await allSchoolsBtn.count() > 0) {
+    if ((await allSchoolsBtn.count()) > 0) {
       await allSchoolsBtn.click();
       await page.locator('.bestiary-index__row').first().click();
-      
+
       await expect(page.locator('.school-detail')).toBeVisible();
     }
   });
@@ -171,7 +173,7 @@ test.describe('shortcuts modal', () => {
 
     await page.getByRole('button', { name: /Shortcuts/i }).click();
     await expect(page.locator('.shortcuts-modal')).toBeVisible();
-    
+
     // Check for some known shortcuts
     await expect(page.getByText('Focus the Scrying Orb')).toBeVisible();
     await expect(page.getByText('Close any open modal')).toBeVisible();
@@ -182,7 +184,7 @@ test.describe('shortcuts modal', () => {
 
     await page.getByRole('button', { name: /Shortcuts/i }).click();
     await expect(page.locator('.shortcuts-modal')).toBeVisible();
-    
+
     await closeModal(page, '.shortcuts-modal');
     await expect(page.locator('.shortcuts-modal')).not.toBeVisible();
   });
@@ -194,7 +196,7 @@ test.describe('featured schools customization', () => {
 
     // Click the customize button (gear icon)
     const customizeBtn = page.locator('.spine-customize-btn');
-    if (await customizeBtn.count() > 0) {
+    if ((await customizeBtn.count()) > 0) {
       await customizeBtn.click();
       await expect(page.locator('.spine-edit')).toBeVisible();
     }

@@ -1,6 +1,6 @@
-import { describe, it, expect } from 'vitest';
-import { grimoireIndex } from '../data/grimoireIndexInstance.js';
+import { describe, expect, it } from 'vitest';
 import { createGrimoireIndex } from '../data/grimoireIndex.js';
+import { grimoireIndex } from '../data/grimoireIndexInstance.js';
 
 const TEST_SCHOOLS = [
   {
@@ -10,7 +10,7 @@ const TEST_SCHOOLS = [
     desc: 'For unit tests.',
     spells: [
       { name: 'Alpha', skill: 'alpha-spell', effect: 'first' },
-      { name: 'Beta',  skill: 'beta-spell',  effect: 'second' },
+      { name: 'Beta', skill: 'beta-spell', effect: 'second' },
     ],
   },
 ];
@@ -41,7 +41,10 @@ describe('grimoireIndex — lookup', () => {
     });
 
     it('resolves a list of combo names to entries', () => {
-      const entries = grimoireIndex.resolveComboSpells(['Log Trace Correlation', 'Bisect Debugging']);
+      const entries = grimoireIndex.resolveComboSpells([
+        'Log Trace Correlation',
+        'Bisect Debugging',
+      ]);
       expect(entries).toHaveLength(2);
       expect(entries.map((e) => e.spell.skill)).toEqual([
         'log-trace-correlation',
@@ -69,7 +72,9 @@ describe('grimoireIndex — lookup', () => {
     });
 
     it('returns the spell name for a known skill', () => {
-      expect(grimoireIndex.getSpellNameBySkill('log-trace-correlation')).toBe('Log Trace Correlation');
+      expect(grimoireIndex.getSpellNameBySkill('log-trace-correlation')).toBe(
+        'Log Trace Correlation',
+      );
     });
 
     it('returns null name for an unknown skill', () => {
@@ -426,7 +431,7 @@ describe('grimoireIndex — derived views', () => {
       expect(e).toHaveProperty('school');
       expect(e).toHaveProperty('_key');
     }
-    expect(a[0].spell.name <= a[a.length - 1].spell.name).toBe(true);
+    expect(a[0].spell.name <= a.at(-1).spell.name).toBe(true);
   });
 
   it('flatEntries() _key is stable and unique', () => {

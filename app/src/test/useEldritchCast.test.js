@@ -1,5 +1,5 @@
-import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
-import { renderHook, act } from '@testing-library/react';
+import { act, renderHook } from '@testing-library/react';
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { useEldritchCast } from '../hooks/useEldritchCast.js';
 
 // Mock audio functions
@@ -10,7 +10,7 @@ vi.mock('../audio/sounds.js', () => ({
   castThud: vi.fn(),
 }));
 
-import { castTear, castBoom, castScratch, castThud } from '../audio/sounds.js';
+import { castBoom, castScratch, castTear, castThud } from '../audio/sounds.js';
 
 beforeEach(() => {
   vi.clearAllMocks();
@@ -34,9 +34,7 @@ afterEach(() => {
 
 describe('useEldritchCast', () => {
   it('starts in wake phase', () => {
-    const { result } = renderHook(() =>
-      useEldritchCast({ onComplete: vi.fn() })
-    );
+    const { result } = renderHook(() => useEldritchCast({ onComplete: vi.fn() }));
     expect(result.current.phase).toBe('wake');
     expect(result.current.reduced).toBe(false);
     expect(result.current.canSkip).toBe(false);
@@ -50,41 +48,31 @@ describe('useEldritchCast', () => {
       removeEventListener: vi.fn(),
     }));
 
-    const { result } = renderHook(() =>
-      useEldritchCast({ onComplete: vi.fn() })
-    );
+    const { result } = renderHook(() => useEldritchCast({ onComplete: vi.fn() }));
 
     expect(result.current.phase).toBe('reduced');
     expect(result.current.reduced).toBe(true);
   });
 
   it('canSkip is false by default', () => {
-    const { result } = renderHook(() =>
-      useEldritchCast({ onComplete: vi.fn() })
-    );
+    const { result } = renderHook(() => useEldritchCast({ onComplete: vi.fn() }));
     expect(result.current.canSkip).toBe(false);
   });
 
   it('handleSkip is a function', () => {
-    const { result } = renderHook(() =>
-      useEldritchCast({ onComplete: vi.fn() })
-    );
+    const { result } = renderHook(() => useEldritchCast({ onComplete: vi.fn() }));
     expect(typeof result.current.handleSkip).toBe('function');
   });
 
   it('handleSkip is a callback that can be invoked', () => {
-    const { result } = renderHook(() =>
-      useEldritchCast({ onComplete: vi.fn() })
-    );
+    const { result } = renderHook(() => useEldritchCast({ onComplete: vi.fn() }));
     // handleSkip should not throw when called (even if elapsed < SKIP_AFTER)
     expect(() => act(() => result.current.handleSkip())).not.toThrow();
   });
 
   it('cleans up event listeners on unmount', () => {
     const removeSpy = vi.spyOn(window, 'removeEventListener');
-    const { unmount } = renderHook(() =>
-      useEldritchCast({ onComplete: vi.fn() })
-    );
+    const { unmount } = renderHook(() => useEldritchCast({ onComplete: vi.fn() }));
 
     unmount();
     // The hook removes the keydown listener on cleanup
@@ -93,16 +81,12 @@ describe('useEldritchCast', () => {
 
   it('registers a keydown listener for Escape', () => {
     const addSpy = vi.spyOn(window, 'addEventListener');
-    renderHook(() =>
-      useEldritchCast({ onComplete: vi.fn() })
-    );
+    renderHook(() => useEldritchCast({ onComplete: vi.fn() }));
     expect(addSpy).toHaveBeenCalledWith('keydown', expect.any(Function));
   });
 
   it('exports expected properties', () => {
-    const { result } = renderHook(() =>
-      useEldritchCast({ onComplete: vi.fn() })
-    );
+    const { result } = renderHook(() => useEldritchCast({ onComplete: vi.fn() }));
 
     expect(result.current).toHaveProperty('phase');
     expect(result.current).toHaveProperty('reduced');

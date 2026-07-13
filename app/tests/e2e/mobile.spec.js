@@ -1,5 +1,5 @@
-import { test, devices, expect } from '@playwright/test';
-import { gotoReady, checkA11y, closeModal } from './helpers.js';
+import { expect, test } from '@playwright/test';
+import { checkA11y, closeModal, gotoReady } from './helpers.js';
 
 const mobileViewports = {
   'iPhone SE': { width: 375, height: 667 },

@@ -1,15 +1,15 @@
-import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
-import { render, screen, fireEvent, act } from '@testing-library/react';
+import { act, fireEvent, render, screen } from '@testing-library/react';
 import { BrowserRouter } from 'react-router-dom';
-import { LanguageProvider } from '../i18n/LanguageContext';
-import SpellCard from '../components/SpellCard.jsx';
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
+import ApprenticeWelcome from '../components/ApprenticeWelcome.jsx';
 import GrimoireStackLayout from '../components/GrimoireStackLayout.jsx';
 import InstallPrompt from '../components/InstallPrompt.jsx';
-import ApprenticeWelcome from '../components/ApprenticeWelcome.jsx';
 import LibraryContent from '../components/LibraryContent.jsx';
 import RecipeLabView from '../components/RecipeLabView.jsx';
-import StaleLinkBanner from '../components/StaleLinkBanner.jsx';
 import SettingsView from '../components/SettingsView.jsx';
+import SpellCard from '../components/SpellCard.jsx';
+import StaleLinkBanner from '../components/StaleLinkBanner.jsx';
+import { LanguageProvider } from '../i18n/LanguageContext';
 
 const sampleSpell = {
   name: 'Trace Sight',
@@ -33,17 +33,47 @@ const multiSchool = [
     name: 'School of Validation',
     real: 'Testing',
     desc: 'Incantations to prove correctness.',
-    spells: [{ name: 'Jest Invocation', skill: 'jest-testing', effect: 'Write correct Jest tests.', status: 'New' }],
+    spells: [
+      {
+        name: 'Jest Invocation',
+        skill: 'jest-testing',
+        effect: 'Write correct Jest tests.',
+        status: 'New',
+      },
+    ],
   },
 ];
 
 vi.mock('../data/grimoireIndexInstance.js', () => {
-  const trace = { name: 'Trace Sight', skill: 'log-trace-correlation', effect: 'Maps stack traces to source code and suggests fixes.', status: 'Proven' };
-  const jest = { name: 'Jest Invocation', skill: 'jest-testing', effect: 'Write correct Jest tests.', status: 'New' };
-  const debugging = { id: 'debugging', name: 'School of Remediation', real: 'Debugging', desc: 'Incantations to banish bugs.', spells: [trace] };
-  const testing = { id: 'testing', name: 'School of Validation', real: 'Testing', desc: 'Incantations to prove correctness.', spells: [jest] };
+  const trace = {
+    name: 'Trace Sight',
+    skill: 'log-trace-correlation',
+    effect: 'Maps stack traces to source code and suggests fixes.',
+    status: 'Proven',
+  };
+  const jest = {
+    name: 'Jest Invocation',
+    skill: 'jest-testing',
+    effect: 'Write correct Jest tests.',
+    status: 'New',
+  };
+  const debugging = {
+    id: 'debugging',
+    name: 'School of Remediation',
+    real: 'Debugging',
+    desc: 'Incantations to banish bugs.',
+    spells: [trace],
+  };
+  const testing = {
+    id: 'testing',
+    name: 'School of Validation',
+    real: 'Testing',
+    desc: 'Incantations to prove correctness.',
+    spells: [jest],
+  };
   const manySchool = { id: 'many', name: 'School of Many', real: 'Many', desc: '', spells: [] };
-  for (let i = 0; i < 40; i++) manySchool.spells.push({ name: `Spell ${i}`, skill: `skill-${i}`, effect: `effect ${i}` });
+  for (let i = 0; i < 40; i++)
+    manySchool.spells.push({ name: `Spell ${i}`, skill: `skill-${i}`, effect: `effect ${i}` });
 
   const mockSchools = [debugging, testing, manySchool];
   const mockFlat = [];
@@ -57,12 +87,15 @@ vi.mock('../data/grimoireIndexInstance.js', () => {
       getSchoolMap: () => mockMap,
       getStats: () => ({ totalSchools: mockSchools.length, totalSpells: mockFlat.length }),
       getSchoolForSkill: () => null,
-      resolveBySkill: (skill) => mockFlat.find(e => e.spell.skill === skill) || null,
+      resolveBySkill: (skill) => mockFlat.find((e) => e.spell.skill === skill) || null,
       similarTo: (query) => {
         const q = query.toLowerCase();
         return mockFlat
-          .filter(e => e.spell.skill.toLowerCase().includes(q) || e.spell.name.toLowerCase().includes(q))
-          .map(e => ({ spell: e.spell, school: e.school }));
+          .filter(
+            (e) =>
+              e.spell.skill.toLowerCase().includes(q) || e.spell.name.toLowerCase().includes(q),
+          )
+          .map((e) => ({ spell: e.spell, school: e.school }));
       },
     },
   };
@@ -124,13 +157,25 @@ describe('SpellCard', () => {
 
   it('fires onClick when clicked', () => {
     let clicked = false;
-    render(<SpellCard spell={sampleSpell} matched={null} onClick={() => { clicked = true; }} />);
+    render(
+      <SpellCard
+        spell={sampleSpell}
+        matched={null}
+        onClick={() => {
+          clicked = true;
+        }}
+      />,
+    );
     screen.getByText('Trace Sight').click();
     expect(clicked).toBe(true);
   });
 
   it('shows children text in the reveal hint', () => {
-    render(<SpellCard spell={sampleSpell} matched={null}>custom hint</SpellCard>);
+    render(
+      <SpellCard spell={sampleSpell} matched={null}>
+        custom hint
+      </SpellCard>,
+    );
     expect(screen.getByText('custom hint')).toBeInTheDocument();
   });
 
@@ -161,7 +206,7 @@ describe('LibraryContent', () => {
         isFavorited={() => false}
         onToggleFavorite={() => {}}
         marginalia={{}}
-      />
+      />,
     );
     // Default view should show "Featured" pill (SchoolCardGrid)
     expect(screen.getByText('Featured')).toBeInTheDocument();
@@ -177,7 +222,7 @@ describe('LibraryContent', () => {
         isFavorited={() => false}
         onToggleFavorite={() => {}}
         marginalia={{}}
-      />
+      />,
     );
     const input = screen.getByPlaceholderText(/scry by name/i);
     fireEvent.change(input, { target: { value: 'jest' } });
@@ -195,7 +240,7 @@ describe('LibraryContent', () => {
         isFavorited={() => false}
         onToggleFavorite={() => {}}
         marginalia={{}}
-      />
+      />,
     );
     const input = screen.getByPlaceholderText(/scry by name/i);
     fireEvent.change(input, { target: { value: 'no-such-spell' } });
@@ -213,7 +258,7 @@ describe('LibraryContent', () => {
         isFavorited={() => false}
         onToggleFavorite={() => {}}
         marginalia={{}}
-      />
+      />,
     );
     const input = screen.getByPlaceholderText(/scry by name/i);
     fireEvent.change(input, { target: { value: 'trace' } });
@@ -232,7 +277,7 @@ describe('LibraryContent', () => {
         isFavorited={() => false}
         onToggleFavorite={() => {}}
         marginalia={{}}
-      />
+      />,
     );
     const input = screen.getByPlaceholderText(/scry by name/i);
     fireEvent.change(input, { target: { value: 'jest' } });
@@ -246,7 +291,7 @@ describe('RecipeLabView', () => {
     render(
       <LanguageProvider>
         <RecipeLabView onSpellClick={() => {}} />
-      </LanguageProvider>
+      </LanguageProvider>,
     );
     expect(screen.getByText('Rituals')).toBeInTheDocument();
     expect(screen.getByPlaceholderText(/scry by name/i)).toBeInTheDocument();
@@ -256,7 +301,7 @@ describe('RecipeLabView', () => {
     render(
       <LanguageProvider>
         <RecipeLabView onSpellClick={() => {}} />
-      </LanguageProvider>
+      </LanguageProvider>,
     );
     // First page is 60, so all 40 should be visible
     expect(screen.getByText('Spell 0')).toBeInTheDocument();
@@ -267,11 +312,8 @@ describe('RecipeLabView', () => {
     const onCompareTwo = vi.fn();
     render(
       <LanguageProvider>
-        <RecipeLabView
-          onSpellClick={() => {}}
-          onCompareTwo={onCompareTwo}
-        />
-      </LanguageProvider>
+        <RecipeLabView onSpellClick={() => {}} onCompareTwo={onCompareTwo} />
+      </LanguageProvider>,
     );
     // Click the two spell cards (by their names)
     fireEvent.click(screen.getByText('Trace Sight'));
@@ -296,7 +338,7 @@ describe('InstallPrompt', () => {
     const { container } = render(
       <LanguageProvider>
         <InstallPrompt />
-      </LanguageProvider>
+      </LanguageProvider>,
     );
     expect(container.firstChild).toBeNull();
   });
@@ -312,7 +354,7 @@ describe('ApprenticeWelcome', () => {
     render(
       <LanguageProvider>
         <ApprenticeWelcome onClose={() => {}} />
-      </LanguageProvider>
+      </LanguageProvider>,
     );
     expect(screen.getByText(/Welcome/i)).toBeInTheDocument();
     expect(screen.getByText(/Continue/i)).toBeInTheDocument();
@@ -322,11 +364,13 @@ describe('ApprenticeWelcome', () => {
     render(
       <LanguageProvider>
         <ApprenticeWelcome onClose={() => {}} />
-      </LanguageProvider>
+      </LanguageProvider>,
     );
     // The "Back" button only appears on panels after the first.
     expect(screen.queryByText(/Back/i)).not.toBeInTheDocument();
-    await act(async () => { fireEvent.click(screen.getByText(/Continue/i)); });
+    await act(async () => {
+      fireEvent.click(screen.getByText(/Continue/i));
+    });
     expect(screen.getByText(/Back/i)).toBeInTheDocument();
   });
 
@@ -335,7 +379,7 @@ describe('ApprenticeWelcome', () => {
     render(
       <LanguageProvider>
         <ApprenticeWelcome onClose={onClose} />
-      </LanguageProvider>
+      </LanguageProvider>,
     );
     fireEvent.click(screen.getByText(/Skip/i));
     expect(onClose).toHaveBeenCalledTimes(1);
@@ -356,7 +400,7 @@ describe('SpellCard favorites', () => {
         matched={null}
         isFavorited={false}
         onToggleFavorite={() => {}}
-      />
+      />,
     );
     expect(screen.getByLabelText(/bind to/i)).toBeInTheDocument();
   });
@@ -368,7 +412,7 @@ describe('SpellCard favorites', () => {
         matched={null}
         isFavorited={true}
         onToggleFavorite={() => {}}
-      />
+      />,
     );
     expect(screen.getByLabelText(/unbind from/i)).toBeInTheDocument();
   });
@@ -381,7 +425,7 @@ describe('SpellCard favorites', () => {
         matched={null}
         isFavorited={false}
         onToggleFavorite={toggle}
-      />
+      />,
     );
     fireEvent.click(screen.getByLabelText(/bind to/i));
     expect(toggle).toHaveBeenCalledWith('Trace Sight', 'log-trace-correlation');
@@ -397,7 +441,7 @@ describe('SpellCard favorites', () => {
         isFavorited={false}
         onClick={onClick}
         onToggleFavorite={toggle}
-      />
+      />,
     );
     fireEvent.click(screen.getByLabelText(/bind to/i));
     expect(toggle).toHaveBeenCalledTimes(1);
@@ -412,7 +456,7 @@ describe('StaleLinkBanner', () => {
   it('shows the unknown skill in the message and a dismiss button', () => {
     const onDismiss = vi.fn();
     renderWithLang(
-      <StaleLinkBanner skill="no-such-typo" onDismiss={onDismiss} onSelectSkill={() => {}} />
+      <StaleLinkBanner skill="no-such-typo" onDismiss={onDismiss} onSelectSkill={() => {}} />,
     );
     expect(screen.getByText(/no-such-typo/i)).toBeInTheDocument();
     fireEvent.click(screen.getByRole('button', { name: /dismiss/i }));
@@ -425,7 +469,7 @@ describe('StaleLinkBanner', () => {
         skill="log-trace" // partial match against "log-trace-correlation"
         onDismiss={() => {}}
         onSelectSkill={() => {}}
-      />
+      />,
     );
     expect(screen.getByRole('button', { name: 'log-trace-correlation' })).toBeInTheDocument();
   });
@@ -433,11 +477,7 @@ describe('StaleLinkBanner', () => {
   it('routes a clicked suggestion through onSelectSkill with the resolved school', () => {
     const onSelectSkill = vi.fn();
     renderWithLang(
-      <StaleLinkBanner
-        skill="log-trace"
-        onDismiss={() => {}}
-        onSelectSkill={onSelectSkill}
-      />
+      <StaleLinkBanner skill="log-trace" onDismiss={() => {}} onSelectSkill={onSelectSkill} />,
     );
     fireEvent.click(screen.getByRole('button', { name: 'log-trace-correlation' }));
     expect(onSelectSkill).toHaveBeenCalledTimes(1);
@@ -458,9 +498,8 @@ describe('SettingsView', () => {
           onShowShortcuts={() => {}}
           onExportJson={() => {}}
           onExportMarkdown={() => {}}
-
         />
-      </LanguageProvider>
+      </LanguageProvider>,
     );
     expect(screen.getByText('Settings')).toBeInTheDocument();
     const select = screen.getByLabelText(/Language/i);
@@ -477,9 +516,8 @@ describe('SettingsView', () => {
           onShowShortcuts={() => {}}
           onExportJson={() => {}}
           onExportMarkdown={() => {}}
-
         />
-      </LanguageProvider>
+      </LanguageProvider>,
     );
     // Open the About section
     fireEvent.click(screen.getByText('About'));
@@ -496,9 +534,8 @@ describe('SettingsView', () => {
           onShowShortcuts={() => {}}
           onExportJson={() => {}}
           onExportMarkdown={() => {}}
-
         />
-      </LanguageProvider>
+      </LanguageProvider>,
     );
     const select = screen.getByLabelText(/Language/i);
     fireEvent.change(select, { target: { value: 'plain' } });
@@ -514,9 +551,8 @@ describe('SettingsView', () => {
           onShowShortcuts={() => {}}
           onExportJson={() => {}}
           onExportMarkdown={() => {}}
-
         />
-      </LanguageProvider>
+      </LanguageProvider>,
     );
     // The Data section should be active by default? No — language is default.
     // Click Data tab.

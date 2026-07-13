@@ -1,12 +1,15 @@
-import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
-import { render, screen, waitFor, act } from '@testing-library/react';
+import { act, render, screen, waitFor } from '@testing-library/react';
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
 // Mock the grimoire index — keeps the test fast and independent of the
 // real registry, while exposing the methods App.jsx reads on mount.
 vi.mock('../data/grimoireIndexInstance.js', () => {
   const debug = { id: 'debugging', real: 'Debugging', name: 'School of Remediation', spells: [] };
   const reason = { id: 'reasoning', real: 'Reasoning', name: 'School of Cognition', spells: [] };
-  const map = new Map([[debug.id, debug], [reason.id, reason]]);
+  const map = new Map([
+    [debug.id, debug],
+    [reason.id, reason],
+  ]);
   const emptySearch = { entries: [], total: 0, bySchool: new Map() };
   return {
     grimoireIndex: {
@@ -46,11 +49,15 @@ describe('App smoke (full render)', () => {
     unhandledErrors = [];
 
     vi.spyOn(console, 'error').mockImplementation((...args) => {
-      const msg = args.map((a) => (typeof a === 'string' ? a : a?.message ?? String(a))).join(' ');
+      const msg = args
+        .map((a) => (typeof a === 'string' ? a : (a?.message ?? String(a))))
+        .join(' ');
       consoleErrors.push(msg);
     });
     vi.spyOn(console, 'warn').mockImplementation((...args) => {
-      const msg = args.map((a) => (typeof a === 'string' ? a : a?.message ?? String(a))).join(' ');
+      const msg = args
+        .map((a) => (typeof a === 'string' ? a : (a?.message ?? String(a))))
+        .join(' ');
       consoleWarns.push(msg);
     });
 
@@ -97,7 +104,7 @@ describe('App smoke (full render)', () => {
     // its return value is not iterable". Surface any destructuring-style
     // or function-call errors before they ship.
     const iterabilityErrors = consoleErrors.filter((m) =>
-      /is not a function or its return value is not iterable/i.test(m)
+      /is not a function or its return value is not iterable/i.test(m),
     );
     expect(iterabilityErrors).toEqual([]);
   });

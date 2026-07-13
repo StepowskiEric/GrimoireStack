@@ -1,6 +1,6 @@
 /* eslint-disable react/no-array-index-key -- fixed-size static pip array */
 
-import { useState, useRef, useEffect } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { SEANCE_MAX_SANITY } from '../../data/consultationData.js';
 
 /**
@@ -44,7 +44,9 @@ export default function SanityMeter({ sanity, maxSanity = SEANCE_MAX_SANITY }) {
       aria-valuenow={sanity}
       data-sanity={sanity}
     >
-      <span className="font-['Cinzel'] text-[0.68rem] uppercase tracking-widest text-text-muted">Sanity</span>
+      <span className="font-['Cinzel'] text-[0.68rem] uppercase tracking-widest text-text-muted">
+        Sanity
+      </span>
       <div className="flex items-center gap-1.5" aria-hidden="true">
         {pips.map((filled, i) => (
           <span

@@ -10,8 +10,15 @@ export default function StaleLinkBanner({ skill, onDismiss, onSelectSkill }) {
   const suggestions = useMemo(() => grimoireIndex.similarTo(skill, 4), [skill]);
 
   return (
-    <div className="notfound-banner" role="alert" aria-live="polite" aria-label={t('notFoundAria', { skill })}>
-      <div className="notfound-glyph" aria-hidden="true"><Icon name="eye-fragment" size={20} /></div>
+    <div
+      className="notfound-banner"
+      role="alert"
+      aria-live="polite"
+      aria-label={t('notFoundAria', { skill })}
+    >
+      <div className="notfound-glyph" aria-hidden="true">
+        <Icon name="eye-fragment" size={20} />
+      </div>
       <div className="notfound-body">
         <div className="notfound-title">{t('notFoundTitle')}</div>
         <div className="notfound-msg">{t('notFoundMessage', { skill })}</div>

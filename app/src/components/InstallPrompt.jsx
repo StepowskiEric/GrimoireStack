@@ -22,7 +22,9 @@ export default function InstallPrompt() {
   const handleInstall = async () => {
     if (!deferredPrompt) return;
     deferredPrompt.prompt();
-    try { await deferredPrompt.userChoice; } catch (error) {
+    try {
+      await deferredPrompt.userChoice;
+    } catch (error) {
       console.warn('Install prompt failed:', error);
     }
     setVisible(false);
@@ -31,7 +33,9 @@ export default function InstallPrompt() {
 
   const handleDismiss = () => {
     setVisible(false);
-    try { localStorage.setItem('grimoire-install-dismissed', '1'); } catch {}
+    try {
+      localStorage.setItem('grimoire-install-dismissed', '1');
+    } catch {}
   };
 
   if (!visible) return null;
@@ -39,8 +43,15 @@ export default function InstallPrompt() {
   return (
     <div className="install-toast" role="status" aria-live="polite">
       <span>Summon GrimoireStack to your device</span>
-      <button type="button" onClick={handleInstall}>Install</button>
-      <button type="button" className="install-dismiss" onClick={handleDismiss} aria-label="Dismiss install">
+      <button type="button" onClick={handleInstall}>
+        Install
+      </button>
+      <button
+        type="button"
+        className="install-dismiss"
+        onClick={handleDismiss}
+        aria-label="Dismiss install"
+      >
         <Icon name="close" size={14} />
       </button>
     </div>

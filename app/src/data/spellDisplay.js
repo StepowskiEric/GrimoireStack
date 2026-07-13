@@ -19,11 +19,7 @@
 export function hasDistinctTrueName(spell) {
   if (!spell) return false;
   const tn = spell.trueName;
-  return (
-    typeof tn === 'string'
-    && tn.trim().length > 0
-    && tn !== spell.name
-  );
+  return typeof tn === 'string' && tn.trim().length > 0 && tn !== spell.name;
 }
 
 /**
@@ -36,7 +32,7 @@ export function hasDistinctTrueName(spell) {
  */
 export function getSpellHeadline(spell) {
   if (!spell) return '';
-  return hasDistinctTrueName(spell) ? spell.trueName : (spell.name || '');
+  return hasDistinctTrueName(spell) ? spell.trueName : spell.name || '';
 }
 
 /**
@@ -56,6 +52,6 @@ export function getSpellSearchableText(spell) {
   if (!spell) return '';
   return [spell.name, spell.skill, spell.effect, spell.trueName]
     .filter(Boolean)
-    .map(s => s.toLowerCase())
+    .map((s) => s.toLowerCase())
     .join(' ');
 }

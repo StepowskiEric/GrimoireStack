@@ -1,5 +1,9 @@
-import { useState, useEffect, useRef, useCallback } from 'react';
-import { setAudioEnabled as setSiteAudioEnabled, startAmbience, startWhispers } from '../audio/sounds.js';
+import { useCallback, useEffect, useRef, useState } from 'react';
+import {
+  setAudioEnabled as setSiteAudioEnabled,
+  startAmbience,
+  startWhispers,
+} from '../audio/sounds.js';
 
 const STORAGE_KEY = 'grimoire-audio';
 

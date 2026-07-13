@@ -1,4 +1,4 @@
-import { useState, useCallback } from 'react';
+import { useCallback, useState } from 'react';
 import { useAgentMode } from '../hooks/useAgentMode.js';
 
 // Slice 10 — page-agent void incantations. At peak gaze (>= 0.8) the eye
@@ -38,7 +38,7 @@ export default function VoidIncantations({ gaze = 0 }) {
         setError('The void did not respond.');
       }
     },
-    [incantation, runAgent]
+    [incantation, runAgent],
   );
 
   // The eye only listens at peak gaze — no affordance below the threshold.
@@ -68,10 +68,10 @@ export default function VoidIncantations({ gaze = 0 }) {
           Utter
         </button>
       </div>
-      {status === 'stirring' && <p className="mt-2 text-text-muted text-[0.82rem]">The void stirs…</p>}
-      {status === 'error' && (
-        <p className="mt-2 text-danger text-[0.82rem]">{error}</p>
+      {status === 'stirring' && (
+        <p className="mt-2 text-text-muted text-[0.82rem]">The void stirs…</p>
       )}
+      {status === 'error' && <p className="mt-2 text-danger text-[0.82rem]">{error}</p>}
     </form>
   );
 }

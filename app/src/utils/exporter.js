@@ -114,9 +114,10 @@ export function importConfig(raw) {
   if (!parsed || typeof parsed !== 'object' || Array.isArray(parsed)) return null;
   if (parsed.schema !== 'grimoirestack.config.v1') return null;
   const favorites = Array.isArray(parsed.favorites) ? parsed.favorites : [];
-  const marginalia = parsed.marginalia && typeof parsed.marginalia === 'object' && !Array.isArray(parsed.marginalia)
-    ? parsed.marginalia
-    : {};
+  const marginalia =
+    parsed.marginalia && typeof parsed.marginalia === 'object' && !Array.isArray(parsed.marginalia)
+      ? parsed.marginalia
+      : {};
   const recent = Array.isArray(parsed.recent) ? parsed.recent : [];
   return { favorites, marginalia, recent };
 }

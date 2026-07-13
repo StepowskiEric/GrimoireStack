@@ -11,17 +11,23 @@ export function useMarginalia() {
 
   const getNote = useCallback((skill) => notes[skill] || '', [notes]);
 
-  const setNote = useCallback((skill, text) => {
-    setNotes((prev) => ({ ...prev, [skill]: text }));
-  }, [setNotes]);
+  const setNote = useCallback(
+    (skill, text) => {
+      setNotes((prev) => ({ ...prev, [skill]: text }));
+    },
+    [setNotes],
+  );
 
-  const clear = useCallback((skill) => {
-    setNotes((prev) => {
-      const next = { ...prev };
-      delete next[skill];
-      return next;
-    });
-  }, [setNotes]);
+  const clear = useCallback(
+    (skill) => {
+      setNotes((prev) => {
+        const next = { ...prev };
+        delete next[skill];
+        return next;
+      });
+    },
+    [setNotes],
+  );
 
   return { getNote, setNote, clear, notes, setNotes };
 }

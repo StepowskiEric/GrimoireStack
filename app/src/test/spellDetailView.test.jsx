@@ -1,5 +1,5 @@
-import { describe, it, expect, vi } from 'vitest';
-import { render, screen, fireEvent } from '@testing-library/react';
+import { fireEvent, render, screen } from '@testing-library/react';
+import { describe, expect, it, vi } from 'vitest';
 import SpellDetailView from '../components/SpellDetailView.jsx';
 
 const sampleSchool = {
@@ -67,7 +67,9 @@ describe('SpellDetailView', () => {
 
   it('does not truncate short effects', () => {
     render(<SpellDetailView school={sampleSchool} onBack={() => {}} />);
-    expect(screen.getByText('Maps stack traces to source code and suggests fixes.')).toBeInTheDocument();
+    expect(
+      screen.getByText('Maps stack traces to source code and suggests fixes.'),
+    ).toBeInTheDocument();
   });
 
   it('calls onBack when back button is clicked', () => {
@@ -84,7 +86,7 @@ describe('SpellDetailView', () => {
         onBack={() => {}}
         isFavorited={() => false}
         onToggleFavorite={() => {}}
-      />
+      />,
     );
     // Click the spell item button (not just the text)
     const spellButton = screen.getByRole('button', { name: /Trace Sight/ });
@@ -92,7 +94,9 @@ describe('SpellDetailView', () => {
 
     // Should now show spell detail view
     expect(screen.getByText('Effect')).toBeInTheDocument();
-    expect(screen.getByText('Maps stack traces to source code and suggests fixes.')).toBeInTheDocument();
+    expect(
+      screen.getByText('Maps stack traces to source code and suggests fixes.'),
+    ).toBeInTheDocument();
   });
 
   it('shows status badge for spells with non-em-dash status', () => {
@@ -115,7 +119,7 @@ describe('SpellDetailView', () => {
         onBack={() => {}}
         isFavorited={() => false}
         onToggleFavorite={() => {}}
-      />
+      />,
     );
     // Click into a spell
     const spellButton = screen.getByRole('button', { name: /Trace Sight/ });
@@ -136,7 +140,7 @@ describe('SpellDetailView', () => {
         getVote={getVote}
         isFavorited={() => false}
         onToggleFavorite={() => {}}
-      />
+      />,
     );
     fireEvent.click(screen.getByText('Trace Sight'));
     expect(screen.getByText('Adept Sigil')).toBeInTheDocument();
@@ -151,7 +155,7 @@ describe('SpellDetailView', () => {
         getVote={() => null}
         isFavorited={() => false}
         onToggleFavorite={() => {}}
-      />
+      />,
     );
     fireEvent.click(screen.getByText('Trace Sight'));
     expect(screen.getByText('Common')).toBeInTheDocument();
@@ -164,7 +168,7 @@ describe('SpellDetailView', () => {
         onBack={() => {}}
         isFavorited={() => false}
         onToggleFavorite={() => {}}
-      />
+      />,
     );
     fireEvent.click(screen.getByText('Trace Sight'));
     expect(screen.getByText('Common')).toBeInTheDocument();
@@ -177,7 +181,7 @@ describe('SpellDetailView', () => {
         onBack={() => {}}
         isFavorited={() => false}
         onToggleFavorite={() => {}}
-      />
+      />,
     );
     fireEvent.click(screen.getByText('Trace Sight'));
     expect(screen.getByText('Combinations')).toBeInTheDocument();
@@ -191,7 +195,7 @@ describe('SpellDetailView', () => {
         onBack={() => {}}
         isFavorited={() => false}
         onToggleFavorite={() => {}}
-      />
+      />,
     );
     fireEvent.click(screen.getByText('Bisect Divination'));
     expect(screen.queryByText('Combinations')).not.toBeInTheDocument();
@@ -204,7 +208,7 @@ describe('SpellDetailView', () => {
         onBack={() => {}}
         isFavorited={() => false}
         onToggleFavorite={() => {}}
-      />
+      />,
     );
     fireEvent.click(screen.getByText('Trace Sight'));
     expect(screen.getByText('Add to Favorites')).toBeInTheDocument();
@@ -217,7 +221,7 @@ describe('SpellDetailView', () => {
         onBack={() => {}}
         isFavorited={() => true}
         onToggleFavorite={() => {}}
-      />
+      />,
     );
     fireEvent.click(screen.getByText('Trace Sight'));
     expect(screen.getByText('Favorited')).toBeInTheDocument();
@@ -231,7 +235,7 @@ describe('SpellDetailView', () => {
         onBack={() => {}}
         isFavorited={() => false}
         onToggleFavorite={onToggleFavorite}
-      />
+      />,
     );
     fireEvent.click(screen.getByText('Trace Sight'));
     fireEvent.click(screen.getByText('Add to Favorites'));
@@ -245,7 +249,7 @@ describe('SpellDetailView', () => {
         onBack={() => {}}
         isFavorited={() => false}
         onToggleFavorite={() => {}}
-      />
+      />,
     );
     fireEvent.click(screen.getByText('Trace Sight'));
     const textarea = screen.getByPlaceholderText('Add your notes here...');
@@ -259,7 +263,7 @@ describe('SpellDetailView', () => {
         onBack={() => {}}
         isFavorited={() => false}
         onToggleFavorite={() => {}}
-      />
+      />,
     );
     fireEvent.click(screen.getByText('Trace Sight'));
     const textarea = screen.getByPlaceholderText('Add your notes here...');
@@ -270,9 +274,7 @@ describe('SpellDetailView', () => {
   it('shows spell note when present', () => {
     const schoolWithNote = {
       ...sampleSchool,
-      spells: [
-        { ...sampleSchool.spells[0], note: 'Very useful for production incidents' },
-      ],
+      spells: [{ ...sampleSchool.spells[0], note: 'Very useful for production incidents' }],
     };
     render(
       <SpellDetailView
@@ -280,7 +282,7 @@ describe('SpellDetailView', () => {
         onBack={() => {}}
         isFavorited={() => false}
         onToggleFavorite={() => {}}
-      />
+      />,
     );
     fireEvent.click(screen.getByText('Trace Sight'));
     expect(screen.getByText('Note')).toBeInTheDocument();
@@ -294,7 +296,7 @@ describe('SpellDetailView', () => {
         onBack={() => {}}
         isFavorited={() => false}
         onToggleFavorite={() => {}}
-      />
+      />,
     );
     fireEvent.click(screen.getByText('Trace Sight'));
     // Note section should not exist for spells without a note
@@ -312,7 +314,7 @@ describe('SpellDetailView', () => {
         onBack={() => {}}
         isFavorited={() => false}
         onToggleFavorite={() => {}}
-      />
+      />,
     );
     const spellButton = screen.getByRole('button', { name: /Trace Sight/ });
     fireEvent.click(spellButton);

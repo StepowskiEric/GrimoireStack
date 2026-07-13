@@ -1,4 +1,4 @@
-import { describe, it, expect } from 'vitest';
+import { describe, expect, it } from 'vitest';
 import { getSpellTier, TIER_META } from '../data/tiers.js';
 
 describe('getSpellTier', () => {
@@ -122,9 +122,9 @@ describe('TIER_META', () => {
   it('tier keys match getSpellTier return values', () => {
     const tierKeys = Object.keys(TIER_META);
     const spellStatuses = [
-      { status: '' },        // faded
-      { status: 'New' },     // apprentice
-      { status: 'Proven' },  // adept
+      { status: '' }, // faded
+      { status: 'New' }, // apprentice
+      { status: 'Proven' }, // adept
       { status: 'Proven', combos: ['A'] }, // master
       { status: 'Proven', combos: ['A', 'B', 'C'] }, // archmage
     ];

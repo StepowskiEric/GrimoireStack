@@ -1,6 +1,6 @@
-import { describe, it, expect, vi, afterEach } from 'vitest';
-import { renderHook, act } from '@testing-library/react';
-import { useAgentMode, buildIncantationPrompt } from '../hooks/useAgentMode.js';
+import { act, renderHook } from '@testing-library/react';
+import { afterEach, describe, expect, it, vi } from 'vitest';
+import { buildIncantationPrompt, useAgentMode } from '../hooks/useAgentMode.js';
 
 const mockExecute = vi.fn();
 
@@ -8,7 +8,6 @@ vi.mock('page-agent', () => ({
   PageAgent: class {
     panel = { show: vi.fn(), hide: vi.fn() };
     dispose = vi.fn();
-    constructor() {}
     async execute(...args) {
       return mockExecute(...args);
     }

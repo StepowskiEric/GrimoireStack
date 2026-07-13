@@ -28,15 +28,15 @@ export function parseFrontmatter(content) {
 
 function parseValue(raw) {
   // Quoted string
-  if ((raw.startsWith('"') && raw.endsWith('"')) ||
-      (raw.startsWith("'") && raw.endsWith("'"))) {
+  if ((raw.startsWith('"') && raw.endsWith('"')) || (raw.startsWith("'") && raw.endsWith("'"))) {
     return raw.slice(1, -1);
   }
   // Inline array: [a, b, c]
   if (raw.startsWith('[') && raw.endsWith(']')) {
-    return raw.slice(1, -1)
+    return raw
+      .slice(1, -1)
       .split(',')
-      .map(s => s.trim().replace(/^['"]|['"]$/g, ''))
+      .map((s) => s.trim().replace(/^['"]|['"]$/g, ''))
       .filter(Boolean);
   }
   return raw;

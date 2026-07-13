@@ -1,5 +1,5 @@
-import { getSpellTier } from './data/tiers.js';
 import { getSpellSearchableText } from './data/spellDisplay.js';
+import { getSpellTier } from './data/tiers.js';
 
 /**
  * spellSearch — text search and filter over the spell catalog.
@@ -22,7 +22,7 @@ export function searchSpellsOnEntries(entries, query) {
   for (const { spell, school } of entries) {
     if (!getSpellSearchableText(spell).includes(q)) continue;
     const list = bySchool[school.id] || [];
-    list.push(spell.name + '\0' + spell.skill);
+    list.push(`${spell.name}\0${spell.skill}`);
     bySchool[school.id] = list;
     total++;
   }
@@ -63,7 +63,7 @@ export function filterSpellsOnEntries(entries, opts = {}) {
     if (favoritesOnly && !isFavorited(spell.skill)) continue;
 
     const list = bySchool[school.id] || [];
-    list.push(spell.name + '\0' + spell.skill);
+    list.push(`${spell.name}\0${spell.skill}`);
     bySchool[school.id] = list;
     total++;
   }

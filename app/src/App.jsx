@@ -1,26 +1,28 @@
-import { useState, useEffect, useCallback, useRef, useMemo, lazy, Suspense } from 'react';
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import { grimoireIndex } from './data/grimoireIndexInstance.js';
+import { lazy, Suspense, useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import { pageCreak } from './audio/sounds.js';
-import { useAudioState } from './hooks/useAudioState.js';
 import LidlessEyeCast from './components/LidlessEyeCast.tsx';
+import { grimoireIndex } from './data/grimoireIndexInstance.js';
+import { useAudioState } from './hooks/useAudioState.js';
 import './components/LidlessEyeCast.css';
-import ApprenticeWelcome, { STORAGE_KEY as WELCOME_STORAGE_KEY } from './components/ApprenticeWelcome.jsx';
-import GrimoireStackLayout from './components/GrimoireStackLayout.jsx';
-import { useSpellInteraction } from './hooks/useSpellInteraction.js';
-import { useFavoritesSync } from './hooks/useFavoritesSync.js';
-import { useRecentlyViewed } from './hooks/useRecentlyViewed.js';
-import { useMarginalia } from './hooks/useMarginalia.js';
-import { useKeyboardShortcuts } from './hooks/useKeyboardShortcuts.js';
-import { useEyeMood } from './hooks/useEyeMood.js';
-import { LanguageProvider } from './i18n/LanguageContext';
-import { useSignals } from './hooks/useSignals.js';
-import { exportAsJson, exportAsMarkdown, copyToClipboard } from './utils/exporter.js';
-import ErrorBoundary from './components/ErrorBoundary.jsx';
+import ApprenticeWelcome, {
+  STORAGE_KEY as WELCOME_STORAGE_KEY,
+} from './components/ApprenticeWelcome.jsx';
 import CompareSpellsModal from './components/CompareSpellsModal.jsx';
+import ErrorBoundary from './components/ErrorBoundary.jsx';
+import GrimoireStackLayout from './components/GrimoireStackLayout.jsx';
+import InstallPrompt from './components/InstallPrompt.jsx';
 import SpellModal from './components/SpellModal.jsx';
 import StaleLinkBanner from './components/StaleLinkBanner.jsx';
-import InstallPrompt from './components/InstallPrompt.jsx';
+import { useEyeMood } from './hooks/useEyeMood.js';
+import { useFavoritesSync } from './hooks/useFavoritesSync.js';
+import { useKeyboardShortcuts } from './hooks/useKeyboardShortcuts.js';
+import { useMarginalia } from './hooks/useMarginalia.js';
+import { useRecentlyViewed } from './hooks/useRecentlyViewed.js';
+import { useSignals } from './hooks/useSignals.js';
+import { useSpellInteraction } from './hooks/useSpellInteraction.js';
+import { LanguageProvider } from './i18n/LanguageContext';
+import { copyToClipboard, exportAsJson, exportAsMarkdown } from './utils/exporter.js';
 import './components/ModalSuspense.css';
 import './components/ExportToast.css';
 
@@ -46,21 +48,24 @@ function AppInner() {
     return schools[0]?.id || 'debugging';
   });
   const { audioEnabled, toggleAudio } = useAudioState();
-  const [castEnabled, setCastEnabled] = useState(() => localStorage.getItem('grimoire-cast') !== 'off');
-  const [welcomeOpen, setWelcomeOpen] = useState(() => localStorage.getItem(WELCOME_STORAGE_KEY) !== 'true');
+  const [castEnabled, setCastEnabled] = useState(
+    () => localStorage.getItem('grimoire-cast') !== 'off',
+  );
+  const [welcomeOpen, setWelcomeOpen] = useState(
+    () => localStorage.getItem(WELCOME_STORAGE_KEY) !== 'true',
+  );
   const [shortcutsOpen, setShortcutsOpen] = useState(false);
   const initializedRef = useRef(false);
 
   // Modal state
   const [compareOpen, setCompareOpen] = useState(false);
-  const [compareLeft, setCompareLeft] = useState(null);  // { spell, school }
-  const [compareRight, setCompareRight] = useState(null);  // { spell, school }
+  const [compareLeft, setCompareLeft] = useState(null); // { spell, school }
+  const [compareRight, setCompareRight] = useState(null); // { spell, school }
   const { favorites, isFavorited, toggleFavorite, sync } = useFavoritesSync();
   const { recent, record: recordRecent } = useRecentlyViewed();
   const { mood, recordView } = useEyeMood();
   const marginalia = useMarginalia();
   const { getVote, vote: castVote, aggregateFor } = useSignals();
-
 
   const {
     modal,
@@ -72,8 +77,6 @@ function AppInner() {
     dismissNotFound,
   } = useSpellInteraction(castEnabled);
 
-
-
   // Record spell view in history when modal opens
   useEffect(() => {
     if (modal) recordRecent(modal.spell.name, modal.spell.skill);
@@ -81,18 +84,21 @@ function AppInner() {
 
   const handleCastBones = useCallback(() => {
     const all = grimoireIndex.flatEntries();
-    if (!all.length) return;
+    if (all.length === 0) return;
     const pick = all[Math.floor(Math.random() * all.length)];
     handleSpellClick(pick.spell, pick.school);
   }, [handleSpellClick]);
 
-  const handleNotFoundSelect = useCallback((skill) => {
-    const found = grimoireIndex.resolveBySkill(skill);
-    if (found) {
-      dismissNotFound();
-      handleSpellClick(found.spell, found.school);
-    }
-  }, [dismissNotFound, handleSpellClick]);
+  const handleNotFoundSelect = useCallback(
+    (skill) => {
+      const found = grimoireIndex.resolveBySkill(skill);
+      if (found) {
+        dismissNotFound();
+        handleSpellClick(found.spell, found.school);
+      }
+    },
+    [dismissNotFound, handleSpellClick],
+  );
 
   // Compare spells helpers
   const handlePickCompareSlot = useCallback((slot, spell, school) => {
@@ -132,17 +138,32 @@ function AppInner() {
   const handleWelcomeCloseRef = useRef(null);
   const handleModalCloseRef = useRef(null);
 
-  const keyboardHandlers = useMemo(() => ({
-    openCheatsheet: () => setShortcutsOpen(true),
-    handleGlobalEscape: () => {
-      let handled = false;
-      if (shortcutsOpen) { setShortcutsOpen(false); handled = true; }
-      if (compareOpen) { setCompareOpen(false); handled = true; }
-      if (modal) { handleModalClose(); handled = true; }
-      if (welcomeOpen) { handleWelcomeCloseRef.current(); handled = true; }
-      return handled;
-    },
-  }), [shortcutsOpen, compareOpen, modal, handleModalClose, welcomeOpen]);
+  const keyboardHandlers = useMemo(
+    () => ({
+      openCheatsheet: () => setShortcutsOpen(true),
+      handleGlobalEscape: () => {
+        let handled = false;
+        if (shortcutsOpen) {
+          setShortcutsOpen(false);
+          handled = true;
+        }
+        if (compareOpen) {
+          setCompareOpen(false);
+          handled = true;
+        }
+        if (modal) {
+          handleModalClose();
+          handled = true;
+        }
+        if (welcomeOpen) {
+          handleWelcomeCloseRef.current();
+          handled = true;
+        }
+        return handled;
+      },
+    }),
+    [shortcutsOpen, compareOpen, modal, handleModalClose, welcomeOpen],
+  );
 
   useKeyboardShortcuts(keyboardHandlers);
 
@@ -150,7 +171,6 @@ function AppInner() {
     setCurrentSchool(id);
     setTimeout(pageCreak, 50);
   }, []);
-
 
   const toggleCast = useCallback(() => {
     setCastEnabled((prev) => {
@@ -185,7 +205,17 @@ function AppInner() {
         if (Array.isArray(parsed) && parsed.length > 0) return parsed;
       }
     } catch {}
-    return ['debugging', 'reasoning', 'execution', 'systems-and-architecture', 'testing', 'output-quality', 'orchestration', 'software-development', 'research'];
+    return [
+      'debugging',
+      'reasoning',
+      'execution',
+      'systems-and-architecture',
+      'testing',
+      'output-quality',
+      'orchestration',
+      'software-development',
+      'research',
+    ];
   });
 
   return (
@@ -197,17 +227,38 @@ function AppInner() {
         </filter>
         <filter id="parchment-stain">
           <feTurbulence type="fractalNoise" baseFrequency="0.04" numOctaves="3" seed="7" />
-          <feColorMatrix type="matrix" values="0 0 0 0 0.15  0 0 0 0 0.08  0 0 0 0 0.03  0 0 0 0.08 0" />
+          <feColorMatrix
+            type="matrix"
+            values="0 0 0 0 0.15  0 0 0 0 0.08  0 0 0 0 0.03  0 0 0 0.08 0"
+          />
           <feBlend in="SourceGraphic" mode="multiply" />
         </filter>
         <filter id="paper-grain" x="0" y="0" width="100%" height="100%">
-          <feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="2" seed="5" stitchTiles="stitch" />
-          <feColorMatrix type="matrix" values="0 0 0 0 0.18  0 0 0 0 0.10  0 0 0 0 0.05  0 0 0 0.18 0" />
+          <feTurbulence
+            type="fractalNoise"
+            baseFrequency="0.9"
+            numOctaves="2"
+            seed="5"
+            stitchTiles="stitch"
+          />
+          <feColorMatrix
+            type="matrix"
+            values="0 0 0 0 0.18  0 0 0 0 0.10  0 0 0 0 0.05  0 0 0 0.18 0"
+          />
           <feComposite in2="SourceGraphic" operator="in" />
         </filter>
         <filter id="leather-grain" x="0" y="0" width="100%" height="100%">
-          <feTurbulence type="fractalNoise" baseFrequency="0.65" numOctaves="2" seed="11" stitchTiles="stitch" />
-          <feColorMatrix type="matrix" values="0 0 0 0 0.08  0 0 0 0 0.05  0 0 0 0 0.02  0 0 0 0.35 0" />
+          <feTurbulence
+            type="fractalNoise"
+            baseFrequency="0.65"
+            numOctaves="2"
+            seed="11"
+            stitchTiles="stitch"
+          />
+          <feColorMatrix
+            type="matrix"
+            values="0 0 0 0 0.08  0 0 0 0 0.05  0 0 0 0 0.02  0 0 0 0.35 0"
+          />
           <feComposite in2="SourceGraphic" operator="in" />
         </filter>
         <filter id="ink-blot" x="-20%" y="-20%" width="140%" height="140%">
@@ -223,7 +274,7 @@ function AppInner() {
           onSelectSkill={handleNotFoundSelect}
         />
       )}
-      
+
       {/* GrimoireStack Layout */}
       <GrimoireStackLayout
         currentSchool={currentSchool}

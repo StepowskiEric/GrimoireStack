@@ -13,10 +13,10 @@ import { EXPLICIT } from './spellMetadata.js';
 const ISO = (date) => date.toISOString().slice(0, 10);
 
 function hashStringToInt(str) {
-  let h = 2166136261;
+  let h = 2_166_136_261;
   for (let i = 0; i < str.length; i++) {
     h ^= str.charCodeAt(i);
-    h = Math.imul(h, 16777619);
+    h = Math.imul(h, 16_777_619);
   }
   return h >>> 0;
 }
@@ -46,7 +46,8 @@ export function isExplicitlyUpdated(skill) {
 }
 
 export function getRecentlyUpdated(limit = 12) {
-  return grimoireIndex.allEntries()
+  return grimoireIndex
+    .allEntries()
     .map(({ spell, school }) => ({
       skill: spell.skill,
       name: spell.name,

@@ -12,9 +12,7 @@ const SPELL_PATH_RE = /^\/s\/([\w.-]+)\/?$/;
 
 export function parseSpellFromLocation(locationLike) {
   const pathname =
-    typeof locationLike === 'string'
-      ? locationLike.split('?')[0]
-      : locationLike.pathname || '';
+    typeof locationLike === 'string' ? locationLike.split('?')[0] : locationLike.pathname || '';
   const search =
     typeof locationLike === 'string'
       ? locationLike.split('?')[1] || ''
