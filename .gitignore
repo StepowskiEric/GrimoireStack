@@ -35,6 +35,17 @@ coppermind_memory_triage_research.json
 benchmarks/
 refactor-target.md
 
+# Generated skill copies
+.agents/
+
+# Personal tool artifacts
+.rpiv/
+
+# Debug/trace outputs
+trace_*.jsonl
+divergence.json
+SUPER_REVIEW_REPORT.md
+
 # Playwright / test artifacts
 app/test-results/
 app/playwright-report/
