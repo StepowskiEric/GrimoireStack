@@ -158,3 +158,22 @@ Before declaring done:
 | Skip backward verification | Forward reasoning hides assumptions |
 | Abort on first failed patch | Iteration is expected; stop only on duplicate patches |
 | Declare fixed on passing test alone | Must state root cause, mechanism, and why fix addresses it |
+
+---
+
+## Conquest Mode
+
+For the hardest cases — intermittent failures, environment-specific crashes, Heisenbugs ("fixes itself" when you add logging), or any bug where the cost of a wrong fix exceeds the cost of thorough investigation — load [`references/conquest-mode.md`](references/conquest-mode.md).
+
+Conquest extends each phase of the base protocol above with:
+
+- **Pre-Flight Inquisition (DEEP)** — drilled-down version of the 5 questions, with negative-symptom checks, counterfactual probes, and a graveyard audit of failed attempts.
+- **Phase 2 Interrogation** — per-hypothesis 5-question grill before presentation; reject what cannot be falsified.
+- **Phase 3 Adversarial Backward Verification** — construct 3–5 alternatives that fit the evidence, attempt to rule them out, only proceed when ruled out or when #1 hypothesis has a unique falsifiable prediction.
+- **Phase 4 Step Verification Gates** — faithfulness check, alternative scan, and claim verification after each probe. Maximum 5 instrumentation cycles before mandatory reassessment.
+- **Phase 5 Pre-Mortem on the Fix** — 3–5 failure modes for the fix itself + assumption audit + simplicity test, before any code is written.
+- **Phase 6 Final Adversarial Review** — case-for + case-against, residual risks, minimal-diff verification.
+- **Evidence Ledger** — running table of claims with source + confidence, updated each phase.
+- **Confidence Protocol** — minimum-confidence gates at each phase transition.
+
+The base protocol above stays the same. Conquest overlays additional rigor at each phase.

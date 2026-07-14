@@ -1,315 +1,146 @@
 ---
 name: zero-defect-protocol
-description: "14-phase protocol for mission-critical features: data contracting, invariant mapping, red-team critique, pre-mortem before any code is written."
+description: "Mission-critical feature protocol: data contracting, red-team critique, pre-mortem, 3x critique loop, and speculative prototyping before any code is written."
 triggers:
   - Mission-critical features where a single bug could cause catastrophic failure
-  - Security-critical code
+  - Security-critical or financially-critical code
   - Production deployment where correctness is paramount
 ---
 
-
 # Zero-Defect Protocol
 
-You are operating under a Mission-Critical Zero-Defect standard. Imagine you are
-deploying code to a production environment where a single bug, security flaw, or
-misalignment with user intent could cause catastrophic failure. You cannot
-assume, you cannot guess, and you cannot skip verification. Your goal is to
-create a perfect plan and implementation.
+You are deploying code to a production environment where a single bug, security flaw, or misalignment with user intent could cause catastrophic failure. You cannot assume, cannot guess, cannot skip verification. Your goal is a perfect plan and implementation.
 
-**Governing rule:** If you are confused, uncertain, or don't know something —
-STOP. Get more context. Ask. Do NOT fabricate an answer. An incomplete plan
-with an honest question is infinitely better than a wrong plan built on guessed
-assumptions.
+**Governing rule:** If confused, uncertain, or don't know something — STOP. Get more context. Ask. Do NOT fabricate. An incomplete plan with an honest question is infinitely better than a wrong plan built on guessed assumptions.
 
 ---
 
-## The 14 Phases
+## The 8 Phases
 
 ```
-PHASE  1: Bound the Context          — Read everything relevant. Summarize architecture.
-PHASE  2: High-Impact Clarification  — Ask only unanswerable-from-codebase questions.
-PHASE  3: Rough Ideation & Research  — Gist the plan. Fill knowledge gaps via web search.
-PHASE  4: Data Contracting           — Define I/O schemas, state mutations, invariants.
-PHASE  5: The Master Plan            — Architecture, Mermaid control flow, tests, failure modes.
-PHASE  6: Quick Sync                 — Verify alignment with user intent. Ask minor clarifications.
-PHASE  7: Alternative Architectures  — 2 lightweight alternatives + pros/cons matrix. Pick winner.
-PHASE  8: Red Team Sub-Agent        — Senior Principal Engineer tries to destroy the plan.
-PHASE  9: Pre-Mortem                 — Imagine 6 months in, it failed. Why? Add safeguards.
-PHASE 10: 3x Targeted Critique Loop — Logic → Malicious edge cases → Simplification.
-PHASE 11: Speculative Prototyping   — Spike the riskiest 10%. Verify it works.
-PHASE 12: Implementation            — Write production-ready code from the verified plan.
-PHASE 13: The Refactor Gate         — Clean up readability, DRY, naming. No functionality change.
-PHASE 14: Final Validation          — Run tests. Fix failures. Present final output.
+PHASE  1: Bound + Clarify       — Read everything. Ask only unanswerable-from-codebase questions.
+PHASE  2: Research + Ideate     — Gist the plan. Fill knowledge gaps via web search.
+PHASE  3: Data Contract         — Define I/O schemas, state mutations, invariants BEFORE architecture.
+PHASE  4: Master Plan + Alts    — Architecture, control flow, tests, failure modes + 2 lightweight alternatives.
+PHASE  5: Red Team + Pre-Mortem + 3x Critique — Three attack lenses on the plan.
+PHASE  6: Speculative Prototype — Spike the riskiest 10%. Verify before building the rest.
+PHASE  7: Implement + Refactor  — Write production code. Refactor for clarity, not behavior.
+PHASE  8: Final Validation      — Run all tests. Fix failures. Present final output.
 ```
 
 ---
 
-## Phase 1 — Bound the Context
+## Phase 1 — Bound + Clarify
 
-Identify and gather ALL necessary context related to the feature.
+Read every relevant file, dependency, and related code. If the context is large, spawn a sub-agent to summarize the architecture. Map key files, functions, schemas, relationships.
 
-- Read existing codebase patterns, dependencies, and related files.
-- If the context is large, spawn a sub-agent to summarize the relevant architecture.
-- Map the key files, functions, schemas, and their relationships.
-- Emit structured findings per file.
+Then ask the user only the questions you cannot answer from the codebase. Group by category (data shape / business logic / edge cases / security). **Wait for answers before proceeding.**
 
-**Output format (JSONL):**
-```jsonl
-{"phase": "context_bound", "path": "...", "relevant_to": "...", "key_findings": ["..."], "gaps_or_questions": ["..."]}
-```
-
-**Rule:** Do not proceed until the full landscape is understood. If a referenced file is unknown, read it.
+**Done when:** the full landscape is understood and every unanswerable question has a user answer.
 
 ---
 
-## Phase 2 — High-Impact Clarification
+## Phase 2 — Research + Ideate
 
-Identify every ambiguous, high-impact detail. Ask the user clarifying questions grouped by category.
+Formulate the gist of the plan. Identify knowledge gaps in libraries, APIs, syntax. Web-search to fill them. Record findings concisely.
 
-**Rule:** Do not ask questions you can find the answer to in the codebase. Only ask questions where assuming the wrong answer would fundamentally break the implementation.
-
-**Wait for user answers before proceeding.**
-
-Group questions by category for efficient back-and-forth:
-
-```
-CATEGORY: [Data Shape]
-  Q: ...
-
-CATEGORY: [Business Logic]
-  Q: ...
-
-CATEGORY: [Edge Cases]
-  Q: ...
-```
+**Done when:** a one-paragraph gist exists and every knowledge gap has a documented search result.
 
 ---
 
-## Phase 3 — Rough Ideation & Research
+## Phase 3 — Data Contract
 
-Formulate the general gist/summary of the plan. Identify knowledge gaps regarding specific libraries, APIs, or syntax, and search the web for current documentation to fill those gaps.
+**Before designing architecture, define the data.**
 
-```jsonl
-{"phase": "ideation", "gist": "...", "knowledge_gaps": [{"gap": "...", "search_query": "...", "finding": "..."}]}
-```
+| Item | What to define |
+|---|---|
+| Input schema | exact shape entering the system (types, required vs optional) |
+| Output schema | exact shape leaving the system |
+| State mutations | how data transforms at each step (before → transform → after) |
+| Invariants | absolute truths that must hold before and after execution |
 
----
+**Linearizing the data flow forces logic to be mathematically sound before a single line of architecture text.**
 
-## Phase 4 — Data Contracting & Invariant Mapping
-
-**Before designing the architecture, explicitly define the data.**
-
-### Input/Output Schemas
-The exact expected shape of data entering and leaving the system (types, required vs optional fields).
-
-```jsonl
-{"phase": "data_contract", "input_schema": {...}, "output_schema": {...}}
-```
-
-### State Mutations
-Exactly how data transforms at each step.
-
-```jsonl
-{"phase": "state_mutations", "steps": [{"step": 1, "before": {...}, "after": {...}, "transform": "..."}]}
-```
-
-### Invariants
-The absolute truths that must hold true before and after execution.
-
-```jsonl
-{"phase": "invariants", "invariant": ["The user balance can never be negative", "The list must never contain duplicates"]}
-```
-
-**Linearizing the data flow forces your logic to be mathematically sound before you write a single line of architectural text.**
+**Done when:** every input/output/mutation/invariant is stated explicitly, no implicit assumptions remain.
 
 ---
 
-## Phase 5 — The Master Plan
+## Phase 4 — Master Plan + Alternatives
 
-Draft the primary implementation plan. It MUST include:
+Draft the primary implementation plan:
+- **Architecture** — how the feature fits the existing system
+- **Control flow** — Mermaid diagram mapping the logic. *Writing the syntax exposes hidden loops and dead ends.*
+- **Test strategy** — unit, integration, edge cases
+- **Security + failure modes** — how this could be exploited or break
 
-### Architecture & Design
-How the feature fits into the existing system.
+Then create **2 lightweight alternatives** using fundamentally different architectures. Build a pros/cons matrix on performance / maintainability / safety. **Select the winner with justification** — do not default to the first idea.
 
-### Control Flow (Mermaid)
-Include a Mermaid diagram mapping the logic flow.
-
-**Note:** Writing the syntax forces you to linearize spatial reasoning, exposing hidden logic loops or dead ends.
-
-```mermaid
-graph TD
-    A[Input] --> B{Validation}
-    B -->|pass| C[Process]
-    B -->|fail| D[Error]
-```
-
-### Test Strategy
-- Unit tests
-- Integration tests
-- Specific edge cases to be handled
-
-### Security & Failure Modes
-- How this could be exploited or break
-- How it will fail gracefully
+**Done when:** one chosen plan exists, alternatives are documented, the choice is justified.
 
 ---
 
-## Phase 6 — Quick Sync
+## Phase 5 — Red Team + Pre-Mortem + 3x Critique
 
-Review the Master Plan against the user's original request.
+Three attack lenses applied in sequence, each updating the plan:
 
-- Are there any minor clarifications needed?
-- Did the plan stay within the original request scope?
-- Did any ambiguity shift during planning?
+### 5a — Red Team
 
-**If yes:** Ask. **If no:** Proceed.
+Spawn a sub-agent acting as Senior Principal Engineer whose sole job is to destroy the plan. Feed it the plan and tell it to find: logic flaws, race conditions, security vulnerabilities, missing edge cases. Do not blindly accept feedback, but integrate valid critiques.
 
----
+### 5b — Pre-Mortem
 
-## Phase 7 — Alternative Architectures
+Imagine 6 months in the future: the feature was implemented exactly as planned but was a complete disaster. Users are furious, the system crashed, the project failed. Write a brief failure retrospective explaining *why* it failed. **Append safeguards to the plan to prevent each specific failure.**
 
-The first idea is rarely the best.
+### 5c — 3x Targeted Critique
 
-Create 2 lightweight alternative plans that solve the core problem using fundamentally different architectures or data structures.
+Three passes, distinct lens each, update the plan after each:
 
-Create a brief pros/cons matrix comparing all 3 plans against metrics of:
+- **Logic & Data Consistency** — does the control flow match the Data Contracts and Invariants from Phase 3? Broken state transitions? Unhandled data types?
+- **Malicious Edge Cases** — if someone actively tried to break this, what weird inputs, race conditions, or simultaneous actions would fail it?
+- **Occam's Razor / Simplification** — can any part be simplified without losing functionality? Remove a dependency? Combine two steps into one?
 
-| Metric         | Plan A | Plan B | Plan C |
-|----------------|--------|--------|--------|
-| Performance    |        |        |        |
-| Maintainability|        |        |        |
-| Safety         |        |        |        |
-
-**Select the winning plan.** Do not default to the first idea — justify the choice.
+**Done when:** all three lenses have been applied, every finding is integrated or explicitly deferred with reasoning.
 
 ---
 
-## Phase 8 — Red Team Sub-Agent
+## Phase 6 — Speculative Prototype
 
-Spawn a sub-agent acting as a Senior Principal Engineer whose sole job is to destroy your winning plan.
-
-Feed it the plan and tell it to find:
-- Logic flaws
-- Race conditions
-- Security vulnerabilities
-- Missing edge cases
-
-**Do not blindly accept its feedback**, but integrate any valid critiques into the final plan.
-
-```jsonl
-{"phase": "red_team", "critiques": [{"issue": "...", "valid": true|false, "integration": "..."}]}
-```
-
----
-
-## Phase 9 — Pre-Mortem
-
-Imagine we are 6 months in the future. The feature was implemented exactly as planned, but it was a complete disaster. Users are furious, the system crashed, and the project failed.
-
-Write a brief retrospective explaining why it failed based on the plan, and **append safeguards** to the plan to prevent those specific futures.
-
-```jsonl
-{"phase": "premortem", "failure_story": "...", "root_causes": ["..."], "safeguards": ["..."]}
-```
-
----
-
-## Phase 10 — The 3x Targeted Critique Loop
-
-Critique and refine the plan 3 separate times. Do not just look for generic errors — use a specific lens for each pass, updating the plan after each one.
-
-### Loop 1 (Logic & Data Consistency)
-Does the control flow perfectly match the Data Contracts and Invariants from Phase 4? Are there any broken state transitions or unhandled data types?
-
-**Fix and update the plan.**
-
-### Loop 2 (The Malicious Edge Cases)
-If someone actively tried to break this system, what weird inputs, race conditions, or simultaneous actions would cause it to fail?
-
-**Add mitigations to the plan.**
-
-### Loop 3 (Occam's Razor / Simplification)
-Is any part of the plan over-engineered? Can you remove a dependency, combine two steps into one, or simplify a data structure without losing functionality?
-
-**Simplify the plan.**
-
----
-
-## Phase 11 — Speculative Prototyping
-
-Isolate the riskiest or most complex 10% of the winning plan.
-
-Write a quick, isolated draft/spike of just that part and mentally (or via code execution) verify it works as expected.
+Isolate the riskiest or most complex 10% of the winning plan. Write a quick spike of just that part and verify it works as expected.
 
 **This prevents building a perfect house on a broken foundation.**
 
-```jsonl
-{"phase": "prototype", "risky_part": "...", "spike_code": "...", "verified": true|false, "findings": "..."}
-```
+**Done when:** the riskiest 10% is proven in isolation, with documented findings.
 
 ---
 
-## Phase 12 — Implementation
+## Phase 7 — Implement + Refactor
 
-Write the full, production-ready code based on the verified, refined plan.
+**Implement:** Write production-ready code from the verified plan. Follow existing codebase conventions strictly.
 
-**Follow existing codebase conventions strictly.**
+**Refactor Gate:** Review the generated code. Improve readability, remove redundant logic, ensure variable names match the Data Contracts, verify DRY. **Do not change functionality — only improve engineering quality.**
 
-```jsonl
-{"phase": "implementation", "files_written": ["..."], "conventions_followed": ["..."]}
-```
+**Done when:** all plan steps are implemented, refactor gate passed without behavioral change.
 
 ---
 
-## Phase 13 — The Refactor Gate
+## Phase 8 — Final Validation
 
-Review the code you just generated.
-
-- Refactor for readability
-- Remove any redundant logic
-- Ensure variable names perfectly match the Data Contracts defined in Phase 4
-- Verify it adheres to the DRY (Don't Repeat Yourself) principle
-
-**Do not change the functionality — only improve the engineering quality.**
-
-```jsonl
-{"phase": "refactor_gate", "changes": ["..."], "dry_violations_fixed": ["..."], "naming_improved": ["..."]}
-```
-
----
-
-## Phase 14 — The Final Validation
-
-Write the tests defined in Phase 5.
-
-- If you have code execution capabilities, run the tests.
-- If any test fails, debug and fix.
-- Do not present the final output to the user until **all tests pass** and the code perfectly matches the Master Plan.
+Write the tests defined in Phase 4. Run them. If any fail, debug and fix. Do not present the final output until **all tests pass** and the code matches the Master Plan.
 
 Present the final output in clean, well-structured Markdown.
 
-```jsonl
-{"phase": "final_validation", "tests_run": N, "tests_passed": N, "tests_failed": 0, "ready": true|false}
-```
-
----
-
-## Output File
-
-All JSONL goes to `zero_defect_plan.jsonl` in the working directory. The file is the artifact. The final Markdown is the human-readable deliverable.
+**Done when:** all tests pass, code matches the plan, final output is presented.
 
 ---
 
 ## When to Use
 
-Use this skill when:
 - Deploying to production with zero tolerance for failure
 - Security-critical or financially-critical features
 - Any feature where a bug could cause irreversible harm
 - The request is ambiguous or high-stakes
 
-Do NOT use when:
+**Do NOT use when:**
 - Trivial one-liner change
 - You already have an approved spec and just need to execute
-- The task is purely exploratory with no implementation delivery
-- Speed is more important than correctness (explicitly acknowledge this trade-off if so)
+- Speed is more important than correctness (acknowledge the trade-off explicitly if so)

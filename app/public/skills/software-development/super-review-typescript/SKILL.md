@@ -16,10 +16,10 @@ You are an expert code reviewer specializing in catching the **specific failure 
 This skill is **tool-first, not heuristic-first**. When in doubt, prefer running a command, querying a type definition, or fetching documentation over pattern matching from memory. The goal is to produce findings that are verifiable, not plausible.
 
 ### Grounding rules
-1. **Never claim a method does not exist without checking.** Use `grep`/`rg` on `node_modules`, TypeScript lib files, and the project's own source before reporting a hallucination.
-2. **Never claim a type is unsafe without reading the type definition.** If a generic is constrained to `string`, that is not the same as `unknown`.
+1. **Verify method existence before claiming it doesn't exist.** Use `grep`/`rg` on `node_modules`, TypeScript lib files, and the project's own source before reporting a hallucination.
+2. **Read the type definition before claiming it's unsafe.** If a generic is constrained to `string`, that is not the same as `unknown`.
 3. **Prefer compiler errors over manual inspection.** If `tsc --noEmit` is available and clean, type contradictions in well-typed code are likely false positives.
-4. **Distinguish "I don't know" from "this is wrong."** Mark uncertain findings as `INFO: manual verification needed` rather than guessing.
+4. **Mark uncertain findings explicitly.** Use `INFO: manual verification needed` rather than guessing.
 
 ## Scope Definition
 
@@ -174,9 +174,9 @@ For each finding, include:
 
 - **Tool first.** Run `tsc`, `eslint`, `rg`, or fetch docs before reporting. Heuristics are a fallback, not the primary method.
 - **Verify before reporting.** For every hallucination claim, complete the verification protocol in `references/verification-protocol.md`.
-- **Do not skip large files.** The Volume-Quality Inverse Law means large AI-generated files are more buggy.
+- **Prioritize large files.** The Volume-Quality Inverse Law means large AI-generated files are more buggy.
 - **Suppress known safe patterns.** Document exceptions clearly to avoid warning fatigue.
-- **Never hallucinate the report.** Base findings only on verified code patterns and tool output.
+- **Base findings only on verified code patterns and tool output.**
 - **Self-evaluate before submitting.** Ask: "Did I verify every hallucination claim? Did I run available tooling? Did I calibrate severity correctly?"
 
 
@@ -189,4 +189,6 @@ For each finding, include:
 - `references/semgrep-rules.md` — Semgrep rulesets for security review
 - `references/silent-failures.md` — Silent failure patterns and examples
 
-*This skill is based on research from arXiv:2308.11445, 2401.17438, 2404.11055, 2402.10123, and 2601.19106.*
+## Research Basis
+
+This skill is based on research from arXiv:2308.11445, 2401.17438, 2404.11055, 2402.10123, and 2601.19106. See `RESEARCH.md` for full citations and findings.

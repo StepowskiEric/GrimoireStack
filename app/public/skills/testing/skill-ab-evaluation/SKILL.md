@@ -106,7 +106,33 @@ Report:
 - % improvement
 - Anecdotal observations (e.g., "skill trials consistently found root cause in step 3 instead of step 7")
 
-## Safety rules
+### Step 6 — Justification Memo
+
+After analysis, produce a one-page memo with the evidence for the skill decision:
+
+```md
+## Decision
+<one sentence: "Keep / Retire / Refine `<skill>` because…">
+
+## Evidence Summary
+| Source | Type | Sample Size | Finding |
+|--------|------|-------------|---------|
+| A/B trial | score comparison | 5 trials × 2 conditions | +34% improvement |
+
+## Limitations
+- What the evidence does NOT show
+- Factors that changed alongside the skill
+- Cherry-picking risk (did you choose the easiest test case?)
+
+## Recommendation
+- Decision with explicit confidence level
+- Conditions under which this decision should be reversed
+- Next review date
+```
+
+Store alongside the skill source so future maintainers see why a change was made.
+
+---
 - **Never** run trials in current working directories or active projects
 - **Always** use `/tmp/` or disposable worktrees
 - If a subagent tries to modify files outside its worktree, kill it

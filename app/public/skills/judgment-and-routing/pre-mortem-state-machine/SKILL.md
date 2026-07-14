@@ -23,6 +23,12 @@ Source: Gary Klein's research on naturalistic decision-making, *Sources of Power
 
 ---
 
+### Conceptual Overview
+
+A pre-mortem assumes failure has already happened — "it is six months from now, the plan was executed, and it failed catastrophically" — then reasons backward to explain why. This narrative framing ("what went wrong?") generates better failure hypotheses than abstract risk listing ("what could go wrong?"). Run this mentally before diving into the protocol: state the plan, assume failure, narrate 3-5 specific failure stories, rank them, convert to guardrails.
+
+---
+
 ## Core Law
 
 The plan must survive the pre-mortem before it earns the right to be executed.

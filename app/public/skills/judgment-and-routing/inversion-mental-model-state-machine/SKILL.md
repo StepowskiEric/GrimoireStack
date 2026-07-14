@@ -36,6 +36,12 @@ This is useful for:
 
 ---
 
+### Conceptual Overview
+
+Instead of asking only "how do I succeed?", ask "how could this fail?" and "what would make this worse?" Inversion reveals blind spots forward reasoning misses. Use this as a quick mental check before diving into the protocol: for any goal, state the opposite outcome, enumerate concrete failure modes, rank them by likelihood/severity, and convert to guardrails.
+
+---
+
 ## Core Law
 
 The agent must not recommend a path to success before first mapping the main paths to failure.

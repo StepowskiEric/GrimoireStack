@@ -147,6 +147,17 @@ Detect when reasoning has stabilized. Halt early to save tokens and prevent over
 - **False abstention:** marking everything < 0.7 produces paralysis — default to LIKELY (0.75) when evidence is strong but not direct
 - **Revising verified-correct claims:** second-system effect — if a claim was verified as correct, do not touch it
 
+---
+
+### Confidence Calibration (CAPO + CURE)
+
+During verification, maintain per-claim confidence on a 0-1 scale:
+- **≥ 0.9:** Proceed with confidence
+- **0.7–0.9:** Proceed with caveat
+- **< 0.7:** STOP — verify further or abstain ("I don't have enough evidence to conclude X")
+
+Aggregate confidence for a conclusion = min(ancestor claim confidences). Use backward contradiction checks to test each conclusion: assume it's wrong, list what would have to be true, then cross-check against evidence.
+
 ## Exit Criteria
 
 The chain is complete when ALL of the following hold:

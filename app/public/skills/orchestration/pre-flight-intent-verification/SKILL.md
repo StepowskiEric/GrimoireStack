@@ -34,6 +34,8 @@ Purpose: surface the single most consequential ambiguity before any action.
 5. **ACTION GATE** — Ask the question and wait for an answer before proceeding. Exception: explicitly accept the ambiguity when the consequence is reversible, blast radius is small, or the user has said "use your best judgment." When accepting ambiguity, state the assumption explicitly and flag the signal that would indicate it was wrong.
 6. **RESOLVE** — Update the assumption map with the answer. Proceed to Phase 2.
 
+**Artifact:** Create `clarification-record.md` with the task as stated, assumption map, ranked critical assumptions, the one clarifying question, the resolution, and the action gate decision. This artifact locks the assumption basis before Phase 2 begins.
+
 ---
 
 ### Phase 2 — Specify (Intent Specification)

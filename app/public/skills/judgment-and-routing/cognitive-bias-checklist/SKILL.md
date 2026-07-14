@@ -198,6 +198,24 @@ Work through each bias below. For each one, apply the check honestly.
 
 ---
 
+### Automated Bias Detection (Assisted Check)
+
+When a companion script is available, run `scripts/cognitive_bias_auditor.py check --decision "<description>" --bias all` for an automated scan. The script evaluates 9 biases from arXiv:2410.02820:
+
+| Bias | Description | Flag if… |
+|------|-------------|----------|
+| **Anchoring** | Over-reliance on first info | Decision shaped by first answer encountered |
+| **Confirmation Bias** | Seeking confirming evidence | No disconfirming test was run |
+| **Sunk Cost Fallacy** | Continuing due to prior investment | Decision justified by time already spent |
+| **Loss Aversion** | Avoiding losses over acquiring gains | Status quo preferred despite better alternative |
+| **Framing Effects** | Decision changes with presentation framing | Same facts presented differently would flip decision |
+| **Conjunction Fallacy** | Specific conditions > general ones | Composite explanation favored over simple one |
+| **Overconfidence** | Overestimating accuracy | Confidence high relative to evidence quality |
+| **Availability Heuristic** | Judging by ease of recall | Recent/vivid example drives the decision |
+| **Representativeness** | Judging by similarity to stereotype | Pattern match dominates statistical evidence |
+
+---
+
 ## Pairing Guide
 
 - **Kahneman Fast/Slow** — this skill is invoked after slow mode is triggered; it ensures slow mode is actually bias-corrected

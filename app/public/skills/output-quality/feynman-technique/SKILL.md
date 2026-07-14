@@ -199,6 +199,21 @@ Proceeding as if the agent understands the full picture when parts of it are gen
 
 ---
 
+### Formal Variant: Compression-as-Understanding
+
+For a more rigorous version, use **compression testing**: compress your explanation to ≤10 sentences or 200 words, then attempt to reconstruct key details from the compressed form alone. The reconstruction accuracy (≥80% target) quantifies understanding.
+
+**Protocol:**
+1. Write simple explanation (Feynman pass)
+2. Compress to ≤10 sentences — strip implementation detail, keep essence
+3. Test reconstruction: from the compressed form, answer "what would break this?" + key mechanism questions
+4. Score: reconstruction accuracy ≥80%? If not, re-explore and re-compress
+5. Document gaps vs correctly captured elements
+
+This adds a measurable pass/fail criterion to the Feynman gap analysis. Use when stakes justify the extra rigor.
+
+---
+
 ## Definition of Done
 
 The Feynman Technique was applied correctly when:

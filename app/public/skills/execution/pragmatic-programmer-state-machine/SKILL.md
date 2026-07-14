@@ -128,6 +128,27 @@ Avoid:
 Exit condition:
 - bounded pragmatic move chosen
 
+### Sub-lens: When designing a module or interface
+
+Apply John Ousterhout's depth lens in addition to the pragmatic preference rules. A *deep module* hides complexity behind a simple interface; a *shallow* module is mostly wrapper with little to hide.
+
+Questions before choosing a boundary:
+- What caller complexity disappears once this boundary exists?
+- What implementation details become internal?
+- Does the interface get simpler than the implementation?
+- Are we reducing *change amplification* — the number of places that must change for a single conceptual change?
+
+Reject the boundary if any of these are true:
+- It is shallower than the current code (no complexity hidden, just renamed).
+- It introduces an interface with a single implementation and no architectural need.
+- Wrappers exist purely to enable extraction.
+- The extracted module depends heavily on the original's internals.
+- Change amplification stays the same or grows.
+
+Pick the boundary that hides the most complexity behind the simplest interface. If two boundaries are close, the deeper one wins.
+
+**One session, one primary smell family.** Do not chase a second structural problem while resolving the first.
+
 ---
 
 ## State 3 — Execution Unlock

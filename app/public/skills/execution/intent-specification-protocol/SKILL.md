@@ -6,435 +6,136 @@ triggers:
   - Request is ambiguous or could be interpreted multiple ways
   - Previous attempts produced over-engineered or off-target code
   - Change touches existing behavior that must be preserved
-  - About to "just start coding"
+  - About to 'just start coding'
   - Task involves modifying code you didn't write
 ---
 
 # Intent Specification Protocol
 
-Crystallize vague coding requests into precise, testable specifications before writing any code. Prevents the Intent-Behavior Mirroring Effect where vague requirements produce invasive, over-engineered output.
+Crystallize vague coding requests into precise, testable specifications before writing any code. Prevents the Intent-Behavior Mirroring Effect — vague requirements produce invasive "berserker" modifications; precise specs produce "surgical" minimal corrections.
 
-## Why This Matters
+**Spec quality is the single biggest predictor of code generation quality** — not the model, not the prompting technique. The specification.
 
-**The Intent-Behavior Mirroring Effect** (Project Prometheus, 2026):
+---
 
-> The structural invasiveness of an agent's generated code is a direct mirror of the structural scope of its input requirement.
-
-- Vague, broad requirements → "Berserker-style" invasive modifications — the agent rewrites too much, breaks too many things, and produces code that passes tests but violates intent
-- Precise, atomic specifications → "Surgical-style" minimal corrections — the agent changes only what's needed and nothing more
-
-This is the single biggest predictor of code generation quality. Not the model. Not the prompting technique. The specification.
-
-**What the research shows:**
-- Project Prometheus: 93.97% success with specs vs 76.5% without — a 17.5pp gap from specification alone
-- Self-repair research: Assertion errors (wrong intent) self-repair at only ~45% — you can't fix what you misunderstood
-- AdaCoder: Adaptive planning triggered only on failure is 16x faster than always-planning approaches
-
-## State Machine Protocol
+## State Machine
 
 ```
-┌─────────────┐
-│    INIT     │  Receive request, decide if spec is needed
-└──────┬──────┘
-       │
-       ▼
-┌─────────────┐
-│    PARSE    │  Extract core intent from the request
-└──────┬──────┘
-       │
-       ▼
-┌─────────────┐
-│  CONSTRAIN  │  Identify what must NOT change (invariants)
-└──────┬──────┘
-       │
-       ▼
-┌─────────────┐
-│ FORMALIZE   │  Write Given/When/Then scenarios for done-ness
-└──────┬──────┘
-       │
-       ▼
-┌─────────────┐     ┌─────────────┐
-│    GATE     │────▶│  AMBIGUOUS  │
-└──────┬──────┘     └──────┬──────┘
-       │                   │ (ask user)
-       │ (clear)           │
-       │                   ▼
-       │            ┌─────────────┐
-       │            │   CLARIFY   │
-       │            └──────┬──────┘
-       │                   │
-       │                   ▼
-       │            ┌─────────────┐
-       │            │  FORMALIZE  │ (re-formalize with new info)
-       │            └──────┬──────┘
-       │                   │
-       ▼                   │
-┌─────────────┐            │
-│   EXECUTE   │◀───────────┘
-└──────┬──────┘
-       │
-       ▼
-┌─────────────┐     ┌─────────────┐
-│   VERIFY    │────▶│   REPAIR    │
-└──────┬──────┘     └──────┬──────┘
-       │                   │
-       │ (pass)            │ (against spec, not request)
-       │                   │
-       ▼                   └─────────┐
-┌─────────────┐                     │
-│    DONE     │◀────────────────────┘
-└─────────────┘
+INIT → PARSE → CONSTRAIN → FORMALIZE → GATE
+                                          │
+                            ┌─────────────┴─────────────┐
+                            ▼ (clear)                   ▼ (ambiguous)
+                        EXECUTE → VERIFY → DONE      AMBIGUOUS
+                                          │              │
+                                          ▼ (fail)       ▼
+                                       REPAIR ← CLARIFY ←┘
 ```
+
+---
 
 ## States
 
-### INIT
-**Purpose:** Decide whether this task needs specification or can proceed directly.
-
-**Entry Actions:**
-- Read the user's request
-- Assess ambiguity level: Is there more than one reasonable interpretation?
-- Assess scope: Does the change touch existing behavior?
-- If the request is trivial and unambiguous → skip to EXECUTE directly
-- If the request has ANY ambiguity or touches existing code → proceed to PARSE
-
-**Exit Conditions:**
-- Unambiguous trivial task → EXECUTE (skip spec)
-- Everything else → PARSE
-
-**Output Format:**
-```yaml
-init:
-  request_summary: "One sentence: what they asked for"
-  ambiguity: "none|low|medium|high"
-  scope: "trivial|single_function|module|cross_cutting"
-  needs_spec: true|false
-  reason: "Why spec is/isn't needed"
-```
-
-___
-
-
-### PARSE
-**Purpose:** Extract the core intent — the smallest change that satisfies the request.
-
-**Entry Actions:**
-- Strip the request to its essential intent
-- Identify: What is the NEW behavior being requested?
-- Identify: What is the MINIMAL surface area of change?
-- Separate intent from implementation hints (the user may suggest HOW, but focus on WHAT)
-
-**Prompt Template:**
-```
-Given this request: "{{request}}"
-
-1. What is the core intent? (one sentence)
-2. What is the smallest change that satisfies this intent?
-3. What implementation details did the user suggest vs mandate?
-4. Are there multiple valid interpretations? If so, list them.
-```
-
-**Exit Conditions:** Always → CONSTRAIN
-
-**Output Format:**
-```yaml
-parse:
-  core_intent: "One sentence describing the minimal desired change"
-  minimal_surface: "The smallest set of files/functions that must change"
-  user_suggestions: ["List of implementation hints from user"]
-  user_mandates: ["List of hard requirements from user"]
-  interpretations:
-    - description: "Interpretation A"
-      likelihood: "high|medium|low"
-    - description: "Interpretation B"
-      likelihood: "high|medium|low"
-```
-
-___
-
-
-### CONSTRAIN
-**Purpose:** Identify invariants — what must NOT change. This is the guardrail that prevents over-engineering.
-
-**Entry Actions:**
-- List all existing behavior that must be preserved
-- Identify implicit contracts (other callers, API consumers, database state)
-- Find the boundary: where does this change stop?
-- Check for non-obvious dependencies (tests, configs, imports, types)
-
-**Prompt Template:**
-```
-The change is: {{core_intent}}
-Affecting: {{minimal_surface}}
-
-What must NOT change:
-1. Existing callers of modified functions — what do they expect?
-2. Existing tests — what behavior do they verify?
-3. Data/state contracts — what shapes must be preserved?
-4. Public API surface — what signatures are locked?
-5. Performance characteristics — any latency/throughput constraints?
-
-For each invariant, state it as a negative constraint:
-"X must continue to Y when Z"
-```
-
-**Exit Conditions:** Always → FORMALIZE
-
-**Output Format:**
-```yaml
-constraints:
-  invariants:
-    - "Function X must continue to return Y when given Z"
-    - "API endpoint /foo must accept the same request shape"
-  boundary: "This change touches files A, B. It does NOT touch C, D."
-  dependencies:
-    must_preserve: ["Existing test behavior in test_foo.py"]
-    may_modify: ["Internal implementation of bar()"]
-```
-
-___
-
-
-### FORMALIZE
-**Purpose:** Write executable scenarios that define "done." Not full BDD — just enough to be unambiguous.
-
-**Entry Actions:**
-- Write 2-5 Given/When/Then scenarios covering:
-  1. The happy path (primary intent)
-  2. Edge cases that are likely to break
-  3. At least one scenario that should NOT be affected (invariant check)
-- Each scenario must be specific enough to verify mechanically
-- Include expected outputs, not just behaviors
-
-**Prompt Template:**
-```
-Intent: {{core_intent}}
-Constraints: {{invariants}}
-
-Write Given/When/Then scenarios:
-
-Scenario 1: [Happy path - primary intent]
-  Given [specific preconditions]
-  When [specific action]
-  Then [specific expected result]
-
-Scenario 2: [Edge case]
-  Given [edge case preconditions]
-  When [edge case action]
-  Then [edge case expected result]
-
-Scenario 3: [Invariant check - something that should NOT change]
-  Given [existing behavior context]
-  When [action that would trigger the old behavior]
-  Then [old behavior still works exactly as before]
-```
+### INIT — Decide whether to spec
 
-**Exit Conditions:** Always → GATE
+| Output | |
+|---|---|
+| `ambiguity` | none / low / medium / high |
+| `scope` | trivial / single_function / module / cross_cutting |
+| `needs_spec` | true / false |
+| `reason` | why spec is or isn't needed |
 
-**Output Format:**
-```yaml
-scenarios:
-  - name: "Happy path"
-    given: "User is authenticated, database has X records"
-    when: "User requests Y with parameter Z"
-    then: "Response contains W, database now has X+1 records"
-  - name: "Edge case: empty input"
-    given: "No records exist"
-    when: "User requests Y"
-    then: "Returns empty list, status 200, no error"
-  - name: "Invariant: existing callers unaffected"
-    given: "Old client calls original endpoint"
-    when: "Request with old format"
-    then: "Response identical to pre-change behavior"
-```
+Exit: trivial+unambiguous → EXECUTE; else → PARSE.
 
-___
+### PARSE — Strip to core intent
 
+Identify the *smallest change* that satisfies the request. Separate user **suggestions** (implementation hints) from **mandates** (hard requirements). List every plausible interpretation with likelihood.
 
-### GATE
-**Purpose:** Check for ambiguity. If the spec has gaps, ask before coding.
+| Output | |
+|---|---|
+| `core_intent` | one sentence describing the minimal desired change |
+| `minimal_surface` | smallest set of files/functions that must change |
+| `interpretations[]` | each interpretation with likelihood |
 
-**Entry Actions:**
-- Review scenarios for completeness
-- Check: Does every scenario have concrete expected outputs?
-- Check: Are there "TODO" or "figure out later" gaps?
-- Check: Do any scenarios contradict each other?
-- Check: Is there an interpretation from PARSE that isn't covered?
+Always → CONSTRAIN.
 
-**Exit Conditions:**
-- All scenarios concrete and consistent → EXECUTE
-- Any ambiguity found → AMBIGUOUS
+### CONSTRAIN — Identify invariants
 
-**Gate Checklist:**
-```
-[ ] Every scenario has specific inputs AND expected outputs
-[ ] No scenario says "handle appropriately" or "should work"
-[ ] Edge cases cover at least: empty input, max input, error case
-[ ] At least one scenario verifies unchanged behavior
-[ ] No unresolved interpretations from PARSE
-[ ] The minimal surface area is still minimal (no scope creep)
-```
+What *must not* change. The guardrail that prevents over-engineering.
 
-___
+| Output | |
+|---|---|
+| `invariants[]` | "X must continue to Y when Z" |
+| `boundary` | files/surfaces this change touches and explicitly does not touch |
+| `must_preserve[]` | tests, contracts, public API surface that stays fixed |
+| `may_modify[]` | internals explicitly allowed to change |
 
+Always → FORMALIZE.
 
-### AMBIGUOUS
-**Purpose:** Surface the specific ambiguity to the user with options.
+### FORMALIZE — Write Given/When/Then scenarios
 
-**Entry Actions:**
-- Identify exactly what is unclear
-- Present 2-3 concrete interpretations with tradeoffs
-- Ask the user to choose or clarify
-- Do NOT proceed with a guess
+2–5 scenarios covering: happy path, edge cases likely to break, **at least one invariant check** (something that should NOT change). Each scenario must have specific inputs and concrete expected outputs.
 
-**Prompt Template:**
-```
-I need clarification before coding:
+| Output | |
+|---|---|
+| `scenarios[]` | name, given, when, then (specific expected result) |
 
-Ambiguity: {{what is unclear}}
+Always → GATE.
 
-Option A: {{interpretation 1}}
-  - Pro: {{advantage}}
-  - Con: {{disadvantage}}
-  - Changes: {{what this affects}}
+### GATE — Check for ambiguity
 
-Option B: {{interpretation 2}}
-  - Pro: {{advantage}}
-  - Con: {{disadvantage}}
-  - Changes: {{what this affects}}
+Verify every scenario has concrete expected outputs. No "handle appropriately" or "should work." No scenario contradictions. No unresolved interpretations from PARSE. If any ambiguity remains → AMBIGUOUS; else → EXECUTE.
 
-Which interpretation matches your intent? Or describe what you actually want.
-```
+### AMBIGUOUS — Surface to user
 
-**Exit Conditions:** User response received → CLARIFY
+Present 2–3 concrete interpretations with pros/cons/affected surfaces. Ask the user to choose or clarify. Never guess. → CLARIFY on response.
 
-___
+### CLARIFY — Re-formalize
 
+Update core_intent and constraints. Return to FORMALIZE with new info.
 
-### CLARIFY
-**Purpose:** Integrate user's clarification into the spec and re-formalize.
+### EXECUTE — Implement, bounded
 
-**Entry Actions:**
-- Update core intent with clarification
-- Update constraints if new information affects invariants
-- Return to FORMALIZE to update scenarios
+Generate the *smallest* code change that satisfies all scenarios. **One scenario at a time**: implement, verify, next. Touch only files in the boundary list. No speculative additions. No error handling for scenarios not listed. → VERIFY.
 
-**Exit Conditions:** Always → FORMALIZE
+### VERIFY — Run scenarios mechanically
 
-___
+For each scenario: set up Given preconditions, execute When, check Then matches expected output exactly. All pass → DONE. Any fail → REPAIR.
 
+### REPAIR — Fix against the spec, not the request
 
-
-### EXECUTE
-**Purpose:** Generate code constrained by the spec. Minimal change that satisfies all scenarios.
-
-**Entry Actions:**
-- Read the finalized scenarios and constraints
-- Generate the SMALLEST code change that passes all scenarios
-- Do NOT add features not covered by scenarios
-- Do NOT refactor adjacent code not touched by the change
-- Do NOT add error handling for scenarios not listed
-
-**Execution Rules:**
-1. **One scenario at a time.** Implement the first, verify, then the next.
-2. **Touch only the minimal surface.** If you're editing a file not in the boundary list, stop.
-3. **No speculative additions.** If it's not in a scenario, it doesn't exist.
-4. **Preserve all invariants.** If a change breaks an invariant scenario, revert and try differently.
-
-**Exit Conditions:** Code generated → VERIFY
-
-___
-
-
-### VERIFY
-**Purpose:** Run each scenario against the generated code.
-
-**Entry Actions:**
-- For each scenario: Given → set up preconditions, When → execute action, Then → check result
-- If all scenarios pass → DONE
-- If any scenario fails → REPAIR (against the spec, NOT the original vague request)
-
-**Verification Checklist:**
-```
-For each scenario:
-  [ ] Given preconditions can be set up
-  [ ] When action executes without error
-  [ ] Then result matches expected output exactly
-  [ ] No side effects beyond what's specified
-```
-
-**Exit Conditions:**
-- All scenarios pass → DONE
-- Any scenario fails → REPAIR
-
-___
-
-
-### REPAIR
-**Purpose:** Fix the code to satisfy the failing scenario. Key: repair against the spec, not the original request.
-
-**Entry Actions:**
-- Identify WHICH scenario failed and HOW
-- Re-read the scenario's Given/When/Then
-- Generate a targeted fix for that specific scenario only
-- Do NOT rewrite the whole implementation
-- Maximum 3 repair attempts per scenario (after 3, re-examine the spec)
-
-**Prompt Template:**
-```
-Scenario that failed: {{scenario_name}}
-  Given: {{given}}
-  When: {{when}}
-  Expected: {{then}}
-  Actual: {{what happened instead}}
-
-Current code: {{relevant code section}}
-
-Fix ONLY what's needed to make this scenario pass.
-Do NOT change anything that isn't directly causing the failure.
-Do NOT add error handling, logging, or "improvements" not in the spec.
-```
-
-**Exit Conditions:**
-- Fix applied → VERIFY (re-run all scenarios)
-- 3 attempts exceeded → re-enter FORMALIZE with the failing scenario as new input
-
-___
-
+Identify the failing scenario. Generate a targeted fix for that scenario *only*. Do not rewrite the implementation. Maximum 3 repair attempts per scenario; if exceeded, return to FORMALIZE with the failing scenario as new input. → VERIFY after each repair.
 
 ### DONE
-**Purpose:** The spec is satisfied. Report what was done.
 
-**Output:**
-```yaml
-result:
-  intent: "{{original core intent}}"
-  scenarios_passed: N/M
-  files_modified: ["list of files"]
-  invariants_preserved: true|false
-  repair_attempts: N
-```
+| Output | |
+|---|---|
+| `scenarios_passed` | N/M |
+| `files_modified[]` | list of files |
+| `invariants_preserved` | true / false |
+| `repair_attempts` | N |
+
+---
 
 ## Failure Modes
 
-1. **Specifying too much:** writing more than 5 scenarios for a single change — decompose first
-2. **Specifying too little:** one scenario is never enough. Minimum: happy path + one edge case + one invariant check
-3. **Skipping CONSTRAIN:** the most commonly skipped state and the most valuable. Without invariants, you can't detect over-engineering
-4. **Spec drift during REPAIR:** re-reading the spec is mandatory. If the spec is wrong, go back to FORMALIZE
-5. **Gate bypass:** convincing yourself the spec is clear when it isn't. If you can't write a concrete expected output, you're in AMBIGUOUS
-6. **Feature creep in EXECUTE:** the spec is a contract. Adding "nice to have" features violates the contract
+- **Specifying too much** — more than 5 scenarios for one change. Decompose first.
+- **Specifying too little** — one scenario is never enough. Minimum: happy path + one edge case + one invariant check.
+- **Skipping CONSTRAIN** — the most commonly skipped state and the most valuable. Without invariants, over-engineering is undetectable.
+- **Spec drift during REPAIR** — re-read the spec before each fix. If the spec is wrong, return to FORMALIZE.
+- **Gate bypass** — convincing yourself the spec is clear when it isn't. If you can't write a concrete expected output, you're in AMBIGUOUS.
+- **Feature creep in EXECUTE** — the spec is a contract. Adding "nice to have" features violates the contract.
 
-## Integration
+---
 
-Combine with:
-- `step-level-verification-protocol`: Use step verification during EXECUTE for complex implementations
-- `thoroughness-check-etto`: Use as preflight before INIT to assess whether the task warrants this protocol
-- `bounded-self-revision`: Use during REPAIR for iterative improvement of failing code
-- `specter`: Use when VERIFY fails and the cause isn't obvious
-- `checklist-manifesto`: Use for high-stakes changes where missing an invariant has serious consequences
+## Pairing
 
-## Research Basis
+- `step-level-verification-protocol` — use step verification during EXECUTE for complex implementations
+- `checklist-manifesto` — use for high-stakes changes where missing an invariant has serious consequences
+- `specter` — use when VERIFY fails and the cause isn't obvious
+- `bounded-self-revision` — use during REPAIR for iterative improvement
 
-- **Project Prometheus** (arXiv:2604.17464): Intent-Behavior Mirroring Effect, BDD specifications for code repair, 93.97% success rate with specs vs 76.5% without
-- **"How Many Tries Does It Take?"** (arXiv:2604.10508): Iterative self-repair effectiveness, assertion errors (wrong intent) self-repair at only ~45%, diminishing returns after 2 rounds
-- **AdaCoder** (arXiv:2504.04220): Adaptive planning triggered only on failure, error-feedback-driven planning, +54.58% Pass@1 with minimal token overhead
+---
+
+## References
+
+- `references/prompt-templates.md` — full prompt templates per state (PARSE, FORMALIZE, AMBIGUOUS, REPAIR) for direct copy-paste use.

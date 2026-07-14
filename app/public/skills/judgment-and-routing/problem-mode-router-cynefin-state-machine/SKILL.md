@@ -23,6 +23,19 @@ Source: David Snowden's Cynefin Framework.
 
 ---
 
+### Conceptual Overview
+
+Before solving, classify the problem domain. Cynefin has 5 domains:
+- **Obvious** — cause/effect clear, best practice exists → sense-categorize-respond
+- **Complicated** — cause/effect needs expert analysis → sense-analyze-respond  
+- **Complex** — cause/effect only visible in retrospect → probe-sense-respond
+- **Chaotic** — no stable cause/effect, urgent → act-sense-respond
+- **Disorder** — unclear which domain applies → gather signal first
+
+The most common mistake: treating Complex problems as Complicated (analysis fails) or treating Chaotic as Complex (delay costs). The protocol below gats classification formally.
+
+---
+
 ## Core Law
 
 The worst response to a problem is the right response to the wrong kind of problem.

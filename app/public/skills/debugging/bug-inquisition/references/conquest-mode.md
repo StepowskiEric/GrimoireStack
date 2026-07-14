@@ -1,28 +1,21 @@
----
-name: bug-inquisition-conquest
-description: Run conquest-mode debugging — ultra-heavy root-cause analysis with ongoing adversarial interrogation, evidence-ledger tracking, pre-mortem on every fix, and confidence-gated phase transitions. Use for the hardest bugs where surface debugging has failed, for intermittent or environment-specific bugs, or when the cost of a wrong fix exceeds the cost of thorough investigation.
-triggers:
-  - Deep bug where surface debugging has failed
-  - Intermittent or environment-specific bug
-  - Heisenbug or ghost bug
-  - bug-inquisition (standard mode) has already failed
----
+# Conquest Mode — Reference
 
-# Bug Inquisition — Conquest Mode
+**Load this after `bug-inquisition/SKILL.md`.** Each section below *extends* the corresponding phase in the base protocol. Conquest adds components; it does not substitute phases.
 
-## Purpose
+**Use conquest when:**
+- Hard bug where surface debugging has failed
+- Intermittent / environment-specific crash
+- Heisenbug or ghost bug ("fixes itself" when you add logging)
+- Cost of a wrong fix exceeds the cost of thorough investigation
+- The base protocol has run but produced a low-confidence fix
 
-The heaviest debugging protocol in the arsenal. For bugs where guessing is too expensive: intermittent failures, environment-specific crashes, bugs that "fix themselves" when you add logging, or any bug where the cost of a wrong fix exceeds the cost of thorough investigation.
-
-**Guarantee:** Every claim is backed by evidence, every hypothesis is adversarially tested, every fix is pre-mortemed before application, and the AI maintains a live evidence ledger throughout. Every assumption is challenged.
-
-**Relationship to bug-inquisition:** Conquest mode runs the same 6-phase structure, but each phase contains ongoing interrogation loops — the AI interrogates its own understanding at every step rather than just running a phase.
+**Relationship to base:** Run the base 6-phase protocol. Apply the extensions below at the matching phases. The Evidence Ledger and Confidence Protocol are overlays applied throughout.
 
 ---
 
-## Pre-Flight Inquisition (DEEP)
+## Pre-Flight Inquisition (DEEP) — extends base questionnaire
 
-Before any debugging, the AI conducts a full interrogation of the bug report. Ask ALL questions below. Drill into every branch until the answer is specific, concrete, and testable.
+The base questionnaire asks 5 questions. Conquest drills into each branch until the answer is specific, concrete, and testable.
 
 ### 1. Symptom — Drill down
 
@@ -36,22 +29,22 @@ Before any debugging, the AI conducts a full interrogation of the bug report. As
 ### 2. Reproduction — Force specificity
 
 - What are the exact steps to reproduce? Number them.
-- What input, data, or state triggers it? (Be specific: "user ID 42" not "some users")
-- What environment is required? (OS, browser, Node version, config, environment variables, feature flags)
+- What input, data, or state triggers it? (Specific: "user ID 42" not "some users")
+- What environment is required? (OS, browser, runtime version, config, env vars, feature flags)
 - Can you reproduce it locally? If yes, show the commands. If no, why not?
 - Is it deterministic or flaky? If flaky, what's the reproduction rate? (10%? 50%?)
-- **Boundary test:** If you change [one specific variable], does it still happen? If you don't know, test it now.
+- **Boundary test:** If you change one specific variable, does it still happen?
 
 ### 3. Blast Radius — Map what's safe
 
 - What's *not* broken? List related functionality that works correctly.
-- What schools/modules/components are unaffected?
+- What modules/components are unaffected?
 - Is the bug isolated to one code path, or does it corrupt state that other paths depend on?
-- **Counterfactual:** If you swapped [related component A] for [related component B], would the bug move or disappear?
+- **Counterfactual:** If you swapped related component A for B, would the bug move or disappear?
 
 ### 4. History — Trace the timeline
 
-- What code changed in the last [N] commits? List files and commit messages.
+- What code changed in the last N commits? List files and commit messages.
 - What config, env vars, or feature flags changed recently?
 - Were there any deployments, dependency updates, or migrations in the timeline?
 - What was the last known good state? (Commit hash, deploy timestamp)
@@ -65,78 +58,39 @@ Before any debugging, the AI conducts a full interrogation of the bug report. As
 - What did you learn from each failed attempt? (Critical — failed attempts contain evidence.)
 - **Sanity check:** Have you verified that your repro still reproduces after each failed attempt? (Sometimes "fixing" something accidentally masks the bug.)
 
-Record as:
-```markdown
-## Bug Context — Conquest Mode
-### Symptom
-- Exact failure: ...
-- First observed: ...
-- Frequency: ...
-- Stack trace: ...
-- Negative symptom: ...
-
-### Reproduction
-- Steps: ...
-- Trigger input/state: ...
-- Environment: ...
-- Reproducible locally: ...
-- Flaky rate: ...
-- Boundary test result: ...
-
-### Blast Radius
-- Unaffected: ...
-- Isolated vs. corrupting: ...
-- Counterfactual: ...
-
-### History
-- Recent changes: ...
-- Last known good: ...
-- Diff check result: ...
-
-### Triage
-- Attempted fixes: ...
-- Ruled-out hypotheses: ...
-- Evidence from failures: ...
-```
+Record as conquest-style context, full structure shown in the pre-flight section of the original conquest skill.
 
 ---
 
 ## Phase 1 — Reproduce & Freeze (with Verification Gate)
 
-Build a feedback loop. Same options as standard mode, but with stricter requirements:
+Same as base, with stricter requirements:
 
-- The loop must be **deterministic or high-rate** (>50% reproduction for flaky bugs).
-- Capture the **exact failure signature** — error message, wrong output, performance number.
+- The reproduction loop must be **deterministic or high-rate** (>50% reproduction for flaky bugs).
+- Capture the exact failure signature — error message, wrong output, performance number.
 - Run it **3 times** to confirm reproducibility before proceeding.
 - Record the **minimal input** that triggers the bug.
 
-**Verification gate:** Before proceeding, the AI must state:
+**Verification gate:** Before proceeding, the agent must state:
+
 > "I can reproduce this bug on demand. Here is the command/input that triggers it, and here is the exact failure I observe."
 
 If it cannot state this, keep building a better loop until reproduction is reliable.
 
-```markdown
-## Frozen Symptom
-- Reproduces with: [command/input]
-- Failure signature: [exact error/output]
-- Reproduction rate: [N% or deterministic]
-- Minimal reproducer: [smallest input that triggers it]
-```
-
 ---
 
-## Phase 2 — Abductive Hypotheses with INTERROGATION
+## Phase 2 — Hypotheses (Interrogation + Claim Decomposition)
 
-Generate **5–7 hypotheses** (more than standard mode — conquest mode demands breadth before depth).
+Generate **5–7 hypotheses** (more than the base — conquest demands breadth before depth).
 
-For each hypothesis, the AI runs an **internal grill** before presenting to the user:
+For each candidate hypothesis, run an **internal grill** before presenting to the user:
 
 ### Hypothesis Interrogation (per hypothesis)
 
-For each candidate hypothesis, ask:
+For each candidate:
 
 1. **What would prove this hypothesis WRONG?** (Falsifiability check — if you can't answer this, the hypothesis is too vague.)
-2. **What evidence already contradicts it?** (Be honest — look at the bug context, the blast radius, the history.)
+2. **What evidence already contradicts it?** (Be honest — look at the bug context, blast radius, history.)
 3. **What does this hypothesis explain that others don't?** (If it explains nothing unique, it's not a real candidate.)
 4. **What does this hypothesis FAIL to explain?** (List at least one gap.)
 5. **How complex is the causal chain?** Count steps and independent entities.
@@ -147,7 +101,7 @@ For each candidate hypothesis, ask:
 - Has no unique explanatory power
 - Requires accepting 3+ independent new entities without evidence
 
-Present the surviving hypotheses to the user with their scores, gaps, and falsification criteria.
+Present the surviving hypotheses to the user with scores, gaps, and falsification criteria.
 
 ### Claim Decomposition
 
@@ -159,29 +113,29 @@ For the top 2–3 hypotheses, decompose into atomic falsifiable claims. Each cla
 
 ## Phase 3 — Simplicity Selection + ADVERSARIAL Backward Verification
 
-Same Occam's Razor ranking as standard mode. But then:
+Apply Occam's Razor ranking as in the base. Then run an adversarial backward verification.
 
 ### Adversarial Backward Verification
 
-Assume the #1 hypothesis is **completely wrong**. Now construct the strongest possible alternative explanation that fits ALL the evidence.
+Assume the #1 hypothesis is **completely wrong**. Construct the strongest possible alternative explanation that fits ALL the evidence.
 
-1. List 3–5 alternative explanations that are *inconsistent* with the #1 hypothesis but *consistent* with all observed evidence.
+1. List 3–5 alternative explanations that are *inconsistent* with the #1 hypothesis but *consistent with all observed evidence*.
 2. For each alternative, ask: "What specific evidence would rule this out?"
 3. If you cannot find ruling evidence for an alternative, it remains a **live threat**.
 4. Only proceed when either:
    - All alternatives are ruled out with specific evidence, OR
    - The #1 hypothesis has a falsifiable prediction that, if confirmed, eliminates all live alternatives.
 
-**Confidence gate:** Score the #1 hypothesis 0–1:
-- **≥ 0.9**: All alternatives ruled out, hypothesis makes unique predictions. Proceed.
-- **0.7–0.9**: Some alternatives remain but hypothesis has strong unique predictions. Proceed with caveat — note live alternatives.
-- **< 0.7**: Return to Phase 2 or gather more evidence
+**Confidence gate:**
+- **≥ 0.9** — All alternatives ruled out, hypothesis makes unique predictions. Proceed.
+- **0.7–0.9** — Some alternatives remain but hypothesis has strong unique predictions. Proceed with caveat — note live alternatives.
+- **< 0.7** — Return to Phase 2 or gather more evidence.
 
 ---
 
 ## Phase 4 — Instrument & Probe (with Step Verification)
 
-Same instrumentation approach, but with **step verification gates** after each probe:
+Same instrumentation approach, but with **step verification gates** after each probe.
 
 ### Step Verification Gate
 
@@ -207,11 +161,9 @@ After each instrumentation run, before interpreting results:
 
 ## Phase 5 — Fix + Regression Test (with Pre-Mortem)
 
-Same fix approach, but with an **adversarial pre-mortem** before any code change:
+Before writing any fix code, run a **pre-mortem on the fix**.
 
 ### Pre-Mortem on the Fix
-
-Before writing a single line of fix code, answer these questions:
 
 1. "Assume this fix was applied and the bug came back. What went wrong?"
    - List 3–5 specific failure modes for the fix itself.
@@ -222,47 +174,41 @@ Before writing a single line of fix code, answer these questions:
    - For each: "If this assumption is false, does the fix still work?"
 
 3. "What's the simplest thing that could make this fix fail?"
-   - Think about edge cases, boundary conditions, concurrent access, data variations.
+   - Edge cases, boundary conditions, concurrent access, data variations.
 
 4. "Am I fixing the root cause or a contributing factor?"
    - Apply the test: "If I fix only this, will the symptom be impossible under the same conditions?"
    - If NO → keep digging. Apply the fix only when the root cause is confirmed.
 
-Only after the pre-mortem is complete and the AI can state "I have considered how this fix could fail, and I believe it addresses the root cause" does it proceed to write the regression test and apply the fix.
+Only after the pre-mortem is complete and the agent can state *"I have considered how this fix could fail, and I believe it addresses the root cause"* does it proceed to write the regression test and apply the fix.
 
 ### Fix Iteration with Evidence Tracking
 
 - Write regression test → watch it fail → apply fix → watch it pass.
-- If fix fails: return to Phase 4 instrumentation with updated evidence rather than guessing a different fix
-- If fix passes but pre-mortem predictions are violated: STOP. The bug is not fixed — you've masked it.
-- Maximum 4 fix iterations. If exhausted, escalate with full evidence ledger.
+- If fix fails: return to Phase 4 instrumentation with updated evidence rather than guessing a different fix.
+- If fix passes but pre-mortem predictions are violated: **STOP**. The bug is not fixed — you've masked it.
+- **Maximum 4 fix iterations.** If exhausted, escalate with full evidence ledger.
 
 ---
 
-## Phase 6 — Prevent Recurrence (with Adversarial Review)
+## Phase 6 — Prevent Recurrence (with Final Adversarial Review)
 
-Before declaring done, run the **final adversarial review**:
+Run a final adversarial review before declaring done.
 
 ### Final Adversarial Review
 
-1. **State the case FOR the fix** (what you believe is true).
-2. **State the case AGAINST the fix** (what could still be wrong, what gaps remain, what alternatives you ruled out but couldn't fully disprove).
+1. **State the case FOR the fix** — what you believe is true.
+2. **State the case AGAINST the fix** — what could still be wrong, what gaps remain, what alternatives you ruled out but couldn't fully disprove.
 3. **Identify residual risks** — what edge cases, environments, or future changes could resurrect this bug?
 4. **Verify the fix is minimal** — smallest diff that addresses the root cause, not the symptom.
 
-Then complete the standard checklist:
-- [ ] Original repro no longer reproduces
-- [ ] Regression test passes
-- [ ] All instrumentation removed
-- [ ] Throwaway prototypes deleted
-- [ ] Correct hypothesis stated in commit message
-- [ ] Preventive measure added
+Then complete the base protocol's prevention checklist.
 
 ---
 
-## Evidence Ledger
+## Evidence Ledger (Overlay)
 
-Throughout all phases, maintain a running ledger of claims and their status:
+Throughout all phases, maintain a running ledger of claims and their status. Append, do not rewrite — earlier entries are evidence of how the investigation evolved.
 
 ```markdown
 ## Evidence Ledger
@@ -274,18 +220,18 @@ Throughout all phases, maintain a running ledger of claims and their status:
 ```
 
 Rules:
-- Every claim in the ledger must have a source (not "I think").
+- Every claim must have a source (not "I think").
 - Confidence must be updated after each instrumentation run.
-- Contradicted claims are marked and their descendants are invalidated.
-- The ledger is the AI's memory — refer to it before every phase transition.
+- Contradicted claims are marked and their descendants invalidated.
+- The ledger is the agent's memory — refer to it before every phase transition.
 
 ---
 
-## Confidence Protocol
+## Confidence Protocol (Overlay)
 
-At each phase transition, the AI must state its confidence and what would change it:
+State confidence at every phase transition and what would change it:
 
-| Gate | Minimum confidence | What to do if below |
+| Gate | Minimum | What to do if below |
 |---|---|---|
 | After Phase 2 (hypotheses) | 0.6 | Gather more evidence, generate more hypotheses |
 | After Phase 3 (verification) | 0.7 | Rule out more alternatives, or gather targeted evidence |
@@ -303,8 +249,9 @@ At each phase transition, the AI must state its confidence and what would change
 | Accepting surface answers in questionnaire | Partial context = guessing = wasted cycles |
 | Generating < 5 hypotheses | First-branch lock-in is guaranteed with fewer |
 | Skipping hypothesis interrogation | Plausible-but-wrong narratives survive unchallenged |
-| Confirming evidence as disconfirming | "My hypothesis predicts X, and I observed X" — but 3 other hypotheses also predict X |
+| Confirming evidence as disconfirming | "My hypothesis predicts X, I observed X" — but 3 others also predict X |
 | Skipping pre-mortem | Fixes that look correct often mask the bug instead of curing it |
 | Proceeding below confidence threshold | Low confidence = high probability of wrong fix |
-| Fixing without falsifying alternatives | You haven't proven your hypothesis, you've just confirmed one prediction |
-| Declaring done without adversarial review | The case against the fix is usually more informative than the case for it |
+| Fixing without falsifying alternatives | Not proven; only one prediction confirmed |
+| Declaring done without adversarial review | Case-against is usually more informative than case-for |
+| Not writing to the evidence ledger | Earlier reasoning is lost; the agent repeats mistakes |

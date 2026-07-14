@@ -26,6 +26,12 @@ Source: Gary Klein's Recognition-Primed Decision model, *Sources of Power*.
 
 ---
 
+### Conceptual Overview
+
+In urgent situations, don't compare every option or build decision trees. Instead: (1) recognize the situation pattern, (2) choose the first plausible strong action, (3) mentally simulate it, (4) execute if it survives simulation, (5) reassess. The goal is a workable move fast, not the globally optimal move after endless analysis. Reversible actions preferred. The protocol below gates each step formally.
+
+---
+
 ## Core Law
 
 Speed and recklessness are not the same.

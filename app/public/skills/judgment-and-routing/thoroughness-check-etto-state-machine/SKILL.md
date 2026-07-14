@@ -27,6 +27,19 @@ The purpose is to prevent a fast low-rigor response from being applied to a high
 
 ---
 
+### Conceptual Overview
+
+ETTO classifies task rigor on a 1-5 scale:
+- **ETTO-1 (Speed)** — brainstorming, rough drafts. Move fast, skip validation.
+- **ETTO-2 (Lean)** — simple edits, low-risk changes. Basic consistency check.
+- **ETTO-3 (Balanced)** — non-trivial impl, debugging. Verify assumptions, check alternatives.
+- **ETTO-4 (Thorough)** — auth, security, migrations. Strong evidence, bounded steps, rollback.
+- **ETTO-5 (Maximum)** — medical/legal/financial, irreversible actions. Conservative scope, explicit uncertainty, refuse unsafe.
+
+Key factors: cost of error, reversibility, blast radius, uncertainty. The protocol below gates this formally.
+
+---
+
 ## Core Law
 
 The agent must not begin execution until it classifies the task’s required balance between:

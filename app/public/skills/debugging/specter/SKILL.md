@@ -39,6 +39,17 @@ Rules:
 
 **Done when** you have 3-5 hypotheses, each with premise + falsifiable prediction + disconfirming condition, including at least one obvious and one weird.
 
+### When the cause is non-code
+
+For hypotheses whose cause is *outside the codebase* — deployment, infra, env config, schedule, external service — Phase 2 (locate by structure) is not the right tool. Use explanatory coherence instead:
+
+- **Coverage** — what % of observed symptoms does this hypothesis explain?
+- **Specificity** — does it predict the *exact* failure mode, or just a class of failures?
+- **Simplicity** — count the causal chain length and independent new entities required.
+- **Consistency** — does it conflict with any confirmed observation?
+
+Pick the hypothesis with highest coverage, highest specificity, fewest new entities, no contradictions. Proceed straight to Phase 3 with a probe designed to confirm or falsify, even if the probe is "check the deploy log" rather than a code trace.
+
 ## Phase 2 — Locate by Structure
 
 For each surviving hypothesis, locate code by **structural relationship**, not keyword:

@@ -320,6 +320,19 @@ Start with query optimization (satisfies Complexity, partially Performance).
 Revisit caching only if 5x improvement insufficient AND consistency window acceptable.
 ```
 
+### Lightweight Mode (Jury Pattern)
+
+For faster multi-perspective analysis without full triad cycles, use the Jury pattern:
+1. Assign 3-4 jurors each with a distinct perspective and explicit goal
+2. Each round: juror makes a claim, another juror responds with counter/concession
+3. Build a **conflict graph** — nodes are claims/positions, edges are disagreements
+4. The graph reveals which disagreements are fundamental (different values) vs tactical (different facts)
+5. Verdict: decision with confidence, resolved vs persistent edges, most-useful argument credited
+
+This trades triad depth for speed. Use when urgency doesn't allow full Rashomon cycles but multi-perspective analysis is still needed.
+
+---
+
 ## References
 
 For deeper guidance on choosing and weighting perspectives (optimist vs pessimist vs pragmatist, weighting by task type):

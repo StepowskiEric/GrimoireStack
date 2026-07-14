@@ -117,6 +117,33 @@ Confidence: CERTAIN
 Supporting claims:
 ✓ APIRouter sets on_startup before super().__init__() [read_file: routing.py:952]
 ✓ Starlette Router.__init__ sets self.on_startup = [] [read_file: starlette/routing.py:234]
+```
+
+### Optional Step 6 — Anchor Store (Session Persistence)
+
+For long sessions, persist verified claims to `anchors.jsonl` for cross-session consistency checking:
+
+```json
+{"id": "a1", "claim": "Starlette Router.__init__ overwrites on_startup", "source": "starlette/routing.py:234", "verified": true, "confidence": "certain"}
+```
+
+On new claims, check the store first: if a contradicting anchor exists, halt and resolve before proceeding. This prevents accumulating contradictions across turns. Use `scripts/anchor_chain.py` to manage the store.
+
+---
+
+Final output includes:
+1. Conclusion
+2. Confidence level (minimum confidence across all supporting claims)
+3. List of claims with their verification status
+4. Any UNCERTAIN claims that were not verifiable (gaps)
+
+```
+Conclusion: The bug is caused by Starlette overwriting on_startup.
+Confidence: CERTAIN
+
+Supporting claims:
+✓ APIRouter sets on_startup before super().__init__() [read_file: routing.py:952]
+✓ Starlette Router.__init__ sets self.on_startup = [] [read_file: starlette/routing.py:234]
 ✓ Therefore handlers are overwritten [logical inference]
 
 Gaps: None

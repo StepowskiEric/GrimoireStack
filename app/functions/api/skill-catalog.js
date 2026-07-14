@@ -3,14 +3,6 @@
 
 export const SKILL_CATALOG = [
   {
-    "skill": "accelerate-ai",
-    "name": "Accelerate for AI Delivery and Reliability Agents",
-    "school": "Systems & Architecture",
-    "schoolName": "School of Architecture",
-    "status": "—",
-    "effect": "Improve engineering throughput and reliability by strengthening feedback, lowering batch risk, and shortening recovery time."
-  },
-  {
     "skill": "maintain-architecture",
     "name": "Architecture Maintenance",
     "school": "Systems & Architecture",
@@ -88,15 +80,7 @@ export const SKILL_CATALOG = [
     "school": "Systems & Architecture",
     "schoolName": "School of Architecture",
     "status": "—",
-    "effect": "Three security lenses merged: attack surface analysis, hazardous operation checking, and LLM-specific vulnerability audit."
-  },
-  {
-    "skill": "security-threat-modeling",
-    "name": "Security Threat Modeling for AI Agents",
-    "school": "Systems & Architecture",
-    "schoolName": "School of Architecture",
-    "status": "—",
-    "effect": "STRIDE threat analysis, attack-surface mapping, trust-boundary reasoning, and attacker-perspective review."
+    "effect": "4-phase security review fusing STRIDE, hazard analysis, LLM vuln audit, and expanded threat-modeling guidance (assets, boundaries, secrets, input validation, authz, failure modes, attacker perspective)."
   },
   {
     "skill": "sre-error-budget",
@@ -147,36 +131,12 @@ export const SKILL_CATALOG = [
     "effect": "Systematic checklist for vulnerabilities LLMs reliably introduce: exposed secrets, missing RLS, broken auth, injection flaws, insecure defaults."
   },
   {
-    "skill": "chaos-detector",
-    "name": "Chaos Detector",
-    "school": "Reasoning & Faithfulness",
-    "schoolName": "School of Cognition",
-    "status": "—",
-    "effect": "Compute empirical Lyapunov exponents over token trajectories and flag when small perturbations amplify into divergent conclusions."
-  },
-  {
     "skill": "claim-verification-reasoning",
     "name": "Claim Verification Reasoning",
     "school": "Reasoning & Faithfulness",
     "schoolName": "School of Cognition",
     "status": "—",
     "effect": "Atomic decomposition with confidence labels and tool-grounded verification."
-  },
-  {
-    "skill": "context-density-operator",
-    "name": "Context Density Operator",
-    "school": "Reasoning & Faithfulness",
-    "schoolName": "School of Cognition",
-    "status": "—",
-    "effect": "Maximize decision-relevant information per token via hierarchical memory, on-demand detail expansion, and redundant-context pruning."
-  },
-  {
-    "skill": "context-rot-pruner",
-    "name": "Context Rot Pruner",
-    "school": "Reasoning & Faithfulness",
-    "schoolName": "School of Cognition",
-    "status": "—",
-    "effect": "Apply exponential decay to context messages so old, unreferenced content gets pruned before the context window overflows."
   },
   {
     "skill": "cot-pruning-reasoning",
@@ -195,14 +155,6 @@ export const SKILL_CATALOG = [
     "effect": "Detect and prevent faithfulness hallucinations where claims aren't logically entailed by the premises."
   },
   {
-    "skill": "hallucination-anchor-chain",
-    "name": "Hallucination Anchor Chain",
-    "school": "Reasoning & Faithfulness",
-    "schoolName": "School of Cognition",
-    "status": "—",
-    "effect": "Anchor every factual claim to a verified source — unanchored claims are hidden. Builds a verifiable chain of evidence. Use when accuracy matters in research, code generation with external APIs, multi-step reasoning where errors compound, or any domain where wrong facts cause harm."
-  },
-  {
     "skill": "prism",
     "name": "Prism",
     "school": "Reasoning & Faithfulness",
@@ -217,14 +169,6 @@ export const SKILL_CATALOG = [
     "schoolName": "School of Cognition",
     "status": "—",
     "effect": "Escalating 4-phase verification chain: faithfulness, claims, contradiction, selective halt."
-  },
-  {
-    "skill": "reasoning-verification-hybrid",
-    "name": "Reasoning Verification Hybrid",
-    "school": "Reasoning & Faithfulness",
-    "schoolName": "School of Cognition",
-    "status": "—",
-    "effect": "Claim verification, backward contradiction, and calibrated confidence."
   },
   {
     "skill": "selective-halt-reasoning",
@@ -243,14 +187,6 @@ export const SKILL_CATALOG = [
     "effect": "Maintain a belief store of claims made during a session. Detect contradictions and force resolution before continuing."
   },
   {
-    "skill": "token-budget-operator",
-    "name": "Token Budget Operator",
-    "school": "Reasoning & Faithfulness",
-    "schoolName": "School of Cognition",
-    "status": "—",
-    "effect": "Orchestrate context compression, CoT pruning, selective halting, and SOP capture in sequence."
-  },
-  {
     "skill": "active-inference-agent",
     "name": "Active Inference Agent",
     "school": "MCP Servers",
@@ -267,36 +203,12 @@ export const SKILL_CATALOG = [
     "effect": "MCP server that runs an evolutionary algorithm to discover and optimize agent tool chains, prompt strategies, and code solutions."
   },
   {
-    "skill": "agent-memory-hygiene",
-    "name": "Agent Memory Hygiene for AI Agents",
-    "school": "Agent Orchestration",
-    "schoolName": "School of Confluence",
-    "status": "—",
-    "effect": "Control what is stored, retrieved, trusted, and discarded to avoid stale-context actions."
-  },
-  {
     "skill": "agentic-design-patterns-orchestrator-state-machine",
-    "name": "Agentic Patterns Orchestrator — State Machine Protocol for AI Agents",
+    "name": "Agentic Patterns Orchestrator — State Machine Protocol",
     "school": "Agent Orchestration",
     "schoolName": "School of Confluence",
     "status": "—",
     "effect": "Enforce a phased workflow with explicit gates between classify, plan, execute, reflect, and verify."
-  },
-  {
-    "skill": "agentic-design-patterns-orchestrator",
-    "name": "Agentic Patterns Orchestrator for AI Agents",
-    "school": "Agent Orchestration",
-    "schoolName": "School of Confluence",
-    "status": "—",
-    "effect": "Adopt pattern-based orchestration with planning, routing, reflection, and recovery."
-  },
-  {
-    "skill": "jury",
-    "name": "Jury",
-    "school": "Agent Orchestration",
-    "schoolName": "School of Confluence",
-    "status": "—",
-    "effect": "Spawn parallel perspectives with conflicting goals, force them to engage, output a conflict graph that reveals what actually matters."
   },
   {
     "skill": "monte-carlo-tree-search",
@@ -355,14 +267,6 @@ export const SKILL_CATALOG = [
     "effect": "Keep planning, diagnosis, observation, and execution phases intellectually isolated."
   },
   {
-    "skill": "socratic-clarification",
-    "name": "Socratic Clarification Protocol for AI Agents",
-    "school": "Agent Orchestration",
-    "schoolName": "School of Confluence",
-    "status": "—",
-    "effect": "Surface the most critical hidden assumption before committing to execution."
-  },
-  {
     "skill": "sop-evolution-memory",
     "name": "SOP Evolution Memory",
     "school": "Agent Orchestration",
@@ -385,14 +289,6 @@ export const SKILL_CATALOG = [
     "schoolName": "School of Confluence",
     "status": "—",
     "effect": "Standing behavioral constraints every sub-agent must follow. Enforce scope discipline, test integrity, and communication standards."
-  },
-  {
-    "skill": "thought-retriever-coppermind",
-    "name": "Thought-Retriever with Coppermind",
-    "school": "Agent Orchestration",
-    "schoolName": "School of Confluence",
-    "status": "—",
-    "effect": "Store intermediate reasoning as retrievable thoughts in the Coppermind memory layers."
   },
   {
     "skill": "weak-link-detection-multi-agent",
@@ -507,6 +403,14 @@ export const SKILL_CATALOG = [
     "effect": "Covers fetch API, React Query, SWR, error handling, caching, offline support, and Expo Router data loaders."
   },
   {
+    "skill": "recency-grounding",
+    "name": "Recency Grounding",
+    "school": "Software Development",
+    "schoolName": "School of Crafting",
+    "status": "—",
+    "effect": "User-invoked pre-claim audit for one unfamiliar or post-cutoff library. Invoke with `/recency-grounding <library> [version]`."
+  },
+  {
     "skill": "review-changes",
     "name": "Review Changes",
     "school": "Software Development",
@@ -563,14 +467,6 @@ export const SKILL_CATALOG = [
     "effect": "Verify the actual system behavior rather than matching abstract terminology when integrating research or external docs."
   },
   {
-    "skill": "philosophy-of-software-design-state-machine",
-    "name": "A Philosophy of Software Design — State Machine Protocol for AI Agents",
-    "school": "Execution & Improvement",
-    "schoolName": "School of Execution",
-    "status": "—",
-    "effect": "Design deeper modules, avoid shallow abstraction sprawl, declare unknowns and blast radius, bound change scope."
-  },
-  {
     "skill": "blueprint",
     "name": "Blueprint",
     "school": "Execution & Improvement",
@@ -587,28 +483,12 @@ export const SKILL_CATALOG = [
     "effect": "Build the smallest useful checklist for high-stakes procedures, gate execution on checklist completion, stop cleanly and escalate if it cannot be cleared."
   },
   {
-    "skill": "cognitive-friction-governor",
-    "name": "Cognitive Friction Governor",
-    "school": "Execution & Improvement",
-    "schoolName": "School of Execution",
-    "status": "—",
-    "effect": "Assign deliberation budgets to tasks; each reasoning step consumes friction; budget exhausted forces decision."
-  },
-  {
     "skill": "context-budget-operator",
     "name": "Estimate token cost of files",
     "school": "Execution & Improvement",
     "schoolName": "School of Execution",
     "status": "—",
     "effect": "Track token budget, classify information needs, compress aggressively, and decide breadth-vs-depth based on remaining runway."
-  },
-  {
-    "skill": "how-to-solve-it-analogy",
-    "name": "How to Solve It — Analogy",
-    "school": "Execution & Improvement",
-    "schoolName": "School of Execution",
-    "status": "—",
-    "effect": "Apply analogy to a problem — find a structurally related solved problem, map the correspondence, transfer the solution, adapt it. Use when a problem resembles one solved in another domain, when a design pattern from elsewhere seems applicable, or when brute-force analysis needs a structural guide."
   },
   {
     "skill": "how-to-solve-it-state-machine",
@@ -635,28 +515,12 @@ export const SKILL_CATALOG = [
     "effect": "Author a detailed technical spec grounded in research, refine through up to 3 judge-LLM review cycles, then present to the user for final approval."
   },
   {
-    "skill": "keyword-agnostic-logic-locator",
-    "name": "Keyword-Agnostic Logic Locator",
-    "school": "Execution & Improvement",
-    "schoolName": "School of Execution",
-    "status": "—",
-    "effect": "Find code by structural relationships and logical queries via a Datalog-style knowledge graph over call graphs, data flows, and type hierarchies."
-  },
-  {
     "skill": "legacy-rescue-protocol",
     "name": "Legacy Rescue Protocol",
     "school": "Execution & Improvement",
     "schoolName": "School of Execution",
     "status": "—",
     "effect": "Fuse of Working Effectively with Legacy Code + Refactoring State Machine. Characterize legacy behavior, create seams, then transform in bounded slices with anti-loop protection."
-  },
-  {
-    "skill": "long-task-survival-kit",
-    "name": "Long Task Survival Kit",
-    "school": "Execution & Improvement",
-    "schoolName": "School of Execution",
-    "status": "—",
-    "effect": "Recurring checkpoint protocol that prevents agent decay on complex tasks: context overflow, failure spirals, and hallucinated facts."
   },
   {
     "skill": "ooda-loop-state-machine",
@@ -675,38 +539,6 @@ export const SKILL_CATALOG = [
     "effect": "Use when improving a process through a measurement-anchored cycle — plan with a measurable prediction, do, check actual vs predicted, then standardize or escalate. Do not standardize what was not measured."
   },
   {
-    "skill": "plan-with-judge",
-    "name": "Plan with Judge",
-    "school": "Execution & Improvement",
-    "schoolName": "School of Execution",
-    "status": "—",
-    "effect": "Create an implementation plan in JSONL format, then iteratively improve it using a stronger model as a judge until approved."
-  },
-  {
-    "skill": "process-reward-model-protocol",
-    "name": "Process Reward Model Protocol",
-    "school": "Execution & Improvement",
-    "schoolName": "School of Execution",
-    "status": "—",
-    "effect": "Self-assign process rewards per step and backtrack when cumulative reward drops below threshold."
-  },
-  {
-    "skill": "refactoring-state-machine",
-    "name": "Refactoring — State Machine Protocol for AI Agents",
-    "school": "Execution & Improvement",
-    "schoolName": "School of Execution",
-    "status": "—",
-    "effect": "Characterize behavior, transform in bounded slices, re-test. Stops refactor loops."
-  },
-  {
-    "skill": "requirement-crystallization-protocol",
-    "name": "Requirement Crystallization Protocol",
-    "school": "Execution & Improvement",
-    "schoolName": "School of Execution",
-    "status": "—",
-    "effect": "Surface the critical assumption, then crystallize vague requests into locked, testable specs before coding begins."
-  },
-  {
     "skill": "retrospective",
     "name": "Retrospective — After-Action Learning from Real Outcomes",
     "school": "Execution & Improvement",
@@ -721,14 +553,6 @@ export const SKILL_CATALOG = [
     "schoolName": "School of Execution",
     "status": "—",
     "effect": "Generate multiple solution branches in parallel, verify each against hard constraints, select the best."
-  },
-  {
-    "skill": "speculative-exploration-protocol",
-    "name": "Speculative Exploration Protocol for AI Agents",
-    "school": "Execution & Improvement",
-    "schoolName": "School of Execution",
-    "status": "—",
-    "effect": "Branch into N candidates, score with process rewards, prune low-reward branches, verify the best against hard constraints."
   },
   {
     "skill": "split-large-files",
@@ -795,28 +619,12 @@ export const SKILL_CATALOG = [
     "effect": "State every assumption explicitly, verify with the cheapest possible check, and only proceed on confirmation."
   },
   {
-    "skill": "working-effectively-with-legacy-code-state-machine",
-    "name": "Working Effectively with Legacy Code — State Machine Protocol for AI Agents",
-    "school": "Execution & Improvement",
-    "schoolName": "School of Execution",
-    "status": "—",
-    "effect": "Characterize legacy behavior, create seams, transform in bounded slices with anti-loop protection."
-  },
-  {
     "skill": "zero-defect-protocol",
     "name": "Zero-Defect Protocol",
     "school": "Execution & Improvement",
     "schoolName": "School of Execution",
     "status": "—",
-    "effect": "14-phase protocol for mission-critical features: data contracting, invariant mapping, red-team critique, pre-mortem before any code is written."
-  },
-  {
-    "skill": "adversarial-review",
-    "name": "Adversarial Review",
-    "school": "Judgment & Decision-Making",
-    "schoolName": "School of Judgment",
-    "status": "—",
-    "effect": "Stress-test proposals against a separate adversarial subagent. Tool-mediated review with no prior investment."
+    "effect": "Mission-critical feature protocol: data contracting, red-team critique, pre-mortem, 3x critique loop, and speculative prototyping before any code is written."
   },
   {
     "skill": "advocatus-diaboli",
@@ -833,14 +641,6 @@ export const SKILL_CATALOG = [
     "schoolName": "School of Judgment",
     "status": "—",
     "effect": "Maintain explicit priors updated by likelihood, avoiding over- and under-reaction to new evidence."
-  },
-  {
-    "skill": "cognitive-bias-auditor",
-    "name": "Cognitive Bias Auditor",
-    "school": "Judgment & Decision-Making",
-    "schoolName": "School of Judgment",
-    "status": "—",
-    "effect": "Explicit audit framework covering the 9 most common cognitive biases in agents."
   },
   {
     "skill": "cognitive-bias-checklist",
@@ -867,20 +667,20 @@ export const SKILL_CATALOG = [
     "effect": "Explicit explore/exploit protocol with diminishing-returns stopping rule."
   },
   {
-    "skill": "explore-vs-exploit",
-    "name": "Explore vs Exploit for AI Agents",
-    "school": "Judgment & Decision-Making",
-    "schoolName": "School of Judgment",
-    "status": "—",
-    "effect": "Deliberate explore/exploit choice instead of defaulting to either extreme."
-  },
-  {
     "skill": "failure-analysis-protocol",
     "name": "Failure Analysis Protocol",
     "school": "Judgment & Decision-Making",
     "schoolName": "School of Judgment",
     "status": "—",
     "effect": "Three failure lenses merged: invert success, narrate specific failures, trace cascading consequences."
+  },
+  {
+    "skill": "failure-swarm",
+    "name": "Failure Swarm",
+    "school": "Judgment & Decision-Making",
+    "schoolName": "School of Judgment",
+    "status": "—",
+    "effect": "Swarm 3-5 critic personas over a spec to surface failure modes pre-implementation. User-invoked; type `/failure-swarm`."
   },
   {
     "skill": "first-principles",
@@ -899,14 +699,6 @@ export const SKILL_CATALOG = [
     "effect": "Enforce failure-mode mapping and guardrail derivation before recommending success paths."
   },
   {
-    "skill": "inversion-mental-model",
-    "name": "Inversion for AI Agents",
-    "school": "Judgment & Decision-Making",
-    "schoolName": "School of Judgment",
-    "status": "—",
-    "effect": "Model failure paths before recommending the success path."
-  },
-  {
     "skill": "metacognitive-monitoring",
     "name": "Metacognitive Monitoring — Know When You Don't Know",
     "school": "Judgment & Decision-Making",
@@ -923,14 +715,6 @@ export const SKILL_CATALOG = [
     "effect": "Favor the simplest sufficient explanation or solution. Try the simplest thing that fits the evidence before escalating."
   },
   {
-    "skill": "pre-mortem",
-    "name": "Pre-Mortem",
-    "school": "Judgment & Decision-Making",
-    "schoolName": "School of Judgment",
-    "status": "—",
-    "effect": "Run a pre-mortem on a plan — assume failure has already happened, narrate backward to root causes, convert risks to guardrails. Use when finalizing a high-stakes plan, when consensus creates optimism blindness, or before a rollout, migration, or launch that is hard to reverse."
-  },
-  {
     "skill": "pre-mortem-state-machine",
     "name": "Pre-Mortem — State Machine Protocol for AI Agents",
     "school": "Judgment & Decision-Making",
@@ -939,28 +723,12 @@ export const SKILL_CATALOG = [
     "effect": "Pre-mortem protocol with artifact gating, narrative failure modeling, and risk-adjusted plan revision."
   },
   {
-    "skill": "problem-mode-router-cynefin",
-    "name": "Problem-Mode Router (Cynefin)",
-    "school": "Judgment & Decision-Making",
-    "schoolName": "School of Judgment",
-    "status": "—",
-    "effect": "Cynefin-based routing before solving the problem. Classify the problem type before deciding how to solve it."
-  },
-  {
     "skill": "problem-mode-router-cynefin-state-machine",
     "name": "Problem-Mode Router (Cynefin) — State Machine Protocol for AI Agents",
     "school": "Judgment & Decision-Making",
     "schoolName": "School of Judgment",
     "status": "—",
     "effect": "Enforce Cynefin domain classification as a hard gate before any tool use or execution."
-  },
-  {
-    "skill": "recognition-primed-triage",
-    "name": "Recognition-Primed Triage",
-    "school": "Judgment & Decision-Making",
-    "schoolName": "School of Judgment",
-    "status": "—",
-    "effect": "Pattern recognition, mental simulation, and immediate next move under incomplete information."
   },
   {
     "skill": "recognition-primed-triage-state-machine",
@@ -1003,28 +771,12 @@ export const SKILL_CATALOG = [
     "effect": "Construct the strongest opposing case before committing to a recommendation."
   },
   {
-    "skill": "task-intake-protocol",
-    "name": "Task Intake Protocol",
-    "school": "Judgment & Decision-Making",
-    "schoolName": "School of Judgment",
-    "status": "—",
-    "effect": "Universal preflight gate: classify the problem, set the evidence bar, take the first action."
-  },
-  {
     "skill": "kahneman-thinking-fast-slow-software-agent",
     "name": "Thinking Fast and Slow for Software Engineering Agents",
     "school": "Judgment & Decision-Making",
     "schoolName": "School of Judgment",
     "status": "—",
     "effect": "Switch between fast pattern recognition and slow deliberation as stakes demand."
-  },
-  {
-    "skill": "thoroughness-check-etto",
-    "name": "Thoroughness Check (ETTO Principle) for AI Agents",
-    "school": "Judgment & Decision-Making",
-    "schoolName": "School of Judgment",
-    "status": "—",
-    "effect": "Classify the efficiency-vs-thoroughness balance before acting."
   },
   {
     "skill": "thoroughness-check-etto-state-machine",
@@ -1057,14 +809,6 @@ export const SKILL_CATALOG = [
     "schoolName": "School of Measurement",
     "status": "—",
     "effect": "Reference for E2E testing mindset, architecture, and strategy: testing epistemology, 3-layer BDR architecture, risk-based prioritization, data realism principles."
-  },
-  {
-    "skill": "empirical-justification",
-    "name": "Empirical Justification",
-    "school": "Testing & Measurement",
-    "schoolName": "School of Measurement",
-    "status": "—",
-    "effect": "Gather empirical evidence — usage telemetry, A/B results, regression counts — to justify retiring, refining, or promoting a skill."
   },
   {
     "skill": "skill-ab-evaluation",
@@ -1116,19 +860,11 @@ export const SKILL_CATALOG = [
   },
   {
     "skill": "cognitive-load-operator-state-machine",
-    "name": "Cognitive Load Operator — State Machine Protocol for AI Agents",
+    "name": "Cognitive Load Operator — State Machine Protocol",
     "school": "Output Quality",
     "schoolName": "School of Refinement",
     "status": "—",
     "effect": "Inspect complexity and replace high-load structures with lower-load equivalents."
-  },
-  {
-    "skill": "compression-as-understanding",
-    "name": "Compression-as-Understanding",
-    "school": "Output Quality",
-    "schoolName": "School of Refinement",
-    "status": "—",
-    "effect": "Compress to the shortest representation and test whether it reconstructs the original."
   },
   {
     "skill": "documentation-craft",
@@ -1145,14 +881,6 @@ export const SKILL_CATALOG = [
     "schoolName": "School of Refinement",
     "status": "—",
     "effect": "Explain from scratch in plain language and identify where the explanation breaks."
-  },
-  {
-    "skill": "large-documentation-navigation",
-    "name": "Large Documentation Navigation",
-    "school": "Output Quality",
-    "schoolName": "School of Refinement",
-    "status": "—",
-    "effect": "Layered navigation driven by user situation rather than category labels."
   },
   {
     "skill": "mece-pyramid-principle",
@@ -1179,14 +907,6 @@ export const SKILL_CATALOG = [
     "effect": "Generate independent reasoning paths and check whether they converge."
   },
   {
-    "skill": "stakeholder-communication",
-    "name": "Stakeholder Communication and Uncertainty Calibration",
-    "school": "Output Quality",
-    "schoolName": "School of Refinement",
-    "status": "—",
-    "effect": "Calibrate certainty, separate fact from inference, avoid overpromising or undue alarm."
-  },
-  {
     "skill": "tool-interactive-critic",
     "name": "Tool-Interactive Critic",
     "school": "Output Quality",
@@ -1201,14 +921,6 @@ export const SKILL_CATALOG = [
     "schoolName": "School of Refinement",
     "status": "—",
     "effect": "Branch, evaluate, and prune candidate solutions before committing."
-  },
-  {
-    "skill": "abductive-first-debugging",
-    "name": "Abductive-First Debugging",
-    "school": "Debugging",
-    "schoolName": "School of Remediation",
-    "status": "—",
-    "effect": "Generate multiple competing hypotheses, select the one that best explains all observed symptoms."
   },
   {
     "skill": "simulate-instrumentation",
@@ -1235,28 +947,12 @@ export const SKILL_CATALOG = [
     "effect": "Deep root-cause debugging with mandatory context-gathering. Fuses root-cause analysis, specter, diagnose, debug-to-fix-pipeline, occam-root-cause, and reasoning-integrity-chain into one sequential protocol."
   },
   {
-    "skill": "bug-inquisition-conquest",
-    "name": "Bug Inquisition — Conquest Mode",
-    "school": "Debugging",
-    "schoolName": "School of Remediation",
-    "status": "—",
-    "effect": "Run conquest-mode debugging — ultra-heavy root-cause analysis with ongoing adversarial interrogation, evidence-ledger tracking, pre-mortem on every fix, and confidence-gated phase transitions. Use for the hardest bugs where surface debugging has failed, for intermittent or environment-specific bugs, or when the cost of a wrong fix exceeds the cost of thorough investigation."
-  },
-  {
-    "skill": "explore-codebase",
-    "name": "Codebase Walk",
-    "school": "Debugging",
-    "schoolName": "School of Remediation",
-    "status": "—",
-    "effect": "Structured exploration with progressive deepening: module structure → file roles → symbol resolution."
-  },
-  {
     "skill": "debug-issue",
     "name": "Debug Issue",
     "school": "Debugging",
     "schoolName": "School of Remediation",
     "status": "—",
-    "effect": "Force the reproduce → isolate → fix → verify cycle. Graph-powered code navigation traces issues through the system along dataflow edges."
+    "effect": "Force the reproduce → isolate → fix → verify cycle. Graph-powered code navigation traces issues through the system along dataflow edges. Use when the bug spans multiple modules or services, the crash site isn't the cause, or state diverges across an async boundary."
   },
   {
     "skill": "debug-subagent",
@@ -1289,22 +985,6 @@ export const SKILL_CATALOG = [
     "schoolName": "School of Remediation",
     "status": "—",
     "effect": "Structured protocol for when an agent is stuck — escalating from self-recovery to user collaboration to full retreat. Fills the gap between trajectory-guard (detects stuck) and summarize (bails out)."
-  },
-  {
-    "skill": "iterative-patch-repair",
-    "name": "Iterative Patch Repair",
-    "school": "Debugging",
-    "schoolName": "School of Remediation",
-    "status": "—",
-    "effect": "Loop of generate patch → run test → capture runtime state → refine patch. Max N iterations with patch augmentation to avoid overfitting. Use when first patch attempt failed, bug has multiple plausible fixes, or test feedback reveals the fix was close but not quite right."
-  },
-  {
-    "skill": "log-trace-correlation",
-    "name": "Log Trace Correlation",
-    "school": "Debugging",
-    "schoolName": "School of Remediation",
-    "status": "—",
-    "effect": "Correlate error logs and stack traces to source code — map each frame to a file:line, identify root cause, and produce a minimal fix. Use when you have an error log with a stack trace and need to determine which file, function, and line caused the failure without guesswork."
   },
   {
     "skill": "minimal-reproduction",
@@ -1363,36 +1043,12 @@ export const SKILL_CATALOG = [
     "effect": "Web search discipline for technical research. Official-docs-first, version-aware, full GitHub issue follow-through."
   },
   {
-    "skill": "add-new-skill-to-repository",
-    "name": "Add New Skill to GrimoireStack Repository",
-    "school": "Development & Tooling",
-    "schoolName": "School of Tools",
-    "status": "—",
-    "effect": "Standardized process for adding a new skill to the GrimoireStack repository with proper documentation, installation support, and cross-platform verification."
-  },
-  {
-    "skill": "bulk-rename-and-update-references",
-    "name": "Bulk Rename Files and Update Cross-References",
-    "school": "Development & Tooling",
-    "schoolName": "School of Tools",
-    "status": "—",
-    "effect": "Use when renaming many files where old names appear in content — discover references first to avoid broken links and stale cross-references."
-  },
-  {
-    "skill": "skill-development-with-supporting-files",
-    "name": "Developing Skills with Supporting Files",
-    "school": "Development & Tooling",
-    "schoolName": "School of Tools",
-    "status": "—",
-    "effect": "Use when a skill depends on scripts, templates, or other supporting files — package them so installation copies the full set, not just SKILL.md."
-  },
-  {
     "skill": "project-folder-architecture",
     "name": "Project Folder Architecture",
     "school": "Development & Tooling",
     "schoolName": "School of Tools",
     "status": "—",
-    "effect": ">"
+    "effect": "Folder architecture for TypeScript + Expo Router + React Native + Supabase full-stack projects, updated to 2026 conventions. Use when scaffolding a new project, restructuring an existing one, auditing folder health, or answering 'where should this file live?'."
   },
   {
     "skill": "unit-test-debugging",

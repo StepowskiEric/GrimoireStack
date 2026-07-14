@@ -1,7 +1,12 @@
 ---
-name: Legacy Rescue Protocol
+name: legacy-rescue-protocol
 description: Fuse of Working Effectively with Legacy Code + Refactoring State Machine. Characterize legacy behavior, create seams, then transform in bounded slices with anti-loop protection.
-...
+triggers:
+  - Changing brittle code with weak tests or unclear behavior
+  - Need to characterize legacy behavior before changing
+  - Heavy coupling makes changes risky
+  - Need to refactor legacy code with anti-loop protection
+---
 
 
 

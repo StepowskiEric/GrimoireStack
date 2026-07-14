@@ -90,9 +90,12 @@ Generate a fix, run tests, and iterate using the inner refinement loop.
 2. Apply the patch to source code
 3. Run the failing test — if PASS, proceed to Phase 6; if FAIL, continue to step 4
 4. Capture the new failure state (return to Phase 3 briefly for updated runtime evidence)
-5. Generate a refined patch or variant — try a different approach, different file, or different implementation
+5. Generate a refined patch or variant. Pick from these variant categories before regenerating:
+   - **Same root cause, different fix location** — the model is right about what's broken; the edit is in the wrong place.
+   - **Same location, different implementation approach** — the line is right but the technique isn't. E.g. you wrote a guard clause; try an assertion, an upstream normalization, or a different default.
+   - **Add null-check / change default / refactor data flow** — surface-level fixes that signal you're working at the wrong layer. If multiple iterations end up here, your model of the root cause is wrong.
 6. Repeat steps 2-5 up to iteration budget (simple: 2, medium: 3-4, complex: 5 max)
-7. If iteration N produces the same diff as iteration N-1, STOP — agent is stuck in a loop
+7. If iteration N produces the same diff as iteration N-1, STOP — agent is stuck in a loop. Return to Phase 1 with updated evidence.
 8. If the patch modifies test expectations, that's a red flag — the bug is in the code, not the test
 
 **Exit condition:** Patch passes the failing test. If budget exhausted without pass, escalate or report partial findings.

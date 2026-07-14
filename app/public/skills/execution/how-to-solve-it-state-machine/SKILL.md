@@ -104,6 +104,17 @@ Exit condition:
 - at least one evidence-gathering command or inspection has been executed
 - evidence materially updates one or more hypotheses
 
+### Sub-technique: Find an Analog (Polya)
+
+Before declaring recon complete, ask: *is there a related problem already solved in a different domain?* Polya's 4 questions:
+
+1. **Can you find a related problem that has been solved before?** Scan for problems with similar structure (same input/output relationship, same constraint type, same failure mode, same optimization target). The analog does not need to be in the same domain.
+2. **What is the structural mapping?** For the identified analog, make the mapping explicit: what corresponds to what, what role X plays in the analog, what constraints transfer. If the mapping requires contortion, the analog is weaker than it appeared.
+3. **What transfers and what does not?** Identify structural elements that transfer (solution technique, decomposition, invariant) vs domain-specific constraints that change the problem shape. If more does not transfer than transfers, drop this analog.
+4. **How must the transferred solution be adapted?** Apply the analog's solution to the current problem. Identify what must change, what new constraints the current problem introduces, what validation confirms the transfer worked.
+
+If a strong analog emerges, record it in `evidence-log.md` as a candidate approach for State 2 ranking. Do not commit to it yet — recon only.
+
 ---
 
 ## State 2 — Hypothesis Ranking
