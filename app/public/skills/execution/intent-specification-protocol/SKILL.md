@@ -1,33 +1,18 @@
 ---
 name: intent-specification-protocol
-description: Crystallize vague coding requests into precise, testable specifications before writing any code. Prevents the Intent-Behavior Mirroring Effect where vague requirements produce invasive, over-engineered output. Based on Project Prometheus (arXiv:2604.17464), AdaCoder (arXiv:2504.04220), and iterative self-repair research (arXiv:2604.10508).
-category: execution
-tags: [specification, intent, requirements, code-generation, state-machine, BDD, contracts]
-author: Research synthesis
-date: 2026-04-22
-version: 1.0.0
-...
-
-
-
+description: "Crystallize vague coding requests into precise, testable specifications before writing any code. Prevents the Intent-Behavior Mirroring Effect."
+triggers:
+  - Starting a new feature, bug fix, or code change of any size
+  - Request is ambiguous or could be interpreted multiple ways
+  - Previous attempts produced over-engineered or off-target code
+  - Change touches existing behavior that must be preserved
+  - About to "just start coding"
+  - Task involves modifying code you didn't write
 ---
 
 # Intent Specification Protocol
 
-## When to Use
-
-Use this skill when:
-- Starting a new feature, bug fix, or code change of any size
-- The request is ambiguous or could be interpreted multiple ways
-- Previous attempts produced over-engineered or off-target code
-- The change touches existing behavior that must be preserved
-- You catch yourself about to "just start coding"
-- The task involves modifying code you didn't write
-
-Do NOT use when:
-- The request is a trivial one-liner with no ambiguity
-- You've already specified this exact change before and it's well understood
-- The task is exploratory (prototyping, brainstorming) and precision would slow you down
+Crystallize vague coding requests into precise, testable specifications before writing any code. Prevents the Intent-Behavior Mirroring Effect where vague requirements produce invasive, over-engineered output.
 
 ## Why This Matters
 
@@ -430,19 +415,14 @@ result:
   repair_attempts: N
 ```
 
-## Pitfalls
+## Failure Modes
 
-1. **Specifying too much:** The goal is 2-5 scenarios, not a full test suite. If you're writing more than 5 scenarios for a single change, the change is too big — decompose it first.
-
-2. **Specifying too little:** One scenario is never enough. At minimum: happy path + one edge case + one invariant check.
-
-3. **Skipping CONSTRAIN:** This is the most commonly skipped state and the most valuable. Without invariants, you can't detect over-engineering.
-
-4. **Spec drift during REPAIR:** When repairing, always re-read the spec. Don't "fix" something by changing what the spec says the code should do. If the spec is wrong, go back to FORMALIZE.
-
-5. **Gate bypass:** Don't convince yourself the spec is clear when it isn't. If you can't write a concrete expected output for a scenario, you're in AMBIGUOUS.
-
-6. **Feature creep in EXECUTE:** The spec is a contract. Adding "nice to have" features during execution violates the contract and creates blast radius.
+1. **Specifying too much:** writing more than 5 scenarios for a single change — decompose first
+2. **Specifying too little:** one scenario is never enough. Minimum: happy path + one edge case + one invariant check
+3. **Skipping CONSTRAIN:** the most commonly skipped state and the most valuable. Without invariants, you can't detect over-engineering
+4. **Spec drift during REPAIR:** re-reading the spec is mandatory. If the spec is wrong, go back to FORMALIZE
+5. **Gate bypass:** convincing yourself the spec is clear when it isn't. If you can't write a concrete expected output, you're in AMBIGUOUS
+6. **Feature creep in EXECUTE:** the spec is a contract. Adding "nice to have" features violates the contract
 
 ## Integration
 

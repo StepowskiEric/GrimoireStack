@@ -1,6 +1,10 @@
 ---
 name: mece-pyramid-principle
-description: "Use when structuring a complex output — enforce mutually exclusive, collectively exhaustive categories under a single governing thought."
+description: "Enforce mutually exclusive, collectively exhaustive categories under a single governing thought."
+triggers:
+  - Structuring a complex output
+  - Need to ensure completeness and non-redundancy
+  - Plans, analyses, recommendations, memos, or explanations
 ---
 
 # Skill: MECE / Pyramid Principle for AI Agents

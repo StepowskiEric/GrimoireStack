@@ -1,13 +1,10 @@
 ---
 name: chaos-detector
-category: reasoning
-description: "Use when multi-agent or extended reasoning looks unstable — compute empirical Lyapunov exponents over token trajectories and flag when small perturbations are amplifying into divergent conclusions."
-version: 1.0
-tags: [reasoning, chaos-theory, dynamical-systems, divergence-detection, Lyapunov]
-...
-
-
-
+description: "Compute empirical Lyapunov exponents over token trajectories and flag when small perturbations amplify into divergent conclusions."
+triggers:
+  - Multi-agent or extended reasoning looks unstable
+  - Need to detect reasoning collapse before it happens
+  - Small perturbations are amplifying into divergent conclusions
 ---
 
 # Chaos Detector

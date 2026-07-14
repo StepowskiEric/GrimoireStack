@@ -1,6 +1,6 @@
 ---
-source: "GrimoireStack"
-description: "Use when writing code that calls external libraries/APIs — every external API call must be traceable to a doc you actually checked."
+name: verified-api-workflow
+description: "Every external API call must be traceable to a doc you actually checked."
 triggers:
   - Writing code that calls external libraries/APIs
   - Building against APIs that change frequently (FastAPI, httpx, newer frameworks)

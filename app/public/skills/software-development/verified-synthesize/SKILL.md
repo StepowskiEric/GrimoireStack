@@ -1,17 +1,16 @@
 ---
-description: "Use when code correctness must be proven, not tested — critical bugs, pre-refactor spec locking, or API contracts requiring formal verification."
-version: 1.0
-tags: [formal-verification, Dafny, code-synthesis, correctness, provable]
+name: verified-synthesize
+description: Verify code correctness through formal Dafny specifications — given a natural language spec, produce provably correct code with pre/postconditions and loop invariants. Use for critical bugs in security, memory safety, or financial calculations; pre-refactor spec locking; or API contracts across module boundaries.
 triggers:
   - Critical bugs: security, memory safety, financial calculations
-  - Pre-refactor: before changing a function, generate its Dafny spec to lock down behavior
-  - Bug reports with no test: generate a Dafny specification from the bug description, verify the fix
-  - API contracts: enforce pre/postconditions across module boundaries
+  - Pre-refactor spec locking — capture behavior before changing a function
+  - Bug reports with no test — verify the fix against a formal spec
+  - API contracts — enforce pre/postconditions across module boundaries
 ---
 
 # Verified Code Synthesizer
 
-Generate code that is **provably correct**, not just probably correct. Given a natural language spec, an LLM produces both implementation code and formal Dafny specifications (preconditions, postconditions, loop invariants). The companion script runs `dafny verify` and returns a machine-checkable proof result.
+Generate provably correct code. Given a natural language spec, produce implementation code and formal Dafny specifications (preconditions, postconditions, loop invariants). The companion script runs `dafny verify` and returns a machine-checkable proof result.
 
 **Grounded in:** "From Natural Language to Verified Code" (arXiv:2604.22601) — shows off-the-shelf LLMs achieve 90% success rate on Dafny self-healing, and that formal logic pretraining matters more than model size.
 
@@ -140,7 +139,7 @@ Rules:
 1. Every function MUST have a `requires` (precondition) and/or `ensures` (postcondition)
 2. Loop invariants are REQUIRED for any `while` loop
 3. For sequences/arrays, specify behavior on empty input
-4. Do NOT generate assume statements — only verifiable assertions
+4. Generate only verifiable assertions — no `assume` statements
 5. Keep specifications minimal and tractable for Z3
 
 Output format:
@@ -151,19 +150,14 @@ Output format:
 ```
 
 
-## Limitations
+## Constraints
 
-- **Dafny installation**: Required but nontrivial on some platforms. Not all Dafny features translate cleanly to all target languages.
-- **Loop invariants**: LLM-generated loop invariants are often wrong. Expect iteration on this.
-- **Complex data structures**: Dafny's support for Python's dynamic features (dict, set comprehensions) is limited.
-- **Z3 timeouts**: Very complex specs can cause Z3 to time out. Keep specs minimal.
-
-## Research Basis
-
-- "From Natural Language to Verified Code: Toward AI Assisted Problem-to-Code Generation with Dafny-Based Formal Verification" — arXiv:2604.22601
-- "A Benchmark for Vericoding: Formally Verified Program Synthesis" — OpenReview 2025
-- Dafny Language Reference: https://dafny.org/
+- **Dafny required**: Installation is required on each platform; not all Dafny features translate to every target language
+- **Loop invariants need iteration**: LLM-generated loop invariants often need manual correction — plan for this
+- **Dynamic features limited**: Dafny's support for Python dicts and set comprehensions is bounded — prefer simple data structures
+- **Keep specs minimal**: Very complex specs can cause Z3 to time out — tractable specs verify faster
 
 ## References
 
 - `references/dafny-patterns.md` — Reusable Dafny spec patterns for common verification tasks (basic math, sequences, sets, maps, loops, recursion, error handling).
+- Research basis: see [RESEARCH.md](RESEARCH.md) for the papers informing this skill.

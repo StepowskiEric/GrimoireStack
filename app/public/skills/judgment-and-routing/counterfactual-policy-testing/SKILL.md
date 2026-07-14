@@ -1,6 +1,10 @@
 ---
 name: counterfactual-policy-testing
-description: "Use when a decision must beat its alternatives — compare against null, opposite, and partial counterfactuals before committing."
+description: "Compare a decision against null, opposite, and partial counterfactuals before committing."
+triggers:
+  - A decision must beat its alternatives
+  - Need to prevent "we did X, therefore X caused Y" fallacies
+  - High-stakes decision where counterfactual comparison is essential
 ---
 
 # Skill: Counterfactual Policy Testing

@@ -1,16 +1,10 @@
 ---
 name: context-density-operator
-description: "Use when context is bloated with low-signal content — maximize decision-relevant information per token via hierarchical memory, on-demand detail expansion, and redundant-context pruning."
-category: reasoning
-tags: [token-efficiency, context-management, memory, reasoning, information-density]
-author: Research synthesis
-source: arXiv:2604.17091, arXiv:2602.14002
-date: 2026-04-22
-version: 1.0.0
-...
-
-
-
+description: "Maximize decision-relevant information per token via hierarchical memory, on-demand detail expansion, and redundant-context pruning."
+triggers:
+  - Context is bloated with low-signal content
+  - Need to maximize decision-relevant information per token
+  - Need hierarchical memory and on-demand detail expansion
 ---
 
 # Context Density Operator

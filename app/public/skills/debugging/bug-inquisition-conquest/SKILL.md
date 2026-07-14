@@ -1,23 +1,28 @@
 ---
 name: bug-inquisition-conquest
-description: "Ultra-heavy root-cause debugging with relentless ongoing interrogation. Fuses bug-inquisition pre-flight with continuous adversarial self-grilling, evidence-ledger tracking, pre-mortem on every fix, confidence-gated phase transitions, and final adversarial review. Use for the hardest bugs where surface debugging has failed, when the bug is intermittent or environment-specific, or when the cost of a wrong fix is high. Triggers: 'deep bug', 'intermittent bug', 'heisenbug', 'ghost bug', 'bug inquisition conquest', or when bug-inquisition has already failed."
+description: Run conquest-mode debugging — ultra-heavy root-cause analysis with ongoing adversarial interrogation, evidence-ledger tracking, pre-mortem on every fix, and confidence-gated phase transitions. Use for the hardest bugs where surface debugging has failed, for intermittent or environment-specific bugs, or when the cost of a wrong fix exceeds the cost of thorough investigation.
+triggers:
+  - Deep bug where surface debugging has failed
+  - Intermittent or environment-specific bug
+  - Heisenbug or ghost bug
+  - bug-inquisition (standard mode) has already failed
 ---
 
 # Bug Inquisition — Conquest Mode
 
 ## Purpose
 
-The heaviest debugging protocol in the arsenal. For bugs where guessing is not an option: intermittent failures, environment-specific crashes, bugs that "fix themselves" when you add logging, or any bug where the cost of a wrong fix exceeds the cost of thorough investigation.
+The heaviest debugging protocol in the arsenal. For bugs where guessing is too expensive: intermittent failures, environment-specific crashes, bugs that "fix themselves" when you add logging, or any bug where the cost of a wrong fix exceeds the cost of thorough investigation.
 
-**Guarantee:** Every claim is backed by evidence, every hypothesis is adversarially tested, every fix is pre-mortemed before application, and the AI maintains a live evidence ledger throughout. No assumption passes unchallenged.
+**Guarantee:** Every claim is backed by evidence, every hypothesis is adversarially tested, every fix is pre-mortemed before application, and the AI maintains a live evidence ledger throughout. Every assumption is challenged.
 
-**Relationship to bug-inquisition:** Conquest mode runs the same 6-phase structure, but each phase contains ongoing interrogation loops. The AI does not just "run a phase" — it interrogates its own understanding at every step.
+**Relationship to bug-inquisition:** Conquest mode runs the same 6-phase structure, but each phase contains ongoing interrogation loops — the AI interrogates its own understanding at every step rather than just running a phase.
 
 ---
 
 ## Pre-Flight Inquisition (DEEP)
 
-Before any debugging, the AI conducts a full interrogation of the bug report. Ask ALL questions below. Accept no surface answers. Drill into every branch until the answer is specific, concrete, and testable.
+Before any debugging, the AI conducts a full interrogation of the bug report. Ask ALL questions below. Drill into every branch until the answer is specific, concrete, and testable.
 
 ### 1. Symptom — Drill down
 
@@ -108,7 +113,7 @@ Build a feedback loop. Same options as standard mode, but with stricter requirem
 **Verification gate:** Before proceeding, the AI must state:
 > "I can reproduce this bug on demand. Here is the command/input that triggers it, and here is the exact failure I observe."
 
-If it cannot say this, it does not proceed. It builds a better loop.
+If it cannot state this, keep building a better loop until reproduction is reliable.
 
 ```markdown
 ## Frozen Symptom
@@ -170,7 +175,7 @@ Assume the #1 hypothesis is **completely wrong**. Now construct the strongest po
 **Confidence gate:** Score the #1 hypothesis 0–1:
 - **≥ 0.9**: All alternatives ruled out, hypothesis makes unique predictions. Proceed.
 - **0.7–0.9**: Some alternatives remain but hypothesis has strong unique predictions. Proceed with caveat — note live alternatives.
-- **< 0.7**: Do NOT proceed. Return to Phase 2 or gather more evidence.
+- **< 0.7**: Return to Phase 2 or gather more evidence
 
 ---
 
@@ -191,7 +196,7 @@ After each instrumentation run, before interpreting results:
 
 3. **Claim verification:** For each atomic claim from Phase 2:
    - Does the new evidence confirm or contradict it?
-   - If contradicted: return to Phase 2 immediately. Do not patch.
+   - If contradicted: return to Phase 2 immediately instead of patching
    - If confirmed: upgrade confidence label.
 
 4. **Decision:** Proceed to next probe, confirm hypothesis and move to Phase 5, or backtrack to Phase 2.
@@ -221,14 +226,14 @@ Before writing a single line of fix code, answer these questions:
 
 4. "Am I fixing the root cause or a contributing factor?"
    - Apply the test: "If I fix only this, will the symptom be impossible under the same conditions?"
-   - If NO → keep digging. Do not apply the fix.
+   - If NO → keep digging. Apply the fix only when the root cause is confirmed.
 
 Only after the pre-mortem is complete and the AI can state "I have considered how this fix could fail, and I believe it addresses the root cause" does it proceed to write the regression test and apply the fix.
 
 ### Fix Iteration with Evidence Tracking
 
 - Write regression test → watch it fail → apply fix → watch it pass.
-- If fix fails: return to Phase 4 instrumentation with updated evidence. Do not guess a different fix.
+- If fix fails: return to Phase 4 instrumentation with updated evidence rather than guessing a different fix
 - If fix passes but pre-mortem predictions are violated: STOP. The bug is not fixed — you've masked it.
 - Maximum 4 fix iterations. If exhausted, escalate with full evidence ledger.
 
@@ -291,9 +296,9 @@ At each phase transition, the AI must state its confidence and what would change
 
 ---
 
-## Anti-Patterns (Conquest-Specific)
+## Failure Modes
 
-| Anti-Pattern | Why It Fails |
+| What Goes Wrong | Why It Fails |
 |---|---|
 | Accepting surface answers in questionnaire | Partial context = guessing = wasted cycles |
 | Generating < 5 hypotheses | First-branch lock-in is guaranteed with fewer |
@@ -303,9 +308,3 @@ At each phase transition, the AI must state its confidence and what would change
 | Proceeding below confidence threshold | Low confidence = high probability of wrong fix |
 | Fixing without falsifying alternatives | You haven't proven your hypothesis, you've just confirmed one prediction |
 | Declaring done without adversarial review | The case against the fix is usually more informative than the case for it |
-
----
-
-## Trigger
-
-Use when user says: "deep bug", "intermittent bug", "heisenbug", "ghost bug", "bug inquisition conquest", or when `bug-inquisition` (standard mode) has already failed to resolve the issue.

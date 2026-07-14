@@ -1,16 +1,10 @@
 ---
 name: selective-halt-reasoning
-description: "Use when reasoning is generating waste — monitor for semantic stabilization and halt early when consecutive steps converge on equivalent conclusions, instead of running to a fixed budget."
-category: reasoning
-tags: [reasoning, early-stopping, token-efficiency, convergence, selective-halting]
-author: Research synthesis
-source: arXiv:2604.18103
-date: 2026-04-22
-version: 1.0.0
-...
-
-
-
+description: "Monitor for semantic stabilization and halt early when consecutive steps converge on equivalent conclusions."
+triggers:
+  - Reasoning is generating waste
+  - Need to halt early when conclusions stabilize
+  - Running to a fixed budget is wasteful
 ---
 
 # Selective Halt Reasoning

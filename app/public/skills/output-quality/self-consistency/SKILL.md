@@ -1,6 +1,10 @@
 ---
 name: self-consistency
-description: "Use when a conclusion must be confirmed, not assumed — generate independent reasoning paths and check whether they converge."
+description: "Generate independent reasoning paths and check whether they converge."
+triggers:
+  - A conclusion must be confirmed, not assumed
+  - Need to verify reasoning reliability
+  - Need to check whether multiple independent chains reach the same conclusion
 ---
 
 # Skill: Self-Consistency Check for AI Agents

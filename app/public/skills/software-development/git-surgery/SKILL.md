@@ -1,10 +1,8 @@
 ---
-description: "Use when the repo is in a state you don't fully understand, git status output scares you, or you need to recover from a local git disaster."
-version: 1.0.0
-priority: high
-tags: [git, recovery, disaster-recovery, version-control, cli]
+name: git-surgery
+description: "Recover from local git disasters: detached HEAD, botched rebase, accidental commits, merge conflicts."
 triggers:
-  - The repo is in a state you don't fully understand
+  - Repo is in a state you don't fully understand
   - git status output scares you
   - Detached HEAD, botched rebase, accidental commit to wrong branch
   - Force-push overwrite, hard reset gone wrong, merge conflict hell

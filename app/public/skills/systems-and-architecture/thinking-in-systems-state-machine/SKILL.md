@@ -1,6 +1,10 @@
 ---
 name: thinking-in-systems-state-machine
-description: "Use when tasks involve feedback loops, delayed effects, or multi-step cascades — model stocks, flows, delays, leverage points, and blast radius before touching the system. State-machine protocol, not a mindset."
+description: "Model stocks, flows, delays, leverage points, and blast radius before touching the system."
+triggers:
+  - Tasks involve feedback loops, delayed effects, or multi-step cascades
+  - Need to map the system boundary before acting
+  - Need to understand system dynamics before making changes
 ---
 
 # Thinking in Systems — State Machine Protocol for AI Agents

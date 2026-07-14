@@ -1,14 +1,12 @@
 ---
-source: "GrimoireStack"
 name: iterative-spec-authoring
-description: "Use when a spec must be defensible — author a detailed technical spec grounded in research, refine through up to 3 judge-LLM review cycles, then present to the user for final approval."
-category: execution
-tags: [spec, planning, iterative-review, judge, llm-review, acceptance-criteria, implementation-plan, research]
-version: 2.0
----
-
-
-
+description: "Author a detailed technical spec grounded in research, refine through up to 3 judge-LLM review cycles, then present to the user for final approval."
+triggers:
+  - Need a detailed, reviewable spec before starting implementation
+  - Task touches multiple concerns (backend, frontend, email, infra, security)
+  - Task is complex enough to benefit from structured critique cycles
+  - Want a stronger model to stress-test the plan before committing
+  - Spec needs to be human-readable for stakeholder review
 ---
 
 # Iterative Spec Authoring
@@ -16,24 +14,6 @@ version: 2.0
 Write a complete, research-grounded technical specification, then run it through
 a configurable judge-LLM loop (up to 3 rounds) to surface blind spots, strengthen
 acceptance criteria, and improve implementation clarity — before the user sees it.
-
-## When to Use
-
-**Use this skill when:**
-
-- You need a detailed, reviewable spec before starting implementation
-- The task touches multiple concerns (backend, frontend, email, infra, security)
-- The task is complex enough to benefit from structured critique cycles
-- You want a stronger model to stress-test your plan before committing
-- The spec needs to be human-readable (.md) for stakeholder review
-- Current best practices matter (the research phase catches stale knowledge)
-
-**Do NOT use when:**
-
-- The task is trivial (a single-file, obvious change)
-- No LLM judge is available and you can't fall back to manual review
-- You already have an approved spec and just need to execute
-- The user explicitly says "skip research" or the task is purely internal
 
 ## Workflow
 
@@ -312,14 +292,14 @@ The spec template (`references/spec-template.md`) includes 10 sections:
 | Fixed 3 rounds | Empirically sufficient to catch ~90% of issues; more rounds show diminishing returns |
 | User always gets final approval | Agent proposes, human disposes |
 
-## Pitfalls
+## Failure Modes
 
-- **Skipping the template** — Always use the template. Freeform specs miss sections
-- **Too much scope per spec** — If you can't fit it in one spec, split the work into multiple specs
-- **Ignoring MINOR findings** — They compound. Address them or explicitly document why you didn't
-- **Revising beyond 3 rounds** — Stop. Present to user. Don't let the judge loop become infinite
-- **No user gate** — The user must always see and approve the final spec before implementation starts
-- **Treating research as optional by default** — The research phase is the main value-add over simpler plan-with-judge approaches
+- **Skipping the template:** freeform specs miss sections
+- **Too much scope per spec:** if it doesn't fit in one spec, split the work
+- **Ignoring MINOR findings:** they compound. Address them or document why you didn't
+- **Revising beyond 3 rounds:** stop and present to user
+- **No user gate:** the user must always see and approve the final spec before implementation starts
+- **Treating research as optional by default:** the research phase is the main value-add
 
 ## Related Skills
 

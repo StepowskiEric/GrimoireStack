@@ -83,11 +83,11 @@ Maintain a running log across iterations:
 - **Patch augmentation**: Generating variants of plausible patches improves correctness by **+19.9%**.
 - **Feedback integration**: Using negative feedback from failed patches to guide subsequent repairs is critical — without it, agents repeat the same wrong fix.
 
-## Anti-patterns
+## Failure Modes
 
-- **Same patch, different iteration**: If iteration N produces the same diff as iteration N-1, stop. The agent is stuck in a loop.
-- **Fixing tests instead of code**: If the patch modifies test expectations, that's a red flag. The bug is in the code, not the test.
-- **Overfitting to test suite**: A patch that makes tests pass but introduces regressions elsewhere is worse than no fix. Run broader test suite before finalizing.
+- **Same patch, different iteration:** If iteration N produces the same diff as iteration N-1, stop. The agent is stuck in a loop.
+- **Fixing tests instead of code:** If the patch modifies test expectations, that's a red flag. The bug is in the code, not the test.
+- **Overfitting to test suite:** A patch that makes tests pass but introduces regressions elsewhere is worse than no fix. Run broader test suite before finalizing.
 
 ## Example
 

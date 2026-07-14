@@ -20,9 +20,9 @@ Abduction, not deduction. Given a symptom, infer the best explanation, then **di
 
 ## When NOT to Use
 
-- **Deterministic bug with a reproducing test.** Abduction burns tool-call budget on hypothesis generation without fixing localized logic errors. Use `debug-subagent` instead.
-- **Tight tool-call budget (≤25 calls).** The probe loop needs ~10-15 calls before any code change.
-- **Silent logic error in a single module** (type mismatch, init order). Abduction is built for multi-system novel failures, not local bugs.
+- **Deterministic bug with a reproducing test:** use `debug-subagent` instead
+- **Tight tool-call budget (≤25 calls):** the probe loop needs ~10-15 calls before any code change
+- **Silent logic error in a single module** (type mismatch, init order): use a simpler debugging skill
 
 ## Phase 1 — Hypothesize
 
@@ -78,7 +78,7 @@ Alternative:   [if I'm wrong, what to check next]
 
 **Done when** every field is filled, and `Alternative` names the next hypothesis to test if this fix doesn't land.
 
-## Anti-Patterns
+## Failure Modes
 
 - **First-branch lock-in:** declaring cause before probes have run — ignoring disconfirming evidence
 - **Keyword grep:** finding code that looks right but isn't structurally upstream of the symptom

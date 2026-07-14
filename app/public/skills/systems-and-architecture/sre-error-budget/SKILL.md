@@ -1,6 +1,10 @@
 ---
 name: sre-error-budget
-description: "Use when reasoning about reliability vs velocity — SLOs, error budgets, toil budgets, and change-velocity governance. Spend the budget on speed when healthy; freeze changes when depleted."
+description: "SLOs, error budgets, toil budgets, and change-velocity governance. Spend the budget on speed when healthy; freeze changes when depleted."
+triggers:
+  - Reasoning about reliability vs velocity
+  - Need to make the reliability-velocity tradeoff explicit and governed
+  - Need error budget policy for change velocity
 ---
 
 # SRE / Error Budget Thinking for AI Agents

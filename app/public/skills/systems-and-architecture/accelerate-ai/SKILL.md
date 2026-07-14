@@ -1,6 +1,10 @@
 ---
 name: accelerate-ai
-description: "Use when delivery is slow or risky — improve engineering throughput and reliability by strengthening feedback, lowering batch risk, and shortening recovery time. Covers CI/CD, release engineering, platform work, and incident recovery."
+description: "Improve engineering throughput and reliability by strengthening feedback, lowering batch risk, and shortening recovery time."
+triggers:
+  - Delivery is slow or risky
+  - Need to improve engineering throughput and reliability
+  - CI/CD, release engineering, platform work, or incident recovery
 ---
 
 # Accelerate for AI Delivery and Reliability Agents

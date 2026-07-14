@@ -1,30 +1,18 @@
 ---
 name: cognitive-friction-governor
-description: "Use when deliberation is miscalibrated — over-thinking trivial problems, under-thinking complex ones, or paralyzed by analysis. Assign deliberation budgets; step costs friction; budget exhausted forces decision."
+description: "Assign deliberation budgets to tasks; each reasoning step consumes friction; budget exhausted forces decision."
+triggers:
+  - Over-thinking trivial problems
+  - Under-thinking complex problems
+  - Analysis paralysis is a recurring issue
+  - Deliberation depth should match stakes
 ---
 
 # Cognitive Friction Governor
 
-## Purpose
-
 Impose "friction" on deliberation — a cost system that forces bounded, purposeful thinking. Assign deliberation budgets to tasks; each reasoning step consumes friction; budget exhausted means decision time.
 
 Based on "Cognitive Friction: A Decision-Theoretic Framework for Bounded Deliberation in Tool-Using Agents" (arXiv:2603.30031).
-
----
-
-## When to Use
-
-- When you tend to over-think trivial problems
-- When you under-think complex problems
-- For time-boxed decision making
-- When analysis paralysis is a recurring issue
-- Any task where deliberation depth should match stakes
-
-**Don't use when:**
-- Learning/exploration is the primary goal (not decision)
-- The problem is genuinely open-ended research
-- Time is truly unlimited (rare)
 
 ---
 
@@ -265,19 +253,13 @@ Side effects: Considered and mitigated
 
 ---
 
-## Anti-Patterns
+## Failure Modes
 
-**Don't:**
-- Cheat the system (mark expensive ops as cheap)
-- Request more budget without strong justification
-- Use high budgets for trivial tasks (inflation)
-- Ignore the constraint when budget exhausted
-
-**Do:**
-- Be honest about operation costs
-- Use budget exhaustion as a signal (not failure)
-- Track calibration (were budgets right-sized?)
-- Celebrate efficient decisions (low friction, good outcome)
+- **Cheating the system:** marking expensive ops as cheap
+- **Requesting more budget without strong justification**
+- **Using high budgets for trivial tasks:** budget inflation
+- **Ignoring the constraint when budget exhausted**
+- **Not tracking calibration:** failing to learn whether budgets were right-sized
 
 ---
 

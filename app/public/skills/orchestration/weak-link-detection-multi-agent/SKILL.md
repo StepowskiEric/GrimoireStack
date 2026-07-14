@@ -1,16 +1,11 @@
 ---
 name: weak-link-detection-multi-agent
-description: Identify and isolate the weakest reasoning chain in multi-agent outputs before aggregation. Prevents error amplification when one agent fails. Use when aggregating outputs and one bad agent could poison the collective result.
+description: "Identify and isolate the weakest reasoning chain in multi-agent outputs before aggregation."
 triggers:
   - Aggregating outputs from multiple agents
   - One agent's error could pollute the collective result
   - Previous multi-agent runs produced inconsistent results
   - Quality of individual agent outputs varies significantly
-category: orchestration
-tags: [multi-agent, weak-link, error-detection, aggregation, quality-control]
-author: Research synthesis
-date: 2026-04-20
-version: 1.0.0
 ---
 
 # Weak-Link Detection for Multi-Agent Systems

@@ -1,11 +1,13 @@
 ---
 name: how-to-solve-it-state-machine
-description: "Use when solving a hard problem under uncertainty — frame the problem, gather evidence, explore via hypothesis, plan, reflect. Designed to prevent premature coding."
+description: "Frame the problem, gather evidence, explore via hypothesis, plan, reflect. Designed to prevent premature coding."
+triggers:
+  - Solving a hard problem under uncertainty
+  - Premature coding is a risk
+  - Need to enforce problem framing before action
 ---
 
 # How to Solve It — State Machine Protocol for AI Agents
-
-## Purpose
 
 Use this skill when the agent is solving a hard problem under uncertainty.
 
@@ -215,6 +217,9 @@ This skill is correctly applied when:
 
 ---
 
-## Final Instruction
+## Failure Modes
 
-Understand first. Search second. Plan third. Act fourth. Reflect fifth.
+- **Premature coding:** acting before understanding the problem
+- **First-answer lock-in:** committing to the first hypothesis without evidence
+- **Skipping recon:** gathering evidence after writing code instead of before
+- **No reflection:** closing a task without learning from what happened

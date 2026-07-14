@@ -1,11 +1,10 @@
 ---
 name: speculative-drafting-verification
-description: "Use when a single candidate risks a local minimum — generate multiple solution branches in parallel, verify each against hard constraints, select the best."
-category: execution
-tags: [speculative, parallel-exploration, verification, candidate-generation, optimization]
-author: Research synthesis
-date: 2026-04-20
-version: 1.0.0
+description: "Generate multiple solution branches in parallel, verify each against hard constraints, select the best."
+triggers:
+  - Problem has multiple plausible solution paths
+  - Risk of getting stuck in local optima
+  - Need to explore alternatives before committing
 ---
 
 

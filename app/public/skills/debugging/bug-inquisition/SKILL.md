@@ -1,11 +1,16 @@
 ---
 name: bug-inquisition
-description: "Deep root-cause debugging with mandatory context-gathering. Fuses root-cause analysis, specter, diagnose, debug-to-fix-pipeline, occam-root-cause, and reasoning-integrity-chain into one sequential protocol. Use when user says 'hard bug', 'stuck on debugging', 'can't figure out this error', 'stuck on bug', or 'bug inquisition'."
+description: "Deep root-cause debugging with mandatory context-gathering. Fuses root-cause analysis, specter, diagnose, debug-to-fix-pipeline, occam-root-cause, and reasoning-integrity-chain into one sequential protocol."
+triggers:
+  - "hard bug"
+  - "stuck on debugging"
+  - "can't figure out this error"
+  - "stuck on bug"
+  - "bug inquisition"
+  - Simpler debugging skills have already failed
 ---
 
 # Bug Inquisition
-
-## Purpose
 
 For the hardest bugs — where the fix isn't obvious, where symptoms mislead, where patches mask instead of cure. Fuses root-cause analysis, specter (abductive hypothesis generation), diagnose (feedback-loop construction), debug-to-fix-pipeline (instrumentation + patch iteration), occam-root-cause (simplicity selection), and reasoning-integrity-chain (faithfulness + claim verification + backward scrutiny) into one sequential protocol.
 
@@ -101,11 +106,9 @@ Each probe must map to a specific prediction from Phase 2. **Change one variable
 - **Debugger / REPL** if available — one breakpoint beats ten logs.
 - **Targeted logs** at 3–5 strategic points max. Tag with unique prefix `[DEBUG-XXXX]` for easy cleanup.
 - Print full objects, not single attributes — the missing/wrong key is often the bug.
-- Never "log everything and grep."
-
-**Step verification gate:** Before proceeding to the next hypothesis or to Phase 5, verify that the current instrumentation evidence supports the claims. If evidence contradicts the hypothesis, return to Phase 2. If evidence confirms, proceed.
-
-**For performance regressions:** establish baseline measurement first, then bisect. Measure first, fix second.
+- Log at 3-5 strategic points, not everything.
+- **Step verification gate:** Before proceeding to the next hypothesis or to Phase 5, verify that the current instrumentation evidence supports the claims. If evidence contradicts the hypothesis, return to Phase 2. If evidence confirms, proceed.
+- **For performance regressions:** establish baseline measurement first, then bisect. Measure first, fix second.
 
 ---
 
@@ -143,9 +146,9 @@ Before declaring done:
 
 ---
 
-## Anti-Patterns
+## Failure Modes
 
-| Anti-Pattern | Why It Fails |
+| Failure Mode | Why It Fails |
 |---|---|
 | Patch the symptom | Guard clauses, retries, null checks without understanding why the bad input arrived |
 | First-branch lock-in | "I know what caused it" → ignoring disconfirming evidence |
@@ -155,9 +158,3 @@ Before declaring done:
 | Skip backward verification | Forward reasoning hides assumptions |
 | Abort on first failed patch | Iteration is expected; stop only on duplicate patches |
 | Declare fixed on passing test alone | Must state root cause, mechanism, and why fix addresses it |
-
----
-
-## Trigger
-
-Use when user says: "hard bug", "stuck on debugging", "can't figure out this error", "stuck on bug", "bug inquisition", or when simpler debugging skills have already failed.

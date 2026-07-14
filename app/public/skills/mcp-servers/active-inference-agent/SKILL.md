@@ -1,16 +1,10 @@
 ---
-source: "GrimoireStack"
 name: active-inference-agent
-category: mcp-servers
-description: >
-  An MCP server implementing a practical Active Inference agent based on Friston's Free Energy Principle.
-  The agent maintains hierarchical beliefs about system states, computes Expected Free Energy (EFE) for each
-  action, selects policies that minimize predicted surprise, and updates beliefs on observation. Pure stdlib —
-  zero external dependencies.
-...
-
-
-
+description: "MCP server implementing a practical Active Inference agent based on Friston's Free Energy Principle."
+triggers:
+  - Need an Active Inference agent for system state reasoning
+  - Need to compute Expected Free Energy for action selection
+  - Need hierarchical belief maintenance about system states
 ---
 
 # Active Inference Agent

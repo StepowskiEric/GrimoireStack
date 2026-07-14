@@ -1,8 +1,11 @@
 ---
 name: split-large-files
-category: execution
-description: "Split large files along change boundaries, not line counts. Investigate before extracting, require strong architectural signals, and reject splits that increase coupling."
-version: 1.0
+description: "Split large files along change boundaries, not line counts. Investigate before extracting, require strong architectural signals."
+triggers:
+  - File nearing or exceeding ~500 lines
+  - Need to refactor a large module or extract functions
+  - Reviewing a PR with oversized files
+  - About to add code to a file that is already large
 ---
 
 # Split Large Files — Boundary-Driven Extraction Protocol

@@ -117,8 +117,8 @@ DEBUG: after stringify customerId='500', type=<class 'str'>
 
 **Diagnosis:** Confirmed. `customerId` was int, now str. Downstream `typeof customerId === 'number'` fails.
 
-## Pitfalls
+## Failure Modes
 
-- **Instrumentation changes behavior**: Print statements can alter timing or trigger lazy evaluation. Remove them after debugging.
-- **Print fatigue**: Don't instrument every line. Pick 3-5 strategic points maximum.
-- **Side effects in property access**: `print(obj.expensive_property)` may trigger unwanted computation. Use `hasattr` checks or `repr` carefully.
+- **Instrumentation changes behavior:** print statements can alter timing or trigger lazy evaluation. Remove them after debugging.
+- **Print fatigue:** instrumenting every line instead of 3-5 strategic points maximum
+- **Side effects in property access:** `print(obj.expensive_property)` may trigger unwanted computation. Use `hasattr` checks or `repr` carefully.

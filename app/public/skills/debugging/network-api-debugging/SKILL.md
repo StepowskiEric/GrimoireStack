@@ -273,6 +273,14 @@ console.log('Request body:', JSON.stringify(body, null, 2));
 
 ---
 
+## Failure Modes
+
+- **Debugging client code when the problem is server-side:** 5xx errors mean the server crashed — check server logs, not client code
+- **Assuming the request is correct without capturing it:** always capture the actual HTTP request before hypothesizing
+- **Ignoring CORS in development:** React Native doesn't enforce CORS, so a bug that only appears in the browser is likely CORS
+- **Auth refresh loops:** refreshing the token on every 401 without limiting retries creates infinite loops
+- **Double-encoding request bodies:** `JSON.stringify(JSON.stringify(body))` silently corrupts the payload
+
 ## References
 
 - `references/http-status-quick-reference.md` — Full HTTP status code reference table for 4xx and 5xx responses with first-check actions for each.

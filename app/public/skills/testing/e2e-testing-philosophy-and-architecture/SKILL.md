@@ -1,8 +1,10 @@
 ---
 name: e2e-testing-philosophy-and-architecture
-category: testing
-description: "Reference for E2E testing mindset, architecture, and strategy. Covers testing epistemology, 3-layer BDR architecture, risk-based prioritization, data realism principles, anti-patterns, heuristics, and suite management."
-version: 1.0
+description: "Reference for E2E testing mindset, architecture, and strategy: testing epistemology, 3-layer BDR architecture, risk-based prioritization, data realism principles."
+triggers:
+  - Need E2E testing reference for mindset and architecture
+  - Need testing epistemology and strategy guidance
+  - Need risk-based prioritization and data realism principles
 ---
 
 # E2E Testing Philosophy & Architecture — Reference

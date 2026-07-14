@@ -1,15 +1,10 @@
 ---
 name: step-level-verification-protocol
-description: "Use when multi-step reasoning risks error propagation — verify each step before proceeding so a wrong step doesn't cascade into a chain of unjustified conclusions."
-category: execution
-tags: [verification, reasoning, step-by-step, error-prevention, state-machine]
-author: Research synthesis
-date: 2026-04-20
-version: 1.0.0
-...
-
-
-
+description: "Verify each step before proceeding so a wrong step doesn't cascade into a chain of unjustified conclusions."
+triggers:
+  - Multi-step reasoning where errors compound
+  - Solving multi-step problems with cascading dependencies
+  - Need to verify each step before proceeding
 ---
 
 # Step-Level Verification Protocol

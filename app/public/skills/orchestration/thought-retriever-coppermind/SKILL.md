@@ -1,6 +1,10 @@
 ---
 name: thought-retriever-coppermind
-description: "Use when sub-agents must learn across sessions — store intermediate reasoning as retrievable thoughts in the Coppermind memory layers."
+description: "Store intermediate reasoning as retrievable thoughts in the Coppermind memory layers."
+triggers:
+  - Sub-agents must learn across sessions
+  - Need to store structured thoughts for future retrieval
+  - Need to build collective reasoning memory
 ---
 
 # Skill: Thought-Retriever with Coppermind

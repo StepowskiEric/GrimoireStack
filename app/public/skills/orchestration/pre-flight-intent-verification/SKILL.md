@@ -1,6 +1,10 @@
 ---
 name: pre-flight-intent-verification
-description: "Pre-action gate before any significant task — surface the critical assumption, crystallize intent into testable spec, ground facts before acting. Use when a request has ambiguity, blast radius, or irreversible side effects."
+description: "Surface the critical assumption, crystallize intent into testable spec, ground facts before acting."
+triggers:
+  - Request has ambiguity, blast radius, or irreversible side effects
+  - Before any significant code change, mutation, or external action
+  - Need to map assumptions before acting
 ---
 
 # Pre-Flight Intent Verification

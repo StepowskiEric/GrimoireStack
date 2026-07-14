@@ -1,6 +1,10 @@
 ---
 name: stakeholder-communication
-description: "Use when a human must act on the agent's output — calibrate certainty, separate fact from inference, and avoid overpromising or undue alarm."
+description: "Calibrate certainty, separate fact from inference, avoid overpromising or undue alarm."
+triggers:
+  - A human must act on the agent's output
+  - Presenting conclusions, estimates, recommendations, or technical explanations
+  - Need to avoid overpromising, hiding uncertainty, or creating false confidence
 ---
 
 # Skill: Stakeholder Communication and Uncertainty Calibration

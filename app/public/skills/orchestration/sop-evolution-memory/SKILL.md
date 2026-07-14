@@ -1,16 +1,10 @@
 ---
 name: sop-evolution-memory
-description: "Use after repeated successes on a class of tasks — distill trajectories into reusable Standard Operating Procedures (SOPs). Future similar tasks load the SOP instead of the full history."
-category: orchestration
-tags: [memory, self-evolution, SOP, trajectory-distillation, episodic-memory]
-author: Research synthesis
-source: arXiv:2604.17091
-date: 2026-04-22
-version: 1.0.0
-...
-
-
-
+description: "Distill trajectories into reusable Standard Operating Procedures (SOPs) after repeated successes on a class of tasks."
+triggers:
+  - Repeated successes on a class of tasks
+  - Need to distill trajectories into reusable SOPs
+  - Future similar tasks should load the SOP instead of full history
 ---
 
 # SOP Evolution Memory

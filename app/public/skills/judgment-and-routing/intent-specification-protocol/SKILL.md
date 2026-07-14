@@ -1,12 +1,10 @@
 ---
-source: "GrimoireStack"
 name: intent-specification-protocol
-category: judgment-and-routing
-description: Crystallize vague user requests into precise, testable intent specifications. Replace vague words (fast, good, optimized) with measurable criteria. Now includes MCP server + companion script.
-...
-
-
-
+description: "Crystallize vague user requests into precise, testable intent specifications with measurable criteria."
+triggers:
+  - Vague user request with words like "fast", "good", "optimized"
+  - Need to replace vague requirements with measurable criteria
+  - Ambiguous feature request that could be interpreted multiple ways
 ---
 
 # Intent Specification Protocol

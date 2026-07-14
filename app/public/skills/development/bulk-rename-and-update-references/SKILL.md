@@ -140,9 +140,9 @@ git push
 
 ---
 
-## Pitfalls
+## Failure Modes
 
-| Pitfall | Why It Happens | Prevention |
+| Failure Mode | Why It Happens | Prevention |
 |---------|---------------|------------|
 | Off-by-one in string slice | Counting characters incorrectly | Test slice on examples before running |
 | Partial replacement in content | `foo-skill` replaced inside `foo-skill-state-machine` | Sort by length descending; use word boundaries |

@@ -1,7 +1,6 @@
 ---
-name: Super Review TypeScript
-description: "Use when reviewing AI-authored TypeScript — targets the five LLM-specific failure modes: security vulnerabilities, hallucinated APIs, logic errors, type-safety violations, architectural decay."
-source: "GrimoireStack"
+name: super-review-typescript
+description: "Targets the five LLM-specific failure modes: security vulnerabilities, hallucinated APIs, logic errors, type-safety violations, architectural decay."
 triggers:
   - After a "vibe-coded" session where a human or AI generated most of the code
   - Before committing or deploying TypeScript projects that contain AI-authored files

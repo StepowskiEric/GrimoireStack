@@ -1,9 +1,12 @@
 ---
-name: Long-Task Survival Kit
-description: "Fuse of Assumption Grounding + Trajectory Guard + Context Budget Operator. Recurring checkpoint protocol that prevents agent decay on complex tasks: context overflow, failure spirals, and hallucinated facts."
----
-
-
+name: long-task-survival-kit
+description: "Recurring checkpoint protocol that prevents agent decay on complex tasks: context overflow, failure spirals, and hallucinated facts."
+triggers:
+  - Task will take 10+ tool calls
+  - Multi-file refactors
+  - Migration work
+  - Complex debugging sessions
+  - Tasks where context pressure is likely
 ---
 
 ## Long-Task Survival Kit
@@ -113,12 +116,12 @@ CHECKPOINT ──→ CHECK 1 (Context) ──→ CHECK 2 (Trajectory) ──→ 
 - Complex debugging sessions
 - Tasks where context pressure is likely
 
-### Anti-Patterns
+### Failure Modes
 
-- Skipping checkpoints because "I'm almost done" (you're not)
-- Checking context but ignoring trajectory (the most common form of agent decay)
-- Verifying assumptions by reading old tool output instead of re-running (state may have changed)
-- Treating the checkpoint as optional on "easy" tasks (easy tasks become hard when they go wrong)
+- **Skipping checkpoints because "I'm almost done":** you're not
+- **Checking context but ignoring trajectory:** the most common form of agent decay
+- **Verifying assumptions by reading old tool output instead of re-running:** state may have changed
+- **Treating the checkpoint as optional on "easy" tasks:** easy tasks become hard when they go wrong
 
 ## References
 

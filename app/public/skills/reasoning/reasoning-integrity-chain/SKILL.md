@@ -1,6 +1,10 @@
 ---
 name: reasoning-integrity-chain
-description: "Use when multi-step reasoning risks hallucination — escalating 4-phase verification chain (faithfulness, claims, contradiction, selective halt)."
+description: "Escalating 4-phase verification chain: faithfulness, claims, contradiction, selective halt."
+triggers:
+  - Multi-step reasoning risks hallucination
+  - Need to catch all 4 PRISM hallucination types
+  - Need escalating verification that converges efficiently
 ---
 
 # Skill: Reasoning Integrity Chain for AI Agents

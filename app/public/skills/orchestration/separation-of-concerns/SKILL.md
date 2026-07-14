@@ -1,6 +1,10 @@
 ---
 name: separation-of-concerns
-description: "Use when a multi-step task risks concern contamination — keep planning, diagnosis, observation, and execution phases intellectually isolated."
+description: "Keep planning, diagnosis, observation, and execution phases intellectually isolated."
+triggers:
+  - Multi-step task risks concern contamination
+  - Planning, diagnosis, observation, and execution need isolation
+  - One sub-task's assumptions could leak into another's state
 ---
 
 # Skill: Separation of Concerns for AI Agent Orchestration

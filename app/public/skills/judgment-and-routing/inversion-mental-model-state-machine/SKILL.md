@@ -1,6 +1,10 @@
 ---
 name: inversion-mental-model-state-machine
-description: "Use when risk reasoning needs defensive discipline — enforce failure-mode mapping and guardrail derivation before recommending success paths."
+description: "Enforce failure-mode mapping and guardrail derivation before recommending success paths."
+triggers:
+  - Risk reasoning needs defensive discipline
+  - Need to reason more effectively about risk, failure, blind spots
+  - Need enforced protocol for defensive design
 ---
 
 # Skill: Inversion — State Machine Protocol for AI Agents

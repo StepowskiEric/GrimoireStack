@@ -1,6 +1,10 @@
 ---
 name: prism
-description: "Calibrate, compress, verify — force numeric confidence on each claim, compress to its essence, then verify the compression reconstructs the original. Use when you need to verify understanding before acting, catch overconfidence, or distill a complex situation to its core."
+description: "Force numeric confidence on each claim, compress to its essence, then verify the compression reconstructs the original."
+triggers:
+  - Need to verify understanding before acting
+  - Need to catch overconfidence or underconfidence
+  - Need to distill a complex situation to its core
 ---
 
 # Prism

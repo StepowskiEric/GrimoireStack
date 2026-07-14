@@ -1,16 +1,10 @@
 ---
 name: reasoning-verification-hybrid
-description: "Use when reasoning conclusions must survive challenge — claim verification, backward contradiction, and calibrated confidence."
-category: reasoning
-tags: [hallucination-prevention, verification, hybrid, reasoning, factuality, confidence-calibration]
-author: Research synthesis
-source: arXiv:2604.12046, arXiv:2604.20098, arXiv:2604.16909, arXiv:2601.07199, arXiv:2604.12632, arXiv:2602.05897
-date: 2026-04-22
-version: 1.0.0
-...
-
-
-
+description: "Claim verification, backward contradiction, and calibrated confidence."
+triggers:
+  - Reasoning conclusions must survive challenge
+  - Need claim verification with backward contradiction
+  - Need calibrated confidence on reasoning outputs
 ---
 
 # Reasoning Verification Hybrid

@@ -1,6 +1,10 @@
 ---
 name: vibe-coding-security-hardening
-description: "Use before deploying AI-generated apps — systematic checklist for the vulnerabilities LLMs reliably introduce: exposed secrets, missing RLS, broken auth, injection flaws, insecure defaults."
+description: "Systematic checklist for vulnerabilities LLMs reliably introduce: exposed secrets, missing RLS, broken auth, injection flaws, insecure defaults."
+triggers:
+  - Before deploying AI-generated ("vibe-coded") applications
+  - Need to check for OWASP Top 10 vulnerabilities in AI-generated code
+  - Need systematic security hardening for AI-authored code
 ---
 
 # Vibe Coding Security Hardening

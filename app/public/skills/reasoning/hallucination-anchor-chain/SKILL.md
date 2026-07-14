@@ -1,51 +1,20 @@
 ---
-source: "GrimoireStack"
 name: hallucination-anchor-chain
-category: reasoning
-description: "Use when factual claims risk hallucination — anchor every claim to a verified source. Unanchored claims are marked unverified and hidden. Builds a verifiable chain of evidence."
-tags: [hallucination-prevention, grounding, verification, factuality, chain-of-evidence]
-author: Research synthesis
-date: 2026-06-14
-version: 2.0.0
-...
-
-
-
+description: Anchor every factual claim to a verified source — unanchored claims are hidden. Builds a verifiable chain of evidence. Use when accuracy matters in research, code generation with external APIs, multi-step reasoning where errors compound, or any domain where wrong facts cause harm.
+triggers:
+  - Research tasks where accuracy matters more than speed
+  - Code generation using external APIs or libraries (anchor the API surface)
+  - Multi-step reasoning where errors compound
+  - Medical, legal, financial, or technical domains where wrong facts cause harm
 ---
 
 # Hallucination Anchor Chain
 
 ## Core Principle
 
-**If you can't point to a source you actually checked, you don't know it. Don't pretend you do.**
+Every factual claim must link to a verified source. Unanchored claims are hidden from outputs — the chain exists to make uncertainty visible.
 
-Every factual claim must link to a verified source. Unanchored claims are hidden from outputs. This prevents the most common form of LLM failure: confident-sounding statements that are factually wrong.
-
-## Research Basis
-
-This skill is informed by research on hallucination prevention and factual verification:
-
-- **Chain-of-Verification (CoVe)** (arXiv:2309.11495, Sep 2023) — Reduces hallucination by generating verification questions for each claim, answering them independently, and identifying inconsistencies. Shows 15-25% reduction in hallucinated facts.
-- **Self-Consistency** (arXiv:2203.11171, Mar 2022) — Multiple reasoning paths that agree are more likely to be factual. Use agreement across independent sources as a confidence signal.
-- **Grounded Chain-of-Thought** (arXiv:2503.12799, Mar 2025) — Forces reasoning chains to reference specific evidence before making claims. Reduces visual and factual hallucinations in multimodal models.
-- **Mitigating Hallucination via RAG** (arXiv:2510.24476, Oct 2025) — Retrieval-augmented generation with grounding reduces hallucination rates by 40-60% across domains.
-- **Domain-Grounded Tiered Retrieval** (arXiv:2603.17872, Mar 2026) — Tiered retrieval with domain grounding achieves near-zero hallucination in specialized domains.
-- **Self-Verification in LLMs** (arXiv:2506.01369, Jun 2025) — Training LLMs to self-verify their outputs improves factuality by 12-18% without external tools.
-
-## When to Use
-
-- Research tasks where accuracy matters more than speed
-- Code generation using external APIs/libraries (anchor the API surface)
-- Any task where the agent might "fill in" unknown facts
-- Multi-step reasoning where errors compound
-- Medical, legal, or financial information where wrong facts cause harm
-- Technical documentation that will be referenced by others
-
-## When NOT to Use
-
-- Creative writing where facts are intentionally fictional
-- Brainstorming where quantity matters more than accuracy
-- Quick responses where the user explicitly says "rough draft" or "don't worry about accuracy"
+Research basis: see [RESEARCH.md](RESEARCH.md) for the papers informing this skill.
 
 ## Workflow
 
@@ -151,7 +120,7 @@ New anchors must link to the chain:
 
 **Chain validation:**
 - Every child anchor's parent must exist
-- No circular dependencies allowed
+- Dependency chains must be acyclic
 - If a parent is falsified, all children become unverified
 
 ## Anti-Patterns
@@ -222,7 +191,7 @@ Want to make a factual claim?
 Do you have a source you actually checked?
     │ NO → Can you check one now?
     │       │ YES → Check it, create anchor
-    │       │ NO → Don't make the claim
+    │       │ NO → Omit the claim
     │ YES ↓
     │
 Does the source actually say what you think?
@@ -261,6 +230,6 @@ Run CoVe check: any contradictions with existing claims?
 
 ## Key Insight
 
-Hallucination isn't random — it's the model filling in gaps with plausible-sounding text. Anchoring forces you to identify those gaps and fill them with verified facts instead of confident guesses.
+Hallucination is the model filling gaps with plausible-sounding text. Anchoring forces you to identify those gaps and fill them with verified facts instead.
 
-**The chain exists to make uncertainty visible, not to make everything certain.** Some claims will remain uncertain. That's honest — and better than a confident lie.
+**The chain makes uncertainty visible.** Some claims remain uncertain. That is honest.

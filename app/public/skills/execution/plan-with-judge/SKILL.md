@@ -1,15 +1,10 @@
 ---
-source: "GrimoireStack"
 name: plan-with-judge
-description: Create an implementation plan in JSONL format, then iteratively improve it using a stronger user-specified model as a judge until the plan is approved.
-category: execution
-priority: high
-tags: [planning, quality-assurance, iterative-improvement, plan-review, jsonl]
-version: 1.0
-...
-
-
-
+description: "Create an implementation plan in JSONL format, then iteratively improve it using a stronger model as a judge until approved."
+triggers:
+  - Need a structured implementation plan before coding
+  - Want a stronger model to stress-test the plan
+  - Complex multi-step feature work
 ---
 
 # Plan with Judge

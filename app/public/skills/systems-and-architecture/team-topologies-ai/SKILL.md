@@ -1,6 +1,10 @@
 ---
 name: team-topologies-ai
-description: "Use when organizing work across multiple agents or teams — stream-aligned, platform, enabling, and complicated-subsystem boundaries with explicit interaction modes. Prevents God Agents and platform empires."
+description: "Stream-aligned, platform, enabling, and complicated-subsystem boundaries with explicit interaction modes."
+triggers:
+  - Organizing work across multiple agents or teams
+  - Need bounded ownership and clear interaction modes
+  - Need to prevent God Agents and platform empires
 ---
 
 # Team Topologies for Multi-Agent Software Systems

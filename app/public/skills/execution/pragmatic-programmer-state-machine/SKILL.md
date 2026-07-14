@@ -1,6 +1,11 @@
 ---
 name: pragmatic-programmer-state-machine
-description: "Use when working pragmatically in a real system — bounded changes, reversible choices, automation over repeated toil, root-cause fixes over symptom patches, practical scope control."
+description: "Bounded changes, reversible choices, automation over repeated toil, root-cause fixes over symptom patches."
+triggers:
+  - Working pragmatically in a real system
+  - Need bounded changes and reversible choices
+  - Automation instead of repeated toil
+  - Root-cause fixes instead of symptom patches
 ---
 
 # The Pragmatic Programmer — State Machine Protocol for AI Agents

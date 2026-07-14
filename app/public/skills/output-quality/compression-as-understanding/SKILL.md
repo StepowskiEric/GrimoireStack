@@ -1,6 +1,10 @@
 ---
 name: compression-as-understanding
-description: "Use when depth of understanding must be verified, not assumed — compress to the shortest representation and test whether it reconstructs the original."
+description: "Compress to the shortest representation and test whether it reconstructs the original."
+triggers:
+  - Depth of understanding must be verified, not assumed
+  - Need to test whether you genuinely understand something
+  - Need to verify that compressed knowledge can reconstruct the original
 ---
 
 # Skill: Compression-as-Understanding

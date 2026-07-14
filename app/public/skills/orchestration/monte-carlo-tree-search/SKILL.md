@@ -1,6 +1,10 @@
 ---
 name: monte-carlo-tree-search
-description: "Use when several strategies compete for limited reasoning budget — allocate search effort to branches that earn it through probes and scoring."
+description: "Allocate search effort to branches that earn it through probes and scoring."
+triggers:
+  - Several strategies compete for limited reasoning budget
+  - Need to allocate search effort to promising branches
+  - Need bounded probes scored against explicit criteria
 ---
 
 # Skill: Monte Carlo Tree Search for AI Agents

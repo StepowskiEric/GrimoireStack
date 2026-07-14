@@ -154,14 +154,14 @@ The `event` field is one of: `call`, `line`, `return`, `exception`.
 - **Large traces** — for long-running scripts, use `--max-steps 10000` to cap the trace size.
 - **Non-determinism** — if the bug involves network, randomness, or threading, the trace captures one path. You may need multiple runs.
 
-## Pitfalls
+## Failure Modes
 
-- **sys.settrace overhead**: Tracing slows execution ~10-100x. This is fine for scripts that run in <1s but unacceptable for long-running processes.
-- **Large local state**: Functions with huge local variables (e.g., DataFrames, large lists) will bloat the trace file. Use `--max-locals-size 1024` to truncate large values.
-- **Recursion**: Deep recursion generates long traces. Set `--max-steps` appropriately.
-- **C extensions**: `sys.settrace` only traces Python-level calls. C extension function calls are invisible.
-- **Generators**: Generator frames behave differently from regular frames. The trace captures `yield` events as `line` events at the yield point.
-- **Threading**: Only the main thread is traced by default. Multi-threaded debugging needs `settrace` per thread.
+- **sys.settrace overhead:** tracing slows execution ~10-100x. Fine for scripts that run in <1s but unacceptable for long-running processes.
+- **Large local state:** functions with huge local variables (e.g., DataFrames, large lists) bloat the trace file. Use `--max-locals-size 1024` to truncate large values.
+- **Recursion:** deep recursion generates long traces. Set `--max-steps` appropriately.
+- **C extensions:** `sys.settrace` only traces Python-level calls. C extension function calls are invisible.
+- **Generators:** generator frames behave differently from regular frames. The trace captures `yield` events as `line` events at the yield point.
+- **Threading:** only the main thread is traced by default. Multi-threaded debugging needs `settrace` per thread.
 
 ## MCP Server Details
 

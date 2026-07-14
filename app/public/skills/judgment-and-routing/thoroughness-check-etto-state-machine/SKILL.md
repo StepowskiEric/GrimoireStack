@@ -1,6 +1,10 @@
 ---
 name: thoroughness-check-etto-state-machine
-description: "Use as universal preflight before meaningful tasks — gating ETTO classification into executable controls on rigor, evidence, and tools."
+description: "Gate ETTO classification into executable controls on rigor, evidence, and tools."
+triggers:
+  - Universal preflight before meaningful tasks
+  - Need to convert ETTO into an executable control system
+  - Need to decide rigor, evidence bar, and tool selection
 ---
 
 # Skill: Thoroughness Check (ETTO) — State Machine Protocol for AI Agents

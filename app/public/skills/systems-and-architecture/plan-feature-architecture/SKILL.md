@@ -1,6 +1,10 @@
 ---
-name: Plan Feature Architecture
-description: Plan the architecture of a feature before implementation. Decide ownership, placement, module boundaries, dependencies, and project impact before writing code.
+name: plan-feature-architecture
+description: "Decide ownership, placement, module boundaries, dependencies, and project impact before writing code."
+triggers:
+  - Need to plan the architecture of a feature before implementation
+  - Need to decide how the feature fits into the existing architecture
+  - Prefer planning over implementation
 ---
 
 # Feature Architecture Planning

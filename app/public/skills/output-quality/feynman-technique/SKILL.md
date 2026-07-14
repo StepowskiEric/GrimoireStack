@@ -1,6 +1,10 @@
 ---
 name: feynman-technique
-description: "Use when explanation gaps reveal understanding gaps — explain from scratch in plain language and identify where the explanation breaks."
+description: "Explain from scratch in plain language and identify where the explanation breaks."
+triggers:
+  - Explanation gaps reveal understanding gaps
+  - Need to verify genuine understanding, not recitation
+  - Need to test whether you can explain from the ground up
 ---
 
 # Skill: Feynman Technique for AI Agents

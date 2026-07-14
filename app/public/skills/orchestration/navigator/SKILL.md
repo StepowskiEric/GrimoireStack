@@ -1,6 +1,6 @@
 ---
 name: navigator
-description: Map, distill, retrieve — Scout reads code, Thought-Retriever stores the reasoning trail so future sessions resume from where you stopped. Use when the codebase is large, unfamiliar, or the agent keeps re-asking the same questions.
+description: "Scout reads code, Thought-Retriever stores the reasoning trail so future sessions resume from where you stopped."
 triggers:
   - Large or unfamiliar codebase
   - Investigation trail worth preserving across sessions

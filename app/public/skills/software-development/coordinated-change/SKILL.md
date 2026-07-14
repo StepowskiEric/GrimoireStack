@@ -1,5 +1,6 @@
 ---
-description: "Use when a fix or feature requires touching 2+ files that must stay consistent — types, implementation, tests, schema, config."
+name: coordinated-change
+description: "Ensure consistency when a fix or feature requires touching 2+ files that must stay consistent."
 triggers:
   - A fix requires changes in more than one file
   - Changing an API contract that has client and server consumers

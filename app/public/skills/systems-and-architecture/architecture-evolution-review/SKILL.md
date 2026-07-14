@@ -1,6 +1,10 @@
 ---
-name: Architecture Evolution Review
-description: Review the repository as a living system. Detect architectural drift, feature erosion, and long-term maintenance risks before they become expensive.
+name: architecture-evolution-review
+description: "Review the repository as a living system. Detect architectural drift, feature erosion, and long-term maintenance risks."
+triggers:
+  - Need to detect architectural drift before it becomes expensive
+  - Need to evaluate whether the repository is becoming easier or harder to maintain
+  - Long-term codebase health review
 ---
 
 # Mission

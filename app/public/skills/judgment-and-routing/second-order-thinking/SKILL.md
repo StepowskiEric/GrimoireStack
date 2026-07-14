@@ -1,6 +1,10 @@
 ---
 name: second-order-thinking
-description: "Use when a decision's downstream effects matter more than the obvious one — chain consequences past first-order until the system-level outcome is clear."
+description: "Chain consequences past first-order until the system-level outcome is clear."
+triggers:
+  - A decision's downstream effects matter more than the obvious one
+  - Need to reason past the immediate consequence
+  - Need to trace cascading effects of a decision
 ---
 
 # Skill: Second-Order Thinking for AI Agents

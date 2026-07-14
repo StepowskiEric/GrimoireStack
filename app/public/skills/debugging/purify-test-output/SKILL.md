@@ -73,8 +73,8 @@ KeyError: 'id'
 | Variable diffs (`expected X, got Y`) | Coverage reports |
 | Last 3 lines of stderr | stdout from passing tests |
 
-## Pitfalls
+## Failure Modes
 
-- **Over-purification**: Don't remove the test assertion line — it contains the expected vs actual values.
-- **Under-purification**: Framework frames like `pytest.raises` or `asyncio.run` may be relevant if the bug involves async/test infrastructure.
-- **Multi-failure cascades**: If test A fails because test B's setup broke, you may need both failure outputs.
+- **Over-purification:** removing the test assertion line — it contains the expected vs actual values
+- **Under-purification:** keeping framework frames like `pytest.raises` or `asyncio.run` when the bug is in user code
+- **Multi-failure cascades:** if test A fails because test B's setup broke, you may need both failure outputs

@@ -1,10 +1,10 @@
 ---
-name: Requirement Crystallization Protocol
-description: Fuse of Socratic Clarification + Intent Specification Protocol. Surfaces the critical assumption, then crystallizes vague requests into locked, testable specs before coding begins.
-...
-
-
-
+name: requirement-crystallization-protocol
+description: "Surface the critical assumption, then crystallize vague requests into locked, testable specs before coding begins."
+triggers:
+  - Vague or ambiguous feature request
+  - Need to surface hidden assumptions before coding
+  - Previous attempts produced off-target code
 ---
 
 ## Requirement Crystallization Protocol

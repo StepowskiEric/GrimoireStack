@@ -1,10 +1,6 @@
 ---
-description: "Use after completing any non-trivial coding task, before merging code that touches security/auth/data/concurrency, or when upgrading from casual self-review to production-grade QA."
-version: 1.0.0
-priority: high
-tags: [code-review, multi-agent, testing, security, quality-gate, production-ready]
-author: GrimoireStack
-created: 2026-05-09
+name: review-ladder-plus
+description: "Multi-agent code review ladder for production-grade QA: security, auth, data, concurrency."
 triggers:
   - After completing any non-trivial coding task (feature, fix, refactor, migration)
   - Before merging any code that touches security, auth, data, or concurrency

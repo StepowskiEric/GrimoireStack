@@ -1,6 +1,10 @@
 ---
 name: thoroughness-check-etto
-description: "Use when the agent must decide how much rigor a task deserves — classify the efficiency-vs-thoroughness balance before acting."
+description: "Classify the efficiency-vs-thoroughness balance before acting."
+triggers:
+  - Need to decide how much rigor a task deserves
+  - Before executing any meaningful task
+  - Need to calibrate efficiency vs thoroughness
 ---
 
 # Skill: Thoroughness Check (ETTO Principle) for AI Agents

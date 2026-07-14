@@ -1,16 +1,10 @@
 ---
 name: token-budget-operator
-description: Master token-efficiency protocol that orchestrates context compression, CoT pruning, selective halting, and SOP capture in sequence. For long-horizon tasks where token burn is the bottleneck.
-category: reasoning
-tags: [token-efficiency, hybrid, context-management, reasoning, budget, orchestration]
-author: Research synthesis
-source: arXiv:2604.17091, arXiv:2312.08901, arXiv:2604.18103
-date: 2026-04-22
-version: 1.0.0
-...
-
-
-
+description: "Orchestrate context compression, CoT pruning, selective halting, and SOP capture in sequence."
+triggers:
+  - Long-horizon tasks where token burn is the bottleneck
+  - Need to orchestrate multiple token-efficiency strategies
+  - Context compression, CoT pruning, and selective halting needed
 ---
 
 # Token Budget Operator

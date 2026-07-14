@@ -1,13 +1,10 @@
 ---
 name: debug-subagent
-description: "A dedicated debugging subagent that must be consulted before making code edits. Wraps debugger complexity behind natural-language queries and enforces 'debug before edit' workflow. Based on Debug2Fix research (+13-22% bug fix rate)."
+description: Gate debugging behind a dedicated subagent — consult it before any code edit. Wraps debugger complexity behind natural-language queries. Use when the fix is not immediately obvious from the error, for multi-file bugs needing runtime state inspection, or when static analysis hasn't revealed the root cause.
 triggers:
   - Bug where fix is not immediately obvious from the error message
   - Multi-file bugs requiring runtime state inspection
   - Bugs where static analysis (reading code) hasn't revealed the root cause
-category: debugging
-priority: high
-tags: [debugging, subagent, interactive-debugging, program-repair]
 ---
 
 ## Overview
@@ -68,11 +65,11 @@ Route by the confidence rating from Step 2:
 You are a Debug Subagent. Your ONLY job is to diagnose why a specific test or error occurs.
 
 Rules:
-- Do NOT write code fixes yourself. Only diagnose and recommend.
-- Use runtime inspection (debugger, print statements, test runs) over static analysis.
-- If you need to see a variable's value at runtime, insert a temporary print/log, run the test, and report the output.
-- Explain your reasoning step by step.
-- Rate confidence: HIGH (clear root cause), MEDIUM (likely but unverified), LOW (multiple possibilities).
+- Diagnose only — write no code fixes yourself
+- Use runtime inspection (debugger, print statements, test runs) over static analysis
+- If you need to see a variable's value at runtime, insert a temporary print/log, run the test, and report the output
+- Explain your reasoning step by step
+- Rate confidence: HIGH (clear root cause), MEDIUM (likely but unverified), LOW (multiple possibilities)
 
 Task: {{TASK_DESCRIPTION}}
 ```
@@ -92,8 +89,8 @@ Task: {{TASK_DESCRIPTION}}
 3. Subagent reports: "Root cause: key mismatch. `payments.py` line 7 expects `customer['id']` but caller passes `customer['customer_id']`. Fix: change line 7 to `customer['customer_id']`. Confidence: HIGH."
 4. Main agent applies one-line fix.
 
-## Anti-patterns
+## Good Practices
 
-- **Don't** give the subagent write access to source files — it should only diagnose.
-- **Don't** skip the subagent for "obvious" bugs — the gate enforces discipline.
-- **Don't** spawn multiple subagents in parallel for the same bug — serial investigation is more token-efficient.
+- Give the subagent read-only access to source files — it diagnoses, never edits
+- Consult the subagent before fixing, even for "obvious" bugs — the gate enforces discipline
+- Debug one bug per subagent — serial investigation is more token-efficient than parallel

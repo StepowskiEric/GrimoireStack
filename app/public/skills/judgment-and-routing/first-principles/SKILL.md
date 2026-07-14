@@ -1,6 +1,10 @@
 ---
 name: first-principles
-description: "Use when conventional solutions fail or framing is inherited — decompose to axiomatic foundations and reason upward from what must be true."
+description: "Decompose to axiomatic foundations and reason upward from what must be true."
+triggers:
+  - Conventional solutions fail or framing is inherited
+  - Need to reason from the ground up rather than from convention or analogy
+  - Received wisdom may be wrong for this context
 ---
 
 # Skill: First Principles Thinking for AI Agents

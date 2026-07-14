@@ -77,20 +77,13 @@ Set a maximum scope before starting:
 - Max time: [set before starting]
 - If budget exceeded, stop and reassess
 
-### Anti-Patterns
+### Failure Modes
 
-- Skipping characterization and going straight to transformation (most common, most damaging)
-- Writing "correctness" tests instead of characterization tests (you don't know what "correct" is yet)
-- Making the seam too wide (if you're touching the core logic to create the seam, the seam is wrong)
-- Transforming without slicing (big bang changes in legacy code = guaranteed regression)
-- Ignoring characterization test failures ("I'll fix those later" = you won't)
-
-### When to Use
-
-- Any change to code without adequate test coverage
-- Refactoring code you didn't write
-- Fixing bugs in unfamiliar code
-- Migrating legacy systems
+- **Skipping characterization:** going straight to transformation is the most common and most damaging mistake
+- **Writing "correctness" tests instead of characterization tests:** you don't know what "correct" is yet
+- **Making the seam too wide:** if you're touching the core logic to create the seam, the seam is wrong
+- **Transforming without slicing:** big bang changes in legacy code guarantee regression
+- **Ignoring characterization test failures:** "I'll fix those later" means you won't
 
 ## References
 

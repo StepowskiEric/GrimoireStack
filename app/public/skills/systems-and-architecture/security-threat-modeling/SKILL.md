@@ -1,6 +1,10 @@
 ---
 name: security-threat-modeling
-description: "Use when handling auth, secrets, user input, or sensitive data — STRIDE threat analysis, attack-surface mapping, trust-boundary reasoning, and attacker-perspective review before shipping security-relevant changes."
+description: "STRIDE threat analysis, attack-surface mapping, trust-boundary reasoning, and attacker-perspective review."
+triggers:
+  - Handling auth, secrets, user input, or sensitive data
+  - Need STRIDE threat analysis before shipping security-relevant changes
+  - Need to prevent common vulnerabilities, credential leaks, or abuse-prone APIs
 ---
 
 # Security Threat Modeling for AI Agents

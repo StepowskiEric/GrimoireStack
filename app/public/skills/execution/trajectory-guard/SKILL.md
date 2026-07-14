@@ -1,15 +1,11 @@
 ---
-source: "GrimoireStack"
 name: trajectory-guard
-description: Runtime meta-monitoring protocol that detects agent failure spirals — repetitive loops, specification drift, and stuck trajectories — and forcibly redirects strategy. Based on Wink (2602.17037) misbehavior taxonomy and PALADIN (2509.25238) recovery patterns.
-category: execution
-priority: high
-tags: [meta-monitoring, failure-recovery, trajectory, agent-safety, self-correction]
-version: 1.0
-...
-
-
-
+description: "Detect agent failure spirals — repetitive loops, specification drift, and stuck trajectories — and forcibly redirect strategy."
+triggers:
+  - Agent is repeating the same approach without progress
+  - Specification drift detected
+  - Same error appearing after multiple fix attempts
+  - Context window growing without convergence
 ---
 
 # Trajectory Guard — Detect and Recover from Failure Spirals

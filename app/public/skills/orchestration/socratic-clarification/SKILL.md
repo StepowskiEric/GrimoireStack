@@ -1,6 +1,10 @@
 ---
 name: socratic-clarification
-description: "Use when a task is ambiguous or high-stakes — surface the most critical hidden assumption before committing to execution."
+description: "Surface the most critical hidden assumption before committing to execution."
+triggers:
+  - Task is ambiguous or high-stakes
+  - Need to identify what you think you know and expose assumptions
+  - Need to gate action on the answer to the most important clarifying question
 ---
 
 # Skill: Socratic Clarification Protocol for AI Agents

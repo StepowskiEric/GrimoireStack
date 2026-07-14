@@ -1,6 +1,10 @@
 ---
 name: large-documentation-navigation
-description: "Use when a documentation corpus becomes unscannable — layered navigation driven by user situation rather than category labels."
+description: "Layered navigation driven by user situation rather than category labels."
+triggers:
+  - Documentation corpus becomes unscannable
+  - Need to transform unwieldy docs into navigable knowledge base
+  - Users can't find what they need from category listings
 ---
 
 # Skill: Large Documentation Navigation

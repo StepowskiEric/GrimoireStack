@@ -1,6 +1,6 @@
 ---
 name: rashomon-triad-hybrid
-description: Surface genuine disagreement — parallel perspectives with conflicting goals run independent abductive-deductive-inductive cycles, then argue via attack graph. Returns selection, composition, or conflict-surfacing output. Use for high-stakes trade-offs without a single correct answer.
+description: "Parallel perspectives with conflicting goals run independent abductive-deductive-inductive cycles, then argue via attack graph."
 triggers:
   - Stakeholders have genuinely conflicting goals (not just miscommunication)
   - No single correct answer — only trade-offs

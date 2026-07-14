@@ -1,8 +1,6 @@
 ---
-description: "Use when running diagnostics across multiple tools (eslint, tsc, vitest, pytest, biome, ruff) or comparing before/after fix diagnostics for contamination."
-version: 1.0.0
-priority: high
-tags: [mcp, diagnostics, lint, tests, tsc, eslint, vitest, pytest, ruff, biome]
+name: dev-diagnostics-mcp
+description: "Run diagnostics across multiple tools (eslint, tsc, vitest, pytest, biome, ruff) and compare before/after for contamination."
 triggers:
   - Running diagnostics across multiple tools (eslint, tsc, vitest, pytest, biome, ruff)
   - Comparing before/after fix diagnostics for contamination

@@ -1,6 +1,10 @@
 ---
 name: six-thinking-hats
-description: "Use when a decision risks collapsed thinking — separate fact, intuition, caution, optimism, creativity, and process into six discrete rounds."
+description: "Separate fact, intuition, caution, optimism, creativity, and process into six discrete rounds."
+triggers:
+  - A decision risks collapsed thinking
+  - Need to examine a problem from multiple perspectives
+  - Thinking modes are getting mixed together
 ---
 
 # Skill: Six Thinking Hats for AI Agents

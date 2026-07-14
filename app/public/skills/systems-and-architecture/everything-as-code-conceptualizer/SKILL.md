@@ -1,6 +1,10 @@
 ---
 name: everything-as-code-conceptualizer
-description: "Use when messy human problems resist analysis — codify the system as pseudocode to reveal hidden assumptions, missing decisions, and edge cases that natural-language descriptions obscure."
+description: "Codify messy human problems as pseudocode to reveal hidden assumptions, missing decisions, and edge cases."
+triggers:
+  - Messy human problems resist analysis
+  - Need to reveal hidden structure, assumptions, and edge cases
+  - Natural language descriptions obscure the real problem
 ---
 
 # Everything-as-Code Conceptualizer

@@ -1,11 +1,11 @@
 ---
-source: "GrimoireStack"
 name: effective-web-search
-category: research
-description: Web search discipline for technical research. Use when an agent needs to look up an error, library behavior, framework quirk, or bug. Enforces official-docs-first, version-aware research, and full GitHub issue follow-through. Prevents the failure mode where the agent latches onto the first outdated GitHub issue and treats it as truth.
-version: 1.0.0
-priority: high
-tags: [research, verification, debugging, web-search, github, documentation, hallucination-prevention]
+description: "Web search discipline for technical research. Official-docs-first, version-aware, full GitHub issue follow-through."
+triggers:
+  - Need to look up an error, library behavior, framework quirk, or bug
+  - Need official-docs-first, version-aware research
+  - Need full GitHub issue follow-through
+  - Risk of latching onto the first outdated result
 ---
 
 # Effective Web Search

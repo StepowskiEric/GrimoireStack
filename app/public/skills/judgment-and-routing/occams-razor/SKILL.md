@@ -1,6 +1,10 @@
 ---
-name: "occams-razor"
-description: "Apply Occam's Razor to favor the simplest sufficient explanation or solution. Forces the agent to try the simplest thing that fits the evidence before escalating to more complex alternatives. Prevents over-engineering, premature abstraction, and scope creep."
+name: occams-razor
+description: "Favor the simplest sufficient explanation or solution. Try the simplest thing that fits the evidence before escalating."
+triggers:
+  - Over-engineering, premature abstraction, or scope creep is a risk
+  - Need to try the simplest thing before escalating
+  - Multiple explanations fit the evidence equally well
 ---
 
 # Skill: Occam's Razor for AI Agents

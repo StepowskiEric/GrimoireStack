@@ -1,6 +1,10 @@
 ---
-name: Security Review Protocol
-description: "Fuse of Security Threat Modeling (STRIDE) + Unsafe Control Actions + Vibe Coding Security Hardening. Three security lenses merged: attack surface analysis, hazardous operation checking, and LLM-specific vulnerability audit."
+name: security-review-protocol
+description: "Three security lenses merged: attack surface analysis, hazardous operation checking, and LLM-specific vulnerability audit."
+triggers:
+  - Need comprehensive security review
+  - Need STRIDE threat modeling combined with hazard analysis
+  - Need LLM-specific vulnerability audit
 ---
 
 

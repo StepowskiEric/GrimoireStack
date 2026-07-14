@@ -1,6 +1,10 @@
 ---
 name: system-architecture-audit
-description: "Use when auditing an existing system for architectural weaknesses — 4-phase audit fusing Thinking in Systems, DDD, DDIA, and Release It. Reveals structural problems before they cascade."
+description: "4-phase audit fusing Thinking in Systems, DDD, DDIA, and Release It. Reveals structural problems before they cascade."
+triggers:
+  - Auditing an existing system for architectural weaknesses
+  - Need to evaluate boundaries, data flow, and stability
+  - Need to reveal structural problems before they cascade
 ---
 
 # System Architecture Audit for AI Agents

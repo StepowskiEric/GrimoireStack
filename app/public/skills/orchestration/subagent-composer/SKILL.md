@@ -1,6 +1,10 @@
 ---
-name: "subagent-composer"
-description: "Compose high-context sub-agent briefs — skill loading, explicit boundaries, success criteria, stop rules. Use when delegating to sub-agents to eliminate first-pass failures from incomplete briefs."
+name: subagent-composer
+description: "Compose high-context sub-agent briefs with skill loading, explicit boundaries, success criteria, and stop rules."
+triggers:
+  - Delegating to sub-agents
+  - Need to eliminate first-pass failures from incomplete briefs
+  - Need to give sub-agents the right skills and context
 ---
 
 # Skill: Sub-Agent Composer — High-Context Delegation

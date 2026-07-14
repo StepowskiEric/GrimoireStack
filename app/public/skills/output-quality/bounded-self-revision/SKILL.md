@@ -1,6 +1,10 @@
 ---
 name: bounded-self-revision
-description: "Use when an initial draft needs polish but not endless revision — capped self-critique passes that terminate on improvement or budget exhaustion."
+description: "Capped self-critique passes that terminate on improvement or budget exhaustion."
+triggers:
+  - Initial draft needs polish but not endless revision
+  - Need to improve output with disciplined, finite revision
+  - Self-Refine pattern with boundedness
 ---
 
 # Skill: Bounded Self-Revision

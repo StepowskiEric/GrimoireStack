@@ -1,6 +1,10 @@
 ---
 name: the-goal-theory-of-constraints-ai
-description: "Use when throughput is capped or work piles up — find the one constraint, ignore non-constraints, exploit then elevate it, repeat when it moves. Stops micro-optimization that does not move total throughput."
+description: "Find the one constraint, ignore non-constraints, exploit then elevate it, repeat when it moves."
+triggers:
+  - Throughput is capped or work piles up
+  - Need to find the real bottleneck instead of optimizing everything
+  - Micro-optimization is not moving total throughput
 ---
 
 # The Goal for AI Engineering Agents

@@ -1,6 +1,12 @@
 ---
 name: keyword-agnostic-logic-locator
-description: "Use when grep and naming-based search fail — find code by structural relationships and logical queries via a Datalog-style knowledge graph over call graphs, data flows, and type hierarchies."
+description: "Find code by structural relationships and logical queries via a Datalog-style knowledge graph over call graphs, data flows, and type hierarchies."
+triggers:
+  - grep and naming-based search fail
+  - Codebase has unclear or misleading function/file names
+  - Need to find code by "what it does" not "what it's called"
+  - Cross-language codebases where naming conventions differ
+  - Legacy code with poor naming
 ---
 
 # Keyword-Agnostic Logic Locator
@@ -481,19 +487,12 @@ See script headers for usage details.
 
 ---
 
-## Anti-Patterns
+## Failure Modes
 
-**Don't:**
-- Use this for simple name-based lookups (overkill)
-- Trust results without reading source code
-- Build huge queries without testing incrementally
-- Ignore extraction errors (they indicate blind spots)
-
-**Do:**
-- Start with small queries, add constraints incrementally
-- Validate results against source
-- Re-extract facts when codebase changes significantly
-- Combine with keyword search for hybrid approach
+- **Using for simple name-based lookups:** overkill when grep suffices
+- **Trusting results without reading source code:** always validate
+- **Building huge queries without testing incrementally:** start small, add constraints
+- **Ignoring extraction errors:** they indicate blind spots in the knowledge graph
 
 ---
 

@@ -1,6 +1,6 @@
 ---
 name: jury
-description: Argue, then structure the disagreement — spawn parallel perspectives with conflicting goals, force them to engage, output a conflict graph that reveals what actually matters. Use when reasonable options exist and the choice isn't obvious.
+description: "Spawn parallel perspectives with conflicting goals, force them to engage, output a conflict graph that reveals what actually matters."
 triggers:
   - Multiple reasonable options, choice not obvious
   - Stakeholders would prioritize different things

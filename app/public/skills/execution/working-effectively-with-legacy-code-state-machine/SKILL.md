@@ -1,6 +1,10 @@
 ---
 name: working-effectively-with-legacy-code-state-machine
-description: "Use when changing brittle code with weak tests or unclear behavior — characterize legacy behavior, create seams, transform in bounded slices with anti-loop protection."
+description: "Characterize legacy behavior, create seams, transform in bounded slices with anti-loop protection."
+triggers:
+  - Changing brittle code with weak tests or unclear behavior
+  - Need to characterize legacy behavior before changing
+  - Heavy coupling makes changes risky
 ---
 
 # Working Effectively with Legacy Code — State Machine Protocol for AI Agents

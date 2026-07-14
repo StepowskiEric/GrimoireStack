@@ -1,30 +1,18 @@
 ---
 name: cross-domain-analogy-generator
-description: "Use when stuck on a problem — break fixation by mapping the structure to biology, music, traffic, or another foreign domain and transferring insights. Generates novel solutions when standard approaches fail."
+description: Generate cross-domain analogies — break fixation by mapping problem structures to foreign fields (biology, music, traffic) and transferring insights. Use when stuck on a hard problem, when repeated attempts fail, or when local optima seem like global optima.
+triggers:
+  - Stuck on a problem with repeated failed attempts
+  - Local optima seem like global optima
+  - Creative problem-solving where standard approaches fail
+  - Need fresh perspective on a familiar problem before giving up
 ---
 
-# Cross-Domain Analogy Generator
+# Cross-Domain Analogy
 
-## Purpose
-
-Break fixation and generate novel solutions by forcing analogies from unrelated domains. Map problem structures to foreign fields (biology, music, traffic engineering, etc.) and transfer insights.
+Generate analogies from unrelated domains (biology, music, traffic engineering) to break fixation and surface novel solutions. Maps problem structures to foreign fields and transfers the structural insight back.
 
 Based on "Serendipity by Design: Evaluating the Impact of Cross-domain Mappings on Human and LLM Creativity" (arXiv:2603.19087).
-
----
-
-## When to Use
-
-- When stuck on a problem (repeated failed attempts)
-- When local optima seem like global optima
-- For creative problem-solving where standard approaches fail
-- When you need "fresh eyes" on a familiar problem
-- Before giving up on a hard problem
-
-**Don't use when:**
-- Standard solution is known and appropriate
-- Time is critical (this is exploratory, not efficient)
-- Problem is purely technical with established best practice
 
 ---
 
@@ -304,17 +292,12 @@ When stuck, ask:
 
 ## Anti-Patterns
 
-**Don't:**
-- Force analogies when standard solution works
-- Get lost in analogy (surface similarities)
-- Ignore implementation constraints
-- Use same domains repeatedly (defeats the purpose)
-
-**Do:**
 - Map structures, not surfaces
 - Combine insights from multiple domains
 - Validate feasibility before committing
 - Document the analogy (helps others understand)
+- Use analogy when standard solution is known and appropriate — it adds unnecessary complexity
+- Vary domains across uses — repeating the same domains defeats the purpose
 
 ---
 

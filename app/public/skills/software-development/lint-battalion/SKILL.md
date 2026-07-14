@@ -1,11 +1,9 @@
 ---
-description: "Use when facing 50+ linter errors that are mostly mechanical, accumulated lint debt after a rule change or migration, or pre-commit cleanup where auto-fix did not resolve everything."
-version: 1.0
-priority: high
-tags: [linting, bulk-fix, parallel-agents, code-quality, mass-remediation]
+name: lint-battalion
+description: "Batch-process 50+ linter errors as a bulk remediation problem, not 50 separate decisions."
 triggers:
   - 50+ linter errors that are mostly mechanical (missing imports, unused variables, formatting)
-  - A codebase with accumulated lint debt after a rule change or migration
+  - Accumulated lint debt after a rule change or migration
   - Pre-commit cleanup where auto-fix did not resolve everything
   - Onboarding a project to a stricter lint configuration
 ---

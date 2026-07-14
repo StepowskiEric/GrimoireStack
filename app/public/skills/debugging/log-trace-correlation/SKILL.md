@@ -1,13 +1,10 @@
 ---
 name: log-trace-correlation
-category: debugging
-description: "Map error logs and stack traces to source code to identify root cause and suggest fixes. Use when you have an error log with a stack trace and need to determine which file, function, and line caused the failure."
+description: Correlate error logs and stack traces to source code — map each frame to a file:line, identify root cause, and produce a minimal fix. Use when you have an error log with a stack trace and need to determine which file, function, and line caused the failure without guesswork.
 triggers:
   - Error log with a stack trace (or similar diagnostic output)
   - Need to determine which file, function, and line caused the failure
   - Want to avoid guesswork and speed up debugging
-version: 1.0
-last-updated: 2026-05-22
 ---
 
 # Log Trace Correlation
@@ -16,7 +13,7 @@ last-updated: 2026-05-22
 
 1. **Collect the trace**
    - Copy the full error output (including timestamps, error message, and stack trace) into a temporary file or variable.
-   - **Done when:** the full error output is stored verbatim, not paraphrased.
+   - **Done when:** the full error output is stored verbatim.
 
 2. **Normalize file paths**
    - Strip base directories, resolve ../ segments, and convert to repo-relative paths.
@@ -25,7 +22,7 @@ last-updated: 2026-05-22
 
 3. **Locate each frame**
    - For each frame (file, line, function):
-     - Search for the file if the path is not exact.
+     - Search for the file if the path is approximate.
      - Read the surrounding lines (e.g., +/- 5 lines).
    - Record the exact snippet and any relevant variable names.
    - **Done when:** every user-code frame is mapped to a real file:line in the repo, and the surrounding context has been read for each.
@@ -44,7 +41,7 @@ last-updated: 2026-05-22
 
 6. **Propose a fix**
    - Write the minimal change (e.g., add a null check, correct a parameter order, handle an edge case).
-   - **Done when:** the fix is written as a concrete code change, not a description of what to change.
+   - **Done when:** a fix is written as a concrete code change rather than a description of what to change.
 
 7. **Verify**
    - If there is a reproducing test or a way to trigger the error locally, run it to confirm the fix resolves the issue.
@@ -56,7 +53,7 @@ last-updated: 2026-05-22
 - Path mismatches: Stack traces may show paths from a different machine or build container. Always verify by searching for the file name or using fuzzy matching.
 - Optimized/minified code: Line numbers may be off; look at the function name and surrounding context.
 - Async traces: The true cause may be earlier in the call stack; walk back multiple frames if the immediate frame looks benign.
-- Third-party frames: Do not modify library code; instead adjust how you call it or wrap the call.
+- Third-party frames: Adjust your call site, not the library — modify how you call it or wrap the call.
 
 ## Example
 

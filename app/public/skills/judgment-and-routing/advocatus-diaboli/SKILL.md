@@ -1,6 +1,10 @@
 ---
-name: "advocatus-diaboli"
-description: "Use this skill when the main agent must stress-test a proposal, plan, code change, or decision against a SEPARATE adversarial sub-agent before committing. This is NOT self-critique (steelmanning). It is tool-mediated adversarial review using a genuinely different cognitive entity with no prior investment in the proposal."
+name: advocatus-diaboli
+description: "Stress-test a proposal, plan, code change, or decision against a separate adversarial sub-agent before committing."
+triggers:
+  - Need to stress-test a proposal against a genuinely different cognitive entity
+  - Self-critique (steelmanning) is insufficient
+  - High-stakes decision where anchoring to original reasoning is a risk
 ---
 
 # Skill: Advocatus Diaboli — Adversarial Review via Separate Sub-Agent

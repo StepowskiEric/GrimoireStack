@@ -1,6 +1,10 @@
 ---
 name: designing-data-intensive-applications-ai
-description: "Use when reasoning about data systems — storage choices, replication, consistency, partitioning, queues, failure modes, and operational tradeoffs. Covers backend architecture, event systems, schema changes, distributed debugging."
+description: "Reason about data systems: storage choices, replication, consistency, partitioning, queues, failure modes, and operational tradeoffs."
+triggers:
+  - Reasoning about data systems and storage choices
+  - Need to understand consistency, replication, partitioning, and failure modes
+  - Backend architecture, event systems, schema changes, distributed debugging
 ---
 
 # Designing Data-Intensive Applications for AI Agents

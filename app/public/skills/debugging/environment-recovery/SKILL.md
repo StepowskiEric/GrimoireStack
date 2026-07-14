@@ -188,9 +188,9 @@ npm run check  # or project-specific check command
 
 ---
 
-## Anti-Patterns
+## Failure Modes
 
-| Anti-Pattern | Why It Fails |
+| Failure Mode | Why It Fails |
 |-------------|-------------|
 | `npm install` as first response to any error | Installs new deps without understanding the problem; can make dependency conflicts worse |
 | `rm -rf node_modules && npm install` as first response | Nuclear option; 30-120 seconds of wasted time if the issue is a port conflict or disk space |

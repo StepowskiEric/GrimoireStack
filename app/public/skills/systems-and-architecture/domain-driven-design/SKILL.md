@@ -1,6 +1,10 @@
 ---
 name: domain-driven-design
-description: "Use when architecture must reflect the business domain — bounded contexts, ubiquitous language, aggregates, context maps, domain events, anti-corruption layers. Forces separation of concerns at the right seams."
+description: "Bounded contexts, ubiquitous language, aggregates, context maps, domain events, anti-corruption layers."
+triggers:
+  - Architecture must reflect the business domain
+  - Need to organize code around bounded contexts
+  - Need to separate concerns at domain seams
 ---
 
 # Domain-Driven Design for AI Agents

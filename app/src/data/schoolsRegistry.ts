@@ -24,7 +24,7 @@ const schools: Array<{
       {
         "name": "Accelerate for AI Delivery and Reliability Agents",
         "skill": "accelerate-ai",
-        "effect": "Use when delivery is slow or risky — improve engineering throughput and reliability by strengthening feedback, lowering batch risk, and shortening recovery time. Covers CI/CD, release engineering, platform work, and incident recovery.",
+        "effect": "Improve engineering throughput and reliability by strengthening feedback, lowering batch risk, and shortening recovery time.",
         "status": "—"
       },
       {
@@ -34,99 +34,99 @@ const schools: Array<{
         "status": "—"
       },
       {
-        "name": "Cross-Domain Analogy Generator",
+        "name": "Cross-Domain Analogy",
         "skill": "cross-domain-analogy-generator",
-        "effect": "Use when stuck on a problem — break fixation by mapping the structure to biology, music, traffic, or another foreign domain and transferring insights. Generates novel solutions when standard approaches fail.",
+        "effect": "Generate cross-domain analogies — break fixation by mapping problem structures to foreign fields (biology, music, traffic) and transferring insights. Use when stuck on a hard problem, when repeated attempts fail, or when local optima seem like global optima.",
         "status": "—"
       },
       {
         "name": "Designing Data-Intensive Applications for AI Agents",
         "skill": "designing-data-intensive-applications-ai",
-        "effect": "Use when reasoning about data systems — storage choices, replication, consistency, partitioning, queues, failure modes, and operational tradeoffs. Covers backend architecture, event systems, schema changes, distributed debugging.",
+        "effect": "Reason about data systems: storage choices, replication, consistency, partitioning, queues, failure modes, and operational tradeoffs.",
         "status": "—"
       },
       {
         "name": "Domain-Driven Design for AI Agents",
         "skill": "domain-driven-design",
-        "effect": "Use when architecture must reflect the business domain — bounded contexts, ubiquitous language, aggregates, context maps, domain events, anti-corruption layers. Forces separation of concerns at the right seams.",
+        "effect": "Bounded contexts, ubiquitous language, aggregates, context maps, domain events, anti-corruption layers.",
         "status": "—"
       },
       {
         "name": "Everything-as-Code Conceptualizer",
         "skill": "everything-as-code-conceptualizer",
-        "effect": "Use when messy human problems resist analysis — codify the system as pseudocode to reveal hidden assumptions, missing decisions, and edge cases that natural-language descriptions obscure.",
+        "effect": "Codify messy human problems as pseudocode to reveal hidden assumptions, missing decisions, and edge cases.",
         "status": "—"
       },
       {
         "name": "Feature Architecture Planning",
         "skill": "plan-feature-architecture",
-        "effect": "Plan the architecture of a feature before implementation. Decide ownership, placement, module boundaries, dependencies, and project impact before writing code.",
+        "effect": "Decide ownership, placement, module boundaries, dependencies, and project impact before writing code.",
         "status": "—"
       },
       {
-        "name": "Improving existing codebase structure",
+        "name": "Improve Codebase Architecture",
         "skill": "improve-codebase-architecture",
-        "effect": "Finds deepening opportunities informed by the domain language in CONTEXT.md and decisions in docs/adr/.",
+        "effect": "Find deepening opportunities informed by the domain language in CONTEXT.md and decisions in docs/adr/.",
         "status": "—"
       },
       {
         "name": "Mission",
         "skill": "architecture-evolution-review",
-        "effect": "Review the repository as a living system. Detect architectural drift, feature erosion, and long-term maintenance risks before they become expensive.",
+        "effect": "Review the repository as a living system. Detect architectural drift, feature erosion, and long-term maintenance risks.",
         "status": "—"
       },
       {
         "name": "Release It! Stability Patterns for AI Agents",
         "skill": "release-it-stability",
-        "effect": "Use when reasoning about distributed-system resilience — circuit breakers, bulkheads, timeouts, load shedding, steady-state hygiene for production failure modes. Stops cascading failures before they spread.",
+        "effect": "Circuit breakers, bulkheads, timeouts, load shedding, steady-state hygiene for production failure modes.",
         "status": "—"
       },
       {
         "name": "Security Review Protocol",
         "skill": "security-review-protocol",
-        "effect": "Fuse of Security Threat Modeling (STRIDE) + Unsafe Control Actions + Vibe Coding Security Hardening. Three security lenses merged: attack surface analysis, hazardous operation checking, and LLM-specific vulnerability audit.",
+        "effect": "Three security lenses merged: attack surface analysis, hazardous operation checking, and LLM-specific vulnerability audit.",
         "status": "—"
       },
       {
         "name": "Security Threat Modeling for AI Agents",
         "skill": "security-threat-modeling",
-        "effect": "Use when handling auth, secrets, user input, or sensitive data — STRIDE threat analysis, attack-surface mapping, trust-boundary reasoning, and attacker-perspective review before shipping security-relevant changes.",
+        "effect": "STRIDE threat analysis, attack-surface mapping, trust-boundary reasoning, and attacker-perspective review.",
         "status": "—"
       },
       {
         "name": "SRE / Error Budget Thinking for AI Agents",
         "skill": "sre-error-budget",
-        "effect": "Use when reasoning about reliability vs velocity — SLOs, error budgets, toil budgets, and change-velocity governance. Spend the budget on speed when healthy; freeze changes when depleted.",
+        "effect": "SLOs, error budgets, toil budgets, and change-velocity governance. Spend the budget on speed when healthy; freeze changes when depleted.",
         "status": "—"
       },
       {
         "name": "System Architecture Audit for AI Agents",
         "skill": "system-architecture-audit",
-        "effect": "Use when auditing an existing system for architectural weaknesses — 4-phase audit fusing Thinking in Systems, DDD, DDIA, and Release It. Reveals structural problems before they cascade.",
+        "effect": "4-phase audit fusing Thinking in Systems, DDD, DDIA, and Release It. Reveals structural problems before they cascade.",
         "status": "—"
       },
       {
         "name": "Team Topologies for Multi-Agent Software Systems",
         "skill": "team-topologies-ai",
-        "effect": "Use when organizing work across multiple agents or teams — stream-aligned, platform, enabling, and complicated-subsystem boundaries with explicit interaction modes. Prevents God Agents and platform empires.",
+        "effect": "Stream-aligned, platform, enabling, and complicated-subsystem boundaries with explicit interaction modes.",
         "status": "—"
       },
       {
         "name": "The Goal for AI Engineering Agents",
         "skill": "the-goal-theory-of-constraints-ai",
-        "effect": "Use when throughput is capped or work piles up — find the one constraint, ignore non-constraints, exploit then elevate it, repeat when it moves. Stops micro-optimization that does not move total throughput.",
+        "effect": "Find the one constraint, ignore non-constraints, exploit then elevate it, repeat when it moves.",
         "status": "—"
       },
       {
         "name": "Thinking in Systems — State Machine Protocol for AI Agents",
         "skill": "thinking-in-systems-state-machine",
-        "effect": "Use when tasks involve feedback loops, delayed effects, or multi-step cascades — model stocks, flows, delays, leverage points, and blast radius before touching the system. State-machine protocol, not a mindset.",
+        "effect": "Model stocks, flows, delays, leverage points, and blast radius before touching the system.",
         "status": "—"
       },
       {
         "name": "Vibe Coding Security Hardening",
         "skill": "vibe-coding-security-hardening",
-        "effect": "Use before deploying AI-generated apps — systematic checklist for the vulnerabilities LLMs reliably introduce: exposed secrets, missing RLS, broken auth, injection flaws, insecure defaults.",
+        "effect": "Systematic checklist for vulnerabilities LLMs reliably introduce: exposed secrets, missing RLS, broken auth, injection flaws, insecure defaults.",
         "status": "—"
       }
     ]
@@ -140,79 +140,79 @@ const schools: Array<{
       {
         "name": "Chaos Detector",
         "skill": "chaos-detector",
-        "effect": "Use when multi-agent or extended reasoning looks unstable — compute empirical Lyapunov exponents over token trajectories and flag when small perturbations are amplifying into divergent conclusions.",
+        "effect": "Compute empirical Lyapunov exponents over token trajectories and flag when small perturbations amplify into divergent conclusions.",
         "status": "—"
       },
       {
         "name": "Claim Verification Reasoning",
         "skill": "claim-verification-reasoning",
-        "effect": "Use when multi-step reasoning contains unverified claims — atomic decomposition with confidence labels and tool-grounded verification.",
+        "effect": "Atomic decomposition with confidence labels and tool-grounded verification.",
         "status": "—"
       },
       {
         "name": "Context Density Operator",
         "skill": "context-density-operator",
-        "effect": "Use when context is bloated with low-signal content — maximize decision-relevant information per token via hierarchical memory, on-demand detail expansion, and redundant-context pruning.",
+        "effect": "Maximize decision-relevant information per token via hierarchical memory, on-demand detail expansion, and redundant-context pruning.",
         "status": "—"
       },
       {
         "name": "Context Rot Pruner",
         "skill": "context-rot-pruner",
-        "effect": "Apply exponential decay to context messages so old, unreferenced content loses weight and gets pruned before the context window overflows. Extends useful context life by 2-3x.",
+        "effect": "Apply exponential decay to context messages so old, unreferenced content gets pruned before the context window overflows.",
         "status": "—"
       },
       {
         "name": "CoT Pruning Reasoning",
         "skill": "cot-pruning-reasoning",
-        "effect": "Use when chain-of-thought is consuming budget without changing conclusions — two-pass prune retains only the steps that move the answer (coarse step-level, then fine token-level).",
+        "effect": "Two-pass prune retains only the steps that move the answer (coarse step-level, then fine token-level).",
         "status": "—"
       },
       {
         "name": "Faithfulness-Aware Reasoning",
         "skill": "faithfulness-aware-reasoning",
-        "effect": "Use when reasoning reads plausibly but should not be trusted — detect and prevent faithfulness hallucinations where claims aren't logically entailed by the premises.",
+        "effect": "Detect and prevent faithfulness hallucinations where claims aren't logically entailed by the premises.",
         "status": "—"
       },
       {
         "name": "Hallucination Anchor Chain",
         "skill": "hallucination-anchor-chain",
-        "effect": "Use when factual claims risk hallucination — anchor every claim to a verified source. Unanchored claims are marked unverified and hidden. Builds a verifiable chain of evidence.",
+        "effect": "Anchor every factual claim to a verified source — unanchored claims are hidden. Builds a verifiable chain of evidence. Use when accuracy matters in research, code generation with external APIs, multi-step reasoning where errors compound, or any domain where wrong facts cause harm.",
         "status": "—"
       },
       {
         "name": "Prism",
         "skill": "prism",
-        "effect": "Calibrate, compress, verify — force numeric confidence on each claim, compress to its essence, then verify the compression reconstructs the original. Use when you need to verify understanding before acting, catch overconfidence, or distill a complex situation to its core.",
+        "effect": "Force numeric confidence on each claim, compress to its essence, then verify the compression reconstructs the original.",
         "status": "—"
       },
       {
         "name": "Reasoning Integrity Chain for AI Agents",
         "skill": "reasoning-integrity-chain",
-        "effect": "Use when multi-step reasoning risks hallucination — escalating 4-phase verification chain (faithfulness, claims, contradiction, selective halt).",
+        "effect": "Escalating 4-phase verification chain: faithfulness, claims, contradiction, selective halt.",
         "status": "—"
       },
       {
         "name": "Reasoning Verification Hybrid",
         "skill": "reasoning-verification-hybrid",
-        "effect": "Use when reasoning conclusions must survive challenge — claim verification, backward contradiction, and calibrated confidence.",
+        "effect": "Claim verification, backward contradiction, and calibrated confidence.",
         "status": "—"
       },
       {
         "name": "Selective Halt Reasoning",
         "skill": "selective-halt-reasoning",
-        "effect": "Use when reasoning is generating waste — monitor for semantic stabilization and halt early when consecutive steps converge on equivalent conclusions, instead of running to a fixed budget.",
+        "effect": "Monitor for semantic stabilization and halt early when consecutive steps converge on equivalent conclusions.",
         "status": "—"
       },
       {
         "name": "Self-Contradiction Trap",
         "skill": "self-contradiction-trap",
-        "effect": "Maintain a belief store of claims made during a session. Detect when new claims contradict existing ones, and force resolution before continuing. Prevents agents from contradicting themselves.",
+        "effect": "Maintain a belief store of claims made during a session. Detect contradictions and force resolution before continuing.",
         "status": "—"
       },
       {
         "name": "Token Budget Operator",
         "skill": "token-budget-operator",
-        "effect": "Master token-efficiency protocol that orchestrates context compression, CoT pruning, selective halting, and SOP capture in sequence. For long-horizon tasks where token burn is the bottleneck.",
+        "effect": "Orchestrate context compression, CoT pruning, selective halting, and SOP capture in sequence.",
         "status": "—"
       }
     ]
@@ -226,13 +226,13 @@ const schools: Array<{
       {
         "name": "Active Inference Agent",
         "skill": "active-inference-agent",
-        "effect": ">",
+        "effect": "MCP server implementing a practical Active Inference agent based on Friston's Free Energy Principle.",
         "status": "—"
       },
       {
         "name": "Evolutionary Tool Composer",
         "skill": "evolutionary-tool-composer",
-        "effect": ">",
+        "effect": "MCP server that runs an evolutionary algorithm to discover and optimize agent tool chains, prompt strategies, and code solutions.",
         "status": "—"
       }
     ]
@@ -246,41 +246,41 @@ const schools: Array<{
       {
         "name": "Agent Memory Hygiene for AI Agents",
         "skill": "agent-memory-hygiene",
-        "effect": "Use when memory persists across sessions — control what is stored, retrieved, trusted, and discarded to avoid stale-context actions.",
+        "effect": "Control what is stored, retrieved, trusted, and discarded to avoid stale-context actions.",
         "status": "—"
       },
       {
         "name": "Agentic Patterns Orchestrator — State Machine Protocol for AI Agents",
         "skill": "agentic-design-patterns-orchestrator-state-machine",
-        "effect": "Use when the task is non-trivial and one-shot replies are insufficient — enforce a phased workflow with explicit gates between classify, plan, execute, reflect, and verify.",
+        "effect": "Enforce a phased workflow with explicit gates between classify, plan, execute, reflect, and verify.",
         "status": "—"
       },
       {
         "name": "Agentic Patterns Orchestrator for AI Agents",
         "skill": "agentic-design-patterns-orchestrator",
-        "effect": "Use when treating a task as a single-shot reply would lose reliability — adopt pattern-based orchestration with planning, routing, reflection, and recovery.",
+        "effect": "Adopt pattern-based orchestration with planning, routing, reflection, and recovery.",
         "status": "—"
       },
       {
         "name": "Jury",
         "skill": "jury",
-        "effect": "Argue, then structure the disagreement — spawn parallel perspectives with conflicting goals, force them to engage, output a conflict graph that reveals what actually matters. Use when reasonable options exist and the choice isn't obvious.",
+        "effect": "Spawn parallel perspectives with conflicting goals, force them to engage, output a conflict graph that reveals what actually matters.",
         "status": "—"
       },
       {
         "name": "Monte Carlo Tree Search for AI Agents",
         "skill": "monte-carlo-tree-search",
-        "effect": "Use when several strategies compete for limited reasoning budget — allocate search effort to branches that earn it through probes and scoring.",
+        "effect": "Allocate search effort to branches that earn it through probes and scoring.",
         "status": "—"
       },
       {
         "name": "Navigator",
         "skill": "navigator",
-        "effect": "Map, distill, retrieve — Scout reads code, Thought-Retriever stores the reasoning trail so future sessions resume from where you stopped. Use when the codebase is large, unfamiliar, or the agent keeps re-asking the same questions.",
+        "effect": "Scout reads code, Thought-Retriever stores the reasoning trail so future sessions resume from where you stopped.",
         "status": "—"
       },
       {
-        "name": "Octopus — Distributed Multi-Agent Orchestration",
+        "name": "Octopus",
         "skill": "octopus",
         "effect": "Coordinate parallel sub-agents with bounded concurrency — define shared contracts, delegate with auto-healing arms, retract on failure. Use when 3+ workstreams share a contract and parallel speedup beats coordination overhead.",
         "status": "—"
@@ -288,61 +288,61 @@ const schools: Array<{
       {
         "name": "Pre-Flight Intent Verification",
         "skill": "pre-flight-intent-verification",
-        "effect": "Pre-action gate before any significant task — surface the critical assumption, crystallize intent into testable spec, ground facts before acting. Use when a request has ambiguity, blast radius, or irreversible side effects.",
+        "effect": "Surface the critical assumption, crystallize intent into testable spec, ground facts before acting.",
         "status": "—"
       },
       {
         "name": "Rashomon-Triad Hybrid",
         "skill": "rashomon-triad-hybrid",
-        "effect": "Surface genuine disagreement — parallel perspectives with conflicting goals run independent abductive-deductive-inductive cycles, then argue via attack graph. Returns selection, composition, or conflict-surfacing output. Use for high-stakes trade-offs without a single correct answer.",
+        "effect": "Parallel perspectives with conflicting goals run independent abductive-deductive-inductive cycles, then argue via attack graph.",
         "status": "—"
       },
       {
         "name": "Scout",
         "skill": "scout",
-        "effect": "Fast context scout — a lightweight sub-agent reads files and returns only distilled, relevant context for the main model. Saves tokens, reduces distraction, and prevents the main model from getting lost in large codebases.",
+        "effect": "Scout context — a fast sub-agent reads files and returns only distilled relevant context, saving tokens and reducing distraction for the main model. Use when the codebase is large, you need scoped findings rather than raw file dumps, or the main task needs file context you don't already have.",
         "status": "—"
       },
       {
         "name": "Separation of Concerns for AI Agent Orchestration",
         "skill": "separation-of-concerns",
-        "effect": "Use when a multi-step task risks concern contamination — keep planning, diagnosis, observation, and execution phases intellectually isolated.",
+        "effect": "Keep planning, diagnosis, observation, and execution phases intellectually isolated.",
         "status": "—"
       },
       {
         "name": "Socratic Clarification Protocol for AI Agents",
         "skill": "socratic-clarification",
-        "effect": "Use when a task is ambiguous or high-stakes — surface the most critical hidden assumption before committing to execution.",
+        "effect": "Surface the most critical hidden assumption before committing to execution.",
         "status": "—"
       },
       {
         "name": "SOP Evolution Memory",
         "skill": "sop-evolution-memory",
-        "effect": "Use after repeated successes on a class of tasks — distill trajectories into reusable Standard Operating Procedures (SOPs). Future similar tasks load the SOP instead of the full history.",
+        "effect": "Distill trajectories into reusable Standard Operating Procedures (SOPs) after repeated successes on a class of tasks.",
         "status": "—"
       },
       {
         "name": "Sub-Agent Composer — High-Context Delegation",
         "skill": "subagent-composer",
-        "effect": "Compose high-context sub-agent briefs — skill loading, explicit boundaries, success criteria, stop rules. Use when delegating to sub-agents to eliminate first-pass failures from incomplete briefs.",
+        "effect": "Compose high-context sub-agent briefs with skill loading, explicit boundaries, success criteria, and stop rules.",
         "status": "—"
       },
       {
         "name": "Sub-Agent Laws",
         "skill": "subagent-laws",
-        "effect": "Standing behavioral constraints every sub-agent must follow. Loaded by subagent-composer as mandatory policy alongside task-specific skills. Use when composing briefs to enforce scope discipline, test integrity, and communication standards.",
+        "effect": "Standing behavioral constraints every sub-agent must follow. Enforce scope discipline, test integrity, and communication standards.",
         "status": "—"
       },
       {
         "name": "Thought-Retriever with Coppermind",
         "skill": "thought-retriever-coppermind",
-        "effect": "Use when sub-agents must learn across sessions — store intermediate reasoning as retrievable thoughts in the Coppermind memory layers.",
+        "effect": "Store intermediate reasoning as retrievable thoughts in the Coppermind memory layers.",
         "status": "—"
       },
       {
         "name": "Weak-Link Detection for Multi-Agent Systems",
         "skill": "weak-link-detection-multi-agent",
-        "effect": "Identify and isolate the weakest reasoning chain in multi-agent outputs before aggregation. Prevents error amplification when one agent fails. Use when aggregating outputs and one bad agent could poison the collective result.",
+        "effect": "Identify and isolate the weakest reasoning chain in multi-agent outputs before aggregation.",
         "status": "—"
       }
     ]
@@ -356,121 +356,121 @@ const schools: Array<{
       {
         "name": "1. Run existing tests",
         "skill": "llm-pre-push-review",
-        "effect": "Use before pushing AI-authored code — checklist and protocol for catching systematic LLM coding failures: overcorrection, hallucinated logic, silent vulnerabilities, missing edge cases, context-ignorant reviews.",
+        "effect": "Checklist and protocol for catching systematic LLM coding failures: overcorrection, hallucinated logic, silent vulnerabilities, missing edge cases.",
         "status": "—"
       },
       {
         "name": "1. Tests",
         "skill": "pre-deployment-gate",
-        "effect": "Use before deploying any code to production or before pushing AI-authored code.",
+        "effect": "Complete pre-deployment checklist merging LLM Pre-Push Review with Vibe Coding Security Hardening.",
         "status": "—"
       },
       {
         "name": "API Design and Backward Compatibility",
         "skill": "api-design-backward-compatibility",
-        "effect": "Use when APIs, schemas, or contracts must evolve without breaking clients — contract-first design and additive-only change discipline.",
+        "effect": "Contract-first design and additive-only change discipline for evolving APIs without breaking clients.",
         "status": "—"
       },
       {
         "name": "API Surface Anchoring",
         "skill": "api-surface-anchoring",
-        "effect": "Use when using any external library, SDK, or API you are not 100% sure of, libraries released after your LLM's training cutoff, or niche/low-training-count libraries.",
+        "effect": "Verify every external API call against current docs to prevent hallucinated APIs.",
         "status": "—"
       },
       {
-        "name": "Codebase Divide-and-Conquer Search",
-        "skill": "codebase-divide-conquer-search",
-        "effect": "Use when the codebase is too large to fit in context (>50K tokens), grep produces too many candidates, you need to find code by behavior not by name, or the search target could be in any of several modules.",
-        "status": "—"
-      },
-      {
-        "name": "Coordinated Change",
-        "skill": "coordinated-change",
-        "effect": "Use when a fix or feature requires touching 2+ files that must stay consistent — types, implementation, tests, schema, config.",
-        "status": "—"
-      },
-      {
-        "name": "Critical System Interrogation",
-        "skill": "critical-system-interrogation",
-        "effect": "Use when stress-testing a critical system path (auth pipelines, payment flows, data validation) for correctness, race conditions, security flaws, and architectural integrity.",
-        "status": "—"
-      },
-      {
-        "name": "Data fetching in a React/Expo app",
-        "skill": "native-data-fetching",
-        "effect": "Covers fetch API, React Query, SWR, error handling, caching, offline support, and Expo Router data loaders.",
-        "status": "—"
-      },
-      {
-        "name": "Dev Diagnostics MCP",
-        "skill": "dev-diagnostics-mcp",
-        "effect": "Use when running diagnostics across multiple tools (eslint, tsc, vitest, pytest, biome, ruff) or comparing before/after fix diagnostics for contamination.",
-        "status": "—"
-      },
-      {
-        "name": "ESLint",
-        "skill": "lint-battalion",
-        "effect": "Use when facing 50+ linter errors that are mostly mechanical, accumulated lint debt after a rule change or migration, or pre-commit cleanup where auto-fix did not resolve everything.",
-        "status": "—"
-      },
-      {
-        "name": "General quality or correctness doubts",
-        "skill": "code-review-excellence",
-        "effect": "Provides constructive feedback, catches bugs early, and fosters knowledge sharing while maintaining team morale.",
-        "status": "—"
-      },
-      {
-        "name": "Identify the detached commits",
-        "skill": "git-surgery",
-        "effect": "Use when the repo is in a state you don't fully understand, git status output scares you, or you need to recover from a local git disaster.",
-        "status": "—"
-      },
-      {
-        "name": "Knowledge Graph",
+        "name": "Code Knowledge Graph MCP",
         "skill": "code-knowledge-graph-mcp",
         "effect": "MCP server with structured symbol and call-graph queries. Navigate code by structure, not by string search.",
         "status": "—"
       },
       {
-        "name": "Review Ladder Plus",
-        "skill": "review-ladder-plus",
-        "effect": "Use after completing any non-trivial coding task, before merging code that touches security/auth/data/concurrency, or when upgrading from casual self-review to production-grade QA.",
+        "name": "Code Review Excellence",
+        "skill": "code-review-excellence",
+        "effect": "Provide constructive feedback, catch bugs early, and foster knowledge sharing while maintaining team morale.",
         "status": "—"
       },
       {
-        "name": "Review Lens",
+        "name": "Codebase Divide-and-Conquer Search",
+        "skill": "codebase-divide-conquer-search",
+        "effect": "Divide a large codebase into manageable chunks and search each systematically.",
+        "status": "—"
+      },
+      {
+        "name": "Coordinated Change",
+        "skill": "coordinated-change",
+        "effect": "Ensure consistency when a fix or feature requires touching 2+ files that must stay consistent.",
+        "status": "—"
+      },
+      {
+        "name": "Critical System Interrogation",
+        "skill": "critical-system-interrogation",
+        "effect": "Stress-test critical system paths (auth pipelines, payment flows, data validation) for correctness, race conditions, security flaws, and architectural integrity.",
+        "status": "—"
+      },
+      {
+        "name": "Dev Diagnostics MCP",
+        "skill": "dev-diagnostics-mcp",
+        "effect": "Run diagnostics across multiple tools (eslint, tsc, vitest, pytest, biome, ruff) and compare before/after for contamination.",
+        "status": "—"
+      },
+      {
+        "name": "ESLint",
+        "skill": "lint-battalion",
+        "effect": "Batch-process 50+ linter errors as a bulk remediation problem, not 50 separate decisions.",
+        "status": "—"
+      },
+      {
+        "name": "Identify the detached commits",
+        "skill": "git-surgery",
+        "effect": "Recover from local git disasters: detached HEAD, botched rebase, accidental commits, merge conflicts.",
+        "status": "—"
+      },
+      {
+        "name": "Native Data Fetching",
+        "skill": "native-data-fetching",
+        "effect": "Covers fetch API, React Query, SWR, error handling, caching, offline support, and Expo Router data loaders.",
+        "status": "—"
+      },
+      {
+        "name": "Review Changes",
         "skill": "review-changes",
-        "effect": "Structured review checklist for evaluating code changes systematically rather than reading through aimlessly.",
+        "effect": "Structured review checklist for evaluating code changes systematically.",
+        "status": "—"
+      },
+      {
+        "name": "Review Ladder Plus",
+        "skill": "review-ladder-plus",
+        "effect": "Multi-agent code review ladder for production-grade QA: security, auth, data, concurrency.",
         "status": "—"
       },
       {
         "name": "Safe Refactor",
         "skill": "refactor-safely",
-        "effect": "Characterization testing to capture existing behavior, then bounded changes with immediate verification. Safe transformation of untested code.",
+        "effect": "Characterization testing to capture existing behavior, then bounded changes with immediate verification.",
         "status": "—"
       },
       {
         "name": "Super Review TypeScript",
         "skill": "super-review-typescript",
-        "effect": "Use when reviewing AI-authored TypeScript — targets the five LLM-specific failure modes: security vulnerabilities, hallucinated APIs, logic errors, type-safety violations, architectural decay.",
+        "effect": "Targets the five LLM-specific failure modes: security vulnerabilities, hallucinated APIs, logic errors, type-safety violations, architectural decay.",
         "status": "—"
       },
       {
         "name": "Verified API Workflow",
         "skill": "verified-api-workflow",
-        "effect": "Use when writing code that calls external libraries/APIs — every external API call must be traceable to a doc you actually checked.",
+        "effect": "Every external API call must be traceable to a doc you actually checked.",
         "status": "—"
       },
       {
         "name": "Verified Code Synthesizer",
         "skill": "verified-synthesize",
-        "effect": "Use when code correctness must be proven, not tested — critical bugs, pre-refactor spec locking, or API contracts requiring formal verification.",
+        "effect": "Verify code correctness through formal Dafny specifications — given a natural language spec, produce provably correct code with pre/postconditions and loop invariants. Use for critical bugs in security, memory safety, or financial calculations; pre-refactor spec locking; or API contracts across module boundaries.",
         "status": "—"
       },
       {
         "name": "Verify Before Integrate",
         "skill": "verify-before-integrate",
-        "effect": "Use when integrating research or external docs into code — verify the actual system behavior rather than matching abstract terminology.",
+        "effect": "Verify the actual system behavior rather than matching abstract terminology when integrating research or external docs.",
         "status": "—"
       }
     ]
@@ -484,55 +484,61 @@ const schools: Array<{
       {
         "name": "A Philosophy of Software Design — State Machine Protocol for AI Agents",
         "skill": "philosophy-of-software-design-state-machine",
-        "effect": "Use when managing complexity or designing modules — design deeper modules, avoid shallow abstraction sprawl, declare unknowns and blast radius, bound change scope, stop explicitly.",
-        "status": "—"
-      },
-      {
-        "name": "Analogy and Transfer Reasoning for AI Agents",
-        "skill": "how-to-solve-it-analogy",
-        "effect": "Use when the problem resembles one solved before — deliberately search for the best-matching analog, verify the structural mapping holds, then transfer the prior solution. Companion to first-principles thinking.",
+        "effect": "Design deeper modules, avoid shallow abstraction sprawl, declare unknowns and blast radius, bound change scope.",
         "status": "—"
       },
       {
         "name": "Blueprint",
         "skill": "blueprint",
-        "effect": "Type the problem — codify messy situations into schema so contradictions, gaps, and silent assumptions become impossible to ignore. Use when vague problems keep being redefined or stakeholders talk past each other.",
+        "effect": "Blueprint a messy problem into formal schema — types, operations, events, constraints — so contradictions, gaps, and hidden assumptions surface as bugs. Use when scope keeps expanding, stakeholders talk past each other, or informal requirements need precision.",
         "status": "—"
       },
       {
         "name": "Checklist Manifesto — State Machine Protocol for AI Agents",
         "skill": "checklist-manifesto",
-        "effect": "Use when a high-stakes procedure demands more than expertise — build the smallest useful checklist, gate execution on checklist completion, stop cleanly and escalate if it cannot be cleared.",
+        "effect": "Build the smallest useful checklist for high-stakes procedures, gate execution on checklist completion, stop cleanly and escalate if it cannot be cleared.",
         "status": "—"
       },
       {
         "name": "Cognitive Friction Governor",
         "skill": "cognitive-friction-governor",
-        "effect": "Use when deliberation is miscalibrated — over-thinking trivial problems, under-thinking complex ones, or paralyzed by analysis. Assign deliberation budgets; step costs friction; budget exhausted forces decision.",
+        "effect": "Assign deliberation budgets to tasks; each reasoning step consumes friction; budget exhausted forces decision.",
         "status": "—"
       },
       {
         "name": "Estimate token cost of files",
         "skill": "context-budget-operator",
-        "effect": "Manage finite context windows explicitly. Track token budget, classify information needs, compress aggressively, and decide breadth-vs-depth based on remaining runway. Prevents silent context overflow and instruction dropout.",
+        "effect": "Track token budget, classify information needs, compress aggressively, and decide breadth-vs-depth based on remaining runway.",
+        "status": "—"
+      },
+      {
+        "name": "How to Solve It — Analogy",
+        "skill": "how-to-solve-it-analogy",
+        "effect": "Apply analogy to a problem — find a structurally related solved problem, map the correspondence, transfer the solution, adapt it. Use when a problem resembles one solved in another domain, when a design pattern from elsewhere seems applicable, or when brute-force analysis needs a structural guide.",
         "status": "—"
       },
       {
         "name": "How to Solve It — State Machine Protocol for AI Agents",
         "skill": "how-to-solve-it-state-machine",
-        "effect": "Use when solving a hard problem under uncertainty — frame the problem, gather evidence, explore via hypothesis, plan, reflect. Designed to prevent premature coding.",
+        "effect": "Frame the problem, gather evidence, explore via hypothesis, plan, reflect. Designed to prevent premature coding.",
+        "status": "—"
+      },
+      {
+        "name": "Intent Specification Protocol",
+        "skill": "intent-specification-protocol",
+        "effect": "Crystallize vague coding requests into precise, testable specifications before writing any code. Prevents the Intent-Behavior Mirroring Effect.",
         "status": "—"
       },
       {
         "name": "Iterative Spec Authoring",
         "skill": "iterative-spec-authoring",
-        "effect": "Use when a spec must be defensible — author a detailed technical spec grounded in research, refine through up to 3 judge-LLM review cycles, then present to the user for final approval.",
+        "effect": "Author a detailed technical spec grounded in research, refine through up to 3 judge-LLM review cycles, then present to the user for final approval.",
         "status": "—"
       },
       {
         "name": "Keyword-Agnostic Logic Locator",
         "skill": "keyword-agnostic-logic-locator",
-        "effect": "Use when grep and naming-based search fail — find code by structural relationships and logical queries via a Datalog-style knowledge graph over call graphs, data flows, and type hierarchies.",
+        "effect": "Find code by structural relationships and logical queries via a Datalog-style knowledge graph over call graphs, data flows, and type hierarchies.",
         "status": "—"
       },
       {
@@ -544,13 +550,13 @@ const schools: Array<{
       {
         "name": "Long Task Survival Kit",
         "skill": "long-task-survival-kit",
-        "effect": "Fuse of Assumption Grounding + Trajectory Guard + Context Budget Operator. Recurring checkpoint protocol that prevents agent decay on complex tasks: context overflow, failure spirals, and hallucinated facts.",
+        "effect": "Recurring checkpoint protocol that prevents agent decay on complex tasks: context overflow, failure spirals, and hallucinated facts.",
         "status": "—"
       },
       {
         "name": "OODA Loop — State Machine Protocol for AI Agents",
         "skill": "ooda-loop-state-machine",
-        "effect": "Use when conditions are changing rapidly, adversarially, or unpredictably — Observe, Orient, Decide, Act, Loop. Maintains decision tempo against an environment that shifts between every move.",
+        "effect": "Observe, Orient, Decide, Act, Loop. Maintains decision tempo against an environment that shifts between every move.",
         "status": "—"
       },
       {
@@ -562,103 +568,103 @@ const schools: Array<{
       {
         "name": "Plan with Judge",
         "skill": "plan-with-judge",
-        "effect": "Create an implementation plan in JSONL format, then iteratively improve it using a stronger user-specified model as a judge until the plan is approved.",
+        "effect": "Create an implementation plan in JSONL format, then iteratively improve it using a stronger model as a judge until approved.",
         "status": "—"
       },
       {
         "name": "Process Reward Model Protocol",
         "skill": "process-reward-model-protocol",
-        "effect": "Use when reasoning may have committed to a wrong path too early — self-assign process rewards per step and backtrack when cumulative reward drops below threshold.",
+        "effect": "Self-assign process rewards per step and backtrack when cumulative reward drops below threshold.",
         "status": "—"
       },
       {
         "name": "Refactoring — State Machine Protocol for AI Agents",
         "skill": "refactoring-state-machine",
-        "effect": "Use when improving structure without drifting into endless cleanup — characterize behavior, transform in bounded slices, re-test. Stops refactor loops.",
+        "effect": "Characterize behavior, transform in bounded slices, re-test. Stops refactor loops.",
         "status": "—"
       },
       {
         "name": "Requirement Crystallization Protocol",
         "skill": "requirement-crystallization-protocol",
-        "effect": "Fuse of Socratic Clarification + Intent Specification Protocol. Surfaces the critical assumption, then crystallizes vague requests into locked, testable specs before coding begins.",
+        "effect": "Surface the critical assumption, then crystallize vague requests into locked, testable specs before coding begins.",
         "status": "—"
       },
       {
         "name": "Retrospective — After-Action Learning from Real Outcomes",
         "skill": "retrospective",
-        "effect": "Use this skill after an incident, shipped feature, completed project, or any significant outcome to systematically learn from what happened. The natural counterpart to pre-mortem: before execution you imagine failure; after execution you examine the real outcome.",
+        "effect": "After an incident, shipped feature, or completed project, systematically learn from what happened.",
         "status": "—"
       },
       {
         "name": "Speculative Drafting with Verification",
         "skill": "speculative-drafting-verification",
-        "effect": "Use when a single candidate risks a local minimum — generate multiple solution branches in parallel, verify each against hard constraints, select the best.",
+        "effect": "Generate multiple solution branches in parallel, verify each against hard constraints, select the best.",
         "status": "—"
       },
       {
         "name": "Speculative Exploration Protocol for AI Agents",
         "skill": "speculative-exploration-protocol",
-        "effect": "Use when the best reasoning path is unclear — branch into N candidates, score with process rewards, prune low-reward branches, then verify the best candidate against hard constraints. Prevents first-branch lock-in.",
+        "effect": "Branch into N candidates, score with process rewards, prune low-reward branches, verify the best against hard constraints.",
         "status": "—"
       },
       {
         "name": "Split Large Files — Boundary-Driven Extraction Protocol",
         "skill": "split-large-files",
-        "effect": "Split large files along change boundaries, not line counts. Investigate before extracting, require strong architectural signals, and reject splits that increase coupling.",
+        "effect": "Split large files along change boundaries, not line counts. Investigate before extracting, require strong architectural signals.",
         "status": "—"
       },
       {
         "name": "Step-Level Verification Protocol",
         "skill": "step-level-verification-protocol",
-        "effect": "Use when multi-step reasoning risks error propagation — verify each step before proceeding so a wrong step doesn't cascade into a chain of unjustified conclusions.",
+        "effect": "Verify each step before proceeding so a wrong step doesn't cascade into a chain of unjustified conclusions.",
         "status": "—"
       },
       {
         "name": "Structured Feature Planning",
         "skill": "structured-feature-planning",
-        "effect": "Use when implementing correctness-critical features — read files, search for patterns, self-review twice, then execute. Governing rule: never hallucinate when confused.",
+        "effect": "Read files, search for patterns, self-review twice, then execute. Never hallucinate when confused.",
         "status": "—"
       },
       {
         "name": "Summarize — Emergency Stop + Handoff Report",
         "skill": "summarize",
-        "effect": "Use when session quality is degraded, you need to hand off mid-work, or you must preserve context before a /new. Emergency stop + perfect handoff report so the next agent loses nothing.",
+        "effect": "Emergency stop + perfect handoff report so the next agent loses nothing.",
         "status": "—"
       },
       {
         "name": "The Pragmatic Programmer — State Machine Protocol for AI Agents",
         "skill": "pragmatic-programmer-state-machine",
-        "effect": "Use when working pragmatically in a real system — bounded changes, reversible choices, automation over repeated toil, root-cause fixes over symptom patches, practical scope control.",
+        "effect": "Bounded changes, reversible choices, automation over repeated toil, root-cause fixes over symptom patches.",
         "status": "—"
       },
       {
         "name": "Toyota Kata — State Machine Protocol for Continuous-Improvement AI Agents",
         "skill": "toyota-kata-state-machine",
-        "effect": "Use when improving a system through disciplined iteration instead of one large speculative change — frame target, analyze current, attack one obstacle at a time, run a PDCA experiment, learn, repeat.",
+        "effect": "Frame target, analyze current, attack one obstacle at a time, run a PDCA experiment, learn, repeat.",
         "status": "—"
       },
       {
         "name": "Trajectory Guard — Detect and Recover from Failure Spirals",
         "skill": "trajectory-guard",
-        "effect": "Runtime meta-monitoring protocol that detects agent failure spirals — repetitive loops, specification drift, and stuck trajectories — and forcibly redirects strategy. Based on Wink (2602.17037) misbehavior taxonomy and PALADIN (2509.25238) recovery patterns.",
+        "effect": "Detect agent failure spirals — repetitive loops, specification drift, and stuck trajectories — and forcibly redirect strategy.",
         "status": "—"
       },
       {
         "name": "Verify a batch of assumptions from a file",
         "skill": "assumption-grounding",
-        "effect": "Prevent hallucinated facts from compounding into costly errors. State every assumption explicitly, verify with the cheapest possible check, and only proceed on confirmation. Based on Chain-of-Verification research.",
+        "effect": "State every assumption explicitly, verify with the cheapest possible check, and only proceed on confirmation.",
         "status": "—"
       },
       {
         "name": "Working Effectively with Legacy Code — State Machine Protocol for AI Agents",
         "skill": "working-effectively-with-legacy-code-state-machine",
-        "effect": "Use when changing brittle code with weak tests or unclear behavior — characterize legacy behavior, create seams, transform in bounded slices with anti-loop protection.",
+        "effect": "Characterize legacy behavior, create seams, transform in bounded slices with anti-loop protection.",
         "status": "—"
       },
       {
         "name": "Zero-Defect Protocol",
         "skill": "zero-defect-protocol",
-        "effect": "Use for mission-critical features where a single bug, security flaw, or misalignment could cause catastrophic failure — 14-phase protocol: data contracting, invariant mapping, red-team critique, pre-mortem before any code is written.",
+        "effect": "14-phase protocol for mission-critical features: data contracting, invariant mapping, red-team critique, pre-mortem before any code is written.",
         "status": "—"
       }
     ]
@@ -670,183 +676,177 @@ const schools: Array<{
     "desc": "Incantations for routing decisions, weighing tradeoffs, and routing problems to the right approach.",
     "spells": [
       {
+        "name": "Adversarial Review",
+        "skill": "adversarial-review",
+        "effect": "Stress-test proposals against a separate adversarial subagent. Tool-mediated review with no prior investment.",
+        "status": "—"
+      },
+      {
         "name": "Advocatus Diaboli — Adversarial Review via Separate Sub-Agent",
         "skill": "advocatus-diaboli",
-        "effect": "Use this skill when the main agent must stress-test a proposal, plan, code change, or decision against a SEPARATE adversarial sub-agent before committing. This is NOT self-critique (steelmanning). It is tool-mediated adversarial review using a genuinely different cognitive entity with no prior investment in the proposal.",
+        "effect": "Stress-test a proposal, plan, code change, or decision against a separate adversarial sub-agent before committing.",
         "status": "—"
       },
       {
         "name": "Bayesian Belief Updating for AI Agents",
         "skill": "bayesian-updating",
-        "effect": "Use when beliefs must shift with evidence — explicit priors updated by likelihood, avoiding over- and under-reaction.",
+        "effect": "Maintain explicit priors updated by likelihood, avoiding over- and under-reaction to new evidence.",
         "status": "—"
       },
       {
         "name": "Cognitive Bias Auditor",
         "skill": "cognitive-bias-auditor",
-        "effect": "Use when slow-mode reasoning risks bias contamination — explicit audit framework covering the 9 most common cognitive biases in agents.",
+        "effect": "Explicit audit framework covering the 9 most common cognitive biases in agents.",
         "status": "—"
       },
       {
         "name": "Cognitive Bias Checklist for AI Agents",
         "skill": "cognitive-bias-checklist",
-        "effect": "Use when slow-mode recommendations need bias audit — explicit checklist to catch contamination before finalizing.",
+        "effect": "Explicit checklist to catch bias contamination before finalizing slow-mode recommendations.",
         "status": "—"
       },
       {
         "name": "Counterfactual Policy Testing",
         "skill": "counterfactual-policy-testing",
-        "effect": "Use when a decision must beat its alternatives — compare against null, opposite, and partial counterfactuals before committing.",
+        "effect": "Compare a decision against null, opposite, and partial counterfactuals before committing.",
         "status": "—"
       },
       {
         "name": "Explore vs Exploit — State Machine Protocol for AI Agents",
         "skill": "explore-vs-exploit-state-machine",
-        "effect": "Use when the agent must choose between more searching and committing — explicit explore/exploit protocol with diminishing-returns stopping rule.",
+        "effect": "Explicit explore/exploit protocol with diminishing-returns stopping rule.",
         "status": "—"
       },
       {
         "name": "Explore vs Exploit for AI Agents",
         "skill": "explore-vs-exploit",
-        "effect": "Use when the agent must choose between more information and acting — deliberate explore/exploit choice instead of defaulting to either extreme.",
+        "effect": "Deliberate explore/exploit choice instead of defaulting to either extreme.",
         "status": "—"
       },
       {
         "name": "Failure Analysis Protocol",
         "skill": "failure-analysis-protocol",
-        "effect": "Fuse of Pre-Mortem + Inversion + Second-Order Thinking. Three failure lenses merged: invert success, narrate specific failures, trace cascading consequences. Strongest pre-commitment analysis.",
+        "effect": "Three failure lenses merged: invert success, narrate specific failures, trace cascading consequences.",
         "status": "—"
       },
       {
         "name": "First Principles Thinking for AI Agents",
         "skill": "first-principles",
-        "effect": "Use when conventional solutions fail or framing is inherited — decompose to axiomatic foundations and reason upward from what must be true.",
-        "status": "—"
-      },
-      {
-        "name": "Intent Specification Protocol",
-        "skill": "intent-specification-protocol",
-        "effect": "Crystallize vague user requests into precise, testable intent specifications. Replace vague words (fast, good, optimized) with measurable criteria. Now includes MCP server + companion script.",
+        "effect": "Decompose to axiomatic foundations and reason upward from what must be true.",
         "status": "—"
       },
       {
         "name": "Inversion — State Machine Protocol for AI Agents",
         "skill": "inversion-mental-model-state-machine",
-        "effect": "Use when risk reasoning needs defensive discipline — enforce failure-mode mapping and guardrail derivation before recommending success paths.",
+        "effect": "Enforce failure-mode mapping and guardrail derivation before recommending success paths.",
         "status": "—"
       },
       {
         "name": "Inversion for AI Agents",
         "skill": "inversion-mental-model",
-        "effect": "Use when forward reasoning keeps missing risks — model failure paths before recommending the success path.",
+        "effect": "Model failure paths before recommending the success path.",
         "status": "—"
       },
       {
         "name": "Metacognitive Monitoring — Know When You Don't Know",
         "skill": "metacognitive-monitoring",
-        "effect": "Use when confidence calibration matters more than raw accuracy — explicit KEEP/WITHDRAW decisions tied to measured withdrawal delta.",
+        "effect": "Explicit KEEP/WITHDRAW decisions tied to measured withdrawal delta.",
         "status": "—"
       },
       {
         "name": "Occam's Razor for AI Agents",
         "skill": "occams-razor",
-        "effect": "Apply Occam's Razor to favor the simplest sufficient explanation or solution. Forces the agent to try the simplest thing that fits the evidence before escalating to more complex alternatives. Prevents over-engineering, premature abstraction, and scope creep.",
+        "effect": "Favor the simplest sufficient explanation or solution. Try the simplest thing that fits the evidence before escalating.",
+        "status": "—"
+      },
+      {
+        "name": "Pre-Mortem",
+        "skill": "pre-mortem",
+        "effect": "Run a pre-mortem on a plan — assume failure has already happened, narrate backward to root causes, convert risks to guardrails. Use when finalizing a high-stakes plan, when consensus creates optimism blindness, or before a rollout, migration, or launch that is hard to reverse.",
         "status": "—"
       },
       {
         "name": "Pre-Mortem — State Machine Protocol for AI Agents",
         "skill": "pre-mortem-state-machine",
-        "effect": "Use when a plan needs validation before execution — pre-mortem protocol with artifact gating, narrative failure modeling, and risk-adjusted plan revision.",
-        "status": "—"
-      },
-      {
-        "name": "Pre-Mortem for AI Agents",
-        "skill": "pre-mortem",
-        "effect": "Use when a plan must surface real risks before commitment — assume failure has occurred and narrate backward to root causes.",
+        "effect": "Pre-mortem protocol with artifact gating, narrative failure modeling, and risk-adjusted plan revision.",
         "status": "—"
       },
       {
         "name": "Problem-Mode Router (Cynefin)",
         "skill": "problem-mode-router-cynefin",
-        "effect": "Use when choosing the wrong reasoning mode is the dominant risk — Cynefin-based routing before solving the problem.",
+        "effect": "Cynefin-based routing before solving the problem. Classify the problem type before deciding how to solve it.",
         "status": "—"
       },
       {
         "name": "Problem-Mode Router (Cynefin) — State Machine Protocol for AI Agents",
         "skill": "problem-mode-router-cynefin-state-machine",
-        "effect": "Use when response style depends on problem type — enforce Cynefin domain classification as a hard gate before any tool use or execution.",
+        "effect": "Enforce Cynefin domain classification as a hard gate before any tool use or execution.",
         "status": "—"
       },
       {
         "name": "Recognition-Primed Triage",
         "skill": "recognition-primed-triage",
-        "effect": "Use when fast judgment is required under incomplete information — pattern recognition, mental simulation, and immediate next move.",
+        "effect": "Pattern recognition, mental simulation, and immediate next move under incomplete information.",
         "status": "—"
       },
       {
         "name": "Recognition-Primed Triage — State Machine Protocol for AI Agents",
         "skill": "recognition-primed-triage-state-machine",
-        "effect": "Use when urgent triage demands speed without recklessness — gated incident-response protocol with simulation and bounded first action.",
+        "effect": "Gated incident-response protocol with simulation and bounded first action.",
         "status": "—"
       },
       {
         "name": "Reference Class Forecasting for AI Agents",
         "skill": "reference-class-forecasting",
-        "effect": "Use when estimating timelines or success probability — anchor to similar past projects before reasoning from the specifics.",
+        "effect": "Anchor to similar past projects before reasoning from the specifics.",
         "status": "—"
       },
       {
         "name": "Second-Order Thinking for AI Agents",
         "skill": "second-order-thinking",
-        "effect": "Use when a decision's downstream effects matter more than the obvious one — chain consequences past first-order until the system-level outcome is clear.",
+        "effect": "Chain consequences past first-order until the system-level outcome is clear.",
         "status": "—"
       },
       {
         "name": "Six Thinking Hats for AI Agents",
         "skill": "six-thinking-hats",
-        "effect": "Use when a decision risks collapsed thinking — separate fact, intuition, caution, optimism, creativity, and process into six discrete rounds.",
+        "effect": "Separate fact, intuition, caution, optimism, creativity, and process into six discrete rounds.",
         "status": "—"
       },
       {
         "name": "Steelmanning for AI Agents",
         "skill": "steelmanning",
-        "effect": "Use when a recommendation needs stress-testing — construct the strongest opposing case before committing.",
-        "status": "—"
-      },
-      {
-        "name": "Stress-testing a plan, design, or proposal",
-        "skill": "adversarial-review",
-        "effect": "Stress-tests proposals against a SEPARATE adversarial subagent. Not self-critique — tool-mediated review with no prior investment.",
+        "effect": "Construct the strongest opposing case before committing to a recommendation.",
         "status": "—"
       },
       {
         "name": "Task Intake Protocol",
         "skill": "task-intake-protocol",
-        "effect": "Universal preflight gate combining Cynefin problem classification, ETTO rigor calibration, and Recognition-Primed Triage into a single 3-phase decision. Classify the problem, set the evidence bar, take the first action.",
+        "effect": "Universal preflight gate: classify the problem, set the evidence bar, take the first action.",
         "status": "—"
       },
       {
         "name": "Thinking Fast and Slow for Software Engineering Agents",
         "skill": "kahneman-thinking-fast-slow-software-agent",
-        "effect": "Use when coding or debugging work needs calibrated reasoning — switch between fast pattern recognition and slow deliberation as stakes demand.",
+        "effect": "Switch between fast pattern recognition and slow deliberation as stakes demand.",
         "status": "—"
       },
       {
         "name": "Thoroughness Check (ETTO Principle) for AI Agents",
         "skill": "thoroughness-check-etto",
-        "effect": "Use when the agent must decide how much rigor a task deserves — classify the efficiency-vs-thoroughness balance before acting.",
+        "effect": "Classify the efficiency-vs-thoroughness balance before acting.",
         "status": "—"
       },
       {
         "name": "Thoroughness Check (ETTO) — State Machine Protocol for AI Agents",
         "skill": "thoroughness-check-etto-state-machine",
-        "effect": "Use as universal preflight before meaningful tasks — gating ETTO classification into executable controls on rigor, evidence, and tools.",
+        "effect": "Gate ETTO classification into executable controls on rigor, evidence, and tools.",
         "status": "—"
       },
       {
         "name": "Unsafe Control Actions / Hazard Analysis",
         "skill": "unsafe-control-actions-hazard-analysis",
-        "effect": "Use this skill when the agent is about to recommend or perform an action that could create serious harm, instability, or irreversible damage.",
+        "effect": "Analyze how a control action could become unsafe before recommending or performing it.",
         "status": "—"
       }
     ]
@@ -858,45 +858,45 @@ const schools: Array<{
     "desc": "Empirical measurement of skill effectiveness and code quality.",
     "spells": [
       {
-        "name": "Code with no tests — need to add tests first",
-        "skill": "test-driven-development",
-        "effect": "Red-green-refactor loop. Write the test first, watch it fail, write the minimal fix, then refactor.",
-        "status": "—"
-      },
-      {
         "name": "E2E Cross-Check Protocol",
         "skill": "e2e-crosscheck",
-        "effect": "Bidirectional audit between E2E test selectors/assertions and source code. Reconciles every test identifier, text assertion, and navigation route against the current code, and flags untested UI states and error paths. Run after refactoring, UI text changes, navigation restructuring, or before any major release.",
+        "effect": "Bidirectional audit between E2E test selectors/assertions and source code. Reconciles every test identifier, text assertion, and navigation route.",
         "status": "—"
       },
       {
         "name": "E2E Testing Philosophy & Architecture — Reference",
         "skill": "e2e-testing-philosophy-and-architecture",
-        "effect": "Reference for E2E testing mindset, architecture, and strategy. Covers testing epistemology, 3-layer BDR architecture, risk-based prioritization, data realism principles, anti-patterns, heuristics, and suite management.",
+        "effect": "Reference for E2E testing mindset, architecture, and strategy: testing epistemology, 3-layer BDR architecture, risk-based prioritization, data realism principles.",
         "status": "—"
       },
       {
         "name": "Empirical Justification",
         "skill": "empirical-justification",
-        "effect": "Gather empirical evidence — usage telemetry, A/B results, regression counts — to justify retiring, refining, or promoting a skill. Use when a skill change is contested or high-stakes.",
+        "effect": "Gather empirical evidence — usage telemetry, A/B results, regression counts — to justify retiring, refining, or promoting a skill.",
         "status": "—"
       },
       {
         "name": "Good: per-run copied snapshot",
         "skill": "skill-ab-evaluation",
-        "effect": "A/B evaluate any GrimoireStack skill against a baseline using isolated subagents, 5 trials each, and an objective rubric. Measures real % improvement without touching current projects.",
+        "effect": "A/B evaluate any GrimoireStack skill against a baseline using isolated subagents, 5 trials each, and an objective rubric.",
         "status": "—"
       },
       {
         "name": "Mobile E2E Testing: The Hunter's Mindset",
         "skill": "mobile-e2e-testing-enterprise-guide",
-        "effect": "Hunter's mindset for mobile E2E testing — what to test, how to catch real bugs, and avoid traps. Use when planning tests, reviewing coverage, debugging flakiness, or needing adversarial/edge-case ideas.",
+        "effect": "Hunter's mindset for mobile E2E testing: what to test, how to catch real bugs, and avoid traps.",
         "status": "—"
       },
       {
         "name": "Premortem: E2E Test Audit Protocol",
         "skill": "e2e-test-premortem",
-        "effect": "Premortem for E2E test changes. Run after writing or modifying E2E tests to audit coverage gaps, data realism, failure-mode coverage, and assertion quality before declaring done. Also run before writing E2E tests to map the flow and identify blind spots first.",
+        "effect": "Premortem for E2E test changes. Audit coverage gaps, data realism, failure-mode coverage, and assertion quality.",
+        "status": "—"
+      },
+      {
+        "name": "Test-Driven Development",
+        "skill": "test-driven-development",
+        "effect": "Red-green-refactor loop. Write the test first, watch it fail, write the minimal fix, then refactor.",
         "status": "—"
       }
     ]
@@ -910,7 +910,7 @@ const schools: Array<{
       {
         "name": "Local LLM Tooling Skill",
         "skill": "local-llm-tooling",
-        "effect": "Skills for running, prompting, and extracting structured output from local LLMs (e.g., Ollama, llama.cpp).",
+        "effect": "Run, prompt, and extract structured output from local LLMs (e.g., Ollama, llama.cpp).",
         "status": "—"
       }
     ]
@@ -924,73 +924,73 @@ const schools: Array<{
       {
         "name": "Bounded Self-Revision",
         "skill": "bounded-self-revision",
-        "effect": "Use when an initial draft needs polish but not endless revision — capped self-critique passes that terminate on improvement or budget exhaustion.",
+        "effect": "Capped self-critique passes that terminate on improvement or budget exhaustion.",
         "status": "—"
       },
       {
         "name": "Cognitive Load Operator — State Machine Protocol for AI Agents",
         "skill": "cognitive-load-operator-state-machine",
-        "effect": "Use when an output risks dense overload — inspect complexity and replace high-load structures with lower-load equivalents.",
+        "effect": "Inspect complexity and replace high-load structures with lower-load equivalents.",
         "status": "—"
       },
       {
         "name": "Compression-as-Understanding",
         "skill": "compression-as-understanding",
-        "effect": "Use when depth of understanding must be verified, not assumed — compress to the shortest representation and test whether it reconstructs the original.",
+        "effect": "Compress to the shortest representation and test whether it reconstructs the original.",
         "status": "—"
       },
       {
         "name": "Documentation Craft — Structured Technical Writing",
         "skill": "documentation-craft",
-        "effect": "Use when writing technical documentation — multi-phase pipeline from outline to verified explanation, audience-driven and source-grounded.",
+        "effect": "Multi-phase pipeline from outline to verified explanation, audience-driven and source-grounded.",
         "status": "—"
       },
       {
         "name": "Feynman Technique for AI Agents",
         "skill": "feynman-technique",
-        "effect": "Use when explanation gaps reveal understanding gaps — explain from scratch in plain language and identify where the explanation breaks.",
+        "effect": "Explain from scratch in plain language and identify where the explanation breaks.",
         "status": "—"
       },
       {
         "name": "Large Documentation Navigation",
         "skill": "large-documentation-navigation",
-        "effect": "Use when a documentation corpus becomes unscannable — layered navigation driven by user situation rather than category labels.",
+        "effect": "Layered navigation driven by user situation rather than category labels.",
         "status": "—"
       },
       {
         "name": "MECE / Pyramid Principle for AI Agents",
         "skill": "mece-pyramid-principle",
-        "effect": "Use when structuring a complex output — enforce mutually exclusive, collectively exhaustive categories under a single governing thought.",
+        "effect": "Enforce mutually exclusive, collectively exhaustive categories under a single governing thought.",
         "status": "—"
       },
       {
         "name": "Self Verify Pipeline",
         "skill": "self-verify-pipeline",
-        "effect": "Use when outputs risk unverified confidence — escalating verification chain of bounded revision, claim decomposition, and tool-grounded critique.",
+        "effect": "Escalating verification chain of bounded revision, claim decomposition, and tool-grounded critique.",
         "status": "—"
       },
       {
         "name": "Self-Consistency Check for AI Agents",
         "skill": "self-consistency",
-        "effect": "Use when a conclusion must be confirmed, not assumed — generate independent reasoning paths and check whether they converge.",
+        "effect": "Generate independent reasoning paths and check whether they converge.",
         "status": "—"
       },
       {
         "name": "Stakeholder Communication and Uncertainty Calibration",
         "skill": "stakeholder-communication",
-        "effect": "Use when a human must act on the agent's output — calibrate certainty, separate fact from inference, and avoid overpromising or undue alarm.",
+        "effect": "Calibrate certainty, separate fact from inference, avoid overpromising or undue alarm.",
         "status": "—"
       },
       {
         "name": "Tool-Interactive Critic",
         "skill": "tool-interactive-critic",
-        "effect": "Use when an initial draft needs post-generation verification — external tools critique the output before it is trusted.",
+        "effect": "External tools critique the output before it is trusted.",
         "status": "—"
       },
       {
         "name": "Tree of Thoughts for AI Agents",
         "skill": "tree-of-thoughts",
-        "effect": "Use when the first reasoning path may be wrong — branch, evaluate, and prune candidate solutions before committing.",
+        "effect": "Branch, evaluate, and prune candidate solutions before committing.",
         "status": "—"
       }
     ]
@@ -1002,6 +1002,12 @@ const schools: Array<{
     "desc": "Incantations to banish bugs and restore order to broken code.",
     "spells": [
       {
+        "name": "Abductive-First Debugging",
+        "skill": "abductive-first-debugging",
+        "effect": "Generate multiple competing hypotheses, select the one that best explains all observed symptoms.",
+        "status": "—"
+      },
+      {
         "name": "Before (buggy)",
         "skill": "simulate-instrumentation",
         "effect": "Auto-insert temporary print/logging statements at key points in the code, run the failing test, and feed the captured runtime state to the LLM.",
@@ -1010,37 +1016,37 @@ const schools: Array<{
       {
         "name": "Bisect Debugging",
         "skill": "bisect-debugging",
-        "effect": "Isolate the exact commit that introduced a bug using binary search through git history. The fastest way to find 'what changed' when tests used to pass.",
+        "effect": "Isolate the exact commit that introduced a bug using binary search through git history.",
         "status": "—"
       },
       {
         "name": "Bug Inquisition",
         "skill": "bug-inquisition",
-        "effect": "Deep root-cause debugging with mandatory context-gathering. Fuses root-cause analysis, specter, diagnose, debug-to-fix-pipeline, occam-root-cause, and reasoning-integrity-chain into one sequential protocol. Use when user says 'hard bug', 'stuck on debugging', 'can't figure out this error', 'stuck on bug', or 'bug inquisition'.",
+        "effect": "Deep root-cause debugging with mandatory context-gathering. Fuses root-cause analysis, specter, diagnose, debug-to-fix-pipeline, occam-root-cause, and reasoning-integrity-chain into one sequential protocol.",
         "status": "—"
       },
       {
         "name": "Bug Inquisition — Conquest Mode",
         "skill": "bug-inquisition-conquest",
-        "effect": "Ultra-heavy root-cause debugging with relentless ongoing interrogation. Fuses bug-inquisition pre-flight with continuous adversarial self-grilling, evidence-ledger tracking, pre-mortem on every fix, confidence-gated phase transitions, and final adversarial review. Use for the hardest bugs where surface debugging has failed, when the bug is intermittent or environment-specific, or when the cost of a wrong fix is high. Triggers: 'deep bug', 'intermittent bug', 'heisenbug', 'ghost bug', 'bug inquisition conquest', or when bug-inquisition has already failed.",
+        "effect": "Run conquest-mode debugging — ultra-heavy root-cause analysis with ongoing adversarial interrogation, evidence-ledger tracking, pre-mortem on every fix, and confidence-gated phase transitions. Use for the hardest bugs where surface debugging has failed, for intermittent or environment-specific bugs, or when the cost of a wrong fix exceeds the cost of thorough investigation.",
         "status": "—"
       },
       {
         "name": "Codebase Walk",
         "skill": "explore-codebase",
-        "effect": "Structured exploration with progressive deepening: module structure → file roles → symbol resolution. Token-efficient for unfamiliar codebases.",
+        "effect": "Structured exploration with progressive deepening: module structure → file roles → symbol resolution.",
+        "status": "—"
+      },
+      {
+        "name": "Debug Issue",
+        "skill": "debug-issue",
+        "effect": "Force the reproduce → isolate → fix → verify cycle. Graph-powered code navigation traces issues through the system along dataflow edges.",
         "status": "—"
       },
       {
         "name": "Debug Subagent",
         "skill": "debug-subagent",
-        "effect": "A dedicated debugging subagent that must be consulted before making code edits. Wraps debugger complexity behind natural-language queries and enforces 'debug before edit' workflow. Based on Debug2Fix research (+13-22% bug fix rate).",
-        "status": "—"
-      },
-      {
-        "name": "Debug Workflow",
-        "skill": "debug-issue",
-        "effect": "Forces the reproduce → isolate → fix → verify cycle. Graph-powered code navigation traces issues through the system along dataflow edges.",
+        "effect": "Gate debugging behind a dedicated subagent — consult it before any code edit. Wraps debugger complexity behind natural-language queries. Use when the fix is not immediately obvious from the error, for multi-file bugs needing runtime state inspection, or when static analysis hasn't revealed the root cause.",
         "status": "—"
       },
       {
@@ -1070,19 +1076,13 @@ const schools: Array<{
       {
         "name": "Log Trace Correlation",
         "skill": "log-trace-correlation",
-        "effect": "Map error logs and stack traces to source code to identify root cause and suggest fixes. Use when you have an error log with a stack trace and need to determine which file, function, and line caused the failure.",
+        "effect": "Correlate error logs and stack traces to source code — map each frame to a file:line, identify root cause, and produce a minimal fix. Use when you have an error log with a stack trace and need to determine which file, function, and line caused the failure without guesswork.",
         "status": "—"
       },
       {
         "name": "Minimal Reproduction",
         "skill": "minimal-reproduction",
         "effect": "Write the smallest possible test that demonstrates the bug, then use it as ammunition for debugging.",
-        "status": "—"
-      },
-      {
-        "name": "Multiple plausible causes, unsure which is real",
-        "skill": "abductive-first-debugging",
-        "effect": "Generates multiple competing hypotheses, selects the one that best explains all observed symptoms — not the first plausible cause.",
         "status": "—"
       },
       {
@@ -1126,7 +1126,7 @@ const schools: Array<{
       {
         "name": "Effective Web Search",
         "skill": "effective-web-search",
-        "effect": "Web search discipline for technical research. Use when an agent needs to look up an error, library behavior, framework quirk, or bug. Enforces official-docs-first, version-aware research, and full GitHub issue follow-through. Prevents the failure mode where the agent latches onto the first outdated GitHub issue and treats it as truth.",
+        "effect": "Web search discipline for technical research. Official-docs-first, version-aware, full GitHub issue follow-through.",
         "status": "—"
       }
     ]
@@ -1140,7 +1140,7 @@ const schools: Array<{
       {
         "name": "Add New Skill to GrimoireStack Repository",
         "skill": "add-new-skill-to-repository",
-        "effect": "Process for adding a new skill to GrimoireStack repository with proper documentation, installation support, and cross-platform verification.",
+        "effect": "Standardized process for adding a new skill to the GrimoireStack repository with proper documentation, installation support, and cross-platform verification.",
         "status": "—"
       },
       {

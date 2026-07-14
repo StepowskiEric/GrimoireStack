@@ -110,9 +110,9 @@ After the fix, add a specific preventive measure tied to the root cause category
 
 ---
 
-## Anti-Patterns
+## Failure Modes
 
-| Anti-Pattern | Why It Fails |
+| Failure Mode | Why It Fails |
 |--------------|-------------|
 | Add a try/catch and log | Hides the symptom; next failure is silent |
 | Restart the service | Treats the symptom as transient; root cause persists |

@@ -1,15 +1,10 @@
 ---
-source: "GrimoireStack"
 name: evolutionary-tool-composer
-category: mcp-servers
-description: >
-  MCP server that runs an evolutionary algorithm to discover and optimize agent tool chains,
-  prompt strategies, and code solutions. Based on AlphaEvolve/OpenEvolve principles — LLM-driven
-  evolutionary search with automated fitness evaluation.
-...
-
-
-
+description: "MCP server that runs an evolutionary algorithm to discover and optimize agent tool chains, prompt strategies, and code solutions."
+triggers:
+  - Need to discover optimal tool chains via evolutionary search
+  - Need automated fitness evaluation of agent strategies
+  - Need LLM-driven evolutionary optimization
 ---
 
 # Evolutionary Tool Composer

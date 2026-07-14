@@ -1,12 +1,10 @@
 ---
 name: local-llm-tooling
-category: mlops
-description: Skills for running, prompting, and extracting structured output from local LLMs (e.g., Ollama, llama.cpp).
-version: 1.0
-...
-
-
-
+description: "Run, prompt, and extract structured output from local LLMs (e.g., Ollama, llama.cpp)."
+triggers:
+  - Need to run a local LLM server
+  - Need to craft prompts for local models
+  - Need to extract structured JSON or text from local LLM output
 ---
 
 # Local LLM Tooling Skill

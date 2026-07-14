@@ -1,6 +1,10 @@
 ---
 name: metacognitive-monitoring
-description: "Use when confidence calibration matters more than raw accuracy — explicit KEEP/WITHDRAW decisions tied to measured withdrawal delta."
+description: "Explicit KEEP/WITHDRAW decisions tied to measured withdrawal delta."
+triggers:
+  - Confidence calibration matters more than raw accuracy
+  - Need to know when you don't know
+  - After every significant answer or decision
 ---
 
 # Skill: Metacognitive Monitoring — Know When You Don't Know

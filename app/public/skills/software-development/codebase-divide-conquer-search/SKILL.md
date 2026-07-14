@@ -1,12 +1,12 @@
 ---
 name: codebase-divide-conquer-search
-description: "Use when the codebase is too large to fit in context (>50K tokens), grep produces too many candidates, you need to find code by behavior not by name, or the search target could be in any of several modules."
+description: "Divide a large codebase into manageable chunks and search each systematically."
 triggers:
-  - The codebase is too large to fit in the LLM context window (>50K tokens of relevant code)
+  - Codebase is too large to fit in the LLM context window (>50K tokens)
   - grep or simple semantic search returns too many candidates
-  - You need to find code by behavior, not by name (vocabulary mismatch)
-  - The search target could be in any of several modules or layers
-  - You have a bug report, feature request, or architectural question with no obvious starting file
+  - Need to find code by behavior, not by name (vocabulary mismatch)
+  - Search target could be in any of several modules or layers
+  - Bug report, feature request, or architectural question with no obvious starting file
 ---
 
 # Skill: Codebase Divide-and-Conquer Search

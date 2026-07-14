@@ -234,19 +234,14 @@ python ~/.copilot/skills/scripts/extract_code_facts.py --help
 
 ---
 
-## Anti-Patterns
+## Failure Modes
 
-**Don't:**
-- Assume `npx GrimoireStack install` copies everything
-- Put scripts in skill subdirectory (they won't be found)
-- Use relative paths like `./script.py` in skill docs (breaks after install)
-- Forget to document the manual copy step
-
-**Do:**
-- Use absolute paths in skill documentation: `~/.copilot/skills/scripts/script.py`
-- Document the manual installation requirement prominently
-- Provide copy-paste commands for users
-- Consider creating a setup script for complex installations
+| Failure Mode | Fix |
+|-------------|------|
+| Assuming `npx GrimoireStack install` copies everything | Document the manual copy step prominently |
+| Putting scripts in skill subdirectory | Place scripts in shared `scripts/` directory |
+| Using relative paths like `./script.py` in skill docs | Use absolute paths: `~/.copilot/skills/scripts/script.py` |
+| Forgetting to document the manual copy step | Provide copy-paste commands for users |
 
 ---
 

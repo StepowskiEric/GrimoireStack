@@ -1,29 +1,15 @@
 ---
 name: scout
-category: orchestration
-description: Fast context scout — a lightweight sub-agent reads files and returns only distilled, relevant context for the main model. Saves tokens, reduces distraction, and prevents the main model from getting lost in large codebases.
-version: 1.0
-...
-
-
-
+description: Scout context — a fast sub-agent reads files and returns only distilled relevant context, saving tokens and reducing distraction for the main model. Use when the codebase is large, you need scoped findings rather than raw file dumps, or the main task needs file context you don't already have.
+triggers:
+  - Large codebase where direct reading wastes attention
+  - Need scoped, distilled findings rather than raw file dumps
+  - Main task needs file context not already in memory
 ---
 
 # Scout
 
-A fast auxiliary agent that pre-reads files and distills only the context the main model actually needs. The main model wastes context and attention searching through files or gets distracted by irrelevant code; Scout intercepts file-reading tasks and returns only what's relevant.
-
-## When to Use
-
-- The main task needs file context you don't already have
-- The codebase is large enough that direct reading wastes attention
-- You want scoped, distilled findings rather than raw file dumps
-
-## When NOT to Use
-
-- **The main model already knows the file location.** Scout is for discovery, not retrieval.
-- **A single file or trivial lookup.** Reading the file directly is faster.
-- **You're about to read every file anyway.** If the scope is "the whole repo," Scout adds overhead without saving context.
+A fast auxiliary agent that pre-reads files and distills only the context the main model actually needs. Scout intercepts file-reading tasks and returns only what is relevant — the main model never searches through files or gets distracted by irrelevant code.
 
 ## Three Scout Modes
 
@@ -164,15 +150,15 @@ Main Model Task
 ___
 
 
-## Anti-Patterns
+## Good Practices
 
-| Don't | Do |
-|-------|-----|
-| Scout every file in a large repo | Scout only the relevant subsystem |
-| Use Full when Lite suffices | Use Lite for known patterns |
-| Ask Scout vague questions like "what does this repo do?" | Be specific: "How does the auth flow work for API requests?" |
-| Return entire file contents | Return only distilled snippets |
-| Let Scout take >60s | Set a timeout; if it overruns, use Lite instead |
+| Do |
+|-----|
+| Scout only the relevant subsystem, not every file in a large repo |
+| Use Lite for known patterns; use Full or Hybrid only when Lite is insufficient |
+| Be specific: "How does the auth flow work for API requests?" not "what does this repo do?" |
+| Return only distilled snippets, not entire file contents |
+| Set a timeout — if Scout exceeds 60s (Full) or 5s (Lite), fall back
 
 ___
 

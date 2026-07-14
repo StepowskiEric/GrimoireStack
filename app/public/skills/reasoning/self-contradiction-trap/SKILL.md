@@ -1,11 +1,11 @@
 ---
-source: "GrimoireStack"
 name: self-contradiction-trap
-category: reasoning
-description: Maintain a belief store of claims made during a session. Detect when new claims contradict existing ones, and force resolution before continuing. Prevents agents from contradicting themselves.
-...
-
-
+description: "Maintain a belief store of claims made during a session. Detect contradictions and force resolution before continuing."
+triggers:
+  - Need to prevent agents from contradicting themselves
+  - Session spans multiple turns with accumulating claims
+  - Need to detect when new claims contradict existing ones
+---
 
 ---
 

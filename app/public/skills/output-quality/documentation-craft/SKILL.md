@@ -1,6 +1,10 @@
 ---
 name: documentation-craft
-description: "Use when writing technical documentation — multi-phase pipeline from outline to verified explanation, audience-driven and source-grounded."
+description: "Multi-phase pipeline from outline to verified explanation, audience-driven and source-grounded."
+triggers:
+  - Writing technical documentation
+  - Need to transform complex code into clear, contextual documentation
+  - Need outline-first planning and quality verification
 ---
 
 # Skill: Documentation Craft — Structured Technical Writing

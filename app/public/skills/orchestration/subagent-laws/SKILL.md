@@ -1,6 +1,10 @@
 ---
 name: subagent-laws
-description: "Standing behavioral constraints every sub-agent must follow. Loaded by subagent-composer as mandatory policy alongside task-specific skills. Use when composing briefs to enforce scope discipline, test integrity, and communication standards."
+description: "Standing behavioral constraints every sub-agent must follow. Enforce scope discipline, test integrity, and communication standards."
+triggers:
+  - Composing sub-agent briefs
+  - Need to enforce scope discipline, test integrity, and communication standards
+  - Loaded by subagent-composer as mandatory policy
 ---
 
 # Sub-Agent Laws

@@ -1,6 +1,10 @@
 ---
 name: refactoring-state-machine
-description: "Use when improving structure without drifting into endless cleanup — characterize behavior, transform in bounded slices, re-test. Stops refactor loops."
+description: "Characterize behavior, transform in bounded slices, re-test. Stops refactor loops."
+triggers:
+  - Improving structure without drifting into endless cleanup
+  - Need to refactor with bounded transformation budget
+  - Refactoring shared code with unknown consumers
 ---
 
 # Refactoring — State Machine Protocol for AI Agents

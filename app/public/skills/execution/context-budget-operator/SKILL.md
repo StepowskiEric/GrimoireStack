@@ -1,26 +1,13 @@
 ---
-source: "GrimoireStack"
 name: context-budget-operator
-description: Manage finite context windows explicitly. Track token budget, classify information needs, compress aggressively, and decide breadth-vs-depth based on remaining runway. Prevents silent context overflow and instruction dropout.
-category: execution
-priority: high
-tags: [context-management, token-efficiency, scaling, agent-safety, long-horizon]
-...
-
-
-
----
-
-## ⚠️ Absorbed by context-lifecycle-manager
-
-This skill's protocol is now part of **`context-lifecycle-manager`** (Phase 1: Birth & Tracking). Use the lifecycle manager for unified context management across birth, decay, and optimization.
-
-- **`context-budget-operator`** → lifecycle-manager Phase 1 (Birth & Tracking)
-- **`context-rot-pruner`** → lifecycle-manager Phase 2 (Decay & Pruning)  
-- **`token-budget-operator`** → lifecycle-manager Phase 3 (Optimization)
-
-Detailed estimation heuristics and decay formulas are preserved in `context-lifecycle-manager/references/budget-and-rot-details.md`.
-
+description: "Track token budget, classify information needs, compress aggressively, and decide breadth-vs-depth based on remaining runway."
+triggers:
+  - Working on codebases with >20 files or files >500 lines
+  - Sessions exceeding 15 turns
+  - Before reading multiple files in parallel
+  - Task requires cross-file reasoning (architecture, refactoring)
+  - Noticing the agent repeating questions or forgetting constraints
+  - Before any operation expected to return >1000 tokens of output
 ---
 
 ## Overview
@@ -33,24 +20,6 @@ Context windows are finite. In long sessions or large codebases, agents silently
 3. **COMPRESS** when usage crosses the compression threshold
 4. **DECIDE** breadth vs depth based on remaining budget
 5. **LOG** consumption per operation to detect runaway growth
-
-Research shows that simply making the agent aware of its remaining budget improves performance without architectural changes (BATS, Liu et al. 2025). Explicit budget tracking is the cheapest scaling intervention.
-
-## When to use
-
-- Working on codebases with >20 files or files >500 lines
-- Sessions exceeding 15 turns
-- Before reading multiple files in parallel
-- When the task requires cross-file reasoning (architecture, refactoring)
-- When you notice the agent repeating questions or forgetting constraints
-- Before any operation expected to return >1000 tokens of output
-
-## When NOT to use
-
-- Single-file edits under 100 lines
-- Sessions under 5 turns with minimal context
-- When the full context easily fits in the window with >50% headroom
-- Time-critical fixes where compression overhead exceeds the savings
 
 ## Companion script (optional)
 
@@ -184,15 +153,13 @@ When total crosses thresholds, note the color:
 
 ## Rules for budget management
 
-| Do | Don't |
-|----|-------|
-| Estimate before every LLM call | Guess and hope it fits |
-| Default to summary/signature level | Always read full files "just in case" |
-| Compress older reasoning first | Compress the user's instructions |
-| Log consumption per operation | Track nothing and wonder why context broke |
-| Use breadth mode when budget is low | Keep drilling deep with 5% remaining |
-| Offload to files/memory when possible | Inline everything into the context |
-| State budget status explicitly | Hide the constraint from yourself |
+- Estimate before every LLM call instead of guessing
+- Default to summary/signature level instead of reading full files "just in case"
+- Compress older reasoning first, not the user's instructions
+- Log consumption per operation
+- Use breadth mode when budget is low
+- Offload to files/memory when possible instead of inlining everything
+- State budget status explicitly
 
 ## Integration with other skills
 
@@ -232,10 +199,10 @@ When total crosses thresholds, note the color:
 [Turn 12] Refactor complete. Peak usage: 9400 tokens. No overflow.
 ```
 
-## Pitfalls
+## Failure Modes
 
-- **Optimistic estimation**: Underestimating code token density. Code is ~0.5 tokens/word but symbols and indentation add up.
-- **Compression resistance**: Refusing to summarize your own reasoning because "it's all important." If everything is important, nothing is.
-- **Threshold panic**: Compressing at 30% because you're anxious. Compression has overhead — only apply when needed.
-- **Instruction dropout**: Compressing the user's original constraints. Never drop the task definition or success criteria.
-- **Log neglect**: Tracking budget but not acting on yellow/red status. The log is useless without the decision gate.
+- **Optimistic estimation:** underestimating code token density. Code is ~0.5 tokens/word but symbols and indentation add up.
+- **Compression resistance:** refusing to summarize your own reasoning because "it's all important"
+- **Threshold panic:** compressing at 30% because you're anxious. Compression has overhead — only apply when needed.
+- **Instruction dropout:** compressing the user's original constraints. Never drop the task definition or success criteria.
+- **Log neglect:** tracking budget but not acting on yellow/red status

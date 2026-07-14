@@ -1,50 +1,31 @@
 ---
 name: pre-mortem
-description: "Use when a plan must surface real risks before commitment — assume failure has occurred and narrate backward to root causes."
+description: Run a pre-mortem on a plan — assume failure has already happened, narrate backward to root causes, convert risks to guardrails. Use when finalizing a high-stakes plan, when consensus creates optimism blindness, or before a rollout, migration, or launch that is hard to reverse.
+triggers:
+  - High-stakes plan needs risk surfacing before commitment
+  - Strong consensus on a plan (optimism blindness risk)
+  - Rollout, migration, or launch that is hard to reverse
 ---
 
-# Skill: Pre-Mortem for AI Agents
+# Pre-Mortem
 
 ## Purpose
 
-Use this skill when the agent must surface the real risks in a plan before committing to it.
+Run a pre-mortem when the plan needs real risks surfaced before commitment. Assume the plan has already failed — catastrophically, visibly — then reason backward to explain why.
 
-A pre-mortem works by assuming the plan has already failed — catastrophically, visibly — and then reasoning backward to explain why.
+This is distinct from Inversion, which asks "how could this fail?" abstractly. A pre-mortem uses a specific, vivid narrative: *it is six months from now, the plan was executed, and it failed. What happened?*
 
-This is distinct from Inversion, which asks "how could this fail?" abstractly.
-A pre-mortem uses a specific, vivid narrative: *it is six months from now, the plan was executed, and it failed. What happened?*
+The narrative framing activates a different kind of reasoning — people generate better failure hypotheses when they assume failure has already occurred rather than when asked to imagine it might.
 
-The narrative framing activates a different kind of reasoning.
-People generate better and more specific failure hypotheses when they assume failure has already occurred rather than when they are asked to imagine it might.
-
-Source: Gary Klein's research on naturalistic decision-making, *Sources of Power*. Widely applied in project planning, medicine, and product development.
+Source: Gary Klein's research on naturalistic decision-making, *Sources of Power*.
 
 ---
 
 ## Core Rule
 
-Assume the failure has already happened.
-You are not predicting whether it will fail.
-You are explaining why it did.
+Assume failure has already happened. Explain why — prediction is irrelevant, only forensic realism matters.
 
-This shifts the cognitive mode from protective optimism ("it probably won't fail") to forensic realism ("it failed — what went wrong?").
-
----
-
-## When to Use
-
-Use this skill when:
-- finalizing a plan before execution begins
-- reviewing a strategy, architecture, or design that has significant consequences
-- evaluating a rollout, migration, or launch
-- making a high-stakes commitment with limited ability to reverse
-- the plan has strong support and consensus (high risk of optimism blindness)
-- complementing an Inversion analysis with a more vivid failure scenario
-
-Do not use this skill for:
-- trivial, easily reversible decisions
-- exploratory work without a defined plan
-- situations where no plan exists yet (use Inversion or First Principles instead)
+"Protective optimism" stays in the past tense. The question is never "will this fail?" but "what went wrong?"
 
 ---
 
@@ -59,7 +40,7 @@ State explicitly:
 "It is [a future date]. The plan was executed. It failed — clearly, obviously, materially.
 We are now looking back and explaining what happened."
 
-Do not hedge this. The plan failed. That is the premise.
+Hedge nothing. The plan failed. That is the premise.
 
 ## Step 3: Generate Failure Stories
 From the failure-assumed vantage point, generate plausible stories for what went wrong.
@@ -74,7 +55,7 @@ Useful categories:
 - **Unknown unknowns** — something happened that was not on anyone's radar
 
 Generate at least five failure stories before stopping.
-Do not filter for plausibility at this stage — capture first, rank later.
+Capture first, rank later — filtering for plausibility comes after the generation phase.
 
 ## Step 4: Rank the Failure Stories
 After generating, rank by:
@@ -132,17 +113,12 @@ Some risks become explicit accepted tradeoffs.
 
 ## Agent Rules
 
-### Do
-- assume failure fully and narratively — do not hedge
-- generate specific failure stories, not abstract categories
-- include at least five failure stories before ranking
-- revise the plan based on the most serious risks revealed
-
-### Do Not
-- confuse the pre-mortem with pessimism — the goal is plan improvement, not discouragement
-- generate only obvious surface risks
-- skip the narrative step and jump straight to abstract risk listing
-- treat all failure stories as equally important before ranking
+- Assume failure fully, narratively, without hedging
+- Generate specific failure stories, not abstract categories
+- Include at least five failure stories before ranking
+- Revise the plan based on the most serious risks revealed
+- Treat pre-mortem as plan improvement, not pessimism
+- Rank stories before acting on them
 
 ---
 
@@ -160,7 +136,7 @@ Use both when a decision is high-stakes.
 
 ---
 
-## Failure Modes This Skill Prevents
+## Failure Modes
 
 ### 1) Optimism blindness in consensus
 When a team agrees a plan is good, the pre-mortem breaks the psychological safety of the consensus and forces failure hypotheses out.

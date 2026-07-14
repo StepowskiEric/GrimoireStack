@@ -1,6 +1,10 @@
 ---
-name: Maintain Architecture
-description: Review completed work for architectural quality, maintainability, feature ownership, and long-term scalability.
+name: maintain-architecture
+description: "Review completed work for architectural quality, maintainability, feature ownership, and long-term scalability."
+triggers:
+  - Need to review completed work for architectural quality
+  - Need to ensure maintainability and long-term scalability
+  - Post-implementation architecture review
 ---
 
 # Architecture Maintenance

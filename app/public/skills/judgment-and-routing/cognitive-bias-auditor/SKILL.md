@@ -1,6 +1,10 @@
 ---
 name: cognitive-bias-auditor
-description: "Use when slow-mode reasoning risks bias contamination — explicit audit framework covering the 9 most common cognitive biases in agents."
+description: "Explicit audit framework covering the 9 most common cognitive biases in agents."
+triggers:
+  - Slow-mode reasoning risks bias contamination
+  - Agent makes a major decision (task selection, architecture choice, tool use)
+  - Results seem inconsistent or irrational
 ---
 
 # Cognitive Bias Auditor

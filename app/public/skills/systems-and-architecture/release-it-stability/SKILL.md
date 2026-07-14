@@ -1,6 +1,10 @@
 ---
 name: release-it-stability
-description: "Use when reasoning about distributed-system resilience — circuit breakers, bulkheads, timeouts, load shedding, steady-state hygiene for production failure modes. Stops cascading failures before they spread."
+description: "Circuit breakers, bulkheads, timeouts, load shedding, steady-state hygiene for production failure modes."
+triggers:
+  - Reasoning about distributed-system resilience
+  - Need to stop cascading failures before they spread
+  - Production failure modes that development never exercises
 ---
 
 # Release It! Stability Patterns for AI Agents

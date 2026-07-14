@@ -1,10 +1,10 @@
 ---
-name: Failure Analysis Protocol
-description: "Fuse of Pre-Mortem + Inversion + Second-Order Thinking. Three failure lenses merged: invert success, narrate specific failures, trace cascading consequences. Strongest pre-commitment analysis."
-...
-
-
-
+name: failure-analysis-protocol
+description: "Three failure lenses merged: invert success, narrate specific failures, trace cascading consequences."
+triggers:
+  - Need pre-commitment failure analysis
+  - Plan, architecture decision, or significant change needs validation
+  - Forward reasoning keeps missing risks
 ---
 
 ## Failure Analysis Protocol

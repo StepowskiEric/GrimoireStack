@@ -1,6 +1,6 @@
 ---
 name: verify-before-integrate
-description: "Use when integrating research or external docs into code — verify the actual system behavior rather than matching abstract terminology."
+description: "Verify the actual system behavior rather than matching abstract terminology when integrating research or external docs."
 triggers:
   - Writing a skill that connects to an existing system (Coppermind, Convex, Supabase, etc.)
   - Implementing a research paper's algorithm in a production codebase

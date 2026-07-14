@@ -1,10 +1,10 @@
 ---
-name: Task Intake Protocol
-description: Universal preflight gate combining Cynefin problem classification, ETTO rigor calibration, and Recognition-Primed Triage into a single 3-phase decision. Classify the problem, set the evidence bar, take the first action.
-...
-
-
-
+name: task-intake-protocol
+description: "Universal preflight gate: classify the problem, set the evidence bar, take the first action."
+triggers:
+  - Before any non-trivial task
+  - Need to classify, calibrate, and commit before acting
+  - Need to combine Cynefin, ETTO, and RPT into one pipeline
 ---
 
 ## Task Intake Protocol

@@ -1,16 +1,10 @@
 ---
 name: claim-verification-reasoning
-description: "Use when multi-step reasoning contains unverified claims — atomic decomposition with confidence labels and tool-grounded verification."
-category: reasoning
-tags: [hallucination-prevention, claim-verification, reasoning, confidence-calibration, factuality]
-author: Research synthesis
-source: arXiv:2604.12046, arXiv:2604.20098, arXiv:2604.16909
-date: 2026-04-22
-version: 1.0.0
-...
-
-
-
+description: "Atomic decomposition with confidence labels and tool-grounded verification."
+triggers:
+  - Multi-step reasoning contains unverified claims
+  - Need to decompose claims into atomic, falsifiable units
+  - Need tool-grounded verification of reasoning claims
 ---
 
 # Claim Verification Reasoning

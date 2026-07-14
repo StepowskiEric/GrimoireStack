@@ -1,15 +1,10 @@
 ---
 name: process-reward-model-protocol
-description: "Use when reasoning may have committed to a wrong path too early — self-assign process rewards per step and backtrack when cumulative reward drops below threshold."
-category: execution
-tags: [process-reward, prm, step-reward, backtracking, reasoning-quality]
-author: Research synthesis
-date: 2026-04-20
-version: 1.0.0
-...
-
-
-
+description: "Self-assign process rewards per step and backtrack when cumulative reward drops below threshold."
+triggers:
+  - Long reasoning chains risk compounding errors
+  - Reasoning may have committed to a wrong path too early
+  - Need to detect and recover from reasoning degradation
 ---
 
 # Process Reward Model Protocol

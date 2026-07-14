@@ -1,9 +1,6 @@
 ---
-source: "GrimoireStack"
-description: "Use when using any external library, SDK, or API you are not 100% sure of, libraries released after your LLM's training cutoff, or niche/low-training-count libraries."
-version: 1.0.0
-priority: high
-tags: [api, verification, hallucination-prevention, code-quality, documentation, sdk]
+name: api-surface-anchoring
+description: "Verify every external API call against current docs to prevent hallucinated APIs."
 triggers:
   - Using any external library, SDK, or API you are not 100% sure of
   - Libraries released or updated after your LLM's training cutoff

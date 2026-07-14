@@ -1,6 +1,10 @@
 ---
 name: tool-interactive-critic
-description: "Use when an initial draft needs post-generation verification — external tools critique the output before it is trusted."
+description: "External tools critique the output before it is trusted."
+triggers:
+  - Initial draft needs post-generation verification
+  - Need external tools to verify output before trusting it
+  - After an initial draft, answer, plan, code change, or recommendation exists
 ---
 
 # Skill: Tool-Interactive Critic

@@ -1,16 +1,10 @@
 ---
 name: cot-pruning-reasoning
-description: "Use when chain-of-thought is consuming budget without changing conclusions — two-pass prune retains only the steps that move the answer (coarse step-level, then fine token-level)."
-category: reasoning
-tags: [chain-of-thought, reasoning, token-efficiency, compression, CoT]
-author: Research synthesis
-source: arXiv:2312.08901, arXiv:2602.14002
-date: 2026-04-22
-version: 1.0.0
-...
-
-
-
+description: "Two-pass prune retains only the steps that move the answer (coarse step-level, then fine token-level)."
+triggers:
+  - Chain-of-thought is consuming budget without changing conclusions
+  - Need to prune reasoning steps that don't move the answer
+  - Need coarse step-level then fine token-level pruning
 ---
 
 # CoT Pruning Reasoning

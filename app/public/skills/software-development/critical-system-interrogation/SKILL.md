@@ -1,5 +1,6 @@
 ---
-description: "Use when stress-testing a critical system path (auth pipelines, payment flows, data validation) for correctness, race conditions, security flaws, and architectural integrity."
+name: critical-system-interrogation
+description: "Stress-test critical system paths (auth pipelines, payment flows, data validation) for correctness, race conditions, security flaws, and architectural integrity."
 triggers:
   - Investigating authentication/authorization pipelines
   - Reviewing payment processing flows

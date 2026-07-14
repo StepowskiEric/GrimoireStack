@@ -7,22 +7,11 @@ triggers:
   - Subtasks have room for local judgment
 ---
 
-# Octopus — Distributed Multi-Agent Orchestration
+# Octopus
 
-A central brain issues contracts; sub-agents (arms) execute with local autonomy, share a workspace, and report compressed summaries. On critical failure, the orchestrator **retracts**: halts downstream dependents, quarantines partial artifacts, writes a failure report.
+Orchestrate parallel sub-agents with bounded concurrency. A central brain issues contracts; sub-agents (arms) execute with local autonomy, share a workspace, and report compressed summaries. On critical failure, the orchestrator **retracts**: halts downstream dependents, quarantines partial artifacts, writes a failure report.
 
-## When to Use
-
-- 3+ independently executable workstreams that share a common interface or schema
-- A shared contract can be defined before any subtask launches
-- Parallel execution saves significant wall-clock time
-- Each subtask has room for judgment calls, fallback logic, or adaptive behavior
-
-## When NOT to Use
-
-- **Linear / sequential task with no parallelism** — use prompt chaining instead.
-- **Sub-agents have no meaningful autonomy** — single-shot task; the overhead doesn't pay off.
-- **Coordination cost exceeds parallel speedup** — for small tasks, a single agent is faster and clearer.
+Use prompt chaining for linear/sequential tasks, single-agent execution when sub-agents have no meaningful autonomy, and a single agent for small tasks where coordination overhead exceeds parallel speedup.
 
 ## Step 1 — Contract-Driven Decomposition
 
@@ -85,7 +74,7 @@ sub_agent:
 
 ### Compression Mandate
 
-Sub-agents **must not** return raw logs. They return structured JSON:
+Sub-agents return structured JSON, not raw logs:
 
 ```json
 {

@@ -1,6 +1,10 @@
 ---
-name: "unsafe-control-actions-hazard-analysis"
-description: "Use this skill when the agent is about to recommend or perform an action that could create serious harm, instability, or irreversible damage."
+name: unsafe-control-actions-hazard-analysis
+description: "Analyze how a control action could become unsafe before recommending or performing it."
+triggers:
+  - About to recommend or perform an action that could create serious harm
+  - Action could cause instability or irreversible damage
+  - Need hazard analysis before acting
 ---
 
 # Skill: Unsafe Control Actions / Hazard Analysis

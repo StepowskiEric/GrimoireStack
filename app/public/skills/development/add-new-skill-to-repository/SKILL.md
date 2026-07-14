@@ -1,18 +1,15 @@
 ---
 name: add-new-skill-to-repository
-category: development
-description: Process for adding a new skill to GrimoireStack repository with proper documentation, installation support, and cross-platform verification.
-version: 1.0
-...
-
-
-
+description: "Standardized process for adding a new skill to the GrimoireStack repository with proper documentation, installation support, and cross-platform verification."
+triggers:
+  - Created a new skill that needs to be contributed to the repository
+  - Need to ensure the skill installs correctly via npx GrimoireStack
+  - Need to maintain repository quality and consistency
 ---
 
 # Add New Skill to GrimoireStack Repository
 
-## Purpose
-Standardized process for contributing a new skill to the GrimoireStack repository that ensures:
+Standardized process for contributing a new skill to the GrimoireStack repository.
 - Proper skill structure and documentation
 - Correct installation support across all target agents
 - Clear separation of concise README info vs detailed documentation

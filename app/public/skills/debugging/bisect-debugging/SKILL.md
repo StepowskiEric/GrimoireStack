@@ -1,15 +1,11 @@
 ---
 name: bisect-debugging
-description: "Isolate the exact commit that introduced a bug using binary search through git history. The fastest way to find 'what changed' when tests used to pass."
+description: "Isolate the exact commit that introduced a bug using binary search through git history."
 triggers:
   - Tests pass on an older commit but fail on HEAD
   - Feature worked yesterday but is broken today
   - Need the exact change that caused a regression
   - Multiple commits could be the culprit
-category: debugging
-tags: [debugging, git, bisect, regression, testing]
-author: empirical-testing
-version: 1.0.0
 ---
 
 # Bisect Debugging
@@ -134,7 +130,7 @@ git bisect run npm test
 
 ---
 
-## Common Pitfalls
+## Failure Modes
 
 1. **Flaky tests** → Bisect becomes unreliable. Fix test flakiness first.
 2. **Non-deterministic bugs** (race conditions, timing) → May need multiple runs per commit.

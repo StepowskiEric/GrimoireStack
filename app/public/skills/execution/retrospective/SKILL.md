@@ -1,6 +1,10 @@
 ---
-name: "retrospective"
-description: "Use this skill after an incident, shipped feature, completed project, or any significant outcome to systematically learn from what happened. The natural counterpart to pre-mortem: before execution you imagine failure; after execution you examine the real outcome."
+name: retrospective
+description: "After an incident, shipped feature, or completed project, systematically learn from what happened."
+triggers:
+  - After an incident, shipped feature, or completed project
+  - Need to systematically learn from what happened
+  - Natural counterpart to pre-mortem
 ---
 
 # Skill: Retrospective — After-Action Learning from Real Outcomes

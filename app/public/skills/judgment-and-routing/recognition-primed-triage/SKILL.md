@@ -1,6 +1,10 @@
 ---
 name: recognition-primed-triage
-description: "Use when fast judgment is required under incomplete information — pattern recognition, mental simulation, and immediate next move."
+description: "Pattern recognition, mental simulation, and immediate next move under incomplete information."
+triggers:
+  - Fast judgment is required under incomplete information
+  - Time pressure or operational ambiguity
+  - Need a strong first move, not exhaustive analysis
 ---
 
 # Skill: Recognition-Primed Triage

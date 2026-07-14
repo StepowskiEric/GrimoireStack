@@ -1,6 +1,10 @@
 ---
 name: philosophy-of-software-design-state-machine
-description: "Use when managing complexity or designing modules — design deeper modules, avoid shallow abstraction sprawl, declare unknowns and blast radius, bound change scope, stop explicitly."
+description: "Design deeper modules, avoid shallow abstraction sprawl, declare unknowns and blast radius, bound change scope."
+triggers:
+  - Managing complexity or designing modules
+  - Need to avoid shallow abstraction sprawl
+  - Changing a shared interface with unknown consumers
 ---
 
 # A Philosophy of Software Design — State Machine Protocol for AI Agents

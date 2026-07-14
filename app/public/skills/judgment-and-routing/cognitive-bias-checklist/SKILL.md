@@ -1,6 +1,10 @@
 ---
 name: cognitive-bias-checklist
-description: "Use when slow-mode recommendations need bias audit — explicit checklist to catch contamination before finalizing."
+description: "Explicit checklist to catch bias contamination before finalizing slow-mode recommendations."
+triggers:
+  - Slow-mode recommendations need bias audit
+  - Making an important decision, recommendation, estimate, or architecture choice
+  - Need to check whether cognitive biases have contaminated the output
 ---
 
 # Skill: Cognitive Bias Checklist for AI Agents

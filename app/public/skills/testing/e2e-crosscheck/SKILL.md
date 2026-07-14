@@ -1,8 +1,10 @@
 ---
 name: e2e-crosscheck
-category: testing
-description: "Bidirectional audit between E2E test selectors/assertions and source code. Reconciles every test identifier, text assertion, and navigation route against the current code, and flags untested UI states and error paths. Run after refactoring, UI text changes, navigation restructuring, or before any major release."
-version: 1.0
+description: "Bidirectional audit between E2E test selectors/assertions and source code. Reconciles every test identifier, text assertion, and navigation route."
+triggers:
+  - After refactoring, UI text changes, or navigation restructuring
+  - Before any major release
+  - Need to reconcile every test claim against the source
 ---
 
 # E2E Cross-Check Protocol

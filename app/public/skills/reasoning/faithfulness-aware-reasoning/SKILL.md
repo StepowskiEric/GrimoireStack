@@ -1,12 +1,11 @@
 ---
 name: faithfulness-aware-reasoning
-description: "Use when reasoning reads plausibly but should not be trusted — detect and prevent faithfulness hallucinations where claims aren't logically entailed by the premises."
-category: reasoning
-tags: [faithfulness, hallucination-detection, logical-entailment, verification, reasoning-quality]
-author: Research synthesis
-date: 2026-04-20
-version: 1.0.0
-...
+description: "Detect and prevent faithfulness hallucinations where claims aren't logically entailed by the premises."
+triggers:
+  - Reasoning reads plausibly but should not be trusted
+  - Need to detect faithfulness hallucinations
+  - Claims may not be logically entailed by the premises
+---
 
 
 

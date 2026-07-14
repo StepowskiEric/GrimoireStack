@@ -476,19 +476,17 @@ features/ladder/
 
 ---
 
-## Anti-Patterns
+## Failure Modes
 
-| ❌ Don't | ✅ Do Instead |
+| ❌ Failure Mode | ✅ Fix |
 |----------|---------------|
-| Put business logic in screens | Move to `features/*/utils/` or shared domain modules |
-| Import `features/a` from `features/b` | Promote shared code to `components/`, `hooks/`, or `services/` |
-| Use `.filter` on DB queries | Use `.withIndex()` with a proper index |
+| Business logic in screens | Move to `features/*/utils/` or shared domain modules |
+| Importing `features/a` from `features/b` | Promote shared code to `components/`, `hooks/`, or `services/` |
+| Using `.filter` on DB queries | Use `.withIndex()` with a proper index |
 | `.collect()` on unbounded queries | Use `.paginate()`, `.take()`, or denormalised counts |
-
-| Forget table names in `ctx.db` calls | Always `ctx.db.get("tableName", id)` |
-| Put component tests in a top-level `__tests__/` folder | Colocate: `features/ladder/__tests__/` |
-
-| Deeply nested components (>2 levels) | That's a signal to create a new feature folder |
+| Forgetting table names in `ctx.db` calls | Always `ctx.db.get("tableName", id)` |
+| Component tests in a top-level `__tests__/` folder | Colocate: `features/ladder/__tests__/` |
+| Deeply nested components (>2 levels) | Signal to create a new feature folder |
 | `Date.now()` in query functions | Pass time as an explicit argument |
 
 ---

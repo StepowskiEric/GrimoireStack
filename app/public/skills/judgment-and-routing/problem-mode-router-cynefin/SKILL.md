@@ -1,6 +1,10 @@
 ---
 name: problem-mode-router-cynefin
-description: "Use when choosing the wrong reasoning mode is the dominant risk — Cynefin-based routing before solving the problem."
+description: "Cynefin-based routing before solving the problem. Classify the problem type before deciding how to solve it."
+triggers:
+  - Choosing the wrong reasoning mode is the dominant risk
+  - Need to decide what kind of problem this is before solving it
+  - Task could be simple, complicated, complex, or chaotic
 ---
 
 # Skill: Problem-Mode Router (Cynefin)

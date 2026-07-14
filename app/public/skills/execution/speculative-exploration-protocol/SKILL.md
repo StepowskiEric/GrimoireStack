@@ -1,6 +1,10 @@
 ---
 name: speculative-exploration-protocol
-description: "Use when the best reasoning path is unclear — branch into N candidates, score with process rewards, prune low-reward branches, then verify the best candidate against hard constraints. Prevents first-branch lock-in."
+description: "Branch into N candidates, score with process rewards, prune low-reward branches, verify the best against hard constraints."
+triggers:
+  - Best reasoning path is unclear
+  - Previous reasoning produced correct-looking but flawed conclusions
+  - Multi-step reasoning where early errors cascade downstream
 ---
 
 # Speculative Exploration Protocol for AI Agents

@@ -1,5 +1,6 @@
 ---
-description: "Use before deploying any code to production or before pushing AI-authored code."
+name: pre-deployment-gate
+description: "Complete pre-deployment checklist merging LLM Pre-Push Review with Vibe Coding Security Hardening."
 triggers:
   - Before deploying any code to production
   - Before pushing AI-authored code

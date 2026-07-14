@@ -1,6 +1,10 @@
 ---
 name: self-verify-pipeline
-description: "Use when outputs risk unverified confidence — escalating verification chain of bounded revision, claim decomposition, and tool-grounded critique."
+description: "Escalating verification chain of bounded revision, claim decomposition, and tool-grounded critique."
+triggers:
+  - Outputs risk unverified confidence
+  - Need escalating verification for agent output
+  - Need to catch different failure modes at different verification levels
 ---
 
 ## Self-Verify Pipeline

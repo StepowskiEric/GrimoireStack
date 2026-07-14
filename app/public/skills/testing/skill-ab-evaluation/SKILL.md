@@ -1,13 +1,11 @@
 ---
-source: "GrimoireStack"
 name: skill-ab-evaluation
-description: A/B evaluate any GrimoireStack skill against a baseline using isolated subagents, 5 trials each, and an objective rubric. Measures real % improvement without touching current projects.
-category: testing
-priority: high
-tags: [evaluation, ab-test, subagent, skill-quality, benchmarking]
-...
-
-
+description: "A/B evaluate any GrimoireStack skill against a baseline using isolated subagents, 5 trials each, and an objective rubric."
+triggers:
+  - Need to measure whether a skill actually improves outcomes
+  - Need to compare a skill against general knowledge
+  - Need empirical evidence for skill quality
+---
 
 ---
 

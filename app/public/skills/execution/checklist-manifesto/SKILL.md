@@ -1,11 +1,13 @@
 ---
 name: checklist-manifesto
-description: "Use when a high-stakes procedure demands more than expertise — build the smallest useful checklist, gate execution on checklist completion, stop cleanly and escalate if it cannot be cleared."
+description: "Build the smallest useful checklist for high-stakes procedures, gate execution on checklist completion, stop cleanly and escalate if it cannot be cleared."
+triggers:
+  - High-stakes procedure where expert knowledge is necessary but not sufficient
+  - Skip-ahead errors have caused failures before
+  - Task involves irreversible actions or shared system impact
 ---
 
 # Checklist Manifesto — State Machine Protocol for AI Agents
-
-## Purpose
 
 Use this skill when the agent must perform a high-stakes procedure where expert knowledge is necessary but not sufficient, and where skip-ahead errors cause most failures.
 
@@ -244,13 +246,13 @@ Stop immediately if:
 
 ---
 
-## Failure Modes This Skill Prevents
+## Failure Modes
 
-- expert skip-ahead on high-stakes steps
-- confidence-based assumption that a step was completed
-- checklist theater (long lists that get skimmed rather than cleared)
-- parallel execution of dependent steps without proper sequencing
-- proceeding through a pause point without required confirmation
+- **Expert skip-ahead:** skipping steps on high-stakes procedures because they feel obvious
+- **Confidence-based assumption:** assuming a step was completed without evidence
+- **Checklist theater:** long lists that get skimmed rather than cleared
+- **Parallel execution of dependent steps:** without proper sequencing
+- **Proceeding through a pause point:** without required confirmation
 
 ---
 
@@ -271,12 +273,3 @@ This skill is correctly applied when:
 - **Unsafe Control Actions** — use when deciding which steps should be pause points or exception triggers
 - **OODA Loop** — use OODA in dynamic environments; use the Checklist in well-defined high-stakes procedures
 - **Working Effectively with Legacy Code** — checklist before any seam-cutting or major structural intervention
-
----
-
-## Final Instruction
-
-Do not rely on expertise to remember the important steps.
-Build the smallest checklist that catches the failures.
-Clear it item by item.
-Then execute.

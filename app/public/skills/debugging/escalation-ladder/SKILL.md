@@ -159,9 +159,9 @@ After 40 minutes of active debugging without resolution, the cost of continuing 
 
 ---
 
-## Anti-Patterns
+## Failure Modes
 
-| Anti-Pattern | Why It Fails |
+| Failure Mode | Why It Fails |
 |-------------|-------------|
 | Skipping Level 0 and going straight to user | Most "stuck" moments resolve with self-correction; asking too early wastes user time |
 | Re-reading files instead of running code | If the bug was visible in code, you'd have found it; runtime state is what you need |

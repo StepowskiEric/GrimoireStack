@@ -114,14 +114,14 @@ Confirm the fix is correct and doesn't introduce regressions.
 
 ---
 
-## Anti-Patterns
+## Failure Modes
 
-- **Don't skip Phase 1** — jumping straight to patching wastes cycles on wrong hypotheses
-- **Don't instrument every line** — 3-5 strategic points max, otherwise output becomes noise
-- **Don't generate same patch twice** — if iteration N matches iteration N-1, stop and re-hypothesize
-- **Don't fix tests instead of code** — patching test expectations to match wrong behavior is a red flag
-- **Don't overfit to test suite** — a patch that makes tests pass but introduces regressions elsewhere is worse than no fix
-- **Don't ignore negative symptoms** — what does NOT happen is as important as what does
-- **Don't skip Phase 6** — a fix that breaks other tests isn't a fix
-- **Don't spawn multiple debug subagents in parallel** — serial investigation is more token-efficient
-- **Don't use abduction for clear error messages** — if the error points to a specific line, use deductive tracing instead
+- **Skipping Phase 1:** jumping straight to patching wastes cycles on wrong hypotheses
+- **Instrumenting every line:** 3-5 strategic points max, otherwise output becomes noise
+- **Generating the same patch twice:** if iteration N matches iteration N-1, stop and re-hypothesize
+- **Fixing tests instead of code:** patching test expectations to match wrong behavior is a red flag
+- **Overfitting to test suite:** a patch that makes tests pass but introduces regressions elsewhere is worse than no fix
+- **Ignoring negative symptoms:** what does NOT happen is as important as what does
+- **Skipping Phase 6:** a fix that breaks other tests isn't a fix
+- **Spawning multiple debug subagents in parallel:** serial investigation is more token-efficient
+- **Using abduction for clear error messages:** if the error points to a specific line, use deductive tracing instead

@@ -135,9 +135,9 @@ npm run check
 
 ---
 
-## Anti-Patterns
+## Failure Modes
 
-| Anti-Pattern | Why It Fails |
+| Failure Mode | Why It Fails |
 |-------------|-------------|
 | Writing a test that asserts current buggy behavior | Tests the symptom, not the fix; will pass before bug is fixed |
 | Mock-heavy reproduction test | Can't mock away the bug — you need the real code to fail |

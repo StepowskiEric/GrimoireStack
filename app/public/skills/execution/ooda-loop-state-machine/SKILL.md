@@ -1,11 +1,13 @@
 ---
 name: ooda-loop-state-machine
-description: "Use when conditions are changing rapidly, adversarially, or unpredictably — Observe, Orient, Decide, Act, Loop. Maintains decision tempo against an environment that shifts between every move."
+description: "Observe, Orient, Decide, Act, Loop. Maintains decision tempo against an environment that shifts between every move."
+triggers:
+  - Conditions are changing rapidly, adversarially, or unpredictably
+  - Environment shifts between every action
+  - Need to maintain decision tempo against a degrading situation
 ---
 
 # OODA Loop — State Machine Protocol for AI Agents
-
-## Purpose
 
 Use this skill when the agent must operate in an environment where conditions are changing rapidly, adversarial, or unpredictable between actions.
 
@@ -288,17 +290,6 @@ Stop and escalate if:
 
 ---
 
-## Failure Modes This Skill Prevents
-
-- reacting without observing (acting on stale mental model)
-- observing without orienting (confusing data with understanding)
-- orienting without deciding (analysis paralysis)
-- deciding without acting (plan without execution)
-- acting without looping (one-shot response when the situation keeps moving)
-- looping without learning (identical cycles with no model update)
-
----
-
 ## Definition of Done
 
 This skill is correctly applied when:
@@ -320,10 +311,11 @@ This skill is correctly applied when:
 
 ---
 
-## Final Instruction
+## Failure Modes
 
-Observe what is actually there.
-Orient to build the truest picture you can.
-Decide with bounded confidence.
-Act within scope.
-Loop — the environment will not wait.
+- **Reacting without observing:** acting on a stale mental model
+- **Observing without orienting:** confusing data with understanding
+- **Orienting without deciding:** analysis paralysis
+- **Deciding without acting:** plan without execution
+- **Acting without looping:** one-shot response when the situation keeps moving
+- **Looping without learning:** identical cycles with no model update

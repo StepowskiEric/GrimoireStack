@@ -1,6 +1,10 @@
 ---
 name: pre-mortem-state-machine
-description: "Use when a plan needs validation before execution — pre-mortem protocol with artifact gating, narrative failure modeling, and risk-adjusted plan revision."
+description: "Pre-mortem protocol with artifact gating, narrative failure modeling, and risk-adjusted plan revision."
+triggers:
+  - Plan needs validation before execution
+  - Need to assume failure has already occurred and work backward
+  - Surface-level risk listing is insufficient
 ---
 
 # Skill: Pre-Mortem — State Machine Protocol for AI Agents

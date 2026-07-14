@@ -1,6 +1,10 @@
 ---
 name: kahneman-thinking-fast-slow-software-agent
-description: "Use when coding or debugging work needs calibrated reasoning — switch between fast pattern recognition and slow deliberation as stakes demand."
+description: "Switch between fast pattern recognition and slow deliberation as stakes demand."
+triggers:
+  - Coding or debugging work needs calibrated reasoning
+  - Need to switch between fast and slow thinking modes
+  - Task is expensive, irreversible, ambiguous, architectural, or security-sensitive
 ---
 
 # Skill: Thinking Fast and Slow for Software Engineering Agents

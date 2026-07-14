@@ -1,8 +1,10 @@
 ---
-source: "GrimoireStack"
 name: structured-feature-planning
-category: execution
-description: "Use when implementing correctness-critical features — read files, search for patterns, self-review twice, then execute. Governing rule: never hallucinate when confused."
+description: "Read files, search for patterns, self-review twice, then execute. Never hallucinate when confused."
+triggers:
+  - Implementing correctness-critical features
+  - Need to read files and search for patterns before coding
+  - Self-review is required before execution
 ---
 
 

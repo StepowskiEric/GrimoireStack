@@ -1,8 +1,10 @@
 ---
 name: e2e-test-premortem
-category: testing
-description: "Premortem for E2E test changes. Run after writing or modifying E2E tests to audit coverage gaps, data realism, failure-mode coverage, and assertion quality before declaring done. Also run before writing E2E tests to map the flow and identify blind spots first."
-version: 1.0
+description: "Premortem for E2E test changes. Audit coverage gaps, data realism, failure-mode coverage, and assertion quality."
+triggers:
+  - After writing or modifying E2E tests
+  - Before writing E2E tests to map the flow and identify blind spots
+  - Need to audit coverage gaps and assertion quality
 ---
 
 # Premortem: E2E Test Audit Protocol

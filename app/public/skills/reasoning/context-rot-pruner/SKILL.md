@@ -1,11 +1,11 @@
 ---
-source: "GrimoireStack"
 name: context-rot-pruner
-category: reasoning
-description: Apply exponential decay to context messages so old, unreferenced content loses weight and gets pruned before the context window overflows. Extends useful context life by 2-3x.
-...
-
-
+description: "Apply exponential decay to context messages so old, unreferenced content gets pruned before the context window overflows."
+triggers:
+  - Context window is approaching capacity
+  - Old, unreferenced content is consuming budget
+  - Need to extend useful context life
+---
 
 ---
 

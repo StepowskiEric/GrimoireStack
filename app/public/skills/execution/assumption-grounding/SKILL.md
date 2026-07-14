@@ -1,14 +1,12 @@
 ---
-source: "GrimoireStack"
 name: assumption-grounding
-description: Prevent hallucinated facts from compounding into costly errors. State every assumption explicitly, verify with the cheapest possible check, and only proceed on confirmation. Based on Chain-of-Verification research.
-category: execution
-priority: high
-tags: [verification, hallucination-prevention, correctness, debugging, agent-safety]
-...
-
-
-
+description: "State every assumption explicitly, verify with the cheapest possible check, and only proceed on confirmation."
+triggers:
+  - Before reading, editing, or creating any file
+  - Before calling any function, API, or tool whose signature you haven't confirmed in this session
+  - Before asserting any factual claim about the codebase, environment, or dependencies
+  - Before proceeding after a context gap (computer restarted, new session, long pause)
+  - When confidence in a memory is < 90%
 ---
 
 ## Overview
@@ -20,23 +18,6 @@ The #1 cause of agent failure is not bad reasoning — it's reasoning atop **hal
 2. **Verify** with the cheapest check that could falsify it
 3. **Decide** — proceed only if confirmed; reformulate if falsified
 4. **Log** the assumption and result for future reference
-
-Research (Chain-of-Verification, Dhuliawala et al. 2023) shows that explicit verification loops reduce factual errors by 28% and prevent error compounding.
-
-## When to use
-
-- Before reading, editing, or creating any file
-- Before calling any function, API, or tool whose signature you haven't confirmed in this session
-- Before asserting any factual claim about the codebase, environment, or dependencies
-- Before proceeding after a context gap (computer restarted, new session, long pause)
-- When confidence in a memory is < 90%
-
-## When NOT to use
-
-- The fact was verified in the current turn and nothing has changed
-- You're repeating a verbatim operation you just completed successfully
-- The check would cost more than the mistake (e.g., verifying a throwaway temp path)
-- The user explicitly instructed you to proceed without verification
 
 ## Companion script (optional)
 
@@ -118,20 +99,22 @@ Assumptions verified this session:
 
 ## Rules for verification
 
-| Do | Don't |
-|----|-------|
-| Use the cheapest check that falsifies the assumption | Run the full operation as "verification" |
-| Verify one assumption at a time | Bundle multiple assumptions into one vague check |
-| State the assumption before verifying | Verify first, then rationalize the assumption |
-| Reformulate and re-verify on failure | Guess the correction without checking |
-| Log both passes and failures | Only log failures |
-| Escalate when ambiguous | Pick arbitrarily and hope |
+- Use the cheapest check that falsifies the assumption, not the full operation
+- Verify one assumption at a time, not bundled into one vague check
+- State the assumption before verifying, not after
+- Reformulate and re-verify on failure instead of guessing
+- Log both passes and failures
+- Escalate when ambiguous instead of picking arbitrarily
 
 ## Research basis
 
 - **Chain-of-Verification** (Dhuliawala et al., 2023): Explicit verification loops reduce hallucination in long-form generation by 28%.
 - **Self-Reflection in LLM Agents** (Renze & Guven, 2024): Self-critique without grounding in observable checks produces minimal improvement.
 - **ErrorProbe** (ACL 2026 Findings): Verified memory of error patterns (confirmed via executable evidence) is the strongest predictor of recovery success.
+
+## References
+
+- `RESEARCH.md` — Full research basis and citations.
 
 ## Example
 
@@ -155,7 +138,7 @@ Verification: `grep "def calculate_tax" src/orders.py` → PASS (line 23).
 Proceeding with edit.
 ```
 
-## Pitfalls
+## Failure Modes
 
 - **Verification theater**: Running `cat huge_file.py` and claiming you verified the assumption. Use targeted `grep` or read specific offsets.
 - **Assumption bundling**: "The function exists and takes 3 arguments and returns a dict" → verify each claim separately.

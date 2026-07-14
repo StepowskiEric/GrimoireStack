@@ -1,8 +1,10 @@
 ---
 name: summarize
-description: "Use when session quality is degraded, you need to hand off mid-work, or you must preserve context before a /new. Emergency stop + perfect handoff report so the next agent loses nothing."
-version: 1.0.0
-author: Eric
+description: "Emergency stop + perfect handoff report so the next agent loses nothing."
+triggers:
+  - Session quality is degraded
+  - Need to hand off mid-work
+  - Must preserve context before a /new
 ---
 
 

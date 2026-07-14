@@ -1,6 +1,10 @@
 ---
 name: bayesian-updating
-description: "Use when beliefs must shift with evidence — explicit priors updated by likelihood, avoiding over- and under-reaction."
+description: "Maintain explicit priors updated by likelihood, avoiding over- and under-reaction to new evidence."
+triggers:
+  - Beliefs must shift with evidence
+  - Need to avoid swinging too far on a single data point
+  - Need to avoid ignoring evidence that conflicts with prior beliefs
 ---
 
 # Skill: Bayesian Belief Updating for AI Agents

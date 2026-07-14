@@ -1,8 +1,11 @@
 ---
 name: mobile-e2e-testing-enterprise-guide
-category: testing
-description: "Hunter's mindset for mobile E2E testing — what to test, how to catch real bugs, and avoid traps. Use when planning tests, reviewing coverage, debugging flakiness, or needing adversarial/edge-case ideas."
-version: 1.0
+description: "Hunter's mindset for mobile E2E testing: what to test, how to catch real bugs, and avoid traps."
+triggers:
+  - Planning mobile E2E tests
+  - Reviewing test coverage
+  - Debugging flakiness
+  - Needing adversarial or edge-case ideas
 ---
 
 # Mobile E2E Testing: The Hunter's Mindset

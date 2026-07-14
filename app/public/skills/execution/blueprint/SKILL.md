@@ -1,24 +1,15 @@
 ---
 name: blueprint
-description: Type the problem — codify messy situations into schema so contradictions, gaps, and silent assumptions become impossible to ignore. Use when vague problems keep being redefined or stakeholders talk past each other.
+description: Blueprint a messy problem into formal schema — types, operations, events, constraints — so contradictions, gaps, and hidden assumptions surface as bugs. Use when scope keeps expanding, stakeholders talk past each other, or informal requirements need precision.
 triggers:
   - Vague problem that keeps being redefined
-  - Stakeholders use the same words but mean different things
+  - Stakeholders talk past each other with hidden disagreement
   - Problem scope keeps expanding mid-discussion
-  - Hidden disagreement masked by vague language
 ---
 
 # Blueprint
 
-Force the messy problem into types, operations, events, and constraints. What you can't represent in schema, you don't understand yet.
-
-## When to Use
-
-- Problem discussed in circles without resolution
-- People keep talking past each other
-- Scope of work keeps expanding or shifting
-- Need to convert informal requirements into precise specifications
-- Hidden disagreement masked by vague language
+Blueprint the messy problem into types, operations, events, and constraints. What you can't represent in schema, you don't understand yet.
 
 ## When NOT to Use
 
@@ -27,7 +18,7 @@ Force the messy problem into types, operations, events, and constraints. What yo
 
 ## Phase 1 — Transcribe
 
-Force the messy problem into formal structure:
+Blueprint the messy problem into formal structure:
 
 ```
 Types / Schema:
@@ -46,8 +37,8 @@ Events:
 ```
 
 Rules:
-- If you can't represent it as data or types, you don't understand it yet
-- Contradictions in the spec are bugs — expose them, don't hide them
+- If you can't blueprint it, you don't understand it yet
+- Contradictions in the spec are bugs — expose them
 - Silent assumptions become explicit `[ASSUMPTION]` comments
 
 **Done when** every noun is typed, every operation references a defined entity, and every constraint names the entities it binds.
@@ -110,10 +101,10 @@ Output markers:
 
 ## Anti-Patterns
 
-- **Scope creep:** problems get redefined mid-implementation
-- **Silent misalignment:** everyone nods but means different things
+- **Scope creep:** problem gets redefined without re-blueprinting
+- **Silent misalignment:** everyone nods but blueprints different things
 - **Assumption amnesia:** forgetting what was assumed when implementing
-- **Requirements rot:** problem definition changes without re-running Blueprint
+- **Requirements rot:** problem definition shifts without re-running Blueprint
 
 ## Integration
 

@@ -1,6 +1,6 @@
 ---
 name: api-design-backward-compatibility
-description: "Use when APIs, schemas, or contracts must evolve without breaking clients — contract-first design and additive-only change discipline."
+description: "Contract-first design and additive-only change discipline for evolving APIs without breaking clients."
 triggers:
   - Adding a new endpoint, method, or public function
   - Changing request/response shapes, error formats, or status codes

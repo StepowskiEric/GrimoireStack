@@ -1,6 +1,10 @@
 ---
 name: reference-class-forecasting
-description: "Use when estimating timelines or success probability — anchor to similar past projects before reasoning from the specifics."
+description: "Anchor to similar past projects before reasoning from the specifics."
+triggers:
+  - Estimating timelines or success probability
+  - Need to establish the outside view before the inside view
+  - Complex, novel, or long-horizon tasks
 ---
 
 # Skill: Reference Class Forecasting for AI Agents

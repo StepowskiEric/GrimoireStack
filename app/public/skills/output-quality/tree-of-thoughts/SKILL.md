@@ -1,6 +1,10 @@
 ---
 name: tree-of-thoughts
-description: "Use when the first reasoning path may be wrong — branch, evaluate, and prune candidate solutions before committing."
+description: "Branch, evaluate, and prune candidate solutions before committing."
+triggers:
+  - First reasoning path may be wrong
+  - Correct reasoning path is not immediately clear
+  - Committing to one line of thinking too early risks missing a better solution
 ---
 
 # Skill: Tree of Thoughts for AI Agents

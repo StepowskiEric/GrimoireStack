@@ -175,7 +175,7 @@ This is a lightweight version of formal mutation testing (Meta's ACH system, arX
 
 ---
 
-## Anti-Patterns to Avoid
+## Failure Modes
 
 ### ❌ Loop: "Test fails → Change code → Test still fails → Change more code"
 **Prevention**: Always complete Step 1 (Zoom Out) before making changes. If you've changed code twice without understanding the root cause, stop and re-read the test and code from scratch.

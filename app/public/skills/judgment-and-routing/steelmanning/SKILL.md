@@ -1,6 +1,10 @@
 ---
 name: steelmanning
-description: "Use when a recommendation needs stress-testing — construct the strongest opposing case before committing."
+description: "Construct the strongest opposing case before committing to a recommendation."
+triggers:
+  - A recommendation needs stress-testing
+  - Need to test whether the opposing position is stronger than it appears
+  - Confirmation bias or overconfidence is a risk
 ---
 
 # Skill: Steelmanning for AI Agents
