@@ -15,7 +15,7 @@ describe('spellMetadata', () => {
     });
 
     it('returns an explicit date for curated spells', () => {
-      expect(getSpellLastUpdated('log-trace-correlation')).toBe('2026-05-22');
+      expect(getSpellLastUpdated('log-trace-correlation')).toBe('2026-07-14');
     });
 
     it('returns a deterministic fallback for unknown spells', () => {

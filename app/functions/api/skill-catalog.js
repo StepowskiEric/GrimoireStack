@@ -987,6 +987,14 @@ export const SKILL_CATALOG = [
     "effect": "Structured protocol for when an agent is stuck — escalating from self-recovery to user collaboration to full retreat. Fills the gap between trajectory-guard (detects stuck) and summarize (bails out)."
   },
   {
+    "skill": "log-trace-correlation",
+    "name": "Log Trace Correlation",
+    "school": "Debugging",
+    "schoolName": "School of Remediation",
+    "status": "—",
+    "effect": "Correlate error logs and stack traces to source code — map each frame to a file:line, identify root cause, and produce a minimal fix. Use when you have an error log with a stack trace and need to determine which file, function, and line caused the failure without guesswork."
+  },
+  {
     "skill": "minimal-reproduction",
     "name": "Minimal Reproduction",
     "school": "Debugging",

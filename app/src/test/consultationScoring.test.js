@@ -85,12 +85,12 @@ describe('consultationScoring — scoreSelections', () => {
       { resolveOption },
     );
     // dbg-n1-a: primary=log-trace-correlation, alt=purify-test-output
-    // dbg-n3-a: primary=iterative-patch-repair, alt=simulate-instrumentation
+    // dbg-n3-a: primary=debug-issue, alt=simulate-instrumentation
     expect(out.topSkill).toBeTruthy();
-    expect(['log-trace-correlation', 'iterative-patch-repair']).toContain(out.topSkill);
+    expect(['log-trace-correlation', 'debug-issue']).toContain(out.topSkill);
     // alt weights are 0.5 each
     expect(out.bySkill.get('log-trace-correlation')).toBe(1);
-    expect(out.bySkill.get('iterative-patch-repair')).toBe(1);
+    expect(out.bySkill.get('debug-issue')).toBe(1);
     expect(out.bySkill.get('purify-test-output')).toBe(0.5);
     expect(out.bySkill.get('simulate-instrumentation')).toBe(0.5);
   });

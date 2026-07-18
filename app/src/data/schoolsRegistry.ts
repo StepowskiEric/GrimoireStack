@@ -843,7 +843,7 @@ const schools: Array<{
         "name": "Log Trace Correlation",
         "skill": "log-trace-correlation",
         "effect": "Correlate error logs and stack traces to source code — map each frame to a file:line, identify root cause, and produce a minimal fix. Use when you have an error log with a stack trace and need to determine which file, function, and line caused the failure without guesswork.",
-        "status": "New"
+        "status": "—"
       },
       {
         "name": "Minimal Reproduction",
