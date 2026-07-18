@@ -30,16 +30,19 @@ export async function discoverSkills() {
       const fullPath = path.join(rootPath, ent.name);
       if (ent.isDirectory()) {
         const skillMd = path.join(fullPath, 'SKILL.md');
+        let hasSkillMd = false;
         try {
           await fs.access(skillMd);
+          hasSkillMd = true;
           results.push({
             skillId: ent.name,
             src: skillMd,
             relDir: `${scanDir}/${ent.name}`,
             topic: scanDir,
           });
-        } catch {
-          // Scan one level deeper for nested skills
+        } catch {}
+        if (!hasSkillMd) {
+          // Scan one level deeper for nested skills when parent lacks SKILL.md
           const subEntries = await fs.readdir(fullPath, { withFileTypes: true });
           for (const sub of subEntries) {
             if (sub.isDirectory()) {
@@ -62,6 +65,26 @@ export async function discoverSkills() {
                 topic: scanDir,
               });
             }
+          }
+        }
+        // Always scan subdirectories for nested skills
+        const subEntries = await fs.readdir(fullPath, { withFileTypes: true });
+        for (const sub of subEntries) {
+          if (sub.isDirectory()) {
+            const subSkillMd = path.join(fullPath, sub.name, 'SKILL.md');
+            try {
+              await fs.access(subSkillMd);
+              // Avoid duplicate if already added above
+              const already = results.some(r => r.src === subSkillMd);
+              if (!already) {
+                results.push({
+                  skillId: sub.name,
+                  src: subSkillMd,
+                  relDir: `${scanDir}/${ent.name}/${sub.name}`,
+                  topic: scanDir,
+                });
+              }
+            } catch {}
           }
         }
       } else if (ent.name.endsWith('.md') && ent.name !== 'README.md') {

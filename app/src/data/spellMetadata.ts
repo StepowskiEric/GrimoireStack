@@ -65,6 +65,7 @@ export const EXPLICIT = {
   'lint-battalion': { lastUpdated: '2026-07-14' },
   'llm-pre-push-review': { lastUpdated: '2026-07-14' },
   'local-llm-tooling': { lastUpdated: '2026-07-14' },
+  'log-trace-correlation': { lastUpdated: '2026-07-14' },
   'maintain-architecture': { lastUpdated: '2026-07-14' },
   'mece-pyramid-principle': { lastUpdated: '2026-07-14' },
   'metacognitive-monitoring': { lastUpdated: '2026-07-14' },

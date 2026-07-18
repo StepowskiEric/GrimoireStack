@@ -13,7 +13,8 @@
 
 import { promises as fs } from 'fs';
 import path from 'path';
-import { APP_DIR, REPO_ROOT } from '../../../scripts/lib/constants.mjs';
+import { execSync } from 'child_process';
+import { APP_DIR, REPO_ROOT, PUBLIC_SKILLS } from '../../../scripts/lib/constants.mjs';
 import { discoverSkills } from '../../../scripts/lib/helpers.mjs';
 import { deriveDisplayName, deriveEffect, fileMtime, isoDate } from './derive.mjs';
 import { buildExplicit, renderMetadataSource } from './emit-metadata.mjs';
@@ -26,12 +27,47 @@ const SPELL_METADATA = path.join(APP_DIR, 'src', 'data', 'spellMetadata.ts');
 async function main() {
   const discovered = await discoverSkills();
   const records = await parseAll(discovered);
+  const newSkillIds = await getNewSkillIds(records);
+  for (const r of records) {
+    if (newSkillIds.has(r.skill)) r.status = 'New';
+  }
   const deduped = dedupRecords(records);
 
   await Promise.all([writeSchools(deduped), writeMetadata(deduped)]);
   console.log(
     `[registry] wrote ${deduped.length} skills across ${new Set(deduped.map((r) => r.topic)).size} topics`,
   );
+}
+
+async function getNewSkillIds(records) {
+  try {
+    const previous = await readPreviousRegistry();
+    const previousSkills = new Set(extractSkillIds(previous));
+    const currentSkills = new Set(records.map((r) => r.skill));
+    const newSkills = [...currentSkills].filter((id) => !previousSkills.has(id));
+    console.log(`[registry] ${newSkills.length} new skills`);
+    return new Set(newSkills);
+  } catch (e) {
+    console.log('[registry] could not determine new skills:', e.message);
+    return new Set();
+  }
+}
+
+async function readPreviousRegistry() {
+  try {
+    const rel = path.relative(REPO_ROOT, SCHOOLS_REGISTRY);
+    return execSync(`git show HEAD:${rel}`, { encoding: 'utf8' });
+  } catch {
+    return '';
+  }
+}
+
+function extractSkillIds(source) {
+  const ids = [];
+  const regex = /"skill":\s*"([^"]+)"/g;
+  let m;
+  while ((m = regex.exec(source))) ids.push(m[1]);
+  return ids;
 }
 
 /**
