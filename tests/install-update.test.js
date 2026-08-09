@@ -187,8 +187,8 @@ describe('cleanOldSkillVersions', () => {
 
 // --- installSkills ---
 
-// Skills live under app/public/skills/ relative to repo root
-const SKILL_PREFIX = 'app/public/skills';
+// Skills live under skills/ relative to repo root
+const SKILL_PREFIX = 'skills';
 
 describe('installSkills', () => {
   beforeAll(() => loadModules());

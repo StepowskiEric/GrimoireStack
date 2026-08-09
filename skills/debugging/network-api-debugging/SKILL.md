@@ -9,7 +9,7 @@ triggers:
   - Redirect chains that lose data or cause infinite loops
   - WebSocket connection drops or reconnection failures
   - Requests that work in Postman/curl but fail in the app
-  - "Network request failed" with no useful error message
+  - "Network request failed with no useful error message"
   - Server returns different data than expected
   - Request body or content-type mismatches
   - SSL/TLS certificate issues in development

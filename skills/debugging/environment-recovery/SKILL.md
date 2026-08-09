@@ -4,7 +4,7 @@ name: environment-recovery
 description: "Diagnose and fix broken development environments — missing tools, wrong versions, corrupted caches, full disks, permission drift, and dependency hell. The skill every other debugging skill assumes."
 triggers:
   - Commands fail with no clear error or misleading errors
-  - "command not found" but the tool is installed
+  - "command not found but the tool is installed"
   - Builds or tests fail silently
   - EACCES, ENOSPC, EADDRINUSE errors
   - Wrong tool version resolved (nvm/pyenv conflict)
@@ -13,7 +13,7 @@ triggers:
   - Transitive dependency version conflicts
   - Lockfile out of sync with package.json
   - Agent ran npm install / pip install and things got worse
-  - "It works on my machine" — environment-specific failures
+  - "It works on my machine — environment-specific failures"
 ---
 
 # Environment Recovery
