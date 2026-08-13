@@ -586,6 +586,12 @@ const schools: Array<{
         "status": "—"
       },
       {
+        "name": "Future Mortem",
+        "skill": "future-mortem",
+        "effect": "After code is written, assume it will cause future pain and work backward to find what will bite: debt with interest, extension traps, hidden assumptions, maintenance memory, time bombs, and upgrade cliffs. Use when implementation is done and the agent must surface what the code will cost the project later.",
+        "status": "New"
+      },
+      {
         "name": "Inversion — State Machine Protocol for AI Agents",
         "skill": "inversion-mental-model-state-machine",
         "effect": "Enforce failure-mode mapping and guardrail derivation before recommending success paths.",
