@@ -216,7 +216,7 @@ const schools: Array<{
       {
         "name": "Octopus",
         "skill": "octopus",
-        "effect": "Coordinate parallel sub-agents with bounded concurrency — define shared contracts, delegate with auto-healing arms, retract on failure. Use when 3+ workstreams share a contract and parallel speedup beats coordination overhead.",
+        "effect": "Coordinate parallel sub-agents with bounded concurrency — define shared contracts, delegate with auto-healing arms, retract on failure.",
         "status": "—"
       },
       {
@@ -238,7 +238,7 @@ const schools: Array<{
         "status": "—"
       },
       {
-        "name": "Separation of Concerns for AI Agent Orchestration",
+        "name": "Separation of Concerns for Agent Orchestration",
         "skill": "separation-of-concerns",
         "effect": "Keep planning, diagnosis, observation, and execution phases intellectually isolated.",
         "status": "—"
@@ -604,7 +604,7 @@ const schools: Array<{
         "status": "—"
       },
       {
-        "name": "Occam's Razor for AI Agents",
+        "name": "Occam's Razor",
         "skill": "occams-razor",
         "effect": "Favor the simplest sufficient explanation or solution. Try the simplest thing that fits the evidence before escalating.",
         "status": "—"
@@ -634,7 +634,7 @@ const schools: Array<{
         "status": "—"
       },
       {
-        "name": "Second-Order Thinking for AI Agents",
+        "name": "Second-Order Thinking",
         "skill": "second-order-thinking",
         "effect": "Chain consequences past first-order until the system-level outcome is clear.",
         "status": "—"
@@ -772,7 +772,7 @@ const schools: Array<{
         "status": "—"
       },
       {
-        "name": "Self-Consistency Check for AI Agents",
+        "name": "Self-Consistency Check",
         "skill": "self-consistency",
         "effect": "Generate independent reasoning paths and check whether they converge.",
         "status": "—"
@@ -784,7 +784,7 @@ const schools: Array<{
         "status": "—"
       },
       {
-        "name": "Tree of Thoughts for AI Agents",
+        "name": "Tree of Thoughts",
         "skill": "tree-of-thoughts",
         "effect": "Branch, evaluate, and prune candidate solutions before committing.",
         "status": "—"
