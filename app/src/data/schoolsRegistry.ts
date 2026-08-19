@@ -22,6 +22,12 @@ const schools: Array<{
     "desc": "Design rituals for systems that endure across dimensions of scale, time, and team boundaries.",
     "spells": [
       {
+        "name": "Architecture Evolution Review",
+        "skill": "architecture-evolution-review",
+        "effect": "Review the repository as a living system. Detect architectural drift, feature erosion, and long-term maintenance risks.",
+        "status": "—"
+      },
+      {
         "name": "Architecture Maintenance",
         "skill": "maintain-architecture",
         "effect": "Review completed work for architectural quality, maintainability, feature ownership, and long-term scalability.",
@@ -61,12 +67,6 @@ const schools: Array<{
         "name": "Improve Codebase Architecture",
         "skill": "improve-codebase-architecture",
         "effect": "Find deepening opportunities informed by the domain language in CONTEXT.md and decisions in docs/adr/.",
-        "status": "—"
-      },
-      {
-        "name": "Mission",
-        "skill": "architecture-evolution-review",
-        "effect": "Review the repository as a living system. Detect architectural drift, feature erosion, and long-term maintenance risks.",
         "status": "—"
       },
       {
@@ -250,9 +250,9 @@ const schools: Array<{
         "status": "—"
       },
       {
-        "name": "Sub-Agent Composer — High-Context Delegation",
+        "name": "Sub-Agent Composer",
         "skill": "subagent-composer",
-        "effect": "Compose high-context sub-agent briefs with skill loading, explicit boundaries, success criteria, and stop rules.",
+        "effect": "Compose high-context sub-agent briefs that eliminate first-pass failures.",
         "status": "—"
       },
       {
@@ -342,7 +342,7 @@ const schools: Array<{
         "status": "—"
       },
       {
-        "name": "Identify the detached commits",
+        "name": "Git Surgery",
         "skill": "git-surgery",
         "effect": "Recover from local git disasters: detached HEAD, botched rebase, accidental commits, merge conflicts.",
         "status": "—"
@@ -452,7 +452,7 @@ const schools: Array<{
         "status": "—"
       },
       {
-        "name": "OODA Loop — State Machine Protocol for AI Agents",
+        "name": "OODA Loop — Rapid Response Protocol",
         "skill": "ooda-loop-state-machine",
         "effect": "Observe, Orient, Decide, Act, Loop. Maintains decision tempo against an environment that shifts between every move.",
         "status": "—"
@@ -464,7 +464,7 @@ const schools: Array<{
         "status": "—"
       },
       {
-        "name": "Retrospective — After-Action Learning from Real Outcomes",
+        "name": "Retrospective",
         "skill": "retrospective",
         "effect": "After an incident, shipped feature, or completed project, systematically learn from what happened.",
         "status": "—"
@@ -506,7 +506,7 @@ const schools: Array<{
         "status": "—"
       },
       {
-        "name": "Toyota Kata — State Machine Protocol for Continuous-Improvement AI Agents",
+        "name": "Toyota Kata",
         "skill": "toyota-kata-state-machine",
         "effect": "Frame target, analyze current, attack one obstacle at a time, run a PDCA experiment, learn, repeat.",
         "status": "—"
@@ -538,13 +538,13 @@ const schools: Array<{
     "desc": "Incantations for routing decisions, weighing tradeoffs, and routing problems to the right approach.",
     "spells": [
       {
-        "name": "Advocatus Diaboli — Adversarial Review via Separate Sub-Agent",
+        "name": "Advocatus Diaboli",
         "skill": "advocatus-diaboli",
-        "effect": "Stress-test a proposal, plan, code change, or decision against a separate adversarial sub-agent before committing.",
+        "effect": "Stress-test a proposal against a separate adversarial sub-agent to break anchoring.",
         "status": "—"
       },
       {
-        "name": "Bayesian Belief Updating for AI Agents",
+        "name": "Bayesian Belief Updating",
         "skill": "bayesian-updating",
         "effect": "Maintain explicit priors updated by likelihood, avoiding over- and under-reaction to new evidence.",
         "status": "—"
@@ -589,7 +589,7 @@ const schools: Array<{
         "name": "Future Mortem",
         "skill": "future-mortem",
         "effect": "After code is written, assume it will cause future pain and work backward to find what will bite: debt with interest, extension traps, hidden assumptions, maintenance memory, time bombs, and upgrade cliffs. Use when implementation is done and the agent must surface what the code will cost the project later.",
-        "status": "New"
+        "status": "—"
       },
       {
         "name": "Inversion — State Machine Protocol for AI Agents",
@@ -652,7 +652,7 @@ const schools: Array<{
         "status": "—"
       },
       {
-        "name": "Thinking Fast and Slow for Software Engineering Agents",
+        "name": "Thinking Fast and Slow for Software Agents",
         "skill": "kahneman-thinking-fast-slow-software-agent",
         "effect": "Switch between fast pattern recognition and slow deliberation as stakes demand.",
         "status": "—"
@@ -748,7 +748,7 @@ const schools: Array<{
         "status": "—"
       },
       {
-        "name": "Documentation Craft — Structured Technical Writing",
+        "name": "Documentation Craft",
         "skill": "documentation-craft",
         "effect": "Multi-phase pipeline from outline to verified explanation, audience-driven and source-grounded.",
         "status": "—"
@@ -918,7 +918,7 @@ const schools: Array<{
       {
         "name": "Unit Test Debugging",
         "skill": "unit-test-debugging",
-        "effect": "Systematic workflow for fixing failing unit tests by first determining whether the tests or the code under test are the source of truth. Use when fixing test failures, debugging test suites, resolving \"tests are passing/failing unexpectedly,\" or when an agent keeps changing code to match failing tests without investigating root cause. Also use when improving weak passing tests that do not actually prove correctness.",
+        "effect": "Systematic workflow for fixing failing unit tests by first determining whether the tests or the code under test are the source of truth.",
         "status": "—"
       }
     ]

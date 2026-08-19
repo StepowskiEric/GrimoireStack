@@ -64,3 +64,4 @@ snap.mjs
 **/.nx/cache
 **/.nx/workspace-data
 **/.nx/migrate-runs
+CLEANUP_PROGRESS.md
