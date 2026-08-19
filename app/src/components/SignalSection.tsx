@@ -7,7 +7,7 @@ export default function SignalSection({ skill, getVote, castVote, aggregateFor }
   if (!getVote || !aggregateFor) return null;
 
   const userVote = getVote(skill);
-  const agg = aggregateFor(skill);
+  const agg = aggregateFor({ skill });
 
   return (
     <div className="signal-section" aria-label="Community signal">
