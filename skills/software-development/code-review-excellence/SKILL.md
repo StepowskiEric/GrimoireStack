@@ -4,7 +4,6 @@ description: "Structured code review that catches bugs early, provides construct
 triggers:
   - systematic-code-review
   - constructive-feedback
-  - code-review-thoroughness
   - knowledge-sharing-review
 ---
 
@@ -36,7 +35,6 @@ Frame feedback constructively: explain why something is a problem, not just that
 - **Do** prioritize correctness and maintainability over personal style preferences.
 - **Do** acknowledge good solutions, not only what needs improvement.
 - **Do** make every comment actionable: state why it matters and how to fix it.
-- **Do** treat the review as a teaching moment — catch bugs early and share knowledge.
 
 ## Failure modes
 Nitpicking style over substance; dismissing good solutions; vague feedback ("this could be better" without why or how).

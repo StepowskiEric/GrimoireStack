@@ -33,9 +33,5 @@ Before writing code, state the hypothesis and how to falsify it. Then fix, and c
 For the full 5-Whys rules with worked good/bad examples, the Ishikawa categories, and the failure-mode table, see [`references/root-cause-details.md`](references/root-cause-details.md).
 
 ## Rules
-- **Do** freeze the symptom first — speculation without a frozen symptom is guessing.
-- **Do** gather correlated events exhaustively — cherry-picking the latest change misses the cause.
-- **Do** stop at a fixable cause: missing process, incorrect assumption, or code defect.
-- **Do** use the faithfulness test to separate root cause from contributing factor.
-- **Do** treat "race condition" as a starting point — analyze the actual interleaving.
+- **Do** treat "race condition" as a starting point — analyze the actual interleaving, not the label.
 - **Do** cross-check code-debugging runs with the `debug-to-fix-pipeline` (verification phases) and `specter` (hypothesis generation); `verify-before-integrate` guards against fix breakage.

@@ -43,8 +43,5 @@ triggers:
 For HICCUPPS oracles, SFDPOT coverage dimensions, the full abuse-case checklist, cognitive-bias counter-strategies, 16 edge cases, the 12-entry anti-pattern table, permission/mocking strategy, and enterprise patterns, see [`reference/ref.md`](reference/ref.md). Shared philosophy, three-layer architecture, and risk-based prioritization live in `e2e-testing-philosophy-and-architecture`.
 
 ## Rules
-- **Do** define the starting state of every test — state-less tests flake.
-- **Do** assert on visible user outcomes via accessibility IDs, never text, coordinates, or indexes.
-- **Do** quarantine flaky tests immediately and investigate — one flaky test poisons the suite's credibility.
 - **Do** think adversarially: lie to the app, break trust boundaries, chain micro-bugs, attack assumptions.
 - **Do** watch your own biases — confirmation, anchoring, automation, availability, sunk cost, optimism.

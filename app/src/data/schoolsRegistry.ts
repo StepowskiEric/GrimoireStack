@@ -49,7 +49,7 @@ const schools: Array<{
         "name": "Feature Architecture",
         "skill": "feature-architecture",
         "effect": "One rule set for three moments: plan where files live before writing, review completed work, and audit the repo as a living system.",
-        "status": "New"
+        "status": "—"
       },
       {
         "name": "Improve Codebase Architecture",

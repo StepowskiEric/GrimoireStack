@@ -47,9 +47,5 @@ All must hold:
 If any criterion fails, output a partial result with explicit uncertainty markers — never a polished but unfounded conclusion.
 
 ## Rules
-- **Do** run all four phases in order — each catches failure modes the others miss.
-- **Do** verify only UNCERTAIN+ claims — CERTAIN and LIKELY claims do not need tool verification.
-- **Do** stop when backward scrutiny scores <0.7 and no further verification is possible — abstain rather than guess.
-- **Do** force a novel action after 3 NO_CHANGEs — never keep reasoning.
 - **Do** compress resolved all-CERTAIN branches into summary claims — graph bloat slows the chain.
 - **Do** leave verified-correct claims untouched — the second-system effect rewrites good work.

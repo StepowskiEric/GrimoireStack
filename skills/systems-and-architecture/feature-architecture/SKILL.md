@@ -17,15 +17,15 @@ triggers:
 ## The Move
 
 ### 1. Decide ownership (before writing)
-Which feature owns this? Is this an extension or a new feature? Does it belong in shared? Does it need new infrastructure, navigation, or backend APIs? Resolve ownership before planning files — unclear ownership is unclear architecture.
+Which feature owns this? Is this an extension or a new feature? Does it belong in shared? Does it need new infrastructure, navigation, or backend APIs? Resolve ownership before planning files — unclear ownership is unclear architecture. **Done when every planned file has an owner.**
 
 ### 2. Apply the boundary rules
 - **Feature rules** — each feature owns its components, screens, hooks, services, api, validation, models, constants.
-- **Shared rules** — shared code must satisfy BOTH: used by multiple features AND generic functionality. Shared is earned — challenge every addition; if reuse is not real, move it back.
+- **Shared rules** — shared code must satisfy BOTH: used by multiple features AND generic functionality. Shared is earned — challenge every addition; if reuse is not real, move it back. **Done when each planned file passes its feature/shared/core test.**
 - **Core rules** — core holds infrastructure only: auth, storage, analytics, networking, logging, configuration, permissions.
 
 ### 3. Design deep modules and dependency direction
-Hide implementation: good `voteForPlayer()`, bad `validateVote() saveVote() refreshVotes() showToast()`. Direction: UI ↓ Hooks ↓ Services ↓ Repositories ↓ Infrastructure. Reject infrastructure depending on React, features importing another feature's internals, and circular dependencies.
+Hide implementation: good `voteForPlayer()`, bad `validateVote() saveVote() refreshVotes() showToast()`. Direction: UI ↓ Hooks ↓ Services ↓ Repositories ↓ Infrastructure. Reject infrastructure depending on React, features importing another feature's internals, and circular dependencies. **Done when every new import respects the direction.**
 
 ### 4. Test the plan
 **Simplicity test** — could another engineer find every file without searching? **Growth test** — if the feature doubles, does the structure still make sense? **Delete test** — if this file disappeared, would the project become harder to understand? If no, recommend deleting, merging, or simplifying.
@@ -43,8 +43,5 @@ Plan: feature owner, affected features, new/modified files, dependencies, risks,
 For the full rule set, per-audit checklist, and output templates, see [`references/feature-architecture-details.md`](references/feature-architecture-details.md), [`references/architecture-maintenance-details.md`](references/architecture-maintenance-details.md), and [`references/architecture-evolution-details.md`](references/architecture-evolution-details.md).
 
 ## Rules
-- **Do** resolve ownership before planning files — unclear ownership is unclear architecture.
-- **Do** keep feature files in their feature; shared and core are earned, not assumed.
-- **Do** check dependency direction for every new import.
-- **Do** prefer patterns over isolated issues — one case is noise, five is a trend.
-- **Do** record every non-trivial decision with its trade-offs and rejected alternatives.
+- **Do** check dependency direction for every new import — the direction rules are the load-bearing constraint.
+- **Do** record every non-trivial recommendation as a decision — the record is the audit trail for the next feature.

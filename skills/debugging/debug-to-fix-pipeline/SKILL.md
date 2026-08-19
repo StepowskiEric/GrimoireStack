@@ -48,8 +48,6 @@ For the hardest cases — intermittent failures, environment-specific crashes, H
 
 ## Rules
 - **Do** answer the pre-flight before touching code — guessing with partial context wastes cycles.
-- **Do** generate 3+ hypotheses and decompose the winner into falsifiable claims — first-branch lock-in ignores disconfirming evidence.
-- **Do** instrument 3–5 points that target a prediction — logging everything buries the signal.
 - **Do** write the regression test before the fix when a correct seam exists.
 - **Do** stop on duplicate patches and on symptom-patching (guard clauses, retries, null checks without understanding why the bad input arrived).
 - **Do** declare done only when root cause and mechanism are stated and prevention is in place.
