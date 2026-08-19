@@ -2,233 +2,45 @@
 name: feynman-technique
 description: "Explain from scratch in plain language and identify where the explanation breaks."
 triggers:
-  - Explanation gaps reveal understanding gaps
-  - Need to verify genuine understanding, not recitation
-  - Need to test whether you can explain from the ground up
+  - understanding-verification
+  - explanation-gap-hunting
+  - ground-up-explanation
+  - mechanism-check
 ---
 
-# Skill: Feynman Technique for AI Agents
+# Feynman Technique
 
-## Purpose
-
-Use this skill when the agent needs to verify that it genuinely understands something — not that it can recite it, but that it can explain it from the ground up in simple language.
-
-The Feynman Technique is a test of understanding:
-1. Explain the concept, system, or decision as if teaching someone with no background
-2. Find the gaps where the explanation breaks down
-3. Return to the source to close those gaps
-4. Simplify until the explanation is clear, not clever
-
-The gaps in the simple explanation reveal the gaps in understanding.
-If you cannot explain it simply, you do not understand it well enough.
-
-Source: Richard Feynman's teaching philosophy, documented in *Surely You're Joking, Mr. Feynman!* and his *Lectures on Physics* series.
-
----
-
-## Core Rule
-
-Understanding is not the ability to reproduce correct-sounding language.
-Understanding is the ability to explain from the ground up, answer simple questions about it, and identify the edges where the explanation breaks.
-
-If the agent's explanation requires jargon to avoid gaps, the gaps exist.
-
----
+**If you cannot explain it simply, you do not understand it yet.** Understanding is not the ability to reproduce correct-sounding language — it is the ability to explain from the ground up, answer simple questions about it, and identify the edges where the explanation breaks. If the explanation needs jargon to avoid its gaps, the gaps exist. Find them, close them, and if they cannot be closed, say so.
 
 ## When to Use
+- Generating an explanation, tutorial, or documentation and verifying the reasoning is sound
+- Reviewing a generated plan, architecture, or design — did the agent understand what it produced?
+- Answering a complex question
+- Verifying a proposed solution at the mechanism level
+- Finding the underspecified parts of a recommendation
 
-Use this skill when:
-- generating an explanation, tutorial, or documentation and wanting to verify the reasoning is sound
-- reviewing a plan, architecture, or design that was generated and checking whether the agent truly understands what it produced
-- responding to a question about a complex technical or non-technical topic
-- verifying that a proposed solution actually makes sense at the mechanism level
-- identifying where a generated recommendation has uncertain or underspecified parts
+Skip it: producing technical output (code/config) rather than explanation, expert audiences where simplification would condescend, trivial concepts.
 
-Do not use when:
-- the task requires producing a technical output (code, config) rather than an explanation
-- the audience is already expert and simplified explanation would be condescending
-- the concept is trivial and the simplification adds no value
+## The Move
 
----
+### 1. Write the simple explanation
+Explain as if teaching someone with no background: no jargon unless defined immediately, no appeals to authority without the mechanism, no circular definitions, and explain the mechanism — not just the outcome.
 
-## The Four-Step Process
+### 2. Find the gaps
+Hunt where the explanation: becomes vague or hand-wavy; relies on terms not themselves explained; claims something without explaining why; skips a mechanism ("and then it works"); produces a correct-sounding phrase without conveying the process. Each gap is an incomplete understanding. Common patterns: circular definitions, mechanism skips, jargon placeholders, correct-but-shallow statements.
 
-### Step 1: Write the Simple Explanation
-Explain the concept, system, or reasoning as if writing for someone with no background in the domain.
+### 3. Close the gaps
+For each gap, go back to the source — documentation, code, reasoning, facts — and revise the explanation to fill it. If the gap cannot be closed because the information genuinely does not exist, state that explicitly. Confident-sounding filler is not a resolution.
 
-Rules:
-- no jargon unless it is defined immediately after it is used
-- no appeals to authority ("experts agree that…") without explaining the mechanism
-- no circular definitions ("X is when you do X-like things")
-- explain the mechanism, not just the outcome
+### 4. Simplify and test
+After the gaps close, make it shorter without losing accuracy: accurate without being incomplete, specific without jargon-density, clear to a smart non-expert, honest about what is unknown.
 
-### Step 2: Find the Gaps
-Where does the explanation:
-- become vague or hand-wavy?
-- rely on terms that were not themselves explained?
-- make a claim without explaining why it is true?
-- skip over a mechanism ("and then it works") instead of explaining it?
-- produce a correct-sounding phrase without actually conveying the process?
+## Reference
+For the Feynman template, the common gap patterns with examples, using the technique on your own outputs, the compression-as-understanding variant with its measurable ≥80% reconstruction target, and pairing guide, see [`references/feynman-details.md`](references/feynman-details.md).
 
-These gaps are the places where the agent's understanding is incomplete.
-
-### Step 3: Close the Gaps
-For each gap:
-- go back to the source (documentation, code, reasoning, facts)
-- find the actual explanation
-- revise the simple explanation to fill the gap
-
-If the gap cannot be closed because the information does not exist, state that explicitly rather than papering over it with confident-sounding language.
-
-### Step 4: Simplify and Test
-After the gaps are closed, simplify the explanation further.
-Ask: can this be made shorter without losing accuracy?
-
-A good simple explanation is:
-- accurate without being incomplete
-- specific without being jargon-dense
-- clear to a smart non-expert reader
-- honest about what is unknown
-
----
-
-## Feynman Technique Template
-
-```md
-## Concept / Decision / Plan Being Explained
-<what is being explained>
-
-## Simple Explanation (First Pass)
-<explain as if to a smart non-expert with no background>
-
-## Gap Analysis
-- Gap 1: <where the explanation became vague or hand-wavy>
-  - Root cause: <what was not understood>
-  - Resolution: <what was found to close the gap>
-- Gap 2: <gap>
-  - Root cause:
-  - Resolution:
-
-## Unresolved Gaps (Honest Unknowns)
-- <what could not be explained because the information genuinely does not exist or is not known>
-
-## Revised Simple Explanation (Post-Gap Closing)
-<the cleaner, more accurate version after closing the gaps>
-
-## Simplification Check
-- Is there jargon that could be replaced with plain language? <yes/no>
-- Is there a circular definition? <yes/no>
-- Are there mechanism skips ("and then it works")? <yes/no>
-- Final version:
-  <one-paragraph plain-language summary of the core mechanism>
-```
-
----
-
-## Agent Rules
-
-### Do
-- explain the mechanism, not just the outcome
-- find gaps by looking for vague language and unexamined jargon
-- close gaps with evidence, not with more confident-sounding vagueness
-- state unknowns explicitly rather than generating authoritative-sounding filler
-
-### Do Not
-- treat fluent-sounding language as evidence of understanding
-- use jargon as a substitute for explanation
-- skip over the mechanism ("and then it handles it correctly")
-- generate a Feynman explanation without actually checking it for gaps
-
----
-
-## Common Gap Patterns
-
-### Circular definition
-"Caching works by caching the results so you do not have to recompute them."
-The mechanism is missing. What is actually stored? How is cache validity maintained? When does the cache fail?
-
-### Mechanism skip
-"The load balancer distributes requests across instances to prevent overload."
-How does it decide which instance? What happens if an instance becomes unhealthy? What is the failure behavior?
-
-### Jargon placeholder
-"The CQRS pattern separates read and write concerns."
-What does "concerns" mean here? What changes in the system structure? What problem does this solve and what does it cost?
-
-### Correct but shallow
-"A distributed transaction ensures consistency across services."
-By what mechanism? What happens to each service if the transaction fails partway through? What is the latency impact?
-
----
-
-## Using the Feynman Technique to Verify Agent Outputs
-
-After generating a plan, recommendation, or explanation, apply the technique to your own output:
-
-1. Read the output and identify every claim about mechanism
-2. For each mechanism claim, attempt the simple explanation
-3. Where the simple explanation fails, the claim is underspecified
-4. Revise the output to either explain the mechanism or acknowledge the limitation
-
-This prevents confident-sounding outputs that do not actually know what they are talking about.
-
----
-
-## Failure Modes This Skill Prevents
-
-### 1) Fluent uncertainty
-Generating text that sounds authoritative but contains no actual explanation of mechanism.
-
-### 2) Jargon depth illusion
-Using domain vocabulary to create the appearance of expertise without grounding it in explanation.
-
-### 3) Confident incompleteness
-Producing a recommendation or explanation that is partially correct but has gaps the agent is not aware of.
-
-### 4) Unacknowledged unknowns
-Proceeding as if the agent understands the full picture when parts of it are genuinely unclear.
-
----
-
-## Pairing Guide
-
-- **Bounded Self-Revision** — after the Feynman technique identifies gaps, use Bounded Self-Revision to close them in the output
-- **Tool-Interactive Critic** — use external tools to verify the factual correctness of claims that the simple explanation exposed as uncertain
-- **MECE / Pyramid Principle** — after the Feynman technique ensures the reasoning is sound, use MECE to structure the output clearly
-- **ETTO** — use to decide whether a full Feynman technique pass is warranted given the stakes
-
----
-
-### Formal Variant: Compression-as-Understanding
-
-For a more rigorous version, use **compression testing**: compress your explanation to ≤10 sentences or 200 words, then attempt to reconstruct key details from the compressed form alone. The reconstruction accuracy (≥80% target) quantifies understanding.
-
-**Protocol:**
-1. Write simple explanation (Feynman pass)
-2. Compress to ≤10 sentences — strip implementation detail, keep essence
-3. Test reconstruction: from the compressed form, answer "what would break this?" + key mechanism questions
-4. Score: reconstruction accuracy ≥80%? If not, re-explore and re-compress
-5. Document gaps vs correctly captured elements
-
-This adds a measurable pass/fail criterion to the Feynman gap analysis. Use when stakes justify the extra rigor.
-
----
-
-## Definition of Done
-
-The Feynman Technique was applied correctly when:
-- the concept was explained in simple language without jargon substituting for mechanism
-- gaps were identified explicitly, not glossed over
-- gaps were closed with evidence or acknowledged as honest unknowns
-- the final explanation is accurate and clear to a smart non-expert
-- the agent's understanding is stronger because of what the gaps revealed
-
----
-
-## Final Instruction
-
-If you cannot explain it simply, you do not understand it yet.
-
-Find the gaps.
-Close them.
-If they cannot be closed, say so.
+## Rules
+- **Do** explain the mechanism, not just the outcome.
+- **Do** hunt for vague language and unexamined jargon — that is where understanding ends.
+- **Do** close gaps with evidence; state unknowns explicitly when they cannot be closed.
+- **Do** apply the technique to your own outputs — fluent text is not evidence of understanding.
+- **Do** simplify until clear, not clever.

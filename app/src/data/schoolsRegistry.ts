@@ -428,7 +428,7 @@ const schools: Array<{
         "status": "—"
       },
       {
-        "name": "How to Solve It — State Machine Protocol for AI Agents",
+        "name": "How to Solve It",
         "skill": "how-to-solve-it-state-machine",
         "effect": "Frame the problem, gather evidence, explore via hypothesis, plan, reflect. Designed to prevent premature coding.",
         "status": "—"
@@ -500,7 +500,7 @@ const schools: Array<{
         "status": "—"
       },
       {
-        "name": "The Pragmatic Programmer — State Machine Protocol for AI Agents",
+        "name": "The Pragmatic Programmer",
         "skill": "pragmatic-programmer-state-machine",
         "effect": "Bounded changes, reversible choices, automation over repeated toil, root-cause fixes over symptom patches.",
         "status": "—"
@@ -754,13 +754,13 @@ const schools: Array<{
         "status": "—"
       },
       {
-        "name": "Feynman Technique for AI Agents",
+        "name": "Feynman Technique",
         "skill": "feynman-technique",
         "effect": "Explain from scratch in plain language and identify where the explanation breaks.",
         "status": "—"
       },
       {
-        "name": "MECE / Pyramid Principle for AI Agents",
+        "name": "MECE / Pyramid Principle",
         "skill": "mece-pyramid-principle",
         "effect": "Enforce mutually exclusive, collectively exhaustive categories under a single governing thought.",
         "status": "—"

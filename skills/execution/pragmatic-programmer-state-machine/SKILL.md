@@ -2,235 +2,39 @@
 name: pragmatic-programmer-state-machine
 description: "Bounded changes, reversible choices, automation over repeated toil, root-cause fixes over symptom patches."
 triggers:
-  - Working pragmatically in a real system
-  - Need bounded changes and reversible choices
-  - Automation instead of repeated toil
-  - Root-cause fixes instead of symptom patches
+  - bounded-change-discipline
+  - shared-surface-modification
+  - automation-opportunity
+  - root-cause-over-symptom
 ---
 
-# The Pragmatic Programmer — State Machine Protocol for AI Agents
+# The Pragmatic Programmer
 
-## Purpose
+**Be practical, bounded, and honest about blast radius.** Work in a real system the way a pragmatic engineer does: name the real problem, make the smallest correct move, choose reversible options, automate recurring toil, fix root causes instead of symptoms — and never touch a shared surface before finding its consumers.
 
-Use this skill when the agent must work pragmatically in a real system:
-- bounded changes
-- reversible choices
-- automation instead of repeated toil
-- root-cause fixes instead of symptom patches
-- practical scope control
+## The Move
 
-This version adds enforcement for:
-- public interface consumer discovery
-- unknowns declaration
-- blast-radius accounting
-- bounded execution
-- clean stopping
+### 1. Frame — the real problem, not the ticket
+State what is actually wrong or needed, then the **smallest correct move** that solves it. If you cannot state the real problem, you cannot bound the fix.
 
----
+### 2. Consumer discovery — bound the blast radius
+Before modifying any public interface, shared utility, common workflow, schema, or reused contract: run a global search and list consumers. Inspect call sites and map dependencies. If discovery is incomplete, declare the unknown consumers honestly and lower blast-radius confidence — then narrow scope if needed. Editing shared surfaces before the consumer scan is the violation this skill exists to prevent.
 
-## Mandatory Diagnostic Artifacts
+### 3. Choose the move — smallest, reversible, root-cause
+Prefer reversible changes, local improvements with system awareness, automation of recurring toil, and root-cause fixes. Avoid speculative framework-building, giant rewrites, and "nice cleanup" outside the core need. When designing a module or interface, apply the depth lens (in Reference): hide the most complexity behind the simplest interface; reject boundaries that are shallower than current code, have a single implementation with no architectural need, or leave change amplification unchanged. **One session, one primary smell family** — do not chase a second structural problem while resolving the first.
 
-Before meaningful execution, create:
+### 4. Execute — bounded
+Act within the chosen move. Do not open a second major objective; opportunistic cleanup only inside touched scope. When a repeated manual step appears, note it as an automation opportunity rather than doing it by hand again.
 
-### `pragmatic-run-brief.md`
-```md
-# Pragmatic Run Brief
+### 5. Validate & stop
+Verify the move solved the real problem and shared consumers stayed safe. Ask what recurring toil should now become process/tooling — script, lint, template, or CI guardrail. Stop when the smallest correct move is complete, validation passes, and no new essential evidence expands the problem. Escalate when blast radius is unknown on a risky shared surface, consumer discovery failed, or the "small move" became a multi-system migration.
 
-## Task
-<goal>
+## Reference
+For the `pragmatic-run-brief.md` template, the module-depth lens in full, tool gating, and circuit breakers, see [`references/pragmatic-details.md`](references/pragmatic-details.md).
 
-## Real Problem
-<what is actually wrong or needed>
-
-## Smallest Correct Move
-<bounded move>
-
-## Reversibility
-<easy / partial / hard>
-
-## Shared Surfaces Potentially Affected
-- <surface>
-
-## Consumer Discovery Method
-<global search method>
-
-## Known Consumers
-- <consumer>
-
-## Unknown Consumers
-- <unknown>
-
-## Blast Radius Confidence
-<high / medium / low>
-
-## Automation Opportunity
-<what could be scripted, linted, or enforced>
-
-## Stop Condition
-<when to stop>
-```
-
----
-
-## State Machine
-
-## State 0 — Intake
-Goal:
-- identify the real engineering problem, not just the ticket wording
-
-Exit condition:
-- real problem and smallest correct move are stated
-
----
-
-## State 1 — Consumer Discovery / Unknowns Scan
-Goal:
-- bound the blast radius before touching shared surfaces
-
-Mandatory rule:
-Before modifying any public interface, shared utility, common workflow, schema, or reused contract, the agent must run a global search and list consumers.
-
-If consumer discovery is incomplete:
-- unknown consumers must be declared
-- blast radius confidence must be lowered
-- scope may need to be narrowed
-
-Allowed actions:
-- global search
-- call-site inspection
-- dependency mapping
-- artifact writing
-
-Disallowed actions:
-- editing shared surfaces before consumer scan
-
-Exit condition:
-- consumer list exists
-- or blast radius is explicitly unknown
-
----
-
-## State 2 — Practical Option Selection
-Goal:
-- choose the smallest move that solves the real problem
-
-Prefer:
-- reversible changes
-- local improvements with system awareness
-- automation of recurring toil
-- root-cause fixes
-
-Avoid:
-- speculative framework-building
-- giant rewrites
-- “nice cleanup” that is not part of the core need
-
-Exit condition:
-- bounded pragmatic move chosen
-
-### Sub-lens: When designing a module or interface
-
-Apply John Ousterhout's depth lens in addition to the pragmatic preference rules. A *deep module* hides complexity behind a simple interface; a *shallow* module is mostly wrapper with little to hide.
-
-Questions before choosing a boundary:
-- What caller complexity disappears once this boundary exists?
-- What implementation details become internal?
-- Does the interface get simpler than the implementation?
-- Are we reducing *change amplification* — the number of places that must change for a single conceptual change?
-
-Reject the boundary if any of these are true:
-- It is shallower than the current code (no complexity hidden, just renamed).
-- It introduces an interface with a single implementation and no architectural need.
-- Wrappers exist purely to enable extraction.
-- The extracted module depends heavily on the original's internals.
-- Change amplification stays the same or grows.
-
-Pick the boundary that hides the most complexity behind the simplest interface. If two boundaries are close, the deeper one wins.
-
-**One session, one primary smell family.** Do not chase a second structural problem while resolving the first.
-
----
-
-## State 3 — Execution Unlock
-Goal:
-- act within the bounded move
-
-Rules:
-- do not open a second major objective
-- opportunistic cleanup only inside touched scope
-- if a repeated manual step is discovered, note an automation opportunity
-
-Exit condition:
-- bounded move completed
-
----
-
-## State 4 — Validation and Process Improvement
-Goal:
-- verify the change and ask what recurring toil should become process/tooling
-
-Checks:
-- did the move solve the real problem?
-- did shared consumers stay safe?
-- should this now be encoded as automation, lint, template, or CI guardrail?
-
-Exit condition:
-- result validated
-- automation opportunity recorded when applicable
-
----
-
-## State 5 — Stop / Relinquish Control
-Stop when:
-- the smallest correct move is complete
-- validation passes
-- no new essential evidence expands the problem
-
-Escalate when:
-- blast radius is unknown on a risky shared surface
-- consumer discovery failed
-- the “small move” became a multi-system migration
-
----
-
-## Tool Gating
-
-### Consumer discovery phase
-Allowed:
-- read/search/list/map
-- artifact writing
-
-Disallowed:
-- editing shared surfaces
-
-### Execution phase
-Allowed:
-- bounded edits only after blast-radius handling
-
----
-
-## Circuit Breakers
-
-Stop and reassess if:
-- the agent is about to change a shared surface with low blast-radius confidence
-- a second major objective appears
-- the agent is “improving things” without evidence that it serves the main goal
-- the task drifts from pragmatic fix into speculative redesign
-
----
-
-## Definition of Done
-
-This skill is correctly applied when:
-- `pragmatic-run-brief.md` exists
-- shared consumers were searched before shared changes
-- unknowns were declared honestly
-- the smallest correct move was chosen
-- automation opportunities were identified
-- the agent stopped after solving the real problem
-
----
-
-## Final Instruction
-
-Be practical, bounded, and honest about blast radius.
+## Rules
+- **Do** search for consumers before touching any shared surface.
+- **Do** declare unknown consumers — a guessed blast radius is a lie about risk.
+- **Do** choose the smallest reversible move that fixes the root cause.
+- **Do** record automation opportunities for repeated manual steps.
+- **Do** stop after solving the real problem — the second objective is the next session.

@@ -2,235 +2,40 @@
 name: how-to-solve-it-state-machine
 description: "Frame the problem, gather evidence, explore via hypothesis, plan, reflect. Designed to prevent premature coding."
 triggers:
-  - Solving a hard problem under uncertainty
-  - Premature coding is a risk
-  - Need to enforce problem framing before action
+  - hard-problem-under-uncertainty
+  - premature-coding-risk
+  - problem-framing-gate
 ---
 
-# How to Solve It — State Machine Protocol for AI Agents
+# How to Solve It
 
-Use this skill when the agent is solving a hard problem under uncertainty.
+**Frame before you act, evidence before you write.** Solving a hard problem under uncertainty means enforcing the sequence: precise problem framing, read-only evidence gathering, hypothesis-driven exploration, a bounded plan, and reflection before closure. The protocol exists to prevent premature coding — the most expensive failure mode in engineering.
 
-This protocol enforces:
-- problem framing before action
-- evidence gathering before writing
-- hypothesis-driven exploration
-- plan before execution
-- reflection before closure
+## The Move
 
-It is explicitly designed to prevent premature coding.
+### 1. Frame the problem
+Convert the vague task into a precise statement in `problem-frame.md` (template in Reference): problem, expected vs observed behavior, known facts, unknowns, constraints, candidate hypotheses, and the cheapest evidence-rich next steps. A problem that cannot be stated precisely cannot be solved deliberately.
 
----
+### 2. Recon — read-only evidence
+Gather evidence before editing: grep/search/find, read files and docs, inspect tests, run non-destructive checks. Log every command and what it learned in `evidence-log.md`. No code modification, no config changes, no implementation drafts masquerading as recon — keep repo-modifying write permissions disabled until this state exits.
 
-## Mandatory Diagnostic Artifacts
+**Sub-technique — find an analog (Polya):** before declaring recon complete, ask whether a related problem was already solved in a different domain. Four questions: (1) Can you find a related problem with similar structure? (2) What is the structural mapping — what corresponds to what? (3) What transfers and what does not — if more does not transfer than transfers, drop it? (4) How must the transferred solution be adapted? Record a strong analog as a candidate approach — recon only, no commitment yet.
 
-Before execution, the agent must create:
+### 3. Rank hypotheses & plan
+Rank explanations or solution paths by evidence. Distinguish fact from guess; keep alternatives alive until evidence narrows them; reject first-answer lock-in. Then write the bounded plan: objective, why this step follows from the evidence, what would falsify it, what counts as success, and whether the action is reversible.
 
-### `problem-frame.md`
-```md
-# Problem Frame
+### 4. Execute — bounded, justified
+Act only on what the evidence and plan justify. No broad speculative edits, no unbounded trial-and-error. If the task touches a shared interface, the plan must include known consumers, unknown consumers, the search method used, and blast-radius confidence — or declare the blast radius unknown.
 
-## Problem
-<precise statement>
+### 5. Look back — reflect before closure
+Which hypothesis was right? What assumption was wrong? What evidence mattered most? What guardrail, test, or process should be added next time? Record the reflection concisely — closing without learning is how the same bug gets solved twice.
 
-## Expected Behavior
-<what should happen>
+## Reference
+For the `problem-frame.md` and `evidence-log.md` templates, tool gating, and circuit breakers, see [`references/solve-it-details.md`](references/solve-it-details.md).
 
-## Observed Behavior
-<what does happen>
-
-## Known Facts
-- <fact>
-
-## Unknowns
-- <unknown>
-
-## Constraints
-- <constraint>
-
-## Candidate Hypotheses
-- <hypothesis>
-
-## Cheapest Evidence-Rich Next Steps
-- <step>
-```
-
-### `evidence-log.md`
-The agent must record the commands or inspections it used to gather evidence.
-
-```md
-# Evidence Log
-
-- grep/find/search: <what was searched>
-- tests/run: <what was run>
-- files inspected: <which files>
-- result summary: <what was learned>
-```
-
----
-
-## State Machine
-
-## State 0 — Intake
-Goal:
-- convert a vague task into a precise problem statement
-
-Exit condition:
-- `problem-frame.md` exists with knowns, unknowns, and candidate hypotheses
-
----
-
-## State 1 — Recon (Read-Only)
-Goal:
-- gather evidence before editing
-
-Allowed actions:
-- grep/search/find
-- read files/docs
-- inspect tests
-- run non-destructive checks/tests
-- update `evidence-log.md`
-
-Disallowed actions:
-- write-to-file on operational targets
-- code modification
-- config changes
-- implementation drafts masquerading as recon
-
-Mandatory rule:
-If the runtime supports tool permissions, repo-modifying write permissions should remain disabled until this state exits.
-
-Exit condition:
-- at least one evidence-gathering command or inspection has been executed
-- evidence materially updates one or more hypotheses
-
-### Sub-technique: Find an Analog (Polya)
-
-Before declaring recon complete, ask: *is there a related problem already solved in a different domain?* Polya's 4 questions:
-
-1. **Can you find a related problem that has been solved before?** Scan for problems with similar structure (same input/output relationship, same constraint type, same failure mode, same optimization target). The analog does not need to be in the same domain.
-2. **What is the structural mapping?** For the identified analog, make the mapping explicit: what corresponds to what, what role X plays in the analog, what constraints transfer. If the mapping requires contortion, the analog is weaker than it appeared.
-3. **What transfers and what does not?** Identify structural elements that transfer (solution technique, decomposition, invariant) vs domain-specific constraints that change the problem shape. If more does not transfer than transfers, drop this analog.
-4. **How must the transferred solution be adapted?** Apply the analog's solution to the current problem. Identify what must change, what new constraints the current problem introduces, what validation confirms the transfer worked.
-
-If a strong analog emerges, record it in `evidence-log.md` as a candidate approach for State 2 ranking. Do not commit to it yet — recon only.
-
----
-
-## State 2 — Hypothesis Ranking
-Goal:
-- rank explanations or solution paths by evidence
-
-Rules:
-- distinguish fact from guess
-- keep alternatives alive until evidence narrows them
-- reject first-answer lock-in
-
-Exit condition:
-- leading hypothesis or plan emerges
-- or scope must be narrowed because uncertainty remains too high
-
----
-
-## State 3 — Plan
-Goal:
-- decide the next bounded move
-
-The plan must include:
-- objective
-- why this step follows from evidence
-- what would falsify it
-- what counts as success
-- whether action is reversible
-
-Exit condition:
-- bounded plan exists
-
----
-
-## State 4 — Execution Unlock
-Goal:
-- permit action only after recon and planning
-
-Allowed actions:
-- actions justified by the evidence and plan
-
-Disallowed:
-- broad speculative edits
-- unbounded trial-and-error
-
-Exit condition:
-- bounded action completed
-
----
-
-## State 5 — Look Back
-Goal:
-- reflect on the result
-
-Questions:
-- which hypothesis was right?
-- what assumption was wrong?
-- what evidence mattered most?
-- what guardrail/test/process should be added next time?
-
-Exit condition:
-- reflection recorded in concise form
-
----
-
-## Tool Gating
-
-### Recon phase
-Allowed:
-- grep/find/search/read/run_tests/list
-- diagnostic artifact writing only
-
-Disallowed:
-- repo modifications
-
-### Execution phase
-Allowed:
-- bounded edits only after evidence gate
-
----
-
-## Unknowns Rule
-
-If the problem touches a shared interface or utility, the agent must add:
-- known consumers
-- unknown consumers
-- search method used
-- blast radius confidence
-
-If it cannot identify consumers, it must declare blast radius unknown.
-
----
-
-## Circuit Breakers
-
-Stop and reassess if:
-- recon never produced new information
-- hypotheses keep multiplying without narrowing
-- the task becomes broader than the original problem frame
-- a shared/public surface is about to change without blast-radius knowledge
-
----
-
-## Definition of Done
-
-This skill is correctly applied when:
-- `problem-frame.md` exists
-- `evidence-log.md` shows real evidence gathering
-- the first phase stayed read-only
-- action followed evidence rather than impatience
-- the agent reflected before closure
-
----
-
-## Failure Modes
-
-- **Premature coding:** acting before understanding the problem
-- **First-answer lock-in:** committing to the first hypothesis without evidence
-- **Skipping recon:** gathering evidence after writing code instead of before
-- **No reflection:** closing a task without learning from what happened
+## Rules
+- **Do** frame the problem before any action — the frame is the gate.
+- **Do** gather evidence read-only before writing code.
+- **Do** keep alternatives alive until evidence narrows them.
+- **Do** make every plan step state what would falsify it.
+- **Do** reflect before closure — the lesson is the deliverable.
