@@ -9,6 +9,8 @@ triggers:
 
 # Claim Verification Reasoning
 
+**Part of the `reasoning-integrity-chain` — Phase 2 (atomize and verify).**
+
 **Every claim gets a label and a source — or it does not proceed.** LLM hallucinations come in four types: missing knowledge, wrong facts, faulty reasoning, and instruction drift. Entailment checks catch only the third. This skill catches all four by decomposing reasoning into atomic, falsifiable claims, labeling their confidence, and verifying every uncertain claim against evidence before building on it.
 
 ## When to Use

@@ -11,7 +11,7 @@ triggers:
 
 A premortem assumes the tests are insufficient and works backward to find the blind spot. Run the relevant branch below.
 
-**Prerequisite:** Load `skill://e2e-testing-philosophy-and-architecture` — the ten tenets, anti-pattern table, data rules, and heuristics toolbox are the reference for every step here.
+**Prerequisite:** Load `e2e-testing-philosophy-and-architecture` — the ten tenets, anti-pattern table, data rules, and heuristics toolbox are the reference for every step here.
 
 ---
 

@@ -1,6 +1,6 @@
 # Conquest Mode — Reference
 
-**Load this after `bug-inquisition/SKILL.md`.** Each section below *extends* the corresponding phase in the base protocol. Conquest adds components; it does not substitute phases.
+**Load this after `debug-to-fix-pipeline/SKILL.md`.** Each section below *extends* the corresponding phase in the base protocol. Conquest adds components; it does not substitute phases.
 
 **Use conquest when:**
 - Hard bug where surface debugging has failed

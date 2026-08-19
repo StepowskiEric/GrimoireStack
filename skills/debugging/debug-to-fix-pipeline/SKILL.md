@@ -1,130 +1,55 @@
 ---
 name: debug-to-fix-pipeline
-description: "6-phase pipeline that increases evidence quality each phase while cutting token waste. Sequences data → hypothesis → isolation → exploitation → repair → verification. Use when debugging is stalling, multi-file bugs need runtime state, or first patch attempt failed."
+description: "6-phase pipeline that increases evidence quality each phase while cutting token waste: context → hypothesis → instrument → capture → purify → patch → verify."
 triggers:
-  - Bug where fix is not immediately obvious from error message
-  - Multi-file bugs requiring runtime state inspection
-  - Silent logic errors where static analysis hasn't revealed the root cause
-  - First patch attempt failed or only partially fixed the issue
+  - bug-not-obvious-from-error
+  - multi-file-runtime-bug
+  - silent-logic-error
+  - first-patch-attempt-failed
+  - hard-bug
+  - stuck-on-debugging
 ---
 
-# Skill: Debug-to-Fix Pipeline for AI Agents
+# Debug-to-Fix Pipeline
 
-Fuses Abductive-First Debugging (competing hypotheses), Debug Subagent (debug-before-edit gate), Simulate Instrumentation (runtime state capture), Purify Test Output (failure-relevant slicing), and Iterative Patch Repair (generate → test → refine loop).
+**Evidence first, patch last — never touch code until the bug has a context.** A sequential protocol that fuses abductive hypothesis testing, runtime state capture, failure-signal purification, and iterated patch repair. When debugging stalls, symptoms mislead, or the first patch failed, run the phases in order: each one raises evidence quality while cutting token waste.
 
-## Phase 0: REPRODUCE (if no failing test)
+## When to Use
+- Bug where the fix is not immediately obvious from the error message
+- Multi-file bugs requiring runtime state inspection; silent logic errors static analysis missed
+- First patch attempt failed or only partially fixed the issue
+- "Hard bug" — stuck, simpler debugging skills already failed
 
-If you don't have a failing test, use `minimal-reproduction` to create one before entering the pipeline. Every subsequent phase assumes you have a test that demonstrates the bug.
+## The Move
 
-- If a failing test already exists → skip to Phase 1
-- If bug is visible at runtime but no test covers it → use `minimal-reproduction` first
-- If bug is environmental (build fails, command not found) → use `environment-recovery` first
+### 0. Pre-flight — mandatory
+Answer all five before touching code and record as Bug Context: **Symptom** (what exactly is broken), **Reproduction** (how to trigger it), **Blast radius** (what is NOT broken — narrows the search space), **History** (what changed recently), **Triage** (what was already tried). Then build a fast, deterministic, agent-runnable pass/fail loop — a failing test at the seam, or a curl script, CLI harness, headless browser, or replay trace. Raise the reproduction rate until the loop produces the exact symptom the user described, and freeze it in writing: exact error, frequency, first observed, affected scope. **The bug is 90% fixed once the loop is fast and deterministic.**
 
----
+### 1. Hypothesize
+Collect observations: primary symptom, secondary symptoms, negative symptoms (what does NOT happen), context. Generate at least 3 competing hypotheses — never stop at the first plausible cause. For each, list what it explains and what it does NOT explain; score coverage, specificity, simplicity, consistency. Select the best (least unexplained, highest coherence); if none scores above 0.6, gather targeted evidence first. Show the ranked list before testing. Decompose the winner into atomic falsifiable claims — one subject, one predicate, an observable prediction, precise identifiers — labeled CERTAIN / LIKELY / UNCERTAIN / SPECULATIVE. Backward-verify the leader: assume it is WRONG, list 2–4 alternatives, rule each out with evidence or record it as unresolved. For the focused hypothesis playbook with structural code location and the synthesize template, see `specter`.
 
-## Phase 1: HYPOTHESIZE
+### 2. Instrument
+Ask what variables or expressions would prove or disprove the hypothesis. Inject 3–5 strategic points max (entry args, return values, loop variables, branch paths, attributes before/after mutation), prefixed `DEBUG:` for easy grep-and-remove. Print before the suspected failure point — if the print does not run, the code path was different. Print full objects, not single attributes; truncate collections over 100 items to first/last 5. One breakpoint beats ten logs when a debugger exists. For performance bugs: establish a baseline measurement first, then bisect. When a value is wrong at the crash site but was correct upstream and the bug crosses a module or service boundary, trace the dataflow with `debug-issue` instead of generic instrumentation.
 
-Generate competing hypotheses and select the best explanation via abductive reasoning.
+### 3. Capture
+Run the test with instrumentation, filter output to `DEBUG:` lines, and compare captured state against hypothesis predictions. Evidence confirms → proceed. Contradicts → return to Phase 1 with updated symptoms. Never hide a contradiction.
 
-1. Collect all observations: primary symptom, secondary symptoms, negative symptoms (what does NOT happen), and context (recent changes, environment, timing)
-2. Generate at least 3 competing hypotheses — force creativity, don't stop at first plausible cause
-3. For each hypothesis, list what it explains and what it does NOT explain
-4. Score each hypothesis on explanatory coherence: coverage (% of symptoms explained), specificity, simplicity, consistency
-5. Select the best hypothesis (Inference to Best Explanation) — the one with least unexplained observations and highest coherence score
-6. If no hypothesis scores above 0.6, gather more evidence targeting the unexplained symptoms before proceeding
+### 4. Purify
+Re-run without instrumentation. Extract the failure signature: assertion message, exception type, expected/got diffs. Keep user-code stack frames only — discard `site-packages`, `node_modules`, framework internals. Keep variable-diff lines and the last 3 lines of stderr; discard setup/teardown logs and coverage reports. Feed 5–10 clean lines — not 50+ raw — to the diagnosis.
 
-**Exit condition:** Best hypothesis selected with rationale. If confidence is low, gather targeted evidence before Phase 2.
+### 5. Patch
+Generate a candidate patch, apply it, run the failing test. On failure, capture the new failure state and pick a variant category before regenerating: **same root cause, different location** (the edit is in the wrong place), **same location, different approach** (guard clause → assertion, upstream normalization, different default), or **null-check / default / data-flow refactor** (signals the root-cause model is wrong). Iterate within budget: simple 2, medium 3–4, complex 5. If iteration N produces the same diff as N−1, STOP — return to Phase 1 with updated evidence. Patching test expectations to match wrong behavior is a red flag: the bug is in the code, not the test.
 
----
+### 6. Verify & prevent recurrence
+Remove all `DEBUG:` instrumentation. Run the full suite, not just the failing test. Confirm the diff is minimal and addresses root cause, not symptom. Faithfulness check: "If I fix X, is the symptom impossible under the same conditions?" Yes → root cause. No → contributing factor — keep digging. Then: original repro no longer reproduces, regression test passes, throwaway prototypes deleted, the correct hypothesis stated in the commit message, and a preventive measure tied to the root-cause category: **code defect** → regression test; **missing process** → checklist, lint rule, or CI gate; **knowledge gap** → documentation; **infrastructure limit** → capacity alert or auto-scaling. For non-code causes and incident postmortems (deployments, environment, process gaps), use the 5-Whys and Ishikawa analysis in `root-cause-analysis`.
 
-## Phase 2: INSTRUMENT
+## Reference
+For the hardest cases — intermittent failures, environment-specific crashes, Heisenbugs, or any bug where a wrong fix costs more than thorough investigation — load [`references/conquest-mode.md`](references/conquest-mode.md): pre-flight inquisition, per-hypothesis grilling, adversarial backward verification, step gates, fix pre-mortem, and the evidence ledger.
 
-Design and inject temporary print/logging statements to capture runtime state that proves or disproves the hypothesis.
-
-1. Ask: "What variables or expressions would prove or disprove my current hypothesis?"
-2. Identify instrumentation targets: function arguments at entry, return values at exit, loop variables mid-iteration, branch conditions (which path taken), object attributes before/after mutation
-3. Inject temporary print/log statements at 3-5 strategic points (max) — use clear prefix `DEBUG:` or `// DEBUG:` for easy grep-and-remove
-4. Print before the suspected failure point — if the print doesn't run, the code path was different
-5. Print the full object, not just one attribute — the missing/wrong key is often the bug
-6. Do NOT print large collections (> 100 items) — truncate to first/last 5
-
-**Exit condition:** Instrumentation injected at strategic points targeting the hypothesis.
-
----
-
-## Phase 3: CAPTURE
-
-Run the test with instrumentation, capture runtime state, and collect raw output.
-
-1. Run the failing test with instrumentation enabled, capturing stdout/stderr
-2. Filter output to `DEBUG:` prefixed lines to extract runtime state
-3. Compare captured runtime state against hypothesis predictions
-4. Update hypothesis confidence: did the evidence confirm or contradict the best hypothesis?
-5. If evidence contradicts, return to Phase 1 with updated symptoms and re-hypothesize
-6. If evidence confirms, proceed to Phase 4
-
-**Exit condition:** Runtime state captured and hypothesis confirmed or falsified. If falsified, loop back to Phase 1.
-
----
-
-## Phase 4: PURIFY
-
-Slice the failing test output to only failure-relevant lines before feeding to diagnosis.
-
-1. Run the test again (without instrumentation) and capture raw output
-2. Extract the failure signature: assertion message, exception type and message, variable diffs (`expected X, got Y`)
-3. Keep user-code stack frames only — discard framework internals (`site-packages`, `node_modules`, `lib/python`)
-4. Keep variable diff lines (`E   `, `==`, `!=`) and last 3 lines of stderr
-5. Discard: test setup/teardown logs, coverage reports, passing test stdout, framework internal frames
-6. Present purified output (typically 5-10 lines vs 50+ raw) to diagnosis step
-
-**Exit condition:** Purified output captures the failure signal with 18-20% fewer tokens than raw output.
-
----
-
-## Phase 5: PATCH
-
-Generate a fix, run tests, and iterate using the inner refinement loop.
-
-1. Generate a candidate patch based on the confirmed hypothesis and purified runtime state
-2. Apply the patch to source code
-3. Run the failing test — if PASS, proceed to Phase 6; if FAIL, continue to step 4
-4. Capture the new failure state (return to Phase 3 briefly for updated runtime evidence)
-5. Generate a refined patch or variant. Pick from these variant categories before regenerating:
-   - **Same root cause, different fix location** — the model is right about what's broken; the edit is in the wrong place.
-   - **Same location, different implementation approach** — the line is right but the technique isn't. E.g. you wrote a guard clause; try an assertion, an upstream normalization, or a different default.
-   - **Add null-check / change default / refactor data flow** — surface-level fixes that signal you're working at the wrong layer. If multiple iterations end up here, your model of the root cause is wrong.
-6. Repeat steps 2-5 up to iteration budget (simple: 2, medium: 3-4, complex: 5 max)
-7. If iteration N produces the same diff as iteration N-1, STOP — agent is stuck in a loop. Return to Phase 1 with updated evidence.
-8. If the patch modifies test expectations, that's a red flag — the bug is in the code, not the test
-
-**Exit condition:** Patch passes the failing test. If budget exhausted without pass, escalate or report partial findings.
-
----
-
-## Phase 6: VERIFY
-
-Confirm the fix is correct and doesn't introduce regressions.
-
-1. Remove all `DEBUG:` instrumentation statements from the code
-2. Run the full test suite (not just the failing test) to check for regressions
-3. Verify the patch is minimal — smallest diff that fixes the bug
-4. Review the patch against the original hypothesis — does it address root cause or just symptom?
-5. If regressions found, return to Phase 5 with the regression test as new evidence
-6. Record the final fix: what was changed, why it works, what the root cause was
-
-**Exit condition:** All tests pass, no regressions, instrumentation removed, fix is minimal and addresses root cause.
-
----
-
-## Failure Modes
-
-- **Skipping Phase 1:** jumping straight to patching wastes cycles on wrong hypotheses
-- **Instrumenting every line:** 3-5 strategic points max, otherwise output becomes noise
-- **Generating the same patch twice:** if iteration N matches iteration N-1, stop and re-hypothesize
-- **Fixing tests instead of code:** patching test expectations to match wrong behavior is a red flag
-- **Overfitting to test suite:** a patch that makes tests pass but introduces regressions elsewhere is worse than no fix
-- **Ignoring negative symptoms:** what does NOT happen is as important as what does
-- **Skipping Phase 6:** a fix that breaks other tests isn't a fix
-- **Spawning multiple debug subagents in parallel:** serial investigation is more token-efficient
-- **Using abduction for clear error messages:** if the error points to a specific line, use deductive tracing instead
+## Rules
+- **Do** answer the pre-flight before touching code — guessing with partial context wastes cycles.
+- **Do** generate 3+ hypotheses and decompose the winner into falsifiable claims — first-branch lock-in ignores disconfirming evidence.
+- **Do** instrument 3–5 points that target a prediction — logging everything buries the signal.
+- **Do** write the regression test before the fix when a correct seam exists.
+- **Do** stop on duplicate patches and on symptom-patching (guard clauses, retries, null checks without understanding why the bad input arrived).
+- **Do** declare done only when root cause and mechanism are stated and prevention is in place.

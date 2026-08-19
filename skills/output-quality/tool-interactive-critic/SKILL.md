@@ -9,6 +9,8 @@ triggers:
 
 # Tool-Interactive Critic
 
+**Tool-execution layer for the `reasoning-integrity-chain` Phase 2 — verifies claims with external tools.**
+
 **Draft first. Verify with the right tools. Critique from evidence. Revise only where needed.** When the agent's weakness is not generation but unverified confidence, do not trust the first output blindly: identify which parts need verification, choose tools that test the likely failure mode, let the tool output shape the critique, and revise only where the evidence says the draft is weak.
 
 ## When to Use

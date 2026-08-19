@@ -23,7 +23,7 @@ It is the post-implementation counterpart to the pre-mortem:
 
 The narrative framing does the work. Assuming the pain has already happened produces more specific and more honest findings than asking "could this cause problems?" — the same effect Gary Klein documented for pre-mortems.
 
-This is a failure review, not a quality review. It does not judge whether the code is well-shaped. It finds where the code will hurt later. For shape, use maintain-architecture or architecture-evolution-review.
+This is a failure review, not a quality review. It does not judge whether the code is well-shaped. It finds where the code will hurt later. For shape, use feature-architecture.
 
 ## Core Rule
 

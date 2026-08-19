@@ -13,14 +13,7 @@ Systematic checklist for reviewing code before pushing. Catches failure modes sp
 
 Based on arXiv research: 2603.00539, 2604.16697, 2604.17014, 2604.19825, 2601.19072, 2603.18740, 2512.18020, 2511.07017.
 
-LLMs have systematic blind spots that differ from human mistakes:
-- They **hallucinate execution traces** and confidently validate buggy code (SolidCoder, 2604.19825)
-- They **know** vulnerabilities exist but still generate them — the "Format-Reliability Gap" (2604.16697)
-- They **overcorrect** correct code, flagging working implementations as broken (2603.00539)
-- They produce **functionally correct but silently vulnerable** code that static analyzers miss (2604.17014)
-- They generate **review comments ungrounded in actual changes** (HalluJudge, 2601.19072)
-- They are **biased by surrounding context** — miss vulnerabilities when code "looks right" (2603.18740)
-
+The failure modes, research sources, and the anti-pattern table live in the shared catalog: [`references/llm-failure-modes.md`](references/llm-failure-modes.md). For a TypeScript-specific tool-first deep review, use `super-review-typescript`.
 ### Protocol
 
 Run this as a **structured pass** over your diff before pushing. Each section is independent — complete all.

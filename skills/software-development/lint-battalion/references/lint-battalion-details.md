@@ -67,7 +67,7 @@ Prevention: never assign the same file to multiple subagents; run the linter per
 |--------|--------|-------|
 | False positive | suppress with inline disable + justification | — |
 | Type mismatch requiring logic change | route to debug subagent | `debug-subagent` |
-| Missing types spanning many files | batch as architectural, dedicated refactor | `refactor-safely` |
+| Missing types spanning many files | batch as architectural, dedicated refactor | `legacy-rescue-protocol` |
 | Linter config issue | update `.eslintrc` / `biome.json` / `tsconfig.json` | — |
 
 ## Anti-patterns
@@ -85,7 +85,7 @@ Prevention: never assign the same file to multiple subagents; run the linter per
 |-------|-------------------|
 | `checklist-manifesto` | phase gates and contamination checks |
 | `debug-subagent` | semantic errors requiring logic understanding |
-| `refactor-safely` | architectural errors needing structural change |
+| `legacy-rescue-protocol` | architectural errors needing structural change |
 | `codebase-divide-conquer-search` | finding related files when errors span unknown modules |
 | `iterative-patch-repair` | subagent's first fix is close but wrong |
 | `pre-deployment-gate` | final lint check before commit |

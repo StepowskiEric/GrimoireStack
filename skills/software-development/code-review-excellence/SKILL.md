@@ -1,44 +1,42 @@
 ---
 name: code-review-excellence
-description: "Provide constructive feedback, catch bugs early, and foster knowledge sharing while maintaining team morale."
+description: "Structured code review that catches bugs early, provides constructive feedback, and shares knowledge while keeping team morale intact."
 triggers:
-  - Need to review code with constructive feedback
-  - Need to catch bugs early while maintaining team morale
-  - Code review where knowledge sharing is a goal
+  - systematic-code-review
+  - constructive-feedback
+  - code-review-thoroughness
+  - knowledge-sharing-review
 ---
 
 # Code Review Excellence
 
-Provide constructive feedback, catch bugs early, and foster knowledge sharing while maintaining team morale.
+**Review with a checklist, not aimless reading — and leave the author better off than you found them.** Catch bugs early, check quality systematically, and deliver feedback that explains why and suggests how, so the review teaches instead of demoralizing.
 
-## Core Protocol
+## When to Use
+- Any code change that needs a review (PR, patch, AI-generated diff)
+- Reviews where thoroughness matters — a structured checklist beats skim-reading
+- Reviews where the human outcome matters: feedback the author can act on
 
-### Phase 1: Understand the Change
+## The Move
 
-Read the diff and understand what the change is trying to accomplish. Check the PR description, linked issues, and any related tests.
+### 1. Understand the change
+Read the diff, PR description, linked issues, and related tests. Done when the intent and scope of the change are understood.
 
-**Done when:** the intent of the change is understood.
+### 2. Check correctness
+Logic errors, edge cases, error handling, security implications. Focus on what the code does, not how it is written. Done when all correctness concerns are documented.
 
-### Phase 2: Review for Correctness
+### 3. Check quality
+Test coverage, maintainability, readability, adherence to conventions, documentation. Done when quality concerns are documented.
 
-Check for logic errors, edge cases, security vulnerabilities, and correctness issues. Focus on what the code does, not how it's written.
+### 4. Deliver feedback
+Frame feedback constructively: explain why something is a problem, not just that it is; suggest alternatives when possible; acknowledge what works well. Done when feedback is delivered with clear reasoning and actionable suggestions.
 
-**Done when:** all correctness concerns are documented.
+## Rules
+- **Do** review with the checklist — reading without purpose misses the big picture.
+- **Do** prioritize correctness and maintainability over personal style preferences.
+- **Do** acknowledge good solutions, not only what needs improvement.
+- **Do** make every comment actionable: state why it matters and how to fix it.
+- **Do** treat the review as a teaching moment — catch bugs early and share knowledge.
 
-### Phase 3: Review for Quality
-
-Check for maintainability, readability, test coverage, and adherence to project conventions.
-
-**Done when:** quality feedback is documented.
-
-### Phase 4: Deliver Feedback
-
-Frame feedback constructively. Explain why something is a problem, not just that it is. Suggest alternatives when possible.
-
-**Done when:** feedback is delivered with clear reasoning and actionable suggestions.
-
-## Failure Modes
-
-- **Nitpicking style over substance:** focus on correctness and maintainability, not personal preferences
-- **Dismissing good solutions:** acknowledge what works well, not just what needs improvement
-- **Vague feedback:** "this could be better" without explaining why or how
+## Failure modes
+Nitpicking style over substance; dismissing good solutions; vague feedback ("this could be better" without why or how).

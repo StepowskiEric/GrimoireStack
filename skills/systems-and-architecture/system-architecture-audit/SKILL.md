@@ -86,7 +86,7 @@ Source: DDIA. Evaluate data correctness, consistency, and flow after boundaries 
 
 ## Phase 4: STABILITY CHECK
 
-Source: Release It. Stress-test the system against production failure conditions.
+Source: Release It — full pattern explanations (timeout, breaker, bulkhead, fallback, steady state, load shedding, back-pressure) live in `release-it-stability`. Stress-test the system against production failure conditions.
 
 1. Check every integration point — does each have timeout, circuit breaker, and fallback behavior
 2. Evaluate bulkhead isolation — are thread/connection pools partitioned by caller or function

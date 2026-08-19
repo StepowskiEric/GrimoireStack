@@ -50,6 +50,8 @@ Fill the assessment template (in Reference): integration-point table (timeout/br
 ## Reference
 For the full pattern catalog with "without it" failure stories, the anti-patterns to identify and remove, and the stability assessment template, see [`references/stability-details.md`](references/stability-details.md).
 
+For a full 4-phase system audit (system map, boundaries, data, stability), see `system-architecture-audit`.
+
 ## Rules
 - **Do** check every integration point for timeout, circuit breaker, and fallback.
 - **Do** hunt for unbounded accumulations — logs, queues, caches, result sets.

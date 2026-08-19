@@ -9,6 +9,8 @@ triggers:
 
 ## Self-Verify Pipeline
 
+**Part of the `reasoning-integrity-chain` — Phase 3 (backward verification).**
+
 An escalating 5-phase verification pipeline for any agent output. Each phase increases cost but catches different failure modes.
 
 Fuses Bounded Self-Revision (internal critique), Claim Verification Reasoning (atomic claim decomposition), and Tool Interactive Critic (external tool-grounded verification).

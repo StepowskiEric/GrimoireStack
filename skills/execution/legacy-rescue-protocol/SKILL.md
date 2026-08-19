@@ -1,95 +1,41 @@
 ---
 name: legacy-rescue-protocol
-description: Fuse of Working Effectively with Legacy Code + Refactoring State Machine. Characterize legacy behavior, create seams, then transform in bounded slices with anti-loop protection.
+description: "Characterize legacy behavior, create seams, then transform in bounded slices with anti-loop protection."
 triggers:
-  - Changing brittle code with weak tests or unclear behavior
-  - Need to characterize legacy behavior before changing
-  - Heavy coupling makes changes risky
-  - Need to refactor legacy code with anti-loop protection
+  - brittle-code-change
+  - characterize-before-change
+  - legacy-refactor-anti-loop
 ---
 
+# Legacy Rescue Protocol
 
+**Characterize before you change — the code is the spec until proven otherwise.** When code is brittle, weakly tested, or unclear, do not transform it directly. Capture what it does today (bugs included) with characterization tests, find or create a seam, then transform in bounded slices with a gate at every phase and an anti-loop breaker.
 
----
+## When to Use
+- Changing brittle code with weak tests or unclear behavior
+- Heavy coupling makes changes risky
+- Any refactor where "characterize before you change" applies
 
-## Legacy Rescue Protocol
+## The Move
 
-A fused protocol for safely changing legacy code. Combines characterization testing (Working Effectively with Legacy Code) with bounded refactoring (Refactoring State Machine) into a single pipeline that enforces "characterize before you change."
+### 1. Characterize
+Read the code and trace the main execution paths — modify nothing. Identify inputs, outputs, and side effects. Write characterization tests that capture **current** behavior, including bugs: these document what the code does now, not what "correct" is. Target: every public function has at least one test; all pass before proceeding. **Gate: characterization green, zero code changes.**
 
-### Phase 1: CHARACTERIZE
+### 2. Create the seam
+Find where you can intercept behavior without touching the core: function parameters, inheritance or composition points, interface boundaries, configuration points. Create a thin abstraction if none exists (extract an interface, wrap side effects, add a config hook). **Gate: seam exists, characterization tests still green.**
 
-Understand what the code actually does before touching it.
+### 3. Transform in slices
+Define the target behavior. Slice the transformation into the smallest committable steps. For each slice: write a failing test for the new behavior, make the change, run ALL tests — if characterization tests break, the change is wrong: revert. Commit when green. **Anti-loop breaker:** the same slice fails three times → stop and re-enter Phase 2 with a better seam. Set a transformation budget up front (max files, max new lines, max time) and stop to reassess when it is exceeded.
 
-1. **Read the code** — trace the main execution paths. Do not modify anything.
-2. **Identify inputs and outputs** — what goes in, what comes out, what side effects occur?
-3. **Write characterization tests** — tests that capture current behavior, including bugs
-   - These tests are NOT "correctness" tests — they document what the code does NOW
-   - If the code has a bug, the test should reproduce the buggy behavior
-   - Target: every public function has at least one characterization test
-4. **Run characterization tests** — all must pass before proceeding
+### 4. Clean up
+Remove tests that only documented the old buggy behavior (if that bug was the change target), keep tests that validate the new behavior, remove seam scaffolding no longer needed. Final test run green.
 
-**Gate:** Characterization tests green. No code changes yet.
+## Reference
+For the characterization-test checklist and patterns, see [`references/characterization-checklist.md`](references/characterization-checklist.md).
 
-### Phase 2: SEAM
-
-Find or create the point where you can make changes safely.
-
-1. **Identify the seam** — where can you intercept behavior without touching the core?
-   - Function parameters (inject behavior via arguments)
-   - Inheritance/composition points
-   - Interface boundaries
-   - Configuration points
-2. **Create the seam if it doesn't exist** — introduce a thin abstraction layer
-   - Extract interface from concrete class
-   - Wrap side effects in an injectable dependency
-   - Add a configuration hook
-3. **Verify** — characterization tests still pass after seam creation
-
-**Gate:** Seam exists, characterization tests still green.
-
-### Phase 3: TRANSFORM
-
-Make the actual change in bounded slices.
-
-1. **Define the target** — what should the behavior be after the change?
-2. **Slice the transformation** — break into smallest possible steps
-   - Each step should leave characterization tests green
-   - Each step should be individually committable
-3. **For each slice:**
-   a. Write a failing test for the new behavior
-   b. Make the change
-   c. Run ALL tests (characterization + new)
-   d. If characterization tests break → the change is wrong, revert
-   e. If new test passes → commit this slice
-4. **Anti-loop breaker** — if the same slice fails 3 times, stop. Re-enter Phase 2 (create a better seam).
-
-**Gate:** All tests green (characterization + new). Target behavior achieved.
-
-### Phase 4: CLEANUP
-
-Remove characterization scaffolding (optional).
-
-1. Remove tests that only document old buggy behavior (if the bug was the target of the change)
-2. Keep tests that validate the new behavior
-3. Remove seam scaffolding if it's no longer needed
-4. Final test run — everything green
-
-### Transformation Budget
-
-Set a maximum scope before starting:
-- Max files to touch: [set before starting]
-- Max new lines: [set before starting]
-- Max time: [set before starting]
-- If budget exceeded, stop and reassess
-
-### Failure Modes
-
-- **Skipping characterization:** going straight to transformation is the most common and most damaging mistake
-- **Writing "correctness" tests instead of characterization tests:** you don't know what "correct" is yet
-- **Making the seam too wide:** if you're touching the core logic to create the seam, the seam is wrong
-- **Transforming without slicing:** big bang changes in legacy code guarantee regression
-- **Ignoring characterization test failures:** "I'll fix those later" means you won't
-
-## References
-
-- `references/characterization-checklist.md` — Characterization test checklist and patterns for capturing current behavior before making changes.
+## Rules
+- **Do** write characterization tests, not "correctness" tests — you do not know what correct is yet.
+- **Do** keep every slice green and individually committable — big-bang changes guarantee regressions.
+- **Do** treat characterization-test failures as the change being wrong: revert, then re-seam.
+- **Do** set the transformation budget before starting and honor it.
+- **Do** keep the seam thin — touching core logic to create the seam means the seam is wrong.

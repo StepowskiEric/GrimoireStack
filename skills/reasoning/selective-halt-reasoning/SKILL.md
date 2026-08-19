@@ -9,6 +9,8 @@ triggers:
 
 # Selective Halt Reasoning
 
+**Part of the `reasoning-integrity-chain` — Phase 4 (convergence halt).**
+
 ## When to Use
 
 Use this skill when:

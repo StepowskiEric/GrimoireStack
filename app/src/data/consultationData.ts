@@ -750,7 +750,7 @@ export const SEANCE_QUESTIONS: Record<string, SeanceQuestionPool> = {
             id: 'sde-n4-d',
             label: 'A path the test runner never saw',
             sigilGlyph: '\u2042',
-            primary: 'dev-diagnostics-mcp',
+            primary: 'simulate-instrumentation',
             alt: 'lint-battalion',
             reason: 'The tooling knows what eyes cannot see.',
           },
@@ -776,7 +776,7 @@ export const SEANCE_QUESTIONS: Record<string, SeanceQuestionPool> = {
             label: 'The linter, in vain',
             sigilGlyph: '\u2756',
             primary: 'lint-battalion',
-            alt: 'dev-diagnostics-mcp',
+            alt: 'simulate-instrumentation',
             reason: 'Many trivial errors, one auto-fix.',
           },
           {

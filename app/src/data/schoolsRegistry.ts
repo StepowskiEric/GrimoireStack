@@ -22,18 +22,6 @@ const schools: Array<{
     "desc": "Design rituals for systems that endure across dimensions of scale, time, and team boundaries.",
     "spells": [
       {
-        "name": "Architecture Evolution Review",
-        "skill": "architecture-evolution-review",
-        "effect": "Review the repository as a living system. Detect architectural drift, feature erosion, and long-term maintenance risks.",
-        "status": "—"
-      },
-      {
-        "name": "Architecture Maintenance",
-        "skill": "maintain-architecture",
-        "effect": "Review completed work for architectural quality: feature ownership, dependency direction, module quality, and long-term scalability.",
-        "status": "—"
-      },
-      {
         "name": "Cross-Domain Analogy",
         "skill": "cross-domain-analogy-generator",
         "effect": "Generate cross-domain analogies — break fixation by mapping problem structures to foreign fields (biology, music, traffic) and transferring insights.",
@@ -58,10 +46,10 @@ const schools: Array<{
         "status": "—"
       },
       {
-        "name": "Feature Architecture Planning",
-        "skill": "plan-feature-architecture",
-        "effect": "Decide ownership, placement, module boundaries, dependencies, and project impact before writing code.",
-        "status": "—"
+        "name": "Feature Architecture",
+        "skill": "feature-architecture",
+        "effect": "One rule set for three moments: plan where files live before writing, review completed work, and audit the repo as a living system.",
+        "status": "New"
       },
       {
         "name": "Improve Codebase Architecture",
@@ -150,9 +138,9 @@ const schools: Array<{
         "status": "—"
       },
       {
-        "name": "Reasoning Integrity Chain for AI Agents",
+        "name": "Reasoning Integrity Chain",
         "skill": "reasoning-integrity-chain",
-        "effect": "Escalating 4-phase verification chain: faithfulness, claims, contradiction, selective halt.",
+        "effect": "Escalating 4-phase verification chain: faithfulness, claims, backward verification, selective halt.",
         "status": "—"
       },
       {
@@ -165,26 +153,6 @@ const schools: Array<{
         "name": "Self-Contradiction Trap",
         "skill": "self-contradiction-trap",
         "effect": "Maintain a belief store of claims made during a session. Detect contradictions and force resolution before continuing.",
-        "status": "—"
-      }
-    ]
-  },
-  {
-    "id": "mcp-servers",
-    "real": "MCP Servers",
-    "name": "School of Conduits",
-    "desc": "Model Context Protocol servers that extend agent capabilities with structured tools.",
-    "spells": [
-      {
-        "name": "Active Inference Agent",
-        "skill": "active-inference-agent",
-        "effect": "MCP server implementing a practical Active Inference agent based on Friston's Free Energy Principle.",
-        "status": "—"
-      },
-      {
-        "name": "Evolutionary Tool Composer",
-        "skill": "evolutionary-tool-composer",
-        "effect": "MCP server that runs an evolutionary algorithm to discover and optimize agent tool chains, prompt strategies, and code solutions.",
         "status": "—"
       }
     ]
@@ -300,15 +268,9 @@ const schools: Array<{
         "status": "—"
       },
       {
-        "name": "Code Knowledge Graph MCP",
-        "skill": "code-knowledge-graph-mcp",
-        "effect": "MCP server with structured symbol and call-graph queries. Navigate code by structure, not by string search.",
-        "status": "—"
-      },
-      {
         "name": "Code Review Excellence",
         "skill": "code-review-excellence",
-        "effect": "Provide constructive feedback, catch bugs early, and foster knowledge sharing while maintaining team morale.",
+        "effect": "Structured code review that catches bugs early, provides constructive feedback, and shares knowledge while keeping team morale intact.",
         "status": "—"
       },
       {
@@ -327,12 +289,6 @@ const schools: Array<{
         "name": "Critical System Interrogation",
         "skill": "critical-system-interrogation",
         "effect": "Stress-test critical system paths (auth pipelines, payment flows, data validation) for correctness, race conditions, security flaws, and architectural integrity.",
-        "status": "—"
-      },
-      {
-        "name": "Dev Diagnostics MCP",
-        "skill": "dev-diagnostics-mcp",
-        "effect": "Run diagnostics across multiple tools (eslint, tsc, vitest, pytest, biome, ruff) and compare before/after for contamination.",
         "status": "—"
       },
       {
@@ -360,21 +316,9 @@ const schools: Array<{
         "status": "—"
       },
       {
-        "name": "Review Changes",
-        "skill": "review-changes",
-        "effect": "Structured review checklist for evaluating code changes systematically.",
-        "status": "—"
-      },
-      {
         "name": "Review Ladder Plus",
         "skill": "review-ladder-plus",
         "effect": "Multi-agent code review ladder for production-grade QA: security, auth, data, concurrency.",
-        "status": "—"
-      },
-      {
-        "name": "Safe Refactor",
-        "skill": "refactor-safely",
-        "effect": "Characterization testing to capture existing behavior, then bounded changes with immediate verification.",
         "status": "—"
       },
       {
@@ -448,7 +392,7 @@ const schools: Array<{
       {
         "name": "Legacy Rescue Protocol",
         "skill": "legacy-rescue-protocol",
-        "effect": "Fuse of Working Effectively with Legacy Code + Refactoring State Machine. Characterize legacy behavior, create seams, then transform in bounded slices with anti-loop protection.",
+        "effect": "Characterize legacy behavior, create seams, then transform in bounded slices with anti-loop protection.",
         "status": "—"
       },
       {
@@ -690,9 +634,9 @@ const schools: Array<{
         "status": "—"
       },
       {
-        "name": "Mobile E2E Testing: The Hunter's Mindset",
+        "name": "Mobile E2E Testing — The Hunter's Mindset",
         "skill": "mobile-e2e-testing-enterprise-guide",
-        "effect": "Hunter's mindset for mobile E2E testing: what to test, how to catch real bugs, and avoid traps.",
+        "effect": "Mobile E2E specifics: five testing mindsets, what to test by tier, adversarial and bias-aware test design, and a starting sequence.",
         "status": "—"
       },
       {
@@ -810,12 +754,6 @@ const schools: Array<{
         "status": "—"
       },
       {
-        "name": "Bug Inquisition",
-        "skill": "bug-inquisition",
-        "effect": "Deep root-cause debugging with mandatory context-gathering. Fuses root-cause analysis, specter, diagnose, debug-to-fix-pipeline, occam-root-cause, and reasoning-integrity-chain into one sequential protocol.",
-        "status": "—"
-      },
-      {
         "name": "Debug Issue",
         "skill": "debug-issue",
         "effect": "Force the reproduce → isolate → fix → verify cycle. Graph-powered code navigation traces issues through the system along dataflow edges. Use when the bug spans multiple modules or services, the crash site isn't the cause, or state diverges across an async boundary.",
@@ -828,9 +766,9 @@ const schools: Array<{
         "status": "—"
       },
       {
-        "name": "Debug-to-Fix Pipeline for AI Agents",
+        "name": "Debug-to-Fix Pipeline",
         "skill": "debug-to-fix-pipeline",
-        "effect": "6-phase pipeline that increases evidence quality each phase while cutting token waste. Sequences data → hypothesis → isolation → exploitation → repair → verification. Use when debugging is stalling, multi-file bugs need runtime state, or first patch attempt failed.",
+        "effect": "6-phase pipeline that increases evidence quality each phase while cutting token waste: context → hypothesis → instrument → capture → purify → patch → verify.",
         "status": "—"
       },
       {
@@ -870,9 +808,9 @@ const schools: Array<{
         "status": "—"
       },
       {
-        "name": "Root Cause Analysis for AI Agents",
+        "name": "Root Cause Analysis",
         "skill": "root-cause-analysis",
-        "effect": "Distinguish symptoms from causes, verify causal chains, fix the underlying defect. Stops recurring regressions caused by workaround hacks. Use when a bug returns after being 'fixed', multiple symptoms share a cause, or a fix in one area breaks another.",
+        "effect": "Distinguish symptoms from causes, verify causal chains, and fix the underlying defect. Stops recurring regressions caused by workarounds.",
         "status": "—"
       },
       {

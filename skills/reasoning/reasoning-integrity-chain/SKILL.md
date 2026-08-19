@@ -1,175 +1,55 @@
 ---
 name: reasoning-integrity-chain
-description: "Escalating 4-phase verification chain: faithfulness, claims, contradiction, selective halt."
+description: "Escalating 4-phase verification chain: faithfulness, claims, backward verification, selective halt."
 triggers:
-  - Multi-step reasoning risks hallucination
-  - Need to catch all 4 PRISM hallucination types
-  - Need escalating verification that converges efficiently
+  - multi-step-reasoning-hallucination-risk
+  - prism-hallucination-check
+  - escalating-verification
 ---
 
-# Skill: Reasoning Integrity Chain for AI Agents
+# Reasoning Integrity Chain
 
-An escalating 4-phase verification chain that catches all 4 PRISM hallucination types (missing knowledge, knowledge errors, reasoning errors, instruction drift) while converging efficiently. Fuses Faithfulness-Aware Reasoning (logical entailment), Claim Verification Reasoning (atomic decomposition + tool verification), Reasoning Verification Hybrid (backward contradiction + confidence calibration), and Selective Halt Reasoning (convergence detection).
-
-## Purpose
-
-An escalating 4-phase verification chain that catches all 4 PRISM hallucination types (missing knowledge, knowledge errors, reasoning errors, instruction drift). Fuses Faithfulness-Aware Reasoning, Claim Verification Reasoning, Reasoning Verification Hybrid, and Selective Halt Reasoning into one protocol that reduces false positives from ~13.4% to ~4.3% while improving claim accuracy by up to 39.9%.
-
-Running all four phases in sequence:
-
-1. Catch plausible-but-unentailed reasoning (faithfulness check)
-2. Decompose into verifiable atoms (claim decomposition)
-3. Stress-test conclusions from the opposite direction (backward verification)
-4. Halt when reasoning converges (selective halt)
-
-No phase is optional. Each catches failure modes the others miss. Running all four reduces false positives from ~13.4% to ~4.3% while improving claim accuracy by up to 39.9% (CURE, arXiv:2604.12046).
+**Four phases, no optional phases: entailment, atomization, adversarial scrutiny, and a disciplined stop.** Multi-step reasoning compounds errors; this chain catches all four PRISM hallucination types (missing knowledge, knowledge errors, reasoning errors, instruction drift) while converging efficiently — reduced false positives from ~13.4% to ~4.3% with claim accuracy up to +39.9% (CURE, arXiv:2604.12046). Each phase is a standalone skill; the chain sequences them and sets the gates.
 
 ## When to Use
-
-Use this skill when:
 - Hallucinations have caused bad outputs before
 - Multi-step reasoning where errors compound
-- The task requires high-confidence conclusions (code changes, architectural decisions)
-- You need to justify conclusions with traceable evidence
+- High-confidence conclusions (code changes, architectural decisions) that need traceable justification
 - Previous reasoning contained confabulated justifications
 
-When NOT to use:
-- Brainstorming or ideation (verification kills creativity)
-- Tasks with no verifiable ground truth (opinions, aesthetics)
-- Trivial tasks where verification cost exceeds error risk
-- Creative writing or speculative exploration
+Skip it: brainstorming and ideation (verification kills creativity), tasks with no verifiable ground truth, trivial tasks where verification costs more than the error risk.
 
-## Phase 1: FAITHFULNESS CHECK
+## The Move
 
-Detect reasoning that sounds plausible but is not logically entailed by premises. Catches reasoning errors (PRISM type 3) and correlation-causation confusion.
+### 1. Faithfulness — entailment first
+Extract premises; for each reasoning step, does the conclusion NECESSARILY follow? Flag correlation-as-causation, hidden premises, over-generalization, equivocation, false dichotomies. REVISE (add the missing premise) or FLAG (confidence 0.3 max). Commit only entailed steps; record faithfulness = verified / total. **Abort: over 50% flagged → restart; the premise set is insufficient.** Full pattern catalog: `faithfulness-aware-reasoning`.
 
-1. Extract all premises from the problem statement, prior verified steps, and explicit assumptions
-2. For each reasoning step in your chain, check: does it NECESSARILY follow from the stated premises?
-3. Flag these patterns:
-   - Correlation presented as causation ("A happened before B, so A caused B")
-   - Hidden unstated premises required for the conclusion
-   - Generalization beyond what premises allow ("this worked once, so it always works")
-   - Equivocation (same word, different meanings across steps)
-   - False dichotomy (presenting two options when more exist)
-4. For each flagged step, decide:
-   - REVISE: Add the missing premise or intermediate step, then re-check entailment
-   - FLAG: Mark as speculative with reduced confidence (0.3 max)
-5. Commit only steps that pass the entailment test: premises → conclusion necessarily follows
-6. Record faithfulness score: verified steps / total steps
+### 2. Claims — atomize and verify
+Decompose committed steps into atomic falsifiable claims (one subject, one predicate, precise identifiers), label CERTAIN / LIKELY / UNCERTAIN / SPECULATIVE, and verify every UNCERTAIN+ claim with tools (read the file, run the test, check the docs). Verified → CERTAIN; falsified → backtrack and invalidate descendants; inconclusive → record the gap. Never proceed on an unverified UNCERTAIN+ claim. Full protocol: `claim-verification-reasoning`; tool-execution layer: `tool-interactive-critic`.
 
-**Abort rule:** If >50% of steps are flagged speculative, restart reasoning from scratch — the premise set is insufficient.
+### 3. Backward verification — assume it is wrong
+Take the conclusion, assume it is WRONG, and list 2–4 alternatives that would also explain the evidence. Rule each out with evidence or record it as unresolved. Hunt hidden assumptions: what would have to be true for your conclusion to be the ONLY explanation? Score survival 0–1: ≥0.9 proceed; 0.7–0.9 proceed with caveat; <0.7 STOP — verify further or abstain. Full protocol: `self-verify-pipeline`.
 
-## Phase 2: CLAIM DECOMPOSITION
+### 4. Selective halt — stop when it converges
+Define halting criteria before reasoning. After each step compute the semantic delta: CONCLUSION_CHANGED → continue; CONFIDENCE_INCREASED → continue once more; NO_CHANGE → halt candidate; REGRESSION → backtrack. Three consecutive NO_CHANGEs: criteria met → HALT; unmet → force a novel action (run a test, read a new file) — never keep reasoning. Never halt on an untested fix; never halt after one NO_CHANGE. Full protocol: `selective-halt-reasoning`; token-efficiency twin: `cot-pruning-reasoning`.
 
-Break verified reasoning into atomic falsifiable claims. Assign confidence labels. Verify uncertain claims with tools. Catches knowledge errors and missing evidence (PRISM types 1, 2).
+## Confidence calibration
+Per-claim confidence 0–1; conclusion confidence = min(ancestor claims). Force external verification for anything ≥0.9 — agents overestimate. Default to LIKELY (0.75) when evidence is strong but indirect — false abstention paralyses.
 
-1. After each committed reasoning step, decompose it into atomic claims:
-   - One subject, one predicate per claim
-   - Each claim must be falsifiable (you could imagine evidence disproving it)
-   - Use precise identifiers (file names, line numbers, function names)
-2. Assign confidence labels to each claim:
-   - CERTAIN: directly observed (read from source, test output, docs)
-   - LIKELY: strong indirect evidence
-   - UNCERTAIN: weak or incomplete evidence
-   - SPECULATIVE: hypothesis, not yet tested
-3. For each UNCERTAIN or SPECULATIVE claim, pick a verification action:
-   - Code behavior → read_file at specific lines, or run test
-   - API behavior → check docs or run experiment
-   - Data fact → query database or check data file
-   - Performance claim → benchmark or timer
-4. Execute verification. Update labels:
-   - Verified → upgrade to CERTAIN
-   - Falsified → mark FALSE, backtrack to last valid claim, invalidate all descendants
-   - Inconclusive → remain UNCERTAIN, record the gap
-5. Build dependency graph: track which claims depend on which
-6. Downgrade aggregate confidence: conclusion confidence = min(all ancestor claim confidences)
+## Exit criteria
+All must hold:
+1. Faithfulness ≥ 75% (3/4 steps pass entailment)
+2. All UNCERTAIN+ claims verified or explicitly gapped
+3. Conclusion survived backward scrutiny, or is marked speculative with documented alternatives
+4. NO_CHANGE × 3 with all halting criteria met
+5. Output includes: conclusion + confidence, claims with verification status, unresolved gaps, alternatives ruled out
 
-**Rule:** Never proceed on an unverified UNCERTAIN+ claim. If verification is impossible, state the gap explicitly.
+If any criterion fails, output a partial result with explicit uncertainty markers — never a polished but unfounded conclusion.
 
-## Phase 3: BACKWARD VERIFICATION
-
-Assume the conclusion is wrong. What must be true? Cross-check against forward chain. Catches hidden assumptions and alternative explanations.
-
-1. Take the proposed conclusion from Phase 2
-2. Ask: "Assuming this conclusion is WRONG, what would have to be true?"
-3. List 2-4 alternative explanations that would also explain the evidence
-4. For each alternative:
-   - Is it consistent with all verified claims from Phase 2?
-   - Can you find evidence that rules it out?
-   - If you cannot rule it out, record it as an unresolved alternative
-5. Look for hidden assumptions in the forward chain:
-   - What did you assume without stating?
-   - What would need to be true for your conclusion to be the ONLY explanation?
-6. Apply confidence calibration (CAPO, arXiv:2604.12632):
-   - Score the conclusion 0-1 based on how well it survived backward scrutiny
-   - Score ≥ 0.9: proceed with confidence
-   - Score 0.7-0.9: proceed with caveat, note unresolved alternatives
-   - Score < 0.7: STOP — verify further or abstain ("I don't have enough evidence to conclude X")
-7. Record the backward verification result: which alternatives were ruled out and how
-
-**Abort rule:** If conclusion confidence < 0.7 and no further verification is possible, abstain rather than guess.
-
-## Phase 4: CONVERGENCE HALT
-
-Detect when reasoning has stabilized. Halt early to save tokens and prevent over-elaboration. Based on DASH delta-attention selective halting (arXiv:2604.18103).
-
-1. Define halting criteria before reasoning: what does "done" look like?
-   - Root cause identified with specific file/line?
-   - Fix proposed and verified?
-   - No regressions?
-2. After each reasoning step, compute semantic delta:
-   - CONCLUSION_CHANGED: new info altered the answer → continue
-   - CONFIDENCE_INCREASED: same conclusion, stronger support → continue once more, then re-check
-   - NO_CHANGE: same conclusion, same confidence → halt candidate
-   - REGRESSION: new info weakens conclusion → backtrack
-3. If 3 consecutive NO_CHANGE steps:
-   - Review halting criteria
-   - All criteria met → HALT immediately
-   - Criteria unmet → force a novel action (run test, read new file) — do NOT keep reasoning
-4. Confidence threshold halting:
-   - confidence > 0.9 AND all criteria met → HALT
-   - confidence > 0.7 AND token budget > 80% used → HALT with caveat
-   - confidence < 0.5 → continue (never halt on uncertainty)
-5. Two reasoning steps are semantically equivalent if they produce the same conclusion, same next action, and same confidence — mere rephrasing counts as NO_CHANGE
-6. Two steps are NOT equivalent if one introduces new evidence, changes fix scope, or reveals a new edge case
-
-**Rule:** Never halt on an untested fix. Never halt after only 1 NO_CHANGE. Always force action after 3 consecutive NO_CHANGEs.
-
-## Anti-Patterns
-
-- **Skipping Phase 1 and going straight to claims:** wastes verification budget on unentailed reasoning that should have been revised or flagged first
-- **Running Phase 2 on every trivial claim:** only verify UNCERTAIN+ claims — CERTAIN and LIKELY claims don't need tool verification
-- **Skipping Phase 3 because "forward chain looks solid":** the Mental-Reality Gap — backward checking catches assumptions forward reasoning hides
-- **Halt-checking too early:** premature halting on complex problems — multi-step fixes have lulls between breakthroughs
-- **Halt-checking too late:** repeating the same conclusion 5+ times — 3 NO_CHANGEs is the threshold, stop polishing
-- **Confidence inflation:** agents overestimate. Force external verification for anything marked ≥ 0.9
-- **Graph bloat:** long chains produce huge dependency graphs — compress resolved branches (all CERTAIN) into summary claims
-- **False abstention:** marking everything < 0.7 produces paralysis — default to LIKELY (0.75) when evidence is strong but not direct
-- **Revising verified-correct claims:** second-system effect — if a claim was verified as correct, do not touch it
-
----
-
-### Confidence Calibration (CAPO + CURE)
-
-During verification, maintain per-claim confidence on a 0-1 scale:
-- **≥ 0.9:** Proceed with confidence
-- **0.7–0.9:** Proceed with caveat
-- **< 0.7:** STOP — verify further or abstain ("I don't have enough evidence to conclude X")
-
-Aggregate confidence for a conclusion = min(ancestor claim confidences). Use backward contradiction checks to test each conclusion: assume it's wrong, list what would have to be true, then cross-check against evidence.
-
-## Exit Criteria
-
-The chain is complete when ALL of the following hold:
-
-1. Faithfulness score ≥ 75% (Phase 1: at least 3/4 steps pass entailment)
-2. All UNCERTAIN+ claims either verified or explicitly marked as gaps (Phase 2)
-3. Backward verification shows conclusion survived scrutiny OR conclusion is marked speculative with documented alternatives (Phase 3)
-4. Semantic delta is NO_CHANGE for 3 consecutive steps AND all halting criteria met (Phase 4)
-5. Final output includes:
-   - Conclusion with confidence level
-   - Supporting claims with verification status (tool used, result)
-   - Unresolved gaps or flagged speculative steps
-   - Alternatives ruled out by backward verification
-
-If any exit criterion cannot be met, output a partial result with explicit uncertainty markers rather than a polished but unfounded conclusion.
+## Rules
+- **Do** run all four phases in order — each catches failure modes the others miss.
+- **Do** verify only UNCERTAIN+ claims — CERTAIN and LIKELY claims do not need tool verification.
+- **Do** stop when backward scrutiny scores <0.7 and no further verification is possible — abstain rather than guess.
+- **Do** force a novel action after 3 NO_CHANGEs — never keep reasoning.
+- **Do** compress resolved all-CERTAIN branches into summary claims — graph bloat slows the chain.
+- **Do** leave verified-correct claims untouched — the second-system effect rewrites good work.

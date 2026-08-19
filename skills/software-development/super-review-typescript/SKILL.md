@@ -182,6 +182,7 @@ For each finding, include:
 
 ## References
 
+- Shared LLM failure-mode catalog (six modes, anti-patterns, research): [`../llm-pre-push-review/references/llm-failure-modes.md`](../llm-pre-push-review/references/llm-failure-modes.md); for the generic diff-level checklist on AI-authored code, use `llm-pre-push-review`.
 - `references/review-checklist.md` — Concrete actionable checklist covering the four high-risk areas most commonly missed by both automated linters and AI-generated code (type safety, runtime correctness, architectural debt, security)
 - `references/verification-protocol.md` — Step-by-step hallucination verification
 - `references/common-hallucinations.md` — Catalog of known AI hallucinations

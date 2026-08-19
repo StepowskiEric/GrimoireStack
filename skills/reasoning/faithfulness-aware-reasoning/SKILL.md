@@ -10,6 +10,8 @@ triggers:
 
 # Faithfulness-Aware Reasoning
 
+**Part of the `reasoning-integrity-chain` — Phase 1 (entailment).**
+
 **Faithfulness hallucinations** occur when reasoning sounds plausible but isn't logically entailed by the premises. The facts may be right, but the logic doesn't support the conclusion. This skill enforces a strict **Extract → Draft → Entail → Repair** loop to catch these gaps.
 
 ## The Move
