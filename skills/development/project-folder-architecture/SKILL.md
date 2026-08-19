@@ -49,7 +49,7 @@ tsconfig.json             Path aliases (@/, @features/, @components/)
 app.config.ts             Expo config (env vars at build time)
 ```
 
-Full per-layer rules and config templates are in [`references/testing.md`](references/testing.md), [`references/daemon-service.md`](references/daemon-service.md), [`references/surrealdb.md`](references/surrealdb.md).
+Full per-layer rules and config templates are in [`references/testing.md`](references/testing.md) and [`references/daemon-service.md`](references/daemon-service.md).
 
 ---
 
@@ -159,4 +159,3 @@ utils/  ←  hooks/  ←  services/  ←  features/  ←  app/
 |------|--------|
 | [`references/testing.md`](references/testing.md) | Full testing layout, runner selection, isolation |
 | [`references/daemon-service.md`](references/daemon-service.md) | Daemon / long-running service structure |
-| [`references/surrealdb.md`](references/surrealdb.md) | SurrealDB schema and migration patterns |
