@@ -2,237 +2,51 @@
 name: lint-battalion
 description: "Batch-process 50+ linter errors as a bulk remediation problem, not 50 separate decisions."
 triggers:
-  - 50+ linter errors that are mostly mechanical (missing imports, unused variables, formatting)
-  - Accumulated lint debt after a rule change or migration
-  - Pre-commit cleanup where auto-fix did not resolve everything
-  - Onboarding a project to a stricter lint configuration
+  - mass-lint-debt
+  - post-rule-change-cleanup
+  - pre-commit-lint-sprint
+  - stricter-lint-onboarding
 ---
 
-## Overview
+# Lint Battalion
 
-500+ linter errors is not 500 separate decisions. It is a batch processing problem.
+**500 linter errors is not 500 decisions — it is a batch-processing problem.** Mass lint remediation is a pipeline: auto-fix the mechanical errors without spending tokens, categorize the remainder, assign scoped batches to parallel fixer subagents, verify no contamination, and escalate the survivors. Errors are independent, fixes are local, verification is objective — the ideal case for parallel agents.
 
-This skill turns mass lint remediation into a pipeline:
-1. **Auto-fix sprint** — eliminate mechanical errors without agent tokens
-2. **Categorize remainder** — sort by fix complexity
-3. **Parallel subagent battalions** — assign scoped batches to dedicated fixers
-4. **Contamination checks** — verify no new errors introduced
-5. **Escalate survivors** — semantic errors route to debug subagent
+## When to Use
+- 50+ linter errors that are mostly mechanical (missing imports, unused vars, formatting)
+- Accumulated lint debt after a rule change or migration
+- Pre-commit cleanup where auto-fix did not resolve everything
+- Onboarding a project to a stricter lint configuration
 
-Research on multi-agent code search (AgentGroupChat-V2, RepoAudit) shows parallel agents on partitioned tasks scale sub-linearly. Linting is ideal for this: errors are independent, fixes are local, and verification is objective.
+Skip it: single-digit errors (direct fix, not battalion overhead), errors tracing to one architectural change (fix the root), security/logic bugs the linter flags (route to a debug skill), or a severely constrained token budget (subagents multiply cost).
 
-Do NOT use for:
-- Single-digit errors (use direct fix, not battalion overhead)
-- Errors that all trace to one architectural change (fix the root, not the symptoms)
-- Security or logic bugs flagged by linter (route to `debug-subagent`)
-- Token budget severely constrained (subagents multiply cost)
+## The Move
 
-## Installation Notes
+### 1. Auto-fix sprint — zero-token reduction
+Run the linter's built-in auto-fix first: `npx eslint . --fix` / `npx biome check --write` / `npx prettier --write .`. **Gate:** if errors drop below 50, switch to single-agent mode — no battalion needed. Log how many auto-fix eliminated and how many remain.
 
-**This skill requires a companion Python script that is bundled with the skill.**
+### 2. Inventory & categorize
+Capture structured linter output. With the companion script, pipe the linter's JSON directly: `npx eslint . --format json | python scripts/lint_battalion.py --markdown --json -o batches.json` (also Biome, Ruff). Without it, summarize by rule with `jq`. Categorize each remaining error:
+- **mechanical** — syntactic, no logic change (missing import, unused var) → general fixer
+- **semantic** — requires understanding intent (type mismatch, async/sync) → specialist
+- **architectural** — violates a pattern, needs refactor (cyclic dependency) → human or refactor skill
+- `auto` — should have been caught by --fix → run it again, check config
 
-When installing with `--with-scripts`, the script is copied alongside `SKILL.md` automatically.
+### 3. Batch assignment
+Group by **rule ID + directory**. Limits: max 20 errors per batch, max 5 files per batch, never split one rule across >3 subagents, never assign the same file to two subagents. Pre-flight: dedupe same-line/same-rule errors, skip generated files (fix the generator, not the output), and note test-vs-source standard differences. Up to 5 mechanical subagents in parallel; 1–2 semantic subagents sequentially (they need broader context); architectural goes to one at a time.
 
-```bash
-npx GrimoireStack install --agent pi --skill lint-battalion --with-scripts
-```
+### 4. Parallel execution & contamination check
+Each subagent gets a scoped prompt: fix ONLY the listed errors, smallest change possible, stop and report `NEEDS_REFACTOR` if a fix exceeds 3 lines or 2 files, run the linter on its files, no new dependencies, no suppress-without-justification. After all report: run the full linter and compare counts. Errors increased or new ones appeared → **contamination**: identify the subagent, revert its changes, re-batch with tighter scope, max 3 retries. Run the linter per-subagent during execution to catch contamination early.
 
-**Pi Agent (flat layout):**
-```bash
-python ~/.pi/agent/skills/lint-battalion/lint_battalion.py --help
-```
+### 5. Triage survivors
+Errors surviving 3 cycles: false positives (suppress with inline justification), type mismatches needing logic change (debug skill), missing types spanning files (architectural batch, dedicated refactor), linter-config issues (fix the config). If >10% of the original count survives, re-examine the categorization — architectural errors were likely misclassified as semantic or mechanical.
 
-**Hermes (grouped layout):**
-```bash
-python ~/.hermes/skills/software-development/lint-battalion/lint_battalion.py --help
-```
-
-For manual copy or development symlinks, see the [skill-development-with-supporting-files](development/skill-development-with-supporting-files.md) skill.
-
-## Core Protocol
-
-### Phase 0 — Auto-Fix Sprint
-
-Run the linter's built-in auto-fix first. Goal: reduce error count with zero token spend.
-
-```bash
-# ESLint
-npx eslint . --fix
-
-# Biome
-npx biome check --write
-
-# Prettier (formatting only)
-npx prettier --write .
-
-# TypeScript (type-only, but often reveals lint-adjacent issues)
-npx tsc --noEmit
-```
-
-**Gate:** If errors drop below 50, switch to single-agent mode. No battalion needed.
-
-**Log:** Record how many errors auto-fix eliminated and how many remain.
-
-### Phase 1 — Inventory & Categorize
-
-Run the linter again and capture structured output.
-
-**Recommended (zero agent tokens):**
-```bash
-# ESLint JSON output -> auto-categorized batches
-npx eslint . --format json | python ~/.pi/agent/skills/lint-battalion/lint_battalion.py --markdown --json -o batches.json
-
-# Biome
-npx biome check --json | python ~/.pi/agent/skills/lint-battalion/lint_battalion.py --markdown --json -o batches.json
-
-# Ruff
-ruff check --output-format json | python ~/.pi/agent/skills/lint-battalion/lint_battalion.py --markdown --json -o batches.json
-```
-
-**Alternative (agent tools):**
-```bash
-# Summarize by rule with jq
-npx eslint . --format json | jq -r '.[] | .ruleId' | sort | uniq -c | sort -rn
-```
-
-**Categorize each remaining error:**
-
-| Category | Description | Example | Fix Strategy |
-|----------|-------------|---------|--------------|
-| `auto` | Should have been caught by --fix | N/A | Run --fix again, check config |
-| `mechanical` | Purely syntactic, no logic change | Missing import, unused var, wrong quote style | Subagent batch |
-| `semantic` | Requires understanding code intent | Type mismatch, unreachable code, async/sync conflict | Specialist subagent |
-| `architectural` | Violates pattern, needs refactor | Cyclic dependency, God class, wrong layer | Escalate to human |
-
-**Tooling:** If the linter does not support JSON output, grep/sed the text output into a structured list per file and rule.
-
-### Phase 2 — Batch Assignment
-
-Group errors into battalion-sized batches.
-
-**Batching rules:**
-- Group by **rule ID + directory** (keeps context local)
-- Max **20 errors per batch** (fits in subagent context)
-- Max **5 files per batch** (minimizes blast radius)
-- Never split a single rule's fixes across >3 subagents (avoid conflicting fixes)
-
-**Batch types:**
-
-| Type | Assignment | Max Parallel |
-|------|-----------|--------------|
-| Mechanical | General lint fix subagent | 5 |
-| Semantic | Specialist subagent (type-aware) | 2 |
-| Architectural | Human review or `refactor-safely` | 1 |
-
-**Pre-flight:** Before spawning subagents, run a quick scan for:
-- Duplicate errors (same line, same rule — count once)
-- Errors in generated files (auto-generated, node_modules, lockfiles — skip)
-- Errors in test files vs source files (different standards may apply)
-
-### Phase 3 — Parallel Execution
-
-Spawn subagents with scoped, identical prompts.
-
-**Subagent prompt template:**
-
-```markdown
-You are a Lint Fix Subagent. Your ONLY job is fix the specific linter errors in your assigned files.
-
-## Your Batch
-Files: [file1.ts, file2.ts]
-Errors:
-- [rule-id] [message] @ [file]:[line]:[col]
+## Reference
+For the subagent prompt template, batching/scale tables with token heuristics, installation notes for the companion script, anti-patterns, and research basis, see [`references/lint-battalion-details.md`](references/lint-battalion-details.md).
 
 ## Rules
-- Fix ONLY the listed errors. Do not "improve" adjacent code.
-- Prefer the smallest possible change (one line > five lines).
-- If a fix requires >3 lines or touches >2 files, STOP and report "NEEDS_REFACTOR".
-- After fixing, run the linter on your files and report: PASS / FAIL.
-- Do not add new dependencies.
-- Do not change logic unless the lint rule explicitly requires it.
-- Do not suppress rules with eslint-disable without justification.
-
-## Output Format
-1. Changes made (file + line + before -> after)
-2. Linter result (PASS / FAIL)
-3. Any errors you could not fix and why
-```
-
-**Execution:**
-- Spawn up to 5 mechanical subagents in parallel (`delegate_task` with `tasks` array)
-- Spawn 1-2 semantic subagents sequentially (they may need broader context)
-- Each subagent gets read access to assigned files + adjacent imports/types
-- Each subagent gets NO write access outside its assigned files
-
-### Phase 4 — Verification & Contamination Check
-
-After all subagents report:
-
-1. **Run full linter:** `npx eslint .`
-2. **Compare error counts:**
-   - If errors decreased: proceed to Phase 5
-   - If errors increased or new errors appeared → **contamination**
-3. **Contamination response:**
-   - Identify which subagent(s) introduced new errors
-   - Revert their changes (git checkout or patch reversal)
-   - Re-batch their files with tighter scope or different rule grouping
-   - Max 3 retry cycles per contaminated batch
-
-**Contamination causes:**
-- Subagent "fixed" an import that broke downstream consumers
-- Subagent reformatted and triggered new formatting rules
-- Subagents touched the same file with conflicting fixes
-
-**Prevention:**
-- Never assign the same file to multiple subagents
-- Run linter per-subagent during Phase 3 (catches most contamination early)
-
-### Phase 5 — Triage Survivors
-
-Errors surviving 3 cycles fall into these buckets:
-
-| Bucket | Action | Skill |
-|--------|--------|-------|
-| False positive | Suppress with inline disable + justification | None |
-| Type mismatch requiring logic change | Route to `debug-subagent` | `debug-subagent` |
-| Missing types spanning many files | Batch as architectural, fix in dedicated refactor | `refactor-safely` |
-| Linter config issue | Update `.eslintrc` / `biome.json` / `tsconfig.json` | None |
-
-**Escalation rule:** If >10% of original errors are survivors, re-examine categorization. You likely misclassified architectural errors as semantic or mechanical.
-
-
-| Error Count | Max Subagents | Max Cycles | Typical Time |
-|-------------|--------------|------------|--------------|
-| 50-100 | 3 | 2 | 3-5 min |
-| 100-300 | 5 | 2 | 5-10 min |
-| 300-500 | 5 | 3 | 8-15 min |
-| 500+ | 5 | 3 | 10-20 min |
-
-**Token budget heuristic:** Mechanical fixes cost ~100 tokens/error. Semantic fixes cost ~500 tokens/error. Plan accordingly.
-
-## Anti-Patterns
-
-- **Skipping auto-fix:** Never spawn subagents for mechanical fixes `--fix` could handle. Token waste.
-- **Giant batches:** >20 errors per subagent causes context overflow and accuracy drop.
-- **Overlapping files:** Assigning the same file to two subagents guarantees merge conflicts.
-- **Fixing generated files:** If the file is auto-generated, fix the generator, not the output.
-- **Infinite retry:** If a batch fails 3 times, escalate — do not loop forever.
-- **Ignoring new errors:** Always run full linter after. Contamination is real.
-
-## Integration
-
-| Skill | Integration Point |
-|-------|-------------------|
-| `checklist-manifesto` | Phase gates and contamination checks |
-| `debug-subagent` | Semantic errors requiring logic understanding |
-| `refactor-safely` | Architectural errors needing structural change |
-| `codebase-divide-conquer-search` | Finding related files when errors span unknown modules |
-| `iterative-patch-repair` | If a subagent's first fix is close but wrong |
-| `pre-deployment-gate` | Final lint check before commit |
-
-## Research Basis
-
-- **AgentGroupChat-V2** (arXiv:2506.15451): Divide-and-conquer with parallel agents scales sub-linearly for independent tasks.
-- **RepoAudit** (arXiv:2501.18160): Demand-driven partitioning keeps agent context focused.
-- **Meta-RAG on Large Codebases** (arXiv:2508.02611): Hierarchical summarization + partitioning beats monolithic approaches on large codebases.
-
+- **Do** run auto-fix first — spawning subagents for fixes `--fix` handles is token waste.
+- **Do** keep batches small and file-disjoint — context overflow and merge conflicts are the failure modes.
+- **Do** run the full linter after every wave — contamination is real.
+- **Do** escalate after 3 failed cycles instead of looping forever.
+- **Do** skip generated files — fix the generator, not the output.

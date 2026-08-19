@@ -336,15 +336,15 @@ const schools: Array<{
         "status": "—"
       },
       {
-        "name": "ESLint",
-        "skill": "lint-battalion",
-        "effect": "Batch-process 50+ linter errors as a bulk remediation problem, not 50 separate decisions.",
-        "status": "—"
-      },
-      {
         "name": "Git Surgery",
         "skill": "git-surgery",
         "effect": "Recover from local git disasters: detached HEAD, botched rebase, accidental commits, merge conflicts.",
+        "status": "—"
+      },
+      {
+        "name": "Lint Battalion",
+        "skill": "lint-battalion",
+        "effect": "Batch-process 50+ linter errors as a bulk remediation problem, not 50 separate decisions.",
         "status": "—"
       },
       {
@@ -550,7 +550,7 @@ const schools: Array<{
         "status": "—"
       },
       {
-        "name": "Cognitive Bias Checklist for AI Agents",
+        "name": "Cognitive Bias Checklist",
         "skill": "cognitive-bias-checklist",
         "effect": "Explicit checklist to catch bias contamination before finalizing slow-mode recommendations.",
         "status": "—"
@@ -628,7 +628,7 @@ const schools: Array<{
         "status": "—"
       },
       {
-        "name": "Reference Class Forecasting for AI Agents",
+        "name": "Reference Class Forecasting",
         "skill": "reference-class-forecasting",
         "effect": "Anchor to similar past projects before reasoning from the specifics.",
         "status": "—"
@@ -884,7 +884,7 @@ const schools: Array<{
       {
         "name": "Time-Traveling Debugger",
         "skill": "time-traveling-debugger",
-        "effect": "When a bug occurs, record a deterministic execution trace forward, then replay it in reverse from the crash point to find the exact line where state first diverged. Spawns 'past self' and 'future self' that meet at the divergence.",
+        "effect": "When a bug occurs, record a deterministic execution trace forward, then replay it in reverse from the crash point to find the exact line where state first diverged.",
         "status": "—"
       }
     ]
