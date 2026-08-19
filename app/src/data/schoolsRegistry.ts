@@ -70,7 +70,7 @@ const schools: Array<{
         "status": "—"
       },
       {
-        "name": "Release It! Stability Patterns for AI Agents",
+        "name": "Release It! Stability Patterns",
         "skill": "release-it-stability",
         "effect": "Circuit breakers, bulkheads, timeouts, load shedding, steady-state hygiene for production failure modes.",
         "status": "—"
@@ -82,7 +82,7 @@ const schools: Array<{
         "status": "—"
       },
       {
-        "name": "SRE / Error Budget Thinking for AI Agents",
+        "name": "SRE / Error Budget Thinking",
         "skill": "sre-error-budget",
         "effect": "SLOs, error budgets, toil budgets, and change-velocity governance. Spend the budget on speed when healthy; freeze changes when depleted.",
         "status": "—"
@@ -106,7 +106,7 @@ const schools: Array<{
         "status": "—"
       },
       {
-        "name": "Thinking in Systems — State Machine Protocol for AI Agents",
+        "name": "Thinking in Systems",
         "skill": "thinking-in-systems-state-machine",
         "effect": "Model stocks, flows, delays, leverage points, and blast radius before touching the system.",
         "status": "—"
@@ -416,7 +416,7 @@ const schools: Array<{
         "status": "—"
       },
       {
-        "name": "Checklist Manifesto — State Machine Protocol for AI Agents",
+        "name": "Checklist Manifesto",
         "skill": "checklist-manifesto",
         "effect": "Build the smallest useful checklist for high-stakes procedures, gate execution on checklist completion, stop cleanly and escalate if it cannot be cleared.",
         "status": "—"
@@ -690,12 +690,6 @@ const schools: Array<{
         "status": "—"
       },
       {
-        "name": "Good: per-run copied snapshot",
-        "skill": "skill-ab-evaluation",
-        "effect": "A/B evaluate any GrimoireStack skill against a baseline using isolated subagents, 5 trials each, and an objective rubric.",
-        "status": "—"
-      },
-      {
         "name": "Mobile E2E Testing: The Hunter's Mindset",
         "skill": "mobile-e2e-testing-enterprise-guide",
         "effect": "Hunter's mindset for mobile E2E testing: what to test, how to catch real bugs, and avoid traps.",
@@ -705,6 +699,12 @@ const schools: Array<{
         "name": "Premortem: E2E Test Audit Protocol",
         "skill": "e2e-test-premortem",
         "effect": "Premortem for E2E test changes. Audit coverage gaps, data realism, failure-mode coverage, and assertion quality.",
+        "status": "—"
+      },
+      {
+        "name": "Skill A/B Evaluation",
+        "skill": "skill-ab-evaluation",
+        "effect": "A/B evaluate any GrimoireStack skill against a baseline using isolated subagents, 5 trials each, and an objective rubric.",
         "status": "—"
       },
       {
