@@ -2,201 +2,39 @@
 name: verify-before-integrate
 description: "Verify the actual system behavior rather than matching abstract terminology when integrating research or external docs."
 triggers:
-  - Writing a skill that connects to an existing system (Coppermind, Convex, Supabase, etc.)
-  - Implementing a research paper's algorithm in a production codebase
-  - Mapping abstract concepts to concrete APIs or database schemas
-  - Creating integration documentation or tutorials
+  - skill-system-integration
+  - research-paper-implementation
+  - abstract-to-concrete-mapping
+  - integration-documentation
 ---
 
-# Skill: Verify Before Integrate
+# Verify Before Integrate
 
-## The Pitfall
+**Abstract descriptions do not match concrete implementations.** Research papers and high-level docs use abstract terminology — "three-layer memory architecture," "event sourcing," "graph relationships" — and every actual system makes specific, often different choices. "Three-layer" in Coppermind means episodes → memories → edges; in another system it means working → episodic → semantic. All are three-layer; none share schemas, fields, or constraints. Verify against the real system before writing any integration.
 
-**Abstract descriptions don't match concrete implementations.**
+## The Move
 
-Research papers and high-level documentation use abstract terminology:
-- "Three-layer memory architecture" → sounds like working/episodic/semantic
-- "Event sourcing" → sounds like any system with events
-- "Graph relationships" → sounds like any connected data
+### 1. Identify the abstraction
+Name the concept from the paper, doc, or research: "three-layer memory: working, episodic, semantic." Write it down with its assumed meaning.
 
-**Actual implementations make specific, often different choices:**
-- Coppermind: episodes (immutable) → memories (lifecycle) → edges (relations)
-- Another system: working → episodic → semantic (cognitive science model)
-- A third system: raw events → aggregates → projections
+### 2. Search for terminology in the target
+Does the target system use the same terms? `rg "working.*memory|episodic|semantic"` in the source and docs. Exact match is rare — assume no match until proven.
 
-All are "three-layer" but have different schemas, fields, and constraints.
+### 3. Find the actual schema
+Schemas reveal the truth: `rg "DEFINE TABLE|CREATE TABLE"`, `rg "interface.*Memory|type.*Memory"`, ORM models, SDK types, protobufs. Then **read the source of truth** — the actual implementation file, not just the README. Docs summarize; code commits.
 
-## The Pattern
+### 4. Map fields explicitly
+Create a mapping document: paper concept → system implementation. Name the actual tables/fields and what each really holds — "episode: immutable raw audit (NOT episodic)" — then map each abstract concept to its real counterpart ("observation → episode with promotion=none").
 
-```
-┌─────────────────────────────────────────────────────────────────────┐
-│  STEP 1: Identify the abstraction in the paper/concept              │
-│  "Three-layer memory: working, episodic, semantic"                │
-└─────────────────────────────────────────────────────────────────────┘
-                              │
-                              ▼
-┌─────────────────────────────────────────────────────────────────────┐
-│  STEP 2: Check if target system uses same terminology               │
-│  Search: "working layer" "episodic" "semantic" in target codebase │
-└─────────────────────────────────────────────────────────────────────┘
-                              │
-                    ┌─────────┴─────────┐
-                    │                   │
-                    ▼                   ▼
-            ┌──────────────┐    ┌──────────────┐
-            │  MATCH       │    │  NO MATCH    │
-            │  (rare)      │    │  (common)    │
-            └──────┬───────┘    └──────┬───────┘
-                   │                   │
-                   ▼                   ▼
-            Use directly          Find actual schema
-                                    │
-                                    ▼
-                            ┌──────────────┐
-                            │  Read source │
-                            │  code, not   │
-                            │  just docs   │
-                            └──────┬───────┘
-                                   │
-                                   ▼
-                            ┌──────────────┐
-                            │  Map concept   │
-                            │  to actual     │
-                            │  fields/tables │
-                            └──────┬───────┘
-                                   │
-                                   ▼
-                            ┌──────────────┐
-                            │  Create      │
-                            │  translation │
-                            │  layer       │
-                            └──────────────┘
-```
+### 5. Verify with the system owner
+If possible, confirm the mapping with the owner. Then write the integration against the verified schema, and keep the mapping document for future maintainers.
 
-## Verification Checklist
+## Reference
+For the worked wrong-vs-right example, the red flags that trigger verification, and the verify-against table per integration type, see [`references/verify-details.md`](references/verify-details.md).
 
-Before writing integration code or skills:
-
-### 1. Search for Terminology
-```bash
-# Does the target system use the same terms?
-rg "working.*memory|episodic|semantic" ~/target-system/src/
-rg "three.*layer|memory.*architecture" ~/target-system/docs/
-```
-
-### 2. Find the Actual Schema
-```bash
-# Database schemas reveal the truth
-rg "DEFINE TABLE|CREATE TABLE" ~/target-system/src/
-rg "interface.*Memory|type.*Memory" ~/target-system/src/
-```
-
-### 3. Read the Source of Truth
-```bash
-# The actual implementation file
-cat ~/target-system/src/memory-plane.ts | head -100
-```
-
-### 4. Map Fields Explicitly
-
-Create a mapping document:
-
-```yaml
-# Paper Concept → System Implementation
-paper:
-  working_memory: "Session-scoped temporary storage"
-  episodic_memory: "Event-based audit trail"
-  semantic_memory: "Generalized knowledge graph"
-
-system_actual:
-  episode: "Immutable raw audit (NOT episodic)"
-  memories: "Promoted durable records with lifecycle"
-  edges: "Graph relationships via TYPE RELATION"
-
-mapping:
-  observation: "episode with promotion=none or promoted→memory"
-  inference: "memory with durability=durable"
-  conclusion: "memory with canonical_candidate=true"
-```
-
-## Example: What Went Wrong vs. Right
-
-### Wrong (Assumption)
-```yaml
-# I assumed:
-coppermind_layers:
-  working: "Session thoughts"
-  episodic: "Episode table"
-  semantic: "Abstracted patterns"
-
-# Wrote skill using:
-store_thought:
-  layer: "episodic"  # WRONG - no such layer in Coppermind
-```
-
-### Right (Verification)
-```yaml
-# After reading surreal-memory-plane.ts:
-coppermind_tables:
-  episode:
-    fields: [entry_id, raw_text, promotion, memory_entry_id]
-    purpose: "Immutable audit trail"
-  memories:
-    fields: [entry_id, content, status, durability, canonical_key]
-    purpose: "Promoted durable records"
-  edges:
-    types: [supersedes, contradicts, related_to, derived_from]
-    purpose: "Graph relationships"
-
-# Correct mapping:
-observation_thought:
-  store_to: "episode"
-  promote_to: "memories" if validated
-  edges: ["derived_from"]
-```
-
-## Red Flags
-
-Watch for these signals that you need to verify:
-
-1. **Vague documentation** — "memory system" without schema details
-2. **Familiar terminology** — "events", "layers", "graph" that sound standard
-3. **Research paper integration** — papers use abstract models
-4. **Multiple interpretations possible** — "three-layer" could mean many things
-
-If any red flag appears:
-1. **Stop writing the integration**
-2. **Find the schema source** — usually `src/` or `schema/` directory
-3. **Read the actual implementation** — not just README/docs
-4. **Create explicit mapping** — paper concept → system field
-5. **Verify with system owner** if possible
-
-## Anti-Patterns
-
-**Don't:**
-- Assume terminology is consistent across systems
-- Write integration code from paper abstracts alone
-- Trust high-level architecture diagrams for field names
-- Map concepts without checking actual database schemas
-
-**Do:**
-- Read source code for schema definitions
-- Search for exact terminology matches first
-- Create explicit translation layers
-- Document the mapping for future maintainers
-
-## Quick Reference
-
-| Situation | Verify Against |
-|-----------|----------------|
-| Database integration | `DEFINE TABLE`, `CREATE TABLE`, ORM models |
-| API integration | OpenAPI spec, actual endpoint responses |
-| Research paper | Source code of reference implementation |
-| External system | SDK types, protobuf definitions |
-| Internal system | `src/types.ts`, `schema.sql`, entity files |
-
-## See Also
-
-- `karpathy-guidelines` — general coding discipline
-- `thoroughness-check-etto` — pre-execution verification
-- `socratic-clarification` — when requirements are ambiguous
+## Rules
+- **Do** search for exact terminology first — assume no match until proven.
+- **Do** read source code for schema definitions; docs and architecture diagrams are not field names.
+- **Do** create an explicit translation layer and document the mapping.
+- **Do** stop writing integration the moment a red flag appears — vague docs, familiar-sounding terms, paper abstractions, multiple interpretations.
+- **Do** confirm with the system owner when the mapping is load-bearing.

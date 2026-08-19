@@ -78,7 +78,7 @@ const schools: Array<{
       {
         "name": "Security Review Protocol",
         "skill": "security-review-protocol",
-        "effect": "4-phase security review fusing STRIDE, hazard analysis, LLM vuln audit, and expanded threat-modeling guidance (assets, boundaries, secrets, input validation, authz, failure modes, attacker perspective).",
+        "effect": "4-phase security review fusing STRIDE, hazard analysis, LLM vuln audit, and expanded threat-modeling guidance.",
         "status": "—"
       },
       {

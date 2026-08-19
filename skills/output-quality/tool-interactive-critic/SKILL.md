@@ -2,204 +2,46 @@
 name: tool-interactive-critic
 description: "External tools critique the output before it is trusted."
 triggers:
-  - Initial draft needs post-generation verification
-  - Need external tools to verify output before trusting it
-  - After an initial draft, answer, plan, code change, or recommendation exists
+  - post-generation-verification
+  - tool-grounded-critique
+  - unverified-confidence
 ---
 
-# Skill: Tool-Interactive Critic
+# Tool-Interactive Critic
 
-## Purpose
+**Draft first. Verify with the right tools. Critique from evidence. Revise only where needed.** When the agent's weakness is not generation but unverified confidence, do not trust the first output blindly: identify which parts need verification, choose tools that test the likely failure mode, let the tool output shape the critique, and revise only where the evidence says the draft is weak.
 
-Use this skill after an initial draft, answer, plan, code change, or recommendation already exists.
+## When to Use
+- Factual answers, technical explanations, plans depending on current facts
+- Code changes that tests/lint/typecheck can validate
+- Operational recommendations
+- Any output where external verification materially improves trust
 
-This skill is based on the CRITIC pattern: do not trust the first output blindly.  
-Instead:
-1. generate the initial output
-2. choose the right external verification tool(s)
-3. use those tools to critique the output
-4. revise the output using tool-grounded feedback
-5. stop when the main risks are either resolved or explicitly declared
+Skip it: brainstorming, highly subjective writing, trivial low-stakes tasks where verification costs more than it buys.
 
-This is a **post-generation verification skill**.
+## The Move
 
-It is especially useful when the agent’s main weakness is not generation, but **unverified confidence**.
+### 1. Produce the initial output
+The first answer, plan, patch, recommendation, or explanation — generated normally.
 
----
+### 2. Identify what needs verification
+Not everything deserves equal scrutiny. Targets: factual claims, current data, code correctness, API behavior, configuration assumptions, safety assumptions, dependency usage, edge cases, internal consistency. Verify the high-risk, high-value parts first.
 
-## Best Use-Cases
+### 3. Choose tools that match the failure mode
+Web search for current facts; documentation for library/API behavior; tests/lint/typecheck for code; grep/search for codebase assumptions; calculators for numeric claims; schema inspection for data assumptions. The tool must test the likely failure mode — performative tool use verifies nothing.
 
-Use this skill for:
-- factual answers
-- technical explanations
-- code review with tests or search
-- plans that depend on current facts
-- operational recommendations
-- tool-using agents
-- outputs where external verification materially improves trust
+### 4. Critique from tool feedback
+Use the tool output to name: what is correct, what is weak, what is contradicted, what is still unverified, what needs revision. Hide nothing the tools found — a contradiction discovered is a claim saved.
 
-Good fit:
-- “This looks plausible, but verify it.”
-- “Check this against tools before finalizing.”
-- “Revise this only after external feedback.”
+### 5. Revise and stop
+Revise only where the critique matters — do not rewrite everything because a tool was used. Stop when the key claims are verified, major issues corrected, remaining uncertainty is clearly stated, and another pass would have low value.
 
-Bad fit:
-- pure brainstorming
-- highly subjective writing where external validation adds little
-- trivial low-stakes tasks where the verification cost exceeds the benefit
+## Reference
+For the critique template, invocation examples, and pairing guide, see [`references/critic-details.md`](references/critic-details.md).
 
----
-
-## Core Behavior
-
-The agent should behave like this:
-
-### Step 1: Produce an Initial Output
-Create the first answer, plan, code patch, recommendation, or explanation.
-
-### Step 2: Identify What Needs Verification
-Not every part of the output deserves the same scrutiny.
-
-Possible targets:
-- factual claims
-- current data
-- code correctness
-- API behavior
-- configuration assumptions
-- safety assumptions
-- dependency usage
-- edge cases
-- internal consistency
-
-### Step 3: Choose the Right Tool(s)
-Examples:
-- web search for current facts
-- documentation lookup for library/API behavior
-- tests/lint/typecheck for code changes
-- grep/search for codebase assumptions
-- calculators for numeric reasoning
-- schema inspection for data assumptions
-
-The tool should match the failure mode.
-
-### Step 4: Generate Critiques from Tool Feedback
-Use the tool output to critique:
-- what is correct
-- what is weak
-- what is contradicted
-- what is still unverified
-- what needs revision
-
-### Step 5: Revise the Output
-Revise only where the critique actually matters.
-Do not rewrite everything just because a tool was used.
-
-### Step 6: Stop
-Stop when:
-- the key claims are verified
-- the major issues are corrected
-- remaining uncertainty is clearly stated
-- another pass would have low value
-
----
-
-## Critique Template
-
-```md
-## Initial Output Type
-<answer / plan / code / recommendation / summary>
-
-## Verification Targets
-- <target>
-
-## Tools Chosen
-- <tool>: <why>
-
-## Tool Findings
-- <finding>
-
-## Critique
-- Verified:
-- Contradicted:
-- Weak / uncertain:
-- Needs revision:
-
-## Revised Output Changes
-- <change>
-
-## Remaining Uncertainty
-- <uncertainty>
-```
-
----
-
-## Agent Rules
-
-### Do
-- verify the high-risk or high-value parts first
-- choose tools that directly test the likely failure mode
-- let tool output shape the critique
-- revise only where evidence supports revision
-- keep unverified parts explicitly marked if needed
-
-### Do Not
-- use tools performatively
-- verify everything equally
-- revise without any real critique
-- hide contradictions found by tools
-- keep looping once the main risks are resolved
-
----
-
-## When to Use It
-
-Invoke this skill when:
-- the output is plausible but not yet trustworthy
-- the task depends on facts the model may be shaky on
-- code or planning assumptions can be tested externally
-- you want a verification layer between first draft and final answer
-- a high-value answer deserves a “grounded second pass”
-
----
-
-## Strong Invocation Examples
-
-### Factual answer
-“Use Tool-Interactive Critic. Draft the answer, verify the key claims with the right tools, critique the weak parts, then revise.”
-
-### Code output
-“Use Tool-Interactive Critic. After proposing the change, validate it with tests/search/static checks and revise only where the evidence says the draft is weak.”
-
-### Plan
-“Write the plan first, then use tools to challenge its assumptions before finalizing it.”
-
----
-
-## Good Pairings
-
-- **ETTO** -> decide how much verification is warranted
-- **Agentic Patterns Orchestrator** -> insert this as a post-generation verification phase
-- **How to Solve It** -> use after initial diagnosis or solution proposal
-- **Unsafe Control Actions / Hazard Analysis** -> verify safeguards and assumptions for risky actions
-
----
-
-## Failure Modes This Skill Prevents
-
-- confident but unverified answers
-- “looks right” code or plans with hidden factual flaws
-- hallucinated current details
-- revision without evidence
-- polishing the wording while leaving the substance untested
-
----
-
-## Quick Summary
-
-Use this after the first draft when external tools can materially improve trust.
-
-Draft first.  
-Verify with the right tools.  
-Critique from evidence.  
-Revise only where needed.  
-Stop when the major weaknesses are resolved.
+## Rules
+- **Do** verify the high-risk parts first — equal scrutiny is no scrutiny.
+- **Do** choose tools that directly test the likely failure mode.
+- **Do** let tool output shape the critique; report contradictions honestly.
+- **Do** revise only where evidence supports revision.
+- **Do** mark unverified parts explicitly and stop when the main risks are resolved.
