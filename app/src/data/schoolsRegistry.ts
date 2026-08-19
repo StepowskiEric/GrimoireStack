@@ -314,7 +314,7 @@ const schools: Array<{
       {
         "name": "Codebase Divide-and-Conquer Search",
         "skill": "codebase-divide-conquer-search",
-        "effect": "Divide a large codebase into manageable chunks and search each systematically.",
+        "effect": "Divide a large codebase into summary-ranked zones and conquer each with a parallel sub-agent. Find code by behavior, not by name.",
         "status": "—"
       },
       {
@@ -458,9 +458,9 @@ const schools: Array<{
         "status": "—"
       },
       {
-        "name": "PDCA / Shewhart Cycle — State Machine Protocol for AI Agents",
+        "name": "PDCA / Shewhart Cycle",
         "skill": "pdca-deming",
-        "effect": "Use when improving a process through a measurement-anchored cycle — plan with a measurable prediction, do, check actual vs predicted, then standardize or escalate. Do not standardize what was not measured.",
+        "effect": "Improve a process through a measurement-anchored cycle: plan with a measurable prediction, do, check actual vs predicted, then standardize or escalate. Standardize only what the check confirmed.",
         "status": "—"
       },
       {
@@ -610,9 +610,9 @@ const schools: Array<{
         "status": "—"
       },
       {
-        "name": "Pre-Mortem — State Machine Protocol for AI Agents",
+        "name": "Pre-Mortem",
         "skill": "pre-mortem-state-machine",
-        "effect": "Pre-mortem protocol with artifact gating, narrative failure modeling, and risk-adjusted plan revision.",
+        "effect": "Validate a plan before execution: assume failure has already happened, generate specific failure narratives, rank them, and adjust the plan.",
         "status": "—"
       },
       {
@@ -658,9 +658,9 @@ const schools: Array<{
         "status": "—"
       },
       {
-        "name": "Thoroughness Check (ETTO) — State Machine Protocol for AI Agents",
+        "name": "Thoroughness Check (ETTO)",
         "skill": "thoroughness-check-etto-state-machine",
-        "effect": "Gate ETTO classification into executable controls on rigor, evidence, and tools.",
+        "effect": "Gate task execution by the Efficiency-Thoroughness Trade-Off: classify rigor 1-5, meet the evidence bar, act within the mode, validate to match.",
         "status": "—"
       },
       {

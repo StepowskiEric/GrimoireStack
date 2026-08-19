@@ -1,335 +1,55 @@
 ---
 name: pdca-deming
-description: "Use when improving a process through a measurement-anchored cycle — plan with a measurable prediction, do, check actual vs predicted, then standardize or escalate. Do not standardize what was not measured."
+description: "Improve a process through a measurement-anchored cycle: plan with a measurable prediction, do, check actual vs predicted, then standardize or escalate. Standardize only what the check confirmed."
+triggers:
+  - process-improvement
+  - measurement-cycle
+  - verify-before-standardize
+  - baseline-gap
 ---
 
-# PDCA / Shewhart Cycle — State Machine Protocol for AI Agents
+# PDCA / Shewhart Cycle
 
-## Purpose
+**Standardize only what you measured.** Plan with a measurable prediction, do exactly the planned change, check the actual result against the prediction, then act on what the measurement says — not on how it feels. The cycle's power comes from refusing to skip Check.
 
-Use this skill when the agent must improve a process, system, or output through a measurement-anchored cycle of planning, execution, and verification before standardizing or escalating.
+## When to Use
+- A process, system, or output underperforms against a measurable standard
+- The correct change is not yet certain
+- Previous changes were never validated before being standardized
 
-This skill is based on the Plan-Do-Check-Act cycle introduced by Walter Shewhart and developed by W. Edwards Deming.
+Skip it: one-time incidents needing immediate containment, obvious verified fixes, or exploration-first problems (use Toyota Kata / Explore-vs-Exploit).
 
-The protocol enforces:
-- planning with a measurable prediction before doing
-- measuring actual results before acting on them
-- standardizing only what worked
-- escalating or restarting when the check fails
+## The Move
 
----
+### 1. Plan — baseline, target, hypothesis, prediction
+Write the measurable current state (baseline), a specific target ("response time under 200ms on p95", not "make it better"), a root cause hypothesis, and a prediction of what the measurement will show if the change works. If the baseline cannot be measured, fix observability first. If the root cause is unknown, use a diagnostic skill first. One hypothesis per change.
 
-## Core Law
+### 2. Do — execute the planned change, bounded
+Do exactly what was planned, within the defined scope. Document what was done and what was excluded. No scope expansion because adjacent problems are visible; no mid-execution plan changes without restarting from Plan.
 
-Do not standardize what you have not measured.
-Do not act on results you have not checked against the plan.
+### 3. Check — measure actual vs prediction
+Measure using the check method defined in Plan, and compare against the **prediction**, not just the prior baseline. A mismatch is information, not failure — investigate the gap: was the hypothesis wrong? Was the change implemented as planned? Were there confounding factors? If the check method was inadequate, rebuild observability before the next cycle.
 
----
+### 4. Act — standardize, modify, escalate, or abandon
+- **Standardize:** prediction confirmed — update the process/procedure/config and set the new state as baseline.
+- **Modify:** partial or directional improvement only — adjust and run another cycle; standardize only fully-confirmed changes.
+- **Escalate:** no improvement or worse — the hypothesis was wrong; broader investigation or different expertise is needed.
+- **Abandon:** the approach cannot deliver within acceptable cost/risk — name what was learned and redirect.
 
-## Mandatory Diagnostic Artifact
+Document the decision and reasoning regardless of outcome.
 
-Before beginning, create `pdca-cycle.md`.
-
-Required structure:
-
-```md
-# PDCA Cycle
-
-## Cycle Number
-<iteration>
-
-## Problem Statement
-<what needs improving and why>
-
-## Current Baseline
-<measurable current state with evidence>
-
-## Plan
-
-### Goal
-<specific measurable target>
-
-### Root Cause Hypothesis
-<what is believed to be causing the current state>
-
-### Planned Change
-<what will be done differently>
-
-### Predicted Result
-<what the measurement should show if the change works>
-
-### Check Method
-<how the result will be measured and against what standard>
-
-## Do
-### Actions Taken
-- <action>
-
-### Scope Limits
-<what was explicitly excluded from this cycle>
-
-## Check
-### Actual Result
-<what was measured>
-
-### Comparison to Prediction
-<did the result match the prediction? by how much?>
-
-### Explanation of Gap (if any)
-<why did the result differ from prediction?>
-
-## Act
-### Decision
-<standardize / escalate / modify / abandon>
-
-### If Standardize
-<what standard or procedure was updated>
-
-### If Escalate
-<what needs broader attention>
-
-### If Modify
-<what changes before the next cycle>
-
-### Next Cycle Trigger
-<what starts the next PDCA cycle, if any>
-```
-
----
-
-## State Machine
-
-## State 0 — Intake
-
-Goal:
-- determine whether PDCA is the right protocol for this task
-
-Use PDCA when:
-- a process, system, or output is underperforming against a measurable standard
-- improvement is desired but the correct change is not yet certain
-- previous attempts at change were not validated before being standardized
-- the improvement must be reproducible and verifiable, not just felt
-
-Do not use PDCA as the primary skill when:
-- the problem is a one-time incident requiring immediate containment
-- the problem is fully understood and the fix is obvious and verified
-- exploration is more important than measurement (use Toyota Kata or Explore vs Exploit instead)
-
-Exit condition:
-- task is confirmed as a measurable-improvement problem
-
----
-
-## State 1 — Plan
-
-Goal:
-- define a specific, measurable target, a root cause hypothesis, a planned change, and a predicted result
-
-The plan must include:
-- a baseline measurement of the current state
-- a specific target (not "better" but "response time under 200ms for the p95 path")
-- a hypothesis for why the current state exists
-- a prediction of what the measurement will show if the change works
-
-Rules:
-- if the baseline cannot be measured, fix observability before planning a change
-- if the root cause is genuinely unknown, use a diagnostic skill first (How to Solve It or Thinking in Systems)
-- predictions must be specific enough to falsify
-
-Disallowed:
-- starting with a change before a baseline exists
-- vague goals ("make it better") that cannot be checked
-- plans that mix multiple hypotheses into a single change
-
-Exit condition:
-- `pdca-cycle.md` Plan section is complete
-- prediction is specific and measurable
-
----
-
-## State 2 — Do
-
-Goal:
-- execute the planned change, within the defined scope
-
-Rules:
-- do exactly what was planned
-- do not expand scope because adjacent problems are visible
-- do not change the plan mid-execution without restarting from State 1
-- document exactly what was done and what was excluded
-
-This is a bounded execution, not an open-ended improvement session.
-
-Disallowed:
-- improvising beyond the plan
-- skipping steps that feel unnecessary
-- treating Do as permission to address other problems simultaneously
-
-Exit condition:
-- planned change executed within scope
-- actions documented in `pdca-cycle.md`
-
----
-
-## State 3 — Check
-
-Goal:
-- measure the actual result and compare it to the prediction
-
-This is the most discipline-requiring state.
-Most improvement cycles skip or abbreviate Check.
-PDCA derives its power from refusing to skip it.
-
-Mandatory behaviors:
-- measure using the check method defined in Plan
-- compare the actual result to the prediction, not just to the prior baseline
-- if the result matches the prediction, note it
-- if the result does not match, investigate why — this is information, not failure
-
-Questions:
-- Did the measurement match the prediction?
-- If not, what explains the gap?
-- Was the root cause hypothesis correct?
-- Was the change implemented as planned?
-- Are there confounding factors that invalidated the measurement?
-
-Rules:
-- do not skip to Act without completing Check
-- a result that "feels like improvement" is not the same as a measured result
-- if the check method was inadequate, note this and rebuild observability before the next cycle
-
-Exit condition:
-- actual result is measured and documented
-- comparison to prediction is recorded with explanation of any gap
-
----
-
-## State 4 — Act
-
-Goal:
-- decide what to do with the result: standardize, modify, escalate, or abandon
-
-Four possible decisions:
-
-**Standardize:**
-The change worked and the prediction was confirmed.
-Update the relevant process, procedure, configuration, or documentation.
-Establish the new state as the baseline for future cycles.
-
-**Modify:**
-The change showed partial or directional improvement but the prediction was not fully confirmed.
-Identify what to adjust before the next cycle.
-Do not standardize a partially-confirmed change.
-
-**Escalate:**
-The change produced no improvement or made things worse.
-The root cause hypothesis was wrong.
-Broader investigation, different tooling, or different expertise is required.
-
-**Abandon:**
-The current approach cannot produce the desired result within acceptable cost or risk.
-Name what was learned.
-Redirect to a different goal.
-
-Rules:
-- do not standardize a change that was not confirmed by the Check
-- do not repeat the same change cycle without updating the hypothesis
-- do not escalate before Check has been completed
-- document the decision and the reasoning regardless of outcome
-
-Exit condition:
-- Act decision is documented
-- next steps are defined or the cycle is cleanly closed
-
----
-
-## State 5 — Stop / Loop
-
-Stop when:
-- the target condition is confirmed by measurement
-- the decision was to abandon the current approach and a different path is now needed
-- the cycle has produced diminishing returns and the investment exceeds the improvement value
-
-Loop when:
-- the decision was to Modify (return to Plan with an updated hypothesis)
-- the target condition was confirmed but a new improvement opportunity was revealed
-- Escalate resolved and a new plan is ready
-
----
-
-## Tool Gating
-
-### Plan phase
-Allowed:
-- read, inspect, gather metrics, analyze baselines
-- artifact writing
-
-Disallowed:
-- writes to the system being improved
-- configuration changes
-
-### Do phase
-Allowed:
-- only the bounded planned change
-
-Disallowed:
-- scope expansion
-- parallel improvements
-
-### Check phase
-Allowed:
-- measurement tools, test runners, metrics queries, log inspection
-
-Disallowed:
-- additional changes to the system before Check is complete
-
----
-
-## Circuit Breakers
-
-Stop immediately if:
-- the baseline was never measured (observability gap — fix this first)
-- the prediction was never written down (restart from Plan)
+## Circuit breakers
+- The baseline was never measured — fix observability first
+- The prediction was never written down — restart from Plan
 - Check is being skipped or summarized ("it seemed better")
-- the same cycle is repeating without a hypothesis update
-- the scope of the planned change grew during Do
+- The same cycle repeats without a hypothesis update
+- The scope of the planned change grew during Do
 
----
+## Reference
+For the `pdca-cycle.md` template, tool gating per phase, failure modes, and pairing guide, see [`references/pdca-details.md`](references/pdca-details.md).
 
-## Failure Modes This Skill Prevents
-
-- standardizing improvements that were never verified
-- acting on felt improvement instead of measured improvement
-- implementing changes without a prediction (nothing to check against)
-- repeating the same failed approach without updating the hypothesis
-- mixing multiple changes in one cycle (obscures which change caused the result)
-
----
-
-## Definition of Done
-
-This skill is correctly applied when:
-- `pdca-cycle.md` exists with all four phases completed
-- the baseline was measured before the change
-- the prediction was written before the change was executed
-- the Check compared actual results to the prediction explicitly
-- the Act decision was based on the Check, not on intuition
-- any standardization was grounded in a confirmed check
-
----
-
-## Pairing Guide
-
-- **Toyota Kata** — when the obstacle is unknown, use Toyota Kata to discover it; when the obstacle is known, use PDCA to eliminate it with measurement discipline
-- **Thinking in Systems** — use before Plan if the root cause involves feedback loops
-- **Theory of Constraints** — identify the constraint first, then apply PDCA to elevate it
-- **Bounded Self-Revision** — use PDCA structure when the "system" being improved is an output like a document or prompt
-
----
-
-## Final Instruction
-
-Plan with a prediction.
-Do exactly what was planned.
-Check against the prediction, not just against the baseline.
-Act on what the measurement tells you, not on what it felt like.
+## Rules
+- **Do** write the prediction before executing the change.
+- **Do** check against the prediction, not just the baseline.
+- **Do** update the hypothesis before repeating a cycle.
+- **Do** standardize only what the Check confirmed.

@@ -1,375 +1,49 @@
 ---
 name: thoroughness-check-etto-state-machine
-description: "Gate ETTO classification into executable controls on rigor, evidence, and tools."
+description: "Gate task execution by the Efficiency-Thoroughness Trade-Off: classify rigor 1-5, meet the evidence bar, act within the mode, validate to match."
 triggers:
-  - Universal preflight before meaningful tasks
-  - Need to convert ETTO into an executable control system
-  - Need to decide rigor, evidence bar, and tool selection
+  - preflight-gate
+  - rigor-classification
+  - evidence-threshold
+  - risk-escalation
 ---
 
-# Skill: Thoroughness Check (ETTO) — State Machine Protocol for AI Agents
+# Thoroughness Check (ETTO)
 
-## Purpose
+**Match rigor to the real stakes of the task.** ETTO (Efficiency–Thoroughness Trade-Off) is a preflight gate: classify the task on a 1–5 rigor scale before acting, then hold evidence, execution, and validation to that level. It prevents fast low-rigor responses on high-risk work — and over-analysis of trivial work.
 
-Use this skill as a universal preflight protocol before the agent performs any meaningful task.
+## The Move
 
-This is not a philosophy note.  
-This is a gating protocol.
+### 1. Intake — frame the task
+Restate the task in one sentence. Trivial and reversible? ETTO may be lightweight. Non-trivial? ETTO is mandatory. Before any action, create `etto-preflight.md` (template in Reference).
 
-It converts the Efficiency–Thoroughness Trade-Off into an executable control system that decides:
-- how much evidence is required
-- whether the agent may act yet
-- what tools are permitted
-- how much validation is mandatory
-- when the agent must stop, escalate, or reduce scope
+### 2. Classify — pick the ETTO level
+Rate the task 1–5 by cost of error, reversibility, blast radius, and uncertainty:
+- **1 Speed** — brainstorming, rough drafts
+- **2 Lean** — simple edits, low-risk changes
+- **3 Balanced** — non-trivial implementation, debugging, review
+- **4 Thorough** — migrations, auth, security, destructive operations
+- **5 Maximum** — medical/legal/financial, irreversible actions
 
-The purpose is to prevent a fast low-rigor response from being applied to a high-risk task.
+Name the evidence threshold, execution mode, and validation level for that rating in the preflight.
 
----
+### 3. Evidence gate — meet the bar before acting
+Gather only what the level demands: 1–2 light, 3 moderate (check assumptions, inspect key dependencies), 4 strong (verify load-bearing assumptions, blast radius, rollback), 5 very strong (conservative scope, explicit uncertainty, refusal or safe redirection where warranted). Never act below the declared bar; never hide missing evidence.
 
-### Conceptual Overview
+### 4. Execute — within the mode
+- **Fast (1–2):** move quickly, low ceremony, brief uncertainty note.
+- **Balanced (3):** verify important assumptions, avoid first-answer lock-in.
+- **Thorough (4):** bounded reversible steps, containment over aggressive change.
+- **Maximum (5):** narrow scope, explicit safety boundaries, refuse unsafe action.
 
-ETTO classifies task rigor on a 1-5 scale:
-- **ETTO-1 (Speed)** — brainstorming, rough drafts. Move fast, skip validation.
-- **ETTO-2 (Lean)** — simple edits, low-risk changes. Basic consistency check.
-- **ETTO-3 (Balanced)** — non-trivial impl, debugging. Verify assumptions, check alternatives.
-- **ETTO-4 (Thorough)** — auth, security, migrations. Strong evidence, bounded steps, rollback.
-- **ETTO-5 (Maximum)** — medical/legal/financial, irreversible actions. Conservative scope, explicit uncertainty, refuse unsafe.
+### 5. Validate & close — match the declared bar
+Validate to the declared level (1 light plausibility → 5 maximum validation or safe non-execution). Compare the result to the objective; state residual uncertainty honestly. Escalate when blast radius is unknown, facts stay highly uncertain, the evidence bar cannot be met, or the task moved up a class midstream.
 
-Key factors: cost of error, reversibility, blast radius, uncertainty. The protocol below gates this formally.
+## Reference
+For the `etto-preflight.md` template, the per-level evidence/mode/validation matrix, tool gating, circuit breakers, and failure modes, see [`references/etto-details.md`](references/etto-details.md).
 
----
-
-## Core Law
-
-The agent must not begin execution until it classifies the task’s required balance between:
-- efficiency
-- thoroughness
-- reversibility
-- blast radius
-- uncertainty
-- cost of error
-
-This skill should run before most other non-trivial skills.
-
----
-
-## Output Artifact (Mandatory Before Action)
-
-Before execution, the agent must create `etto-preflight.md`.
-
-Required fields:
-
-```md
-# ETTO Preflight
-
-## Task
-<one-sentence task statement>
-
-## Primary Objective
-<what success means>
-
-## Cost of Error
-<trivial / moderate / high / severe>
-
-## Reversibility
-<easy / partial / difficult / irreversible>
-
-## Blast Radius
-<local / shared / system-wide / external>
-
-## Uncertainty
-<low / medium / high>
-
-## Time Pressure
-<low / medium / high>
-
-## Required Precision
-<approximate / moderate / exact>
-
-## Chosen ETTO Level
-<1-5>
-
-## Execution Mode
-<fast / balanced / thorough / maximum caution>
-
-## Required Evidence Before Action
-<list>
-
-## Required Validation Before Completion
-<list>
-
-## Escalation Triggers
-<list>
-```
-
-No execution should begin until this artifact exists.
-
----
-
-## State Machine
-
-## State 0 — Intake
-
-Goal:
-- identify the real task
-- identify whether this is trivial or meaningful
-- decide whether ETTO is required
-
-If the task is clearly trivial and reversible, ETTO may be lightweight.
-If the task is non-trivial, ETTO is mandatory.
-
-Allowed actions:
-- restate task
-- identify task class
-- identify obvious risk factors
-
-Disallowed actions:
-- modifying code, files, configs, or external state
-- high-confidence recommendations before classification
-
-Exit condition:
-- task is clearly framed
-- ETTO artifact must be created
-
----
-
-## State 1 — Classification
-
-Goal:
-- rate the task on the ETTO scale
-
-### ETTO-1
-Speed dominant.  
-Examples: brainstorming, rough ideation, low-stakes drafts.
-
-### ETTO-2
-Lean but careful.  
-Examples: simple edits, routine transformations, low-risk suggestions.
-
-### ETTO-3
-Balanced.  
-Examples: non-trivial implementation, debugging, planning, code review.
-
-### ETTO-4
-Thoroughness dominant.  
-Examples: migrations, auth, security, production-risk changes, destructive operations.
-
-### ETTO-5
-Maximum caution.  
-Examples: medical, legal, financial, privacy/security incidents, irreversible actions, critical compliance tasks.
-
-Allowed actions:
-- risk scoring
-- uncertainty declaration
-- evidence planning
-- defining validation level
-
-Disallowed actions:
-- treating ETTO-4/5 tasks like ETTO-1/2 tasks
-- vague “I’ll just be careful” without a classification artifact
-
-Exit condition:
-- ETTO level chosen
-- evidence threshold defined
-- execution mode chosen
-
----
-
-## State 2 — Evidence Gate
-
-Goal:
-- determine what minimum evidence is required before acting
-
-### ETTO-1
-Minimal evidence acceptable.
-
-### ETTO-2
-Basic evidence acceptable.
-
-### ETTO-3
-At least moderate evidence required:
-- check assumptions
-- inspect key dependencies
-- compare alternatives if needed
-
-### ETTO-4
-Strong evidence required:
-- verify load-bearing assumptions
-- inspect blast radius
-- identify second-order effects
-- define rollback or containment
-
-### ETTO-5
-Very strong evidence required:
-- conservative scope
-- explicit uncertainty
-- refusal or safe redirection where appropriate
-- strong external support and validation
-
-Allowed actions:
-- research
-- checking assumptions
-- scoping validation needs
-
-Disallowed actions:
-- acting before evidence threshold is met
-- hiding missing evidence
-
-Exit condition:
-- evidence threshold satisfied
-- or task must be narrowed / escalated / refused
-
----
-
-## State 3 — Execution Unlock
-
-Goal:
-- permit action only at the level allowed by the ETTO rating
-
-### Fast Mode (ETTO-1/2)
-- move quickly
-- avoid over-research
-- deliver concise, low-ceremony output
-- note uncertainty briefly when relevant
-
-### Balanced Mode (ETTO-3)
-- verify important assumptions
-- avoid first-answer lock-in
-- test major alternatives mentally or directly
-- act with moderate caution
-
-### Thorough Mode (ETTO-4)
-- use bounded, reversible steps
-- verify before acting
-- surface residual uncertainty
-- prefer containment over aggressive change
-
-### Maximum Caution Mode (ETTO-5)
-- conservative action only
-- strong evidence
-- narrow scope
-- explicit safety boundaries
-- refuse unsafe action when needed
-
-Allowed actions:
-- those consistent with the chosen execution mode
-
-Disallowed actions:
-- behaving more casually than the chosen ETTO level permits
-- pretending all tasks deserve the same rigor
-
-Exit condition:
-- action completed within allowed rigor envelope
-
----
-
-## State 4 — Validation Gate
-
-Goal:
-- verify completion using the validation level declared in the preflight artifact
-
-Validation should match ETTO level.
-
-### ETTO-1
-Light plausibility check.
-
-### ETTO-2
-Basic consistency check.
-
-### ETTO-3
-Validation of core assumptions and outcome.
-
-### ETTO-4
-Strong verification with risk review.
-
-### ETTO-5
-Maximum validation or safe non-execution/refusal.
-
-Allowed actions:
-- validate
-- compare result to objective
-- state residual uncertainty honestly
-
-Disallowed actions:
-- claiming completion without matched validation
-- using low-effort validation for high-effort risk
-
-Exit condition:
-- validation meets pre-declared threshold
-- or task is reported as incomplete/uncertain
-
----
-
-## State 5 — Stop / Escalate
-
-Goal:
-- end cleanly
-- avoid scope creep
-- avoid accidental downgrade of rigor
-- escalate when the task cannot be safely completed under current certainty
-
-Escalate when:
-- blast radius is unknown
-- facts remain highly uncertain
-- evidence threshold cannot be met
-- the task moved into a higher ETTO class midstream
-- acting would require pretending certainty that does not exist
-
----
-
-## Tool Gating Guidance
-
-### ETTO-1 / ETTO-2
-Tools may be used lightly or not at all depending on task.
-
-### ETTO-3
-Use tools or checks when they materially improve confidence.
-
-### ETTO-4 / ETTO-5
-Critical assumptions must be checked before action.
-Verification and scoping tools are not optional.
-
-Rule:
-Higher ETTO means the burden of proof rises before action.
-
----
-
-## Circuit Breakers
-
-Stop and reassess immediately if:
-- the task appears more irreversible than first believed
-- new evidence expands blast radius
-- uncertainty jumps materially
-- a “simple” task becomes a multi-system task
-- high confidence was based on thin evidence
-
----
-
-## Failure Modes This Skill Prevents
-
-- speed-first hallucination on high-risk work
-- over-analysis of trivial work
-- false confidence
-- one-mode behavior across all tasks
-- silent mismatch between stakes and rigor
-
----
-
-## Definition of Done
-
-This skill is correctly applied when:
-- `etto-preflight.md` exists
-- the ETTO level is explicit
-- evidence threshold matched the risk
-- execution matched the chosen mode
-- validation matched the chosen mode
-- the agent stopped instead of quietly improvising past the risk boundary
-
----
-
-## Final Instruction
-
-Do not be always fast.  
-Do not be always thorough.  
-Be appropriately rigorous for the real stakes of the task.
+## Rules
+- **Do** create `etto-preflight.md` before acting on any non-trivial task.
+- **Do** raise the ETTO level when evidence or blast radius grows midstream.
+- **Do** claim completion only when validation passed at the declared level.
+- **Do** refuse or safely redirect when the task demands certainty you don't have.
