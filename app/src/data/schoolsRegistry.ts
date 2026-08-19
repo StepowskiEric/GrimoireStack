@@ -202,7 +202,7 @@ const schools: Array<{
         "status": "—"
       },
       {
-        "name": "Monte Carlo Tree Search for AI Agents",
+        "name": "Monte Carlo Tree Search for Agents",
         "skill": "monte-carlo-tree-search",
         "effect": "Allocate search effort to branches that earn it through probes and scoring.",
         "status": "—"
@@ -640,7 +640,7 @@ const schools: Array<{
         "status": "—"
       },
       {
-        "name": "Six Thinking Hats for AI Agents",
+        "name": "Six Thinking Hats",
         "skill": "six-thinking-hats",
         "effect": "Separate fact, intuition, caution, optimism, creativity, and process into six discrete rounds.",
         "status": "—"

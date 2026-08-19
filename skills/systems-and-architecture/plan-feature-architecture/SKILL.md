@@ -2,275 +2,45 @@
 name: plan-feature-architecture
 description: "Decide ownership, placement, module boundaries, dependencies, and project impact before writing code."
 triggers:
-  - Need to plan the architecture of a feature before implementation
-  - Need to decide how the feature fits into the existing architecture
-  - Prefer planning over implementation
+  - feature-architecture-planning
+  - ownership-decision
+  - module-boundaries
+  - pre-implementation-planning
 ---
 
 # Feature Architecture Planning
 
-You are acting as the project's software architect.
-
-Your goal is NOT to write code.
-
-Your goal is to decide how the feature should fit into the existing architecture so the codebase remains easy to understand after hundreds of future features.
-
-Prefer planning over implementation.
-
-Think in terms of years of maintenance, not today's feature.
-
----
-
-# Core Philosophy
-
-The project follows a Feature-First Modular Architecture with lightweight Clean Architecture principles.
-
-Every feature owns its UI, business logic, validation, hooks, and data access.
-
-Infrastructure is centralized.
-
-Business logic stays outside React components.
-
-Modules should hide complexity rather than expose it.
-
-Architecture should optimize for future development speed rather than minimizing today's file count.
-
----
-
-# Folder Philosophy
-
-Assume a structure similar to:
-
-src/
-
-    app/
-
-    core/
-
-    features/
-
-    shared/
-
-Only recommend new top-level folders if absolutely necessary.
-
----
-
-# Ownership Rules
-
-Every file must have exactly one obvious owner.
-
-Ask:
-
-Which feature owns this?
-
-If ownership is unclear, the architecture is unclear.
-
----
-
-# Feature Rules
-
-Each feature owns:
-
-- components
-- screens
-- hooks
-- services
-- api
-- validation
-- models
-- constants
-
-Do not move feature-specific files into shared.
-
----
-
-# Shared Rules
-
-Shared code must satisfy BOTH:
-
-1. Used by multiple features.
-
-2. Represents generic functionality.
-
-Never create shared code because it "might" be reused later.
-
-Shared is earned.
-
----
-
-# Core Rules
-
-Core contains infrastructure only.
-
-Examples:
-
-- auth
-- storage
-- analytics
-- networking
-- logging
-- configuration
-- permissions
-
-Business logic does not belong here.
-
----
-
-# Questions To Ask
-
-Before planning, determine:
-
-What feature owns this?
-
-Is this extending an existing feature?
-
-Does this create a new feature?
-
-Does it belong in shared?
-
-Does it require new infrastructure?
-
-Does it require new navigation?
-
-Does it require new backend APIs?
-
-Will this likely grow substantially later?
-
----
-
-# Module Planning
-
-Favor deep modules.
-
-Good:
-
-voteForPlayer()
-
-Bad:
-
-validateVote()
-
-saveVote()
-
-refreshVotes()
-
-showToast()
-
-trackAnalytics()
-
-The caller should know as little as possible.
-
----
-
-# File Creation
-
-Estimate the minimum number of files.
-
-Prefer:
-
-5 focused files
-
-over
-
-1 gigantic file
-
-Do not split prematurely.
-
-Do not combine unrelated responsibilities.
-
----
-
-# Dependency Direction
-
-Allowed:
-
-UI
-
-↓
-
-Hooks
-
-↓
-
-Services
-
-↓
-
-Repositories
-
-↓
-
-Backend
-
-Forbidden:
-
-Repositories importing React.
-
-Features importing another feature's internal files.
-
-Business logic inside UI.
-
----
-
-# Simplicity Test
-
-Ask:
-
-Could another engineer find this file without searching?
-
-If not,
-
-the architecture probably needs improvement.
-
----
-
-# Growth Test
-
-Imagine this feature doubles in size.
-
-Would the folder structure still make sense?
-
-If not,
-
-plan for that now.
-
----
-
-# Output
-
-Always produce:
-
-## Architecture Plan
-
-Feature Owner
-
-Affected Features
-
-New Files
-
-Modified Files
-
-New Dependencies
-
-Potential Risks
-
-Future Growth Considerations
-
-Testing Strategy
-
-Architectural Notes
-
-Do NOT begin implementation until the architecture is coherent.
-
----
-
-# Architectural Decisions
-
-Record every non-trivial architectural recommendation.
-
-Include:
-
-- Decision
-- Why
-- Trade-offs
-- Why alternatives were rejected
+**Every file must have exactly one obvious owner.** You are the project's architect — your job is not to write code but to decide how the feature fits the existing architecture, thinking in years of maintenance, not today's feature. The project follows a Feature-First Modular Architecture: features own their UI, logic, validation, and data access; infrastructure is centralized; business logic stays out of React components; modules hide complexity.
+
+## The Move
+
+### 1. Decide ownership
+Determine: which feature owns this? Is this extending an existing feature or creating a new one? Does it belong in shared? Does it require new infrastructure, navigation, or backend APIs? Will it grow substantially later? If ownership is unclear, the architecture is unclear — resolve it before planning files.
+
+### 2. Check the boundary rules
+- **Feature rules** — each feature owns its components, screens, hooks, services, api, validation, models, constants. Feature-specific files stay in the feature.
+- **Shared rules** — shared code must satisfy BOTH: used by multiple features AND generic functionality. Shared is earned — never create it because it "might" be reused.
+- **Core rules** — core holds infrastructure only: auth, storage, analytics, networking, logging, configuration, permissions. Business logic does not belong there.
+
+### 3. Plan the modules
+- **Deep modules** — hide implementation: good `voteForPlayer()`, bad `validateVote() saveVote() refreshVotes() showToast() trackAnalytics()`. The caller should know as little as possible.
+- **File count** — estimate the minimum; prefer 5 focused files over 1 gigantic file, but do not split prematurely or combine unrelated responsibilities.
+- **Dependency direction** — UI ↓ Hooks ↓ Services ↓ Repositories ↓ Backend. Forbidden: repositories importing React, features importing another feature's internals, business logic in UI.
+
+### 4. Test the plan
+- **Simplicity test** — could another engineer find every file without searching? If not, improve the architecture.
+- **Growth test** — imagine this feature doubles: would the folder structure still make sense? If not, plan for that now.
+- **Folder philosophy** — fit the existing `app/ core/ features/ shared/` structure; recommend new top-level folders only when absolutely necessary.
+
+### 5. Write the plan
+Produce: **Architecture Plan** — feature owner, affected features, new files, modified files, new dependencies, potential risks, future growth considerations, testing strategy, architectural notes. Record every non-trivial recommendation as a decision: decision, why, trade-offs, why alternatives were rejected. Do not begin implementation until the architecture is coherent.
+
+## Reference
+For the full rule set and the architecture-plan output template, see [`references/feature-architecture-details.md`](references/feature-architecture-details.md).
+
+## Rules
+- **Do** resolve ownership before planning files — unclear ownership is unclear architecture.
+- **Do** keep feature-specific files in their feature; shared and core are earned, not assumed.
+- **Do** hide complexity behind deep modules.
+- **Do** check dependency direction for every new import.
+- **Do** record every non-trivial decision with its trade-offs and rejected alternatives.
