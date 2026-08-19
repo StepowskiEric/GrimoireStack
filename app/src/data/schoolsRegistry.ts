@@ -30,7 +30,7 @@ const schools: Array<{
       {
         "name": "Architecture Maintenance",
         "skill": "maintain-architecture",
-        "effect": "Review completed work for architectural quality, maintainability, feature ownership, and long-term scalability.",
+        "effect": "Review completed work for architectural quality: feature ownership, dependency direction, module quality, and long-term scalability.",
         "status": "—"
       },
       {
@@ -592,15 +592,15 @@ const schools: Array<{
         "status": "—"
       },
       {
-        "name": "Inversion — State Machine Protocol for AI Agents",
+        "name": "Inversion",
         "skill": "inversion-mental-model-state-machine",
         "effect": "Enforce failure-mode mapping and guardrail derivation before recommending success paths.",
         "status": "—"
       },
       {
-        "name": "Metacognitive Monitoring — Know When You Don't Know",
+        "name": "Metacognitive Monitoring",
         "skill": "metacognitive-monitoring",
-        "effect": "Explicit KEEP/WITHDRAW decisions tied to measured withdrawal delta.",
+        "effect": "Explicit KEEP/WITHDRAW decisions tied to measured withdrawal delta — know when you don't know.",
         "status": "—"
       },
       {
@@ -616,7 +616,7 @@ const schools: Array<{
         "status": "—"
       },
       {
-        "name": "Problem-Mode Router (Cynefin) — State Machine Protocol for AI Agents",
+        "name": "Problem-Mode Router (Cynefin)",
         "skill": "problem-mode-router-cynefin-state-machine",
         "effect": "Enforce Cynefin domain classification as a hard gate before any tool use or execution.",
         "status": "—"

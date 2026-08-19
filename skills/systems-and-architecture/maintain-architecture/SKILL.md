@@ -1,309 +1,44 @@
 ---
 name: maintain-architecture
-description: "Review completed work for architectural quality, maintainability, feature ownership, and long-term scalability."
+description: "Review completed work for architectural quality: feature ownership, dependency direction, module quality, and long-term scalability."
 triggers:
-  - Need to review completed work for architectural quality
-  - Need to ensure maintainability and long-term scalability
-  - Post-implementation architecture review
+  - post-implementation-architecture-review
+  - architectural-drift
+  - maintainability-review
+  - feature-ownership-check
 ---
 
 # Architecture Maintenance
 
-You are reviewing architecture.
+**The project should become easier to work on after every feature.** Review architecture — not formatting, not naming, not lint, not style. Focus exclusively on keeping a clean architecture as the application grows: prevent drift, avoid unnecessary rewrites, and only recommend changes that materially improve maintainability.
 
-NOT formatting.
+## The Move
 
-NOT naming.
+### 1. Map ownership
+Check every new file clearly belongs to a feature: **feature ownership** (no miscellaneous folders), **shared folder audit** (is it actually reused? if not, move it back — shared code is a maintenance cost), and **core folder audit** (infrastructure only — reject business logic, feature helpers, and UI in core).
 
-NOT lint.
+### 2. Check structure
+- **Deep modules** — prefer interfaces that hide implementation (good: `voteForPlayer()`; bad: `validate() mutate() cache() refresh()`)
+- **UI purity** — React components render, handle events, call hooks; business logic belongs elsewhere; decompose components over ~250 lines
+- **Dependency direction** — UI ↓ Hooks ↓ Services ↓ Repositories ↓ Infrastructure; reject infrastructure depending on React, feature internals imported elsewhere, circular dependencies
+- **Cohesion** — every file in a feature belongs together; if not, recommend moving files
 
-NOT code style.
+### 3. Check knowledge
+- **Delete test** — if this file disappeared, would the project become harder to understand? If no, recommend deleting, merging, or simplifying
+- **Duplicate knowledge** — repeated business rules (not repeated syntax): vote eligibility checked in four locations → centralize
 
-Focus exclusively on maintaining a clean architecture as the application grows.
+### 4. Check growth
+- **Future growth** — imagine the feature doubles: does navigation stay obvious, do file names stay obvious, does onboarding stay easy?
+- **Simplicity** — prefer obvious, predictable, boring architecture; avoid clever abstractions and premature generalization
 
-Prevent architectural drift.
+### 5. Write the verdict
+Produce: **Architecture Health** (overall assessment, feature ownership, dependency direction, module quality, UI purity, shared/core usage, duplicate knowledge, future growth) and **Recommendations** — only changes that materially improve maintainability. Record every non-trivial recommendation as an architectural decision: decision, why, trade-offs, why alternatives were rejected.
 
-Avoid unnecessary rewrites.
+## Reference
+For the full per-audit checklist with the exact review questions, the ignore list, and the output template, see [`references/architecture-maintenance-details.md`](references/architecture-maintenance-details.md).
 
----
-
-# Core Principle
-
-The project should become easier to work on after every feature.
-
-Never recommend changes that increase complexity without strong justification.
-
----
-
-# Review Goals
-
-Determine whether the new code:
-
-- belongs in the correct feature
-- respects dependency direction
-- hides complexity
-- keeps React components small
-- improves maintainability
-- avoids duplicate knowledge
-- scales to future features
-
----
-
-# Feature Ownership
-
-Every new file should clearly belong somewhere.
-
-If ownership is unclear:
-
-identify the better location.
-
-Never allow "miscellaneous" folders to grow.
-
----
-
-# Shared Folder Audit
-
-Challenge every addition to shared.
-
-Ask:
-
-Is this actually reused?
-
-If not,
-
-recommend moving it back into its feature.
-
-Shared code is a maintenance cost.
-
----
-
-# Core Folder Audit
-
-Core should remain infrastructure only.
-
-Reject business logic.
-
-Reject feature-specific helpers.
-
-Reject UI.
-
----
-
-# UI Audit
-
-React components should primarily:
-
-Render UI.
-
-Handle events.
-
-Call hooks.
-
-Business logic belongs elsewhere.
-
-If components exceed roughly 250 lines,
-
-recommend decomposition.
-
----
-
-# Deep Module Review
-
-Prefer modules that hide implementation.
-
-Good:
-
-voteForPlayer()
-
-Bad:
-
-validate()
-
-mutate()
-
-cache()
-
-refresh()
-
-toast()
-
-analytics()
-
-The interface should stay simple.
-
----
-
-# Delete Test
-
-Ask:
-
-If this file disappeared,
-
-would the project become harder to understand?
-
-If no,
-
-recommend deleting, merging, or simplifying it.
-
----
-
-# Duplicate Knowledge
-
-Look for repeated business rules.
-
-Not repeated syntax.
-
-Repeated knowledge.
-
-Example:
-
-Vote eligibility checked in four locations.
-
-Recommend centralizing knowledge.
-
----
-
-# Dependency Direction
-
-Verify:
-
-UI
-
-↓
-
-Hooks
-
-↓
-
-Services
-
-↓
-
-Repositories
-
-↓
-
-Infrastructure
-
-Reject:
-
-Infrastructure depending on React.
-
-Feature internals imported elsewhere.
-
-Circular dependencies.
-
----
-
-# Cohesion Test
-
-Does every file inside this feature belong together?
-
-If not,
-
-recommend moving files.
-
----
-
-# Future Growth
-
-Imagine:
-
-This feature doubles.
-
-Would navigation remain obvious?
-
-Would file names remain obvious?
-
-Would onboarding a new engineer stay easy?
-
-If not,
-
-recommend improvements.
-
----
-
-# Simplicity
-
-Prefer:
-
-Obvious
-
-Predictable
-
-Boring
-
-Architecture.
-
-Avoid clever abstractions.
-
-Avoid premature generalization.
-
----
-
-# Ignore
-
-Ignore:
-
-Formatting
-
-Import order
-
-Variable names
-
-Whitespace
-
-Semicolons
-
-Minor TypeScript improvements
-
-Lint warnings
-
-Micro-optimizations
-
-Unless they directly affect architecture.
-
----
-
-# Output
-
-Produce:
-
-## Architecture Health
-
-Overall Assessment
-
-Feature Ownership
-
-Dependency Direction
-
-Module Quality
-
-UI Purity
-
-Shared Usage
-
-Core Usage
-
-Duplicate Knowledge
-
-Future Growth
-
-Recommendations
-
-Only recommend changes that materially improve maintainability.
-
-Avoid architecture for architecture's sake.
-
----
-
-# Architectural Decisions
-
-Record every non-trivial architectural recommendation.
-
-Include:
-
-- Decision
-- Why
-- Trade-offs
-- Why alternatives were rejected
+## Rules
+- **Do** review architecture only — formatting, naming, lint, and style are out of scope unless they affect architecture.
+- **Do** challenge every addition to shared/ — reuse must be real.
+- **Do** prefer small, high-leverage improvements over rewrites.
+- **Do** record every non-trivial recommendation as a decision with trade-offs.
