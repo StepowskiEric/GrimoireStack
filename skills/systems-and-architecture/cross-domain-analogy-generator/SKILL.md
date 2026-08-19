@@ -1,316 +1,48 @@
 ---
 name: cross-domain-analogy-generator
-description: Generate cross-domain analogies — break fixation by mapping problem structures to foreign fields (biology, music, traffic) and transferring insights. Use when stuck on a hard problem, when repeated attempts fail, or when local optima seem like global optima.
+description: "Generate cross-domain analogies — break fixation by mapping problem structures to foreign fields (biology, music, traffic) and transferring insights."
 triggers:
-  - Stuck on a problem with repeated failed attempts
-  - Local optima seem like global optima
-  - Creative problem-solving where standard approaches fail
-  - Need fresh perspective on a familiar problem before giving up
+  - repeated-failed-attempts
+  - local-optima-trap
+  - creative-block
+  - fresh-perspective-needed
 ---
 
 # Cross-Domain Analogy
 
-Generate analogies from unrelated domains (biology, music, traffic engineering) to break fixation and surface novel solutions. Maps problem structures to foreign fields and transfers the structural insight back.
+**Fixation is the failure: you know the domain too well.** When repeated attempts fail and local optima look like global optima, stop grinding inside the familiar frame. Map the problem's structure to foreign fields — biology, music, traffic — and transfer the structural insight back. Structural mapping (how the parts relate), not surface similarity (what the parts look like), is what reveals deep patterns.
 
-Based on "Serendipity by Design: Evaluating the Impact of Cross-domain Mappings on Human and LLM Creativity" (arXiv:2603.19087).
+## When to Use
+- Stuck on a problem with repeated failed attempts
+- "I've tried everything" — low confidence despite effort
+- Local optima seem like global optima
+- Standard approaches fail and you need a fresh frame before giving up
 
----
+Skip it when a standard solution is known and appropriate — analogy adds unnecessary complexity.
 
-## Core Concept
+## The Move
 
-**The Analogy Pipeline:**
+### 1. Recognize stuckness
+Trigger analogy mode on: multiple failed attempts, the same failed approach repeating, declining confidence, or a problem that "seems impossible." Check the pattern-repetition signal — same approach, same failure — before escalating to analogy.
 
-```
-Problem Structure → Abstract Pattern → Foreign Domain → Analogous Pattern → Map Back → Novel Solution
-```
+### 2. Extract the problem structure
+Abstract the problem to its structural elements: resources, actors, constraints, failure modes, and the goal. Then name the relationships — who competes for what, what's binary, what's missing (e.g., "many consumers compete for limited resource, no prioritization, hard failure mode"). The abstract pattern is what you map, not the original problem.
 
-**Why It Works:**
-- Local fixation: You know the domain too well, see only familiar solutions
-- Cross-domain breaks fixation by importing foreign frameworks
-- Structural mapping (not surface similarity) reveals deep patterns
+### 3. Generate cross-domain analogies
+Map the structure to 3+ foreign domains — biology (evolution, cellular mechanisms), music (harmony, improvisation, trading), traffic (flow, congestion, ramp metering), cooking, sports, architecture. For each: name the analogous structure, map element-by-element ("API capacity" → "ATP supply"), and extract the insight. Vary the domains across uses — repeating the same domains defeats the purpose.
 
-**Example Domains to Map:**
-- Biology (evolution, ecosystems, cellular mechanisms)
-- Music (harmony, rhythm, improvisation)
-- Traffic/Logistics (flow, congestion, routing)
-- Cooking (recipes, timing, flavor pairing)
-- Sports (team dynamics, strategy, training)
-- Architecture (structure, load-bearing, aesthetics)
-- Nature (ant colonies, flocking, water flow)
+### 4. Synthesize a novel solution
+Combine the insights into one solution, tagging each component with its source domain (priority classes from biology's essential-vs-growth split; time-slice allocation from jazz trading fours; adaptive metering from ramp control). The combination across domains is what makes the solution novel, not any single analogy.
 
----
+### 5. Evaluate before committing
+Feasibility, complexity increase, expected improvement, risks, and mitigation. Start small (2 priority levels, gradual rollout with fallback) and declare a decision with confidence. An analogy-generated idea earns implementation the same way any idea does — on evidence.
 
-## Framework (Not Protocol)
+## Reference
+For the structured YAML templates, per-domain prompts, the full worked example, and integration notes, see [`references/analogy-details.md`](references/analogy-details.md).
 
-This is a **conceptual lens** applied when stuck.
-
-### Step 1: Recognize Stuckness
-
-Signs you need analogy mode:
-- Multiple failed attempts
-- Repeating same failed approach
-- "I've tried everything"
-- Low confidence despite effort
-- Problem seems "impossible"
-
-```yaml
-stuckness_assessment:
-  attempts_made: 3
-  confidence_trend: declining  # increasing | stable | declining
-  pattern_repetition: high    # none | some | high
-  emotional_state: frustrated  # engaged | neutral | frustrated
-  
-  trigger_analogy_mode: true
-```
-
----
-
-### Step 2: Extract Problem Structure
-
-Abstract the problem to its structural elements.
-
-```yaml
-problem_structure:
-  original_problem: "API rate limiting that doesn't degrade gracefully"
-  
-  elements:
-    - resource: "API capacity"
-    - consumers: "Multiple clients with varying needs"
-    - constraint: "Hard capacity limit"
-    - failure_mode: "All clients suffer when limit hit"
-    - goal: "Fair distribution under scarcity"
-    
-  relationships:
-    - "Many consumers compete for limited resource"
-    - "No prioritization mechanism"
-    - "Binary outcome (success/fail)"
-    - "No feedback to consumers"
-    
-  abstract_pattern: |
-    Resource scarcity with multiple competing consumers,
-    no prioritization, hard failure mode, need for
-    graceful degradation.
-```
-
----
-
-### Step 3: Generate Cross-Domain Analogies
-
-Map to 3+ foreign domains.
-
-```yaml
-cross_domain_analogies:
-  domain_1:
-    name: "Biology - Cellular Resource Allocation"
-    analogy: |
-      Cells have limited ATP. When scarce, they:
-      - Prioritize essential functions (maintenance)
-      - Deprioritize growth/reproduction
-      - Communicate scarcity via signaling molecules
-      - Enter hibernation mode if critical
-      
-    structural_mapping:
-      "API capacity" → "ATP supply"
-      "Clients" → "Cellular processes"
-      "Hard limit" → "Metabolic constraint"
-      "Graceful degradation" → "Prioritization + signaling"
-      
-    insight: |
-      Implement priority classes + backpressure signaling.
-      Critical clients get capacity; non-critical get
-      "hibernation" responses (retry-after).
-  
-  domain_2:
-    name: "Music - Jazz Improvisation"
-    analogy: |
-      Jazz soloists share limited "solo space":
-      - Trading fours: structured handoff
-      - Comping: background support without dominating
-      - Cues: non-verbal communication for transitions
-      - Collective improvisation: simultaneous but coherent
-      
-    structural_mapping:
-      "API capacity" → "Solo space / attention"
-      "Clients" → "Musicians"
-      "Fair distribution" → "Trading solos"
-      "Graceful degradation" → "Comping instead of soloing"
-      
-    insight: |
-      Implement "trading" pattern - clients get time slices
-      instead of request-based limits. Smooth handoffs via
-      signaling (cues).
-  
-  domain_3:
-    name: "Traffic - Ramp Metering"
-    analogy: |
-      Highway on-ramps meter entry during congestion:
-      - Dynamic rate based on downstream conditions
-      - Feedback loop: measure → adjust → measure
-      - Alternative routes suggested when delayed
-      - Priority vehicles (emergency) bypass metering
-      
-    structural_mapping:
-      "API capacity" → "Highway throughput"
-      "Clients" → "Vehicles entering"
-      "Rate limiting" → "Ramp metering"
-      "Graceful degradation" → "Dynamic adjustment + alternatives"
-      
-    insight: |
-      Implement adaptive rate limiting based on backend health.
-      Provide alternative endpoints (routes) when primary
-      congested. Priority lanes for critical clients.
-```
-
----
-
-### Step 4: Synthesize Novel Solution
-
-Combine insights from analogies.
-
-```yaml
-novel_solution:
-  name: "Adaptive Priority Rate Limiting with Backpressure"
-  
-  components:
-    - component: "Priority Classes"
-      source: "Biology - essential vs growth functions"
-      implementation: |
-        Tag clients by priority (critical/standard/background).
-        Critical always served; background deprioritized.
-    
-    - component: "Backpressure Signaling"
-      source: "Biology - signaling molecules"
-      implementation: |
-        Return 429 with Retry-After headers.
-        Clients adapt behavior (backoff).
-    
-    - component: "Time-Slice Allocation"
-      source: "Music - trading fours"
-      implementation: |
-        Instead of per-request limits, allocate time windows.
-        Smooths burst traffic.
-    
-    - component: "Adaptive Metering"
-      source: "Traffic - ramp metering"
-      implementation: |
-        Adjust rate limits based on backend health metrics.
-        Suggest alternative endpoints when congested.
-  
-  why_novel: |
-    Standard rate limiting is static and binary (allowed/denied).
-    This approach is dynamic, prioritized, and communicative -
-    inspired by biological and traffic systems that handle
-    scarcity gracefully.
-```
-
----
-
-### Step 5: Evaluate and Implement
-
-Assess if analogy-generated solution is viable.
-
-```yaml
-evaluation:
-  feasibility: "high"
-  complexity_increase: "medium"
-  expected_improvement: "significant"
-  
-  risks:
-    - "Priority system adds complexity"
-    - "Client adaptation required for backpressure"
-    
-  mitigation:
-    - "Start with 2 priority levels (critical/standard)"
-    - "Gradual rollout with fallback to simple limiting"
-    
-  decision: "IMPLEMENT"
-  confidence: 0.8
-```
-
----
-
-## Domain Prompts
-
-When stuck, ask:
-
-**Biology:**
-- How does nature solve this?
-- What would evolution do?
-- How do cells/organisms handle this constraint?
-
-**Music:**
-- How would a composer structure this?
-- What would improvisation suggest?
-- How do musicians coordinate?
-
-**Traffic/Logistics:**
-- How do highways handle congestion?
-- What would a supply chain do?
-- How do airports manage flow?
-
-**Cooking:**
-- How would a chef balance flavors?
-- What does timing teach us?
-- How do ingredients interact?
-
-**Sports:**
-- How would a coach train for this?
-- What strategy would win?
-- How do teams coordinate?
-
-**Architecture:**
-- How would an architect structure this?
-- What supports the load?
-- How is space organized?
-
----
-
-## Example: Database Connection Pool Exhaustion
-
-**Standard approach:** "Increase pool size" (works until next limit)
-
-**Analogy mode:**
-
-**Biology:** "How do cells handle resource scarcity?"
-→ Prioritization, signaling, hibernation
-
-**Music:** "How do jazz bands handle solo space?"
-→ Trading, comping, cues
-
-**Traffic:** "How do on-ramps handle congestion?"
-→ Metering, dynamic adjustment, alternatives
-
-**Synthesized solution:**
-- Priority connections (critical vs batch)
-- Backpressure (signal clients to slow down)
-- Adaptive pool sizing (based on load)
-- Queue with timeout (graceful degradation)
-
-**Result:** System gracefully degrades instead of failing.
-
----
-
-## Anti-Patterns
-
-- Map structures, not surfaces
-- Combine insights from multiple domains
-- Validate feasibility before committing
-- Document the analogy (helps others understand)
-- Use analogy when standard solution is known and appropriate — it adds unnecessary complexity
-- Vary domains across uses — repeating the same domains defeats the purpose
-
----
-
-## Integration
-
-- Use **when** `metacognitive-monitoring` shows declining confidence
-- Use **before** `specter` to generate novel hypotheses
-- Use **with** `cognitive-friction-governor` — analogies have friction cost
-
----
-
-## See Also
-
-- Paper: "Serendipity by Design: Evaluating the Impact of Cross-domain Mappings on Human and LLM Creativity" (arXiv:2603.19087)
-- `how-to-solve-it-analogy` — for structured analogy
-- `first-principles` — for deconstruction before analogy
+## Rules
+- **Do** map structures, not surfaces — the relationship pattern is what transfers.
+- **Do** generate at least 3 domains before synthesizing.
+- **Do** combine insights across domains — single-analogy solutions are weak.
+- **Do** document the analogy — it helps others understand the borrowed frame.
+- **Do** evaluate feasibility and complexity before committing.

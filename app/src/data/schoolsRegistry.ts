@@ -36,7 +36,7 @@ const schools: Array<{
       {
         "name": "Cross-Domain Analogy",
         "skill": "cross-domain-analogy-generator",
-        "effect": "Generate cross-domain analogies — break fixation by mapping problem structures to foreign fields (biology, music, traffic) and transferring insights. Use when stuck on a hard problem, when repeated attempts fail, or when local optima seem like global optima.",
+        "effect": "Generate cross-domain analogies — break fixation by mapping problem structures to foreign fields (biology, music, traffic) and transferring insights.",
         "status": "—"
       },
       {
@@ -94,13 +94,13 @@ const schools: Array<{
         "status": "—"
       },
       {
-        "name": "Team Topologies for Multi-Agent Software Systems",
+        "name": "Team Topologies for Multi-Agent Systems",
         "skill": "team-topologies-ai",
         "effect": "Stream-aligned, platform, enabling, and complicated-subsystem boundaries with explicit interaction modes.",
         "status": "—"
       },
       {
-        "name": "The Goal for AI Engineering Agents",
+        "name": "The Goal — Theory of Constraints for Engineering Agents",
         "skill": "the-goal-theory-of-constraints-ai",
         "effect": "Find the one constraint, ignore non-constraints, exploit then elevate it, repeat when it moves.",
         "status": "—"
@@ -114,7 +114,7 @@ const schools: Array<{
       {
         "name": "Vibe Coding Security Hardening",
         "skill": "vibe-coding-security-hardening",
-        "effect": "Systematic checklist for vulnerabilities LLMs reliably introduce: exposed secrets, missing RLS, broken auth, injection flaws, insecure defaults.",
+        "effect": "Hardening checklist for vulnerabilities LLMs reliably introduce: exposed secrets, missing RLS, broken auth, injection flaws, insecure defaults.",
         "status": "—"
       }
     ]
@@ -562,9 +562,9 @@ const schools: Array<{
         "status": "—"
       },
       {
-        "name": "Explore vs Exploit — State Machine Protocol for AI Agents",
+        "name": "Explore vs Exploit",
         "skill": "explore-vs-exploit-state-machine",
-        "effect": "Explicit explore/exploit protocol with diminishing-returns stopping rule.",
+        "effect": "Explicit explore/exploit protocol: frame the decision, budget the search, explore with purpose, stop deliberately, act when search stops earning its keep.",
         "status": "—"
       },
       {
@@ -622,9 +622,9 @@ const schools: Array<{
         "status": "—"
       },
       {
-        "name": "Recognition-Primed Triage — State Machine Protocol for AI Agents",
+        "name": "Recognition-Primed Triage",
         "skill": "recognition-primed-triage-state-machine",
-        "effect": "Gated incident-response protocol with simulation and bounded first action.",
+        "effect": "Gated incident-response protocol: recognize the pattern, simulate the first action, act within scope, reassess, hand off.",
         "status": "—"
       },
       {

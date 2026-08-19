@@ -2,323 +2,52 @@
 name: the-goal-theory-of-constraints-ai
 description: "Find the one constraint, ignore non-constraints, exploit then elevate it, repeat when it moves."
 triggers:
-  - Throughput is capped or work piles up
-  - Need to find the real bottleneck instead of optimizing everything
-  - Micro-optimization is not moving total throughput
+  - throughput-capped
+  - bottleneck-hunting
+  - micro-optimization-fatigue
+  - pipeline-slowdown
 ---
 
-# The Goal for AI Engineering Agents
+# The Goal — Theory of Constraints for Engineering Agents
 
-## Purpose
-
-Use this skill when the agent must improve throughput, delivery, or system performance by finding the real bottleneck instead of optimizing everything.
-
-This skill adapts the Theory of Constraints into an engineering operating model:
-- every system has a limiting constraint
-- local optimization outside the constraint often does little
-- the job is to identify, exploit, and elevate the constraint
-- once a constraint moves, repeat the process
-
----
+**Every system has one Herbie.** In *The Goal*, the scout troop's pace is set by the slowest boy — everyone else waits on him. Same for systems: total throughput is capped by the current constraint, and improving anything else may move the total by zero. Find the Herbie. Protect it. Improve it. Then repeat.
 
 ## When to Use
-
-Use this skill when:
-- performance is poor but the causes are diffuse
-- people propose many micro-optimizations
-- throughput is capped by one hidden stage
-- build or test times are painful
-- the release process is slow
-- a service is saturated while others are underused
-- work piles up in one stage of a pipeline
-- teams are trying to optimize everything at once
-
----
-
-## Core Law
-
-The system only moves as fast as its current constraint.
-
-If the agent improves parts that are not the constraint, total improvement may be tiny or zero.
-
-Therefore:
-1. identify the constraint
-2. exploit it
-3. subordinate everything else
-4. elevate it
-5. if the constraint moves, repeat
-
----
-
-## Definitions
-
-### Constraint
-The resource, policy, stage, dependency, or workflow step that most limits total throughput.
-
-### Exploit the constraint
-Get the maximum useful output from the current constraint without major redesign.
-
-### Subordinate everything else
-Align non-constraints to support the constraint rather than optimizing themselves independently.
-
-### Elevate the constraint
-Increase the actual capacity or effectiveness of the constraint.
-
----
-
-## Constraint-Finding Workflow
-
-## Step 1: Model the flow
-
-Identify the end-to-end pipeline:
-- request path
-- job path
-- build path
-- release path
-- developer workflow path
-- data ingestion path
-
-Map:
-- stages
-- queues
-- handoffs
-- resource usage
-- wait times
-- failure/retry points
-
----
-
-## Step 2: Find accumulation and starvation
-
-Signals of a real constraint:
-- backlog builds before it
-- downstream stages go idle waiting for it
-- utilization near saturation
-- latency spikes around it
-- throughput plateaus even when other stages have headroom
-
-Examples:
-- test suite serialization in CI
-- one hot DB query on a saturated index
-- a single queue consumer group
-- human review step blocking release
-- one expensive aggregation that dominates response time
-- one API dependency with narrow rate limits
-
----
-
-## Step 3: Ignore non-constraints
-
-This is the discipline most agents lack.
-
-Do not spend effort on:
-- local speedups with no effect on end-to-end throughput
-- nice-to-have micro-optimizations
-- stylistic cleanup disguised as performance work
-- parallel work that floods the bottleneck faster
-
-If the constraint is the DB, improving controller execution by 15% may be irrelevant.
-
----
-
-## Step 4: Exploit the constraint
-
-Low-cost improvements first:
-- remove wasted work at the bottleneck
-- improve batching at the bottleneck
-- reduce duplicate requests reaching it
-- reorder work to keep it busy on highest-value tasks
-- fix noisy retries that consume constrained capacity
-- reduce context switching or serial waits
-- precompute or cache only if it directly relieves the constraint
-
-Ask:
-- Is this resource spending time on low-value work?
-- Can it stay busy doing only necessary work?
-- Is it blocked by avoidable setup or bad scheduling?
-
----
-
-## Step 5: Subordinate the rest
-
-Other parts of the system should stop behaving as if they are the main character.
-
-Examples:
-- cap upstream concurrency so the bottleneck does not thrash
-- slow producers when consumers are saturated
-- shape work to match constraint capacity
-- prioritize valuable work instead of feeding the bottleneck garbage
-- align batch sizes, schedules, or retry policies to protect the constraint
-
-Rule:
-Do not optimize non-constraints in ways that make the constraint’s life worse.
-
----
-
-## Step 6: Elevate the constraint
-
-Only after exploit/subordinate steps:
-- add capacity
-- redesign the algorithm
-- shard the bottleneck
-- denormalize or precompute strategically
-- split pipelines
-- add hardware
-- parallelize the constrained stage
-- automate the constrained human step
-- redesign ownership if organizational friction is the real bottleneck
-
----
-
-## Step 7: Re-run the analysis
-
-Once the constraint moves:
-- a new one appears
-- old assumptions may be wrong
-- previous bottleneck fixes may no longer matter
-
-Improvement is iterative, not final.
-
----
-
-## Where the Constraint Might Hide
-
-### Technical
-- DB pool / lock / query plan
-- synchronous remote dependency
-- CPU-bound transform
-- serialized worker
-- queue consumer
-- rate limit
-- slow test stage
-- artifact packaging
-- storage I/O
-- cache-miss storm
-
-### Process
-- code review queue
-- deployment approval
-- flaky integration environment
-- release coordination
-- manual QA checkpoint
-- knowledge silo
-- single person dependency
-
-### Product / policy
-- over-broad validation
-- too much required synchronous work
-- one-size-fits-all pipeline for all changes
-- unprioritized backlog flooding the system
-
----
-
-## Anti-Patterns
-
-### 1) Optimize everything
-The agent suggests 40 changes with no bottleneck analysis.
-
-Counter:
-One system, one current primary constraint.
-
-### 2) Mistake high utilization everywhere for the bottleneck
-Busy does not equal limiting.
-
-Counter:
-Look for accumulation, starvation, and end-to-end impact.
-
-### 3) Flood the constraint faster
-The agent parallelizes upstream work and worsens overload.
-
-Counter:
-Subordinate non-constraints to protect the bottleneck.
-
-### 4) Improve averages, ignore throughput
-Averages can hide where the real system limit lives.
-
-Counter:
-Inspect end-to-end flow, queues, wait time, and saturation.
-
-### 5) Solve the old bottleneck forever
-The agent keeps polishing yesterday’s constraint.
-
-Counter:
-Reassess after each meaningful improvement.
-
----
-
-## Best Uses for This Skill
-
-- performance tuning
-- CI/CD optimization
-- deployment speed improvement
-- queue and worker systems
-- batch pipeline optimization
-- large test suite acceleration
-- incident triage for overload
-- developer workflow improvement
-- platform engineering prioritization
-
----
-
-## Constraint Analysis Template
-
-```text
-System goal:
-Flow stages:
-Observed throughput:
-Observed latency:
-Where work accumulates:
-Where downstream stages starve:
-Likely constraint:
-Low-cost exploitation ideas:
-Ways to subordinate non-constraints:
-Capacity elevation options:
-Success metric:
-```
-
----
-
-## Review Questions
-
-- What is the actual goal of this system?
-- What one stage most limits reaching that goal?
-- What evidence shows that this is the constraint?
-- Which proposed optimizations do not touch it?
-- How can we protect the constraint from waste?
-- What happens after the constraint moves?
-
----
-
-## Definition of Done
-
-A throughput or optimization task is done when:
-- the primary constraint was identified with evidence
-- proposed work focused primarily on that constraint
-- waste at the constraint was reduced
-- non-constraints were aligned to support it
-- success was measured end-to-end
-- the team knows what the next constraint is likely to be
-
----
-
-## Prompt Snippets
-
-### For optimization
-“Do not optimize everything. Identify the current system constraint, explain the evidence, and focus recommendations on exploiting, subordinating to, and elevating that bottleneck.”
-
-### For CI/CD
-“Treat the pipeline as a flow system. Find the stage limiting end-to-end throughput and ignore changes that do not move that constraint.”
-
-### For performance review
-“Find the one bottleneck that dominates the critical path. Distinguish it from busy but non-limiting components.”
-
-### For incident load spikes
-“Identify what is saturated, where work accumulates, and which changes would reduce pressure on the true constraint first.”
-
----
-
-## Final Instruction
-
-A system with one real bottleneck does not improve because everything got slightly better.
-
-Find the Herbie. Protect it. Improve it. Then repeat.
+- Performance is poor but causes are diffuse
+- Many micro-optimizations are being proposed
+- Throughput is capped by one hidden stage
+- Build/test/release times are painful
+- One service is saturated while others are underused
+- Work piles up in one stage of a pipeline
+
+## The Move
+
+### 1. Find the Herbie
+Model the end-to-end flow: stages, queues, handoffs, wait times, failure/retry points. Locate the constraint by evidence:
+- **Accumulation** — backlog builds before it
+- **Starvation** — downstream stages go idle waiting for it
+- Throughput plateaus even when other stages have headroom
+
+Busy is not limiting: high utilization everywhere is not a bottleneck signal. Then **ignore the non-constraints** — local speedups with no end-to-end effect, micro-optimizations, cleanup disguised as performance work. If the DB is the Herbie, making controllers 15% faster is irrelevant.
+
+### 2. Exploit it — low-cost wins first
+Get maximum useful output from the current constraint without redesign: remove wasted work at the bottleneck, improve batching, reduce duplicate requests reaching it, reorder work to keep it busy on highest-value tasks, fix noisy retries that consume constrained capacity.
+
+### 3. Subordinate the rest
+Align non-constraints to support the constraint instead of optimizing themselves: cap upstream concurrency so the bottleneck doesn't thrash, slow producers when consumers are saturated, shape work to match constraint capacity, prioritize valuable work over feeding the bottleneck garbage.
+
+### 4. Elevate it — only after exploit and subordinate
+Add capacity or redesign: shard the bottleneck, denormalize or precompute strategically, split pipelines, parallelize the constrained stage, automate a constrained human step, redesign ownership if organizational friction is the real constraint.
+
+### 5. Re-run the analysis
+Once the constraint moves, a new one appears and old assumptions may be wrong. Improvement is iterative, not final — reassess after every meaningful improvement.
+
+## Reference
+For where constraints hide (technical, process, product/policy), the failure modes with counters, the analysis template, and prompt snippets, see [`references/goal-details.md`](references/goal-details.md).
+
+## Rules
+- **Do** identify the constraint with evidence (accumulation + starvation) before proposing any change.
+- **Do** ignore non-constraint optimizations — they don't move total throughput.
+- **Do** exploit before elevating; low-cost wins come first.
+- **Do** protect the constraint from upstream floods.
+- **Do** reassess after each improvement — the Herbie moves.
