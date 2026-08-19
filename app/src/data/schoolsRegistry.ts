@@ -422,7 +422,7 @@ const schools: Array<{
         "status": "—"
       },
       {
-        "name": "Estimate token cost of files",
+        "name": "Context Budget Operator",
         "skill": "context-budget-operator",
         "effect": "Track token budget, classify information needs, compress aggressively, and decide breadth-vs-depth based on remaining runway.",
         "status": "—"
@@ -580,7 +580,7 @@ const schools: Array<{
         "status": "—"
       },
       {
-        "name": "First Principles Thinking for AI Agents",
+        "name": "First Principles Thinking",
         "skill": "first-principles",
         "effect": "Decompose to axiomatic foundations and reason upward from what must be true.",
         "status": "—"

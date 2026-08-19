@@ -2,212 +2,53 @@
 name: first-principles
 description: "Decompose to axiomatic foundations and reason upward from what must be true."
 triggers:
-  - Conventional solutions fail or framing is inherited
-  - Need to reason from the ground up rather than from convention or analogy
-  - Received wisdom may be wrong for this context
+  - conventional-solutions-failing
+  - inherited-framing
+  - ground-up-reasoning
+  - received-wisdom-risk
 ---
 
-# Skill: First Principles Thinking for AI Agents
+# First Principles Thinking
 
-## Purpose
-
-Use this skill when the agent needs to reason from the ground up rather than from convention, analogy, or received wisdom.
-
-First principles thinking means decomposing a problem down to its fundamental, axiomatic constraints — what must be true — and then reasoning upward from those foundations rather than inheriting assumptions from how the problem has been framed or solved before.
-
-This skill prevents the agent from:
-- accepting a solution pattern because it is familiar
-- reasoning by analogy when the analogy does not hold
-- inheriting unnecessary constraints embedded in how the problem was stated
-- optimizing inside a bad framing instead of questioning the framing
-
-Sources: Aristotle's *Posterior Analytics*, Descartes' *Discourse on the Method*, Feynman's teaching philosophy, widely applied in physics and engineering.
-
----
-
-## Core Rule
-
-Before reasoning toward a solution, ask: what must actually be true here?
-
-Do not inherit the constraints of prior solutions.
-Do not inherit the vocabulary of the requester's framing.
-Decompose to the real foundations and rebuild from there.
-
----
+**Strip to what must be true, then build from there.** Do not inherit the problem as stated, do not inherit the constraints of prior solutions, do not inherit the vocabulary of the requester's framing. Decompose to the real foundations — what must actually be true — and reason upward. This prevents optimizing inside a bad framing, accepting a pattern because it is familiar, and treating soft constraints as physical laws.
 
 ## When to Use
+- Every option has been "tried" and the problem feels intractable
+- The solution space seems narrow and none of the options are good
+- The framing is being imported unchanged from a prior context
+- Reasoning by "this is how we do it" instead of "this is why we do it this way"
+- You suspect the design itself is the problem, not its optimization
+- Conventional approaches failed and their assumptions need questioning
 
-Use this skill when:
-- a problem feels intractable because every option has been "tried"
-- the solution space seems narrow and none of the options are good
-- the framing of the problem is being imported unchanged from a prior context
-- the agent is reasoning by "this is how we do it" rather than "this is why we do it this way"
-- a creative or novel solution is needed
-- the agent is optimizing an existing design but suspects the design itself is the problem
-- conventional approaches have failed and the agent must question the assumptions behind them
+Skip it: well-understood problems where the standard approach is correct, speed-critical work, incremental improvement within a known-good framework (use Toyota Kata / PDCA).
 
-Do not use this skill when:
-- the problem is genuinely well-understood and the standard approach is correct
-- speed matters more than re-examination
-- the goal is incremental improvement within a known-good framework (use Toyota Kata or PDCA instead)
+## The Move
 
----
+### 1. Strip the goal of method assumptions
+Not "add a caching layer" but "reduce response latency under load." Not "fix the bug" but "ensure this behavior is reliably correct." The goal as stated often smuggles in the solution's constraints.
 
-## The Core Questions
+### 2. Separate what we know from what we inherited
+Classify into: established facts (measured, observed, proven), strong inferences (well-supported but unobserved), inherited assumptions (believed because it has always been done this way), and requirements from first principles (what must be true for the goal). Name each item's class explicitly.
 
-### Step 1: What is the actual goal?
-Strip the goal of any assumed method.
-Not "add a caching layer" but "reduce response latency under load."
-Not "fix the bug" but "ensure this behavior is reliably correct."
+### 3. Classify the constraints
+- **Hard** — physical, mathematical, regulatory; truly non-negotiable
+- **Soft** — organizational, conventional, historical; can be questioned
+- **Assumed** — believed hard but never actually tested
 
-### Step 2: What do we actually know?
-Separate:
-- established facts (measured, observed, proven)
-- strong inferences (well-supported, but not directly observed)
-- inherited assumptions (believed because it is how things have always been done)
-- requirements from first principles (what must be true for the goal to be achieved)
+For every assumed constraint, ask: has this been tested, or is it inherited? "We need a separate service for this," "we need a database for this," "this must be real-time," "this will take six weeks" — each is a candidate assumed constraint.
 
-### Step 3: What are the real constraints?
-Distinguish:
-- hard constraints (physical, mathematical, regulatory — truly non-negotiable)
-- soft constraints (organizational, conventional, historical — can be questioned)
-- assumed constraints (believed to be hard but never actually tested)
+### 4. Build from the foundations up
+Start from the real constraints and build upward — do not start from the existing solution and subtract. If the prior solution did not exist, what would emerge from what must be true?
 
-For each assumed constraint, ask: has this been tested, or is it inherited?
+### 5. Compare to the conventional approach
+Where do they differ? Which differences come from legitimate constraints vs inherited assumptions? Is the conventional solution leaving value on the table — or is the first-principles solution just unfamiliar? Recommend: proceed with the first-principles approach, validate the conventional one as already optimal, or hybrid.
 
-### Step 4: What would the solution look like if we had no prior solution?
-Build from the verified foundations.
-Do not start from the existing solution and subtract.
-Start from the real constraints and build upward.
+## Reference
+For the analysis template, common inherited assumptions per domain (architecture, product, planning, debugging), failure modes, and pairing guide, see [`references/first-principles-details.md`](references/first-principles-details.md).
 
-### Step 5: Compare the first-principles solution to the conventional one
-Ask:
-- where do they differ?
-- which differences are due to legitimate constraints versus inherited assumptions?
-- is the conventional solution leaving value on the table?
-- is the first-principles solution actually better or just unfamiliar?
-
----
-
-## First Principles Analysis Template
-
-```md
-## Problem Statement (Inherited)
-<how the problem was originally stated>
-
-## Actual Goal (Decomposed)
-<what must actually be achieved, without method assumptions>
-
-## What We Know (Verified)
-- Facts:
-  - <fact>
-- Inferences:
-  - <inference>
-
-## Inherited Assumptions (to Question)
-- <assumption> — status: hard constraint / soft constraint / unverified
-- <assumption> — status: hard constraint / soft constraint / unverified
-
-## Hard Constraints (Genuinely Non-Negotiable)
-- <constraint with evidence of why it is truly fixed>
-
-## Soft Constraints (Can Be Questioned)
-- <constraint> — why it has been treated as fixed / whether it needs to be
-
-## First-Principles Solution Sketch
-<what emerges from the real constraints, not from convention>
-
-## Comparison to Conventional Approach
-- Where they differ:
-  - <difference>
-- Whether the difference matters:
-  - <reasoning>
-
-## Recommendation
-<proceed with first-principles approach / validate conventional approach is already optimal / hybrid>
-```
-
----
-
-## Agent Rules
-
-### Do
-- separate facts from inherited assumptions explicitly
-- question constraints that have never been tested
-- build solutions from verified foundations up
-- compare the first-principles result to the conventional one
-- name which constraints are genuinely hard and which are soft
-
-### Do Not
-- mistake familiarity for correctness
-- treat "this is how everyone does it" as a first principle
-- stop at the inherited problem framing
-- use first principles as an excuse to reinvent things that work
-- ignore the conventional approach entirely without comparing it
-
----
-
-## Common Inherited Assumptions to Question
-
-### In software architecture
-- "We need a separate service for this" — is that truly required?
-- "We need a database for this" — is durable state actually required?
-- "This must be real-time" — does the user actually require real-time, or just timely?
-
-### In product design
-- "Users want this feature" — do users need the outcome this feature provides, or the feature itself?
-- "We need an API for this" — is integration the actual requirement, or something else?
-
-### In planning
-- "This will take six weeks" — based on what actual constraints?
-- "This requires three teams" — which dependency is truly necessary?
-
-### In debugging
-- "The problem is in component X" — is that where the symptom is, or where the cause is?
-- "This is the correct behavior" — verified by whom against what specification?
-
----
-
-## Failure Modes This Skill Prevents
-
-### 1) Framing inheritance
-Accepting the problem as stated without questioning what it assumes.
-
-### 2) Analogy reasoning in the wrong domain
-"We did it this way for system A so we should do it this way for system B" — without checking whether the two systems share the relevant constraints.
-
-### 3) Optimization inside a bad frame
-Making the existing approach faster or cleaner when the approach itself is the problem.
-
-### 4) Assumed constraint acceptance
-Treating soft, historical, or organizational constraints as if they were physical laws.
-
----
-
-## Pairing Guide
-
-- **Inversion** — inversion reasons backward from failure; first principles reasons upward from axioms; use both to stress-test a problem
-- **How to Solve It** — first principles reveals the true problem; How to Solve It provides a structured solving protocol
-- **ETTO** — first principles is slow-mode work; use ETTO to decide whether this depth is warranted before starting
-- **Analogy/How to Solve It Analogy variant** — first principles and analogy are the two poles of a routing decision: strip analogies to test whether the situation truly resembles the analog
-
----
-
-## Definition of Done
-
-First principles was applied correctly when:
-- the inherited problem framing was questioned, not just inherited
-- facts were separated from assumptions
-- hard constraints were distinguished from soft ones
-- the solution was built from verified foundations up
-- the first-principles result was compared to the conventional approach
-- the final recommendation is stronger because the framing was examined, not just accepted
-
----
-
-## Final Instruction
-
-Do not inherit the problem as stated.
-Do not inherit the constraints of prior solutions.
-Strip to what must be true.
-Build from there.
+## Rules
+- **Do** separate facts from inherited assumptions explicitly — the separation is the work.
+- **Do** question every constraint that has never been tested.
+- **Do** build from verified foundations up, not from the existing solution down.
+- **Do** compare the first-principles result to the conventional one before recommending.
+- **Do** name which constraints are genuinely hard and which are soft — do not mistake familiarity for correctness.

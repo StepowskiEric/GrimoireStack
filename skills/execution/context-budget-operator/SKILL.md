@@ -2,207 +2,52 @@
 name: context-budget-operator
 description: "Track token budget, classify information needs, compress aggressively, and decide breadth-vs-depth based on remaining runway."
 triggers:
-  - Working on codebases with >20 files or files >500 lines
-  - Sessions exceeding 15 turns
-  - Before reading multiple files in parallel
-  - Task requires cross-file reasoning (architecture, refactoring)
-  - Noticing the agent repeating questions or forgetting constraints
-  - Before any operation expected to return >1000 tokens of output
+  - large-codebase-session
+  - long-session-budget
+  - multi-file-parallel-read
+  - cross-file-reasoning
 ---
 
-## Overview
+# Context Budget Operator
 
-Context windows are finite. In long sessions or large codebases, agents silently exceed their budget, causing earlier instructions to drop out, reasoning to fragment, and coherence to collapse. The failure mode is invisible until the agent contradicts itself or forgets constraints set 10 turns ago.
+**The context window is finite — and the failure is invisible until you contradict yourself.** In long sessions or large codebases, agents silently exceed the budget: earlier instructions drop out, reasoning fragments, coherence collapses. Treat token budget as a first-class resource: assess before every call, classify the information need, compress at the threshold, decide breadth vs depth on remaining runway, and log consumption to catch runaway growth.
 
-**Context Budget Operator** treats token budget as a first-class resource:
-1. **ASSESS** current context usage before every LLM call
-2. **CLASSIFY** the information need (summary vs full vs index)
-3. **COMPRESS** when usage crosses the compression threshold
-4. **DECIDE** breadth vs depth based on remaining budget
-5. **LOG** consumption per operation to detect runaway growth
+## The Move
 
-## Companion script (optional)
+### 1. Assess — before every LLM call
+Estimate where you stand: window limit, current usage, headroom, threshold. Approximate rates: English ~1.3 tokens/word, code ~0.5 tokens/word (symbols add up — under-estimation is the common failure), a line of code ~5–10 tokens, a reasoning paragraph ~50–100.
 
-A companion Python script estimates token counts, suggests compression strategies, and tracks session budget.
+### 2. Classify — the lowest need level that answers the question
+| Need | Cost |
+|------|------|
+| **Summary** — what does this file do? | 50–100 |
+| **Signature** — what functions, what args? | 100–200 |
+| **Section** — lines 50–100 only | 200–400 |
+| **Full** — complete file | 500–3000 |
+| **Multi-file** — cross-reference 3+ | 1500–8000 |
 
-```bash
-# Estimate token cost of files
-python scripts/context_budget.py --files src/main.py src/utils.py
+Default to the lowest level; escalate only when it proves insufficient. Reading full files "just in case" is the budget leak.
 
-# Check if content fits budget
-python scripts/context_budget.py --file large_output.txt --budget 4000
+### 3. Compress — at the 50% threshold, before adding new content
+Summarize older reasoning (keep conclusions, drop derivations), replace full reads with signature extracts, collapse multi-turn conversations into decision summaries, strip comments from quoted snippets, use ellipsis for boilerplate, offload to files/notes instead of inlining. Compress older reasoning first — never the user's instructions, task definition, or success criteria. Compression has overhead: apply it at the threshold, not from anxiety.
 
-# Track session usage
-python scripts/context_budget.py --log "read_file:main.py:1200" --budget 16000
-python scripts/context_budget.py --log "grep:utils:50" --budget 16000
-python scripts/context_budget.py --report
+### 4. Decide — breadth vs depth on remaining budget R
+- **R > 50%** → depth mode: full reads, deep exploration
+- **R 25–50%** → balanced: summarize most files, read 1–2 key files fully
+- **R < 25%** → breadth: signatures only, targeted searches — or pause and compress first
+- **R < 10%** → halt: compress immediately or escalate to the user
 
-# Suggest compression for oversized content
-python scripts/context_budget.py --file huge_log.txt --suggest --budget 4000
-```
+When budget is constrained, state it explicitly: "budget constrained — choose the single most important check" (telling the agent it still has budget to explore is measurably effective).
 
-The script is optional — the skill works equally well with manual estimation.
+### 5. Log — every operation that adds tokens
+Track per-operation consumption and status color: **GREEN** (<50%, no action), **YELLOW** (50–75%, compress before next addition), **RED** (>75%, halt and compress), **BLACK** (>90%, stop, summarize and reset or escalate). State the budget status explicitly.
 
-## Core protocol
+## Reference
+For the companion script commands (`scripts/context_budget.py`: estimate, budget check, session tracking, compression suggestions), the compression techniques table, the worked example, and research basis, see [`references/budget-details.md`](references/budget-details.md).
 
-### Step 1 — ASSESS current context usage
-
-Before every LLM call, estimate where you stand:
-
-```markdown
-Context budget assessment:
-- Window limit: ~16000 tokens (estimate)
-- Current usage: ~9000 tokens (reasoning + file contents + history)
-- Headroom: ~7000 tokens
-- Safety threshold: 50% (8000 tokens)
-- Status: ABOVE threshold → compression required
-```
-
-**Estimation rules (approximate):**
-| Content type | Tokens per unit |
-|-------------|-----------------|
-| English text | ~1.3 tokens per word |
-| Code | ~0.5 tokens per word (more symbols) |
-| File path / short string | ~2-4 tokens |
-| Line of code | ~5-10 tokens |
-| Reasoning paragraph | ~50-100 tokens |
-
-### Step 2 — CLASSIFY the information need
-
-Determine how much fidelity you need:
-
-| Need level | Description | Approximate token cost |
-|-----------|-------------|----------------------|
-| **Summary** | "What does this file do?" | 50-100 tokens |
-| **Signature** | "What functions exist and what are their args?" | 100-200 tokens |
-| **Section** | "Read lines 50-100 only" | 200-400 tokens |
-| **Full** | "I need the complete file" | 500-3000 tokens |
-| **Multi-file** | "Cross-reference 3+ files" | 1500-8000 tokens |
-
-Default to the **lowest** need level that can answer the question. Escalate only when the lower level proves insufficient.
-
-### Step 3 — COMPRESS when over threshold
-
-**Compression threshold: 50% of window.**
-
-When current usage exceeds the threshold, apply compression before adding new content:
-
-```markdown
-Compression checklist:
-- [ ] Summarize older reasoning (keep conclusions, drop derivations)
-- [ ] Replace full file reads with signature-only extracts
-- [ ] Collapse multi-turn conversations into decision summaries
-- [ ] Remove code comments from quoted snippets
-- [ ] Use ellipsis (...) for repetitive or boilerplate sections
-- [ ] Offload to external memory (notes, files) instead of inline context
-```
-
-**Compression techniques by content type:**
-
-| Content | Compression technique |
-|---------|----------------------|
-| Long reasoning chain | Keep final conclusion + key decision points only |
-| Full file content | Extract signatures + relevant section only |
-| Test output | Purify to failure-relevant lines only |
-| Error logs | Keep first and last 5 lines + exception message |
-| Multi-turn chat | Summarize each turn to 1-2 sentences |
-| Stack traces | Keep user frames only (see purify-test-output skill) |
-
-### Step 4 — DECIDE breadth vs depth
-
-With remaining budget R:
-
-```markdown
-If R > 50% of window:
-  → Depth mode: Read full files, explore deeply
-
-If R is 25-50% of window:
-  → Balanced mode: Summarize most files, read 1-2 key files fully
-
-If R < 25% of window:
-  → Breadth mode: Signatures only, search for specific terms
-  → OR: Pause and compress existing context before proceeding
-
-If R < 10% of window:
-  → Halt: Compress immediately or escalate to user
-```
-
-**BATS insight:** Telling the agent "you still have budget, explore more" is effective. Conversely, when budget is low, explicitly state "budget constrained — choose the single most important check."
-
-### Step 5 — LOG consumption
-
-Track every operation that adds tokens:
-
-```markdown
-Context budget log:
-[Turn 1] reasoning: ~400 tokens
-[Turn 2] read_file config.py: ~200 tokens
-[Turn 3] read_file main.py (full): ~1800 tokens
-[Turn 4] grep search results: ~300 tokens
-[Turn 5] reasoning: ~500 tokens
-___
-
-Total: ~3200 tokens | Remaining: ~12800 tokens | Status: GREEN
-```
-
-When total crosses thresholds, note the color:
-- **GREEN** (< 50%): No action needed
-- **YELLOW** (50-75%): Apply compression before next addition
-- **RED** (> 75%): Halt and compress existing context
-- **BLACK** (> 90%): Stop. Summarize and reset, or escalate.
-
-## Rules for budget management
-
-- Estimate before every LLM call instead of guessing
-- Default to summary/signature level instead of reading full files "just in case"
-- Compress older reasoning first, not the user's instructions
-- Log consumption per operation
-- Use breadth mode when budget is low
-- Offload to files/memory when possible instead of inlining everything
-- State budget status explicitly
-
-## Integration with other skills
-
-- **assumption-grounding**: Verify file sizes before reading full contents
-- **purify-test-output**: Strip test noise before adding failure output to context
-- **explore-codebase**: Use graph/index search instead of reading every file
-- **debug-issue**: Focus on single failure path rather than full system state
-
-## Research basis
-
-- **ContextBudget** (arXiv:2604.01664): Budget-aware context compression for long-horizon agents, framed as sequential decision-making.
-- **BATS** (Liu et al., 2025): Budget-aware tool-use scaling. Simply informing agents of remaining budget pushes the cost-performance Pareto frontier.
-- **Externalization in LLM Agents** (arXiv:2604.08224): As context windows saturate, reliability depends on relocating cognitive burdens to external memory, tool registries, and protocol definitions.
-
-## Example
-
-**Scenario:** Agent needs to refactor a 2000-line monolith across 15 files.
-
-**Without budget management:**
-```
-[Turn 3] Read full monolith → +3000 tokens
-[Turn 5] Read 5 dependencies → +4000 tokens
-[Turn 8] Context overflows. Agent forgets refactoring constraints.
-[Turn 12] Agent contradicts earlier decisions. Session derailed.
-```
-
-**With budget management:**
-```
-[Turn 1] ASSESS: 0/16000 tokens. GREEN.
-[Turn 2] CLASSIFY: Need signatures of 15 files, not full contents.
-[Turn 3] Read 15 files at signature level → +800 tokens
-[Turn 4] Identify 3 key files for full read.
-[Turn 5] Read 3 files fully → +1500 tokens
-[Turn 6] ASSESS: 2800/16000. GREEN. Proceed with refactor.
-[Turn 8] ASSESS: 8200/16000. YELLOW. Compress old reasoning.
-[Turn 9] Summarize turns 1-6 into 200 tokens. Net save: 600 tokens.
-[Turn 12] Refactor complete. Peak usage: 9400 tokens. No overflow.
-```
-
-## Failure Modes
-
-- **Optimistic estimation:** underestimating code token density. Code is ~0.5 tokens/word but symbols and indentation add up.
-- **Compression resistance:** refusing to summarize your own reasoning because "it's all important"
-- **Threshold panic:** compressing at 30% because you're anxious. Compression has overhead — only apply when needed.
-- **Instruction dropout:** compressing the user's original constraints. Never drop the task definition or success criteria.
-- **Log neglect:** tracking budget but not acting on yellow/red status
+## Rules
+- **Do** estimate usage before every LLM call instead of guessing.
+- **Do** default to summary/signature level — full reads are the exception, not the default.
+- **Do** compress older reasoning first; the user's instructions are the last thing to touch.
+- **Do** act on yellow/red status — logging without acting is neglect.
+- **Do** offload to files and memory instead of inlining everything.
