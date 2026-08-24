@@ -168,3 +168,24 @@ first-principles (+11 batch-retired by audit).
 Rule holds: attention-direction skills won only when graded on output shape;
 outcome-level differences appeared exactly once (assumption-grounding, mid-tier)
 and were retired by user call.
+
+### Round 8 (2026-08-24): occams-razor + explore-vs-exploit-state-machine (audit-KEEPs)
+
+#### occams-razor — DeepSeek V4 Flash, 1v1
+NULL. Fixture baited over-engineering (persistence feature in a no-build static
+project); BOTH conditions delivered the minimal solution (localStorage, single file,
+no abstractions, syntax-clean). Baseline did not over-engineer.
+
+#### explore-vs-exploit-state-machine — Stepfun Step 3.7 Flash, 1v1
+NULL. Both picked `integrations` (correct: highest change rate + most rollbacks +
+blocked dedicated team + narrow sync coupling) and both explicitly documented what
+they stopped investigating (reporting = cost trap, notifications = 1-engineer team,
+billing = dependency not extractable). No runaway exploration either side.
+
+## Audit-KEEP calibration
+Rounds 8 show audit-KEEP skills also null against flash-tier baselines on
+well-posed tasks. The audit KEEPs therefore encode value for stronger agents,
+messier real-world context, or multi-session work - NOT measurable lift over a
+mid-tier model on synthetic tasks. Treat catalog as curated for capable agents;
+per-skill A/B lift at flash tier is not a meaningful keep/retire criterion for
+this remaining corpus.
