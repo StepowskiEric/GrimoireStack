@@ -10,10 +10,10 @@ describe('getSpellSearchableText', () => {
   it('concatenates name + skill + effect lowercased', () => {
     const text = getSpellSearchableText({
       name: 'Trace Sight',
-      skill: 'log-trace-correlation',
+      skill: 'debug-issue',
       effect: 'Reads the Stack.',
     });
-    expect(text).toBe('trace sight log-trace-correlation reads the stack.');
+    expect(text).toBe('trace sight debug-issue reads the stack.');
   });
 
   it('omits missing fields gracefully', () => {

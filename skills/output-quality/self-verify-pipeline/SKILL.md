@@ -109,7 +109,7 @@ Revise ONLY where tool-grounded evidence demands it.
 ### Anti-Patterns
 
 - Skipping Phase 2 and going straight to tools (wastes tool budget on obvious errors)
-- Running Phase 2 indefinitely (2 passes max — diminishing returns)
+- Running Phase 2 indefinitely (2 passes max — diminishing returns). Stop conditions: two consecutive passes with no new verified corrections, budget exhausted, or marginal gain visibly flattening. A hard stop beats an exhausted budget.
 - Verifying every claim instead of flagged ones (waste of tokens)
 - Revising verified-correct claims (second-system effect)
 - Skipping Phase 4 because "Phase 2 looked good" (the Mental-Reality Gap)

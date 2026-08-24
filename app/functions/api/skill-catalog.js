@@ -115,28 +115,12 @@ export const SKILL_CATALOG = [
     "effect": "Hardening checklist for vulnerabilities LLMs reliably introduce: exposed secrets, missing RLS, broken auth, injection flaws, insecure defaults."
   },
   {
-    "skill": "claim-verification-reasoning",
-    "name": "Claim Verification Reasoning",
-    "school": "Reasoning & Faithfulness",
-    "schoolName": "School of Cognition",
-    "status": "—",
-    "effect": "Atomic decomposition with confidence labels and tool-grounded verification."
-  },
-  {
     "skill": "cot-pruning-reasoning",
     "name": "CoT Pruning Reasoning",
     "school": "Reasoning & Faithfulness",
     "schoolName": "School of Cognition",
     "status": "—",
     "effect": "Two-pass prune retains only the steps that move the answer (coarse step-level, then fine token-level)."
-  },
-  {
-    "skill": "faithfulness-aware-reasoning",
-    "name": "Faithfulness-Aware Reasoning",
-    "school": "Reasoning & Faithfulness",
-    "schoolName": "School of Cognition",
-    "status": "—",
-    "effect": "Detect and prevent faithfulness hallucinations where claims aren't logically entailed by the premises."
   },
   {
     "skill": "prism",
@@ -161,14 +145,6 @@ export const SKILL_CATALOG = [
     "schoolName": "School of Cognition",
     "status": "—",
     "effect": "Monitor for semantic stabilization and halt early when consecutive steps converge on equivalent conclusions."
-  },
-  {
-    "skill": "self-contradiction-trap",
-    "name": "Self-Contradiction Trap",
-    "school": "Reasoning & Faithfulness",
-    "schoolName": "School of Cognition",
-    "status": "—",
-    "effect": "Maintain a belief store of claims made during a session. Detect contradictions and force resolution before continuing."
   },
   {
     "skill": "agentic-design-patterns-orchestrator-state-machine",
@@ -225,14 +201,6 @@ export const SKILL_CATALOG = [
     "schoolName": "School of Confluence",
     "status": "—",
     "effect": "Scout context — a fast sub-agent reads files and returns only distilled relevant context, saving tokens and reducing distraction for the main model. Use when the codebase is large, you need scoped findings rather than raw file dumps, or the main task needs file context you don't already have."
-  },
-  {
-    "skill": "separation-of-concerns",
-    "name": "Separation of Concerns for Agent Orchestration",
-    "school": "Agent Orchestration",
-    "schoolName": "School of Confluence",
-    "status": "—",
-    "effect": "Keep planning, diagnosis, observation, and execution phases intellectually isolated."
   },
   {
     "skill": "sop-evolution-memory",
@@ -323,14 +291,6 @@ export const SKILL_CATALOG = [
     "effect": "Ensure consistency when a fix or feature requires touching 2+ files that must stay consistent."
   },
   {
-    "skill": "critical-system-interrogation",
-    "name": "Critical System Interrogation",
-    "school": "Software Development",
-    "schoolName": "School of Crafting",
-    "status": "—",
-    "effect": "Stress-test critical system paths (auth pipelines, payment flows, data validation) for correctness, race conditions, security flaws, and architectural integrity."
-  },
-  {
     "skill": "git-surgery",
     "name": "Git Surgery",
     "school": "Software Development",
@@ -419,14 +379,6 @@ export const SKILL_CATALOG = [
     "effect": "Build the smallest useful checklist for high-stakes procedures, gate execution on checklist completion, stop cleanly and escalate if it cannot be cleared."
   },
   {
-    "skill": "context-budget-operator",
-    "name": "Context Budget Operator",
-    "school": "Execution & Improvement",
-    "schoolName": "School of Execution",
-    "status": "—",
-    "effect": "Track token budget, classify information needs, compress aggressively, and decide breadth-vs-depth based on remaining runway."
-  },
-  {
     "skill": "how-to-solve-it-state-machine",
     "name": "How to Solve It",
     "school": "Execution & Improvement",
@@ -507,14 +459,6 @@ export const SKILL_CATALOG = [
     "effect": "Verify each step before proceeding so a wrong step doesn't cascade into a chain of unjustified conclusions."
   },
   {
-    "skill": "structured-feature-planning",
-    "name": "Structured Feature Planning",
-    "school": "Execution & Improvement",
-    "schoolName": "School of Execution",
-    "status": "—",
-    "effect": "Read files, search for patterns, self-review twice, then execute. Never hallucinate when confused."
-  },
-  {
     "skill": "summarize",
     "name": "Summarize — Emergency Stop + Handoff Report",
     "school": "Execution & Improvement",
@@ -545,14 +489,6 @@ export const SKILL_CATALOG = [
     "schoolName": "School of Execution",
     "status": "—",
     "effect": "Detect agent failure spirals — repetitive loops, specification drift, and stuck trajectories — and forcibly redirect strategy."
-  },
-  {
-    "skill": "assumption-grounding",
-    "name": "Verify a batch of assumptions from a file",
-    "school": "Execution & Improvement",
-    "schoolName": "School of Execution",
-    "status": "—",
-    "effect": "State every assumption explicitly, verify with the cheapest possible check, and only proceed on confirmation."
   },
   {
     "skill": "zero-defect-protocol",
@@ -603,14 +539,6 @@ export const SKILL_CATALOG = [
     "effect": "Explicit explore/exploit protocol: frame the decision, budget the search, explore with purpose, stop deliberately, act when search stops earning its keep."
   },
   {
-    "skill": "failure-analysis-protocol",
-    "name": "Failure Analysis Protocol",
-    "school": "Judgment & Decision-Making",
-    "schoolName": "School of Judgment",
-    "status": "—",
-    "effect": "Three failure lenses merged: invert success, narrate specific failures, trace cascading consequences."
-  },
-  {
     "skill": "failure-swarm",
     "name": "Failure Swarm",
     "school": "Judgment & Decision-Making",
@@ -633,14 +561,6 @@ export const SKILL_CATALOG = [
     "schoolName": "School of Judgment",
     "status": "—",
     "effect": "After code is written, assume it will cause future pain and work backward to find what will bite: debt with interest, extension traps, hidden assumptions, maintenance memory, time bombs, and upgrade cliffs. Use when implementation is done and the agent must surface what the code will cost the project later."
-  },
-  {
-    "skill": "inversion-mental-model-state-machine",
-    "name": "Inversion",
-    "school": "Judgment & Decision-Making",
-    "schoolName": "School of Judgment",
-    "status": "—",
-    "effect": "Enforce failure-mode mapping and guardrail derivation before recommending success paths."
   },
   {
     "skill": "metacognitive-monitoring",
@@ -779,14 +699,6 @@ export const SKILL_CATALOG = [
     "effect": "A/B evaluate any GrimoireStack skill against a baseline using isolated subagents, 5 trials each, and an objective rubric."
   },
   {
-    "skill": "test-driven-development",
-    "name": "Test-Driven Development",
-    "school": "Testing & Measurement",
-    "schoolName": "School of Measurement",
-    "status": "—",
-    "effect": "Red-green-refactor loop. Write the test first, watch it fail, write the minimal fix, then refactor."
-  },
-  {
     "skill": "local-llm-tooling",
     "name": "Local LLM Tooling Skill",
     "school": "Mlops",
@@ -843,14 +755,6 @@ export const SKILL_CATALOG = [
     "effect": "Escalating verification chain of bounded revision, claim decomposition, and tool-grounded critique."
   },
   {
-    "skill": "self-consistency",
-    "name": "Self-Consistency Check",
-    "school": "Output Quality",
-    "schoolName": "School of Refinement",
-    "status": "—",
-    "effect": "Generate independent reasoning paths and check whether they converge."
-  },
-  {
     "skill": "tool-interactive-critic",
     "name": "Tool-Interactive Critic",
     "school": "Output Quality",
@@ -873,14 +777,6 @@ export const SKILL_CATALOG = [
     "schoolName": "School of Remediation",
     "status": "—",
     "effect": "Auto-insert temporary print/logging statements at key points in the code, run the failing test, and feed the captured runtime state to the LLM."
-  },
-  {
-    "skill": "bisect-debugging",
-    "name": "Bisect Debugging",
-    "school": "Debugging",
-    "schoolName": "School of Remediation",
-    "status": "—",
-    "effect": "Isolate the exact commit that introduced a bug using binary search through git history."
   },
   {
     "skill": "debug-issue",
@@ -923,14 +819,6 @@ export const SKILL_CATALOG = [
     "effect": "Structured protocol for when an agent is stuck — escalating from self-recovery to user collaboration to full retreat. Fills the gap between trajectory-guard (detects stuck) and summarize (bails out)."
   },
   {
-    "skill": "log-trace-correlation",
-    "name": "Log Trace Correlation",
-    "school": "Debugging",
-    "schoolName": "School of Remediation",
-    "status": "—",
-    "effect": "Correlate error logs and stack traces to source code — map each frame to a file:line, identify root cause, and produce a minimal fix. Use when you have an error log with a stack trace and need to determine which file, function, and line caused the failure without guesswork."
-  },
-  {
     "skill": "minimal-reproduction",
     "name": "Minimal Reproduction",
     "school": "Debugging",
@@ -953,14 +841,6 @@ export const SKILL_CATALOG = [
     "schoolName": "School of Remediation",
     "status": "—",
     "effect": "Use when failing test output contains >50% framework noise (site-packages, node_modules) that drowns out user code, or when multiple tests fail and you need to isolate the most relevant failure first."
-  },
-  {
-    "skill": "root-cause-analysis",
-    "name": "Root Cause Analysis",
-    "school": "Debugging",
-    "schoolName": "School of Remediation",
-    "status": "—",
-    "effect": "Distinguish symptoms from causes, verify causal chains, and fix the underlying defect. Stops recurring regressions caused by workarounds."
   },
   {
     "skill": "specter",

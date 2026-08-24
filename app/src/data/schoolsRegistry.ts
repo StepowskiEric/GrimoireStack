@@ -114,21 +114,9 @@ const schools: Array<{
     "desc": "Mental models and structured thought for when the problem itself is unclear or risks hallucination.",
     "spells": [
       {
-        "name": "Claim Verification Reasoning",
-        "skill": "claim-verification-reasoning",
-        "effect": "Atomic decomposition with confidence labels and tool-grounded verification.",
-        "status": "—"
-      },
-      {
         "name": "CoT Pruning Reasoning",
         "skill": "cot-pruning-reasoning",
         "effect": "Two-pass prune retains only the steps that move the answer (coarse step-level, then fine token-level).",
-        "status": "—"
-      },
-      {
-        "name": "Faithfulness-Aware Reasoning",
-        "skill": "faithfulness-aware-reasoning",
-        "effect": "Detect and prevent faithfulness hallucinations where claims aren't logically entailed by the premises.",
         "status": "—"
       },
       {
@@ -147,12 +135,6 @@ const schools: Array<{
         "name": "Selective Halt Reasoning",
         "skill": "selective-halt-reasoning",
         "effect": "Monitor for semantic stabilization and halt early when consecutive steps converge on equivalent conclusions.",
-        "status": "—"
-      },
-      {
-        "name": "Self-Contradiction Trap",
-        "skill": "self-contradiction-trap",
-        "effect": "Maintain a belief store of claims made during a session. Detect contradictions and force resolution before continuing.",
         "status": "—"
       }
     ]
@@ -203,12 +185,6 @@ const schools: Array<{
         "name": "Scout",
         "skill": "scout",
         "effect": "Scout context — a fast sub-agent reads files and returns only distilled relevant context, saving tokens and reducing distraction for the main model. Use when the codebase is large, you need scoped findings rather than raw file dumps, or the main task needs file context you don't already have.",
-        "status": "—"
-      },
-      {
-        "name": "Separation of Concerns for Agent Orchestration",
-        "skill": "separation-of-concerns",
-        "effect": "Keep planning, diagnosis, observation, and execution phases intellectually isolated.",
         "status": "—"
       },
       {
@@ -286,12 +262,6 @@ const schools: Array<{
         "status": "—"
       },
       {
-        "name": "Critical System Interrogation",
-        "skill": "critical-system-interrogation",
-        "effect": "Stress-test critical system paths (auth pipelines, payment flows, data validation) for correctness, race conditions, security flaws, and architectural integrity.",
-        "status": "—"
-      },
-      {
         "name": "Git Surgery",
         "skill": "git-surgery",
         "effect": "Recover from local git disasters: detached HEAD, botched rebase, accidental commits, merge conflicts.",
@@ -366,12 +336,6 @@ const schools: Array<{
         "status": "—"
       },
       {
-        "name": "Context Budget Operator",
-        "skill": "context-budget-operator",
-        "effect": "Track token budget, classify information needs, compress aggressively, and decide breadth-vs-depth based on remaining runway.",
-        "status": "—"
-      },
-      {
         "name": "How to Solve It",
         "skill": "how-to-solve-it-state-machine",
         "effect": "Frame the problem, gather evidence, explore via hypothesis, plan, reflect. Designed to prevent premature coding.",
@@ -432,12 +396,6 @@ const schools: Array<{
         "status": "—"
       },
       {
-        "name": "Structured Feature Planning",
-        "skill": "structured-feature-planning",
-        "effect": "Read files, search for patterns, self-review twice, then execute. Never hallucinate when confused.",
-        "status": "—"
-      },
-      {
         "name": "Summarize — Emergency Stop + Handoff Report",
         "skill": "summarize",
         "effect": "Emergency stop + perfect handoff report so the next agent loses nothing.",
@@ -459,12 +417,6 @@ const schools: Array<{
         "name": "Trajectory Guard — Detect and Recover from Failure Spirals",
         "skill": "trajectory-guard",
         "effect": "Detect agent failure spirals — repetitive loops, specification drift, and stuck trajectories — and forcibly redirect strategy.",
-        "status": "—"
-      },
-      {
-        "name": "Verify a batch of assumptions from a file",
-        "skill": "assumption-grounding",
-        "effect": "State every assumption explicitly, verify with the cheapest possible check, and only proceed on confirmation.",
         "status": "—"
       },
       {
@@ -512,12 +464,6 @@ const schools: Array<{
         "status": "—"
       },
       {
-        "name": "Failure Analysis Protocol",
-        "skill": "failure-analysis-protocol",
-        "effect": "Three failure lenses merged: invert success, narrate specific failures, trace cascading consequences.",
-        "status": "—"
-      },
-      {
         "name": "Failure Swarm",
         "skill": "failure-swarm",
         "effect": "Swarm 3-5 critic personas over a spec to surface failure modes pre-implementation. User-invoked; type `/failure-swarm`.",
@@ -533,12 +479,6 @@ const schools: Array<{
         "name": "Future Mortem",
         "skill": "future-mortem",
         "effect": "After code is written, assume it will cause future pain and work backward to find what will bite: debt with interest, extension traps, hidden assumptions, maintenance memory, time bombs, and upgrade cliffs. Use when implementation is done and the agent must surface what the code will cost the project later.",
-        "status": "—"
-      },
-      {
-        "name": "Inversion",
-        "skill": "inversion-mental-model-state-machine",
-        "effect": "Enforce failure-mode mapping and guardrail derivation before recommending success paths.",
         "status": "—"
       },
       {
@@ -650,12 +590,6 @@ const schools: Array<{
         "skill": "skill-ab-evaluation",
         "effect": "A/B evaluate any GrimoireStack skill against a baseline using isolated subagents, 5 trials each, and an objective rubric.",
         "status": "—"
-      },
-      {
-        "name": "Test-Driven Development",
-        "skill": "test-driven-development",
-        "effect": "Red-green-refactor loop. Write the test first, watch it fail, write the minimal fix, then refactor.",
-        "status": "—"
       }
     ]
   },
@@ -716,12 +650,6 @@ const schools: Array<{
         "status": "—"
       },
       {
-        "name": "Self-Consistency Check",
-        "skill": "self-consistency",
-        "effect": "Generate independent reasoning paths and check whether they converge.",
-        "status": "—"
-      },
-      {
         "name": "Tool-Interactive Critic",
         "skill": "tool-interactive-critic",
         "effect": "External tools critique the output before it is trusted.",
@@ -745,12 +673,6 @@ const schools: Array<{
         "name": "Before (buggy)",
         "skill": "simulate-instrumentation",
         "effect": "Auto-insert temporary print/logging statements at key points in the code, run the failing test, and feed the captured runtime state to the LLM.",
-        "status": "—"
-      },
-      {
-        "name": "Bisect Debugging",
-        "skill": "bisect-debugging",
-        "effect": "Isolate the exact commit that introduced a bug using binary search through git history.",
         "status": "—"
       },
       {
@@ -784,12 +706,6 @@ const schools: Array<{
         "status": "—"
       },
       {
-        "name": "Log Trace Correlation",
-        "skill": "log-trace-correlation",
-        "effect": "Correlate error logs and stack traces to source code — map each frame to a file:line, identify root cause, and produce a minimal fix. Use when you have an error log with a stack trace and need to determine which file, function, and line caused the failure without guesswork.",
-        "status": "—"
-      },
-      {
         "name": "Minimal Reproduction",
         "skill": "minimal-reproduction",
         "effect": "Write the smallest possible test that demonstrates the bug, then use it as ammunition for debugging.",
@@ -805,12 +721,6 @@ const schools: Array<{
         "name": "Or from file: python purify_test_output.py --file /tmp/raw_output.txt",
         "skill": "purify-test-output",
         "effect": "Use when failing test output contains >50% framework noise (site-packages, node_modules) that drowns out user code, or when multiple tests fail and you need to isolate the most relevant failure first.",
-        "status": "—"
-      },
-      {
-        "name": "Root Cause Analysis",
-        "skill": "root-cause-analysis",
-        "effect": "Distinguish symptoms from causes, verify causal chains, and fix the underlying defect. Stops recurring regressions caused by workarounds.",
         "status": "—"
       },
       {

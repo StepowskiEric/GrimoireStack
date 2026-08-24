@@ -3,7 +3,7 @@ import { compareSpells } from '../utils/markdownExport.ts';
 
 const spellA = {
   name: 'Trace Sight',
-  skill: 'log-trace-correlation',
+  skill: 'debug-issue',
   effect: 'Maps stack traces to source code.',
   status: 'Proven',
   combos: ['Bisect Divination', 'Root Cause Revelation'],
@@ -13,7 +13,7 @@ const spellA = {
 
 const spellB = {
   name: 'Bisect Divination',
-  skill: 'bisect-debugging',
+  skill: 'debug-to-fix-pipeline',
   effect: 'Binary searches commit history.',
   status: 'Proven',
   combos: ['Trace Sight'],

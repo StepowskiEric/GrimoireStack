@@ -8,18 +8,18 @@ export const WIZARD_DATA = [
         id: 'stack-trace',
         label: 'Stack trace or error log',
         desc: 'Read a trace, find the problem',
-        skill: 'log-trace-correlation',
+        skill: 'debug-issue',
         effect:
           'Maps stack traces to source code, inspects context around the failure, and suggests the most likely fix.',
         reason:
           'Optimized for errors you already have in hand — the trace IS the data you need to act on.',
-        alt: 'bisect-debugging — if you need to find when this started',
+        alt: 'debug-to-fix-pipeline — if you need to find when this started',
       },
       {
         id: 'cryptic-error',
         label: 'Cryptic or misleading error message',
         desc: 'Error makes no sense',
-        skill: 'log-trace-correlation',
+        skill: 'debug-issue',
         effect:
           'Maps stack traces to source code, inspects context around the failure, and suggests the most likely fix.',
         reason:
@@ -30,18 +30,18 @@ export const WIZARD_DATA = [
         id: 'regression',
         label: 'Regression — something that used to work',
         desc: 'Find the change that broke it',
-        skill: 'bisect-debugging',
+        skill: 'debug-to-fix-pipeline',
         effect:
           'Binary search across git history to isolate the exact commit that introduced the bug.',
         reason:
           'Fastest way to find "what changed" when tests used to pass — O(log n) commits checked.',
-        alt: 'root-cause-analysis — if the cause is likely config or environment, not a code change',
+        alt: 'specter — if the cause is likely config or environment, not a code change',
       },
       {
         id: 'random-failure',
         label: 'Random / non-deterministic failure',
         desc: 'Fails sometimes, passes other times with no changes',
-        skill: 'root-cause-analysis',
+        skill: 'specter',
         effect:
           'Systematically surfaces the real risks in a plan before committing — works backward from the failure to find what went wrong.',
         reason:
@@ -52,7 +52,7 @@ export const WIZARD_DATA = [
         id: 'wild-guess',
         label: 'Guessing at fixes / wasting time',
         desc: 'Trying things at random',
-        skill: 'root-cause-analysis',
+        skill: 'specter',
         effect:
           'Traces the failure back to its root cause rather than patching symptoms — prevents the "try random things until it passes" death spiral.',
         reason:
@@ -203,7 +203,7 @@ export const WIZARD_DATA = [
           'Diagnoses and fixes broken development environments — missing tools, wrong versions, corrupted caches, full disks, permission drift, and dependency hell.',
         reason:
           'CI failures are environment problems until proven otherwise. Environment recovery is built for these diagnostics.',
-        alt: 'network-api-debugging — if the failure is a network or API call, not a tool; or log-trace-correlation — if you have a specific error trace',
+        alt: 'network-api-debugging — if the failure is a network or API call, not a tool; or debug-issue — if you have a specific error trace',
       },
       {
         id: 'test-strategy',
@@ -214,7 +214,7 @@ export const WIZARD_DATA = [
           'Writes tests that pin real behavior instead of implementation details — config values, lucky samples, or brittle selectors.',
         reason:
           'Good tests survive refactoring. Bad tests couple to implementation and break on every change. This skill teaches the difference.',
-        alt: 'test-driven-development — if you want to write the tests before the code; or e2e-testing-philosophy-and-architecture — for the full E2E testing mindset',
+        alt: 'unit-test-debugging — if you want to write the tests before the code; or e2e-testing-philosophy-and-architecture — for the full E2E testing mindset',
       },
       {
         id: 'shipping-check',
@@ -557,7 +557,7 @@ export const WIZARD_DATA = [
           'Systematically learns from outcomes — the natural counterpart to pre-mortem, examining what actually happened vs what was expected.',
         reason:
           'Post-incident reviews are only valuable if they are blameless and systematic. Retrospective structures that learning.',
-        alt: 'root-cause-analysis — if the primary need is technical root cause, not process learning',
+        alt: 'specter — if the primary need is technical root cause, not process learning',
       },
     ],
   },
@@ -575,13 +575,13 @@ export const WIZARD_DATA = [
           'Writes tests that pin real behavior instead of implementation details — config values, lucky samples, or brittle selectors.',
         reason:
           'Unit tests are the first line of defense. Getting them right makes the entire test suite more valuable.',
-        alt: 'test-driven-development — if you prefer to write tests before code',
+        alt: 'unit-test-debugging — if you prefer to write tests before code',
       },
       {
         id: 'integration-tests',
         label: 'Write integration tests',
         desc: 'Test module interactions',
-        skill: 'test-driven-development',
+        skill: 'unit-test-debugging',
         effect:
           'Red-green-refactor loop: write the test first, watch it fail, write the minimal fix, then refactor.',
         reason:
@@ -699,7 +699,7 @@ export const WIZARD_DATA = [
           'RCA runbook for alerts — identifies the alert type, verifies tooling/auth, and walks through root cause analysis using deep research.',
         reason:
           'On-call is high-pressure. A runbook prevents the common failure modes: tunnel vision, jumping to fixes, and missing evidence.',
-        alt: 'root-cause-analysis — for the pure root-cause investigation without the on-call workflow',
+        alt: 'specter — for the pure root-cause investigation without the on-call workflow',
       },
       {
         id: 'migration',

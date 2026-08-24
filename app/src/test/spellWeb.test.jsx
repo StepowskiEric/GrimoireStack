@@ -11,13 +11,13 @@ const mockSchools = [
     spells: [
       {
         name: 'Trace Sight',
-        skill: 'log-trace-correlation',
+        skill: 'debug-issue',
         effect: 'Maps stack traces.',
         status: 'Proven',
       },
       {
         name: 'Bisect Divination',
-        skill: 'bisect-debugging',
+        skill: 'debug-to-fix-pipeline',
         effect: 'Binary searches.',
         status: 'Proven',
       },
@@ -49,7 +49,7 @@ const mockWeb = {
       spellCount: 2,
       children: [
         {
-          id: 'log-trace-correlation',
+          id: 'debug-issue',
           type: 'spell',
           label: 'Trace Sight',
           schoolId: 'debugging',
@@ -59,7 +59,7 @@ const mockWeb = {
           effect: 'Maps stack traces.',
         },
         {
-          id: 'bisect-debugging',
+          id: 'debug-to-fix-pipeline',
           type: 'spell',
           label: 'Bisect Divination',
           schoolId: 'debugging',
@@ -92,7 +92,7 @@ const mockWeb = {
   ],
   spellNodes: [
     {
-      id: 'log-trace-correlation',
+      id: 'debug-issue',
       type: 'spell',
       label: 'Trace Sight',
       schoolId: 'debugging',
@@ -102,7 +102,7 @@ const mockWeb = {
       effect: 'Maps stack traces.',
     },
     {
-      id: 'bisect-debugging',
+      id: 'debug-to-fix-pipeline',
       type: 'spell',
       label: 'Bisect Divination',
       schoolId: 'debugging',

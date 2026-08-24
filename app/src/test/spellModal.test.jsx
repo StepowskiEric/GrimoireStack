@@ -4,7 +4,7 @@ import SpellModal from '../components/SpellModal.tsx';
 
 const sampleSpell = {
   name: 'Trace Sight',
-  skill: 'log-trace-correlation',
+  skill: 'debug-issue',
   effect: 'Maps stack traces to source code.',
   status: 'Proven',
 };
@@ -50,7 +50,7 @@ describe('SpellModal action buttons', () => {
     });
     expect(inscribeBtn.textContent).toBe('Incantation Inscribed');
     expect(navigator.clipboard.writeText).toHaveBeenCalledWith(
-      'npx GrimoireStack install --agent claude --skill log-trace-correlation',
+      'npx GrimoireStack install --agent claude --skill debug-issue',
     );
     await act(() => new Promise((r) => setTimeout(r, 2100)));
     expect(inscribeBtn.textContent).toBe('Inscribe to your Workshop');
@@ -67,7 +67,7 @@ describe('SpellModal action buttons', () => {
       fireEvent.click(inscribeBtn);
     });
     expect(navigator.clipboard.writeText).toHaveBeenCalledWith(
-      'Copy log-trace-correlation/SKILL.md into ~/.factory/skills/log-trace-correlation/',
+      'Copy debug-issue/SKILL.md into ~/.factory/skills/debug-issue/',
     );
   });
 

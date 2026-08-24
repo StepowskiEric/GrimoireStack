@@ -16,34 +16,34 @@ describe('useFavorites', () => {
   it('adds a favorite', () => {
     const { result } = renderHook(() => useFavorites());
     act(() => {
-      result.current.toggleFavorite('Trace Sight', 'log-trace-correlation');
+      result.current.toggleFavorite('Trace Sight', 'debug-issue');
     });
     expect(result.current.favorites).toHaveLength(1);
     expect(result.current.favorites[0].name).toBe('Trace Sight');
-    expect(result.current.isFavorited('log-trace-correlation')).toBe(true);
+    expect(result.current.isFavorited('debug-issue')).toBe(true);
   });
 
   it('removes a favorite when toggled again', () => {
     const { result } = renderHook(() => useFavorites());
     act(() => {
-      result.current.toggleFavorite('Trace Sight', 'log-trace-correlation');
+      result.current.toggleFavorite('Trace Sight', 'debug-issue');
     });
     act(() => {
-      result.current.toggleFavorite('Trace Sight', 'log-trace-correlation');
+      result.current.toggleFavorite('Trace Sight', 'debug-issue');
     });
     expect(result.current.favorites).toHaveLength(0);
-    expect(result.current.isFavorited('log-trace-correlation')).toBe(false);
+    expect(result.current.isFavorited('debug-issue')).toBe(false);
   });
 
   it('stores favorites in localStorage', () => {
     const { result } = renderHook(() => useFavorites());
     act(() => {
-      result.current.toggleFavorite('Trace Sight', 'log-trace-correlation');
+      result.current.toggleFavorite('Trace Sight', 'debug-issue');
     });
     const stored = JSON.parse(localStorage.getItem('grimoire-favorites'));
     expect(stored).toHaveLength(1);
     expect(stored[0].name).toBe('Trace Sight');
-    expect(stored[0].skill).toBe('log-trace-correlation');
+    expect(stored[0].skill).toBe('debug-issue');
   });
 
   it('loads favorites from localStorage on mount', () => {
@@ -69,11 +69,11 @@ describe('useFavorites', () => {
   it('finds a favorite spell across schools', () => {
     const { result } = renderHook(() => useFavorites());
     act(() => {
-      result.current.toggleFavorite('Log Trace Correlation', 'log-trace-correlation');
+      result.current.toggleFavorite('Debug Issue', 'debug-issue');
     });
-    const found = result.current.findFavoriteSpell('log-trace-correlation');
+    const found = result.current.findFavoriteSpell('debug-issue');
     expect(found).not.toBeNull();
-    expect(found.spell.name).toBe('Log Trace Correlation');
+    expect(found.spell.name).toBe('Debug Issue');
   });
 
   it('returns null when favorite spell is not found', () => {

@@ -38,6 +38,7 @@ For the reviewer and test-generation prompt templates, see [`references/prompt-t
 
 ## Rules
 - **Do** keep reviewers diagnostic-only — a reviewer that writes code cannot review its own fix.
+- **Do** end every review in an explicit verdict — APPROVE / APPROVE-WITH-CHANGES / REJECT — so the output is an approval bar, not a finding list.
 - **Do** require formal proof to dismiss Critical/High — severity-rated issues need severity-rated responses.
 - **Do** generate tests for every reported issue before submission.
 - **Do** run the fresh-context reviewer — anchoring on prior issues is a real failure mode.

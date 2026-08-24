@@ -26,7 +26,7 @@ describe('AllSchoolsView — search', () => {
       name: 'School of Remediation',
       real: 'Debugging',
       desc: 'Incantations to banish bugs.',
-      spells: [{ name: 'Trace Sight', skill: 'log-trace-correlation', effect: 'Reads stack traces.' }],
+      spells: [{ name: 'Trace Sight', skill: 'debug-issue', effect: 'Reads stack traces.' }],
     });
     mockSchoolMap.set('reasoning', {
       id: 'reasoning',
@@ -48,11 +48,11 @@ describe('AllSchoolsView — search', () => {
       name: 'School of Remediation',
       real: 'Debugging',
       desc: 'x',
-      spells: [{ name: 'A', skill: 'log-trace-correlation', effect: 'b' }],
+      spells: [{ name: 'A', skill: 'debug-issue', effect: 'b' }],
     });
 
     renderWithProviders(
-      <AllSchoolsView onSchoolSelect={() => {}} searchQuery="log-trace-correlation" />,
+      <AllSchoolsView onSchoolSelect={() => {}} searchQuery="debug-issue" />,
     );
     expect(screen.getByText('Debugging')).toBeInTheDocument();
   });

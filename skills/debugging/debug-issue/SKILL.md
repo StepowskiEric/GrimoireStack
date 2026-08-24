@@ -18,7 +18,7 @@ Dataflow debugging for bugs that *aren't* local. When a value is wrong at point 
 
 - Use this when **static reading of the crash site doesn't explain the symptom**. The variable is wrong; you don't know *where it became wrong.*
 - Don't use when the bug is local: `simulate-instrumentation` for single-module runtime evidence, `debug-issue` once you know the bug crosses a module/service boundary.
-- Don't use when the cause is recent and you need *when*, not *where* — use `bisect-debugging` instead.
+- Don't use when the cause is recent and you need *when*, not *where* — inspect git history first.
 
 ---
 

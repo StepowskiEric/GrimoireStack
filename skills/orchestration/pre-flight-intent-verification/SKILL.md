@@ -141,4 +141,4 @@ This skill was correctly applied when:
 - **`improve-codebase-architecture`** — Phase 2 (Constrain) aligns with its Deletion Test; the invariant list is compatible with its candidate format.
 - **`verification-before-completion`** — Phase 3's verify-before-act discipline is a lighter-weight precursor; use both when the task is large enough to warrant pre-flight _and_ post-completion gates.
 - **`checklist-manifesto`** — for recurring high-stakes tasks, encode the most critical clarifying questions into the pre-procedure checklist.
-- **`root-cause-analysis`** — if this skill was _not_ applied and execution went wrong, the RCA's causal chain will often trace back to a missed Phase 1 assumption or Phase 2 spec gap.
+- **`debug-to-fix-pipeline`** — if this skill was _not_ applied and execution went wrong, the causal chain will often trace back to a missed Phase 1 assumption or Phase 2 spec gap.

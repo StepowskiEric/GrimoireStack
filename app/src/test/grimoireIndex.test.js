@@ -18,10 +18,10 @@ const TEST_SCHOOLS = [
 describe('grimoireIndex — lookup', () => {
   describe('singleton', () => {
     it('resolves a known skill to its entry', () => {
-      const entry = grimoireIndex.resolveBySkill('log-trace-correlation');
+      const entry = grimoireIndex.resolveBySkill('debug-issue');
       expect(entry).not.toBeNull();
-      expect(entry.spell.skill).toBe('log-trace-correlation');
-      expect(entry.spell.name).toBe('Log Trace Correlation');
+      expect(entry.spell.skill).toBe('debug-issue');
+      expect(entry.spell.name).toBe('Debug Issue');
       expect(entry.school.id).toBe('debugging');
     });
 
@@ -30,9 +30,9 @@ describe('grimoireIndex — lookup', () => {
     });
 
     it('resolves a known name to its entry', () => {
-      const entry = grimoireIndex.resolveByName('Log Trace Correlation');
+      const entry = grimoireIndex.resolveByName('Debug Issue');
       expect(entry).not.toBeNull();
-      expect(entry.spell.skill).toBe('log-trace-correlation');
+      expect(entry.spell.skill).toBe('debug-issue');
       expect(entry.school.id).toBe('debugging');
     });
 
@@ -42,13 +42,13 @@ describe('grimoireIndex — lookup', () => {
 
     it('resolves a list of combo names to entries', () => {
       const entries = grimoireIndex.resolveComboSpells([
-        'Log Trace Correlation',
-        'Bisect Debugging',
+        'Debug Issue',
+        'Debug-to-Fix Pipeline',
       ]);
       expect(entries).toHaveLength(2);
       expect(entries.map((e) => e.spell.skill)).toEqual([
-        'log-trace-correlation',
-        'bisect-debugging',
+        'debug-issue',
+        'debug-to-fix-pipeline',
       ]);
     });
 
@@ -62,7 +62,7 @@ describe('grimoireIndex — lookup', () => {
     });
 
     it('returns the school for a known skill', () => {
-      const school = grimoireIndex.getSchoolForSkill('log-trace-correlation');
+      const school = grimoireIndex.getSchoolForSkill('debug-issue');
       expect(school).not.toBeNull();
       expect(school.id).toBe('debugging');
     });
@@ -72,8 +72,8 @@ describe('grimoireIndex — lookup', () => {
     });
 
     it('returns the spell name for a known skill', () => {
-      expect(grimoireIndex.getSpellNameBySkill('log-trace-correlation')).toBe(
-        'Log Trace Correlation',
+      expect(grimoireIndex.getSpellNameBySkill('debug-issue')).toBe(
+        'Debug Issue',
       );
     });
 
@@ -118,7 +118,7 @@ describe('grimoireIndex — iteration', () => {
     for (const e of grimoireIndex) {
       ids.add(e.spell.skill);
     }
-    expect(ids.has('log-trace-correlation')).toBe(true);
+    expect(ids.has('debug-issue')).toBe(true);
     expect(ids.size).toBeGreaterThan(20);
   });
 
@@ -167,8 +167,8 @@ describe('grimoireIndex — similarTo', () => {
   });
 
   it('ranks exact substring matches higher than partial', () => {
-    const out = grimoireIndex.similarTo('log-trace', 5);
-    expect(out[0].spell.skill).toBe('log-trace-correlation');
+    const out = grimoireIndex.similarTo('debug-issue', 5);
+    expect(out[0].spell.skill).toBe('debug-issue');
   });
 
   it('returns empty for empty or whitespace query', () => {
@@ -224,15 +224,15 @@ describe('grimoireIndex — matchProblem', () => {
   });
 
   it('matches on skill name', () => {
-    const results = grimoireIndex.matchProblem('log-trace-correlation', { limit: 5 });
+    const results = grimoireIndex.matchProblem('debug-issue', { limit: 5 });
     expect(results.length).toBeGreaterThan(0);
-    expect(results[0].spell.skill).toBe('log-trace-correlation');
+    expect(results[0].spell.skill).toBe('debug-issue');
   });
 
   it('matches on effect keywords', () => {
     const results = grimoireIndex.matchProblem('stack trace', { limit: 5 });
     expect(results.length).toBeGreaterThan(0);
-    const hasLogTrace = results.some((r) => r.spell.skill === 'log-trace-correlation');
+    const hasLogTrace = results.some((r) => r.spell.skill === 'debug-issue');
     expect(hasLogTrace).toBe(true);
   });
 
@@ -303,9 +303,9 @@ describe('grimoireIndex — buildGraph', () => {
 describe('grimoireIndex — getNodeBySkill', () => {
   it('returns a node for a valid skill', () => {
     const graph = grimoireIndex.buildGraph();
-    const node = grimoireIndex.getNodeBySkill(graph, 'log-trace-correlation');
+    const node = grimoireIndex.getNodeBySkill(graph, 'debug-issue');
     expect(node).not.toBeNull();
-    expect(node.id).toBe('log-trace-correlation');
+    expect(node.id).toBe('debug-issue');
   });
 
   it('returns null for an invalid skill', () => {
@@ -379,9 +379,9 @@ describe('grimoireIndex — buildSpellWeb', () => {
 
   it('findSpellNode returns correct spell', () => {
     const web = grimoireIndex.buildSpellWeb();
-    const spell = web.findSpellNode('log-trace-correlation');
+    const spell = web.findSpellNode('debug-issue');
     expect(spell).not.toBeNull();
-    expect(spell.label).toBe('Log Trace Correlation');
+    expect(spell.label).toBe('Debug Issue');
     expect(spell.schoolId).toBe('debugging');
   });
 

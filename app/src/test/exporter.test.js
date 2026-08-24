@@ -42,18 +42,18 @@ describe('exporter', () => {
     });
 
     it('includes favorites in output', () => {
-      const favs = [{ name: 'Trace Sight', skill: 'log-trace-correlation' }];
+      const favs = [{ name: 'Trace Sight', skill: 'debug-issue' }];
       const json = exportAsJson({ favorites: favs, marginalia: {}, recent: [] });
       const parsed = JSON.parse(json);
       expect(parsed.favorites.length).toBe(1);
-      expect(parsed.favorites[0].skill).toBe('log-trace-correlation');
+      expect(parsed.favorites[0].skill).toBe('debug-issue');
     });
 
     it('includes marginalia in output', () => {
-      const marg = { 'log-trace-correlation': 'my note' };
+      const marg = { 'debug-issue': 'my note' };
       const json = exportAsJson({ favorites: [], marginalia: marg, recent: [] });
       const parsed = JSON.parse(json);
-      expect(parsed.marginalia['log-trace-correlation']).toBe('my note');
+      expect(parsed.marginalia['debug-issue']).toBe('my note');
     });
   });
 
@@ -64,14 +64,14 @@ describe('exporter', () => {
     });
 
     it('lists favorites with skill ID', () => {
-      const favs = [{ name: 'Trace Sight', skill: 'log-trace-correlation' }];
+      const favs = [{ name: 'Trace Sight', skill: 'debug-issue' }];
       const md = exportAsMarkdown({ favorites: favs, marginalia: {}, recent: [] });
       expect(md).toContain('Trace Sight');
-      expect(md).toContain('`log-trace-correlation`');
+      expect(md).toContain('`debug-issue`');
     });
 
     it('includes marginalia when present', () => {
-      const marg = { 'log-trace-correlation': 'my note' };
+      const marg = { 'debug-issue': 'my note' };
       const md = exportAsMarkdown({ favorites: [], marginalia: marg, recent: [] });
       expect(md).toContain('my note');
     });
@@ -164,9 +164,9 @@ describe('exporter', () => {
     });
 
     it('round-trips: export then import produces equivalent data', () => {
-      const favs = [{ name: 'Trace Sight', skill: 'log-trace-correlation' }];
-      const marg = { 'log-trace-correlation': 'my note' };
-      const rec = [{ name: 'Trace Sight', skill: 'log-trace-correlation', viewedAt: 123 }];
+      const favs = [{ name: 'Trace Sight', skill: 'debug-issue' }];
+      const marg = { 'debug-issue': 'my note' };
+      const rec = [{ name: 'Trace Sight', skill: 'debug-issue', viewedAt: 123 }];
       const json = exportAsJson({ favorites: favs, marginalia: marg, recent: rec });
       const result = importConfig(json);
       expect(result.favorites).toEqual(favs);

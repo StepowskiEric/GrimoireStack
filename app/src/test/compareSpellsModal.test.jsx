@@ -7,7 +7,7 @@ const mockEntries = [
   {
     spell: {
       name: 'Trace Sight',
-      skill: 'log-trace-correlation',
+      skill: 'debug-issue',
       effect: 'Maps stack traces to source code.',
       status: 'Proven',
     },
@@ -16,7 +16,7 @@ const mockEntries = [
   {
     spell: {
       name: 'Bisect Divination',
-      skill: 'bisect-debugging',
+      skill: 'debug-to-fix-pipeline',
       effect: 'Binary searches commit history.',
       status: 'Proven',
     },
@@ -44,7 +44,7 @@ import { grimoireIndex } from '../data/grimoireIndexInstance.ts';
 const leftSpell = {
   spell: {
     name: 'Trace Sight',
-    skill: 'log-trace-correlation',
+    skill: 'debug-issue',
     effect: 'Maps stack traces to source code.',
     status: 'Proven',
   },
@@ -54,7 +54,7 @@ const leftSpell = {
 const rightSpell = {
   spell: {
     name: 'Bisect Divination',
-    skill: 'bisect-debugging',
+    skill: 'debug-to-fix-pipeline',
     effect: 'Binary searches commit history.',
     status: 'Proven',
   },
@@ -107,7 +107,7 @@ describe('CompareSpellsModal', () => {
     const bisectDiv = screen.getAllByText('Bisect Divination');
     expect(bisectDiv.length).toBeGreaterThanOrEqual(2);
     // Skill IDs appear in slot and comparison table
-    const skillIds = screen.getAllByText(/log-trace-correlation/);
+    const skillIds = screen.getAllByText(/debug-issue/);
     expect(skillIds.length).toBeGreaterThanOrEqual(2);
   });
 

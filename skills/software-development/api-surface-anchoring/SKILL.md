@@ -24,6 +24,26 @@ Do NOT use for:
 - Trivial wrappers where the API surface is obvious from context
 - Prototyping where correctness isn't critical
 
+## Two depth modes
+
+### Call-site depth (default)
+Verify the specific signature you are about to write, per the protocol above.
+
+### Library-level depth (recency mode)
+Before building against a whole library you have not touched this session — or one
+that may have changed after your training data — audit its surface first: installed
+version (`pip show` / `package.json`), the changelog or migration guide between your
+cutoff version and the installed one, and the modules you plan to import. One pass
+per library, not per call.
+
+## Merge-time compatibility checklist
+When changing a public API in this repo (renames, new parameters, signature changes):
+- [ ] Grep every caller before changing a signature; classify each as keyword or positional
+- [ ] New parameters go LAST — inserting mid-signature silently corrupts positional callers
+- [ ] Keep renamed parameters as deprecated aliases that emit `DeprecationWarning`
+- [ ] Migrate internal callers to the new name in the same patch
+- [ ] Add a regression test per consumer contract, not just for the happy path
+
 ## Companion Script
 
 This skill includes a companion Python script (`api_surface.py`) that automates verification lookups.
@@ -160,6 +180,5 @@ Agent (running this skill):
 
 ## See Also
 
-- `assumption-grounding` — General verification-before-act discipline
 - `verify-before-integrate` — Pre-commit verification for integrations
 - `debug-subagent` — For debugging when verified code still fails

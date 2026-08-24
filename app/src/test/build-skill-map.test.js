@@ -30,8 +30,8 @@ describe('build-skill-map output', () => {
   });
 
   it('map keys are the skill ID (directory or filename stem)', () => {
-    // bisect-debugging/SKILL.md -> key "bisect-debugging"
-    expect(map['bisect-debugging']).toBe('/skills/debugging/bisect-debugging/SKILL.md');
+    // debug-to-fix-pipeline/SKILL.md -> key "debug-to-fix-pipeline"
+    expect(map['debug-to-fix-pipeline']).toBe('/skills/debugging/debug-to-fix-pipeline/SKILL.md');
     // debug-to-fix-pipeline/SKILL.md -> key "debug-to-fix-pipeline"
     expect(map['debug-to-fix-pipeline']).toBe('/skills/debugging/debug-to-fix-pipeline/SKILL.md');
   });

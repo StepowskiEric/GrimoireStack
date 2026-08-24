@@ -23,10 +23,10 @@ Skip it: brainstorming and ideation (verification kills creativity), tasks with 
 ## The Move
 
 ### 1. Faithfulness — entailment first
-Extract premises; for each reasoning step, does the conclusion NECESSARILY follow? Flag correlation-as-causation, hidden premises, over-generalization, equivocation, false dichotomies. REVISE (add the missing premise) or FLAG (confidence 0.3 max). Commit only entailed steps; record faithfulness = verified / total. **Abort: over 50% flagged → restart; the premise set is insufficient.** Full pattern catalog: `faithfulness-aware-reasoning`.
+Extract premises; for each reasoning step, does the conclusion NECESSARILY follow? Flag correlation-as-causation, hidden premises, over-generalization, equivocation, false dichotomies. REVISE (add the missing premise) or FLAG (confidence 0.3 max). Commit only entailed steps; record faithfulness = verified / total. **Abort: over 50% flagged → restart; the premise set is insufficient.**
 
 ### 2. Claims — atomize and verify
-Decompose committed steps into atomic falsifiable claims (one subject, one predicate, precise identifiers), label CERTAIN / LIKELY / UNCERTAIN / SPECULATIVE, and verify every UNCERTAIN+ claim with tools (read the file, run the test, check the docs). Verified → CERTAIN; falsified → backtrack and invalidate descendants; inconclusive → record the gap. Never proceed on an unverified UNCERTAIN+ claim. Full protocol: `claim-verification-reasoning`; tool-execution layer: `tool-interactive-critic`.
+Decompose committed steps into atomic falsifiable claims (one subject, one predicate, precise identifiers), label CERTAIN / LIKELY / UNCERTAIN / SPECULATIVE, and verify every UNCERTAIN+ claim with tools (read the file, run the test, check the docs). Verified → CERTAIN; falsified → backtrack and invalidate descendants; inconclusive → record the gap. Never proceed on an unverified UNCERTAIN+ claim. Tool-execution layer: verify with the cheapest tool that can falsify the claim.
 
 ### 3. Backward verification — assume it is wrong
 Take the conclusion, assume it is WRONG, and list 2–4 alternatives that would also explain the evidence. Rule each out with evidence or record it as unresolved. Hunt hidden assumptions: what would have to be true for your conclusion to be the ONLY explanation? Score survival 0–1: ≥0.9 proceed; 0.7–0.9 proceed with caveat; <0.7 STOP — verify further or abstain. Full protocol: `self-verify-pipeline`.

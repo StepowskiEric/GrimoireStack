@@ -9,13 +9,13 @@ import {
 describe('spellMetadata', () => {
   describe('getSpellLastUpdated', () => {
     it('returns a string for any known skill', () => {
-      const d = getSpellLastUpdated('log-trace-correlation');
+      const d = getSpellLastUpdated('debug-issue');
       expect(typeof d).toBe('string');
       expect(d).toMatch(/^\d{4}-\d{2}-\d{2}$/);
     });
 
     it('returns an explicit date for curated spells', () => {
-      expect(getSpellLastUpdated('log-trace-correlation')).toBe('2026-08-24');
+      expect(getSpellLastUpdated('debug-issue')).toBe('2026-08-24');
     });
 
     it('returns a deterministic fallback for unknown spells', () => {
@@ -34,7 +34,7 @@ describe('spellMetadata', () => {
 
   describe('getSpellNote', () => {
     it('returns null when no note is in the SKILL.md frontmatter', () => {
-      expect(getSpellNote('log-trace-correlation')).toBeNull();
+      expect(getSpellNote('debug-issue')).toBeNull();
     });
 
     it('returns null for spells without a note', () => {
@@ -45,7 +45,7 @@ describe('spellMetadata', () => {
 
   describe('isExplicitlyUpdated', () => {
     it('returns true for curated spells', () => {
-      expect(isExplicitlyUpdated('log-trace-correlation')).toBe(true);
+      expect(isExplicitlyUpdated('debug-issue')).toBe(true);
     });
 
     it('returns false for non-curated spells', () => {

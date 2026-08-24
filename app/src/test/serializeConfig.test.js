@@ -9,17 +9,17 @@ import { serializeConfig, serializeMarkdown } from '../utils/serializeConfig.ts'
  */
 
 const SAMPLE_FAVS = [
-  { name: 'Trace Sight', skill: 'log-trace-correlation', addedAt: 1_718_000_000_000 },
-  { name: 'Bisect Divination', skill: 'bisect-debugging', addedAt: 1_718_000_001_000 },
+  { name: 'Trace Sight', skill: 'debug-issue', addedAt: 1_718_000_000_000 },
+  { name: 'Bisect Divination', skill: 'debug-to-fix-pipeline', addedAt: 1_718_000_001_000 },
 ];
 
 const SAMPLE_MARG = {
-  'log-trace-correlation': 'Maps stack traces to source code',
-  'bisect-debugging': 'Use when tests fail',
+  'debug-issue': 'Maps stack traces to source code',
+  'debug-to-fix-pipeline': 'Use when tests fail',
 };
 
 const SAMPLE_RECENT = [
-  { name: 'Trace Sight', skill: 'log-trace-correlation', viewedAt: 1_718_000_000_000 },
+  { name: 'Trace Sight', skill: 'debug-issue', viewedAt: 1_718_000_000_000 },
   { name: 'Tree of Thoughts', skill: 'tree-of-thoughts', viewedAt: 1_717_999_999_000 },
 ];
 
@@ -46,14 +46,14 @@ describe('serializeConfig', () => {
       serializeConfig({ favorites: SAMPLE_FAVS, marginalia: {}, recent: [] }),
     );
     expect(parsed.favorites.length).toBe(2);
-    expect(parsed.favorites[0].skill).toBe('log-trace-correlation');
+    expect(parsed.favorites[0].skill).toBe('debug-issue');
   });
 
   it('includes marginalia', () => {
     const parsed = JSON.parse(
       serializeConfig({ favorites: [], marginalia: SAMPLE_MARG, recent: [] }),
     );
-    expect(parsed.marginalia['log-trace-correlation']).toBe('Maps stack traces to source code');
+    expect(parsed.marginalia['debug-issue']).toBe('Maps stack traces to source code');
   });
 
   it('includes recent', () => {
@@ -125,9 +125,9 @@ describe('serializeMarkdown', () => {
   it('lists favorites with name and skill id', () => {
     const md = serializeMarkdown({ favorites: SAMPLE_FAVS, marginalia: {}, recent: [] });
     expect(md).toContain('Trace Sight');
-    expect(md).toContain('`log-trace-correlation`');
+    expect(md).toContain('`debug-issue`');
     expect(md).toContain('Bisect Divination');
-    expect(md).toContain('`bisect-debugging`');
+    expect(md).toContain('`debug-to-fix-pipeline`');
   });
 
   it('includes marginalia notes next to matching favorites', () => {
@@ -191,7 +191,7 @@ describe('serializeMarkdown', () => {
   it('flattens newlines in favorite note lines', () => {
     const md = serializeMarkdown({
       favorites: SAMPLE_FAVS,
-      marginalia: { 'log-trace-correlation': 'line one\nline two' },
+      marginalia: { 'debug-issue': 'line one\nline two' },
       recent: [],
     });
     // The 'Note:' sub-line under the favorite gets flattened

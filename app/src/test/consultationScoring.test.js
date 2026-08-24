@@ -84,13 +84,13 @@ describe('consultationScoring — scoreSelections', () => {
       ],
       { resolveOption },
     );
-    // dbg-n1-a: primary=log-trace-correlation, alt=purify-test-output
+    // dbg-n1-a: primary=debug-issue, alt=purify-test-output
     // dbg-n3-a: primary=debug-issue, alt=simulate-instrumentation
+    // (both primaries are debug-issue after the log-trace-corellation retirement)
     expect(out.topSkill).toBeTruthy();
-    expect(['log-trace-correlation', 'debug-issue']).toContain(out.topSkill);
+    expect(['debug-issue', 'debug-issue']).toContain(out.topSkill);
     // alt weights are 0.5 each
-    expect(out.bySkill.get('log-trace-correlation')).toBe(1);
-    expect(out.bySkill.get('debug-issue')).toBe(1);
+    expect(out.bySkill.get('debug-issue')).toBe(2);
     expect(out.bySkill.get('purify-test-output')).toBe(0.5);
     expect(out.bySkill.get('simulate-instrumentation')).toBe(0.5);
   });
@@ -118,7 +118,7 @@ describe('consultationScoring — scoreSelections', () => {
     // dbg-n2-c: primary=minimal-reproduction, alt=purify-test-output
     // Both options have alt = purify-test-output
     expect(out.bySkill.get('purify-test-output')).toBe(1); // 0.5 + 0.5
-    expect(out.bySkill.get('log-trace-correlation')).toBe(1);
+    expect(out.bySkill.get('debug-issue')).toBe(1);
     expect(out.bySkill.get('minimal-reproduction')).toBe(1);
   });
 });
@@ -153,10 +153,10 @@ describe('consultationScoring — decideResult', () => {
     const out = decideResult(
       {
         bySkill: new Map([
-          ['log-trace-correlation', 2],
+          ['debug-issue', 2],
           ['purify-test-output', 1],
         ]),
-        topSkill: 'log-trace-correlation',
+        topSkill: 'debug-issue',
       },
       [
         {
@@ -177,7 +177,7 @@ describe('consultationScoring — decideResult', () => {
       { resolveOption },
       3,
     );
-    expect(out.primary).toBe('log-trace-correlation');
+    expect(out.primary).toBe('debug-issue');
     expect(out.alt).toBe('purify-test-output');
     expect(out.beasthood).toBe(false);
     expect(out.reason).toContain('trace');
@@ -187,10 +187,10 @@ describe('consultationScoring — decideResult', () => {
     const out = decideResult(
       {
         bySkill: new Map([
-          ['log-trace-correlation', 2],
+          ['debug-issue', 2],
           ['purify-test-output', 1],
         ]),
-        topSkill: 'log-trace-correlation',
+        topSkill: 'debug-issue',
       },
       [
         {
@@ -215,7 +215,7 @@ describe('consultationScoring — decideResult', () => {
     // The alt of dbg-n1-a is purify-test-output. That becomes the primary.
     expect(out.primary).toBe('purify-test-output');
     // The original top becomes the alt.
-    expect(out.alt).toBe('log-trace-correlation');
+    expect(out.alt).toBe('debug-issue');
   });
 });
 

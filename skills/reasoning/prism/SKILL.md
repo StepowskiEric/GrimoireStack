@@ -98,4 +98,4 @@ Understanding Summary:
 
 ## Integration
 
-Use after `assumption-grounding` to verify assumptions are actually well-grounded. Use before `counterfactual-policy-testing` to ensure your understanding is accurate enough to test alternatives. Use after `specter` to verify the root cause summary before proposing a fix.
+Use before `counterfactual-policy-testing` to ensure your understanding is accurate enough to test alternatives. Use after `specter` to verify the root cause summary before proposing a fix.

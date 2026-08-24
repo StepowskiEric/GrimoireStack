@@ -10,14 +10,14 @@ const sampleSchool = {
   spells: [
     {
       name: 'Trace Sight',
-      skill: 'log-trace-correlation',
+      skill: 'debug-issue',
       effect: 'Maps stack traces to source code and suggests fixes.',
       status: 'Proven',
       combos: ['Bisect Divination'],
     },
     {
       name: 'Bisect Divination',
-      skill: 'bisect-debugging',
+      skill: 'debug-to-fix-pipeline',
       effect: 'Binary searches commit history for the regression commit.',
       status: 'Proven',
     },
@@ -144,7 +144,7 @@ describe('SpellDetailView', () => {
     );
     fireEvent.click(screen.getByText('Trace Sight'));
     expect(screen.getByText('Adept Sigil')).toBeInTheDocument();
-    expect(getVote).toHaveBeenCalledWith('log-trace-correlation');
+    expect(getVote).toHaveBeenCalledWith('debug-issue');
   });
 
   it('defaults tier to Common when getVote returns null', () => {
@@ -239,7 +239,7 @@ describe('SpellDetailView', () => {
     );
     fireEvent.click(screen.getByText('Trace Sight'));
     fireEvent.click(screen.getByText('Add to Favorites'));
-    expect(onToggleFavorite).toHaveBeenCalledWith('Trace Sight', 'log-trace-correlation');
+    expect(onToggleFavorite).toHaveBeenCalledWith('Trace Sight', 'debug-issue');
   });
 
   it('renders the marginalia textarea', () => {

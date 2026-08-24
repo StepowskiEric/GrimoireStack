@@ -172,7 +172,6 @@ Good response (do this):
 
 ## See Also
 
-- `assumption-grounding` — Verify before acting, in general.
 - `api-surface-anchoring` — Specifically for library API signatures.
 - `hallucination-anchor-chain` — Anchor every factual claim to a verified source.
 - `verify-before-integrate` — Pre-commit verification for integrations.

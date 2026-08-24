@@ -110,7 +110,7 @@ Hand off to the appropriate debugging skill:
 | Know where the bug is, need to find the fix | `iterative-patch-repair` |
 | Bug has multiple possible causes | `specter` |
 | Need full structured workflow | `debug-to-fix-pipeline` |
-| Bug was introduced recently | `bisect-debugging` then this skill |
+| Bug was introduced recently | inspect git history (`git log -p`) then this skill |
 | Bug is in runtime behavior (async, state) | `simulate-instrumentation` |
 
 **Done when:** the bug-fix skill has been selected and invoked with the failing test as input.

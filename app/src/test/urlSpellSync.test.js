@@ -3,15 +3,15 @@ import { buildPathForSpell, buildShareUrl, parseSpellFromLocation } from '../uti
 
 describe('parseSpellFromLocation', () => {
   it('reads skill from ?s= query', () => {
-    expect(parseSpellFromLocation('/?s=log-trace-correlation')).toBe('log-trace-correlation');
+    expect(parseSpellFromLocation('/?s=debug-issue')).toBe('debug-issue');
   });
 
   it('reads skill from /s/<skill> path', () => {
-    expect(parseSpellFromLocation('/s/log-trace-correlation')).toBe('log-trace-correlation');
+    expect(parseSpellFromLocation('/s/debug-issue')).toBe('debug-issue');
   });
 
   it('reads skill from /s/<skill>/ path', () => {
-    expect(parseSpellFromLocation('/s/log-trace-correlation/')).toBe('log-trace-correlation');
+    expect(parseSpellFromLocation('/s/debug-issue/')).toBe('debug-issue');
   });
 
   it('returns null when no skill in URL', () => {
@@ -32,13 +32,13 @@ describe('parseSpellFromLocation', () => {
 
 describe('buildShareUrl', () => {
   it('builds an absolute URL with the path form', () => {
-    const url = buildShareUrl('https://grimoirestack.dev', 'log-trace-correlation');
-    expect(url).toBe('https://grimoirestack.dev/s/log-trace-correlation');
+    const url = buildShareUrl('https://grimoirestack.dev', 'debug-issue');
+    expect(url).toBe('https://grimoirestack.dev/s/debug-issue');
   });
 });
 
 describe('buildPathForSpell', () => {
   it('returns a relative path', () => {
-    expect(buildPathForSpell('log-trace-correlation')).toBe('/s/log-trace-correlation');
+    expect(buildPathForSpell('debug-issue')).toBe('/s/debug-issue');
   });
 });

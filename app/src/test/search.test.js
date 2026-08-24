@@ -7,7 +7,7 @@ const sampleEntries = [
   {
     spell: {
       name: 'Trace Sight',
-      skill: 'log-trace-correlation',
+      skill: 'debug-issue',
       effect: 'Maps stack traces to source code and suggests fixes.',
       status: 'Proven',
     },
@@ -16,7 +16,7 @@ const sampleEntries = [
   {
     spell: {
       name: 'Bisect Divination',
-      skill: 'bisect-debugging',
+      skill: 'debug-to-fix-pipeline',
       effect: 'Binary searches commit history for the regression commit.',
       status: 'Proven',
     },
@@ -50,13 +50,13 @@ const sampleSchools = [
     spells: [
       {
         name: 'Trace Sight',
-        skill: 'log-trace-correlation',
+        skill: 'debug-issue',
         effect: 'Maps stack traces to source code and suggests fixes.',
         status: 'Proven',
       },
       {
         name: 'Bisect Divination',
-        skill: 'bisect-debugging',
+        skill: 'debug-to-fix-pipeline',
         effect: 'Binary searches commit history for the regression commit.',
         status: 'Proven',
       },
@@ -97,9 +97,9 @@ describe('searchSpellsOnEntries (canonical)', () => {
   });
 
   it('finds spells matching by skill ID', () => {
-    const result = searchSpellsOnEntries(sampleEntries, 'bisect-debugging');
+    const result = searchSpellsOnEntries(sampleEntries, 'debug-to-fix-pipeline');
     expect(result.total).toBe(1);
-    expect(result.bySchool.debugging[0]).toContain('bisect-debugging');
+    expect(result.bySchool.debugging[0]).toContain('debug-to-fix-pipeline');
   });
 
   it('finds spells matching by partial effect text', () => {
@@ -133,12 +133,12 @@ describe('searchSpellsOnEntries (canonical)', () => {
 
   it('uses name + NUL + skill as the match key format', () => {
     const result = searchSpellsOnEntries(sampleEntries, 'Trace Sight');
-    expect(result.bySchool.debugging[0]).toBe('Trace Sight\0log-trace-correlation');
+    expect(result.bySchool.debugging[0]).toBe('Trace Sight\0debug-issue');
   });
 });
 
 describe('filterSpellsOnEntries (canonical)', () => {
-  const favFn = (skill) => skill === 'log-trace-correlation';
+  const favFn = (skill) => skill === 'debug-issue';
 
   it('returns all spells when no filters and no query', () => {
     const result = filterSpellsOnEntries(sampleEntries, { isFavorited: () => false });
@@ -160,8 +160,8 @@ describe('filterSpellsOnEntries (canonical)', () => {
       tierFilter: new Set(['master']),
       isFavorited: () => false,
     });
-    // 'bisect-debugging' has status 'Proven' so tier = 'adept' (Proven, no combo)
-    // 'log-trace-correlation' has 'Proven' so tier = 'adept'
+    // 'debug-to-fix-pipeline' has status 'Proven' so tier = 'adept' (Proven, no combo)
+    // 'debug-issue' has 'Proven' so tier = 'adept'
     // No master tier in this sample
     expect(result.total).toBe(0);
   });
@@ -172,7 +172,7 @@ describe('filterSpellsOnEntries (canonical)', () => {
       isFavorited: favFn,
     });
     expect(result.total).toBe(1);
-    expect(result.bySchool.debugging[0]).toContain('log-trace-correlation');
+    expect(result.bySchool.debugging[0]).toContain('debug-issue');
   });
 
   it('combines query and filters (AND)', () => {
@@ -213,11 +213,11 @@ describe('search matches by name and skill', () => {
   it('matches by name', () => {
     const result = searchSpellsOnEntries(sampleEntries, 'Trace Sight');
     expect(result.total).toBe(1);
-    expect(result.bySchool.debugging[0]).toContain('log-trace-correlation');
+    expect(result.bySchool.debugging[0]).toContain('debug-issue');
   });
 
   it('matches by skill id', () => {
-    const result = searchSpellsOnEntries(sampleEntries, 'bisect-debugging');
+    const result = searchSpellsOnEntries(sampleEntries, 'debug-to-fix-pipeline');
     expect(result.total).toBe(1);
   });
 

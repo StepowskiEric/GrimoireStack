@@ -25,7 +25,7 @@ describe('injectSpellMeta', () => {
   const meta = {
     name: 'Trace Sight',
     effect: 'Maps stack traces to source code and suggests fixes.',
-    skill: 'log-trace-correlation',
+    skill: 'debug-issue',
     origin: 'https://grimoirestack.dev',
   };
 
@@ -45,7 +45,7 @@ describe('injectSpellMeta', () => {
     expect(out).toContain('<meta property="og:description"');
     expect(out).toContain('<meta property="og:type" content="article">');
     expect(out).toContain(
-      '<meta property="og:url" content="https://grimoirestack.dev/s/log-trace-correlation">',
+      '<meta property="og:url" content="https://grimoirestack.dev/s/debug-issue">',
     );
     expect(out).toContain(
       '<meta property="og:image" content="https://grimoirestack.dev/og-image.png">',
@@ -63,7 +63,7 @@ describe('injectSpellMeta', () => {
   it('adds a canonical link', () => {
     const out = injectSpellMeta(SHELL, meta);
     expect(out).toContain(
-      '<link rel="canonical" href="https://grimoirestack.dev/s/log-trace-correlation">',
+      '<link rel="canonical" href="https://grimoirestack.dev/s/debug-issue">',
     );
   });
 

@@ -14,7 +14,7 @@ const sampleSchools = [
     name: 'School of Remediation',
     desc: '',
     spells: [
-      { name: 'Trace Sight', skill: 'log-trace-correlation', effect: 'x', status: 'Proven' },
+      { name: 'Trace Sight', skill: 'debug-issue', effect: 'x', status: 'Proven' },
     ],
   },
   {
@@ -29,7 +29,7 @@ const sampleSchools = [
 vi.mock('../data/grimoireIndexInstance.ts', () => {
   const trace = {
     name: 'Trace Sight',
-    skill: 'log-trace-correlation',
+    skill: 'debug-issue',
     effect: 'x',
     status: 'Proven',
   };

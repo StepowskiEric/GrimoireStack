@@ -3,7 +3,7 @@ import { validateSchool, validateSchools, validateSpell } from '../data/schema.t
 
 const baseSpell = () => ({
   name: 'Trace Sight',
-  skill: 'log-trace-correlation',
+  skill: 'debug-issue',
   effect: 'Maps stack traces to source code.',
   status: 'Proven',
 });

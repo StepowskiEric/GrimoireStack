@@ -15,9 +15,9 @@ describe('useMarginalia', () => {
   it('saves a note for a skill', () => {
     const { result } = renderHook(() => useMarginalia());
     act(() => {
-      result.current.setNote('log-trace-correlation', 'This was useful for the prod incident');
+      result.current.setNote('debug-issue', 'This was useful for the prod incident');
     });
-    expect(result.current.getNote('log-trace-correlation')).toBe(
+    expect(result.current.getNote('debug-issue')).toBe(
       'This was useful for the prod incident',
     );
   });

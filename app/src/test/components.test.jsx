@@ -13,7 +13,7 @@ import { LanguageProvider } from '../i18n/LanguageContext';
 
 const sampleSpell = {
   name: 'Trace Sight',
-  skill: 'log-trace-correlation',
+  skill: 'debug-issue',
   effect: 'Maps stack traces to source code and suggests fixes.',
   status: 'Proven',
 };
@@ -47,7 +47,7 @@ const multiSchool = [
 vi.mock('../data/grimoireIndexInstance.ts', () => {
   const trace = {
     name: 'Trace Sight',
-    skill: 'log-trace-correlation',
+    skill: 'debug-issue',
     effect: 'Maps stack traces to source code and suggests fixes.',
     status: 'Proven',
   };
@@ -106,7 +106,7 @@ describe('SpellCard', () => {
   it('renders the spell name and incantation', () => {
     render(<SpellCard spell={sampleSpell} matched={null} />);
     expect(screen.getByText('Trace Sight')).toBeInTheDocument();
-    expect(screen.getByText('〈 log-trace-correlation 〉')).toBeInTheDocument();
+    expect(screen.getByText('〈 debug-issue 〉')).toBeInTheDocument();
   });
 
   it('shows the arcane tier when status is set', () => {
@@ -254,7 +254,7 @@ describe('LibraryContent', () => {
     fireEvent.change(input, { target: { value: 'trace' } });
     fireEvent.click(screen.getByText('Trace Sight'));
     expect(onClick).toHaveBeenCalledTimes(1);
-    expect(onClick.mock.calls[0][0].skill).toBe('log-trace-correlation');
+    expect(onClick.mock.calls[0][0].skill).toBe('debug-issue');
   });
 
   it('shows a Clear button when filters are active', () => {
@@ -313,7 +313,7 @@ describe('RecipeLabView', () => {
     expect(onCompareTwo).toHaveBeenCalledTimes(1);
     // Argument order: leftSpell, leftSchool, rightSpell, rightSchool
     const args = onCompareTwo.mock.calls[0];
-    expect(args[0].skill).toBe('log-trace-correlation');
+    expect(args[0].skill).toBe('debug-issue');
     expect(args[2].skill).toBe('jest-testing');
   });
 });
@@ -418,7 +418,7 @@ describe('SpellCard favorites', () => {
       />,
     );
     fireEvent.click(screen.getByLabelText(/bind to/i));
-    expect(toggle).toHaveBeenCalledWith('Trace Sight', 'log-trace-correlation');
+    expect(toggle).toHaveBeenCalledWith('Trace Sight', 'debug-issue');
   });
 
   it('does not trigger card click when star is clicked', () => {
@@ -456,23 +456,23 @@ describe('StaleLinkBanner', () => {
   it('suggests similar skills from the catalog', () => {
     renderWithLang(
       <StaleLinkBanner
-        skill="log-trace" // partial match against "log-trace-correlation"
+        skill="debug-issu" // partial match against "debug-issue"
         onDismiss={() => {}}
         onSelectSkill={() => {}}
       />,
     );
-    expect(screen.getByRole('button', { name: 'log-trace-correlation' })).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: 'debug-issue' })).toBeInTheDocument();
   });
 
   it('routes a clicked suggestion through onSelectSkill with the resolved school', () => {
     const onSelectSkill = vi.fn();
     renderWithLang(
-      <StaleLinkBanner skill="log-trace" onDismiss={() => {}} onSelectSkill={onSelectSkill} />,
+      <StaleLinkBanner skill="debug-issu" onDismiss={() => {}} onSelectSkill={onSelectSkill} />,
     );
-    fireEvent.click(screen.getByRole('button', { name: 'log-trace-correlation' }));
+    fireEvent.click(screen.getByRole('button', { name: 'debug-issue' }));
     expect(onSelectSkill).toHaveBeenCalledTimes(1);
     const [skill, school] = onSelectSkill.mock.calls[0];
-    expect(skill).toBe('log-trace-correlation');
+    expect(skill).toBe('debug-issue');
     expect(school.id).toBe('debugging');
   });
 });

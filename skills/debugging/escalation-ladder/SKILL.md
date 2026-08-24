@@ -40,7 +40,7 @@ disable-model-invocation: true
 
 **Self-correction didn't work.** Switch debugging strategy entirely.
 
-1. **Switch debugging skill** — If using `debug-to-fix-pipeline`, switch to `specter`. If using `specter`, switch to `bisect-debugging` (if recent change). If using ad-hoc debugging, switch to a structured skill.
+1. **Switch debugging skill** — If using `debug-to-fix-pipeline`, switch to `specter`. If using `specter`, switch to `minimal-reproduction` (no failing test yet). If using ad-hoc debugging, switch to a structured skill.
 2. **Reduce scope to minimal reproduction** — Strip away everything unrelated to the bug. Create a minimal test case that demonstrates the issue.
 3. **Change information source** — If you've been reading code, run the code. If you've been running code, read the code. If you've been looking at logs, look at the runtime state.
 4. **Generate competing hypotheses** — Write down 3-5 possible root causes. Include at least one "weird" hypothesis that contradicts your current intuition.
@@ -178,7 +178,6 @@ After 40 minutes of active debugging without resolution, the cost of continuing 
 - **`trajectory-guard`** → fires at Level 0, triggers this skill
 - **`environment-recovery`** → run at Level 0 self-correction step 3
 - **`specter`** → use at Level 1 as strategy change
-- **`bisect-debugging`** → use at Level 1 if the bug was recently introduced
 - **`debug-to-fix-pipeline`** → use at Level 1 as alternative strategy
 - **`summarize`** → use at Level 4 for handoff document
 

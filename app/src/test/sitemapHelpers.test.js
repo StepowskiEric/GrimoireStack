@@ -18,10 +18,10 @@ describe('buildSitemapXml', () => {
   it('includes per-spell paths', () => {
     const xml = buildSitemapXml({
       origin: 'https://grimoirestack.dev',
-      paths: ['/s/log-trace-correlation', '/s/bisect-debugging'],
+      paths: ['/s/debug-issue', '/s/debug-to-fix-pipeline'],
     });
-    expect(xml).toContain('<loc>https://grimoirestack.dev/s/log-trace-correlation</loc>');
-    expect(xml).toContain('<loc>https://grimoirestack.dev/s/bisect-debugging</loc>');
+    expect(xml).toContain('<loc>https://grimoirestack.dev/s/debug-issue</loc>');
+    expect(xml).toContain('<loc>https://grimoirestack.dev/s/debug-to-fix-pipeline</loc>');
   });
 
   it('produces a well-formed XML document', () => {

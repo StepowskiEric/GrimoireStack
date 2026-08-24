@@ -2,7 +2,7 @@ import { describe, expect, it } from 'vitest';
 import { buildSchools, renderSchoolsSource } from '../../scripts/registry/emit-schools.mjs';
 
 const baseRecord = () => ({
-  skill: 'log-trace-correlation',
+  skill: 'debug-issue',
   topic: 'debugging',
   name: 'Trace Sight',
   effect: 'Maps stack traces to source code.',
@@ -57,7 +57,7 @@ describe('buildSchools', () => {
   it('groups multiple records by topic', () => {
     const schools = buildSchools([
       baseRecord(),
-      { ...baseRecord(), skill: 'bisect-debugging', name: 'Bisect Divination' },
+      { ...baseRecord(), skill: 'debug-to-fix-pipeline', name: 'Bisect Divination' },
     ]);
     expect(schools).toHaveLength(1);
     expect(schools[0].spells).toHaveLength(2);
@@ -81,7 +81,7 @@ describe('renderSchoolsSource', () => {
         real: 'Debugging',
         name: 'School of Remediation',
         desc: 'Tests',
-        spells: [{ name: 'Trace Sight', skill: 'log-trace-correlation', effect: 'X', status: '—' }],
+        spells: [{ name: 'Trace Sight', skill: 'debug-issue', effect: 'X', status: '—' }],
       },
     ]);
     expect(source).toMatch(/^const schools/m);

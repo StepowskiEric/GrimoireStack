@@ -4,18 +4,18 @@ import ChangelogView from '../components/ChangelogView.tsx';
 // Mock the spellMetadata module
 const mockRecentlyUpdated = [
   {
-    skill: 'log-trace-correlation',
+    skill: 'debug-issue',
     name: 'Trace Sight',
-    spell: { name: 'Trace Sight', skill: 'log-trace-correlation', effect: 'Maps stack traces.' },
+    spell: { name: 'Trace Sight', skill: 'debug-issue', effect: 'Maps stack traces.' },
     school: { id: 'debugging', real: 'Debugging', name: 'School of Remediation' },
     lastUpdated: '2026-06-10',
     isExplicit: true,
     note: 'Polished effect description.',
   },
   {
-    skill: 'bisect-debugging',
+    skill: 'debug-to-fix-pipeline',
     name: 'Bisect Divination',
-    spell: { name: 'Bisect Divination', skill: 'bisect-debugging', effect: 'Binary searches.' },
+    spell: { name: 'Bisect Divination', skill: 'debug-to-fix-pipeline', effect: 'Binary searches.' },
     school: { id: 'debugging', real: 'Debugging', name: 'School of Remediation' },
     lastUpdated: '2026-06-05',
     isExplicit: true,

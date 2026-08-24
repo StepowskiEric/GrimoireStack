@@ -7,7 +7,7 @@ Synthetic bugs often have tell-tale comments or trivial fixes. For realistic eva
 1. Clone a small repo (<1GB, has tests): `fastapi`, `express`, `flask`, `axios`
 2. Find a fix commit: `git log --oneline --grep='fix' -- '*.py'`
 3. Check out the commit *before* the fix: `git checkout <fix-commit>~1`
-4. Cherry-pick *only the test* from the fix commit (the test should fail on the buggy code)
+4. Copy *only the test* from the fix commit onto the buggy tree: `git checkout <fix-commit> -- <test-file>`. Never `cherry-pick -n` here — it stages the entire fix, handing the runner a solved bug.
 5. Task: "Make this test pass"
 
 This gives a real bug with ground-truth verification.
@@ -59,8 +59,8 @@ Why it works: no tell-tale comments, root cause spans the FastAPI → Starlette 
 git clone https://github.com/fastapi/fastapi.git /tmp/fastapi-bench
 cd /tmp/fastapi-bench
 git checkout ed2512a~1
-git cherry-pick -n ed2512a  # grab only the test file
-git checkout HEAD -- tests/test_router_events.py
+# Grab ONLY the test file from the fix commit; the code stays buggy:
+git checkout ed2512a -- tests/test_router_events.py
 # Bug: on_startup handlers set before super().__init__(), overwritten
 ```
 
@@ -76,6 +76,15 @@ Identical reasoning tasks with/without the skill; count output tokens and reason
 Batches of 3 trials in parallel; stop if baseline passes trivially with no skill difference; continue to full 5 on dramatic divergence. Good for screening many skills.
 
 ## Failure modes observed in practice
+
+### Field-tested additions (2026-08-24 campaign)
+
+- **Grade process traces alongside outcomes.** A runner can pass by luck while skipping every discipline the skill teaches. Score adherence from the session trace (tool calls, file touches, verification steps) and weight outcome still highest.
+- **Blind judges for judgment skills.** For review/critique skills, have a fresh judge rank sanitized artifacts under neutral labels; strip paths and condition-revealing words first.
+- **Model tier changes the answer.** In one campaign, a verification scaffold helped a mid-tier model but vanished at a lower tier (below a capability floor it is not executed even when loaded), while a reasoning-discipline skill helped the LOWER tier. Confirm keep verdicts on a second tier before generalizing.
+- **Ceiling nulls are findings.** When both conditions ace the task, the model's defaults already cover it — record the null and lean toward retirement rather than redesigning forever.
+- **Synthetic fixtures bias conservative.** Sparse toy repos make verification artificially cheap, which understates a skill's real-world value; confirm any KEEP on a real-repo checkout before finalizing.
+- **Concurrency:** batch runner spawns 2–4 at a time; more risks provider rate-limit stalls that silently park subagents mid-read.
 
 ### Output token exhaustion
 A subagent burned 41,728 output tokens on verbose reasoning and had none left for the response. Mitigation: tighter `max_iterations` (20 instead of 30) on tasks where verbosity is the risk.

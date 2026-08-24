@@ -152,3 +152,6 @@ If any checklist item fails, fix before pushing. No exceptions.
 ## References
 
 - `references/review-patterns.md` — Review pattern catalog with per-pass checklists, code smell detection templates, and anti-pattern identification guides for each LLM failure mode.
+
+## Rules
+- **Do** reproduce every finding before reporting it — a claim you could not demonstrate against the code is a hypothesis, not a finding. State how you reproduced it or drop it.

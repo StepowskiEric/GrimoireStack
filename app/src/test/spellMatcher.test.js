@@ -17,14 +17,14 @@ const TWO_SCHOOLS = [
     spells: [
       {
         name: 'Trace Sight',
-        skill: 'log-trace-correlation',
+        skill: 'debug-issue',
         effect: 'Maps stack traces to source.',
         status: 'Proven',
         combos: ['Bisect Divination'],
       },
       {
         name: 'Bisect Divination',
-        skill: 'bisect-debugging',
+        skill: 'debug-to-fix-pipeline',
         effect: 'Binary search commit history.',
         status: 'Proven',
       },
@@ -69,9 +69,9 @@ function makeIndex(schools = TWO_SCHOOLS) {
 describe('similarTo', () => {
   it('returns exact skill matches first', () => {
     const idx = makeIndex();
-    const results = idx.similarTo('log-trace-correlation', 4);
+    const results = idx.similarTo('debug-issue', 4);
     expect(results.length).toBeGreaterThanOrEqual(1);
-    expect(results[0].spell.skill).toBe('log-trace-correlation');
+    expect(results[0].spell.skill).toBe('debug-issue');
   });
 
   it('returns exact name matches', () => {
@@ -84,11 +84,11 @@ describe('similarTo', () => {
   it('returns partial matches ranked below exact', () => {
     const idx = makeIndex();
     const results = idx.similarTo('trace', 4);
-    // 'trace' appears in both 'Trace Sight' (substring) and 'log-trace-correlation' (token)
-    // Substring hit on 'Trace Sight' scores 5, token hit on 'log-trace-correlation' scores 1
+    // 'trace' appears in both 'Trace Sight' (substring) and 'debug-issue' (token)
+    // Substring hit on 'Trace Sight' scores 5, token hit on 'debug-issue' scores 1
     expect(results.length).toBeGreaterThanOrEqual(1);
     const skills = results.map((r) => r.spell.skill);
-    expect(skills).toContain('log-trace-correlation');
+    expect(skills).toContain('debug-issue');
   });
 
   it('returns empty for no query', () => {
@@ -115,7 +115,7 @@ describe('similarTo', () => {
   });
 
   it('scores substring hit higher than single token', () => {
-    // 'trace' is a substring of 'Trace Sight' (score 5) and a token in 'log-trace-correlation' (score 1)
+    // 'trace' is a substring of 'Trace Sight' (score 5) and a token in 'debug-issue' (score 1)
     const idx = makeIndex();
     const results = idx.similarTo('trace', 4);
     const top = results[0];
@@ -148,14 +148,14 @@ describe('matchProblem', () => {
     const idx = makeIndex();
     const results = idx.matchProblem('stack trace mapping', { limit: 5 });
     expect(results.length).toBeGreaterThanOrEqual(1);
-    expect(results[0].spell.skill).toBe('log-trace-correlation');
+    expect(results[0].spell.skill).toBe('debug-issue');
   });
 
   it('matches on effect tokens', () => {
     const idx = makeIndex();
     const results = idx.matchProblem('binary search commits', { limit: 5 });
     expect(results.length).toBeGreaterThanOrEqual(1);
-    expect(results[0].spell.skill).toBe('bisect-debugging');
+    expect(results[0].spell.skill).toBe('debug-to-fix-pipeline');
   });
 
   it('matches on school name', () => {

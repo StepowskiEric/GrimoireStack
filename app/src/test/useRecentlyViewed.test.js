@@ -15,12 +15,12 @@ describe('useRecentlyViewed', () => {
   it('records a spell view', () => {
     const { result } = renderHook(() => useRecentlyViewed());
     act(() => {
-      result.current.record('Trace Sight', 'log-trace-correlation');
+      result.current.record('Trace Sight', 'debug-issue');
     });
     expect(result.current.recent).toHaveLength(1);
     expect(result.current.recent[0]).toMatchObject({
       name: 'Trace Sight',
-      skill: 'log-trace-correlation',
+      skill: 'debug-issue',
     });
   });
 
@@ -49,11 +49,11 @@ describe('useRecentlyViewed', () => {
   it('persists to localStorage', () => {
     const { result } = renderHook(() => useRecentlyViewed());
     act(() => {
-      result.current.record('Trace Sight', 'log-trace-correlation');
+      result.current.record('Trace Sight', 'debug-issue');
     });
     const stored = JSON.parse(localStorage.getItem('grimoire-recent'));
     expect(stored).toHaveLength(1);
-    expect(stored[0].skill).toBe('log-trace-correlation');
+    expect(stored[0].skill).toBe('debug-issue');
   });
 
   it('loads from localStorage on mount', () => {

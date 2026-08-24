@@ -33,16 +33,16 @@ const GOLDEN_SET = [
     expected: ['security-review-protocol'],
   },
   {
-    query: 'planning a complex feature and not sure where to start',
-    expected: ['how-to-solve-it-state-machine', 'structured-feature-planning'],
+    query: 'frame the problem and write precise specifications before writing code',
+    expected: ['how-to-solve-it-state-machine', 'intent-specification-protocol'],
   },
   {
     query: 'separate fact, intuition, caution, optimism, creativity, and process into six discrete rounds',
     expected: ['six-thinking-hats', 'steelmanning'],
   },
   {
-    query: 'isolate the exact commit that introduced a bug using binary search',
-    expected: ['bisect-debugging', 'root-cause-analysis'],
+    query: 'reproduce the bug with a minimal failing test, then fix the debug pipeline',
+    expected: ['minimal-reproduction', 'debug-to-fix-pipeline'],
   },
   {
     query: 'want to verify my answer is correct before committing',
@@ -81,7 +81,7 @@ const GOLDEN_SET = [
   },
   {
     query: 'designing a new microservice and worried about coupling',
-    expected: ['domain-driven-design', 'separation-of-concerns'],
+    expected: ['domain-driven-design', 'feature-architecture'],
     aiOnly: true,
   },
   {
@@ -111,7 +111,7 @@ const GOLDEN_SET = [
   },
   {
     query: 'agent keeps hallucinating APIs that do not exist',
-    expected: ['claim-verification-reasoning'],
+    expected: ['reasoning-integrity-chain'],
     aiOnly: true,
   },
   {

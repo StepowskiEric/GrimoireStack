@@ -9,8 +9,8 @@ const sampleSchools = [
     name: 'School of Remediation',
     real: 'Debugging',
     spells: [
-      { name: 'Trace Sight', skill: 'log-trace-correlation', effect: 'Maps stack traces.' },
-      { name: 'Bisect Divination', skill: 'bisect-debugging', effect: 'Binary searches.' },
+      { name: 'Trace Sight', skill: 'debug-issue', effect: 'Maps stack traces.' },
+      { name: 'Bisect Divination', skill: 'debug-to-fix-pipeline', effect: 'Binary searches.' },
     ],
   },
   {
@@ -107,7 +107,7 @@ describe('FavoritesView', () => {
   it('renders favorite spells by name', () => {
     renderWithLang(
       <FavoritesView
-        favorites={[{ name: 'Trace Sight', skill: 'log-trace-correlation' }]}
+        favorites={[{ name: 'Trace Sight', skill: 'debug-issue' }]}
         recent={[]}
         marginalia={{}}
         onSpellClick={() => {}}
@@ -122,8 +122,8 @@ describe('FavoritesView', () => {
     renderWithLang(
       <FavoritesView
         favorites={[
-          { name: 'Trace Sight', skill: 'log-trace-correlation' },
-          { name: 'Bisect Divination', skill: 'bisect-debugging' },
+          { name: 'Trace Sight', skill: 'debug-issue' },
+          { name: 'Bisect Divination', skill: 'debug-to-fix-pipeline' },
         ]}
         recent={[]}
         marginalia={{}}
@@ -139,7 +139,7 @@ describe('FavoritesView', () => {
     const onSpellClick = vi.fn();
     renderWithLang(
       <FavoritesView
-        favorites={[{ name: 'Trace Sight', skill: 'log-trace-correlation' }]}
+        favorites={[{ name: 'Trace Sight', skill: 'debug-issue' }]}
         recent={[]}
         marginalia={{}}
         onSpellClick={onSpellClick}
@@ -156,7 +156,7 @@ describe('FavoritesView', () => {
     const onToggleFavorite = vi.fn();
     renderWithLang(
       <FavoritesView
-        favorites={[{ name: 'Trace Sight', skill: 'log-trace-correlation' }]}
+        favorites={[{ name: 'Trace Sight', skill: 'debug-issue' }]}
         recent={[]}
         marginalia={{}}
         onSpellClick={() => {}}
@@ -166,7 +166,7 @@ describe('FavoritesView', () => {
     );
     const starButtons = screen.getAllByLabelText(/Unbind|Bind/);
     fireEvent.click(starButtons[0]);
-    expect(onToggleFavorite).toHaveBeenCalledWith('Trace Sight', 'log-trace-correlation');
+    expect(onToggleFavorite).toHaveBeenCalledWith('Trace Sight', 'debug-issue');
   });
 
   it('renders recently viewed spells', () => {
@@ -186,7 +186,7 @@ describe('FavoritesView', () => {
   it('shows the school name under each spell', () => {
     renderWithLang(
       <FavoritesView
-        favorites={[{ name: 'Trace Sight', skill: 'log-trace-correlation' }]}
+        favorites={[{ name: 'Trace Sight', skill: 'debug-issue' }]}
         recent={[]}
         marginalia={{}}
         onSpellClick={() => {}}
@@ -247,7 +247,7 @@ describe('FavoritesView', () => {
   it('favorites section uses role="button" for keyboard accessibility', () => {
     renderWithLang(
       <FavoritesView
-        favorites={[{ name: 'Trace Sight', skill: 'log-trace-correlation' }]}
+        favorites={[{ name: 'Trace Sight', skill: 'debug-issue' }]}
         recent={[]}
         marginalia={{}}
         onSpellClick={() => {}}
@@ -264,7 +264,7 @@ describe('FavoritesView', () => {
     const onSpellClick = vi.fn();
     renderWithLang(
       <FavoritesView
-        favorites={[{ name: 'Trace Sight', skill: 'log-trace-correlation' }]}
+        favorites={[{ name: 'Trace Sight', skill: 'debug-issue' }]}
         recent={[]}
         marginalia={{}}
         onSpellClick={onSpellClick}
