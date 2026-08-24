@@ -23,8 +23,8 @@ meanings of these terms.
   modal).
 - **Marginalia** — user notes on individual spells (`useMarginalia`,
   persisted under `grimoire-marginalia`).
-- **Inscribe** — install a skill locally. The CLI in `bin/install.js`
-  performs the actual installation; the app's UI shows the incantation
+- **Inscribe** — install a skill locally with `npx skills add`
+  (the standard skills CLI); the app's UI shows the incantation
   to copy.
 - **Bind / Unbind** — add/remove a spell from the user's "summoning
   circle" (the compare set in `CompareSpellsModal`).

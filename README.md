@@ -4,69 +4,62 @@ A catalog of agent skills for making AI systems more reliable, disciplined, and 
 
 ## Quick Install
 
+Install the whole catalog with the standard [skills CLI](https://github.com/vercel-labs/skills):
+
 ```bash
-# Interactive picker — choose agent and skills
-npx grimoirestack install
+# Preview the catalog without installing
+npx skills add StepowskiEric/GrimoireStack --list
 
-# Install all skills to a specific agent
-npx grimoirestack install --agent copilot
-npx grimoirestack install --agent codex
-npx grimoirestack install --agent hermes --with-mcp # includes MCP servers
-npx grimoirestack install --agent claude
-npx grimoirestack install --agent antigravity
+# Install every skill globally
+npx skills add StepowskiEric/GrimoireStack -g -s '*' -a cline -y
 
-# List available skills without installing
-npx grimoirestack list
+# Install a single skill
+npx skills add StepowskiEric/GrimoireStack -s specter -g -y
+
+# Update installed skills (and remove any deleted from the catalog)
+npx skills update -g
+
+# List / remove installed skills
+npx skills ls -g
+npx skills remove <skill> -g
 ```
 
-See [docs/installation.md](docs/installation.md) for full details including all agents, custom destinations, and VS Code Copilot setup.
+See [docs/installation.md](docs/installation.md) for full details.
+
+Notes:
+- `-g` installs globally. The canonical copy lands in `~/.agents/skills/<name>/`; agent-specific directories become symlinks to it.
+- Pick an agent with `-a` (e.g. `cline`, `warp`, `zed`, `codex`, `cursor`). Universal agents (`cline`, `warp`, `zed`, `dexto`, `kimi-code-cli`, `loaf`) read `~/.agents/skills/` directly, with no symlinks.
+- Every skill ships with its `references/`, `scripts/`, and `RESEARCH.md` files — the CLI copies the whole skill directory.
+- Installing from a local path works (`npx skills add .`), but local-path installs are not update-tracked. Use the GitHub source (`StepowskiEric/GrimoireStack`) so that `npx skills update` keeps them fresh.
 
 ## Supported Agents
 
-| Agent | Install location | Format |
-|-------|-----------------|--------|
-| **Factory Droid** | `~/.factory/skills/` | `name/SKILL.md` (flat), lowercase-hyphen directory name |
-| **OpenAI Codex** | `~/.agents/skills/` | `topic/name/SKILL.md` with YAML frontmatter |
-| **VS Code Copilot** | `~/.copilot/skills/` | `name/SKILL.md` (flat), name must be lowercase-hyphen matching directory |
-| **Pi Agent** | `~/.pi/agent/skills/` | `name/SKILL.md` (flat), same as Copilot |
-| **Hermes** | `~/.hermes/skills/` | `topic/name/SKILL.md` with YAML frontmatter |
-| **Claude Code** | `~/.claude/skills/` | `topic/name/SKILL.md` with YAML frontmatter |
-| **Antigravity** | `~/.antigravity/skills/` | `topic/name/SKILL.md` with YAML frontmatter |
+The `skills` CLI supports 70+ agents (Claude Code, Codex, Cursor, Copilot, Gemini, Zed, Pi, Droid/Factory, and more). The paths that matter most:
 
-## Factory Droid
+| Agent (`-a`) | Global location |
+|--------------|-----------------|
+| Universal (cline, warp, zed, dexto, kimi-code-cli, loaf) | `~/.agents/skills/` — real files, no symlinks |
+| Codex | `~/.codex/skills/` (symlink to canonical `~/.agents/skills/`) |
+| Claude Code | `~/.claude/skills/` |
+| Cursor | `~/.cursor/skills/` |
+| GitHub Copilot | `~/.copilot/skills/` |
+| Pi | `~/.pi/agent/skills/` |
+| Droid / Factory | `~/.factory/skills/` |
+| Gemini CLI | `~/.gemini/skills/` |
 
-Install skills to `~/.factory/skills/` using a flat directory structure matching the skill's `name` field (lowercase-hyphen). Each skill should be a directory containing a `SKILL.md` with YAML frontmatter. Factory Droid discovers skills automatically from this folder. Skills can be invoked directly with `/skill-name`, or the Droid can load them automatically when they match the current task. Use `disable-model-invocation: true` in frontmatter to restrict a skill to manual invocation only.
+See the [skills CLI agent table](https://github.com/vercel-labs/skills#supported-agents) for the full list.
 
-The installer automatically adapts the format for each agent:
-- Copilot and Pi use a flat structure (no topic subdirectories) and slug-normalize the `name` field to match the directory
-- All other agents use topic-based subdirectories preserving the original `name` field
+## Skill Frontmatter
 
-## Companion Scripts & MCP Servers
+Every skill directory contains a `SKILL.md` with standard Agent Skills frontmatter:
 
-This repository ships with two kinds of tooling alongside skills:
-
-| Type | What | How to get it |
-|------|------|---------------|
-| **Companion Python scripts** | `*.py` files shipped with specific skills (e.g. `lint_battalion.py`, `git_surgery.py`). Each is pure stdlib — no `pip install`. | `npx grimoirestack install --with-scripts --with-mcp` |
-| **MCP Servers** | Raw stdio MCP servers in `mcp-servers/` — zero external deps, JSON-RPC over stdio with `Content-Length` framing. | Copy `mcp-servers/` into your project; add to Hermes `config.yaml` |
-
-### MCP Servers included
-
-| Server | Tools | Best for |
-|--------|-------|----------|
-| `mcp-servers/code-graph/server.py` | `index_repo`, `find_symbol`, `search_semantic`, `get_call_graph`, `get_dead_code` | Structured code navigation, symbol search, call-graph analysis |
-| `mcp-servers/dev-diagnostics/server.py` | `run_diagnostics`, `parse_output`, `get_summary`, `contamination_check` | Unified lint/test/typecheck output parsing across 6+ tools |
-
-Hermes config example:
 ```yaml
-mcp_servers:
-  code-graph:
-    command: python3
-    args: ["/full/path/to/GrimoireStack/mcp-servers/code-graph/server.py"]
-  dev-diagnostics:
-    command: python3
-    args: ["/full/path/to/GrimoireStack/mcp-servers/dev-diagnostics/server.py"]
+name: specter
+description: "..."
+disable-model-invocation: true
 ```
+
+`disable-model-invocation: true` hides the skill from the model's system prompt. Users invoke it explicitly with `/skill:<name>` (Prime Agent) or the agent's equivalent. Companion Python scripts, `references/`, and `RESEARCH.md` ride along with each skill directory automatically.
 
 ## Documentation
 
@@ -277,7 +270,7 @@ Output: `app/dist/`. Deploy with `npx wrangler pages deploy dist --project-name 
 ## Testing
 
 - **Vitest unit tests** in `app/src/test/` — covers data, hooks, utils, components, a11y, search, exporter, problem matcher, spell graph, spell metadata, URL sync
-- **Playwright e2e** at the repo root — covers navigation, search, favorites, marginalia, signals, keyboard shortcuts, PWA install prompt, axe a11y
+- **Playwright e2e** in `app/tests/e2e/` — covers navigation, search, favorites, marginalia, signals, keyboard shortcuts, PWA install prompt, axe a11y
 - Run only unit: `cd app && npm test`
 - Run only e2e: `cd app && npm run test:e2e:prod` (uses the built `dist/`)
 - Run all: `cd app && npm test && npm run test:e2e:prod`

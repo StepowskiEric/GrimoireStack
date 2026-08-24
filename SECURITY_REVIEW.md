@@ -1,7 +1,7 @@
 # Security Review Report — GrimoireStack
 
 **Date:** 2026-07-12
-**Scope:** Full repository (React + Vite frontend + Cloudflare Pages Functions + CLI installer)
+**Scope:** Full repository (React + Vite frontend + Cloudflare Pages Functions)
 **Method:** STRIDE + Unsafe Control Actions + LLM-Specific Vulnerability Audit + Evidence Verification
 
 ---
@@ -19,7 +19,7 @@
 | `POST /api/llm-proxy/v1/chat/completions` | CF Pages Function | Re-export of llm-proxy | Public internet |
 | `POST /api/recommend` | CF Pages Function | Skill recommendations via Groq/OpenRouter | Public internet |
 | `sw.js` | Service Worker | Cache of static assets + skill files | Client browser |
-| `bin/install.js` | CLI tool | Writes skill files to home dirs | User's machine |
+| Skills install via external `npx skills` CLI (vercel-labs) | Third-party tool | Writes skill files to agent dirs | User's machine |
 | Static pages (React) | Client | UI rendering of skill catalog | Public internet |
 
 ### Threat Table
@@ -119,7 +119,7 @@
 | "Rate limiting on recommend" | Read `recommend.js:446-467` | **CONFIRMED** — KV-based, 20 req/min/IP, fails open |
 | "No rate limiting on groq-proxy" | Read `groq-proxy.js` | **CONFIRMED** — no throttle logic present |
 | "Model is validated on LLM proxy" | Read `llm-proxy.js:50` | **PARTIALLY CONFIRMED** — checks it's a non-empty string, no allowlist |
-| "No remote downloads in install script" | Grep'd `install.js` for fetch/curl/wget | **CONFIRMED** — no remote downloads |
+| "No remote downloads in installer" | Skills installed via `npx skills` from the GitHub source; the CLI is third-party code | **OBSOLETE** — custom installer removed; trust moves to the external CLI |
 | "Service worker is same-origin only" | Read `sw.js:55-57` | **CONFIRMED** — `url.origin !== self.location.origin` check |
 | "AI binding check exists" | Read `llm-proxy.js:34` | **CONFIRMED** — returns 500 if missing |
 

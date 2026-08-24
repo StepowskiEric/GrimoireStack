@@ -1,25 +1,12 @@
 {
   "name": "grimoirestack",
   "version": "1.17.0",
-  "description": "A catalog of agent skills for making AI systems more reliable, disciplined, and useful in real work. Includes protocol and framework skills, companion Python scripts, and MCP servers.",
-  "bin": {
-    "grimoirestack": "bin/install.js"
-  },
+  "description": "A catalog of agent skills for making AI systems more reliable, disciplined, and useful in real work. Install with npx skills add StepowskiEric/GrimoireStack.",
   "files": [
-    "bin/",
-    "debugging/",
-    "execution/",
-    "judgment-and-routing/",
-    "output-quality/",
-    "systems-and-architecture/",
-    "orchestration/",
-    "mlops/",
-    "reasoning/",
-    "software-development/",
-    "development/",
-    "testing/",
-    "research/",
-    "scripts/"
+    "skills/",
+    "scripts/",
+    "docs/",
+    "README.md"
   ],
   "keywords": [
     "ai",
@@ -38,10 +25,6 @@
   "scripts": {
     "test": "vitest run tests/",
     "test:app": "cd app && npm test"
-  },
-  "dependencies": {
-    "prompts": "^2.4.2",
-    "playwright": "^1.58.0"
   },
   "engines": {
     "node": ">=14"

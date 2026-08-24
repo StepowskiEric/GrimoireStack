@@ -1,78 +1,93 @@
 # Installation
 
-Install skills directly to your agent's configuration directory using `npx`:
+Install skills from this catalog with the standard [skills CLI](https://github.com/vercel-labs/skills)
+(`npx skills`). The catalog lives at `StepowskiEric/GrimoireStack` on GitHub and is
+discovered automatically from the standard `skills/` container.
 
 ## Quick Start
 
 ```bash
-# Interactive picker — select agent and skills from a menu
-npx grimoirestack install
+# Preview the catalog without installing
+npx skills add StepowskiEric/GrimoireStack --list
 
-# Install all skills to a specific agent
-npx grimoirestack install --agent copilot
-npx grimoirestack install --agent codex
-npx grimoirestack install --agent hermes
-npx grimoirestack install --agent claude
-npx grimoirestack install --agent antigravity
+# Install every skill globally (real files in ~/.agents/skills/, no symlinks)
+npx skills add StepowskiEric/GrimoireStack -g -s '*' -a cline -y
 
-# Install only specific skills (repeat --skill for multiple)
-npx grimoirestack install --agent copilot --skill checklist-manifesto
-npx grimoirestack install --agent codex --skill how-to-solve-it-state-machine --skill ooda-loop-state-machine
+# Install a single skill
+npx skills add StepowskiEric/GrimoireStack -s specter -g -y
 
-# Partial name matching works too
-npx grimoirestack install --agent claude --skill "six-thinking"
+# Install to a specific agent (creates a symlink in the agent's skills dir)
+npx skills add StepowskiEric/GrimoireStack -g -a codex -y
 
-# Install to all supported agents
-npx grimoirestack install --all
-
-# List available skills without installing
-npx grimoirestack list
+# Copy instead of symlink (agent dir gets real files, canonical dir is skipped)
+npx skills add StepowskiEric/GrimoireStack -g -a codex --copy -y
 ```
 
-## Default Install Paths
+## Updating
+
+Global installs from the GitHub source are recorded in `~/.agents/.skill-lock.json`.
+Updates diff every installed skill against the catalog and prompt for skills that
+were deleted upstream:
 
 ```bash
-npx GrimoireStack install --agent codex       # → ~/.agents/skills/
-npx GrimoireStack install --agent hermes      # → ~/.hermes/skills/
-npx GrimoireStack install --agent claude      # → ~/.claude/skills/
-npx GrimoireStack install --agent antigravity # → ~/.antigravity/skills/
-npx GrimoireStack install --agent copilot     # → ~/.copilot/skills/ (VS Code Copilot)
+npx skills update -g          # update all global skills
+npx skills update <skill> -g  # update one skill
 ```
 
-## Custom Destinations
-
-To make skills show up in a Codex repository workspace, install them into the repo-local Team Config path:
+## Removing
 
 ```bash
-npx GrimoireStack install --agent codex --dest .agents/skills
+npx skills remove <skill> -g  # remove one global skill
+npx skills remove -g          # interactive picker
+npx skills ls -g              # list installed global skills
 ```
 
-Use any custom destination:
+## Local Paths
+
+A local checkout works as a source too:
 
 ```bash
-npx GrimoireStack install --agent codex --dest /path/to/custom/dir
+npx skills add /path/to/GrimoireStack -g -s '*' -a cline -y
 ```
 
-## How It Works
+Note: local-path installs are not update-tracked (no lock entry). Use the GitHub
+source for `npx skills update` support.
 
-Each command copies every skill into a folder bundle with a `SKILL.md` file. Each bundle includes `name`, `description`, and `source: "GrimoireStack"` frontmatter so skills are discoverable and identifiable in the skills picker.
+## What Gets Installed
 
-For example, `execution/how-to-solve-it-state-machine` installs to `execution/how-to-solve-it-state-machine/SKILL.md` under the target directory.
+Each skill is a directory. The CLI copies the whole directory:
 
-## VS Code Copilot
-
-These skills use the [Agent Skills open standard](https://agentskills.io), which VS Code Copilot supports natively. Installing to `~/.copilot/skills/` makes them available as personal skills across all your VS Code workspaces.
-
-```bash
-# Install all skills for VS Code Copilot
-npx GrimoireStack install --agent copilot
-
-# Or pick specific skills
-npx GrimoireStack install --agent copilot --skill checklist-manifesto --skill first-principles
-
-# Then in VS Code, type /skills in chat to verify they appear
+```
+my-skill/
+├── SKILL.md       # frontmatter + instructions
+├── references/    # detailed docs, loaded on demand
+├── scripts/       # companion scripts (pure stdlib Python)
+└── RESEARCH.md    # research basis (where present)
 ```
 
-After installation, skills are loaded on-demand by Copilot when relevant to your task. You can manage them via the Chat Customizations editor (gear icon in the Chat view) or by typing `/skills` in the chat input.
+## Frontmatter
 
-Note: VS Code Copilot requires skills to be in flat directories directly under the skills folder. The installer automatically uses a flat structure for `--agent copilot` (e.g. `~/.copilot/skills/checklist-manifesto/SKILL.md`) while keeping topic-grouped subdirectories for other agents.
+Every skill carries the standard Agent Skills frontmatter plus one extension:
+
+```yaml
+name: my-skill
+description: What it does and when to use it.
+disable-model-invocation: true
+```
+
+`disable-model-invocation: true` hides the skill from the model's system prompt
+in Prime Agent. Users invoke it explicitly with `/skill:my-skill`. Other agents
+may ignore the field or map it to their own equivalent setting.
+
+## Prime Agent
+
+Prime Agent reads global skills from `~/.agents/skills/`. Install to a universal
+agent (`-a cline`, `-a warp`, ...) so the real files land there directly, or use
+any agent and point Prime Agent at the canonical directory:
+
+```json
+// ~/.prime/agent/settings.json
+{
+  "skills": ["~/.agents/skills"]
+}
+```
