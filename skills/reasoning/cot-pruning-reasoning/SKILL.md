@@ -10,7 +10,7 @@ disable-model-invocation: true
 
 # CoT Pruning Reasoning
 
-**Twin of `selective-halt-reasoning` (Phase 4 of the `reasoning-integrity-chain`) — prunes tokens instead of halting.**
+**Phase 4 twin within the `reasoning-integrity-chain` — prunes tokens instead of halting.**
 
 ## When to Use
 

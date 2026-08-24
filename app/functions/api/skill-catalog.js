@@ -11,22 +11,6 @@ export const SKILL_CATALOG = [
     "effect": "Generate cross-domain analogies — break fixation by mapping problem structures to foreign fields (biology, music, traffic) and transferring insights."
   },
   {
-    "skill": "designing-data-intensive-applications-ai",
-    "name": "Designing Data-Intensive Applications for AI Agents",
-    "school": "Systems & Architecture",
-    "schoolName": "School of Architecture",
-    "status": "—",
-    "effect": "Reason about data systems: storage choices, replication, consistency, partitioning, queues, failure modes, and operational tradeoffs."
-  },
-  {
-    "skill": "domain-driven-design",
-    "name": "Domain-Driven Design for AI Agents",
-    "school": "Systems & Architecture",
-    "schoolName": "School of Architecture",
-    "status": "—",
-    "effect": "Bounded contexts, ubiquitous language, aggregates, context maps, domain events, anti-corruption layers."
-  },
-  {
     "skill": "everything-as-code-conceptualizer",
     "name": "Everything-as-Code Conceptualizer",
     "school": "Systems & Architecture",
@@ -67,14 +51,6 @@ export const SKILL_CATALOG = [
     "effect": "4-phase security review fusing STRIDE, hazard analysis, LLM vuln audit, and expanded threat-modeling guidance."
   },
   {
-    "skill": "sre-error-budget",
-    "name": "SRE / Error Budget Thinking",
-    "school": "Systems & Architecture",
-    "schoolName": "School of Architecture",
-    "status": "—",
-    "effect": "SLOs, error budgets, toil budgets, and change-velocity governance. Spend the budget on speed when healthy; freeze changes when depleted."
-  },
-  {
     "skill": "system-architecture-audit",
     "name": "System Architecture Audit for AI Agents",
     "school": "Systems & Architecture",
@@ -89,14 +65,6 @@ export const SKILL_CATALOG = [
     "schoolName": "School of Architecture",
     "status": "—",
     "effect": "Stream-aligned, platform, enabling, and complicated-subsystem boundaries with explicit interaction modes."
-  },
-  {
-    "skill": "the-goal-theory-of-constraints-ai",
-    "name": "The Goal — Theory of Constraints for Engineering Agents",
-    "school": "Systems & Architecture",
-    "schoolName": "School of Architecture",
-    "status": "—",
-    "effect": "Find the one constraint, ignore non-constraints, exploit then elevate it, repeat when it moves."
   },
   {
     "skill": "thinking-in-systems-state-machine",
@@ -123,14 +91,6 @@ export const SKILL_CATALOG = [
     "effect": "Two-pass prune retains only the steps that move the answer (coarse step-level, then fine token-level)."
   },
   {
-    "skill": "prism",
-    "name": "Prism",
-    "school": "Reasoning & Faithfulness",
-    "schoolName": "School of Cognition",
-    "status": "—",
-    "effect": "Force numeric confidence on each claim, compress to its essence, then verify the compression reconstructs the original."
-  },
-  {
     "skill": "reasoning-integrity-chain",
     "name": "Reasoning Integrity Chain",
     "school": "Reasoning & Faithfulness",
@@ -139,36 +99,12 @@ export const SKILL_CATALOG = [
     "effect": "Escalating 4-phase verification chain: faithfulness, claims, backward verification, selective halt."
   },
   {
-    "skill": "selective-halt-reasoning",
-    "name": "Selective Halt Reasoning",
-    "school": "Reasoning & Faithfulness",
-    "schoolName": "School of Cognition",
-    "status": "—",
-    "effect": "Monitor for semantic stabilization and halt early when consecutive steps converge on equivalent conclusions."
-  },
-  {
-    "skill": "agentic-design-patterns-orchestrator-state-machine",
-    "name": "Agentic Patterns Orchestrator — State Machine Protocol",
-    "school": "Agent Orchestration",
-    "schoolName": "School of Confluence",
-    "status": "—",
-    "effect": "Enforce a phased workflow with explicit gates between classify, plan, execute, reflect, and verify."
-  },
-  {
     "skill": "monte-carlo-tree-search",
     "name": "Monte Carlo Tree Search for Agents",
     "school": "Agent Orchestration",
     "schoolName": "School of Confluence",
     "status": "—",
     "effect": "Allocate search effort to branches that earn it through probes and scoring."
-  },
-  {
-    "skill": "navigator",
-    "name": "Navigator",
-    "school": "Agent Orchestration",
-    "schoolName": "School of Confluence",
-    "status": "—",
-    "effect": "Scout reads code, Thought-Retriever stores the reasoning trail so future sessions resume from where you stopped."
   },
   {
     "skill": "octopus",
@@ -185,14 +121,6 @@ export const SKILL_CATALOG = [
     "schoolName": "School of Confluence",
     "status": "—",
     "effect": "Surface the critical assumption, crystallize intent into testable spec, ground facts before acting."
-  },
-  {
-    "skill": "rashomon-triad-hybrid",
-    "name": "Rashomon-Triad Hybrid",
-    "school": "Agent Orchestration",
-    "schoolName": "School of Confluence",
-    "status": "—",
-    "effect": "Parallel perspectives with conflicting goals run independent abductive-deductive-inductive cycles, then argue via attack graph."
   },
   {
     "skill": "scout",
@@ -251,14 +179,6 @@ export const SKILL_CATALOG = [
     "effect": "Complete pre-deployment checklist merging LLM Pre-Push Review with Vibe Coding Security Hardening."
   },
   {
-    "skill": "api-design-backward-compatibility",
-    "name": "API Design and Backward Compatibility",
-    "school": "Software Development",
-    "schoolName": "School of Crafting",
-    "status": "—",
-    "effect": "Contract-first design and additive-only change discipline for evolving APIs without breaking clients."
-  },
-  {
     "skill": "api-surface-anchoring",
     "name": "API Surface Anchoring",
     "school": "Software Development",
@@ -315,14 +235,6 @@ export const SKILL_CATALOG = [
     "effect": "Covers fetch API, React Query, SWR, error handling, caching, offline support, and Expo Router data loaders."
   },
   {
-    "skill": "recency-grounding",
-    "name": "Recency Grounding",
-    "school": "Software Development",
-    "schoolName": "School of Crafting",
-    "status": "—",
-    "effect": "User-invoked pre-claim audit for one unfamiliar or post-cutoff library. Invoke with `/recency-grounding <library> [version]`."
-  },
-  {
     "skill": "review-ladder-plus",
     "name": "Review Ladder Plus",
     "school": "Software Development",
@@ -363,28 +275,12 @@ export const SKILL_CATALOG = [
     "effect": "Verify the actual system behavior rather than matching abstract terminology when integrating research or external docs."
   },
   {
-    "skill": "blueprint",
-    "name": "Blueprint",
-    "school": "Execution & Improvement",
-    "schoolName": "School of Execution",
-    "status": "—",
-    "effect": "Blueprint a messy problem into formal schema — types, operations, events, constraints — so contradictions, gaps, and hidden assumptions surface as bugs. Use when scope keeps expanding, stakeholders talk past each other, or informal requirements need precision."
-  },
-  {
     "skill": "checklist-manifesto",
     "name": "Checklist Manifesto",
     "school": "Execution & Improvement",
     "schoolName": "School of Execution",
     "status": "—",
     "effect": "Build the smallest useful checklist for high-stakes procedures, gate execution on checklist completion, stop cleanly and escalate if it cannot be cleared."
-  },
-  {
-    "skill": "how-to-solve-it-state-machine",
-    "name": "How to Solve It",
-    "school": "Execution & Improvement",
-    "schoolName": "School of Execution",
-    "status": "—",
-    "effect": "Frame the problem, gather evidence, explore via hypothesis, plan, reflect. Designed to prevent premature coding."
   },
   {
     "skill": "intent-specification-protocol",
@@ -427,14 +323,6 @@ export const SKILL_CATALOG = [
     "effect": "Improve a process through a measurement-anchored cycle: plan with a measurable prediction, do, check actual vs predicted, then standardize or escalate. Standardize only what the check confirmed."
   },
   {
-    "skill": "retrospective",
-    "name": "Retrospective",
-    "school": "Execution & Improvement",
-    "schoolName": "School of Execution",
-    "status": "—",
-    "effect": "After an incident, shipped feature, or completed project, systematically learn from what happened."
-  },
-  {
     "skill": "speculative-drafting-verification",
     "name": "Speculative Drafting with Verification",
     "school": "Execution & Improvement",
@@ -467,14 +355,6 @@ export const SKILL_CATALOG = [
     "effect": "Emergency stop + perfect handoff report so the next agent loses nothing."
   },
   {
-    "skill": "pragmatic-programmer-state-machine",
-    "name": "The Pragmatic Programmer",
-    "school": "Execution & Improvement",
-    "schoolName": "School of Execution",
-    "status": "—",
-    "effect": "Bounded changes, reversible choices, automation over repeated toil, root-cause fixes over symptom patches."
-  },
-  {
     "skill": "toyota-kata-state-machine",
     "name": "Toyota Kata",
     "school": "Execution & Improvement",
@@ -505,14 +385,6 @@ export const SKILL_CATALOG = [
     "schoolName": "School of Judgment",
     "status": "—",
     "effect": "Stress-test a proposal against a separate adversarial sub-agent to break anchoring."
-  },
-  {
-    "skill": "bayesian-updating",
-    "name": "Bayesian Belief Updating",
-    "school": "Judgment & Decision-Making",
-    "schoolName": "School of Judgment",
-    "status": "—",
-    "effect": "Maintain explicit priors updated by likelihood, avoiding over- and under-reaction to new evidence."
   },
   {
     "skill": "cognitive-bias-checklist",
@@ -611,14 +483,6 @@ export const SKILL_CATALOG = [
     "effect": "Anchor to similar past projects before reasoning from the specifics."
   },
   {
-    "skill": "second-order-thinking",
-    "name": "Second-Order Thinking",
-    "school": "Judgment & Decision-Making",
-    "schoolName": "School of Judgment",
-    "status": "—",
-    "effect": "Chain consequences past first-order until the system-level outcome is clear."
-  },
-  {
     "skill": "six-thinking-hats",
     "name": "Six Thinking Hats",
     "school": "Judgment & Decision-Making",
@@ -707,14 +571,6 @@ export const SKILL_CATALOG = [
     "effect": "Run, prompt, and extract structured output from local LLMs (e.g., Ollama, llama.cpp)."
   },
   {
-    "skill": "bounded-self-revision",
-    "name": "Bounded Self-Revision",
-    "school": "Output Quality",
-    "schoolName": "School of Refinement",
-    "status": "—",
-    "effect": "Capped self-critique passes that terminate on improvement or budget exhaustion."
-  },
-  {
     "skill": "cognitive-load-operator-state-machine",
     "name": "Cognitive Load Operator — State Machine Protocol",
     "school": "Output Quality",
@@ -737,14 +593,6 @@ export const SKILL_CATALOG = [
     "schoolName": "School of Refinement",
     "status": "—",
     "effect": "Explain from scratch in plain language and identify where the explanation breaks."
-  },
-  {
-    "skill": "mece-pyramid-principle",
-    "name": "MECE / Pyramid Principle",
-    "school": "Output Quality",
-    "schoolName": "School of Refinement",
-    "status": "—",
-    "effect": "Enforce mutually exclusive, collectively exhaustive categories under a single governing thought."
   },
   {
     "skill": "self-verify-pipeline",

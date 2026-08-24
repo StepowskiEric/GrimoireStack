@@ -136,7 +136,7 @@ This skill was correctly applied when:
 ## Integration
 
 - **`thoroughness-check-etto`** — use before Phase 1 to calibrate how much rigor is warranted.
-- **`refactoring-state-machine`** or `pragmatic-programmer-state-machine` — the spec produced by Phase 2 feeds directly into bounded execution.
+- **`trajectory-guard`** or `legacy-rescue-protocol` — the spec produced by Phase 2 feeds directly into bounded execution.
 - **`pre-mortem`** — the assumption map from Phase 1 is direct input for pre-mortem failure story generation.
 - **`improve-codebase-architecture`** — Phase 2 (Constrain) aligns with its Deletion Test; the invariant list is compatible with its candidate format.
 - **`verification-before-completion`** — Phase 3's verify-before-act discipline is a lighter-weight precursor; use both when the task is large enough to warrant pre-flight _and_ post-completion gates.

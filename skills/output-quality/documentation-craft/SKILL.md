@@ -34,6 +34,9 @@ Any section failing a dimension goes back to Draft. Update stale docs in the sam
 ## Reference
 For the README, ADR, and function/class templates plus the positive craft rules, see [`references/documentation-craft-details.md`](references/documentation-craft-details.md).
 
+## MECE test
+Before publishing any taxonomy, category list, or option set: every item must fit exactly one category (no overlaps) and the categories must cover the whole domain (no gaps). An item that fits two places means the categories are wrong.
+
 ## Rules
 - **Do** outline before writing prose.
 - **Do** lead with purpose and give every example context.

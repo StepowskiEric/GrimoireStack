@@ -143,6 +143,9 @@ Fix: Use !!user for UI; waitForUser checks user?.id && !loadingRef.current
 Verify: Run auth E2E, check onboarding redirect
 ```
 
+## Persist-and-resume trails
+For multi-session investigations, persist a resume trail (state reached, next step, open questions) so a fresh session continues instead of rediscovering. Resume reads the trail before re-exploring.
+
 ## Rules
 
 1. **Never create an SOP from a failed trajectory** — only successful ones

@@ -3,7 +3,6 @@ name: reasoning-integrity-chain
 description: "Escalating 4-phase verification chain: faithfulness, claims, backward verification, selective halt."
 triggers:
   - multi-step-reasoning-hallucination-risk
-  - prism-hallucination-check
   - escalating-verification
 disable-model-invocation: true
 ---
@@ -32,7 +31,7 @@ Decompose committed steps into atomic falsifiable claims (one subject, one predi
 Take the conclusion, assume it is WRONG, and list 2–4 alternatives that would also explain the evidence. Rule each out with evidence or record it as unresolved. Hunt hidden assumptions: what would have to be true for your conclusion to be the ONLY explanation? Score survival 0–1: ≥0.9 proceed; 0.7–0.9 proceed with caveat; <0.7 STOP — verify further or abstain. Full protocol: `self-verify-pipeline`.
 
 ### 4. Selective halt — stop when it converges
-Define halting criteria before reasoning. After each step compute the semantic delta: CONCLUSION_CHANGED → continue; CONFIDENCE_INCREASED → continue once more; NO_CHANGE → halt candidate; REGRESSION → backtrack. Three consecutive NO_CHANGEs: criteria met → HALT; unmet → force a novel action (run a test, read a new file) — never keep reasoning. Never halt on an untested fix; never halt after one NO_CHANGE. Full protocol: `selective-halt-reasoning`; token-efficiency twin: `cot-pruning-reasoning`.
+Define halting criteria before reasoning. After each step compute the semantic delta: CONCLUSION_CHANGED → continue; CONFIDENCE_INCREASED → continue once more; NO_CHANGE → halt candidate; REGRESSION → backtrack. Three consecutive NO_CHANGEs: criteria met → HALT; unmet → force a novel action (run a test, read a new file) — never keep reasoning. Never halt on an untested fix; never halt after one NO_CHANGE. Token-efficiency twin: `cot-pruning-reasoning`.
 
 ## Confidence calibration
 Per-claim confidence 0–1; conclusion confidence = min(ancestor claims). Force external verification for anything ≥0.9 — agents overestimate. Default to LIKELY (0.75) when evidence is strong but indirect — false abstention paralyses.

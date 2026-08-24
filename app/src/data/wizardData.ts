@@ -81,7 +81,7 @@ export const WIZARD_DATA = [
         id: 'arch-decisions',
         label: 'Make a technical decision',
         desc: 'Choose between approaches',
-        skill: 'domain-driven-design',
+        skill: 'feature-architecture',
         effect:
           'Reveals the business domain model that should drive technical decisions — makes the right choice obvious by clarifying what the code is really about.',
         reason:
@@ -92,7 +92,7 @@ export const WIZARD_DATA = [
         id: 'system-design',
         label: 'Design a new system or feature',
         desc: 'Greenfield or major addition',
-        skill: 'domain-driven-design',
+        skill: 'feature-architecture',
         effect:
           'Reveals the business domain model that should drive technical decisions — makes the right choice obvious by clarifying what the code is really about.',
         reason:
@@ -103,7 +103,7 @@ export const WIZARD_DATA = [
         id: 'boundaries',
         label: 'Define module / service boundaries',
         desc: 'Split up a monolithic concern',
-        skill: 'domain-driven-design',
+        skill: 'feature-architecture',
         effect:
           'Reveals the business domain model that should drive technical decisions — makes the right choice obvious by clarifying what the code is really about.',
         reason:
@@ -147,7 +147,7 @@ export const WIZARD_DATA = [
         id: 'monolith-breakup',
         label: 'Break up a monolith',
         desc: 'Plan extraction',
-        skill: 'domain-driven-design',
+        skill: 'feature-architecture',
         effect:
           'Reveals the business domain model that should drive technical decisions — makes the right choice obvious by clarifying what the code is really about.',
         reason:
@@ -271,7 +271,7 @@ export const WIZARD_DATA = [
         id: 'options',
         label: 'Compare multiple approaches',
         desc: 'Choose between valid options',
-        skill: 'mece-pyramid-principle',
+        skill: 'documentation-craft',
         effect:
           'Structures complex outputs — plans, analyses, recommendations, memos, explanations — so they are both complete and non-redundant.',
         reason:
@@ -315,12 +315,12 @@ export const WIZARD_DATA = [
         id: 'tradeoff',
         label: 'Evaluate tradeoffs between options',
         desc: 'Whats the right balance?',
-        skill: 'domain-driven-design',
+        skill: 'feature-architecture',
         effect:
           'Reveals the business domain model that should drive technical decisions — makes the right choice obvious by clarifying what the code is really about.',
         reason:
           'Tradeoffs are only resolvable by referring to what the system is actually for. DDD provides the language for that reference.',
-        alt: 'mece-pyramid-principle — to ensure you have enumerated all options before evaluating tradeoffs',
+        alt: 'documentation-craft — to ensure you have enumerated all options before evaluating tradeoffs',
       },
     ],
   },
@@ -444,7 +444,7 @@ export const WIZARD_DATA = [
           'Prevents the most common security vulnerabilities and design flaws — covers injection, auth, data exposure, and supply chain risks using STRIDE and OWASP frameworks.',
         reason:
           'APIs are the primary attack surface. Threat modeling each endpoint prevents the most common API exploits.',
-        alt: 'api-design-backward-compatibility — if the security concern is about breaking existing clients, not vulnerabilities',
+        alt: 'api-surface-anchoring — if the security concern is about breaking existing clients, not vulnerabilities',
       },
     ],
   },
@@ -546,13 +546,13 @@ export const WIZARD_DATA = [
           'Presents conclusions, estimates, recommendations, or technical explanations to humans — without overpromising, hiding uncertainty, or creating false confidence.',
         reason:
           'Technical communication to non-technical stakeholders is a distinct skill. The right framing prevents misalignment.',
-        alt: 'mece-pyramid-principle — to structure the communication before delivering it',
+        alt: 'documentation-craft — to structure the communication before delivering it',
       },
       {
         id: 'incident-report',
         label: 'Write a post-incident review',
         desc: 'Learn from production incidents',
-        skill: 'retrospective',
+        skill: 'future-mortem',
         effect:
           'Systematically learns from outcomes — the natural counterpart to pre-mortem, examining what actually happened vs what was expected.',
         reason:

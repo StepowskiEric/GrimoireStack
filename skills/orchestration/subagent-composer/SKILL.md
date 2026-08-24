@@ -19,7 +19,7 @@ Sub-agent failure is almost always a context failure. This skill defines the str
 Use the **Delegation Decision Tree**: if the task fits in your working memory (1-2 files), do it yourself. Delegate for multi-file isolation, fresh perspective, or mechanical bulk.
 
 ### 2. Load
-Select skills based on the task. **Always** load `subagent-laws` and `tdd` (for code). Add domain-specific skills (e.g., `security-threat-modeling`, `domain-driven-design`).
+Select skills based on the task. **Always** load `subagent-laws` and `tdd` (for code). Add domain-specific skills (e.g., `security-threat-modeling`, `feature-architecture`).
 
 ### 3. Compose
 Build the brief with these sections in order:

@@ -40,6 +40,9 @@ Generate the smallest code change that satisfies all scenarios. Touch only files
 - [`references/ambiguity-patterns.md`](references/ambiguity-patterns.md) — the ambiguity catalog: 6 pattern categories plus red-flag vocabulary, used during Parse and Gate.
 - [`references/intent-specification-details.md`](references/intent-specification-details.md) — the six failure modes.
 
+## Gap-and-contradiction scan
+Before freezing the spec, scan it pairwise: requirements that cannot both hold, terms used two ways, and constraints with no source. Each finding is either resolved in writing or raised as a blocking question — never silently resolved.
+
 ## Rules
 - **Do** write invariants before code — the #1 anti-over-engineering lever.
 - **Do** keep scenarios between 2 and 5; more means the change needs decomposing.

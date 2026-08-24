@@ -140,6 +140,10 @@ Use a category from the list. If nothing fits, write it free text and mark `NEW-
 
 ---
 
+## Conflict is data
+
+When swarm perspectives genuinely conflict, surface the conflict as a finding — never average them into a forced consensus.
+
 ## Failure Modes of the Swarm Itself
 
 - **Premature convergence** — personas echo each other instead of diverging. Defence: instruct each persona explicitly to produce *novel* findings in round 2, not validate peers.

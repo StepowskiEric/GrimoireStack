@@ -28,18 +28,6 @@ const schools: Array<{
         "status": "—"
       },
       {
-        "name": "Designing Data-Intensive Applications for AI Agents",
-        "skill": "designing-data-intensive-applications-ai",
-        "effect": "Reason about data systems: storage choices, replication, consistency, partitioning, queues, failure modes, and operational tradeoffs.",
-        "status": "—"
-      },
-      {
-        "name": "Domain-Driven Design for AI Agents",
-        "skill": "domain-driven-design",
-        "effect": "Bounded contexts, ubiquitous language, aggregates, context maps, domain events, anti-corruption layers.",
-        "status": "—"
-      },
-      {
         "name": "Everything-as-Code Conceptualizer",
         "skill": "everything-as-code-conceptualizer",
         "effect": "Codify messy human problems as pseudocode to reveal hidden assumptions, missing decisions, and edge cases.",
@@ -70,12 +58,6 @@ const schools: Array<{
         "status": "—"
       },
       {
-        "name": "SRE / Error Budget Thinking",
-        "skill": "sre-error-budget",
-        "effect": "SLOs, error budgets, toil budgets, and change-velocity governance. Spend the budget on speed when healthy; freeze changes when depleted.",
-        "status": "—"
-      },
-      {
         "name": "System Architecture Audit for AI Agents",
         "skill": "system-architecture-audit",
         "effect": "4-phase audit fusing Thinking in Systems, DDD, DDIA, and Release It. Reveals structural problems before they cascade.",
@@ -85,12 +67,6 @@ const schools: Array<{
         "name": "Team Topologies for Multi-Agent Systems",
         "skill": "team-topologies-ai",
         "effect": "Stream-aligned, platform, enabling, and complicated-subsystem boundaries with explicit interaction modes.",
-        "status": "—"
-      },
-      {
-        "name": "The Goal — Theory of Constraints for Engineering Agents",
-        "skill": "the-goal-theory-of-constraints-ai",
-        "effect": "Find the one constraint, ignore non-constraints, exploit then elevate it, repeat when it moves.",
         "status": "—"
       },
       {
@@ -120,21 +96,9 @@ const schools: Array<{
         "status": "—"
       },
       {
-        "name": "Prism",
-        "skill": "prism",
-        "effect": "Force numeric confidence on each claim, compress to its essence, then verify the compression reconstructs the original.",
-        "status": "—"
-      },
-      {
         "name": "Reasoning Integrity Chain",
         "skill": "reasoning-integrity-chain",
         "effect": "Escalating 4-phase verification chain: faithfulness, claims, backward verification, selective halt.",
-        "status": "—"
-      },
-      {
-        "name": "Selective Halt Reasoning",
-        "skill": "selective-halt-reasoning",
-        "effect": "Monitor for semantic stabilization and halt early when consecutive steps converge on equivalent conclusions.",
         "status": "—"
       }
     ]
@@ -146,21 +110,9 @@ const schools: Array<{
     "desc": "Incantations for orchestrating multiple agents, sharing reasoning memory, and coordinating parallel workstreams.",
     "spells": [
       {
-        "name": "Agentic Patterns Orchestrator — State Machine Protocol",
-        "skill": "agentic-design-patterns-orchestrator-state-machine",
-        "effect": "Enforce a phased workflow with explicit gates between classify, plan, execute, reflect, and verify.",
-        "status": "—"
-      },
-      {
         "name": "Monte Carlo Tree Search for Agents",
         "skill": "monte-carlo-tree-search",
         "effect": "Allocate search effort to branches that earn it through probes and scoring.",
-        "status": "—"
-      },
-      {
-        "name": "Navigator",
-        "skill": "navigator",
-        "effect": "Scout reads code, Thought-Retriever stores the reasoning trail so future sessions resume from where you stopped.",
         "status": "—"
       },
       {
@@ -173,12 +125,6 @@ const schools: Array<{
         "name": "Pre-Flight Intent Verification",
         "skill": "pre-flight-intent-verification",
         "effect": "Surface the critical assumption, crystallize intent into testable spec, ground facts before acting.",
-        "status": "—"
-      },
-      {
-        "name": "Rashomon-Triad Hybrid",
-        "skill": "rashomon-triad-hybrid",
-        "effect": "Parallel perspectives with conflicting goals run independent abductive-deductive-inductive cycles, then argue via attack graph.",
         "status": "—"
       },
       {
@@ -232,12 +178,6 @@ const schools: Array<{
         "status": "—"
       },
       {
-        "name": "API Design and Backward Compatibility",
-        "skill": "api-design-backward-compatibility",
-        "effect": "Contract-first design and additive-only change discipline for evolving APIs without breaking clients.",
-        "status": "—"
-      },
-      {
         "name": "API Surface Anchoring",
         "skill": "api-surface-anchoring",
         "effect": "Verify every external API call against current docs to prevent hallucinated APIs.",
@@ -280,12 +220,6 @@ const schools: Array<{
         "status": "—"
       },
       {
-        "name": "Recency Grounding",
-        "skill": "recency-grounding",
-        "effect": "User-invoked pre-claim audit for one unfamiliar or post-cutoff library. Invoke with `/recency-grounding <library> [version]`.",
-        "status": "—"
-      },
-      {
         "name": "Review Ladder Plus",
         "skill": "review-ladder-plus",
         "effect": "Multi-agent code review ladder for production-grade QA: security, auth, data, concurrency.",
@@ -324,21 +258,9 @@ const schools: Array<{
     "desc": "Rituals for solving problems, executing plans, and improving systems over time.",
     "spells": [
       {
-        "name": "Blueprint",
-        "skill": "blueprint",
-        "effect": "Blueprint a messy problem into formal schema — types, operations, events, constraints — so contradictions, gaps, and hidden assumptions surface as bugs. Use when scope keeps expanding, stakeholders talk past each other, or informal requirements need precision.",
-        "status": "—"
-      },
-      {
         "name": "Checklist Manifesto",
         "skill": "checklist-manifesto",
         "effect": "Build the smallest useful checklist for high-stakes procedures, gate execution on checklist completion, stop cleanly and escalate if it cannot be cleared.",
-        "status": "—"
-      },
-      {
-        "name": "How to Solve It",
-        "skill": "how-to-solve-it-state-machine",
-        "effect": "Frame the problem, gather evidence, explore via hypothesis, plan, reflect. Designed to prevent premature coding.",
         "status": "—"
       },
       {
@@ -372,12 +294,6 @@ const schools: Array<{
         "status": "—"
       },
       {
-        "name": "Retrospective",
-        "skill": "retrospective",
-        "effect": "After an incident, shipped feature, or completed project, systematically learn from what happened.",
-        "status": "—"
-      },
-      {
         "name": "Speculative Drafting with Verification",
         "skill": "speculative-drafting-verification",
         "effect": "Generate multiple solution branches in parallel, verify each against hard constraints, select the best.",
@@ -399,12 +315,6 @@ const schools: Array<{
         "name": "Summarize — Emergency Stop + Handoff Report",
         "skill": "summarize",
         "effect": "Emergency stop + perfect handoff report so the next agent loses nothing.",
-        "status": "—"
-      },
-      {
-        "name": "The Pragmatic Programmer",
-        "skill": "pragmatic-programmer-state-machine",
-        "effect": "Bounded changes, reversible choices, automation over repeated toil, root-cause fixes over symptom patches.",
         "status": "—"
       },
       {
@@ -437,12 +347,6 @@ const schools: Array<{
         "name": "Advocatus Diaboli",
         "skill": "advocatus-diaboli",
         "effect": "Stress-test a proposal against a separate adversarial sub-agent to break anchoring.",
-        "status": "—"
-      },
-      {
-        "name": "Bayesian Belief Updating",
-        "skill": "bayesian-updating",
-        "effect": "Maintain explicit priors updated by likelihood, avoiding over- and under-reaction to new evidence.",
         "status": "—"
       },
       {
@@ -515,12 +419,6 @@ const schools: Array<{
         "name": "Reference Class Forecasting",
         "skill": "reference-class-forecasting",
         "effect": "Anchor to similar past projects before reasoning from the specifics.",
-        "status": "—"
-      },
-      {
-        "name": "Second-Order Thinking",
-        "skill": "second-order-thinking",
-        "effect": "Chain consequences past first-order until the system-level outcome is clear.",
         "status": "—"
       },
       {
@@ -614,12 +512,6 @@ const schools: Array<{
     "desc": "Incantations for improving, verifying, and stress-testing output before it ships.",
     "spells": [
       {
-        "name": "Bounded Self-Revision",
-        "skill": "bounded-self-revision",
-        "effect": "Capped self-critique passes that terminate on improvement or budget exhaustion.",
-        "status": "—"
-      },
-      {
         "name": "Cognitive Load Operator — State Machine Protocol",
         "skill": "cognitive-load-operator-state-machine",
         "effect": "Inspect complexity and replace high-load structures with lower-load equivalents.",
@@ -635,12 +527,6 @@ const schools: Array<{
         "name": "Feynman Technique",
         "skill": "feynman-technique",
         "effect": "Explain from scratch in plain language and identify where the explanation breaks.",
-        "status": "—"
-      },
-      {
-        "name": "MECE / Pyramid Principle",
-        "skill": "mece-pyramid-principle",
-        "effect": "Enforce mutually exclusive, collectively exhaustive categories under a single governing thought.",
         "status": "—"
       },
       {
