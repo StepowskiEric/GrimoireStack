@@ -5,6 +5,7 @@ triggers:
   - hard-problem-under-uncertainty
   - premature-coding-risk
   - problem-framing-gate
+disable-model-invocation: true
 ---
 
 # How to Solve It

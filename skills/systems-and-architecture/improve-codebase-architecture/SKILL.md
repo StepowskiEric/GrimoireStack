@@ -5,6 +5,7 @@ triggers:
   - Need to improve existing codebase structure
   - Need to find architectural deepening opportunities
   - Domain language and ADR decisions inform the direction
+disable-model-invocation: true
 ---
 
 # Improve Codebase Architecture

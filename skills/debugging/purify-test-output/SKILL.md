@@ -8,6 +8,7 @@ triggers:
 category: debugging
 priority: high
 tags: [testing, token-efficiency, debugging, test-output]
+disable-model-invocation: true
 ---
 
 ## Overview

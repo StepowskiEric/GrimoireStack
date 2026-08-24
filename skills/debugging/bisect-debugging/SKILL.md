@@ -6,6 +6,7 @@ triggers:
   - Feature worked yesterday but is broken today
   - Need the exact change that caused a regression
   - Multiple commits could be the culprit
+disable-model-invocation: true
 ---
 
 # Bisect Debugging

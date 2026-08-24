@@ -5,6 +5,7 @@ triggers:
   - Auditing an existing system for architectural weaknesses
   - Need to evaluate boundaries, data flow, and stability
   - Need to reveal structural problems before they cascade
+disable-model-invocation: true
 ---
 
 # System Architecture Audit for AI Agents

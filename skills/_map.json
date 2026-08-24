@@ -114,7 +114,7 @@
   "llm-failure-modes": "/skills/software-development/llm-pre-push-review/references/llm-failure-modes.md",
   "llm-pre-push-review": "/skills/software-development/llm-pre-push-review/SKILL.md",
   "local-llm-tooling": "/skills/mlops/local-llm-tooling/SKILL.md",
-  "log-trace-correlation": "/skills/debugging/minimal-reproduction/log-trace-correlation/SKILL.md",
+  "log-trace-correlation": "/skills/debugging/log-trace-correlation/SKILL.md",
   "mcts-details": "/skills/orchestration/monte-carlo-tree-search/references/mcts-details.md",
   "mcts-node-schema": "/skills/orchestration/monte-carlo-tree-search/references/mcts-node-schema.md",
   "mece-details": "/skills/output-quality/mece-pyramid-principle/references/mece-details.md",

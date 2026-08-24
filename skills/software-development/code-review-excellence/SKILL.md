@@ -5,6 +5,7 @@ triggers:
   - systematic-code-review
   - constructive-feedback
   - knowledge-sharing-review
+disable-model-invocation: true
 ---
 
 # Code Review Excellence

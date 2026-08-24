@@ -6,6 +6,7 @@ triggers:
   - ambiguous-request
   - unfamiliar-codebase-feature
   - just-start-coding-temptation
+disable-model-invocation: true
 ---
 
 # Structured Feature Planning

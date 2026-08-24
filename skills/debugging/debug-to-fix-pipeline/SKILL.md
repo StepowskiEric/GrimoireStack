@@ -8,6 +8,7 @@ triggers:
   - first-patch-attempt-failed
   - hard-bug
   - stuck-on-debugging
+disable-model-invocation: true
 ---
 
 # Debug-to-Fix Pipeline

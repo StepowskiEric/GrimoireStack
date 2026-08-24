@@ -9,6 +9,7 @@ triggers:
   - Agent is about to patch code without a test that verifies the fix
   - Test suite passes but the feature still doesn't work (untested path)
   - Agent wants to use debug-to-fix-pipeline but has no failing test to start Phase 3
+disable-model-invocation: true
 ---
 
 # Minimal Reproduction

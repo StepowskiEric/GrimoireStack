@@ -6,6 +6,7 @@ triggers:
   - success-probability
   - outside-view-before-inside
   - optimism-bias-risk
+disable-model-invocation: true
 ---
 
 # Reference Class Forecasting

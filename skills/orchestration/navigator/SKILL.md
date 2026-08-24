@@ -5,6 +5,7 @@ triggers:
   - Large or unfamiliar codebase
   - Investigation trail worth preserving across sessions
   - Agent keeps re-reading the same files
+disable-model-invocation: true
 ---
 
 # Navigator

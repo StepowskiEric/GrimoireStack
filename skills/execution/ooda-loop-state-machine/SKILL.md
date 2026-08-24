@@ -6,6 +6,7 @@ triggers:
   - adversarial-pressure
   - decision-tempo
   - degrading-situation
+disable-model-invocation: true
 ---
 
 # OODA Loop — Rapid Response Protocol

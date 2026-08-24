@@ -6,6 +6,7 @@ triggers:
   - post-rule-change-cleanup
   - pre-commit-lint-sprint
   - stricter-lint-onboarding
+disable-model-invocation: true
 ---
 
 # Lint Battalion

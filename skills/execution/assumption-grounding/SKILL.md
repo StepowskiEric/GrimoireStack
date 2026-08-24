@@ -7,6 +7,7 @@ triggers:
   - Before asserting any factual claim about the codebase, environment, or dependencies
   - Before proceeding after a context gap (computer restarted, new session, long pause)
   - When confidence in a memory is < 90%
+disable-model-invocation: true
 ---
 
 ## Overview

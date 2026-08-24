@@ -7,6 +7,7 @@ triggers:
   - Niche or low-training-count libraries
   - Internal/SDK packages whose API may differ from documentation
   - Any code that imports from pip install packages, npm packages, or external REST/gRPC APIs
+disable-model-invocation: true
 ---
 
 # API Surface Anchoring

@@ -6,6 +6,7 @@ triggers:
   - local-optima-escape
   - parallel-drafting
   - constraint-verification
+disable-model-invocation: true
 ---
 
 # Speculative Drafting with Verification

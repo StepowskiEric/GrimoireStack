@@ -6,6 +6,7 @@ triggers:
   - Pre-refactor spec locking — capture behavior before changing a function
   - Bug reports with no test — verify the fix against a formal spec
   - API contracts — enforce pre/postconditions across module boundaries
+disable-model-invocation: true
 ---
 
 # Verified Code Synthesizer

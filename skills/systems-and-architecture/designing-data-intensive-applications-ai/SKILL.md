@@ -6,6 +6,7 @@ triggers:
   - storage-selection
   - distributed-debugging
   - consistency-tradeoffs
+disable-model-invocation: true
 ---
 
 # Designing Data-Intensive Applications for AI Agents

@@ -7,6 +7,7 @@ triggers:
   - botched-rebase
   - merge-conflict-hell
   - accidental-commit
+disable-model-invocation: true
 ---
 
 # Git Surgery

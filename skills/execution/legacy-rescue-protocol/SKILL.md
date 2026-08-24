@@ -5,6 +5,7 @@ triggers:
   - brittle-code-change
   - characterize-before-change
   - legacy-refactor-anti-loop
+disable-model-invocation: true
 ---
 
 # Legacy Rescue Protocol

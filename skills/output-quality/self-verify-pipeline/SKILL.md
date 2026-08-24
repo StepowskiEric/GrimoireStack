@@ -5,6 +5,7 @@ triggers:
   - Outputs risk unverified confidence
   - Need escalating verification for agent output
   - Need to catch different failure modes at different verification levels
+disable-model-invocation: true
 ---
 
 ## Self-Verify Pipeline

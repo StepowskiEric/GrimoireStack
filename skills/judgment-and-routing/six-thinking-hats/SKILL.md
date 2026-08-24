@@ -5,6 +5,7 @@ triggers:
   - collapsed-thinking-risk
   - multi-perspective-analysis
   - mixed-thinking-modes
+disable-model-invocation: true
 ---
 
 # Six Thinking Hats

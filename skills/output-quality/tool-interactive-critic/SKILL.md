@@ -5,6 +5,7 @@ triggers:
   - post-generation-verification
   - tool-grounded-critique
   - unverified-confidence
+disable-model-invocation: true
 ---
 
 # Tool-Interactive Critic

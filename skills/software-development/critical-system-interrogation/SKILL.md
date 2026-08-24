@@ -7,6 +7,7 @@ triggers:
   - validation-layer-audit
   - session-management-review
   - crypto-implementation-review
+disable-model-invocation: true
 ---
 
 # Critical System Interrogation

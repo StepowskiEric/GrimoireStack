@@ -6,6 +6,7 @@ triggers:
   - skill-vs-baseline
   - empirical-skill-evidence
   - skill-quality-audit
+disable-model-invocation: true
 ---
 
 # Skill A/B Evaluation

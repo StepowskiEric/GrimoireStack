@@ -5,6 +5,7 @@ triggers:
   - first-path-may-be-wrong
   - unclear-reasoning-path
   - early-commitment-risk
+disable-model-invocation: true
 ---
 
 # Tree of Thoughts

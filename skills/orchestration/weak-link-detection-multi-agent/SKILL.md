@@ -6,6 +6,7 @@ triggers:
   - quality-variance
   - error-propagation
   - output-consistency
+disable-model-invocation: true
 ---
 
 # Weak-Link Detection for Multi-Agent Systems

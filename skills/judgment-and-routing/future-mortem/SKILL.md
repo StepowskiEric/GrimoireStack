@@ -7,6 +7,7 @@ triggers:
   - Need to know what the code will cost the project in six months
   - Code will be built upon by future features
   - Post-implementation risk audit
+disable-model-invocation: true
 ---
 
 # Skill: Future Mortem — Post-Implementation Failure Review

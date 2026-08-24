@@ -6,6 +6,7 @@ triggers:
   - delegation-failure
   - context-loading
   - skill-selection
+disable-model-invocation: true
 ---
 
 # Sub-Agent Composer

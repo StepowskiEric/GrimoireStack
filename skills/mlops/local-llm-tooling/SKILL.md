@@ -5,6 +5,7 @@ triggers:
   - Need to run a local LLM server
   - Need to craft prompts for local models
   - Need to extract structured JSON or text from local LLM output
+disable-model-invocation: true
 ---
 
 # Local LLM Tooling Skill

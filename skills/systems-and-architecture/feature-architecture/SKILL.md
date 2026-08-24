@@ -8,6 +8,7 @@ triggers:
   - post-implementation-architecture-review
   - architectural-drift
   - long-term-health
+disable-model-invocation: true
 ---
 
 # Feature Architecture

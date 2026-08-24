@@ -6,6 +6,7 @@ triggers:
   - scope-discipline-enforcement
   - test-integrity
   - communication-standards
+disable-model-invocation: true
 ---
 
 # Sub-Agent Laws

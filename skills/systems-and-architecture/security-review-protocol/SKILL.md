@@ -5,6 +5,7 @@ triggers:
   - comprehensive-security-review
   - stride-threat-modeling
   - llm-vulnerability-audit
+disable-model-invocation: true
 ---
 
 # Security Review Protocol

@@ -6,6 +6,7 @@ triggers:
   - tradeoff-decision
   - alternative-rejection-audit
   - premature-consensus-risk
+disable-model-invocation: true
 ---
 
 # Rashomon-Triad Hybrid

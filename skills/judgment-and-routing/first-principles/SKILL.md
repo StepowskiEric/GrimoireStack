@@ -6,6 +6,7 @@ triggers:
   - inherited-framing
   - ground-up-reasoning
   - received-wisdom-risk
+disable-model-invocation: true
 ---
 
 # First Principles Thinking

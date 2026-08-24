@@ -6,6 +6,7 @@ triggers:
   - high-stakes-decision
   - anchoring-break
   - adversarial-review
+disable-model-invocation: true
 ---
 
 # Advocatus Diaboli

@@ -6,6 +6,7 @@ triggers:
   - Need official-docs-first, version-aware research
   - Need full GitHub issue follow-through
   - Risk of latching onto the first outdated result
+disable-model-invocation: true
 ---
 
 # Effective Web Search

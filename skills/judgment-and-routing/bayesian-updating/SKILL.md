@@ -6,6 +6,7 @@ triggers:
   - evidence-evaluation
   - anti-anchoring
   - anti-whiplash
+disable-model-invocation: true
 ---
 
 # Bayesian Belief Updating

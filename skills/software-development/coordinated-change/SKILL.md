@@ -6,6 +6,7 @@ triggers:
   - api-contract-change
   - shared-type-update
   - schema-migration
+disable-model-invocation: true
 ---
 
 # Coordinated Change

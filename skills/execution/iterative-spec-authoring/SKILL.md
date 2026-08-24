@@ -6,6 +6,7 @@ triggers:
   - multi-concern-feature
   - judge-review-cycle
   - stakeholder-review
+disable-model-invocation: true
 ---
 
 # Iterative Spec Authoring

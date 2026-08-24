@@ -6,6 +6,7 @@ triggers:
   - explanation-gap-hunting
   - ground-up-explanation
   - mechanism-check
+disable-model-invocation: true
 ---
 
 # Feynman Technique

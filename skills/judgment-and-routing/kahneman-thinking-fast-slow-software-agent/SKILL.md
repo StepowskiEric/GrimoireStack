@@ -6,6 +6,7 @@ triggers:
   - architectural-decision
   - complex-refactor
   - ambiguous-bug
+disable-model-invocation: true
 ---
 
 # Thinking Fast and Slow for Software Agents

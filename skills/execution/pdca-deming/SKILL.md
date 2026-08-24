@@ -6,6 +6,7 @@ triggers:
   - measurement-cycle
   - verify-before-standardize
   - baseline-gap
+disable-model-invocation: true
 ---
 
 # PDCA / Shewhart Cycle

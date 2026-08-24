@@ -5,6 +5,7 @@ triggers:
   - business-domain-architecture
   - bounded-context-design
   - domain-seam-separation
+disable-model-invocation: true
 ---
 
 # Domain-Driven Design for AI Agents

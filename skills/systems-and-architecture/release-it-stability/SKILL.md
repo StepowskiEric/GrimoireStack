@@ -6,6 +6,7 @@ triggers:
   - cascading-failure-prevention
   - production-readiness-review
   - stability-pattern-audit
+disable-model-invocation: true
 ---
 
 # Release It! Stability Patterns

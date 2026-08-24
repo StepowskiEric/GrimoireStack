@@ -5,6 +5,7 @@ triggers:
   - conclusion-confirmation
   - reasoning-reliability
   - multi-path-convergence
+disable-model-invocation: true
 ---
 
 # Self-Consistency Check

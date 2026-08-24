@@ -6,6 +6,7 @@ triggers:
   - Specification drift detected
   - Same error appearing after multiple fix attempts
   - Context window growing without convergence
+disable-model-invocation: true
 ---
 
 # Trajectory Guard — Detect and Recover from Failure Spirals

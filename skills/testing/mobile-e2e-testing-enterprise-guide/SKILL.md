@@ -6,6 +6,7 @@ triggers:
   - mobile-test-coverage-review
   - flakiness-debugging
   - adversarial-edge-case-ideas
+disable-model-invocation: true
 ---
 
 # Mobile E2E Testing — The Hunter's Mindset

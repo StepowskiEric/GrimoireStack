@@ -6,6 +6,7 @@ triggers:
   - search-effort-allocation
   - bounded-probes
   - branch-scoring
+disable-model-invocation: true
 ---
 
 # Monte Carlo Tree Search for Agents

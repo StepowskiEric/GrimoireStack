@@ -5,6 +5,7 @@ triggers:
   - draft-polish-needed
   - finite-revision-discipline
   - self-refine-bounded
+disable-model-invocation: true
 ---
 
 # Bounded Self-Revision

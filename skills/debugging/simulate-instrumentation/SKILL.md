@@ -9,6 +9,7 @@ triggers:
 category: debugging
 priority: high
 tags: [debugging, instrumentation, runtime-state, logging, program-repair]
+disable-model-invocation: true
 ---
 
 ## Overview

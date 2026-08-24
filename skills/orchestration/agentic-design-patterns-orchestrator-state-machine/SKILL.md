@@ -5,6 +5,7 @@ triggers:
   - Task is non-trivial and one-shot replies are insufficient
   - Need to enforce a phased workflow with explicit gates
   - Need to choose which patterns are needed and which are unnecessary
+disable-model-invocation: true
 ---
 
 # Agentic Patterns Orchestrator — State Machine Protocol

@@ -6,6 +6,7 @@ triggers:
   - know-what-you-dont-know
   - selective-prediction
   - post-answer-audit
+disable-model-invocation: true
 ---
 
 # Metacognitive Monitoring

@@ -6,6 +6,7 @@ triggers:
   - bottleneck-hunting
   - micro-optimization-fatigue
   - pipeline-slowdown
+disable-model-invocation: true
 ---
 
 # The Goal — Theory of Constraints for Engineering Agents

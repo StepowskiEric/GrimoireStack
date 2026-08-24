@@ -5,6 +5,7 @@ triggers:
   - Before deploying any code to production
   - Before pushing AI-authored code
   - Running a pre-deployment security and quality gate
+disable-model-invocation: true
 ---
 
 ## Pre-Deployment Gate

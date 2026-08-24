@@ -6,6 +6,7 @@ triggers:
   - vocabulary-mismatch
   - multi-module-target
   - no-obvious-start-file
+disable-model-invocation: true
 ---
 
 # Codebase Divide-and-Conquer Search

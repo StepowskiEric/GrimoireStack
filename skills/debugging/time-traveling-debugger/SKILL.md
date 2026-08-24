@@ -11,6 +11,7 @@ triggers:
 version: 1.0.0
 priority: high
 tags: [debugging, time-travel, reverse-execution, trace, state-divergence]
+disable-model-invocation: true
 ---
 
 # Time-Traveling Debugger

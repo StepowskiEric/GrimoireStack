@@ -5,6 +5,7 @@ triggers:
   - Need to implement data fetching in a React/Expo app
   - Need to choose between fetch API, React Query, SWR
   - Need error handling, caching, or offline support for data fetching
+disable-model-invocation: true
 ---
 
 # Native Data Fetching

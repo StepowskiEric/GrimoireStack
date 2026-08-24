@@ -8,6 +8,7 @@ triggers:
   - redirect-chain
   - websocket-drop
   - works-in-curl-not-app
+disable-model-invocation: true
 ---
 
 # Network / API Debugging

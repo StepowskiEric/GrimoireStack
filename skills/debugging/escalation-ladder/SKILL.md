@@ -11,6 +11,7 @@ triggers:
   - Agent is generating patches that don't change the failure output
   - Agent has been debugging for 30+ minutes without a clear hypothesis
   - Multiple debugging skills attempted without resolution
+disable-model-invocation: true
 ---
 
 # Escalation Ladder

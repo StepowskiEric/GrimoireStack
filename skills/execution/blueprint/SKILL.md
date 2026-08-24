@@ -5,6 +5,7 @@ triggers:
   - Vague problem that keeps being redefined
   - Stakeholders talk past each other with hidden disagreement
   - Problem scope keeps expanding mid-discussion
+disable-model-invocation: true
 ---
 
 # Blueprint

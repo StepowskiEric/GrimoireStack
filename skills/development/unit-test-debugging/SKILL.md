@@ -6,6 +6,7 @@ triggers:
   - source-of-truth-diagnosis
   - test-overfitting-prevention
   - flaky-test-investigation
+disable-model-invocation: true
 ---
 
 # Unit Test Debugging

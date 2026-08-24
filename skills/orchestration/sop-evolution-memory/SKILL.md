@@ -5,6 +5,7 @@ triggers:
   - Repeated successes on a class of tasks
   - Need to distill trajectories into reusable SOPs
   - Future similar tasks should load the SOP instead of full history
+disable-model-invocation: true
 ---
 
 # SOP Evolution Memory

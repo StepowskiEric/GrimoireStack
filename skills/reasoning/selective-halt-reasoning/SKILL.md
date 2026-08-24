@@ -5,6 +5,7 @@ triggers:
   - Reasoning is generating waste
   - Need to halt early when conclusions stabilize
   - Running to a fixed budget is wasteful
+disable-model-invocation: true
 ---
 
 # Selective Halt Reasoning

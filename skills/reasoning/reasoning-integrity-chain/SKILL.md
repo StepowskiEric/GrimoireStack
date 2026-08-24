@@ -5,6 +5,7 @@ triggers:
   - multi-step-reasoning-hallucination-risk
   - prism-hallucination-check
   - escalating-verification
+disable-model-invocation: true
 ---
 
 # Reasoning Integrity Chain

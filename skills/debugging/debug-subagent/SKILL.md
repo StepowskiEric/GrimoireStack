@@ -5,6 +5,7 @@ triggers:
   - Bug where fix is not immediately obvious from the error message
   - Multi-file bugs requiring runtime state inspection
   - Bugs where static analysis (reading code) hasn't revealed the root cause
+disable-model-invocation: true
 ---
 
 ## Overview

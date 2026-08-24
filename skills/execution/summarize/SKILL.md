@@ -5,6 +5,7 @@ triggers:
   - Session quality is degraded
   - Need to hand off mid-work
   - Must preserve context before a /new
+disable-model-invocation: true
 ---
 
 

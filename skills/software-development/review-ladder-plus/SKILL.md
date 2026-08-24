@@ -6,6 +6,7 @@ triggers:
   - security-sensitive-review
   - data-mutation-review
   - concurrency-review
+disable-model-invocation: true
 ---
 
 # Review Ladder Plus

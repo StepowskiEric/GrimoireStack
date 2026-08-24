@@ -10,6 +10,7 @@ triggers:
   - Changing database schemas that surface through an API
   - Publishing SDKs, client libraries, or webhooks
   - Consuming a third-party API that may change
+disable-model-invocation: true
 ---
 
 # Skill: API Design and Backward Compatibility

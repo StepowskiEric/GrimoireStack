@@ -5,6 +5,7 @@ triggers:
   - Need to verify understanding before acting
   - Need to catch overconfidence or underconfidence
   - Need to distill a complex situation to its core
+disable-model-invocation: true
 ---
 
 # Prism

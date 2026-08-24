@@ -6,6 +6,7 @@ triggers:
   - symptom-vs-cause
   - incident-postmortem
   - causal-chain-verification
+disable-model-invocation: true
 ---
 
 # Root Cause Analysis

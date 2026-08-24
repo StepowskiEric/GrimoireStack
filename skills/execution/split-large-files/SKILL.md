@@ -6,6 +6,7 @@ triggers:
   - Need to refactor a large module or extract functions
   - Reviewing a PR with oversized files
   - About to add code to a file that is already large
+disable-model-invocation: true
 ---
 
 # Split Large Files — Boundary-Driven Extraction Protocol

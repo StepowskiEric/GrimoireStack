@@ -6,6 +6,7 @@ triggers:
   - completeness-and-non-redundancy
   - recommendation-memo
   - analysis-organization
+disable-model-invocation: true
 ---
 
 # MECE / Pyramid Principle

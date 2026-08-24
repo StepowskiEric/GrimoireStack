@@ -7,6 +7,7 @@ triggers:
   - Need to understand how data flows from entry point to failure point
   - Crash site is symptomatic, not causal — the real bug is upstream
   - State corruption happens across module boundaries (auth, caching, async)
+disable-model-invocation: true
 ---
 
 # Debug Issue

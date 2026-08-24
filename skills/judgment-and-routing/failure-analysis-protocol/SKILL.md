@@ -5,6 +5,7 @@ triggers:
   - Need pre-commitment failure analysis
   - Plan, architecture decision, or significant change needs validation
   - Forward reasoning keeps missing risks
+disable-model-invocation: true
 ---
 
 ## Failure Analysis Protocol

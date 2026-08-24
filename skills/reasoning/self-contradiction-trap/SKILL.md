@@ -5,6 +5,7 @@ triggers:
   - Need to prevent agents from contradicting themselves
   - Session spans multiple turns with accumulating claims
   - Need to detect when new claims contradict existing ones
+disable-model-invocation: true
 ---
 
 ---

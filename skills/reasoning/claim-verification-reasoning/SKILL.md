@@ -5,6 +5,7 @@ triggers:
   - unverified-reasoning-claims
   - atomic-claim-decomposition
   - tool-grounded-verification
+disable-model-invocation: true
 ---
 
 # Claim Verification Reasoning

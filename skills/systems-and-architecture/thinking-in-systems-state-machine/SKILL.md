@@ -6,6 +6,7 @@ triggers:
   - delayed-effects
   - multi-step-cascades
   - system-boundary-mapping
+disable-model-invocation: true
 ---
 
 # Thinking in Systems

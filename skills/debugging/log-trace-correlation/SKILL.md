@@ -5,6 +5,7 @@ triggers:
   - Error log with a stack trace (or similar diagnostic output)
   - Need to determine which file, function, and line caused the failure
   - Want to avoid guesswork and speed up debugging
+disable-model-invocation: true
 ---
 
 # Log Trace Correlation

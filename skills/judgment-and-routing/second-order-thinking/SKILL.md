@@ -5,6 +5,7 @@ triggers:
   - downstream-effects-matter
   - cascade-tracing
   - system-level-outcome
+disable-model-invocation: true
 ---
 
 # Second-Order Thinking

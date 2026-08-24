@@ -6,6 +6,7 @@ triggers:
   - response-style-selection
   - domain-gate
   - misclassification-risk
+disable-model-invocation: true
 ---
 
 # Problem-Mode Router (Cynefin)

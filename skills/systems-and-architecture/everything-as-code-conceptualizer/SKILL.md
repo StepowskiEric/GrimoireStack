@@ -6,6 +6,7 @@ triggers:
   - hidden-assumptions
   - requirements-clarification
   - pre-spec-codification
+disable-model-invocation: true
 ---
 
 # Everything-as-Code Conceptualizer

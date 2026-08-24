@@ -6,6 +6,7 @@ triggers:
   - incident-response
   - rapid-first-action
   - pattern-recognition-gate
+disable-model-invocation: true
 ---
 
 # Recognition-Primed Triage

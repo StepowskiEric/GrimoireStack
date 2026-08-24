@@ -6,6 +6,7 @@ triggers:
   - cascading-error-risk
   - long-reasoning-chain
   - step-checkpoints
+disable-model-invocation: true
 ---
 
 # Step-Level Verification Protocol

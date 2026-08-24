@@ -6,6 +6,7 @@ triggers:
   - incident-postmortem
   - project-retro
   - learning-loop
+disable-model-invocation: true
 ---
 
 # Retrospective

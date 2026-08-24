@@ -6,6 +6,7 @@ triggers:
   - pre-release-test-reconciliation
   - test-selector-drift
   - untested-ui-states
+disable-model-invocation: true
 ---
 
 # E2E Cross-Check Protocol

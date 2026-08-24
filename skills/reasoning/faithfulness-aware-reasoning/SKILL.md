@@ -6,6 +6,7 @@ triggers:
   - logical-entailment
   - reasoning-validation
   - confabulation-detection
+disable-model-invocation: true
 ---
 
 # Faithfulness-Aware Reasoning

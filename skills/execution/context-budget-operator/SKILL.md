@@ -6,6 +6,7 @@ triggers:
   - long-session-budget
   - multi-file-parallel-read
   - cross-file-reasoning
+disable-model-invocation: true
 ---
 
 # Context Budget Operator

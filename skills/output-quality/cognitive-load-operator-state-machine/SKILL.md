@@ -5,6 +5,7 @@ triggers:
   - Output risks dense overload
   - Need to make information easier to understand, retain, and act on
   - Explanations, plans, or workflows are too complex
+disable-model-invocation: true
 ---
 
 # Cognitive Load Operator — State Machine Protocol

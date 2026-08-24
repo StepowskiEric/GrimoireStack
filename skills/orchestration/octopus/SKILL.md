@@ -6,6 +6,7 @@ triggers:
   - shared-contract-parallelism
   - wall-clock-speedup
   - local-subtask-autonomy
+disable-model-invocation: true
 ---
 
 # Octopus

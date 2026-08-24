@@ -6,6 +6,7 @@ triggers:
   - error-budget-policy
   - change-freeze-decision
   - slo-design
+disable-model-invocation: true
 ---
 
 # SRE / Error Budget Thinking

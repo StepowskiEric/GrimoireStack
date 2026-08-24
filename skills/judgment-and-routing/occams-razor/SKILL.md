@@ -6,6 +6,7 @@ triggers:
   - premature-abstraction
   - scope-creep-risk
   - simplest-fit-first
+disable-model-invocation: true
 ---
 
 # Occam's Razor

@@ -6,6 +6,7 @@ triggers:
   - shared-surface-modification
   - automation-opportunity
   - root-cause-over-symptom
+disable-model-invocation: true
 ---
 
 # The Pragmatic Programmer

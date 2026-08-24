@@ -5,6 +5,7 @@ triggers:
   - concern-contamination-risk
   - phase-isolation
   - sub-task-leak-prevention
+disable-model-invocation: true
 ---
 
 # Separation of Concerns for Agent Orchestration

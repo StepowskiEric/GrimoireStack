@@ -5,6 +5,7 @@ triggers:
   - Need to add tests first before writing code
   - Need red-green-refactor discipline
   - Code has no tests and needs test coverage
+disable-model-invocation: true
 ---
 
 # Test-Driven Development

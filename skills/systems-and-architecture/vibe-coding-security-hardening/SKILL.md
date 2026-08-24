@@ -6,6 +6,7 @@ triggers:
   - vibe-code-review
   - owasp-checklist
   - secret-scan
+disable-model-invocation: true
 ---
 
 # Vibe Coding Security Hardening

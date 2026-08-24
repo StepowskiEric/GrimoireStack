@@ -6,6 +6,7 @@ triggers:
   - skip-ahead-error-history
   - irreversible-action
   - shared-system-impact
+disable-model-invocation: true
 ---
 
 # Checklist Manifesto

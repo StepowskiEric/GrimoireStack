@@ -5,6 +5,7 @@ triggers:
   - Mission-critical features where a single bug could cause catastrophic failure
   - Security-critical or financially-critical code
   - Production deployment where correctness is paramount
+disable-model-invocation: true
 ---
 
 # Zero-Defect Protocol

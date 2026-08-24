@@ -6,6 +6,7 @@ triggers:
   - failure-mode-mapping
   - guardrail-derivation
   - blind-spot-reveal
+disable-model-invocation: true
 ---
 
 # Inversion

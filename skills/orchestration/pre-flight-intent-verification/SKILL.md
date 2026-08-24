@@ -5,6 +5,7 @@ triggers:
   - Request has ambiguity, blast radius, or irreversible side effects
   - Before any significant code change, mutation, or external action
   - Need to map assumptions before acting
+disable-model-invocation: true
 ---
 
 # Pre-Flight Intent Verification

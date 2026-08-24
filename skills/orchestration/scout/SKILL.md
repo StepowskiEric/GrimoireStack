@@ -5,6 +5,7 @@ triggers:
   - Large codebase where direct reading wastes attention
   - Need scoped, distilled findings rather than raw file dumps
   - Main task needs file context not already in memory
+disable-model-invocation: true
 ---
 
 # Scout

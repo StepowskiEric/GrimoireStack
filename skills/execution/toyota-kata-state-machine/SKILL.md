@@ -6,6 +6,7 @@ triggers:
   - obstacle-removal
   - pdca-cycle
   - disciplined-experimentation
+disable-model-invocation: true
 ---
 
 # Toyota Kata

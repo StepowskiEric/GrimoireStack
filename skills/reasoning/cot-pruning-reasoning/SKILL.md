@@ -5,6 +5,7 @@ triggers:
   - Chain-of-thought is consuming budget without changing conclusions
   - Need to prune reasoning steps that don't move the answer
   - Need coarse step-level then fine token-level pruning
+disable-model-invocation: true
 ---
 
 # CoT Pruning Reasoning

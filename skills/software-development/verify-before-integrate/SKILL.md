@@ -6,6 +6,7 @@ triggers:
   - research-paper-implementation
   - abstract-to-concrete-mapping
   - integration-documentation
+disable-model-invocation: true
 ---
 
 # Verify Before Integrate

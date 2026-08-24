@@ -6,6 +6,7 @@ triggers:
   - causation-fallacy-risk
   - high-stakes-decision
   - default-path-just-do-it
+disable-model-invocation: true
 ---
 
 # Counterfactual Policy Testing

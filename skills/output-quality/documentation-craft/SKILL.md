@@ -6,6 +6,7 @@ triggers:
   - code-to-docs
   - outline-first
   - doc-quality-verification
+disable-model-invocation: true
 ---
 
 # Documentation Craft

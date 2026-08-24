@@ -6,6 +6,7 @@ triggers:
   - Building against APIs that change frequently (FastAPI, httpx, newer frameworks)
   - Any task where API hallucination would waste time debugging
   - Code review — verify someone else's API usage
+disable-model-invocation: true
 ---
 
 # Verified API Workflow

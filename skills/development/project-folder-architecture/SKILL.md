@@ -1,6 +1,7 @@
 ---
 name: project-folder-architecture
 description: "Folder architecture for TypeScript + Expo Router + React Native + Supabase full-stack projects, updated to 2026 conventions. Use when scaffolding a new project, restructuring an existing one, auditing folder health, or answering 'where should this file live?'."
+disable-model-invocation: true
 ---
 
 # Project Folder Architecture

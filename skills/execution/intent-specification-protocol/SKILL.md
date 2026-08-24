@@ -6,6 +6,7 @@ triggers:
   - over-engineering-risk
   - behavior-preservation
   - unfamiliar-code
+disable-model-invocation: true
 ---
 
 # Intent Specification Protocol

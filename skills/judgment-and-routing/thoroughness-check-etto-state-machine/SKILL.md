@@ -6,6 +6,7 @@ triggers:
   - rigor-classification
   - evidence-threshold
   - risk-escalation
+disable-model-invocation: true
 ---
 
 # Thoroughness Check (ETTO)

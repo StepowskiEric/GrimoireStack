@@ -5,6 +5,7 @@ triggers:
   - Need E2E testing reference for mindset and architecture
   - Need testing epistemology and strategy guidance
   - Need risk-based prioritization and data realism principles
+disable-model-invocation: true
 ---
 
 # E2E Testing Philosophy & Architecture — Reference

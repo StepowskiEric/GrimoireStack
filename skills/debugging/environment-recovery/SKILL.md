@@ -10,6 +10,7 @@ triggers:
   - stale-cache-symptoms
   - peer-dependency-conflict
   - lockfile-out-of-sync
+disable-model-invocation: true
 ---
 
 # Environment Recovery

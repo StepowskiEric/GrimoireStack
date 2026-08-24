@@ -6,6 +6,7 @@ triggers:
   - failure-assumption
   - risk-ranking
   - pre-execution-gate
+disable-model-invocation: true
 ---
 
 # Pre-Mortem

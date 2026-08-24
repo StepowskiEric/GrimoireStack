@@ -6,6 +6,7 @@ triggers:
   - local-optima-trap
   - creative-block
   - fresh-perspective-needed
+disable-model-invocation: true
 ---
 
 # Cross-Domain Analogy

@@ -5,6 +5,7 @@ triggers:
   - Multiple plausible causes and your first guess is suspect
   - Crash site is not the root cause (deferred execution, async, state machine)
   - Debugging by reasoning from symptom back to cause
+disable-model-invocation: true
 ---
 
 # Specter

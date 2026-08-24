@@ -6,6 +6,7 @@ triggers:
   - ownership-boundaries
   - god-agent-prevention
   - platform-sprawl
+disable-model-invocation: true
 ---
 
 # Team Topologies for Multi-Agent Systems

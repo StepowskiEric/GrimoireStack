@@ -6,6 +6,7 @@ triggers:
   - pre-delivery-recommendation
   - estimate-calibration
   - high-consequence-decision
+disable-model-invocation: true
 ---
 
 # Cognitive Bias Checklist

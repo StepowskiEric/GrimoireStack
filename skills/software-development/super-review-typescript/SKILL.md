@@ -5,6 +5,7 @@ triggers:
   - After a "vibe-coded" session where a human or AI generated most of the code
   - Before committing or deploying TypeScript projects that contain AI-authored files
   - As a pull request check to ensure AI-introduced anti-patterns are caught
+disable-model-invocation: true
 ---
 
 # Super Review TypeScript

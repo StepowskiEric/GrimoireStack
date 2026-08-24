@@ -5,6 +5,7 @@ triggers:
   - high-consequence-action
   - irreversible-damage-risk
   - hazard-analysis-before-acting
+disable-model-invocation: true
 ---
 
 # Unsafe Control Actions / Hazard Analysis

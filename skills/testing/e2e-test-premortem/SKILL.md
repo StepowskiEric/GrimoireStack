@@ -5,6 +5,7 @@ triggers:
   - After writing or modifying E2E tests
   - Before writing E2E tests to map the flow and identify blind spots
   - Need to audit coverage gaps and assertion quality
+disable-model-invocation: true
 ---
 
 # Premortem: E2E Test Audit Protocol

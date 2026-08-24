@@ -5,6 +5,7 @@ triggers:
   - A recommendation needs stress-testing
   - Need to test whether the opposing position is stronger than it appears
   - Confirmation bias or overconfidence is a risk
+disable-model-invocation: true
 ---
 
 # Skill: Steelmanning for AI Agents
