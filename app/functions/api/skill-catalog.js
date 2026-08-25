@@ -403,6 +403,14 @@ export const SKILL_CATALOG = [
     "effect": "Compare a decision against null, opposite, and partial counterfactuals before committing."
   },
   {
+    "skill": "evidence-grounding",
+    "name": "Evidence Grounding",
+    "school": "Judgment & Decision-Making",
+    "schoolName": "School of Judgment",
+    "status": "New",
+    "effect": "Resolve every load-bearing observation against current evidence before acting: freshness checks on what you read, an early falsifying probe after the first edit, and receipts on every progress claim."
+  },
+  {
     "skill": "explore-vs-exploit-state-machine",
     "name": "Explore vs Exploit",
     "school": "Judgment & Decision-Making",
@@ -593,6 +601,14 @@ export const SKILL_CATALOG = [
     "schoolName": "School of Refinement",
     "status": "—",
     "effect": "Explain from scratch in plain language and identify where the explanation breaks."
+  },
+  {
+    "skill": "rubric-gate",
+    "name": "Rubric Gate",
+    "school": "Output Quality",
+    "schoolName": "School of Refinement",
+    "status": "New",
+    "effect": "Write a rubric of binary done-criteria before implementing, then gate on it: every criterion shows PASS with evidence before work ships."
   },
   {
     "skill": "self-verify-pipeline",

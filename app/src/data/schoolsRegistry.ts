@@ -362,6 +362,12 @@ const schools: Array<{
         "status": "—"
       },
       {
+        "name": "Evidence Grounding",
+        "skill": "evidence-grounding",
+        "effect": "Resolve every load-bearing observation against current evidence before acting: freshness checks on what you read, an early falsifying probe after the first edit, and receipts on every progress claim.",
+        "status": "New"
+      },
+      {
         "name": "Explore vs Exploit",
         "skill": "explore-vs-exploit-state-machine",
         "effect": "Explicit explore/exploit protocol: frame the decision, budget the search, explore with purpose, stop deliberately, act when search stops earning its keep.",
@@ -528,6 +534,12 @@ const schools: Array<{
         "skill": "feynman-technique",
         "effect": "Explain from scratch in plain language and identify where the explanation breaks.",
         "status": "—"
+      },
+      {
+        "name": "Rubric Gate",
+        "skill": "rubric-gate",
+        "effect": "Write a rubric of binary done-criteria before implementing, then gate on it: every criterion shows PASS with evidence before work ships.",
+        "status": "New"
       },
       {
         "name": "Self Verify Pipeline",
