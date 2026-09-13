@@ -1,4 +1,5 @@
 ---
+source: "GrimoireStack"
 name: toyota-kata-state-machine
 description: "Frame target, analyze current, attack one obstacle at a time, run a PDCA experiment, learn, repeat."
 triggers:
@@ -38,3 +39,4 @@ For the detailed 8-state machine, output artifacts (improvement board/log), and 
 - **Do** limit each experiment to one obstacle.
 - **Do not** expand scope mid-run without a fresh obstacle choice.
 - **Do not** jump to a grand redesign — iterate with evidence.
+- **Do** leave kata mode when you hold a single confirmed hypothesis — run `pdca-deming` to verify and standardize it (`pdca-deming` routes here when the path is uncertain; route back when it isn't).

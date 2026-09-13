@@ -1,7 +1,5 @@
 # Toyota Kata — Reference Details
 
-## State Machine Protocol
-
 ## State 0 — Intake
 
 Goal:
@@ -169,7 +167,7 @@ Exit condition:
 - expected result is written down before execution
 
 * * *
-## State 5 — Execution Unlock
+## State 5 — Execution
 
 Goal:
 
@@ -247,31 +245,7 @@ Escalate when:
 * * *
 ## Tool Gating
 
-### Recon / framing phase
-
-Allowed:
-
-- read/search/list/test/benchmark/log inspection
-- artifact writing only
-
-Disallowed:
-
-- broad writes
-- migrations
-- large refactors
-- rollout actions
-
-### Experiment phase
-
-Allowed:
-
-- only the bounded experiment
-- only evidence collection needed for that experiment
-
-Disallowed:
-
-- opportunistic side changes
-- adjacent cleanup not required for the experiment
+Phase gating is enforced by the states themselves, restated here so it can't be missed: States 0–4 are read-only plus artifact writing — no broad writes, migrations, large refactors, or rollout actions (see State 1 disalloweds). State 5 permits only the bounded experiment plus its evidence collection — no opportunistic side changes or adjacent cleanup (see State 5 disalloweds).
 
 * * *
 ## Circuit Breakers
@@ -286,8 +260,6 @@ Stop immediately if:
 - the user’s actual need is containment, not improvement kata
 
 * * *
-
----
 
 ## Output Artifacts
 
@@ -342,24 +314,5 @@ Required log row format:
 No broad implementation should begin until the improvement board exists.
 
 * * *
-## State Machine
 
----
-
-## Circuit Breakers
-
-## Circuit Breakers
-
-Stop immediately if:
-
-- the agent cannot state the current condition clearly
-- no measurable target condition exists
-- more than one obstacle becomes the active focus simultaneously
-- the experiment grows into a rewrite
-- evidence collection is too weak to distinguish success from noise
-- the user’s actual need is containment, not improvement kata
-
-* * *
-
----
 

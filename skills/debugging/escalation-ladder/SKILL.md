@@ -31,6 +31,7 @@ Before escalating, try these self-corrections:
 5. **Check your assumptions** — Write down exactly what you believe is true. Which one is least supported by evidence?
 
 **Exit criteria:**
+
 - New evidence found → continue debugging with updated hypothesis
 - No new evidence → escalate to Level 1
 
@@ -48,6 +49,7 @@ Before escalating, try these self-corrections:
 4. **Generate competing hypotheses** — Write down 3-5 possible root causes. Include at least one "weird" hypothesis that contradicts your current intuition.
 
 **Exit criteria:**
+
 - Minimal reproduction found → continue debugging with narrow scope
 - Can't reproduce → bug may be environmental (switch to `environment-recovery`)
 - Still stuck after 15 minutes → escalate to Level 2
@@ -94,6 +96,7 @@ If it doesn't: **present this to the user.** Ask specifically for help on "Block
 **No user available (background/headless run)?** Write the journal to a file (e.g. `debugging-journal-<bug>.md`) instead of presenting it, then proceed to Level 3. The file becomes the core of the Level 4 handoff.
 
 **Exit criteria:**
+
 - Writing the journal reveals the answer → continue debugging
 - User provides a clue → continue with new information
 - User doesn't know either → escalate to Level 3
@@ -110,6 +113,7 @@ If it doesn't: **present this to the user.** Ask specifically for help on "Block
 4. **Consider: is this actually a bug in your dependencies or runtime?** — Check GitHub issues for the framework/library you're using.
 
 **Decision:**
+
 - If you can narrow the bug to a specific file/function → go back to Level 1 with narrow scope
 - If you can narrow it to a dependency bug → document a workaround and report
 - If you still can't narrow it → escalate to Level 4
@@ -162,7 +166,7 @@ Escalation is not one-way. At any level, genuinely new evidence — a different 
 ## Failure Modes
 
 | Failure Mode | Why It Fails |
-|-------------|-------------|
+| ------------- | ------------- |
 | Skipping Level 0 and going straight to user | Most "stuck" moments resolve with self-correction; asking too early wastes user time |
 | Re-reading files instead of running code | If the bug was visible in code, you'd have found it; runtime state is what you need |
 | Small variations on the same failed approach | If `console.log(x)` didn't show the bug, `console.log(JSON.stringify(x))` probably won't either — change strategy |
