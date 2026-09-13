@@ -1,11 +1,11 @@
-import { describe, it, expect } from 'vitest';
-import fs from 'fs';
-import path from 'path';
-import { fileURLToPath } from 'url';
+import { describe, it, expect } from "vitest";
+import fs from "fs";
+import path from "path";
+import { fileURLToPath } from "url";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
-const repoRoot = path.resolve(__dirname, '..');
-const skillsRoot = path.join(repoRoot, 'skills');
+const repoRoot = path.resolve(__dirname, "..");
+const skillsRoot = path.join(repoRoot, "skills");
 
 /**
  * Parse the YAML frontmatter subset used by the repo (same rules as
@@ -26,20 +26,20 @@ function walkSkills() {
   const skills = [];
   const walk = (dir) => {
     for (const entry of fs.readdirSync(dir, { withFileTypes: true })) {
-      if (entry.name.startsWith('.')) continue;
+      if (entry.name.startsWith(".")) continue;
       const full = path.join(dir, entry.name);
       if (entry.isDirectory()) walk(full);
-      else if (entry.name === 'SKILL.md') skills.push(full);
+      else if (entry.name === "SKILL.md") skills.push(full);
     }
   };
   walk(skillsRoot);
   return skills;
 }
 
-describe('skill frontmatter contract', () => {
+describe("skill frontmatter contract", () => {
   const files = walkSkills();
 
-  it('discovers every skill in skills/', () => {
+  it("discovers every skill in skills/", () => {
     // Floor set after the 2026-08 dedup consolidation (134 audited -> 93 kept).
     // Guards against silent skill loss; raise it when adding skills.
     expect(files.length).toBeGreaterThanOrEqual(93);
@@ -47,7 +47,7 @@ describe('skill frontmatter contract', () => {
 
   for (const file of files) {
     const skillName = path.basename(path.dirname(file));
-    const content = fs.readFileSync(file, 'utf8');
+    const content = fs.readFileSync(file, "utf8");
     const meta = parseFrontmatter(content);
 
     it(`${skillName}: has parseable frontmatter`, () => {
@@ -67,7 +67,7 @@ describe('skill frontmatter contract', () => {
     });
 
     it(`${skillName}: disables model invocation`, () => {
-      expect(meta?.['disable-model-invocation']).toBe('true');
+      expect(meta?.["disable-model-invocation"]).toBe("true");
     });
   }
 });
