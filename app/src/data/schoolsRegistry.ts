@@ -234,7 +234,7 @@ const schools: Array<{
       {
         "name": "Verified API Workflow",
         "skill": "verified-api-workflow",
-        "effect": "Every external API call must be traceable to a doc you actually checked.",
+        "effect": "Prove every version-pinned API claim with web search before writing code on top of it.",
         "status": "—"
       },
       {
@@ -365,7 +365,7 @@ const schools: Array<{
         "name": "Evidence Grounding",
         "skill": "evidence-grounding",
         "effect": "Resolve every load-bearing observation against current evidence before acting: freshness checks on what you read, an early falsifying probe after the first edit, and receipts on every progress claim.",
-        "status": "New"
+        "status": "—"
       },
       {
         "name": "Explore vs Exploit",
@@ -539,7 +539,7 @@ const schools: Array<{
         "name": "Rubric Gate",
         "skill": "rubric-gate",
         "effect": "Write a rubric of binary done-criteria before implementing, then gate on it: every criterion shows PASS with evidence before work ships.",
-        "status": "New"
+        "status": "—"
       },
       {
         "name": "Self Verify Pipeline",

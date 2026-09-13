@@ -256,7 +256,7 @@ export const SKILL_CATALOG = [
     "school": "Software Development",
     "schoolName": "School of Crafting",
     "status": "—",
-    "effect": "Every external API call must be traceable to a doc you actually checked."
+    "effect": "Prove every version-pinned API claim with web search before writing code on top of it."
   },
   {
     "skill": "verified-synthesize",
@@ -407,7 +407,7 @@ export const SKILL_CATALOG = [
     "name": "Evidence Grounding",
     "school": "Judgment & Decision-Making",
     "schoolName": "School of Judgment",
-    "status": "New",
+    "status": "—",
     "effect": "Resolve every load-bearing observation against current evidence before acting: freshness checks on what you read, an early falsifying probe after the first edit, and receipts on every progress claim."
   },
   {
@@ -607,7 +607,7 @@ export const SKILL_CATALOG = [
     "name": "Rubric Gate",
     "school": "Output Quality",
     "schoolName": "School of Refinement",
-    "status": "New",
+    "status": "—",
     "effect": "Write a rubric of binary done-criteria before implementing, then gate on it: every criterion shows PASS with evidence before work ships."
   },
   {
