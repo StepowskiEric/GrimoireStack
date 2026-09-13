@@ -40,7 +40,9 @@ describe('skill frontmatter contract', () => {
   const files = walkSkills();
 
   it('discovers every skill in skills/', () => {
-    expect(files.length).toBeGreaterThanOrEqual(124);
+    // Floor set after the 2026-08 dedup consolidation (134 audited -> 93 kept).
+    // Guards against silent skill loss; raise it when adding skills.
+    expect(files.length).toBeGreaterThanOrEqual(93);
   });
 
   for (const file of files) {
