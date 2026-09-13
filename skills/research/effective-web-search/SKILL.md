@@ -173,6 +173,5 @@ Good response (do this):
 ## See Also
 
 - `api-surface-anchoring` — Specifically for library API signatures.
-- `hallucination-anchor-chain` — Anchor every factual claim to a verified source.
+- `verified-api-workflow` — Anchor every version-pinned claim to a fetched source with a proof bundle.
 - `verify-before-integrate` — Pre-commit verification for integrations.
-- `research` — Broader research workflow umbrella.

@@ -163,7 +163,7 @@ Insights: no canary, no health verification, blast radius 100% — "flaky" is ac
 - Use **before** writing real specs to surface requirements gaps
 - Use **after** `specter` to codify the winning hypothesis
 - Use **with** `metacognitive-monitoring` to assess confidence in the model
-- See also `domain-driven-design` for modeling domains
+- See also `feature-architecture` for modeling domains
 
 ## Source
 

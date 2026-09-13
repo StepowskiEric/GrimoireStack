@@ -87,7 +87,7 @@ Prevention: never assign the same file to multiple subagents; run the linter per
 | `debug-subagent` | semantic errors requiring logic understanding |
 | `legacy-rescue-protocol` | architectural errors needing structural change |
 | `codebase-divide-conquer-search` | finding related files when errors span unknown modules |
-| `iterative-patch-repair` | subagent's first fix is close but wrong |
+| `debug-to-fix-pipeline` | subagent's first fix is close but wrong |
 | `pre-deployment-gate` | final lint check before commit |
 
 ## Research basis

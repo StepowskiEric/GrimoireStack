@@ -19,7 +19,7 @@ A claim is version-pinned when the answer changes with the version: "Unity 6.06 
 
 ### Step 1: Extract version-pinned claims
 
-List each claim plus the exact app/library version it depends on. Include negative claims ("X is unavailable in version Y").
+List each claim plus the exact app/library version it depends on, written exactly as the source states it (Unity docs say `6000.6`, not `6.06`; Ubuntu says `noble`, not just `24.04`). If your claim uses an alias, state the mapping in the claim and put the source's own version string in the bundle. Include negative claims ("X is unavailable in version Y").
 
 Completion: every version-pinned claim the code depends on is listed with its exact version string. No claim proceeds on memory alone.
 
@@ -36,7 +36,7 @@ Completion: every claim has a fetched page whose quoted passage contains the exa
 Append one line per claim to `anchors.jsonl`:
 
 ```json
-{"id": "a1", "claim": "Unity 6.06 supports C# 9, so record types are unavailable", "version": "6.06", "source": "https://docs.unity3d.com/6000.6/Documentation/Manual/csharp-compiler.html", "quote": "Unity 6000.6 uses C# 9", "verified": true, "verified_at": "2026-09-12T00:00:00Z", "parent": null}
+{"id": "a1", "claim": "Unity 6.06 (docs version 6000.6) supports C# 9, so record types are unavailable", "version": "6000.6", "source": "https://docs.unity3d.com/6000.6/Documentation/Manual/csharp-compiler.html", "quote": "Unity 6000.6 uses C# 9", "verified": true, "verified_at": "2026-09-12T00:00:00Z", "parent": null}
 ```
 
 Link related anchors through `parent` (e.g. "Unity 6.06 uses C# 9" is the parent of "`record` is unavailable in Unity 6.06"). A bundle counts as `proved` only when `version`, `source`, `quote`, and `verified_at` are all present and the quote contains the version string.
@@ -74,7 +74,7 @@ Completion: zero `unproved` claims underpinning shipped code, zero dangling pare
 ```text
 User: "Does Unity 6.06 support C# records?"
 
-Step 1: claim = "Unity 6.06 supports C# 9, so record types are unavailable", version = "6.06".
+Step 1: claim = "Unity 6.06 (docs version 6000.6) supports C# 9, so record types are unavailable", version = "6000.6" as the docs state it.
 Step 2: web search `"Unity 6.06" "C# language version"`, fetch the versioned
   Unity docs page, confirm the passage names both the version and C# 9.
 Step 3: append the proof bundle to anchors.jsonl with version, source URL,

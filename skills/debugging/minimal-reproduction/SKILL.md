@@ -14,7 +14,7 @@ disable-model-invocation: true
 
 # Minimal Reproduction
 
-Every structured debugging skill (debug-to-fix-pipeline, iterative-patch-repair, specter) assumes you have a failing test to work with. This skill creates the failing test first, THEN hands off to other debugging skills.
+Every structured debugging skill (debug-to-fix-pipeline, specter) assumes you have a failing test to work with. This skill creates the failing test first, THEN hands off to other debugging skills.
 
 ## The MR Protocol (Minimal Reproduction)
 
@@ -106,8 +106,8 @@ Now you have what every other debugging skill needs: **a failing test**.
 Hand off to the appropriate debugging skill:
 
 | Situation | Skill to Use |
-|-----------|-------------|
-| Know where the bug is, need to find the fix | `iterative-patch-repair` |
+| --- | --- |
+| Know where the bug is, need to find the fix | `debug-to-fix-pipeline` |
 | Bug has multiple possible causes | `specter` |
 | Need full structured workflow | `debug-to-fix-pipeline` |
 | Bug was introduced recently | inspect git history (`git log -p`) then this skill |
@@ -152,7 +152,7 @@ npm run check
 ## Integration with Other Skills
 
 - **Before `debug-to-fix-pipeline`:** Run this skill to create the failing test that Phase 3 needs.
-- **Before `iterative-patch-repair`:** Run this skill first — patch repair needs a failing test to iterate on.
+- **Before `debug-to-fix-pipeline`:** Run this skill first — the pipeline needs a failing test to iterate on.
 - **Before `specter`:** The reproduction test gives specter's hypotheses something concrete to falsify.
 - **After `environment-recovery`:** If the env was broken, fix it first, then create a reproduction test before debugging.
 - **With `escalation-ladder`:** If you can't create a minimal reproduction after Step 2, you're stuck at Level 1 — escalate to strategy change.

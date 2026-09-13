@@ -7,13 +7,13 @@ For simple, low-risk, well-understood tasks (~100 words).
 ```python
 subagent({
     agent: "<agent-name>",
-    skill: ["tdd", "subagent-laws"],
+    skill: ["subagent-laws"],
     context: "fork",
     task: f"""## Goal
 <one sentence>
 
 ## Skills Loaded
-- tdd — write tests first
+- test-first discipline — write tests first
 - subagent-laws — scope discipline
 
 ## Your Task
@@ -41,14 +41,14 @@ For typical code work (~300-500 words).
 ```python
 subagent({
     agent: "<agent-name>",
-    skill: ["tdd", "subagent-laws", "<task-skill-1>", "<task-skill-2>"],
+    skill: ["subagent-laws", "<task-skill-1>", "<task-skill-2>"],
     context: "fork",   # use "fresh" for independent reasoning
     reads: ["<path-to-relevant-file>"],
     task: f"""## Goal
 <one sentence>
 
 ## Skills Loaded
-- tdd — write tests first, then implement
+- test-first discipline — write tests first, then implement
 - <task-skill-1> — why it's relevant
 - <task-skill-2> — why it's relevant
 
@@ -88,14 +88,14 @@ For complex, high-risk, or unfamiliar tasks (~500-1000 words + `reads`).
 ```python
 subagent({
     agent: "<agent-name>",
-    skill: ["tdd", "subagent-laws", "<task-skill-1>", "<task-skill-2>", "<task-skill-3>"],
+    skill: ["subagent-laws", "<task-skill-1>", "<task-skill-2>", "<task-skill-3>"],
     context: "fork",
     reads: ["<large-file-1>", "<large-file-2>"],
     task: f"""## Goal
 <one sentence>
 
 ## Skills Loaded
-- tdd — write tests first, then implement
+- test-first discipline — write tests first, then implement
 - subagent-laws — scope discipline, pre-existing issues guard
 - <task-skill-1> — why it's relevant
 - <task-skill-2> — why it's relevant
@@ -146,7 +146,7 @@ subagent({
 <agent-A-specific goal>
 
 ## Skills Loaded
-- tdd — tests first
+- test-first discipline — tests first
 - subagent-laws — scope discipline
 
 ## Persona
@@ -178,7 +178,7 @@ Stop after success criteria are met. Do not touch agent B's files.""",
 <agent-B-specific goal>
 
 ## Skills Loaded
-- tdd — tests first
+- test-first discipline — tests first
 - subagent-laws — scope discipline
 
 ## Persona
@@ -214,7 +214,7 @@ Stop after success criteria are met. Do not touch agent A's files.""",
 When using chain mode (`chain: [...]`), the following template variables are available:
 
 | Variable | Description | Available in |
-|----------|-------------|--------------|
+| ---------- | ------------- | -------------- |
 | `{task}` | The original user request / top-level task | All chain steps |
 | `{previous}` | The text response from the previous chain step | Steps 2+ |
 | `{chain_dir}` | A shared temp directory for chain artifacts | All chain steps |

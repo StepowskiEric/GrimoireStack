@@ -35,11 +35,11 @@ Fix: Include an explicit Boundaries section. "This is scoped to SessionManager.t
 Do not modify the login form, navigation, or API client."
 
 ### The "Skill Mismatch" Brief
-> Loading only `tdd` for a task that requires `security-threat-modeling`.
+> Loading only a test-first discipline for a task that requires `security-review-protocol`.
 
 Problem: The sub-agent writes tests-first code that is also insecure.
 Fix: Use the task-to-skill mapping. When the task involves auth, data, or storage, load
-`security-threat-modeling`. When it involves complex domain logic, load `domain-driven-design`.
+`security-review-protocol`. When it involves complex domain logic, load `feature-architecture`.
 
 ### The "Assume They Know" Brief
 > "Follow the existing patterns."
@@ -156,10 +156,10 @@ on the brief compression (see Part 9).
 Goal: Fix the session timeout bug so expired tokens trigger a retry instead of crashing.
 
 Skills loaded:
-- tdd — write tests first, then implement
+- test-first discipline — write tests first, then implement
 - subagent-laws — non-negotiable rules: don't fix pre-existing issues outside scope, don't break passing tests
-- root-cause-analysis — trace the actual cause, not the symptom
-- diagnose — structured reproduction → minimise → hypothesise loop
+- debug-issue — trace the actual cause, not the symptom
+- minimal-reproduction — structured reproduction → minimise → hypothesise loop
 
 Persona: You are a senior platform engineer who has owned this auth module for 3 years.
          You value correctness over speed and always write the regression test first.
@@ -218,11 +218,11 @@ Goal: Add a team invitation endpoint that accepts an email and team ID, creates 
       membership, and sends a notification email.
 
 Skills loaded:
-- tdd — write tests first, then implement
+- test-first discipline — write tests first, then implement
 - subagent-laws — non-negotiable rules: don't fix pre-existing issues outside scope
-- api-design-backward-compatibility — endpoint contract design
-- security-threat-modeling — authorization and input validation
-- domain-driven-design — the invitation domain has its own lifecycle worth modelling
+- coordinated-change — endpoint contract changes stay consistent across callers
+- security-review-protocol — authorization and input validation
+- feature-architecture — the invitation domain has its own lifecycle worth modelling
 
 Persona: You are a backend engineer building API endpoints for a B2B SaaS product.
          You design for extensibility and always validate inputs at the boundary.

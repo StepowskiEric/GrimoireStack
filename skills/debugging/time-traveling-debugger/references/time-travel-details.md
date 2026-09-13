@@ -99,6 +99,6 @@ Also `trace_only` (record without analysis) and `rewind_only` (analyze an existi
 ## See also
 
 - `simulate-instrumentation` — auto-inserts print/logging (lighter for known-code bugs)
-- `log-trace-correlation` — maps error logs and stack traces to source (runtime log-based)
-- `iterative-patch-repair` — patch → test → refine (complementary after divergence is found)
+- `debug-issue` — traces issues through the system along dataflow edges (runtime log-based)
+- `debug-to-fix-pipeline` — patch → test → refine (complementary after divergence is found)
 - `specter` — competing hypotheses with structural code location before tracing (narrow where to trace)

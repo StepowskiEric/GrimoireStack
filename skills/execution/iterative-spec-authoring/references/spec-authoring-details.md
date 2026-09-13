@@ -98,7 +98,6 @@ Companion files use only standard tools (`curl`, `python3`) — no pip installs.
 
 ## Related skills
 
-- `plan-with-judge` — JSONL plan refinement (this skill is the markdown spec equivalent with research)
 - `speculative-drafting-verification` — multi-branch solution exploration
-- `structured-feature-planning` — exploration-first planning without the judge loop
-- `security-threat-modeling` — deep security analysis (use when the spec reveals security-critical work)
+- `intent-specification-protocol` — crystallize vague requests into testable specs before writing code
+- `security-review-protocol` — deep security analysis (use when the spec reveals security-critical work)
