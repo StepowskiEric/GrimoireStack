@@ -66,3 +66,8 @@ snap.mjs
 **/.nx/migrate-runs
 CLEANUP_PROGRESS.md
 SKILL-AUDIT.md
+
+# Scratch / brainstorm (untracked by design)
+docs/ideas/
+.pi-gala/
+.pi-glla/
