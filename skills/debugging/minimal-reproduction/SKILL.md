@@ -39,12 +39,13 @@ Scope: [files/functions likely involved]
 Reduce the trigger to the smallest possible input/condition:
 
 | Full trigger | Minimal trigger |
-|-------------|----------------|
+| ------------- | ---------------- |
 | Login with email, password, on iOS, slow network | `signInAsync(credentials)` with valid creds |
 | Bug happens after scrolling through 100 items then tapping one | Bug happens on item tap after list render |
 | Crash when form has special chars in name field | `submitForm({ name: '<script>' })` |
 
 **Questions to ask:**
+
 - Does it happen with the simplest possible input?
 - Does it happen on the first attempt or only after specific actions?
 - Does it happen in isolation or only combined with other features?
@@ -76,6 +77,7 @@ describe("Bug: [one-line description]", () => {
 ```
 
 **Rules:**
+
 - The test must FAIL with current code (proves you reproduced the bug)
 - The test must PASS when the bug is fixed (proves your fix actually works)
 - No mocking unless the dependency makes the test non-deterministic
@@ -95,6 +97,7 @@ npx jest test/minimal-reproduction.test.ts --no-coverage
 **Done when:** the test fails with the expected error. If it passes, you haven't reproduced the bug — go back to Step 2. If it fails for a different reason, the test setup is wrong — fix the test, not the code.
 
 **Critical:** If the test passes, you haven't reproduced the bug. This means one of:
+
 - Your hypothesis about which code path triggers it is wrong
 - The bug requires conditions you didn't include (timing, state, network)
 - The bug is in a different layer than you think
@@ -139,7 +142,7 @@ npm run check
 ## Failure Modes
 
 | Failure Mode | Why It Fails |
-|-------------|-------------|
+| ------------- | ------------- |
 | Writing a test that asserts current buggy behavior | Tests the symptom, not the fix; will pass before bug is fixed |
 | Mock-heavy reproduction test | Can't mock away the bug — you need the real code to fail |
 | Reproduction test that requires full app startup | Too slow; makes the debug loop minutes instead of seconds |

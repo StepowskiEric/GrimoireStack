@@ -54,7 +54,7 @@ If the user mentioned a version (e.g. "React 19", "Next 14", "Python 3.12"), you
 Always start with the authoritative source:
 
 | Domain | Authoritative source |
-|---|---|
+| --- | --- |
 | JavaScript / TypeScript libs | Official site docs (e.g. `react.dev`, `nextjs.org/docs`, `vite.dev`) |
 | Python | Library's official readthedocs / GitHub README / official site |
 | npm package | The package's official docs site, not npmjs.com description |
@@ -144,14 +144,16 @@ Template:
 User: "My Next.js app is throwing `Error: Cannot find module './chunks/...'` after upgrading to 14.2.5."
 
 Bad response (do not do this):
-> This is a known issue. See https://github.com/vercel/next.js/issues/12345 — the workaround is to delete `.next` and rebuild.
+> This is a known issue. See <https://github.com/vercel/next.js/issues/12345> — the workaround is to delete `.next` and rebuild.
 
 Why it's bad:
+
 - Issue #12345 may be from 2022 and pre-14.x. The reporter may be on a different version.
 - The "workaround" may have been the actual bug fix, not a workaround.
 - Nothing in the answer pins a version or links a closing fix.
 
 Good response (do this):
+
 1. Pin version: user is on Next 14.2.5. Confirm via `package.json` if available.
 2. Official docs: search `nextjs.org/docs` for the error string and 14.2.5 release notes.
 3. GitHub: search `repo:vercel/next.js "Cannot find module './chunks"` with sort by **Newest**. Read the top 3 issues.

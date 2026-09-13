@@ -88,7 +88,7 @@ Companion files use only standard tools (`curl`, `python3`) — no pip installs.
 ## Design decisions
 
 | Decision | Rationale |
-|----------|-----------|
+| ---------- | ----------- |
 | Research before drafting | Prevents specs built on stale knowledge; catches breaking changes early |
 | Bounded research (5–7 searches) | Controls cost and time; enough to catch major gaps without analysis paralysis |
 | Judge can request research | Adds a feedback loop without overcomplicating the loop structure |

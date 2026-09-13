@@ -10,7 +10,7 @@ Takes a natural language spec (or existing code) and:
 
 Usage:
     python dafny_verify.py --spec "function spec here" --language python [--output out.py]
-    python dafny_verify.py --verify "path/to/code.dfy" --language python
+    python dafny_verify.py --dafny "path/to/code.dfy" --language python
     python dafny_verify.py --spec "spec" --code "existing code" --language python --verify-only
 
 Requirements:
@@ -23,17 +23,14 @@ Exit codes:
     2 = invocation error (missing dafny, bad args)
 """
 
-import sys
-import json
-import shutil
-import hashlib
 import argparse
-import subprocess
+import json
 import re
+import shutil
+import subprocess
+import sys
 import tempfile
 from pathlib import Path
-from typing import Optional
-
 
 # ── Dafny generation helpers ──────────────────────────────────────────────────
 
@@ -78,7 +75,6 @@ def Dafny_from_spec(spec: str, target_lang: str = "python") -> str:
     fn_name = fn_match.group(1) if fn_match else "f"
 
     # Try to extract input types
-    int_match = re.search(r"(?:int|integer|list\[?int\]?)", spec, re.IGNORECASE)
     str_match = re.search(r"(?:string|str)", spec, re.IGNORECASE)
     seq_match = re.search(r"(?:seq|list|array)", spec, re.IGNORECASE)
 
@@ -89,25 +85,28 @@ def Dafny_from_spec(spec: str, target_lang: str = "python") -> str:
         input_type = "string"
 
     # Try to extract postcondition
-    post_match = re.search(r"(?:ensures|postcondition|returns?|=>)\s*([^,\n]+)", spec, re.IGNORECASE)
+    post_match = re.search(
+        r"(?:ensures|postcondition|returns?|=>)\s*([^,\n]+)", spec, re.IGNORECASE
+    )
     postcondition = post_match.group(1).strip() if post_match else "true"
 
     # Generate simple function
     lines.append(f"function {fn_name}(x: {input_type}): int")
-    lines.append(f"  requires true")
+    lines.append("  requires true")
     lines.append(f"  ensures {postcondition}")
-    lines.append(f"{{")
+    lines.append("{")
     lines.append(f"  match {input_type}")
-    lines.append(f"  case s: seq<int> =>")
+    lines.append("  case s: seq<int> =>")
     lines.append(f"    if |s| == 0 then 0 else s[0] + {fn_name}(s[1..])")
-    lines.append(f"  case n: int => n >= 0 ? n : -n")
-    lines.append(f"  case _ => 0")
-    lines.append(f"}}")
+    lines.append("  case n: int => n >= 0 ? n : -n")
+    lines.append("  case _ => 0")
+    lines.append("}")
 
     return "\n".join(lines)
 
 
 # ── Verification ──────────────────────────────────────────────────────────────
+
 
 def run_dafny_verify(dafny_code: str, timeout: int = 60) -> tuple[str, int]:
     """
@@ -118,9 +117,7 @@ def run_dafny_verify(dafny_code: str, timeout: int = 60) -> tuple[str, int]:
     if not dafny_path:
         return "ERROR: dafny not found in PATH. Install from https://dafny.org/", 2
 
-    with tempfile.NamedTemporaryFile(
-        suffix=".dfy", mode="w", delete=False
-    ) as f:
+    with tempfile.NamedTemporaryFile(suffix=".dfy", mode="w", delete=False) as f:
         f.write(dafny_code)
         temp_path = f.name
 
@@ -130,6 +127,7 @@ def run_dafny_verify(dafny_code: str, timeout: int = 60) -> tuple[str, int]:
             capture_output=True,
             text=True,
             timeout=timeout,
+            check=False,
         )
         output = result.stdout + result.stderr
         return output, result.returncode
@@ -163,9 +161,7 @@ def run_dafny_transpile(
     }
     dafny_lang = lang_map.get(target_lang.lower(), target_lang.lower())
 
-    with tempfile.NamedTemporaryFile(
-        suffix=".dfy", mode="w", delete=False
-    ) as f:
+    with tempfile.NamedTemporaryFile(suffix=".dfy", mode="w", delete=False) as f:
         f.write(dafny_code)
         temp_path = f.name
 
@@ -175,6 +171,7 @@ def run_dafny_transpile(
             capture_output=True,
             text=True,
             timeout=timeout,
+            check=False,
         )
         output = result.stdout + result.stderr
         return output, result.returncode
@@ -187,6 +184,7 @@ def run_dafny_transpile(
 
 
 # ── Output parsing ────────────────────────────────────────────────────────────
+
 
 def parse_verification_output(output: str, exit_code: int) -> dict:
     """
@@ -205,7 +203,7 @@ def parse_verification_output(output: str, exit_code: int) -> dict:
             r"(?:Proof|BVR|Dafny program) .*?verified with (?:\d+) verified?, (\d+) error",
             line,
         )
-        if vm_match and int(vm_match.group(1)) == 0:
+        if vm_match and vm_match.group(1) == "0":
             proved_theorems.append(line)
 
         # Error line
@@ -213,11 +211,13 @@ def parse_verification_output(output: str, exit_code: int) -> dict:
             # Try to extract location and message
             loc_match = re.search(r"([^\s]+\.dfy[^\s]*|line \d+)", line)
             err_match = re.search(r"Error[:\s]+([^\n]+)", line, re.IGNORECASE)
-            verification_errors.append({
-                "raw": line,
-                "location": loc_match.group(1) if loc_match else "unknown",
-                "message": err_match.group(1).strip() if err_match else line,
-            })
+            verification_errors.append(
+                {
+                    "raw": line,
+                    "location": loc_match.group(1) if loc_match else "unknown",
+                    "message": err_match.group(1).strip() if err_match else line,
+                }
+            )
 
         # Warning
         if "warning" in line.lower() and "DAFNY" in line:
@@ -228,7 +228,11 @@ def parse_verification_output(output: str, exit_code: int) -> dict:
     status = "proved" if not has_errors else "unproved"
     if "timed out" in output.lower():
         status = "timeout"
-    if "not found" in output.lower() or "error" in output.lower() and "dafny" in output.lower():
+    if (
+        "not found" in output.lower()
+        or "error" in output.lower()
+        and "dafny" in output.lower()
+    ):
         status = "error"
 
     # Extract specific claims from ensures/requires lines
@@ -264,6 +268,7 @@ def parse_transpile_output(output: str, exit_code: int, target_lang: str) -> dic
 
 
 # ── Main ──────────────────────────────────────────────────────────────────────
+
 
 def main():
     parser = argparse.ArgumentParser(
@@ -333,7 +338,7 @@ def main():
 
     # ── Step 2: Verify ──────────────────────────────────────────────────────
     if args.verbose:
-        sys.stderr.write(f"Verifying with dafny...\n")
+        sys.stderr.write("Verifying with dafny...\n")
 
     verify_out, verify_rc = run_dafny_verify(dafny_code, timeout=args.timeout)
     verify_result = parse_verification_output(verify_out, verify_rc)
@@ -344,10 +349,10 @@ def main():
     # ── Step 3: Transpile (only if verified and output requested) ──────────
     transpiled_code = None
     if verify_result["status"] == "proved" and args.output:
-        transpile_out, transpile_rc = run_dafny_transpile(
-            dafny_code, args.language
+        transpile_out, transpile_rc = run_dafny_transpile(dafny_code, args.language)
+        transpile_result = parse_transpile_output(
+            transpile_out, transpile_rc, args.language
         )
-        transpile_result = parse_transpile_output(transpile_out, transpile_rc, args.language)
 
         if transpile_result["status"] == "transpiled":
             transpiled_code = transpile_result["transpiled_code"]

@@ -3,6 +3,7 @@
 ## Codification patterns
 
 ### State machines
+
 Good for processes with clear states.
 
 ```pseudocode
@@ -15,6 +16,7 @@ state Machine {
 ```
 
 ### Function contracts
+
 Good for interfaces, APIs, responsibilities.
 
 ```pseudocode
@@ -26,6 +28,7 @@ function X(input: T): Result {
 ```
 
 ### Data flow
+
 Good for information moving through systems.
 
 ```pseudocode
@@ -35,6 +38,7 @@ source A -> transform B -> sink C
 ```
 
 ### Decision trees
+
 Good for complex decision processes.
 
 ```pseudocode

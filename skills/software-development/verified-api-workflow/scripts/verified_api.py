@@ -69,7 +69,9 @@ def _next_anchor_id(anchors: list[dict]) -> str:
             try:
                 max_n = max(max_n, int(aid[1:]))
             except ValueError as exc:
-                print(f"  ! Skipping malformed anchor id {aid!r}: {exc}", file=sys.stderr)
+                print(
+                    f"  ! Skipping malformed anchor id {aid!r}: {exc}", file=sys.stderr
+                )
     return f"a{max_n + 1}"
 
 

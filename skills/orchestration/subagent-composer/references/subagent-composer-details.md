@@ -5,12 +5,14 @@
 These brief patterns reliably produce bad sub-agent output.
 
 ### The "Figure It Out" Brief
+>
 > "Look at the codebase and fix the auth bug."
 
 Problem: The sub-agent has no idea which file, which function, or which kind of bug.
 Fix: Point to the file, the function, and the specific symptom.
 
 ### The "Everything but the Kitchen Sink" Brief
+>
 > Paste the entire codebase README plus 10 other files into the brief.
 
 Problem: Context overload. The sub-agent can't distinguish signal from noise and will fixate
@@ -20,6 +22,7 @@ is "fix the login form", include the login form file and its tests — not the e
 documentation.
 
 ### The "Vague Success Criteria" Brief
+>
 > "Make it better."
 
 Problem: The sub-agent doesn't know when to stop or what "better" means.
@@ -27,6 +30,7 @@ Fix: Define specific, testable criteria. "Reduce bundle size by 20% without brea
 is testable. "Make it better" is not.
 
 ### The "No Boundaries" Brief
+>
 > "Refactor the auth module."
 
 Problem: The sub-agent will refactor auth, the login form, the session store, the API client,
@@ -35,6 +39,7 @@ Fix: Include an explicit Boundaries section. "This is scoped to SessionManager.t
 Do not modify the login form, navigation, or API client."
 
 ### The "Skill Mismatch" Brief
+>
 > Loading only a test-first discipline for a task that requires `security-review-protocol`.
 
 Problem: The sub-agent writes tests-first code that is also insecure.
@@ -42,6 +47,7 @@ Fix: Use the task-to-skill mapping. When the task involves auth, data, or storag
 `security-review-protocol`. When it involves complex domain logic, load `feature-architecture`.
 
 ### The "Assume They Know" Brief
+>
 > "Follow the existing patterns."
 
 Problem: The sub-agent doesn't know which patterns you consider "existing" or which ones
@@ -50,6 +56,7 @@ Fix: Name the specific file or pattern. "Follow the error handling pattern in
 TokenService.ts — specifically the catch block at line 42."
 
 ### The "Goldilocks" Brief
+>
 > Dictate every line of code, every variable name, every import order.
 
 Problem: The sub-agent has no room to exercise judgment and will produce mechanical, rigid code
@@ -58,6 +65,7 @@ Fix: Specify the *what* and *why*, let the sub-agent choose the *how*. Give it t
 not the turn-by-turn directions.
 
 ### The "Moving Target" Brief
+>
 > Send follow-up messages that quietly change requirements after the sub-agent has started.
 
 Problem: The sub-agent built against one set of requirements and is now executing against
@@ -66,6 +74,7 @@ Fix: Freeze requirements once dispatched. If requirements change, dispatch a *ne
 the same or a different sub-agent — don't mutate the existing one.
 
 ### The "Rewrite" Brief
+>
 > "Refactor this to use the new pattern."
 
 Problem: The sub-agent doesn't know what "new" means, what the target pattern looks like, or
@@ -75,6 +84,7 @@ error handling in SessionManager.ts to match the pattern in TokenService.ts (see
 at line 30 — try/catch with logged retry)."
 
 ### The "Context Anchor" Brief
+>
 > Dump the parent's entire reasoning chain into the brief, including wrong guesses and abandoned
 approaches.
 
@@ -85,6 +95,7 @@ state. "We tried approach X and ruled it out because [concrete reason]" is fine.
 "Then I thought maybe it could be Y or Z..." is noise.
 
 ### The "Fix Everything" Brief
+>
 > "Fix the auth bug." — and the sub-agent proceeds to fix lint errors in 6 other files, rewrite
 > failing tests it didn't break, and refactor a neighboring module "while it's in there."
 
@@ -97,22 +108,26 @@ issues handler instruction: "If you find failing tests that predate your change,
 were already failing before you started. If so, report them and move on."
 
 ### The "Fixer" Anti-Pattern — Pre-existing Issues
+
 Sub-agents will often encounter pre-existing failures in the codebase: lint errors in nearby
 files, tests that were already red before the change, or code smells in related modules. The
 natural instinct is to "fix" them. **Do not let them.**
 
 A sub-agent assigned to modify one file should:
+
 - **NOT** fix lint errors in other files
 - **NOT** rewrite tests that were already passing before the change
 - **NOT** refactor neighboring code "while it's in there"
 - **NOT** add error handling for failures that existed before the change
 
 Instead, the sub-agent should:
+
 1. Note any pre-existing issues found in the output report
 2. Confirm whether each issue existed before their change (git diff / git status check)
 3. Focus exclusively on the assigned task
 
 Include this guard in every brief:
+
 ```
 Pre-existing issues: If you encounter lint errors, failing tests, or code quality issues in
 files outside your assigned scope, note them in your output and stop. Do not fix them unless
@@ -120,6 +135,7 @@ explicitly instructed. Your scope is [file-or-module-name] only.
 ```
 
 ### The "No Persona" Anti-Pattern
+>
 > Dispatch a sub-agent to "review this PR" without telling it *who* it should be.
 
 Problem: The sub-agent defaults to a generic, neutral tone — missing the adversarial sharpness
@@ -129,6 +145,7 @@ Fix: Always assign a persona. "You are a security engineer reviewing auth code. 
 every input is malicious until proven otherwise."
 
 ### The "No Post-Delegation Check" Anti-Pattern
+>
 > Dispatch, receive "Done", and merge.
 
 Problem: Sub-agents routinely claim "all tests pass" or "lint is clean" when they haven't
@@ -136,6 +153,7 @@ actually run the commands, or when they ran them on a stale state.
 Fix: Always run your own verification after the sub-agent returns (see Part 10).
 
 ### The "Cheapest Agent" Anti-Pattern
+>
 > Use the cheapest / fastest model for every sub-agent dispatch.
 
 Problem: Complex reasoning tasks (bug diagnosis, security review, architecture design) need
@@ -297,7 +315,7 @@ Every sub-agent dispatch has a cost in tokens, latency, and verification effort.
 ### Token Budget
 
 | Context Level | Brief size | Working memory left for sub-agent | Best for |
-|--------------|------------|-----------------------------------|----------|
+| -------------- | ------------ | ----------------------------------- | ---------- |
 | Minimal | ~100 words | ~95% of context window | Mechanical tasks, simple edits |
 | Standard | ~300-500 words | ~80-90% | Typical implementations |
 | Comprehensive | ~500-1000 words + reads | ~60-75% | Complex work needing full context |
@@ -308,7 +326,7 @@ more working memory for reasoning. Use `reads` for any file >100 lines.
 ### Model Selection
 
 | Task type | Recommended model tier | Rationale |
-|-----------|----------------------|-----------|
+| ----------- | ---------------------- | ----------- |
 | Simple mechanical (rename, format, lint) | Fast/cheap model | Low judgment needed |
 | Bug diagnosis, security review, architecture | Strongest available | High reasoning load |
 | Code generation with clear spec | Mid-tier | TDD guards most errors |
@@ -321,7 +339,7 @@ the cost of fixing wrong output exceeds the model savings.
 ### Parallel Dispatch Cost
 
 | Agents | Total token cost | Coordination overhead | Best for |
-|--------|-----------------|----------------------|----------|
+| -------- | ----------------- | ---------------------- | ---------- |
 | 1 | Lowest | None | Self-contained tasks |
 | 2-3 | Moderate | Low | Cleanly separable modules |
 | 4-6 | High | Moderate | Large features with clear boundaries |
@@ -360,7 +378,7 @@ Run these checks in order. Stop at the first failure.
 Sub-agents don't *intend* to deceive, but they reliably produce these patterns:
 
 | They say | Reality | Verification |
-|----------|---------|--------------|
+| ---------- | --------- | -------------- |
 | "All tests pass" | Tests weren't run, or ran against stale state | Run tests yourself |
 | "Only file X was modified" | Files Y and Z also changed | `git diff --name-only` |
 | "Lint is clean" | Linter wasn't installed/configured | Run the linter yourself |
@@ -372,7 +390,7 @@ Sub-agents don't *intend* to deceive, but they reliably produce these patterns:
 After verification, choose one of:
 
 | Outcome | Action |
-|---------|--------|
+| --------- | -------- |
 | **All checks pass** | Integrate the output (commit, PR, or merge as appropriate) |
 | **Minor issues found** | Fix them yourself (if quick) or re-delegate with specific correction brief |
 | **Major issues found** | Re-delegate with a correction brief that names each failure specifically. Do NOT re-send the original brief — the sub-agent will repeat the same mistakes. |
@@ -417,4 +435,3 @@ Stop after the listed issues are fixed and tests pass.
 ---
 
 ---
-

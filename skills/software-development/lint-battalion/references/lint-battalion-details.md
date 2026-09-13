@@ -28,7 +28,7 @@ Errors:
 ## Batch types
 
 | Type | Assignment | Max parallel |
-|------|-----------|--------------|
+| ------ | ----------- | -------------- |
 | Mechanical | general lint fix subagent | 5 |
 | Semantic | specialist subagent (type-aware) | 2 |
 | Architectural | human review or refactor skill | 1 |
@@ -36,7 +36,7 @@ Errors:
 ## Scale table
 
 | Error count | Max subagents | Max cycles | Typical time |
-|-------------|--------------|------------|--------------|
+| ------------- | -------------- | ------------ | -------------- |
 | 50–100 | 3 | 2 | 3–5 min |
 | 100–300 | 5 | 2 | 5–10 min |
 | 300–500 | 5 | 3 | 8–15 min |
@@ -64,7 +64,7 @@ Prevention: never assign the same file to multiple subagents; run the linter per
 ## Survivor triage
 
 | Bucket | Action | Skill |
-|--------|--------|-------|
+| -------- | -------- | ------- |
 | False positive | suppress with inline disable + justification | — |
 | Type mismatch requiring logic change | route to debug subagent | `debug-subagent` |
 | Missing types spanning many files | batch as architectural, dedicated refactor | `legacy-rescue-protocol` |
@@ -82,7 +82,7 @@ Prevention: never assign the same file to multiple subagents; run the linter per
 ## Integration
 
 | Skill | Integration point |
-|-------|-------------------|
+| ------- | ------------------- |
 | `checklist-manifesto` | phase gates and contamination checks |
 | `debug-subagent` | semantic errors requiring logic understanding |
 | `legacy-rescue-protocol` | architectural errors needing structural change |
