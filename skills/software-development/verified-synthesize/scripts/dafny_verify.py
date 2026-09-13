@@ -19,8 +19,8 @@ Requirements:
 
 Exit codes:
     0 = verified (proved)
-    1 = unproved or error
-    2 = invocation error (missing dafny, bad args)
+    1 = unproved or timed out (fix the spec or the proof)
+    2 = environment/invocation error (fix the setup, not the spec)
 """
 
 import argparse
@@ -33,24 +33,6 @@ import tempfile
 from pathlib import Path
 
 # ── Dafny generation helpers ──────────────────────────────────────────────────
-
-DAFNY_TEMPLATE = """// Auto-generated Dafny verification file
-// Spec: {spec_hash}
-{spec_code}
-
-// Transpiled {target_lang} code below:
-// ==========================================
-"""
-
-
-def Dafny_precondition_patterns() -> list[str]:
-    """Common precondition patterns for synthetic generation."""
-    return [
-        r"requires\s+[^\n]+",
-        r"ensures\s+[^\n]+",
-        r"invariant\s+[^\n]+",
-        r"decreases\s+[^\n]+",
-    ]
 
 
 def Dafny_from_spec(spec: str, target_lang: str = "python") -> str:
@@ -186,11 +168,23 @@ def run_dafny_transpile(
 # ── Output parsing ────────────────────────────────────────────────────────────
 
 
-def parse_verification_output(output: str, exit_code: int) -> dict:
+def _extract_spec_claims(dafny_code: str) -> list[str]:
+    """Extract ensures/requires claims from the Dafny source itself.
+
+    The verifier log rarely echoes these, so the source — not the log —
+    is the authority on what was supposedly proved.
+    """
+    claims = re.findall(r"(?:ensures|requires)\s+([^{\n;]+)", dafny_code)
+    return [c.strip() for c in claims if c.strip()]
+
+
+def parse_verification_output(
+    output: str, exit_code: int, dafny_code: str = ""
+) -> dict:
     """
     Parse `dafny verify` output into structured result.
     """
-    proved_theorems: list[str] = []
+    proved_ok = False
     verification_errors: list[dict] = []
     warnings: list[str] = []
 
@@ -198,13 +192,15 @@ def parse_verification_output(output: str, exit_code: int) -> dict:
     for line in output.splitlines():
         line = line.strip()
 
-        # Verified theorem
-        vm_match = re.match(
+        # Verified run: "... N verified, 0 errors" in any phrasing.
+        # Group 1 is the error count in the first shape, group 2 in the second.
+        vm_old = re.match(
             r"(?:Proof|BVR|Dafny program) .*?verified with (?:\d+) verified?, (\d+) error",
             line,
         )
-        if vm_match and vm_match.group(1) == "0":
-            proved_theorems.append(line)
+        vm_new = re.match(r".*?(\d+)\s+verified,\s*(\d+)\s+errors?", line)
+        if (vm_old and vm_old.group(1) == "0") or (vm_new and vm_new.group(2) == "0"):
+            proved_ok = True
 
         # Error line
         if "error" in line.lower() and ("DAFNY" in line or "Error:" in line):
@@ -223,26 +219,25 @@ def parse_verification_output(output: str, exit_code: int) -> dict:
         if "warning" in line.lower() and "DAFNY" in line:
             warnings.append(line)
 
-    # Determine status
-    has_errors = bool(verification_errors) or exit_code != 0
-    status = "proved" if not has_errors else "unproved"
-    if "timed out" in output.lower():
-        status = "timeout"
-    if (
-        "not found" in output.lower()
-        or "error" in output.lower()
-        and "dafny" in output.lower()
-    ):
+    # Determine status. Environment errors are ONLY the script's own
+    # dafny-missing messages — never log content. (A postcondition that
+    # mentions "not found" is an unproved spec, not a broken setup.)
+    lowered = output.lower()
+    if "dafny not found in path" in lowered or "could not invoke dafny" in lowered:
         status = "error"
+    elif "timed out" in lowered:
+        status = "timeout"
+    elif not verification_errors and exit_code == 0 and proved_ok:
+        status = "proved"
+    else:
+        status = "unproved"
 
-    # Extract specific claims from ensures/requires lines
-    claims = re.findall(r"(?:ensures|requires)\s+([^\n;]+)", output)
-    proved_claims = [c.strip() for c in claims if c.strip()]
+    spec_claims = _extract_spec_claims(dafny_code)
 
     return {
         "status": status,
         "verification_log": output.strip(),
-        "proved_theorems": proved_theorems or proved_claims,
+        "proved_theorems": spec_claims if status == "proved" else [],
         "verification_errors": verification_errors,
         "warnings": warnings,
         "exit_code": exit_code,
@@ -306,6 +301,11 @@ def main():
         help="Path to Dafny file to verify (skip generation entirely)",
     )
     parser.add_argument(
+        "--save-dafny",
+        type=str,
+        help="Write the verified Dafny source here (Step 5: commit it beside the code)",
+    )
+    parser.add_argument(
         "--timeout",
         type=int,
         default=60,
@@ -319,7 +319,23 @@ def main():
 
     # ── Step 1: Load Dafny code ───────────────────────────────────────────
     if args.dafny:
-        dafny_code = Path(args.dafny).read_text()
+        try:
+            dafny_code = Path(args.dafny).read_text()
+        except OSError as exc:
+            print(
+                json.dumps(
+                    {
+                        "status": "error",
+                        "verification_log": f"Cannot read Dafny file {args.dafny}: {exc}",
+                        "proved_theorems": [],
+                        "verification_errors": [],
+                        "warnings": [],
+                        "exit_code": 2,
+                    },
+                    indent=2,
+                )
+            )
+            sys.exit(2)
     elif args.code:
         # Assume provided code IS Dafny (verify-only mode)
         dafny_code = args.code
@@ -341,7 +357,7 @@ def main():
         sys.stderr.write("Verifying with dafny...\n")
 
     verify_out, verify_rc = run_dafny_verify(dafny_code, timeout=args.timeout)
-    verify_result = parse_verification_output(verify_out, verify_rc)
+    verify_result = parse_verification_output(verify_out, verify_rc, dafny_code)
 
     if args.verbose:
         sys.stderr.write(f"Verification output:\n{verify_out}\n")
@@ -362,7 +378,17 @@ def main():
         elif args.verbose:
             sys.stderr.write(f"Transpilation failed: {transpile_out}\n")
 
-    # ── Step 4: Build result ───────────────────────────────────────────────
+    # ── Step 4: Persist the spec + build result ────────────────────────────
+    if args.save_dafny:
+        try:
+            Path(args.save_dafny).write_text(dafny_code)
+        except OSError as exc:
+            print(
+                f"  ! Cannot write Dafny file {args.save_dafny}: {exc}",
+                file=sys.stderr,
+            )
+            sys.exit(2)
+
     result = {
         **verify_result,
         "dafny_code": dafny_code,
@@ -372,6 +398,8 @@ def main():
         result["transpiled_code"] = transpiled_code
     if args.output:
         result["output_file"] = args.output
+    if args.save_dafny:
+        result["dafny_file"] = args.save_dafny
 
     print(json.dumps(result, indent=2))
 

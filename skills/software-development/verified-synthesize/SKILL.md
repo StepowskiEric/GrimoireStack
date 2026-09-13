@@ -99,7 +99,7 @@ Done when exit code `0`, or the round budget is spent and the outcome is reporte
 
 ### Step 5: Save the Proof In-Repo
 
-Write the `.dfy` file beside the code it proves (not `/tmp` — session trash evaporates) and commit it with the implementation. The spec is the regression proof; a future change that breaks it fails verification instead of failing silently.
+Write the `.dfy` file beside the code it proves (not `/tmp` — session trash evaporates) and commit it with the implementation. Use `--save-dafny path/to/spec.dfy` to persist it straight from the verify run. The spec is the regression proof; a future change that breaks it fails verification instead of failing silently.
 
 Done when the `.dfy` and its transpiled output are committed next to the code under proof.
 
@@ -112,6 +112,7 @@ Done when the `.dfy` and its transpiled output are committed next to the code un
 | `--spec "<text>"` (no `--verify-only`) | Toy heuristic generation — not for real specs |
 | `--language python\|go\|cs\|java\|js` | Transpile target on proof (default `python`) |
 | `--output out.py` | Write transpiled code (only on proof) |
+| `--save-dafny path/to/spec.dfy` | Persist the Dafny source for Step 5 (saved whenever verification runs; commit only proved specs) |
 | `--timeout 60` | Verify budget in seconds; timeouts mean shrink the spec |
 | `--verbose` | Print generated Dafny and raw verifier output to stderr |
 
