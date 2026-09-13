@@ -18,9 +18,11 @@ disable-model-invocation: true
 
 `trajectory-guard` detects you're stuck. `summarize` bails out entirely. Between "stuck" and "give up" there are productive middle steps. This skill provides a **5-level escalation ladder** with specific actions, time budgets, and clear exit criteria.
 
-## Level 0: Self-Correction (0-5 min, 3-5 tool calls)
+## Level 0: Self-Correction (3-5 tool calls, ~5 min)
 
-**You detect you might be stuck.** Before escalating, try these self-corrections:
+**You detect you might be stuck.** First: note the current time and how many tool calls you've spent debugging. Wall-clock budgets in this ladder are approximate — tool-call budgets are the binding constraint, because you can count calls but can't feel minutes passing.
+
+Before escalating, try these self-corrections:
 
 1. **Re-read the error message verbatim** — not your paraphrase, the actual error output. Copy-paste it.
 2. **Check: am I fixing the symptom or the cause?** — If you've patched code without understanding why, revert and re-hypothesize.
@@ -41,21 +43,9 @@ disable-model-invocation: true
 **Self-correction didn't work.** Switch debugging strategy entirely.
 
 1. **Switch debugging skill** — If using `debug-to-fix-pipeline`, switch to `specter`. If using `specter`, switch to `minimal-reproduction` (no failing test yet). If using ad-hoc debugging, switch to a structured skill.
-2. **Reduce scope to minimal reproduction** — Strip away everything unrelated to the bug. Create a minimal test case that demonstrates the issue.
+2. **Reduce scope to minimal reproduction** — Invoke `minimal-reproduction`: strip everything unrelated and build the smallest test that fails. (That skill owns the template; don't reinvent a weaker one here.)
 3. **Change information source** — If you've been reading code, run the code. If you've been running code, read the code. If you've been looking at logs, look at the runtime state.
 4. **Generate competing hypotheses** — Write down 3-5 possible root causes. Include at least one "weird" hypothesis that contradicts your current intuition.
-
-**Minimal reproduction template:**
-
-```
-## Minimal Reproduction Attempt
-
-Bug: [exact error message or behavior]
-Hypothesis: [most likely root cause]
-Step 1: Create minimal test that should PASS if bug is fixed
-Step 2: Run it — confirm it FAILS (bug reproduced)
-Step 3: If step 2 passes (test doesn't fail) → hypothesis is wrong, try next one
-```
 
 **Exit criteria:**
 - Minimal reproduction found → continue debugging with narrow scope
@@ -98,6 +88,10 @@ Step 3: If step 2 passes (test doesn't fail) → hypothesis is wrong, try next o
 After writing this, **re-read it yourself**. Often the act of writing it reveals the answer.
 
 If it doesn't: **present this to the user.** Ask specifically for help on "Blocked On" items. This is not giving up — it's productive collaboration.
+
+**Why the user before bisection?** Bisection (Level 3) is cheap but blind — it tells you *where*, never *what you misunderstood*. The journal plus user input first means you arrive at bisection with a corrected mental model, or skip it entirely. If user attention is unavailable, or the bug is clearly mechanical (wrong value, off-by-one, typo-class), skip to Level 3 and come back to Level 2 only if bisection stalls.
+
+**No user available (background/headless run)?** Write the journal to a file (e.g. `debugging-journal-<bug>.md`) instead of presenting it, then proceed to Level 3. The file becomes the core of the Level 4 handoff.
 
 **Exit criteria:**
 - Writing the journal reveals the answer → continue debugging
@@ -147,16 +141,21 @@ If it doesn't: **present this to the user.** Ask specifically for help on "Block
 
 ## Time Budgets
 
-| Level | Time | Tool Calls | Signal to Escalate |
-|-------|------|-----------|-------------------|
-| 0 | 0-5 min | 3-5 | No new evidence |
-| 1 | 5-15 min | 5-10 | Strategy change didn't help |
-| 2 | 15-25 min | async (writing) | Writing didn't reveal answer |
-| 3 | 25-40 min | variable | Can't narrow scope |
-| 4 | immediate | 1-2 | Deliver handoff |
+Tool-call budgets bind; wall-clock figures are approximate (you can count calls, you can't feel minutes).
 
-**Maximum total debugging time before full retreat: ~40 minutes.**
-After 40 minutes of active debugging without resolution, the cost of continuing exceeds the value of the information you're generating. Stop and hand off.
+| Level | Tool-call budget | Wall-clock (approx) | Signal to Escalate |
+| --- | --- | --- | --- |
+| 0 | 3-5 | ~5 min | No new evidence |
+| 1 | 5-10 | ~10 min | Strategy change didn't help |
+| 2 | writing only | ~10 min | Writing + user didn't reveal answer |
+| 3 | as needed | ~15 min | Can't narrow scope |
+| 4 | 1-2 | immediate | Deliver handoff |
+
+**Maximum budget before full retreat — set it at Level 0, it binds everywhere.** Default: ~25 tool calls / ~40 minutes of active debugging without resolution. Scale once, up front: typo-class or trivial-blast-radius → ~10 calls; broad, unfamiliar-codebase, or high-blast-radius → up to ~50 calls / 90 min. When the budget is spent, stop and hand off — the next block of effort won't differ from the last.
+
+## Dropping Back Down
+
+Escalation is not one-way. At any level, genuinely new evidence — a different error message, a fired assert that reframes the bug, user info that contradicts your model — drops you back to Level 0 self-correction with the updated hypothesis. Do not continue the higher level's procedure on a stale model. Only Level 4 is terminal.
 
 ---
 
@@ -168,7 +167,7 @@ After 40 minutes of active debugging without resolution, the cost of continuing 
 | Re-reading files instead of running code | If the bug was visible in code, you'd have found it; runtime state is what you need |
 | Small variations on the same failed approach | If `console.log(x)` didn't show the bug, `console.log(JSON.stringify(x))` probably won't either — change strategy |
 | Adding more code to work around the bug | Workarounds create technical debt; find the root cause or explicitly document it as a workaround |
-| "Let me try one more thing" after 40 minutes | Sunk cost fallacy; the next 40 minutes won't be different from the last 40 |
+| "Let me try one more thing" after the budget is spent | Sunk cost fallacy; the next block of effort won't differ from the last — stop and hand off |
 | Not writing the debugging journal | Externalizing reasoning reveals blind spots that internal monologue can't |
 
 ---
