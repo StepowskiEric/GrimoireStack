@@ -14,7 +14,11 @@ Systematic checklist for reviewing code before pushing. Catches failure modes sp
 
 Based on arXiv research: 2603.00539, 2604.16697, 2604.17014, 2604.19825, 2601.19072, 2603.18740, 2512.18020, 2511.07017.
 
-The failure modes, research sources, and the anti-pattern table live in the shared catalog: [`references/llm-failure-modes.md`](references/llm-failure-modes.md). For a TypeScript-specific tool-first deep review, use `super-review-typescript`.
+The failure modes, research sources, and the anti-pattern table live in the shared catalog: [`references/llm-failure-modes.md`](references/llm-failure-modes.md).
+
+For a TypeScript codebase, run the tools before the heuristics — `tsc --noEmit`, `eslint`, `semgrep` — then work through [`references/ts-review-checklist.md`](references/ts-review-checklist.md). Supporting references: [`references/ts-verification-protocol.md`](references/ts-verification-protocol.md) (prove a suspected hallucination before reporting it), [`references/ts-common-hallucinations.md`](references/ts-common-hallucinations.md) (APIs models invent), [`references/ts-silent-failures.md`](references/ts-silent-failures.md), [`references/ts-eslint-rules.md`](references/ts-eslint-rules.md), and [`references/ts-semgrep-rules.md`](references/ts-semgrep-rules.md).
+
+For a production deploy, run this protocol then continue with Passes 6 and 7 below and [`references/gate-checklist.md`](references/gate-checklist.md).
 ### Protocol
 
 Run this as a **structured pass** over your diff before pushing. Each section is independent — complete all.
@@ -81,6 +85,28 @@ Run this as a **structured pass** over your diff before pushing. Each section is
 
 **Red flag:** "It works on my machine" = untested integration. If you didn't verify the full flow, it's unverified.
 
+### PASS 6: Production Hardening (before a deploy)
+
+**Goal:** Secure defaults where the code meets the internet.
+
+- [ ] Row-level security enabled on all user-facing tables
+- [ ] Rate limiting on public API endpoints
+- [ ] CORS configured — not wildcard `*` in production
+- [ ] Content Security Policy headers set
+- [ ] HTTPS enforced, no mixed content
+- [ ] Error responses leak no stack traces or internal state
+- [ ] Health check endpoint exists and validates dependencies
+
+### PASS 7: Secrets and Config Audit (before a deploy)
+
+**Goal:** No credential exposure, in the diff or in history.
+
+- [ ] No secrets in source code (API keys, JWT secrets, DB passwords)
+- [ ] No secrets in git history (`git log -p | grep -iE 'secret|key|token|password'`)
+- [ ] Environment-based config for every environment-specific value
+- [ ] Default configs are production-safe, not dev shortcuts
+- [ ] Third-party credentials rotated if they were ever exposed
+
 ### Quick Mode (for small changes)
 
 For diffs under ~50 lines, use this abbreviated checklist:
@@ -90,6 +116,7 @@ For diffs under ~50 lines, use this abbreviated checklist:
 3. Are types correct at boundaries?
 4. Any security surface exposed?
 5. Do existing tests still pass?
+6. Any secret in the diff?
 
 If any answer is unclear, escalate to full protocol.
 

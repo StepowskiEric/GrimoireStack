@@ -98,6 +98,6 @@ Companion files use only standard tools (`curl`, `python3`) — no pip installs.
 
 ## Related skills
 
-- `speculative-drafting-verification` — multi-branch solution exploration
+- `monte-carlo-tree-search` — branch candidates, probe, and score before committing
 - `intent-specification-protocol` — crystallize vague requests into testable specs before writing code
 - `security-review-protocol` — deep security analysis (use when the spec reveals security-critical work)

@@ -36,6 +36,16 @@ version (`pip show` / `package.json`), the changelog or migration guide between 
 cutoff version and the installed one, and the modules you plan to import. One pass
 per library, not per call.
 
+## Version-pinned claims
+
+A claim is version-pinned when the answer changes with the version. "Unity 6.06 supports C# 9, so `record` types are unavailable" is version-pinned; "Python has `print()`" is not. Every version-pinned claim ends in one of two states: **proved** or **unproved**. No code is written on top of an unproved claim.
+
+- Write the version string exactly as the source states it (`6000.6`, not `6.06`; `noble`, not only `24.04`). If you use an alias, record the mapping and keep the source's own string in the record.
+- Include negative claims ("X is unavailable in version Y") — they are frequently the claim that breaks the build.
+- Prefer sources in this order: official versioned docs, changelog or migration guide, official forum or tracker, third-party write-ups. When sources conflict, the claim is unproved until the official versioned doc resolves it.
+- A search snippet never counts as proof. Fetch the page and quote the passage that contains the version string and the feature statement together.
+- A claim is proved only when version, source, quote, and verification timestamp are all present.
+
 ## Merge-time compatibility checklist
 When changing a public API in this repo (renames, new parameters, signature changes):
 - [ ] Grep every caller before changing a signature; classify each as keyword or positional

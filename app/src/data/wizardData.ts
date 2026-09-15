@@ -108,13 +108,13 @@ export const WIZARD_DATA = [
           'Reveals the business domain model that should drive technical decisions — makes the right choice obvious by clarifying what the code is really about.',
         reason:
           'Bounded contexts are the fundamental unit of modularity. DDD gives you the language to find them.',
-        alt: 'team-topologies-ai — if the boundary decision affects team structure, not just code',
+        alt: 'octopus — if the boundary decision affects team structure, not just code',
       },
       {
         id: 'improve-arch',
         label: 'Improve existing architecture',
         desc: 'Refactor toward a better structure',
-        skill: 'improve-codebase-architecture',
+        skill: 'feature-architecture',
         effect:
           'Finds deepening opportunities informed by the domain language — identifies hot-spots, boundary violations, and missing abstractions in the current codebase.',
         reason:
@@ -152,7 +152,7 @@ export const WIZARD_DATA = [
           'Reveals the business domain model that should drive technical decisions — makes the right choice obvious by clarifying what the code is really about.',
         reason:
           'Monolith breakup is the ultimate bounded-context exercise. Getting the wrong boundaries means painful re-division later.',
-        alt: 'improve-codebase-architecture — for identifying extraction targets from the code itself',
+        alt: 'split-large-files — for boundary-driven extraction once the boundaries are chosen',
       },
     ],
   },
@@ -187,7 +187,7 @@ export const WIZARD_DATA = [
         id: 'code-review',
         label: 'Review code before merging',
         desc: 'Get a review pass',
-        skill: 'code-review-excellence',
+        skill: 'review-ladder-plus',
         effect:
           'Provides constructive feedback, catches bugs early, and fosters knowledge sharing — reviewing for correctness, design, test coverage, and maintainability.',
         reason:
@@ -214,7 +214,7 @@ export const WIZARD_DATA = [
           'Writes tests that pin real behavior instead of implementation details — config values, lucky samples, or brittle selectors.',
         reason:
           'Good tests survive refactoring. Bad tests couple to implementation and break on every change. This skill teaches the difference.',
-        alt: 'unit-test-debugging — if you want to write the tests before the code; or e2e-testing-philosophy-and-architecture — for the full E2E testing mindset',
+        alt: 'unit-test-debugging — if you want to write the tests before the code; or e2e-crosscheck — to reconcile the new tests against the identifiers, text, and routes in the source',
       },
       {
         id: 'shipping-check',
@@ -260,11 +260,11 @@ export const WIZARD_DATA = [
         id: 'hard-problem',
         label: 'Complex / multi-faceted problem',
         desc: 'Many dimensions to consider',
-        skill: 'kahneman-thinking-fast-slow-software-agent',
+        skill: 'thoroughness-check-etto-state-machine',
         effect:
-          'Uses the fast vs. slow thinking model to make AI software agents more reliable during coding, debugging, refactoring, review, estimation, and architecture work.',
+          'Classifies the task into a rigor level 1-5, names the evidence bar before acting, and validates the close-out against the declared bar.',
         reason:
-          'Complex problems need System 2 (slow, deliberate) thinking. This skill enforces that discipline.',
+          'Complex problems fail when rigor is improvised. Declaring the level first sets the evidence bar before any action.',
         alt: 'thinking-in-systems-state-machine — for problems with feedback loops and delayed effects',
       },
       {
@@ -333,12 +333,12 @@ export const WIZARD_DATA = [
         id: 'e2e-flow',
         label: 'Set up or improve E2E tests',
         desc: 'End-to-end test planning',
-        skill: 'e2e-testing-philosophy-and-architecture',
+        skill: 'e2e-crosscheck',
         effect:
-          'Comprehensive reference for E2E testing mindset, architecture, and strategy — covers testing epistemology, 3-layer BDR architecture, risk-based prioritization, and data realism.',
+          'Bidirectional audit between E2E test selectors/assertions and source code — reconciles every identifier, text assertion, and navigation route.',
         reason:
-          'E2E tests are expensive. A clear philosophy ensures every E2E test earns its keep.',
-        alt: 'e2e-crosscheck — if you already have E2E tests and need to verify they still match the code',
+          'E2E tests drift silently. Cross-checking the suite against the source catches dead identifiers and stale routes that a green run hides.',
+        alt: 'rubric-gate — to turn the suite expectations into binary done-criteria',
       },
       {
         id: 'flaky-tests',
@@ -349,7 +349,7 @@ export const WIZARD_DATA = [
           'Bidirectional cross-reference between E2E test selectors/assertions and source code — catches silent failures: dead identifiers, drifted UI text, stale routes, orphaned tests.',
         reason:
           'Flaky tests erode trust in the entire suite. Cross-referencing against source code finds the root cause.',
-        alt: 'purify-test-output — if the flakiness is from noisy test output drowning out the real failure',
+        alt: 'debug-to-fix-pipeline — if the flakiness is from noisy test output drowning out the real failure',
       },
       {
         id: 'unit-tests',
@@ -366,23 +366,23 @@ export const WIZARD_DATA = [
         id: 'test-gaps',
         label: 'Identify test coverage gaps',
         desc: 'What am I not testing?',
-        skill: 'e2e-test-premortem',
+        skill: 'e2e-crosscheck',
         effect:
-          'Premortem for E2E test changes — audits coverage gaps, data realism, failure-mode coverage, and assertion quality before declaring done.',
+          'Reconciles every test identifier, text assertion, and route against the source, which surfaces the flows and states nothing asserts.',
         reason:
-          'You cannot fix what you do not measure. A test premortem reveals coverage gaps before bugs do.',
-        alt: 'mobile-e2e-testing-enterprise-guide — for a broader "hunters mindset" across the full testing surface',
+          'You cannot fix what you do not measure. Reconciling tests against the code shows the gap before a bug does.',
+        alt: 'rubric-gate — when the missing piece is written done-criteria, not more tests',
       },
       {
         id: 'mobile-test',
         label: 'Test mobile / device-specific flows',
         desc: 'On-device quality',
-        skill: 'mobile-e2e-testing-enterprise-guide',
+        skill: 'e2e-crosscheck',
         effect:
-          'Hunter mindset for mobile E2E testing — what to test, how to catch real bugs, verify flows work, and avoid traps on mobile platforms.',
+          'Bidirectional audit between E2E test selectors/assertions and source code — including device-specific selectors, text, and navigation routes.',
         reason:
-          'Mobile testing has unique failure modes (network, device state, gestures, interrupts). A specialized guide prevents the most common mobile-specific regressions.',
-        alt: 'e2e-testing-philosophy-and-architecture — for the foundational E2E principles that apply across platforms',
+          'Mobile flows drift the same way web ones do. Reconciling device-specific selectors and routes against the source catches what a green run hides.',
+        alt: 'environment-recovery — when the failure is the device environment, not the test',
       },
     ],
   },
@@ -468,12 +468,12 @@ export const WIZARD_DATA = [
         id: 'understand-concept',
         label: 'Understand a complex concept',
         desc: 'Deep learning',
-        skill: 'feynman-technique',
+        skill: 'documentation-craft',
         effect:
-          'Verifies genuine understanding by explaining in simple language — if you cannot explain it simply, you do not understand it well enough.',
+          'Outline for the audience, draft section by section, then verify the draft against a quality checklist.',
         reason:
-          'The Feynman Technique is the single best test of understanding. It reveals gaps that reading alone misses.',
-        alt: 'compression-as-understanding — for a more structured "compress and reconstruct" check',
+          'If you cannot write it for a reader, the understanding is not finished — the outline exposes the gaps.',
+        alt: 'evidence-grounding — to check the explanation against the source rather than memory',
       },
       {
         id: 'find-code',
@@ -592,23 +592,23 @@ export const WIZARD_DATA = [
         id: 'e2e-setup',
         label: 'Set up E2E testing framework',
         desc: 'Initial E2E infrastructure',
-        skill: 'e2e-testing-philosophy-and-architecture',
+        skill: 'e2e-crosscheck',
         effect:
-          'Comprehensive reference for E2E testing mindset, architecture, and strategy — covers testing epistemology, 3-layer BDR architecture, risk-based prioritization, and data realism.',
+          'Six reconciliation passes that keep the suite and the source honest: identifiers, text, routes, states, errors, and structure.',
         reason:
-          'E2E testing is as much about philosophy as infrastructure. A clear framework prevents expensive mistakes in test architecture.',
-        alt: 'mobile-e2e-testing-enterprise-guide — if the E2E tests are primarily on mobile platforms',
+          'A new suite is only as good as its agreement with the source. Start from the reconciliation passes so drift never accumulates.',
+        alt: 'rubric-gate — to write the suite done-criteria before the first test',
       },
       {
         id: 'visual-tests',
         label: 'Add visual regression tests',
         desc: 'Catch UI changes',
-        skill: 'e2e-test-premortem',
+        skill: 'e2e-crosscheck',
         effect:
-          'Premortem for E2E test changes — audits coverage gaps, data realism, failure-mode coverage, and assertion quality.',
+          'Bidirectional audit between E2E test selectors/assertions and source code — the pass that catches UI text and route drift.',
         reason:
-          'Visual regression testing needs a clear plan before implementation. A premortem ensures the visual tests actually cover the meaningful surfaces.',
-        alt: 'e2e-crosscheck — for maintaining existing E2E tests, not planning new ones',
+          'Visual tests fail on text and route drift before they fail on pixels. Reconcile those against the source first.',
+        alt: 'rubric-gate — to name the surfaces that must be covered',
       },
     ],
   },
@@ -643,18 +643,17 @@ export const WIZARD_DATA = [
         id: 'check-understanding',
         label: 'Verify I understand a concept',
         desc: 'Test my own understanding',
-        skill: 'feynman-technique',
+        skill: 'documentation-craft',
         effect:
-          'Verifies genuine understanding by explaining in simple language — if you cannot explain it simply, you do not understand it well enough.',
-        reason:
-          'The Feynman Technique exposes understanding gaps that reading alone hides.',
-        alt: 'compression-as-understanding — for a more rigorous compress-and-reconstruct check',
+          'Outline for the audience, draft section by section, then verify the draft against a quality checklist.',
+        reason: 'Explaining it in writing exposes the gaps that reading alone hides.',
+        alt: 'evidence-grounding — to check each claim in the explanation against the source',
       },
       {
         id: 'code-review-learning',
         label: 'Learn from code review feedback',
         desc: 'Improve through review',
-        skill: 'code-review-excellence',
+        skill: 'review-ladder-plus',
         effect:
           'Provides constructive feedback, catches bugs early, and fosters knowledge sharing.',
         reason:
@@ -683,7 +682,7 @@ export const WIZARD_DATA = [
         id: 'tech-debt',
         label: 'Prioritize technical debt',
         desc: 'What to tackle first',
-        skill: 'improve-codebase-architecture',
+        skill: 'feature-architecture',
         effect:
           'Finds deepening opportunities informed by the domain language — identifies hot-spots, boundary violations, and missing abstractions.',
         reason:

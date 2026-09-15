@@ -37,9 +37,9 @@ describe('build-skill-map output', () => {
   });
 
   it('includes skills with YAML frontmatter name field', () => {
-    // super-review-typescript has frontmatter with name: super-review-typescript
-    expect(map['super-review-typescript']).toBe(
-      '/skills/software-development/super-review-typescript/SKILL.md',
+    // llm-pre-push-review has frontmatter with name: llm-pre-push-review
+    expect(map['llm-pre-push-review']).toBe(
+      '/skills/software-development/llm-pre-push-review/SKILL.md',
     );
   });
 });

@@ -175,5 +175,5 @@ Good response (do this):
 ## See Also
 
 - `api-surface-anchoring` — Specifically for library API signatures.
-- `verified-api-workflow` — Anchor every version-pinned claim to a fetched source with a proof bundle.
+- `api-surface-anchoring` — Anchor every version-pinned claim to a fetched source and a recorded proof.
 - `verify-before-integrate` — Pre-commit verification for integrations.

@@ -127,7 +127,7 @@ decision:
 
 ## Integration
 
-- Use **after** `metacognitive-monitoring` to assess confidence in each counterfactual
+- Use **after** `thoroughness-check-etto-state-machine` to set the rigor level for each counterfactual
 - Use **before** `rashomon-triad-hybrid` when multiple genuine approaches exist
 - Use **with** `compression-as-understanding` to ensure you understand the alternatives
 

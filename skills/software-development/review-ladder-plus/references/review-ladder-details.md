@@ -27,7 +27,7 @@ Each issue records its outcome: `FIXED` (patched), `REJECTED` (passing proof), `
 ## Related skills
 
 - `llm-pre-push-review` — pre-push checklist based on LLM coding failure research
-- `pre-deployment-gate` — full pre-deploy security and quality checklist
+- `llm-pre-push-review` — full pre-deploy security and quality checklist (Passes 6-7)
 - `verified-synthesize` — formal verification (Dafny) for correctness-critical code
 - `security-review-protocol` — STRIDE-based security review
 - `vibe-coding-security-hardening` — OWASP hardening for AI-generated code

@@ -66,9 +66,9 @@ const schoolsSummary = [
     desc: 'Diagnose, trace, and resolve issues in code and systems',
   },
   {
-    id: 'reasoning',
-    name: 'Reasoning',
-    desc: 'Structured thinking, planning, and problem-solving protocols',
+    id: 'judgment-and-routing',
+    name: 'Judgment & Routing',
+    desc: 'Structured thinking, routing decisions, and problem-solving protocols',
   },
   {
     id: 'execution',

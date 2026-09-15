@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-purify_test_output.py — Companion script for the purify-test-output skill.
+purify_test_output.py — companion script for debug-to-fix-pipeline Phase 4 (Purify).
 
 Reads raw test output (stdin or file), strips framework noise, preserves
 user-code frames / assertion messages / variable diffs, and prints the

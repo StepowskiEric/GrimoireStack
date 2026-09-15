@@ -1,9 +1,9 @@
 # LLM Failure-Mode Catalog — shared reference
 
 The systematic blind spots of LLM-generated code, with the research behind each.
-Both `llm-pre-push-review` (generic diff checklist) and `super-review-typescript`
-(TS-specific deep review) are organized around these modes. Detection patterns
-per mode: `review-patterns.md`.
+`llm-pre-push-review` is organized around these modes, and its TypeScript references
+(`ts-review-checklist.md`, `ts-silent-failures.md`, `ts-common-hallucinations.md`)
+extend them for TS codebases. Detection patterns per mode: `review-patterns.md`.
 
 ## The six failure modes
 

@@ -26,6 +26,7 @@ Exit condition:
 - task is confirmed as iterative-improvement work
 
 * * *
+
 ## State 1 — Direction and Current Condition
 
 Goal:
@@ -59,6 +60,7 @@ Exit condition:
 - improvement direction is explicit
 
 * * *
+
 ## State 2 — Target Condition Framing
 
 Goal:
@@ -93,6 +95,7 @@ Exit condition:
 - the gap from current condition is explicit
 
 * * *
+
 ## State 3 — Obstacle Selection
 
 Goal:
@@ -123,6 +126,7 @@ Exit condition:
 - one current focus obstacle is selected
 
 * * *
+
 ## State 4 — Next Experiment Design
 
 Goal:
@@ -167,6 +171,7 @@ Exit condition:
 - expected result is written down before execution
 
 * * *
+
 ## State 5 — Execution
 
 Goal:
@@ -193,6 +198,7 @@ Exit condition:
 - evidence collected
 
 * * *
+
 ## State 6 — Learning Review
 
 Goal:
@@ -225,6 +231,7 @@ Exit condition:
 - learning is written clearly enough that another operator could continue
 
 * * *
+
 ## State 7 — Stop / Escalate
 
 Stop when:
@@ -243,11 +250,13 @@ Escalate when:
 - repeated experiments fail to move the target condition materially
 
 * * *
+
 ## Tool Gating
 
 Phase gating is enforced by the states themselves, restated here so it can't be missed: States 0–4 are read-only plus artifact writing — no broad writes, migrations, large refactors, or rollout actions (see State 1 disalloweds). State 5 permits only the bounded experiment plus its evidence collection — no opportunistic side changes or adjacent cleanup (see State 5 disalloweds).
 
 * * *
+
 ## Circuit Breakers
 
 Stop immediately if:
@@ -314,5 +323,3 @@ Required log row format:
 No broad implementation should begin until the improvement board exists.
 
 * * *
-
-

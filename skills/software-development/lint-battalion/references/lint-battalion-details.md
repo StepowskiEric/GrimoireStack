@@ -83,12 +83,12 @@ Prevention: never assign the same file to multiple subagents; run the linter per
 
 | Skill | Integration point |
 | ------- | ------------------- |
-| `checklist-manifesto` | phase gates and contamination checks |
+| `rubric-gate` | phase gates and contamination checks |
 | `debug-subagent` | semantic errors requiring logic understanding |
 | `legacy-rescue-protocol` | architectural errors needing structural change |
 | `codebase-divide-conquer-search` | finding related files when errors span unknown modules |
 | `debug-to-fix-pipeline` | subagent's first fix is close but wrong |
-| `pre-deployment-gate` | final lint check before commit |
+| `llm-pre-push-review` | final lint check before commit |
 
 ## Research basis
 

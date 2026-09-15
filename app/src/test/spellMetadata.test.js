@@ -15,7 +15,8 @@ describe('spellMetadata', () => {
     });
 
     it('returns an explicit date for curated spells', () => {
-      expect(getSpellLastUpdated('debug-issue')).toBe('2026-08-24');
+      // An untouched skill keeps the curated registry date.
+      expect(getSpellLastUpdated('advocatus-diaboli')).toBe('2026-08-24');
     });
 
     it('returns a deterministic fallback for unknown spells', () => {

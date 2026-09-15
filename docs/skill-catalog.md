@@ -1,1672 +1,526 @@
 # Skill Catalog
 
-Skills are organized into topic areas. Each entry shows its file path and whether it is a **[protocol]** (state-machine, enforces a workflow) or a **[framework]** (conceptual lens, improves judgment).
+The 60 skills in this repository, generated from `skills/*/*/SKILL.md`.
+Each entry lists the file path, what the skill is, its triggers, and the supporting files it ships.
 
 ---
 
-## 🔧 Execution — how-to-do-the-work protocols
+## 🔧 Debugging — Find and fix defects
 
-Skills for executing technical work in a bounded, disciplined way.
+`skills/debugging/`
 
-### `execution/how-to-solve-it-state-machine.md` · [protocol]
+### `debugging/debug-issue/SKILL.md`
 
-**What it is:** A disciplined problem-solving protocol that forces problem framing, evidence gathering, planning, execution, and reflection.
+**What it is:** Force the reproduce → isolate → fix → verify cycle. Graph-powered code navigation traces issues through the system along dataflow edges. Use when the bug spans multiple modules or services, the crash site isn't the cause, or state diverges across an async boundary.
 
-**Use it when:** The task is hard, uncertain, or likely to tempt premature coding.
+**Triggers:** `Need to trace an issue through the system along dataflow edges`, `Bug spans multiple modules or services`, `Need to understand how data flows from entry point to failure point`, `Crash site is symptomatic, not causal — the real bug is upstream`, `State corruption happens across module boundaries (auth, caching, async)`
 
-**Best for:** Debugging, algorithmic reasoning, difficult implementation tasks, root-cause work.
+### `debugging/debug-subagent/SKILL.md`
 
----
-
-### `execution/refactoring-state-machine.md` · [protocol]
-
-**What it is:** A bounded refactoring protocol that defines a target, accounts for shared surfaces, limits the transformation budget, and stops cleanly with an anti-loop circuit breaker.
-
-**Use it when:** Structure needs improvement but the task could spiral into endless cleanup.
-
-**Best for:** Safe refactors, complexity reduction, targeted cleanup, anti-slop work.
-
----
-
-### `execution/split-large-files.md` · [protocol]
-
-**What it is:** A boundary-driven extraction protocol that splits large files along change boundaries, not line counts. Investigates before extracting, requires strong architectural signals, and rejects splits that increase coupling. Includes an explicit "do not split" decision gate and recognizes naturally broad but cohesive modules (state machines, schemas, registries, reducers, protocol definitions, orchestration modules).
-
-**Use it when:** A file exceeds ~500 lines and you suspect it mixes independently changeable responsibilities, different callers consume disjoint parts of the module, or a section changes for different business reasons.
-
-**Best for:** File extraction, module boundary identification, preventing over-splitting, recognizing cohesive large files that should stay intact.
-
----
-
-### `execution/working-effectively-with-legacy-code-state-machine.md` · [protocol]
-
-**What it is:** A protocol for making brittle code safe to change before trying to improve it. Forces characterization testing, seam creation, and explicit stopping to prevent rewrite gambling and cleanup drift.
-
-**Use it when:** The system has weak tests, unclear behavior, tight coupling, or rewrite temptation.
-
-**Best for:** Characterization testing, seam creation, change safety, legacy modernization.
-
----
-
-### `execution/toyota-kata-state-machine.md` · [protocol]
-
-**What it is:** A continuous-improvement protocol that forces the agent to define the current condition, set the next target condition, isolate one obstacle, and run one bounded experiment at a time.
-
-**Use it when:** The path forward is uncertain and progress should be discovered iteratively rather than through one large redesign.
-
-**Best for:** Optimization, process improvement, performance tuning, workflow refinement, developer-experience improvements, and safe iterative experimentation.
-
----
-
-### `execution/pragmatic-programmer-state-machine.md` · [protocol]
-
-**What it is:** A practical engineering protocol focused on bounded changes, reversible decisions, automation, and root-cause fixes. Enforces blast-radius accounting, consumer discovery, and clean stopping.
-
-**Use it when:** The agent needs to work like a senior pragmatist instead of an idealist or cleanup maximalist.
-
-**Best for:** Day-to-day engineering work, tooling, repetitive toil reduction, incremental improvements.
-
----
-
-### `execution/philosophy-of-software-design-state-machine.md` · [protocol]
-
-**What it is:** A protocol for managing complexity, building deeper modules, and avoiding shallow abstraction sprawl. Adds hard gates for consumer discovery before shared-interface edits, unknowns/blast-radius declaration, and bounded change scope.
-
-**Use it when:** The agent is changing shared interfaces or making design decisions that can spread complexity.
-
-**Best for:** API design, module boundaries, simplification, architecture cleanup.
-
----
-
-### `execution/ooda-loop-state-machine.md` · [protocol]
-
-**What it is:** A decision-tempo protocol based on Boyd's OODA Loop: Observe → Orient → Decide → Act → Loop. Enforces explicit observation before interpretation, mandatory model updates at each cycle, bounded action scope, and loop assessment after every action.
-
-**Use it when:** The environment is changing rapidly, adversarially, or unpredictably between actions — where conditions shift before the previous move settles.
-
-**Best for:** Rapidly-changing incidents, adversarial debugging, dynamic ops response, situations where tempo matters as much as correctness.
-
----
-
-### `execution/checklist-manifesto.md` · [protocol]
-
-**What it is:** A pre-execution checklist protocol based on Gawande's _The Checklist Manifesto_. Builds the minimal purposeful checklist before any high-stakes procedure, enforces read-do or do-confirm execution, gates each step with confirmation evidence, and halts on exception triggers.
-
-**Use it when:** The task is a high-stakes, known procedure where expert skip-ahead causes failures — and confidence is not a substitute for verification.
-
-**Best for:** Deployment procedures, database migrations, security changes, incident remediation steps, any procedure that has caused failures through missed steps.
-
----
-
-### `execution/pdca-deming.md` · [protocol]
-
-**What it is:** A measurement-anchored improvement protocol based on the Shewhart/Deming PDCA cycle. Requires a measurable baseline and written prediction before action, mandates a Check phase comparing actual vs. predicted results, and gates standardization on confirmed measurement rather than felt improvement.
-
-**Use it when:** Improving a system or process where you must verify what worked before standardizing it — and where "it seemed better" is not a sufficient conclusion.
-
-**Best for:** Process improvement, performance tuning, quality improvement, any work where standardization should follow verified results.
-
----
-
-### `execution/step-level-verification-protocol/SKILL.md` · [protocol]
-
-**What it is:** A verification protocol that validates each reasoning step before proceeding to the next. Prevents error propagation by catching mistakes early in multi-step chains.
-
-**Use it when:** Working on multi-step tasks where early errors compound into larger failures downstream.
-
-**Best for:** Complex debugging, multi-step reasoning, algorithmic work, any task where verification at each step prevents cascading errors.
-
----
-
-### `execution/speculative-drafting-verification/SKILL.md` · [protocol]
-
-**What it is:** A parallel solution generation protocol that creates multiple candidate branches, verifies each against constraints, and selects the best. Prevents local minima traps.
-
-**Use it when:** The problem has multiple plausible approaches and committing to one too early risks suboptimal outcomes.
-
-**Best for:** Design decisions, architecture choices, optimization problems, any task where exploring alternatives before committing improves outcomes.
-
----
-
-### `execution/process-reward-model-protocol/SKILL.md` · [protocol]
-
-**What it is:** A self-correcting reasoning protocol that assigns process rewards to each step and backtracks when cumulative reward drops below threshold.
-
-**Use it when:** Reasoning may go down wrong paths and needs mechanism to detect and recover from poor reasoning chains.
-
-**Best for:** Complex reasoning tasks, multi-step planning, any work where reasoning quality varies and early detection of bad paths matters.
-
----
-
-### `execution/how-to-solve-it-analogy.md` · [framework]
-
-**What it is:** A transfer-reasoning skill based on Polya's analogy technique from _How to Solve It_. Finds structural analogs to the current problem, makes the mapping explicit, identifies what transfers and what does not, and adapts the imported solution structure.
-
-**Use it when:** The problem resembles a previously solved one and importing the solution structure would accelerate the work — but only after verifying the mapping holds.
-
-**Best for:** Design decisions, algorithm selection, architecture patterns, any problem where a known solution from another domain is structurally applicable.
-
----
-
-### `execution/intent-specification-protocol/SKILL.md` · [protocol]
-
-**What it is:** Crystallize vague coding requests into precise, testable specs before writing code. Prevents over-engineering via the Intent-Behavior Mirroring Effect.
-**Includes:** `scripts/intent_mcp_server.py` (MCP server with 3 tools) + `scripts/intent-specification-protocol.py` (stdlib; commands: crystallize, spec, check)
-
-**Use it when:** The request is vague, ambiguous, or likely to lead to over-engineering.
-
-**Best for:** Requirement clarification, spec writing, preventing over-engineering, aligning with stakeholders.
-
----
-
-### `execution/requirement-crystallization-protocol/SKILL.md` · [protocol]
-
-**What it is:** Fuses Socratic Clarification with Intent Specification. Three-phase pipeline: SURFACE assumptions and find the critical one, CAPTURE intent as a structured spec with states/transitions/constraints, LOCK the spec as the coding contract.
-
-**Use it when:** Before any non-trivial feature implementation, when the request is ambiguous, or as a pre-coding step.
-
-**Best for:** Requirement clarification, preventing wrong-thing-built-correctly, spec-first development.
-d05|
-:c2d|---
-:d05|
-:8a6|### `orchestration/pre-flight-intent-verification/SKILL.md` · [protocol]
-:d05|
-:9f0|**What it is:** A unified pre-action gate that prevents the #1 agent failure mode: confidently executing the wrong task. Fuses Socratic Clarification (assumption surfacing), Intent Specification Protocol (testable spec crystallization), and Assumption Grounding (factual verification) into three mandatory phases before any significant task execution: Clarify → Specify → Ground. Produces a `pre-flight-record.md` artifact or does not proceed.
-:d05|
-:250|**Use it when:** Starting a feature, bug fix, code change, or refactor with any ambiguity, blast radius, or irreversible side effects — especially when the request could be interpreted multiple ways, touches existing behavior, or the stakes of being wrong are non-trivial.
-:d05|
-:cdc|**Best for:** Preventing confident wrong execution, surfacing the single most consequential assumption, crystallizing vague intent into testable specs, verifying factual claims before acting, and any task where one wrong assumption makes perfect execution worthless.
-:d05|
-:c2d|---
-
-### `execution/blueprint/SKILL.md` · [protocol]
-
-**What it is:** Codify messy human problems to reveal hidden assumptions and structure. Turn vague problems into concrete data types/schema — contradictions and gaps become impossible to ignore.
-
-**Use it when:** Problem discussed in circles without resolution, people use same words for different things, scope keeps expanding.
-
-**Best for:** Requirement formalization, gap detection, assumption exposure, turning informal specs into typed structures.
-
----
-
-### `execution/legacy-rescue-protocol/SKILL.md` · [protocol]
-
-**What it is:** Fuses Working Effectively with Legacy Code with Refactoring State Machine. Four-phase pipeline: CHARACTERIZE current behavior with tests, SEAM find or create safe change points, TRANSFORM in bounded slices with anti-loop breaker, CLEANUP scaffolding.
-
-**Use it when:** Any change to code without adequate test coverage, refactoring unfamiliar code, or fixing bugs in legacy systems.
-
-**Best for:** Legacy modernization, safe refactoring, characterization testing, change safety.
-
----
-
-### `execution/long-task-survival-kit/SKILL.md` · [protocol]
-
-**What it is:** Fuses Assumption Grounding + Trajectory Guard + Context Budget Operator into a recurring checkpoint protocol. Every 5 tool calls: check context health, trajectory health, and assumption health. Includes emergency protocols for each failure mode.
-
-**Use it when:** Any task that will take 10+ tool calls, multi-file refactors, migration work, complex debugging.
-
-**Best for:** Preventing agent decay, context overflow detection, failure spiral recovery, long-horizon tasks.
-
----
-
----
-
-### `execution/context-lifecycle-manager/SKILL.md` · [hybrid]
-
-**What it is:** Insane hybrid of `context-rot-pruner` + `context-budget-operator` + `token-budget-operator`. Full lifecycle: messages are born → tracked by budget operator → decayed/pruned by rot-pruner → optimized by token-budget-operator. Shares one `context_state.jsonl` artifact.
-
-**Use it when:** Long sessions (30+ turns), Coppermind daemon sessions running for hours, or when you want maximum context utilization (2-3x life extension).
-
-**Best for:** Full context lifecycle management, extending session life dramatically, coordinating three context skills via one artifact.
-
-**Includes:** `scripts/context_lifecycle.py` — pure stdlib; commands: init, add, update, prune, optimize, report, simulate
-
----
-
-### `execution/structured-feature-planning/SKILL.md` · [protocol]
-
-**What it is:** Structured 7-phase planning workflow for implementing new features: explore (read files) → search (3-5 targeted queries) → stuck detection → plan (JSONL) → self-review (diff vs request) → self-review (pre-mortem failure modes) → summary + execute. Designed for correctness-critical features where quality matters more than speed.
-
-**Use it when:** Starting a new feature of any complexity, ambiguous requests that need clarification, features touching architecture you haven't read yet, or when you catch yourself about to "just start coding."
-
-**Best for:** Pre-implementation planning, preventing guessed assumptions from becoming bugs, forcing verification before fabrication, ensuring all uncertain parts are explicitly flagged before execution begins.
-
-**Governing rule:** Never hallucinate when confused. If you don't understand something, stop, search, or ask. A partial plan with honest questions beats a confident plan built on guessed answers.
-
-**Includes:** `scripts/structured_planner.py` — pure stdlib; modes: explore, plan, execute, full, resume, status, reset. Enforces phase ordering, validates JSONL output, halts on unresolved clarifications.
-
----
-
-### `execution/zero-defect-protocol/SKILL.md` · [protocol]
-
-**What it is:** Mission-Critical Zero-Defect planning and implementation workflow. 14-phase protocol (Context Bounding → Clarification → Ideation → Data Contracting → Master Plan → Quick Sync → Alternatives → Red Team → Pre-Mortem → 3x Critique Loop → Speculative Spike → Implementation → Refactor Gate → Final Validation) that forces mathematical soundness via data contracting, invariant mapping, red-team critique, and pre-mortem before any code is written.
-
-**Use it when:** Deploying to production with zero tolerance for failure, security-critical or financially-critical features, any feature where a bug could cause irreversible harm, or the request is ambiguous or high-stakes.
-
-**Best for:** Preventing catastrophic failures, forcing verification before fabrication, ensuring all uncertain parts are explicitly flagged before execution — when "good enough" is not acceptable.
-
----
-
-### `execution/speculative-exploration-protocol.md` · [protocol]
-
-**What it is:** Fuses speculative drafting + tree of thoughts + process reward model into a disciplined exploration protocol. Generates multiple candidate branches, evaluates each with process rewards, prunes weak paths, and selects the best-verified solution.
-
-**Use it when:** Complex problems with multiple plausible approaches where committing to one path early risks suboptimal outcomes.
-
-**Best for:** Design decisions, architecture choices, complex debugging with competing hypotheses, any task where exploring and verifying alternatives improves outcomes.
-
----
-
-### `execution/iterative-improvement-cycle.md` · [protocol]
-
-**What it is:** Fuses Toyota Kata + PDCA + Philosophy of Software Design into a continuous improvement cycle. Defines target conditions, runs measured experiments, manages complexity, and standardizes only on verified results.
-
-**Use it when:** Improving a system or process where iterative experimentation, measurement discipline, and design quality all matter.
-
-**Best for:** Process improvement, code quality enhancement, workflow refinement, any task that needs both Toyota Kata's obstacle-focused iteration and PDCA's measurement discipline.
-
----
-
-### `execution/summarize/SKILL.md` · [protocol]
-
-**What it is:** Emergency STOP + structured handoff report for agent-to-agent session transfer. Forces immediate abandonment of current work with zero data loss — the next agent opens the session with complete context. Governs: STOP signal, 8-section handoff template, strict no-continuation rule.
-
-**Use it when:** Session quality is degraded (2+ compressions), anti-thrashing warning fires, you need to `/new` or `/branch`, session was interrupted mid-work, or user asks "summarize what we did".
-
-**Best for:** Preserving context across restarts, preventing work loss on session reset, agent-to-agent handoff with zero memory of each other.
-
-**Note:** The STOP line is agent-to-agent signaling only. When delivering directly to the user (`deliver: 'origin'`), omit it.
-
----
-
-### `execution/plan-with-judge/SKILL.md` · [protocol]
-
-**What it is:** Creates an implementation plan in JSONL format with atomic steps and dependencies, then iteratively improves it using a stronger user-specified model as a judge until the plan is approved. Runs up to 5 judge-review cycles.
-
-**Use it when:** The task is complex enough to need a structured plan before coding, and you want a stronger model to validate feasibility, completeness, and logical ordering before executing.
-
-**Best for:** Implementation planning, pre-coding quality assurance, plan refinement, ensuring plan feasibility through stronger-model validation.
-
----
-
-### `execution/iterative-spec-authoring/SKILL.md` · [protocol]
-
-**What it is:** Authors a full technical specification in markdown, then runs it through up to 3 judge-LLM review cycles to surface blind spots, strengthen acceptance criteria, and improve implementation clarity before the user reviews it. Includes a companion OpenRouter judge script and spec template.
-
-**Use it when:** You need a detailed, reviewable spec before starting implementation and want a stronger model to stress-test your plan.
-
-**Best for:** Feature specs, architectural changes, multi-concern features (backend + frontend + email + security).
-
-**Includes:** `references/spec-template.md` (spec template), `references/openrouter-judge.sh` (OpenRouter judge helper)
-
----
-
-### `debugging/log-trace-correlation/SKILL.md` · [protocol]
-
-**What it is:** A protocol for correlating error logs and stack traces to source code to identify root cause and suggest fixes.
-
-**Use it when:** You have an error log with a stack trace and need to determine the exact location and cause of failure.
-
-**Best for:** Debugging, root-cause analysis, failure triage.
-
----
-
-### `debugging/bisect-debugging/SKILL.md` · [protocol]
-
-**What it is:** Binary search through git history to isolate the exact commit that introduced a regression.
-
-**Use it when:** Tests pass on an older commit but fail on HEAD, or a feature worked previously but is now broken.
-
-**Best for:** Finding regression commits, understanding what changed, root-cause analysis.
-
----
-
-### `debugging/debug-subagent/SKILL.md` · [protocol]
-
-**What it is:** A dedicated debugging subagent that must be consulted before making code edits. Wraps debugger complexity behind natural-language queries and enforces "debug before edit" workflow.
-
-**Use it when:** The bug is not immediately obvious from the error message, or static analysis hasn't revealed the root cause.
-
-**Best for:** Interactive debugging, program repair, enforcing debug-before-edit discipline. Based on Debug2Fix research (+13-22% bug fix rate).
-
----
-
-### `debugging/purify-test-output/SKILL.md` · [protocol]
-
-**What it is:** Slice failing test output to only failure-relevant lines before showing to the LLM. Removes noise and reduces tokens by ~18.6%.
-
-**Use it when:** Failing tests produce verbose output, or stack traces include framework frames that drown out user code.
-
-**Best for:** Token efficiency, debugging focus, test output processing. Based on DebugRepair research.
-
----
-
-### `debugging/simulate-instrumentation/SKILL.md` · [protocol]
-
-**What it is:** Auto-insert temporary print/logging statements at key points, run the failing test, and feed captured runtime state to the LLM.
-
-**Use it when:** The bug involves runtime state invisible in source code, or static analysis has hit a dead end.
-
-**Best for:** Runtime state capture, verifying data flow assumptions, debugging logic errors. Based on DebugRepair research (+26.3% when removed in ablation).
-
----
-
-### `debugging/iterative-patch-repair/SKILL.md` · [protocol]
-
-**What it is:** Loop of generate patch → run test → capture runtime state → refine patch. Max N iterations with patch augmentation to avoid overfitting.
-
-**Use it when:** The first patch attempt failed, or multiple plausible fixes exist and you need to find the correct one.
-
-**Best for:** Non-obvious bugs, avoiding symptom-only fixes, patch search and verification. Based on DebugRepair research (+19.9% from patch augmentation alone).
-
-### `debugging/specter/SKILL.md` · [protocol]
-
-**What it is:** Debug by generating competing hypotheses (abductive reasoning), then locate code structurally — no keyword grepping, no root-cause guessing. Feels like a ghost hunting the real bug.
-
-**Use it when:** Bug has multiple plausible causes, crash site is not root cause, classic "reason backwards from symptom."
-
-**Best for:** Non-obvious bugs, hypothesis-driven debugging, structural code location by control/data/temporal relationships.
-
----
-
-### `debugging/occam-minimal-repro/SKILL.md` · [protocol]
-
-**What it is:** Fuses Occam's Razor with minimal reproduction. When isolating a bug, systematically rank possible reproduction triggers by complexity (Tier 0 = direct function call → Tier 4 = specific physical environment), test the simplest first, and only escalate when simpler triggers are falsified. Prevents building elaborate reproduction setups when a one-liner would suffice.
-
-**Use it when:** Writing a minimal reproduction test and there are several plausible triggers with different complexity levels, or you catch yourself setting up a complex test environment before trying a simple one.
-
-**Best for:** Bug reproduction, test writing, avoiding environment-hunting before code-hunting.
-
----
-
-### `debugging/debug-to-fix-pipeline.md` · [protocol]
-
-**What it is:** Fuses abductive debugging + debug subagent + simulate instrumentation + purify test output + iterative patch repair into a single end-to-end debugging pipeline. Classifies the failure, generates hypotheses, instruments runtime state, iterates on patches, and verifies the fix.
-
-**Use it when:** Non-trivial bugs that require systematic investigation, runtime state capture, and iterative patch refinement.
-
-**Best for:** Complex debugging, multi-hypothesis bugs, production issue investigation, any debugging task that would normally require loading 5+ debugging skills.
-
----
-
-### `debugging/root-cause-analysis.md` · [protocol]
-
-**What it is:** A disciplined diagnostic protocol that forces distinction between symptoms and causes. Uses 5 Whys, Ishikawa diagrams, and falsifiable hypotheses to prevent symptom patching and workaround hacks.
-
-**Use it when:** A bug returns after being "fixed," a fix in one area breaks something else, or the agent is tempted to add guards without understanding why bad input arrived.
-
-**Best for:** Recurring bugs, complex failures with multiple symptoms, preventing regression, any situation where the visible error is not the actual defect.
-
----
-
-### `debugging/occam-root-cause/SKILL.md` · [protocol]
-
-**What it is:** Fuses Root Cause Analysis with Occam's Razor. After RCA produces multiple candidate root causes, this combo ranks them by causal step count and independent new entities, then verifies the simplest surviving candidate with a falsification experiment. Includes a decisive test: "If I fix only Factor A, does the symptom recur?" If no → A is the root cause; the others are contributing factors.
-
-**Use it when:** RCA has produced multiple candidate root causes, the 5 Whys branched into different causal chains, or you are tempted to accept a "multiple contributing factors" explanation without testing whether a single root cause suffices.
-
-**Best for:** Complex failures with multiple plausible causes, recurring bugs, any situation where the simplest causal chain needs to be verified before committing to a fix.
-
----
-
-### `debugging/time-traveling-debugger/SKILL.md` · [protocol]
-
-**What it is:** When a bug occurs, records a deterministic execution trace via `sys.settrace` (forward), then walks the trace backward from the crash point to find the exact line where state first diverged. Implements the "past self" + "future self" pattern: one agent traces forward, the other rewinds from the crash, they meet at the divergence. Includes companion Python scripts (`time_travel.py`) and an MCP server (`time_travel_server.py` with `trace_and_compare` tool).
-
-**Use it when:** The error message doesn't immediately reveal the root cause, a value is clearly wrong but you don't know where it got set, or you need to find the first state anomaly rather than the last crash site.
-
-**Best for:** Non-trivial bugs with value propagation chains, Heisenbugs that resist print-statement debugging, understanding how a wrong value propagated from source to crash.
-
-**Includes:** `scripts/time_travel.py` -- pure Python stdlib; `scripts/time_travel_server.py` -- MCP server
-
----
-
-### `execution/retrospective/SKILL.md` · [framework]
-
-**What it is:** An after-action learning skill that examines what actually happened after an incident, shipped feature, or completed project. The real-data counterpart to pre-mortem: before execution you imagine failure; after execution you examine the real outcome. Uses the Five Whys for root cause analysis and produces specific, owned, time-bound action items.
-
-**Use it when:** After an incident, shipped feature, sprint, project milestone, or decision outcome. Any significant event whose signal should be captured before it fades.
-
-**Best for:** Incident post-mortems, project retrospectives, sprint retros, personal learning, decision outcome reviews.
-
----
-
-## 🧭 Judgment & Routing — deciding what to do and how rigorously
-
-Skills for routing tasks, calibrating rigor, and reasoning about risks and tradeoffs.
-
-### `judgment-and-routing/problem-mode-router-cynefin.md` · [framework]
-
-**What it is:** A routing skill based on Cynefin-style problem classification that helps the agent decide whether the situation is obvious, complicated, complex, chaotic, or still disordered.
-
-**Use it when:** The first question is not "what do I do?" but "what kind of problem is this, and what response style fits it?"
-
-**Best for:** Task routing, incident routing, skill-stack selection, project kickoff diagnosis, and preventing the wrong reasoning mode from dominating the task.
-
----
-
-### `judgment-and-routing/recognition-primed-triage.md` · [framework]
-
-**What it is:** A fast-judgment skill for urgent situations that tells the agent to recognize the pattern, choose the first plausible strong move, mentally simulate it, and then reassess.
-
-**Use it when:** Delay is costly, information is incomplete, and the agent needs a high-quality first move rather than exhaustive comparison.
-
-**Best for:** Incident triage, outage response, urgent debugging, ops escalation, and fast prioritization under pressure.
-
----
-
-### `judgment-and-routing/kahneman-thinking-fast-slow-software-agent.md` · [framework]
-
-**What it is:** A judgment skill based on fast versus slow thinking for software engineering work. Uses fast mode for cheap pattern recognition and slow mode for anything expensive, irreversible, ambiguous, or security-sensitive.
-
-**Use it when:** The agent needs to decide when cheap pattern recognition is fine and when slow, careful reasoning is mandatory.
-
-**Best for:** Coding, debugging, estimation, review, ambiguous architecture decisions.
-
----
-
-### `judgment-and-routing/unsafe-control-actions-hazard-analysis.md` · [framework]
-
-**What it is:** A hazard-analysis skill for checking whether a consequential action becomes unsafe if it is omitted, applied incorrectly, mistimed, misordered, or left in place too long.
-
-**Use it when:** The agent is about to recommend or perform a high-consequence action where timing, sequencing, constraints, and safeguards matter.
-
-**Best for:** Risky automations, infra changes, migrations, data mutations, security-sensitive operations, rollout decisions, and any tool action that changes external state.
-
----
-
-### `judgment-and-routing/thoroughness-check-etto.md` · [framework]
-
-**What it is:** A conceptual version of the ETTO principle for deciding the right rigor level before work begins.
-
-**Use it when:** You want the judgment of ETTO without a formal gate.
-
-**Best for:** Prompting style, advisory workflows, lightweight preflight reasoning.
-
----
-
-### `judgment-and-routing/thoroughness-check-etto-state-machine.md` · [protocol]
-
-**What it is:** A universal preflight gate based on the efficiency–thoroughness trade-off. Decides how much evidence is required, whether the agent may act yet, what tools are permitted, and when to stop or escalate.
-
-**Use it when:** The agent should decide how much evidence, validation, and caution are required before acting.
-
-**Best for:** Almost any non-trivial task, especially when risk or irreversibility is involved.
-
----
-
-### `judgment-and-routing/explore-vs-exploit.md` · [framework]
-
-**What it is:** A conceptual version of the exploration-vs-commitment tradeoff.
-
-**Use it when:** You want the agent to think clearly about search breadth versus action, without a rigid execution protocol.
-
-**Best for:** Planning, ideation, research strategy, lightweight debugging decisions.
-
----
-
-### `judgment-and-routing/explore-vs-exploit-state-machine.md` · [protocol]
-
-**What it is:** A control system for deciding whether to keep gathering information or commit to action.
-
-**Use it when:** The agent risks either acting too early or searching forever.
-
-**Best for:** Research, debugging, planning, decision support, ambiguous tasks.
-
----
-
-### `judgment-and-routing/inversion-mental-model.md` · [framework]
-
-**What it is:** A conceptual version of inversion as a reasoning tool for risks, blind spots, and failure modes.
-
-**Use it when:** The agent needs a better strategic lens rather than a formal failure-mapping workflow.
-
-**Best for:** Strategy, critique, planning, pre-mortems, anti-goal analysis.
-
----
-
-### `judgment-and-routing/inversion-mental-model-state-machine.md` · [protocol]
-
-**What it is:** A protocol for reasoning from failure backward: define the opposite of success, enumerate failure paths, rank them, and turn them into guardrails.
-
-**Use it when:** Risk, blind spots, defensive design, or failure modes matter.
-
-**Best for:** Safety checks, architecture review, incident prevention, rollout planning.
-
----
-
-### `judgment-and-routing/problem-mode-router-cynefin-state-machine.md` · [protocol]
-
-**What it is:** The protocol version of the Cynefin router. Gates all subsequent work on an explicit, challenged domain classification before any tool use or execution may begin. Enforces the unjustified-Obvious check, mandates evaluation of all five domains, and monitors for reclassification triggers during execution.
-
-**Use it when:** You need domain classification to be an enforced gate, not an optional lens — especially when over-classifying as Obvious is a known risk.
-
-**Best for:** High-stakes task routing, incident classification, skill-stack selection for complex or chaotic situations, any workflow where using the wrong response style would be costly.
-
----
-
-### `judgment-and-routing/recognition-primed-triage-state-machine.md` · [protocol]
-
-**What it is:** The protocol version of Recognition-Primed Triage. Enforces four gated phases: pattern recognition + confidence declaration, mandatory mental simulation before action, bounded first action within declared scope, and mandatory reassessment before continuing or handing off.
-
-**Use it when:** You need urgent triage to be fast and disciplined — not fast and reckless — and you need the reasoning documented at each gate.
-
-**Best for:** On-call incident response, outage containment, automated incident response workflows, any urgent situation where scope expansion during triage is a known failure mode.
-
----
-
-### `judgment-and-routing/first-principles.md` · [framework]
-
-**What it is:** A reasoning skill for decomposing problems to their axiomatic constraints before reasoning upward. Separates confirmed facts from inherited assumptions, distinguishes hard constraints from soft ones, and builds solutions from verified foundations rather than from convention or analogy.
-
-**Use it when:** The problem feels intractable because every option has been tried, the framing imports constraints from a prior context that may not apply, or a creative solution requires questioning the problem itself.
-
-**Best for:** Architecture decisions, intractable engineering problems, questioning inherited constraints, situations where the conventional approach is the problem rather than the solution.
-
----
-
-### `judgment-and-routing/second-order-thinking.md` · [framework]
-
-**What it is:** A consequence-tracing skill that asks "and then what?" at least twice after every first-order effect. Traces how systems, stakeholders, and feedback loops adapt to a change and whether the benefit holds, erodes, or reverses across time horizons.
-
-**Use it when:** A recommendation has a clear first-order benefit but the downstream effects on the system, stakeholders, or incentives have not been traced.
-
-**Best for:** Architecture recommendations, policy changes, process improvements, any decision where the obvious short-term benefit might produce unintended long-term consequences.
-
----
-
-### `judgment-and-routing/occams-razor/SKILL.md` · [framework]
-
-**What it is:** A simplicity-first reasoning discipline. Forces the agent to list alternatives ranked simplest → most complex, test the simplest viable explanation first, and only escalate when it is falsified. Applies a "complexity tax" — every added assumption, dependency, or abstraction must earn its keep with explicit evidence.
-
-**Use it when:** Diagnosing bugs, designing solutions, answering questions with multiple plausible interpretations, or reviewing plans for over-engineering.
-
-**Best for:** Preventing over-engineering, scope creep, and premature abstraction in any reasoning or implementation task.
-
----
-
-### `judgment-and-routing/occam-abduction/SKILL.md` · [framework]
-
-**What it is:** Fuses abductive reasoning (generate competing hypotheses) with Occam's Razor (select simplest surviving hypothesis). After generating 3–5 hypotheses and auditing each against confirmed evidence, discards falsified ones, ranks survivors by assumption count, and verifies the leader with a targeted probe. Simplicity is the primary selection criterion — not narrative appeal.
-
-**Use it when:** Multiple competing explanations fit the evidence, hypotheses differ substantially in assumption count, or you need a principled tiebreaker between explanations that all "seem right."
-
-**Best for:** Bug diagnosis with unclear root cause, ambiguous symptoms, any situation where several explanations are consistent with the available evidence.
-
----
-
-### `judgment-and-routing/pre-mortem.md` · [framework]
-
-**What it is:** A plan-validation skill based on Gary Klein's prospective hindsight technique. Assumes the plan has already failed and generates specific narrative failure stories from that vantage point, then ranks and converts them into plan adjustments.
-
-**Use it when:** A plan is being finalized before execution and the team or agent has strong consensus that it will work (the highest-risk time for optimism blindness).
-
-**Best for:** Project planning, rollout validation, strategy review, architecture commitment, any plan where consensus has reduced scrutiny.
-
----
-
-### `judgment-and-routing/pre-mortem-state-machine.md` · [protocol]
-
-**What it is:** The protocol version of the Pre-Mortem. Enforces minimum failure story generation, mandatory ranking, required risk profiles with prevention and detection for top risks, and a formal proceed/adjust/do-not-proceed verdict before execution is unlocked.
-
-**Use it when:** A high-stakes plan requires formal validation and the pre-mortem must be a genuine gate, not a formality.
-
-**Best for:** High-consequence launches, migrations, architectural commitments, any plan where a failed pre-mortem should halt execution.
-
----
-
-### `judgment-and-routing/six-thinking-hats.md` · [framework]
-
-**What it is:** A multi-perspective analysis skill based on Edward de Bono's _Six Thinking Hats_. Separates White (facts), Red (intuition), Black (caution), Yellow (value), Green (alternatives), and Blue (process) thinking into distinct phases so each mode can operate fully without interference.
-
-**Use it when:** A decision involves multiple stakeholders or perspectives, one reasoning mode (usually caution or optimism) is dominating unfairly, or the agent needs to generate alternatives before evaluating them.
-
-**Best for:** Architecture reviews, stakeholder-sensitive decisions, design proposals, multi-criteria evaluation, any situation where one-mode collapse is a risk.
-
----
-
-### `judgment-and-routing/steelmanning.md` · [framework]
-
-**What it is:** A commitment-quality skill that requires the agent to build the strongest possible case for the opposing position before finalizing a recommendation. Prevents confirmation bias, distinguishes strawman arguments from genuine alternatives, and requires the residual tension to be named honestly.
-
-**Use it when:** The agent has formed a preference and needs to test it against the best available counter-argument before committing.
-
-**Best for:** Architecture tradeoffs, technology decisions, strategic recommendations, any situation where a genuine alternative exists and the agent is tempted to dismiss it.
-
----
-
-### `judgment-and-routing/advocatus-diaboli/SKILL.md` · [framework]
-
-**What it is:** An adversarial review skill that dispatches a separate sub-agent to attack a proposal before committing. Unlike steelmanning (same agent builds the strongest opposition), the Diaboli is a genuinely separate cognitive entity with zero anchoring to the original reasoning — dispatched via `subagent({context: "fork"})`.
-
-**Use it when:** The proposal has meaningful consequences and you want stronger testing than self-critique provides. The agent is deeply anchored to its own reasoning and needs a genuinely separate mind to find the holes.
-
-**Best for:** Architecture decisions, technical proposals, strategic recommendations, any situation where self-critique (steelmanning) is not enough and a separate adversarial agent would surface more.
-
----
-
-### `judgment-and-routing/reference-class-forecasting.md` · [framework]
-
-**What it is:** An estimation skill that anchors forecasts to the base rate of similar past projects before applying inside-view reasoning. Corrects for planning fallacy by requiring an explicit reference class, base rate evidence, and evidence-based adjustments rather than optimism-based ones.
-
-**Use it when:** The agent must estimate a timeline, cost, or success probability and the estimate might otherwise be built from the imagined happy path.
-
-**Best for:** Project estimation, sprint planning, migration scoping, any commitment where optimistic inside-view estimates have caused problems before.
-
----
-
-### `judgment-and-routing/bayesian-updating.md` · [framework]
-
-**What it is:** A belief-management skill for maintaining and updating competing hypotheses as evidence arrives. Prevents over-updating on single data points and under-updating on disconfirming evidence by keeping priors explicit and requiring likelihood assessment for each piece of evidence.
-
-**Use it when:** The agent must reason across multiple observations rather than flipping belief at each signal — debugging, incident analysis, planning under uncertainty, or any multi-step investigation.
-
-**Best for:** Root-cause debugging, incident diagnosis, architecture tradeoff reasoning, planning where beliefs should evolve across evidence rather than reset at each signal.
-
----
-
-### `judgment-and-routing/cognitive-bias-checklist.md` · [framework]
-
----
-
-### `judgment-and-routing/cognitive-bias-auditor/SKILL.md` · [tool]
-
-**What it is:** Automated bias detection in agent decisions based on arXiv:2410.02820 (tested GPT-4o, Gemma 2, Llama 3.1 on 9 biases). **Includes companion script.**
-
-**Use it when:** Agent makes major decisions (tool selection, architecture choice), results seem irrational, or you suspect sunk cost/anchoring.
-
-**Best for:** Automated bias auditing, post-decision review, mitigating overconfidence and availability heuristic.
-
-**Includes:** `scripts/cognitive_bias_auditor.py` — pure stdlib; commands: check, batch, report, persona
-
----
-
-**What it is:** A post-analysis checklist of the eight biases most dangerous to agents in slow-mode reasoning: anchoring, availability heuristic, confirmation bias, planning fallacy, scope insensitivity, overconfidence, substitution, and narrative fallacy. Requires explicit correction before finalizing any slow-mode output.
-
-**Use it when:** The agent has completed a slow-mode analysis, recommendation, or estimate and needs to verify that these biases have not contaminated the output.
-
-**Best for:** Any slow-mode output — estimates, recommendations, architecture decisions, diagnoses — especially when the output feels obviously correct.
-
----
-
-### `judgment-and-routing/task-intake-protocol/SKILL.md` · [protocol]
-
-**What it is:** Universal preflight gate fusing Cynefin problem classification, ETTO rigor calibration, and Recognition-Primed Triage into a single 3-phase pipeline: Classify → Calibrate → Commit.
-
-**Use it when:** Before any non-trivial task — coding, debugging, architecture decisions, ambiguous requests.
-
-**Best for:** Task intake, preflight decisions, eliminating 3-skill loading overhead.
-
----
-
-### `judgment-and-routing/failure-analysis-protocol/SKILL.md` · [protocol]
-
-**What it is:** Three failure-analysis lenses merged into a tightening funnel: Inversion (define failure), Pre-Mortem (narrate failure stories), Second-Order Thinking (trace cascading consequences). Produces a guardrail table with prevention, detection, and recovery for each risk.
-
-**Use it when:** Before committing to plans, architecture decisions, data migrations, or any high-cost-of-being-wrong situation.
-
-**Best for:** Pre-commitment analysis, failure prevention, risk guardrails, architecture review.
-
----
-
-## 🧠 Reasoning — formal and dynamical reasoning tools
-
-Skills for formal reasoning about agent reasoning itself, detecting collapse, and verifying correctness.
-
-### `reasoning/chaos-detector/SKILL.md` · [protocol]
-
-**What it is:** Detects when LLM agent reasoning is collapsing into chaos using Lyapunov exponent analysis over token trajectories. Models agent reasoning as a random dynamical system; computes empirical Lyapunov exponents to flag divergence before it causes collapse. Based on "Chaotic Dynamics in Multi-LLM Deliberation" (arXiv:2603.09127).
-
-**Use it when:** Multi-round agent conversations where reasoning might be looping or contradicting itself. Pre-commitment before high-stakes decisions. Debugging why the same prompt produces different outputs across runs.
-
-**Best for:** Divergence detection, reasoning stability monitoring, collapse pre-emption. Three modes: Lite (perplexity, no API calls), Standard (embeddings, OpenAI), Agentic (multi-agent, full dynamical analysis).
-
-**Includes:** `scripts/lyapunov.py` — pure stdlib, Benettin's algorithm implementation. No external dependencies in Lite mode.
-
-### `reasoning/prism/SKILL.md` · [framework]
-
-**What it is:** A confidence-calibration and verification protocol. Force explicit confidence on each claim, then verify understanding by compressing it to its essence. If you can't compress it, you don't understand it.
-
-**Use it when:** Complex problem before acting, agent confidently says something that feels wrong, need to distill a complex situation to its core.
-
-**Best for:** Understanding verification, confidence calibration, reducing overconfidence, compressing complex situations.
-
----
-
-## 🛠 Orchestration — multi-agent coordination and delegation
-
-Skills for coordinating multiple agents, delegating work, and maintaining shared workspaces.
-
-### `orchestration/octopus/SKILL.md` · [protocol]
-
-**What it is:** A multi-agent coordination protocol that models the agent as a central brain issuing high-level contracts while sub-agents (arms) operate with local intelligence, adapt in real time, share a workspace, and report compressed summaries. Each arm operates independently with max retries, default fallbacks, and self-termination rules.
-
-**Use it when:** Complex tasks that need decomposition into atomic subtasks with shared contracts, bounded parallel delegation, inter-arm coordination, and robust failure handling.
-
-**Best for:** Multi-agent workflows, complex orchestration, delegation with context preservation.
-
----
-
-## ✨ Output Quality — improving what the agent produces
-
-Skills that refine, critique, and simplify the agent's own outputs.
-
-### `output-quality/bounded-self-revision.md` · [framework]
-
-**What it is:** A disciplined self-refine skill that generates an initial output, critiques it against explicit dimensions, revises it up to two passes, and stops when gains flatten. Prevents endless polish loops, vague self-criticism, and rewriting without improvement.
-
-**Use it when:** The first draft is decent but should improve through one or two structured refinement passes, and you need the revision to stay finite and purposeful.
-
-**Best for:** Writing, planning, structured outputs, explanations, prompts, design memos, decision docs, summaries, and complex reasoning presentations.
-
----
-
-### `output-quality/tool-interactive-critic.md` · [framework]
-
-**What it is:** A post-generation verification skill based on the CRITIC pattern. Generates an initial output, selects the right external tools to critique it, revises only where tool-grounded evidence demands it, and stops when the major weaknesses are resolved.
-
-**Use it when:** The first draft is plausible but not yet trustworthy, and external tools can materially improve the answer's accuracy or safety.
-
-**Best for:** Factual answers, technical explanations, code review with tests or search, plans that depend on current facts, operational recommendations, and tool-using agent workflows.
-
----
-
-### `output-quality/cognitive-load-operator-state-machine.md` · [protocol]
-
-**What it is:** A protocol for making outputs easier to understand, retain, and act on. Forces the agent to inspect complexity before output, identify overload sources, choose a lower-load structure, and verify the result is easier to process.
-
-**Use it when:** An answer is technically correct but mentally expensive.
-
-**Best for:** Documentation, workflows, instructions, prompts, onboarding, dense explanations.
-
----
-
-### `output-quality/feynman-technique.md` · [framework]
-
-**What it is:** A verification skill based on Feynman's teaching philosophy. After generating an explanation, plan, or recommendation, re-explains the core mechanism in plain language to expose gaps. Where the simple explanation breaks down is where the understanding is incomplete.
-
-**Use it when:** The agent has generated an explanation or recommendation and needs to verify it actually understands what it produced — not just that it can recite correct-sounding language.
-
-**Best for:** Explanations, technical documentation, plan verification, complex recommendations where jargon might be masking gaps in reasoning.
+**What it is:** Gate debugging behind a dedicated subagent — consult it before any code edit. Wraps debugger complexity behind natural-language queries. Use when the fix is not immediately obvious from the error, for multi-file bugs needing runtime state inspection, or when static analysis hasn't revealed the root cause.
 
----
-
-### `output-quality/mece-pyramid-principle.md` · [framework]
-
-**What it is:** A structure skill based on Barbara Minto's _The Pyramid Principle_. Requires the governing thought to be stated first, supporting arguments to be Mutually Exclusive and Collectively Exhaustive (MECE), and evidence to belong to exactly one argument. Applies the MECE test to identify overlaps and gaps.
-
-**Use it when:** Structuring a complex output — plan, memo, architecture decision, analysis, recommendation — to be complete, non-redundant, and clear.
-
-**Best for:** Strategy memos, architecture decision records, long-form recommendations, any structured analysis where completeness and non-redundancy matter.
-
----
-
-### `output-quality/tree-of-thoughts.md` · [framework]
-
-**What it is:** A problem-solving skill based on the Tree of Thoughts paper (Yao et al., 2023). Generates multiple candidate reasoning branches, develops each to an intermediate checkpoint, evaluates their promise, prunes weak branches, and pursues only the strongest paths to a conclusion.
-
-**Use it when:** The problem has multiple plausible solution strategies and committing to one too early risks a confident but wrong conclusion.
-
-**Best for:** Complex debugging with multiple competing hypotheses, architecture decisions with multiple viable approaches, any reasoning task where a single path could lead to confident wrongness.
-
----
-
-### `output-quality/self-consistency.md` · [framework]
-
-**What it is:** A reasoning-verification skill based on the Self-Consistency paper (Wang et al., 2022). Generates multiple independent reasoning chains to the same conclusion, checks whether they converge, and investigates divergence points where the reasoning is uncertain.
-
-**Use it when:** A single reasoning chain has produced a confident-looking conclusion and the stakes are high enough to warrant checking whether independent paths agree.
-
-**Best for:** High-stakes logical deductions, multi-step quantitative reasoning, complex diagnoses, any conclusion where fluent single-path reasoning might mask an underlying uncertainty.
-
----
-
-### `output-quality/stakeholder-communication.md` · [framework]
-
-**What it is:** A communication calibration skill that forces the agent to separate facts from inferences, state confidence levels explicitly, estimate with ranges rather than points, surface unknowns, and match technical depth to the audience. Prevents overpromising and hidden uncertainty.
-
-**Use it when:** Presenting conclusions, estimates, recommendations, or technical explanations to humans — especially when the recipient must act on the output.
-
-**Best for:** Incident reports, design docs, time estimates, tradeoff explanations, any situation where false confidence creates bad decisions.
-
----
-
-### `reasoning/faithfulness-aware-reasoning/SKILL.md` · [framework]
-
-**What it is:** A reasoning-verification skill that detects faithfulness hallucinations — reasoning that sounds plausible but isn't logically entailed by the premises. Based on arXiv:2602.05897 research on measuring faithfulness in chain-of-thought reasoning.
-
-**Use it when:** The agent produces confident-sounding reasoning that may not actually follow from the stated facts or premises.
-
-**Best for:** Multi-step reasoning, explanations, justifications, any output where logical entailment matters more than rhetorical plausibility.
-
----
-
-### `reasoning/claim-verification-reasoning/SKILL.md` · [protocol]
-
-**What it is:** A claim-level verification protocol that breaks reasoning into atomic claims, assigns confidence labels (CERTAIN/LIKELY/UNCERTAIN/SPECULATIVE), verifies uncertain claims with tools, and builds dependency graphs. Based on CURE (arXiv:2604.12046), DCF (arXiv:2604.20098), and PRISM (arXiv:2604.16909).
-
-**Use it when:** Multi-step reasoning where errors compound, high-stakes conclusions requiring traceable evidence, or previous outputs contained confabulated justifications.
-
-**Best for:** Code debugging, data analysis, fact-checking, any task where claims can be verified against source code, tests, or documentation.
-
----
-
-### `reasoning/reasoning-verification-hybrid/SKILL.md` · [protocol]
-
-**What it is:** A master anti-hallucination protocol combining 4 techniques: claim decomposition + verification (Phase 1), backward contradiction checks (Phase 2), confidence calibration with abstention (Phase 3), and logical entailment validation (Phase 4). Catches all 4 hallucination types from PRISM.
-
-**Use it when:** Hallucinations have caused bad outputs before, high-confidence conclusions are required, or you need to explain _why_ you're confident.
-
-**Best for:** Critical code changes, architectural decisions, complex debugging, any task where the cost of being wrong exceeds the cost of verification.
-
----
-
-### `reasoning/reasoning-integrity-chain.md` · [protocol]
-
-**What it is:** Fuses faithfulness-aware reasoning + claim verification + reasoning verification hybrid + selective halt into a continuous integrity chain. Monitors for faithfulness hallucinations, decomposes claims, verifies entailment, and halts when reasoning stabilizes.
-
-**Use it when:** High-stakes reasoning where hallucinated facts or logically invalid conclusions would cause harm.
-
-**Best for:** Critical analysis, code change justifications, complex reasoning chains where both faithfulness and convergence matter.
-
----
-
----
-
-### `reasoning/hallucination-anchor-chain/SKILL.md` · [protocol]
-
-**What it is:** Force every factual claim to be anchored to a verified source in `anchors.jsonl`. Unanchored claims are marked unverified; anchors form a verifiable chain of evidence that eliminates hallucination.
-
-**Use it when:** Research tasks where accuracy matters more than speed, code generation using external APIs, or any task where the agent might "fill in" unknown facts.
-
-**Best for:** Eliminating hallucinated claims, building auditable research artifacts, ensuring API usage is verified against docs.
-
-**Includes:** `scripts/anchor_chain.py` -- pure stdlib; commands: init, add, verify, check, audit, export
-
----
-
-### `reasoning/context-rot-pruner/SKILL.md` · [protocol] _(absorbed by context-lifecycle-manager)_
-
-**What it is:** Apply exponential decay to context messages so old, unreferenced content loses weight and gets pruned before the context window overflows. **Now part of `context-lifecycle-manager` Phase 2 (Decay & Pruning).** Detailed decay formulas preserved in `context-lifecycle-manager/references/budget-and-rot-details.md`.
-
-**Use it when:** Long sessions (20+ turns), multi-step tasks with stale intermediate results, or approaching context limits but still have critical work to do.
-
-**Best for:** Extending useful context life by 2-3x, preventing context rot in long Coppermind sessions, intelligent pruning that preserves referenced content.
-
-**Includes:** `scripts/context_rot.py` -- pure stdlib; commands: init, update, add, prune, simulate, audit
-
----
-
-### `reasoning/self-contradiction-trap/SKILL.md` · [protocol]
-
-**What it is:** Maintain a `belief_store.jsonl` of all claims made during a session. Detect when new claims contradict existing ones, force resolution immediately, and track a contradiction score that triggers session review when too high.
-
-**Use it when:** Long sessions (15+ turns) where consistency matters, multi-step reasoning tasks, or Coppermind memory sessions where the agent makes claims about memory state.
-
-**Best for:** Preventing self-contradiction in long sessions, enforcing internal consistency, catching reasoning errors before they compound.
-
-**Includes:** `scripts/belief_store.py` -- pure stdlib; commands: init, add, check, resolve, audit, reset
-
----
-
-### `reasoning/context-density-operator/SKILL.md` · [protocol]
-
-**What it is:** A context-management protocol that maximizes decision-relevant information per token. Uses hierarchical memory (always-visible / summarized / reference-table tiers), redundancy elimination, and on-demand expansion to keep the context window dense. Based on GenericAgent (arXiv:2604.17091) and information bottleneck principles.
-
-**Use it when:** The context window is filling during long-horizon tasks, retrieved memories or tool outputs are drowning out decision-relevant info, or you need to preserve reasoning quality while reducing token burn.
-
-**Best for:** Long debugging sessions, multi-step implementation, agent tasks with heavy tool use or memory retrieval.
-
----
-
-### `reasoning/cot-pruning-reasoning/SKILL.md` · [protocol]
-
-**What it is:** A chain-of-thought compression protocol that applies two-pass pruning: coarse step-level (does removing this step change the conclusion?) and fine token-level (keep only assertions, key evidence, and logical connectors). Based on CoT-Influx (arXiv:2312.08901) and sufficiency-conciseness trade-off research.
-
-**Use it when:** Chain-of-thought reasoning exceeds 10 steps, contains redundant justifications, or you need to fit more reasoning within a context budget.
-
-**Best for:** Multi-step debugging, complex reasoning tasks, any situation where verbose CoT consumes too much context.
-
----
-
-### `reasoning/selective-halt-reasoning/SKILL.md` · [protocol]
-
-**What it is:** An early-stopping protocol that monitors reasoning output for semantic stabilization. Halts after 3 consecutive no-change steps or when halting criteria are met. Based on DASH delta-attention selective halting (arXiv:2604.18103) adapted for agent reasoning.
-
-**Use it when:** Reasoning is converging but continuing to elaborate, token budget is constrained, or you need to know when to stop iterating.
-
-**Best for:** Iterative debugging, convergent reasoning, satisficing problems where "good enough" is acceptable.
-
----
-
-### `reasoning/token-budget-operator.md` · [protocol] _(absorbed by context-lifecycle-manager)_
-
-**What it is:** A master token-efficiency protocol that orchestrates four techniques in sequence: context density maximization (Phase 1), CoT pruning (Phase 2), selective halting (Phase 3), and SOP capture (Phase 4). **Now part of `context-lifecycle-manager` Phase 3 (Optimization).**
-
-**Use it when:** Context window is filling during multi-step tasks, you expect >10 reasoning steps, or you want experience to compound via reusable SOPs.
-
-**Best for:** Complex debugging, multi-step implementation, recurring tasks where similar problems appear repeatedly. The compounding effect means each subsequent similar task gets cheaper as SOPs accumulate.
-
----
-
-### `output-quality/documentation-craft.md` · [framework]
-
-**What it is:** A structured technical writing skill for generating high-quality documentation. Follows a 5-phase process: outline-first planning, context enrichment, drafting, verification, and refinement. Based on DocAgent multi-agent architecture and literate programming research.
-
-**Use it when:** Writing README files, API documentation, architecture decision records, or any technical documentation where clarity and completeness matter.
-
-**Best for:** Repository documentation, API docs, complex function/class documentation, architecture explanations, onboarding guides.
-
----
-
-### `output-quality/large-documentation-navigation.md` · [framework]
-
-**What it is:** A skill for transforming unwieldy documentation repositories into navigable, user-centered knowledge bases. Builds multi-layered navigation systems that help users find what they need based on their situation, not just categorical listings.
-
-**Use it when:** Documentation has grown beyond 20+ items, users report "can't find anything", or the README is just a long list without situational guidance.
-
-**Best for:** Large skill catalogs, extensive API documentation, multi-module project documentation, any reference library where users think in tasks, not categories.
-
----
-
-### `output-quality/self-verify-pipeline/SKILL.md` · [protocol]
-
-**What it is:** Fuses Bounded Self-Revision + Tool Interactive Critic + Claim Verification Reasoning into an escalating 5-phase verification pipeline: Draft → Self-Critique (2 passes max) → Claim Decompose (flag uncertain/high-impact) → Tool-Verify (cheapest tool first) → Final Revision (only where evidence demands).
-
-**Use it when:** Before committing code, presenting analysis to humans, or any high-stakes output.
-
-**Best for:** Output verification, anti-hallucination, self-check before commit, quality gate.
-
----
-
-## 🏗️ Systems & Architecture — design principles and structural thinking
-
-Skills for reasoning about systems, boundaries, constraints, and structural design.
-
-### `systems-and-architecture/the-goal-theory-of-constraints-ai.md` · [framework]
-
-**What it is:** A throughput and bottleneck lens based on Theory of Constraints. Every system has a limiting constraint; identify, exploit, and elevate it before optimizing anything else.
-
-**Use it when:** The agent must improve performance or delivery by finding the real limiting factor rather than optimizing everything.
-
-**Best for:** Performance tuning, workflow optimization, queue reduction, system throughput improvement.
-
----
-
-### `systems-and-architecture/team-topologies-ai.md` · [framework]
-
-**What it is:** A coordination and ownership lens for multi-agent or multi-team systems. Enforces bounded ownership, clear interaction modes, cognitive load control, and stream-aligned delivery.
-
-**Use it when:** The problem is less about one task and more about how work should be split, owned, and coordinated.
-
-**Best for:** Multi-agent systems, platform teams, ownership design, reducing coordination chaos.
-
----
+**Triggers:** `Bug where fix is not immediately obvious from the error message`, `Multi-file bugs requiring runtime state inspection`, `Bugs where static analysis (reading code) hasn't revealed the root cause`
 
-### `systems-and-architecture/accelerate-ai.md` · [framework]
+### `debugging/debug-to-fix-pipeline/SKILL.md`
 
-**What it is:** A delivery and reliability lens inspired by Accelerate-style thinking. Optimizes flow, stability, and feedback together; measures what matters; prefers capability improvements over vanity activity.
+**What it is:** 6-phase pipeline that increases evidence quality each phase while cutting token waste: context → hypothesis → instrument → capture → purify → patch → verify.
 
-**Use it when:** The agent must improve engineering throughput, feedback loops, reliability, or team productivity using evidence rather than folklore.
+**Triggers:** `bug-not-obvious-from-error`, `multi-file-runtime-bug`, `silent-logic-error`, `first-patch-attempt-failed`, `hard-bug`, `stuck-on-debugging`
 
-**Best for:** Delivery metrics, operational improvement, recovery time reduction, batch-size reduction.
+**Ships:** `references/conquest-mode.md`, `scripts/purify_test_output.py`
 
----
-
-### `systems-and-architecture/designing-data-intensive-applications-ai.md` · [framework]
-
-**What it is:** A data-systems reasoning lens inspired by DDIA. Reasons about consistency, replication, partitioning, failure modes, and data flow choices consciously.
-
-**Use it when:** The agent must reason about storage, distributed systems, consistency, replication, partitioning, messaging, or reliability tradeoffs.
-
-**Best for:** Backends, data architecture, infra design, state management, event-driven systems.
-
----
-
-### `systems-and-architecture/domain-driven-design.md` · [framework]
-
-**What it is:** A domain-modeling lens based on Eric Evans' _Domain-Driven Design_. Identifies bounded contexts, ubiquitous language gaps, aggregate boundaries, domain events, and anti-corruption layer needs. Maps how contexts relate (shared kernel, customer-supplier, conformist, ACL) and aligns system structure to domain structure.
-
-**Use it when:** The agent must make architecture decisions about service or module boundaries, ownership, or integration patterns — especially when the existing structure has drifted from the domain it serves.
-
-**Best for:** Service decomposition, modular monolith design, API contract design, team boundary alignment, legacy system restructuring around domain concerns.
-
----
-
-### `systems-and-architecture/release-it-stability.md` · [framework]
-
-**What it is:** A production-resilience lens based on Michael Nygard's _Release It!_. Checks every integration point for circuit breakers, timeouts, and bulkheads; identifies unbounded accumulations that cause time-deferred failure; verifies fail-fast, load-shedding, and steady-state patterns are present.
-
-**Use it when:** The agent is designing or reviewing a distributed system and needs to verify it is stable under failure conditions, not just under normal operation.
-
-**Best for:** Distributed system architecture review, third-party integration design, production readiness assessment, post-incident architecture analysis.
-
----
-
-### `systems-and-architecture/sre-error-budget.md` · [framework]
-
-**What it is:** A reliability-governance lens based on Google's _Site Reliability Engineering_ book. Defines SLIs and SLOs at the right level, calculates error budgets, and enforces a release policy: spend the budget on velocity when healthy, freeze non-critical changes when depleted. Includes toil assessment and automation targeting.
-
-**Use it when:** The agent must reason about the tradeoff between reliability and deployment velocity — making that tradeoff explicit, measurable, and governed rather than implicit and conflict-driven.
-
-**Best for:** Deployment decisions, change-freeze recommendations, reliability target setting, on-call sustainability improvement, post-incident policy review.
-
----
-
-### `systems-and-architecture/security-threat-modeling.md` · [framework]
-
-**What it is:** A security lens based on STRIDE analysis. Forces the agent to identify assets, map trust boundaries, check for spoofing/tampering/repudiation/info-disclosure/DoS/elevation, enforce secrets hygiene, validate input, and review from an attacker's perspective.
-
-**Use it when:** Writing, reviewing, or operating code that handles auth, authorization, user input, secrets, or sensitive data.
-
-**Best for:** API endpoint design, auth flow review, secrets handling, input validation, production deployment security review.
-
----
-
-### `systems-and-architecture/vibe-coding-security-hardening.md` · [protocol]
-
-**What it is:** A 9-phase hardening checklist specifically for AI-generated ("vibe-coded") applications. Targets the vulnerabilities AI tools reliably introduce: exposed secrets, missing RLS, broken auth, injection flaws, and insecure defaults. Based on 2025-2026 research showing 45%+ of AI code contains OWASP vulnerabilities.
-
-**Use it when:** Before deploying any AI-generated app to production, or when onboarding an AI-built MVP to a real engineering team.
-
-**Best for:** Pre-production security review of vibe-coded apps, CI/CD security gates, MVP hardening before public launch.
-
----
-
-### `systems-and-architecture/security-review-protocol/SKILL.md` · [protocol]
-
-**What it is:** Fuses STRIDE threat modeling + Unsafe Control Actions + Vibe Coding Security Hardening into a 4-phase security review: MODEL attack surface, AUDIT hazardous operations, HARDCODE LLM-specific vulnerabilities, VERIFY with tool-grounded evidence.
-
-**Use it when:** Before deploying new endpoints, changing auth/permission logic, or security-focused code reviews.
-
-**Best for:** Security review, threat modeling, vulnerability audit, pre-deployment security check.
-
----
-
-### `systems-and-architecture/system-architecture-audit.md` · [protocol]
-
-**What it is:** Fuses DDIA + DDD + Thinking in Systems + Release It into a comprehensive architecture audit. Evaluates data system choices, domain boundaries, system dynamics, and production resilience in a single pass.
-
-**Use it when:** Reviewing or designing a distributed system where data flow, domain boundaries, feedback loops, and failure resilience all matter.
-
-**Best for:** Architecture review, system design validation, production readiness assessment, any task that would normally require loading 4 systems-and-architecture skills.
-
----
-
-## 🤖 Orchestration — agent coordination and workflow control
-
-Skills for structuring how agents plan, route, delegate, and control complex workflows.
-
-### `orchestration/agentic-design-patterns-orchestrator.md` · [framework]
-
-**What it is:** A conceptual version of the orchestration skill focused on planning, routing, deliberate tool use, reflection, memory, sub-agents, and human-in-the-loop behavior.
-
-**Use it when:** You want the agent to reason with agentic patterns without necessarily enforcing a strict protocol.
-
-**Best for:** Strategy design, agent architecture thinking, early-stage workflow design.
-
----
-
-### `orchestration/agentic-design-patterns-orchestrator-state-machine.md` · [protocol]
-
-**What it is:** A workflow-control skill for tasks that need classification, planning, routing, evidence gathering, execution, reflection, verification, and stopping.
-
-**Use it when:** The agent should behave like an orchestrated system, not a one-shot responder.
-
-**Best for:** Multi-step tasks, sub-agent coordination, tool-using workflows, bounded execution.
-
----
-
-### `orchestration/socratic-clarification.md` · [protocol]
+### `debugging/environment-recovery/SKILL.md`
 
-**What it is:** A pre-execution clarification protocol. Maps the agent's assumptions explicitly, identifies the single most critical assumption whose failure would redirect the work, formulates one targeted clarifying question, and gates execution on the answer — or requires the ambiguity to be explicitly accepted with stated reasoning.
+**What it is:** Diagnose and fix broken development environments — missing tools, wrong versions, corrupted caches, full disks, permission drift, and dependency hell. The skill every other debugging skill assumes.
 
-**Use it when:** The agent is about to execute an ambiguous or high-stakes task where confident wrong execution is the primary failure risk.
+**Triggers:** `command-not-found-but-installed`, `silent-build-failure`, `eacces-enspoc-eaddrinuse`, `wrong-tool-version`, `stale-cache-symptoms`, `peer-dependency-conflict`, `lockfile-out-of-sync`
 
-**Best for:** Any task where the user's intent, scope, or constraints are ambiguous; high-stakes actions where wrong-direction execution has significant cost; recurring tasks where assumptions about context have caused rework before.
+**Ships:** `references/common-failure-signatures.md`
 
----
+### `debugging/escalation-ladder/SKILL.md`
 
-### `orchestration/separation-of-concerns.md` · [framework]
+**What it is:** Structured protocol for when an agent is stuck — escalating from self-recovery to user collaboration to full retreat. Fills the gap between trajectory-guard (detects stuck) and summarize (bails out).
 
-**What it is:** An orchestration-discipline skill based on Dijkstra's Separation of Concerns principle. Explicitly separates planning from execution, diagnosis from remediation, observation from interpretation, and design from review — so that concerns in one phase do not contaminate the reasoning or side effects of another.
+**Triggers:** `Agent has tried 3+ approaches without progress`, `trajectory-guard fires but agent doesn't know what to do next`, `Same error message appearing after multiple fix attempts`, `Context window growing without convergence`, `Agent finds itself re-reading the same files`, `Agent is generating patches that don't change the failure output`, `Agent has been debugging for 30+ minutes without a clear hypothesis`, `Multiple debugging skills attempted without resolution`
 
-**Use it when:** A multi-step task is producing confused or contaminated output because different kinds of work are happening simultaneously, or the agent is diagnosing and fixing at the same time.
+**Ships:** `references/escalation-decision-tree.md`
 
-**Best for:** Multi-step complex tasks, debugging workflows where diagnosis and remediation have been mixed, long orchestrations where scope drift is a risk.
+### `debugging/minimal-reproduction/SKILL.md`
 
----
+**What it is:** Write the smallest possible test that demonstrates the bug, then use it as ammunition for debugging.
 
-### `orchestration/subagent-composer/SKILL.md` · [framework]
+**Triggers:** `Bug manifests at runtime but no test covers the buggy path`, `Agent is debugging by repeatedly running the full app instead of a targeted test`, `I can see the bug in the UI but I can't isolate it in a test`, `Agent is about to patch code without a test that verifies the fix`, `Test suite passes but the feature still doesn't work (untested path)`, `Agent wants to use debug-to-fix-pipeline but has no failing test to start Phase 3`
 
-**What it is:** A skill-composition tool for sub-agent delegation. Instead of sending a raw task, consults a task-to-skill mapping table to load the right skills into the sub-agent — TDD for code tasks, plus debugging, security, API design, architecture, or other skills depending on the task type.
+**Ships:** `references/test-templates.md`
 
-**Use it when:** Delegating work to a sub-agent and want it properly equipped — especially when the task spans multiple concerns (code + security, or refactoring + testing).
+### `debugging/network-api-debugging/SKILL.md`
 
-**Best for:** Bug fixes (loads TDD + root-cause-analysis + diagnose), feature implementation (TDD + API design + security), refactoring (TDD + refactoring state machine), and any sub-agent task where skill selection matters.
+**What it is:** Diagnose and fix network and API failures — CORS, auth token issues, rate limiting, redirect chains, WebSocket drops, and HTTP request/response mismatches.
 
----
+**Triggers:** `cors-error`, `auth-token-issue`, `rate-limit-429`, `redirect-chain`, `websocket-drop`, `works-in-curl-not-app`
 
-### `orchestration/agent-memory-hygiene.md` · [framework]
+**Ships:** `references/http-status-quick-reference.md`
 
-**What it is:** A memory-management skill for agents that have cross-session memory or stored context. Categorizes stored items by durability and trust level (durable fact / working context / provisional belief / decision + rationale), applies staleness signals when retrieving, and ensures stored decisions include their rationale and the conditions under which they should be revisited.
+### `debugging/specter/SKILL.md`
 
-**Use it when:** The agent has access to stored context from prior sessions and needs to decide what to trust, what to re-verify, and what to prune.
+**What it is:** Abduce the bug — generate competing hypotheses, locate code by structural relationship, then disconfirm until one survivor remains. Use when the crash site is not the cause, the bug is 'weird,' or your first instinct is suspect.
 
-**Best for:** Long-running agent workflows with cross-session memory, recurring task agents that accumulate context, any workflow where over-trusting stale memory has caused errors.
+**Triggers:** `Multiple plausible causes and your first guess is suspect`, `Crash site is not the root cause (deferred execution, async, state machine)`, `Debugging by reasoning from symptom back to cause`
 
----
+**Ships:** `references/abductive-reasoning-extended.md`
 
-### `orchestration/sop-evolution-memory/SKILL.md` · [protocol]
+### `debugging/time-traveling-debugger/SKILL.md`
 
-**What it is:** A trajectory-distillation protocol that turns successful task executions into reusable Standard Operating Procedures (SOPs). Future similar tasks load the compact SOP (500 tokens) instead of the full trajectory (3000+ tokens). Includes indexing, retrieval, and quality gates. Based on GenericAgent self-evolution (arXiv:2604.17091).
+**What it is:** When a bug occurs, record a deterministic execution trace forward, then replay it in reverse from the crash point to find the exact line where state first diverged.
 
-**Use it when:** You repeatedly solve similar tasks, previous trajectories contain reusable patterns, or context budget is too tight to load full historical traces.
+**Triggers:** `runtime-error-no-obvious-cause`, `wrong-value-mystery`, `heisenbug`, `reproducible-crash`
 
-**Best for:** Recurring debugging patterns, repeated implementation workflows, any domain where experience should compound rather than reset each session.
+**Ships:** `references/time-travel-details.md`, `scripts/time_travel.py`, `scripts/time_travel_server.py`
 
 ---
 
-### `orchestration/monte-carlo-tree-search.md` · [framework]
+## 🧱 Development — Project layout and language-level work
 
-**What it is:** A branch-allocation skill based on Monte Carlo Tree Search (MCTS). Generates distinct candidate branches, spends more effort on branches that earn it through evidence, preserves limited exploration to avoid early lock-in, and uses bounded probes instead of full commitment too early.
-
-**Use it when:** Multiple plausible strategies exist and the agent needs a disciplined way to decide which branch deserves more reasoning, testing, or tool budget.
-
-**Best for:** Hard debugging, refactor-path selection, architecture tradeoffs, repo-scale investigations, and tool-using agents with measurable feedback.
-
----
+`skills/development/`
 
-### `orchestration/occam-mcts/SKILL.md` · [protocol]
+### `development/unit-test-debugging/SKILL.md`
 
-**What it is:** Fuses Occam's Razor with Monte Carlo Tree Search. Branches are ranked by complexity tier (0–4) before any probing begins. The MCTS loop uses simplicity as the primary scoring dimension and has a stop-early gate: if the simplest viable branch passes its probe, the search terminates. Prevents exploring expensive distributed-tracing solutions when a log file would suffice.
+**What it is:** Systematic workflow for fixing failing unit tests by first determining whether the tests or the code under test are the source of truth.
 
-**Use it when:** Multiple approaches differ substantially in complexity, you want to enforce "try the simple thing first" as a systematic discipline, or the cost of exploring a wrong complex branch is high.
+**Triggers:** `test-failure-debugging`, `source-of-truth-diagnosis`, `test-overfitting-prevention`, `flaky-test-investigation`
 
-**Best for:** Debugging with competing hypotheses at different architectural tiers, architecture decisions, any situation where simple and complex solutions are both plausible.
+**Ships:** `references/unit-test-debugging-details.md`
 
 ---
 
-### `orchestration/thought-retriever-coppermind.md` · [protocol]
+## ⚙️ Execution — How-to-do-the-work protocols
 
-**What it is:** A memory-augmented reasoning skill that stores structured "thoughts" (observations, inferences, hypotheses, uncertainties, conclusions) in the Coppermind three-layer memory system. Enables sub-agents to retrieve not just raw data but the reasoning traces of prior agents.
+`skills/execution/`
 
-**Use it when:** You want agents to build collective memory across sessions, learn from each other's problem-solving approaches, or retrieve "how we thought about this" not just "what we concluded."
+### `execution/intent-specification-protocol/SKILL.md`
 
-**Best for:** Complex debugging, research tasks, design decisions, and cross-session work where reasoning context matters as much as answers.
+**What it is:** Crystallize vague coding requests into precise, testable specifications before writing any code. Prevents the Intent-Behavior Mirroring Effect.
 
-**Key technique:** From "Thought-Retriever: Don't Just Retrieve Raw Data, Retrieve Thoughts" (arXiv:2604.12231) — maps thoughts to Coppermind's working/episodic/semantic layers with confidence scoring and access-based liveness.
+**Triggers:** `ambiguous-request`, `over-engineering-risk`, `behavior-preservation`, `unfamiliar-code`
 
----
+**Ships:** `references/ambiguity-patterns.md`, `references/intent-specification-details.md`
 
-### `orchestration/weak-link-detection-multi-agent/SKILL.md` · [protocol]
+### `execution/iterative-spec-authoring/SKILL.md`
 
-**What it is:** A multi-agent quality control protocol that identifies and isolates the weakest reasoning chain before aggregation. Prevents error amplification when one agent produces poor output.
+**What it is:** Author a detailed technical spec grounded in research, refine through up to 3 judge-LLM review cycles, then present to the user for final approval.
 
-**Use it when:** Coordinating multiple agents where one bad output could contaminate the final result.
+**Triggers:** `detailed-spec-needed`, `multi-concern-feature`, `judge-review-cycle`, `stakeholder-review`
 
-**Best for:** Multi-agent systems, ensemble reasoning, voting/agreement mechanisms, any setup where agent outputs need quality filtering before combination.
+**Ships:** `references/conduct-research.sh`, `references/openrouter-judge.sh`, `references/spec-authoring-details.md`, `references/spec-template.md`
 
----
+### `execution/legacy-rescue-protocol/SKILL.md`
 
-### `orchestration/rashomon-triad-hybrid/SKILL.md` · [protocol]
+**What it is:** Characterize legacy behavior, create seams, then transform in bounded slices with anti-loop protection.
 
-**What it is:** A multi-perspective structured reasoning system combining Rashomon Memory (parallel goal-conditioned perspectives that maintain conflicting interpretations) with Triad Reasoning (abductive hypothesis generation → deductive verification → inductive pattern extraction). Perspectives argue via structured argumentation; Dung's semantics determines winners.
+**Triggers:** `brittle-code-change`, `characterize-before-change`, `legacy-refactor-anti-loop`
 
-**Use it when:** Multiple stakeholders have genuinely conflicting goals, the decision has no single "correct" answer, or you need to surface and document why alternatives were rejected rather than hiding conflict behind false consensus.
+**Ships:** `references/characterization-checklist.md`
 
-**Best for:** Architecture reviews with trade-offs, security vs performance decisions, high-stakes choices where "it depends" is the honest answer.
+### `execution/pdca-deming/SKILL.md`
 
-**Key techniques:** From "Rashomon Memory" (arXiv:2604.03588) and "Structured Abductive-Deductive-Inductive Reasoning" (arXiv:2604.15727) — supports three output modes: selection (pick winner), composition (merge non-conflicting), conflict surfacing (return attack graph as explanation).
+**What it is:** Improve a process through a measurement-anchored cycle: plan with a measurable prediction, do, check actual vs predicted, then standardize or escalate. Standardize only what the check confirmed.
 
-### `orchestration/scout.md` · [protocol]
+**Triggers:** `process-improvement`, `measurement-cycle`, `verify-before-standardize`, `baseline-gap`
 
-**What it is:** A fast context scout — a lightweight sub-agent pre-reads files and returns only distilled, relevant context for the main model. Three modes: Lite (deterministic grep, no LLM cost), Full (LLM distillation), Hybrid (Lite narrows + Full deepens).
+**Ships:** `references/kata-improvement-board.md`, `references/pdca-details.md`
 
-**Use it when:** You need file context but don't want the main model wasting tokens reading entire codebases. For finding specific functions (Lite), understanding subsystems (Full), or pre-refactoring analysis (Hybrid).
+### `execution/split-large-files/SKILL.md`
 
-**Best for:** Large codebases, unfamiliar codebases, debugging with broad error traces, pre-refactoring scope analysis. Saves 50-80% of main model context by returning only relevant findings.
+**What it is:** Split large files along change boundaries, not line counts. Investigate before extracting, require strong architectural signals.
 
-**Key techniques:** `delegate_task` with a fast model (claude-haiku, gpt-4o-mini, or local llama via Ollama) as the Scout agent. Lite uses `search_files` + `read_file`. Hybrid chains them: narrow with Lite, deepen with Full.
+**Triggers:** `File nearing or exceeding ~500 lines`, `Need to refactor a large module or extract functions`, `Reviewing a PR with oversized files`, `About to add code to a file that is already large`
 
----
+### `execution/summarize/SKILL.md`
 
-### `orchestration/octopus.md` · [protocol]
+**What it is:** Emergency stop + perfect handoff report so the next agent loses nothing.
 
-**What it is:** A distributed multi-agent orchestration pattern inspired by octopus biology — central brain issues contracts, arms operate with local autonomy, shared workspace enables inter-arm coordination, autotomy/retraction on failure.
+**Triggers:** `Session quality is degraded`, `Need to hand off mid-work`, `Must preserve context before a /new`
 
-**Use it when:** The task has 3+ independently executable workstreams sharing a common interface/schema, parallel execution would save significant wall-clock time, and work benefits from local decision-making.
+**Ships:** `references/handoff-template.md`
 
-**Best for:** Multi-agent coordination, parallel delegation, contract-driven decomposition, robust error handling with quarantine and recovery. Not for linear/sequential tasks with no parallelism.
+### `execution/trajectory-guard/SKILL.md`
 
-**Key techniques:** Contract-first decomposition (define shared interfaces before launching arms), bounded concurrency (max 5 active arms), compression mandate (sub-agents return structured JSON <50 words, never raw logs), inter-arm coordination via shared workspace (arms read each other's outputs without escalating to main agent), retraction protocol (quarantine partial artifacts, halt downstream dependents on failure).
+**What it is:** Detect agent failure spirals — repetitive loops, specification drift, and stuck trajectories — and forcibly redirect strategy.
 
-**Includes:** `references/concrete-example.md` (Feature Flag Dashboard walkthrough), `references/limitations-gotchas.md` (sub-agent fs isolation, contract immutability risks, structured-file collision rules)
+**Triggers:** `Agent is repeating the same approach without progress`, `Specification drift detected`, `Same error appearing after multiple fix attempts`, `Context window growing without convergence`
 
 ---
-
-### `orchestration/tree-of-thoughts-plus-monte-carlo-tree-search.md` · [protocol]
 
-**What it is:** Power combo — Tree of Thoughts generates diverse reasoning branches, Monte Carlo Tree Search allocates deeper effort to the branches that earn it through evidence.
+## 🧭 Judgment and Routing — Decide what to do, and how rigorously
 
-**Use it when:** Hard debugging with multiple plausible hypotheses, architecture decisions with multiple viable routes, or any task where generating alternatives and allocating effort among them both matter.
+`skills/judgment-and-routing/`
 
-**Best for:** Complex problems where straight-line planning fails, correctness-critical decisions, multi-path exploration with bounded probes before full commitment.
+### `judgment-and-routing/advocatus-diaboli/SKILL.md`
 
-**Key technique:** Phase 1 (ToT): generate 3-5 distinct branches, develop to intermediate checkpoint, prune weak ones. Phase 2 (MCTS): select next branch by evidence strength + exploration value, run bounded probe, score, backpropagate, repeat until winner emerges. Prevents first-branch lock-in, equal-effort waste, and premature full commitment.
+**What it is:** Stress-test a proposal against a separate adversarial sub-agent to break anchoring.
 
----
+**Triggers:** `proposal-stress-test`, `high-stakes-decision`, `anchoring-break`, `adversarial-review`
 
-### Power Combinations
+**Ships:** `references/advocatus-diaboli-details.md`
 
-**Note:** These combinations now have standalone skills — see sections above:
+### `judgment-and-routing/cognitive-bias-checklist/SKILL.md`
 
-- **Navigator** (Scout + Thought-Retriever)
-- **Jury** (Rashomon-Triad Hybrid)
-- **Prism** (Metacognitive Monitoring + Compression)
-- **Specter** (Abductive Debugging + Logic Locator)
-- **Blueprint** (Everything-as-Code)
+**What it is:** Explicit checklist to catch bias contamination before finalizing slow-mode recommendations.
 
-Still as references:
+**Triggers:** `slow-mode-bias-audit`, `pre-delivery-recommendation`, `estimate-calibration`, `high-consequence-decision`
 
-- **Scout + Time-Traveling Debugger** → Scout narrows the bug scope; Time-Travel traces the specific error location
-- **Thought-Retriever + Coppermind** → store reasoning traces, not just outputs; retrieve "how we solved this" for future similar problems
-- **Counterfactual Policy Testing** → validate decisions by testing against explicit alternatives (null, opposite, partial) before committing
-- **Cognitive Friction Governor** → impose deliberation budgets with friction costs per operation, forcing bounded purposeful thinking
-- **Cross-Domain Analogy Generator** → break fixation by forcing structural analogies from unrelated domains (biology, music, traffic)
+**Ships:** `references/bias-checklist-details.md`
 
----
+### `judgment-and-routing/counterfactual-policy-testing/SKILL.md`
 
-### `judgment-and-routing/counterfactual-policy-testing.md` · [protocol]
+**What it is:** Compare a decision against null, opposite, and partial counterfactuals before committing.
 
-**What it is:** A decision-validation protocol that tests proposed changes against three explicit counterfactuals — null (do nothing), opposite (do reverse), partial (do 50%) — and only proceeds if the change beats all alternatives.
+**Triggers:** `decision-vs-alternatives`, `causation-fallacy-risk`, `high-stakes-decision`, `default-path-just-do-it`
 
-**Use it when:** Before significant code changes, when multiple solutions seem plausible, or when you need to prevent "we did X, therefore X caused Y" fallacies.
+**Ships:** `references/counterfactual-details.md`
 
-**Key technique:** From counterfactual reasoning research (arXiv:2604.10511) — forces comparison against explicit alternatives rather than assuming the proposed path is optimal.
+### `judgment-and-routing/evidence-grounding/SKILL.md`
 
----
+**What it is:** Resolve every load-bearing observation against current evidence before acting: freshness checks on what you read, an early falsifying probe after the first edit, and receipts on every progress claim.
 
-### `execution/cognitive-friction-governor.md` · [protocol]
+**Triggers:** `Acting on something read earlier (file, log, test output, doc)`, `First edits in an unfamiliar or fast-changing codebase`, `Reporting task status or claiming work is verified`
 
-**What it is:** A deliberation budgeting system that assigns "friction costs" to cognitive operations (search=1, read=2, analysis=10, etc.). When budget is exhausted, you must decide or explicitly request more budget with justification.
+**Ships:** `RESEARCH.md`, `references/worked-example.md`
 
-**Use it when:** You tend to over-think trivial problems or under-think complex ones, or when analysis paralysis is a recurring issue.
+### `judgment-and-routing/explore-vs-exploit-state-machine/SKILL.md`
 
-**Key technique:** From "Cognitive Friction: A Decision-Theoretic Framework for Bounded Deliberation" (arXiv:2603.30031) — friction forces trade-offs between deep analysis and quick action.
+**What it is:** Explicit explore/exploit protocol: frame the decision, budget the search, explore with purpose, stop deliberately, act when search stops earning its keep.
 
----
+**Triggers:** `explore-vs-commit`, `search-stopping-rule`, `research-budget`, `decision-support`
 
-### `systems-and-architecture/cross-domain-analogy-generator.md` · [framework]
+**Ships:** `references/explore-details.md`
 
-**What it is:** A creative problem-solving lens that breaks fixation by forcing structural analogies from unrelated domains (biology, music, traffic engineering, cooking). Maps problem structures to foreign frameworks and transfers insights.
+### `judgment-and-routing/failure-swarm/SKILL.md`
 
-**Use it when:** Stuck on a problem with repeated failed attempts, when local optima seem like global optima, or when you need "fresh eyes" on a familiar problem.
+**What it is:** Swarm 3-5 critic personas over a spec to surface failure modes pre-implementation. User-invoked; type `/failure-swarm`.
 
-**Key technique:** From "Serendipity by Design" (arXiv:2603.19087) — cross-domain mappings stimulate creativity by importing foreign structural patterns.
+### `judgment-and-routing/first-principles/SKILL.md`
 
----
+**What it is:** Decompose to axiomatic foundations and reason upward from what must be true.
 
-### `development/skill-development-with-supporting-files.md` · [framework]
+**Triggers:** `conventional-solutions-failing`, `inherited-framing`, `ground-up-reasoning`, `received-wisdom-risk`
 
-**What it is:** A workflow guide for developing skills that require supporting files beyond the main `.md` file — such as Python scripts, templates, or reference documents. Documents the manual steps required because `npx GrimoireStack install` only copies `.md` files.
+**Ships:** `references/first-principles-details.md`
 
-**Use it when:** Your skill needs external scripts, tools, or data files that must be installed alongside the skill document.
+### `judgment-and-routing/future-mortem/SKILL.md`
 
-**Key learning:** From developing `keyword-agnostic-logic-locator` — supporting scripts in `scripts/` must be manually copied to `~/.copilot/skills/scripts/` after skill installation.
+**What it is:** After code is written, assume it will cause future pain and work backward to find what will bite: debt with interest, extension traps, hidden assumptions, maintenance memory, time bombs, and upgrade cliffs. Use when implementation is done and the agent must surface what the code will cost the project later.
 
----
+**Triggers:** `Implementation is complete and needs a future-failure review before being called done`, `Need to know what the code will cost the project in six months`, `Code will be built upon by future features`, `Post-implementation risk audit`
 
-### `development/add-new-skill-to-repository/SKILL.md` · [framework]
+### `judgment-and-routing/occams-razor/SKILL.md`
 
-**What it is:** A process guide for adding new skills to GrimoireStack repository with proper documentation, installation support, and cross-platform verification.
+**What it is:** Favor the simplest sufficient explanation or solution. Try the simplest thing that fits the evidence before escalating.
 
-**Use it when:** You want to contribute a new skill to this repository.
+**Triggers:** `over-engineering-risk`, `premature-abstraction`, `scope-creep-risk`, `simplest-fit-first`
 
-**Best for:** Skill creation, documentation standards, installer compatibility testing.
+**Ships:** `references/occam-details.md`
 
----
+### `judgment-and-routing/pre-mortem-state-machine/SKILL.md`
 
-### `development/bulk-rename-and-update-references.md` · [protocol]
+**What it is:** Validate a plan before execution: assume failure has already happened, generate specific failure narratives, rank them, and adjust the plan.
 
-**What it is:** A bulk rename workflow that discovers all files matching an old pattern, renames them, and updates cross-references in markdown links, code imports, config files, and documentation.
+**Triggers:** `plan-validation`, `failure-assumption`, `risk-ranking`, `pre-execution-gate`
 
-**Use it when:** Renaming modules, components, or skills in a docs repo; changing naming conventions; reorganizing directory structures.
+**Ships:** `references/pre-mortem-details.md`
 
-**Best for:** Preventing broken links, stale references, and silent partial replacements during large-scale renames.
+### `judgment-and-routing/recognition-primed-triage-state-machine/SKILL.md`
 
-### `development/unit-test-debugging/SKILL.md` · [protocol]
+**What it is:** Gated incident-response protocol: recognize the pattern, simulate the first action, act within scope, reassess, hand off.
 
-**What it is:** A diagnostic workflow for fixing failing unit tests that prevents the "tests are the source of truth" assumption. Forces the agent to zoom out, diagnose whether the test or code is wrong, and apply the correct fix — not just make tests pass by changing code.
+**Triggers:** `urgent-triage`, `incident-response`, `rapid-first-action`, `pattern-recognition-gate`
 
-**Use it when:** Fixing test failures, debugging test suites, resolving "tests are passing/failing unexpectedly," or when an agent keeps changing code to match failing tests without investigating root cause.
+**Ships:** `references/triage-details.md`
 
-**Best for:** Breaking out of fix-loops, determining which side is wrong (test vs code), preventing scope creep from one failing test to massive rewrites, and escalating to web search or advisor when stuck.
+### `judgment-and-routing/reference-class-forecasting/SKILL.md`
 
-### `development/jest-testing/SKILL.md` · [framework]
+**What it is:** Anchor to similar past projects before reasoning from the specifics.
 
-**What it is:** Comprehensive reference for writing correct Jest tests covering matchers, async patterns, mocking, configuration, and React Native specifics. Provides quick-reference patterns and common gotchas.
+**Triggers:** `timeline-estimation`, `success-probability`, `outside-view-before-inside`, `optimism-bias-risk`
 
-**Use it when:** Writing Jest tests, fixing test failures, setting up Jest configuration, mocking functions/modules, testing async code, snapshot testing, React Native testing, or when the user mentions Jest, test assertions, test.each, jest.fn, jest.mock.
+**Ships:** `references/forecasting-details.md`
 
-**Best for:** Quick lookups of Jest APIs, matcher syntax, async patterns, mock setup, React Native preset configuration, and common testing patterns.
+### `judgment-and-routing/steelmanning/SKILL.md`
 
-### `judgment-and-routing/metacognitive-monitoring.md` · [protocol]
+**What it is:** Construct the strongest opposing case before committing to a recommendation.
 
-**What it is:** A confidence calibration protocol forcing agents to explicitly decide KEEP or WITHDRAW their output, and BET or decline — based on the Nelson-Narens metacognitive monitoring framework. Tracks "withdraw delta" to distinguish blanket confidence from selective sensitivity.
+**Triggers:** `A recommendation needs stress-testing`, `Need to test whether the opposing position is stronger than it appears`, `Confirmation bias or overconfidence is a risk`
 
-**Use it when:** You need to know when the agent knows it doesn't know — before committing to high-stakes code changes, for selective prediction, or when overconfidence is the primary failure mode.
+### `judgment-and-routing/thoroughness-check-etto-state-machine/SKILL.md`
 
-**Key technique:** From "The Metacognitive Monitoring Battery" (arXiv:2604.15702) — dual-probe methodology adapted for LLM self-evaluation.
+**What it is:** Gate task execution by the Efficiency-Thoroughness Trade-Off: classify rigor 1-5, meet the evidence bar, act within the mode, validate to match.
 
----
+**Triggers:** `preflight-gate`, `rigor-classification`, `evidence-threshold`, `risk-escalation`
 
-### `execution/keyword-agnostic-logic-locator/SKILL.md` · [protocol]
+**Ships:** `references/etto-details.md`
 
-**What it is:** A neurosymbolic code navigation system that extracts program facts (call graphs, data flows, type hierarchies) into a queryable knowledge graph, then uses Datalog-style logic queries to locate code by structural relationships — not by grepping for names.
+### `judgment-and-routing/unsafe-control-actions-hazard-analysis/SKILL.md`
 
-**Use it when:** Function names are unclear or misleading, you need to find code by "what it does" not "what it's called," or keyword search returns too much noise.
+**What it is:** Analyze how a control action could become unsafe before recommending or performing it.
 
-**Key technique:** From "Neurosymbolic Repo-level Code Localization" (arXiv:2604.16021) — addresses the "Keyword Shortcut" problem with Python scripts for fact extraction and logic query execution.
+**Triggers:** `high-consequence-action`, `irreversible-damage-risk`, `hazard-analysis-before-acting`
 
-**Includes:** `scripts/extract_code_facts.py` and `scripts/query_code_facts.py`
+**Ships:** `references/ai-agent-hazards.md`, `references/worked-example.md`
 
 ---
 
-### `debugging/specter/SKILL.md` · [protocol] _(absorbed `abductive-first-debugging`)_
+## 🐙 Orchestration — Coordinate context and sub-agents
 
-**What it is:** A debugging skill that generates competing hypotheses (abductive reasoning), locates code structurally (Logic Locator), and disconfirms hypotheses with targeted probes. Absorbs the former `abductive-first-debugging` skill's 6-state protocol and coherence scoring into its references.
-
-**Use it when:** Bug has multiple plausible causes, crash site isn't the root cause, first instinct was wrong, or browser/runtime debugging with no visible errors.
-
-**Key technique:** Abductive hypothesis generation (3-5 competing hypotheses with falsifiable predictions) + structural code location (control flow, data flow, call graph, state machine, temporal) + probe & disconfirm loop. Extended abductive reasoning reference preserved in `references/abductive-reasoning-extended.md`.
-
----
+`skills/orchestration/`
 
-### `execution/assumption-grounding/SKILL.md` · [protocol]
+### `orchestration/monte-carlo-tree-search/SKILL.md`
 
-**What it is:** A verify-before-act discipline that forces the agent to state every assumption explicitly, verify with the cheapest possible check, and only proceed on confirmation. Based on Chain-of-Verification research.
+**What it is:** Allocate search effort to branches that earn it through probes and scoring.
 
-**Use it when:** Before reading, editing, or creating any file; before calling any function whose signature you haven't confirmed; when confidence in a memory is < 90%.
+**Triggers:** `competing-strategies`, `search-effort-allocation`, `bounded-probes`, `branch-scoring`
 
-**Best for:** Preventing hallucinated facts from compounding into costly errors, agent safety, correctness verification.
+**Ships:** `references/mcts-details.md`, `references/mcts-node-schema.md`
 
----
+### `orchestration/octopus/SKILL.md`
 
-### `execution/context-budget-operator/SKILL.md` · [protocol] _(absorbed by context-lifecycle-manager)_
+**What it is:** Coordinate parallel sub-agents with bounded concurrency — define shared contracts, delegate with auto-healing arms, retract on failure.
 
-**What it is:** A token-budget management protocol that tracks context usage before every LLM call, classifies information needs, compresses aggressively when crossing thresholds, and decides breadth vs depth based on remaining runway. **Now part of `context-lifecycle-manager` Phase 1 (Birth & Tracking).** Detailed estimation heuristics preserved in `context-lifecycle-manager/references/budget-and-rot-details.md`.
+**Triggers:** `3-plus-parallel-workstreams`, `shared-contract-parallelism`, `wall-clock-speedup`, `local-subtask-autonomy`
 
-**Use it when:** Working on codebases with >20 files, sessions exceeding 15 turns, or when the agent repeats questions or forgets constraints.
+**Ships:** `references/concrete-example.md`, `references/limitations-gotchas.md`
 
-**Best for:** Long-horizon tasks, large codebase work, preventing silent context overflow and instruction dropout.
+### `orchestration/pre-flight-intent-verification/SKILL.md`
 
----
+**What it is:** Surface the critical assumption, crystallize intent into testable spec, ground facts before acting.
 
-### `execution/trajectory-guard/SKILL.md` · [protocol]
+**Triggers:** `Request has ambiguity, blast radius, or irreversible side effects`, `Before any significant code change, mutation, or external action`, `Need to map assumptions before acting`
 
-**What it is:** Runtime meta-monitoring protocol that watches the agent's execution arc (not individual steps) and detects failure spirals — repetitive loops, specification drift, and stuck trajectories. Forces strategy changes instead of allowing retries of the same approach. Based on Wink misbehavior taxonomy (arXiv:2602.17037, 90% resolution on 10K+ trajectories) and PALADIN recovery patterns (arXiv:2509.25238, recovery from 23.75% to 89.86%).
+**Ships:** `references/pre-flight-record-template.md`
 
-**Use it when:** Tasks expected to take more than 5 tool calls, debugging sessions, migrations, multi-file changes. Especially when the agent notices it has tried the same approach more than twice.
+### `orchestration/scout/SKILL.md`
 
-**Best for:** Preventing wasted turns on stuck trajectories, catching specification drift before it compounds, breaking repetition loops that consume context budget with no progress.
+**What it is:** Scout context — a fast sub-agent reads files and returns only distilled relevant context, saving tokens and reducing distraction for the main model. Use when the codebase is large, you need scoped findings rather than raw file dumps, or the main task needs file context you don't already have.
 
----
+**Triggers:** `Large codebase where direct reading wastes attention`, `Need scoped, distilled findings rather than raw file dumps`, `Main task needs file context not already in memory`
 
-### `systems-and-architecture/everything-as-code-conceptualizer.md` · [framework]
+**Ships:** `references/model-comparison.md`, `references/scout-config.yaml`, `references/scouting-patterns.md`
 
-**What it is:** A conceptual lens that forces viewing any system, process, or problem through a "code lens" — writing pseudocode to represent team dynamics, unclear requirements, deployment issues, or knowledge gaps. The act of codification reveals hidden structure and assumptions.
+### `orchestration/subagent-composer/SKILL.md`
 
-**Use it when:** Messy human/process problems resist structured analysis, you need to surface hidden assumptions, or "if only we had clear specs" is being said.
+**What it is:** Compose high-context sub-agent briefs that eliminate first-pass failures.
 
-**Key technique:** From "Understanding Everything as Code: A Taxonomy and Conceptual Model" (arXiv:2507.05100) — codifying forces precision that natural language obscures.
+**Triggers:** `subagent-brief`, `delegation-failure`, `context-loading`, `skill-selection`
 
----
+**Ships:** `references/invocation-templates.md`, `references/subagent-composer-details.md`
 
-### `systems-and-architecture/thinking-in-systems-state-machine.md` · [protocol]
+### `orchestration/subagent-laws/SKILL.md`
 
-**What it is:** A system-dynamics execution protocol. The agent must map system boundaries, stocks and flows, reinforcing/balancing loops, delays, leverage points, and early warning metrics before touching the target system.
+**What it is:** Standing behavioral constraints every sub-agent must follow. Enforce scope discipline, test integrity, and communication standards.
 
-**Use it when:** The task involves interactions, feedback loops, delayed effects, or multi-step downstream consequences.
+**Triggers:** `sub-agent-brief-composition`, `scope-discipline-enforcement`, `test-integrity`, `communication-standards`
 
-**Best for:** Architecture changes, infrastructure work, organizational process changes, any task where local fixes create remote problems.
+**Ships:** `references/subagent-laws-details.md`
 
 ---
 
-### `output-quality/compression-as-understanding.md` · [protocol]
+## 📐 Output Quality — Shape and verify what you hand over
 
-**What it is:** A verification protocol that tests understanding by compressing knowledge into minimal essential form (≤10 sentences), then testing if that compressed representation can reconstruct key details. High compression ratio = deep understanding.
+`skills/output-quality/`
 
-**Use it when:** After exploring a large codebase to verify understanding, before explaining complex systems, or when you need to distinguish "familiar with" from "understands."
+### `output-quality/documentation-craft/SKILL.md`
 
-**Key technique:** Based on Kolmogorov complexity — the shortest program that generates output measures true understanding.
+**What it is:** Multi-phase pipeline from outline to verified explanation, audience-driven and source-grounded.
 
----
-
-## 🛠️ Development — skill building
+**Triggers:** `technical-writing`, `code-to-docs`, `outline-first`, `doc-quality-verification`
 
-Skills for creating skills, integrating external systems, and development workflows.
+**Ships:** `references/documentation-craft-details.md`
 
-### `software-development/verify-before-integrate.md` · [framework]
+### `output-quality/rubric-gate/SKILL.md`
 
-**What it is:** A verification skill for integrating research paper concepts, API documentation, or external system descriptions into implementations. Verifies actual system behavior rather than assuming terminology alignment — names that sound similar often refer to different implementations.
+**What it is:** Write a rubric of binary done-criteria before implementing, then gate on it: every criterion shows PASS with evidence before work ships.
 
-**Use it when:** Writing a skill that connects to an existing system (Coppermind, Convex, Supabase, etc.), implementing a research paper's algorithm, or mapping abstract concepts to concrete APIs or database schemas.
+**Triggers:** `Task where 'done' is vague or contested`, `Output will face review or automated eval`, `Rework caused by unclear acceptance criteria`
 
-**Best for:** Integration documentation, skill development, API mapping, system integration where terminology might not match the abstract description.
-
----
+**Ships:** `RESEARCH.md`, `references/rubric-example.md`
 
-### `software-development/api-design-backward-compatibility.md` · [framework]
+### `output-quality/self-verify-pipeline/SKILL.md`
 
-**What it is:** A contract-first API design lens that forces explicit versioning strategy, consumer discovery before breaking changes, and deprecation timelines. Prevents implicit breakage by requiring the agent to enumerate who calls what, how they call it, and what the rollback path is.
+**What it is:** Escalating verification chain of bounded revision, claim decomposition, and tool-grounded critique.
 
-**Use it when:** Designing, modifying, or reviewing an API where consumers exist or will exist — especially when the temptation is to change the contract because the server-side implementation is simpler that way.
+**Triggers:** `Outputs risk unverified confidence`, `Need escalating verification for agent output`, `Need to catch different failure modes at different verification levels`
 
-**Best for:** REST/GraphQL API changes, database schema migrations with external consumers, library/SDK version bumps, any interface where the producer and consumer are not the same deploy unit.
+**Ships:** `references/verification-templates.md`
 
 ---
 
-### `software-development/codebase-divide-conquer-search/SKILL.md` · [protocol]
+## 🔎 Research — Gather facts you can cite
 
-**What it is:** A hierarchical multi-agent search protocol for large codebases. Compresses the codebase via summarization (~80%), partitions into candidate zones via semantic similarity, spawns parallel sub-agents for deep investigation, and synthesizes ranked results with confidence scores. Based on Meta-RAG, GenLoc, AgentGroupChat-V2, RepoAudit, and Code-Craft research.
+`skills/research/`
 
-**Use it when:** The codebase is too large to fit in context, grep returns too many candidates, or you need to find code by behavior rather than name.
+### `research/effective-web-search/SKILL.md`
 
-**Best for:** Bug localization in large repos, finding feature implementation targets, API consumption tracing, any search where simple text search fails.
+**What it is:** Web search discipline for technical research. Official-docs-first, version-aware, full GitHub issue follow-through.
 
----
-
----
+**Triggers:** `Need to look up an error, library behavior, framework quirk, or bug`, `Need official-docs-first, version-aware research`, `Need full GitHub issue follow-through`, `Risk of latching onto the first outdated result`
 
 ---
-
-### `software-development/llm-pre-push-review/SKILL.md` · [protocol]
 
-**What it is:** A pre-push code review checklist grounded in arXiv research on systematic LLM coding failures. Five structured passes: Execution Grounding, Security Surface, Contextual Correctness, Structural Quality, and Integration Points. Based on 11 papers identifying failure modes unique to LLM-generated code — hallucinated execution traces, the Format-Reliability Gap (models know vulnerabilities but still generate them), systematic overcorrection of correct code, and functionally-correct-but-silently-vulnerable output.
-
-**Use it when:** Reviewing code before a push/PR, especially when LLMs wrote or modified the code. Also useful as a self-review protocol for agents before committing changes.
-
-**Best for:** Pre-push review, LLM-generated code QA, catching silent vulnerabilities, preventing scope creep, anti-pattern detection.
-
----
+## 💻 Software Development — Day-to-day engineering work
 
-### `software-development/super-review-typescript/SKILL.md` · [protocol]
+`skills/software-development/`
 
-**What it is:** A five-pass code reviewer specifically targeting AI‑generated TypeScript failure modes: security vulnerabilities (CWE scan), hallucinated APIs/imports, logic bugs (N+1, off‑by‑one, silent swallowing), TypeScript type‑safety violations (`any` abuse, `!` over‑use), and architectural/concurrency decay. Based on arXiv research showing 57–62% of LLM‑generated code contains security vulnerabilities and 32% hallucinate API existence.
+### `software-development/api-surface-anchoring/SKILL.md`
 
-**Use it when:** After a vibe‑coded session, before committing AI‑authored TypeScript, as a PR gate for TypeScript projects, or when the volume of AI‑generated code is high (Volume‑Quality Inverse Law).
+**What it is:** Verify every external API call against current docs to prevent hallucinated APIs.
 
-**Best for:** TypeScript/JavaScript codebases with AI‑authored files, pre‑deployment review, security auditing of LLM output, catching hallucinated methods (`str.isNullOrEmpty()`, `.first()`, etc.), N+1 queries, and concurrency bugs that static analyzers miss.
+**Triggers:** `Using any external library, SDK, or API you are not 100% sure of`, `Libraries released or updated after your LLM's training cutoff`, `Niche or low-training-count libraries`, `Internal/SDK packages whose API may differ from documentation`, `Any code that imports from pip install packages, npm packages, or external REST/gRPC APIs`
 
----
+**Ships:** `scripts/api_surface.py`
 
-### `software-development/pre-deployment-gate/SKILL.md` · [protocol]
+### `software-development/codebase-divide-conquer-search/SKILL.md`
 
-**What it is:** Fuses LLM Pre-Push Review with Vibe Coding Security Hardening into a complete 7-pass pre-deployment checklist. Covers execution grounding, security surface, contextual correctness, structural quality, integration points, production hardening (RLS, rate limiting, CORS, CSP), and secrets/config audit.
+**What it is:** Divide a large codebase into summary-ranked zones and conquer each with a parallel sub-agent. Find code by behavior, not by name.
 
-**Use it when:** Reviewing code before a push/PR/deployment, especially LLM-generated code.
+**Triggers:** `large-codebase-search`, `vocabulary-mismatch`, `multi-module-target`, `no-obvious-start-file`
 
-**Best for:** Pre-push review, pre-deploy security gate, LLM code QA, production hardening.
+**Ships:** `references/codebase-details.md`, `references/search-strategies.md`
 
----
+### `software-development/coordinated-change/SKILL.md`
 
-### `software-development/review-ladder-plus/SKILL.md` · [protocol]
+**What it is:** Ensure consistency when a fix or feature requires touching 2+ files that must stay consistent.
 
-**What it is:** Rigorous multi-layer code review process with dual specialized reviewers (Alpha: Correctness/Security/Maintainability; Beta: Performance/Concurrency/Edge Cases), forced test generation for all reported issues, and "Explain Why It's Safe" justification gate for Critical/High findings. Ends with a fresh-context reviewer on the post-fix diff.
+**Triggers:** `multi-file-change`, `api-contract-change`, `shared-type-update`, `schema-migration`
 
-**Use it when:** After completing any non-trivial coding task, before merging security/auth/data/concurrency code, or whenever you want production-grade QA instead of casual self-review.
+**Ships:** `references/common-patterns.md`
 
-**Best for:** Pre-merge quality gate, multi-perspective review, bug/edge-case catch rate improvement, preventing cosmetic self-review.
+### `software-development/git-surgery/SKILL.md`
 
----
+**What it is:** Recover from local git disasters: detached HEAD, botched rebase, accidental commits, merge conflicts.
 
-### `software-development/lint-battalion/SKILL.md` · [protocol]
+**Triggers:** `git-disaster-recovery`, `detached-head`, `botched-rebase`, `merge-conflict-hell`, `accidental-commit`
 
-**What it is:** Mass linter error remediation via auto-fix sprint + parallel subagent battalions. Handles 500+ trivial errors mechanically, escalates semantic errors to specialists, and enforces contamination checks.
+**Ships:** `references/git-surgery-protocols.md`, `scripts/git_surgery.py`
 
-**Use it when:** You have 50+ linter errors after auto-fix, especially mechanical errors (missing imports, unused variables, formatting) spread across many files.
+### `software-development/lint-battalion/SKILL.md`
 
-**Best for:** Bulk lint remediation, post-migration cleanup, pre-commit debt reduction, onboarding to stricter lint configs.
+**What it is:** Batch-process 50+ linter errors as a bulk remediation problem, not 50 separate decisions.
 
----
+**Triggers:** `mass-lint-debt`, `post-rule-change-cleanup`, `pre-commit-lint-sprint`, `stricter-lint-onboarding`
 
-### `software-development/git-surgery/SKILL.md` · [protocol]
+**Ships:** `references/lint-battalion-details.md`, `scripts/lint_battalion.py`
 
-**What it is:** 10 deterministic recovery protocols for common git disasters: detached HEAD, botched rebase (abort/continue), accidental commit to main, force-push overwrite, `reset --hard` recovery, merge conflicts, cherry-pick, dirty tree switch, and public revert. Pure stdlib companion script with `diagnose` and `reflog` commands.
+### `software-development/llm-pre-push-review/SKILL.md`
 
-**Use it when:** You hit a git disaster and need a recovery protocol, not a tutorial.
+**What it is:** Checklist and protocol for catching systematic LLM coding failures: overcorrection, hallucinated logic, silent vulnerabilities, missing edge cases.
 
-**Best for:** Detached HEAD resolution, rebase recovery, main branch accidents, force-push damage, hard reset undo, merge conflict navigation, cherry-pick cleanup.
+**Triggers:** `Before pushing AI-authored code`, `Reviewing code generated by an LLM for systematic blind spots`, `Any diff where "it looks right" without running it`
 
----
+**Ships:** `references/gate-checklist.md`, `references/llm-failure-modes.md`, `references/review-patterns.md`, `references/ts-common-hallucinations.md`, `references/ts-eslint-rules.md`, `references/ts-review-checklist.md`, `references/ts-semgrep-rules.md`, `references/ts-silent-failures.md`, `references/ts-verification-protocol.md`
 
-### `software-development/api-surface-anchoring/SKILL.md` · [protocol]
+### `software-development/review-ladder-plus/SKILL.md`
 
-**What it is:** Before writing any code that calls an external library or API, verify its current authoritative signature. Prevents runtime failures from hallucinated API surfaces by anchoring every external call to a verified reference. Includes a companion Python script (`api_surface.py`) for automated signature lookup from PyPI, GitHub, and MDN docs.
+**What it is:** Multi-agent code review ladder for production-grade QA: security, auth, data, concurrency.
 
-**Use it when:** Using any external library, SDK, or API where you are not 100% certain of the exact parameter names, import paths, or return types — especially libraries released or updated after your LLM's training cutoff.
+**Triggers:** `pre-merge-production-qa`, `security-sensitive-review`, `data-mutation-review`, `concurrency-review`
 
-**Best for:** Preventing hallucinated API calls, verifying SDK signatures, reducing guess-and-check debugging on external integrations, ensuring code compiles with real library surfaces.
+**Ships:** `references/prompt-templates.md`, `references/review-ladder-details.md`
 
-**Includes:** `scripts/api_surface.py` — pure Python stdlib
+### `software-development/verified-synthesize/SKILL.md`
 
----
+**What it is:** Verify code correctness through formal Dafny specifications — given a natural language spec, produce provably correct code with pre/postconditions and loop invariants. Use for critical bugs in security, memory safety, or financial calculations; pre-refactor spec locking; or API contracts across module boundaries.
 
----
+**Triggers:** `Critical bugs: security, memory safety, financial calculations`, `Small pure function where a wrong result is expensive`, `Pre-refactor spec locking — capture behavior before changing a function`, `Bug reports with no test — verify the fix against a formal spec`, `API contracts — enforce pre/postconditions across module boundaries`
 
-### `software-development/verified-api-workflow/SKILL.md` · [hybrid]
+**Ships:** `RESEARCH.md`, `references/dafny-patterns.md`, `scripts/dafny_verify.py`
 
-**What it is:** Combines `api-surface-anchoring` + `hallucination-anchor-chain` into a single workflow. Every verified API surface entry becomes an anchor. Code using external APIs is 100% traceable to docs you checked.
+### `software-development/verify-before-integrate/SKILL.md`
 
-**Use it when:** Writing code that calls external libraries/APIs, building against frequently-changing APIs, or doing code review of API usage.
+**What it is:** Verify the actual system behavior rather than matching abstract terminology when integrating research or external docs.
 
-**Best for:** Eliminating API hallucination completely, building auditable code artifacts, ensuring every external call has a verified source.
+**Triggers:** `skill-system-integration`, `research-paper-implementation`, `abstract-to-concrete-mapping`, `integration-documentation`
 
-**Includes:** `scripts/verified_api.py` — pure stdlib; commands: init, scan, verify-all, audit, export
+**Ships:** `references/verify-details.md`
 
 ---
-
-### `software-development/dev-diagnostics-mcp/SKILL.md` · [tool]
 
-**What it is:** MCP server skill for structured developer diagnostics. Tools: `run_diagnostics`, `parse_output`, `get_summary`, `contamination_check`. Parsers for ESLint JSON, Biome JSON, Ruff JSON, tsc stdout, Vitest JSON, pytest JSON/plain. Zero external dependencies.
+## 🏛️ Systems and Architecture — Structure, boundaries, and stability
 
-**Use it when:** You want structured lint/test/typecheck output instead of parsing human-readable terminal output.
+`skills/systems-and-architecture/`
 
-**Best for:** Unified diagnostics across tools, CI pipeline integration, contamination detection, project health dashboards.
+### `systems-and-architecture/cross-domain-analogy-generator/SKILL.md`
 
----
-
-### `software-development/verified-synthesize/SKILL.md` · [protocol]
+**What it is:** Generate cross-domain analogies — break fixation by mapping problem structures to foreign fields (biology, music, traffic) and transferring insights.
 
-**What it is:** Generates provably correct code from natural language specs using Dafny formal verification. LLM produces code + Dafny preconditions/postconditions; the companion script runs `dafny verify` to machine-check correctness. Based on "From Natural Language to Verified Code" (arXiv:2604.22601).
+**Triggers:** `repeated-failed-attempts`, `local-optima-trap`, `creative-block`, `fresh-perspective-needed`
 
-**Use it when:** Critical bugs, security-sensitive code, financial calculations, or any code where "probably correct" isn't good enough. Also useful before refactoring to lock down existing behavior formally.
+**Ships:** `references/analogy-details.md`
 
-**Best for:** Provably correct code, bug pre-commitment, formal specification from natural language. Supports Python, Go, C#, Java, JavaScript targets via Dafny transpilation.
+### `systems-and-architecture/everything-as-code-conceptualizer/SKILL.md`
 
-**Includes:** `scripts/dafny_verify.py` — pure stdlib. Requires `dafny` CLI installed (brew install dafny on macOS).
-
----
+**What it is:** Codify messy human problems as pseudocode to reveal hidden assumptions, missing decisions, and edge cases.
 
-### `mcp-servers/evolutionary-tool-composer/SKILL.md` · [tool]
+**Triggers:** `messy-problem-analysis`, `hidden-assumptions`, `requirements-clarification`, `pre-spec-codification`
 
-**What it is:** MCP server that runs an evolutionary algorithm to discover and optimize agent tool chains, prompt strategies, and code solutions. Based on AlphaEvolve/OpenEvolve principles — LLM-driven evolutionary search with automated fitness evaluation. Tools: `evolve_init`, `evolve_step`, `evolve_get_best`, `evolve_crossover`, `evolve_get_population`, `evolve_migrate`, `evolve_reset`. Pure stdlib.
+**Ships:** `references/everything-as-code-details.md`
 
-**Use it when:** You want the agent to discover tool combinations, prompt strategies, or code solutions that outperform human intuition through evolutionary selection pressure.
+### `systems-and-architecture/feature-architecture/SKILL.md`
 
-**Best for:** Algorithm discovery, prompt optimization, tool-chain exploration, automated code improvement. Works by initializing a population, then iteratively mutating/crossing/selecting based on a fitness function.
+**What it is:** One rule set for three moments: plan where files live before writing, review completed work, and audit the repo as a living system.
 
-**Note:** Fitness function is a Python lambda/expression: `(genes: str, task: str) -> float`. Executed in a sandboxed subprocess.
+**Triggers:** `feature-architecture-planning`, `ownership-decision`, `module-boundaries`, `post-implementation-architecture-review`, `architectural-drift`, `long-term-health`
 
----
+**Ships:** `references/architecture-evolution-details.md`, `references/architecture-maintenance-details.md`, `references/feature-architecture-details.md`
 
-### `mcp-servers/active-inference-agent/SKILL.md` · [tool]
+### `systems-and-architecture/release-it-stability/SKILL.md`
 
-**What it is:** MCP server implementing a practical Active Inference agent based on Friston's Free Energy Principle. The agent maintains hierarchical beliefs about system states, computes Expected Free Energy (EFE) for each action, selects policies that minimize predicted surprise, and updates beliefs on observation. Tools: `init_beliefs`, `add_outcome`, `compute_efe`, `select_policy`, `get_beliefs`, `get_history`, `set_hyperparams`, `reset`. Pure stdlib.
+**What it is:** Circuit breakers, bulkheads, timeouts, load shedding, steady-state hygiene for production failure modes.
 
-**Use it when:** The agent needs a principled,Bayesian decision theory — not just heuristics, but a formal account of why one action is better than another based on predicted surprise and information value.
+**Triggers:** `distributed-system-resilience`, `cascading-failure-prevention`, `production-readiness-review`, `stability-pattern-audit`
 
-**Best for:** Incident triage, diagnostic decision-making, exploration-exploitation tradeoffs, any task where actions have uncertain outcomes and information value matters. The agent learns which actions reduce uncertainty fastest.
+**Ships:** `references/stability-details.md`
 
----
+### `systems-and-architecture/security-review-protocol/SKILL.md`
 
-### `mlops/local-llm-tooling/SKILL.md` · [framework]
+**What it is:** 4-phase security review fusing STRIDE, hazard analysis, LLM vuln audit, and expanded threat-modeling guidance.
 
-**What it is:** A workflow for running, prompting, and extracting structured output from local LLMs (e.g., Ollama, llama.cpp).
+**Triggers:** `comprehensive-security-review`, `stride-threat-modeling`, `llm-vulnerability-audit`
 
-**Use it when:** You need to run an LLM locally for agent tasks, data extraction, or generation, and want to avoid API rate limits, costs, or privacy concerns.
+**Ships:** `references/threat-catalog.md`
 
-**Best for:** Local LLM tooling, structured output extraction, model switching.
+### `systems-and-architecture/system-architecture-audit/SKILL.md`
 
----
+**What it is:** 4-phase audit fusing Thinking in Systems, DDD, DDIA, and Release It. Reveals structural problems before they cascade.
 
-### `testing/skill-ab-evaluation/SKILL.md` · [protocol]
+**Triggers:** `Auditing an existing system for architectural weaknesses`, `Need to evaluate boundaries, data flow, and stability`, `Need to reveal structural problems before they cascade`
 
-**What it is:** A/B evaluate any GrimoireStack skill against a baseline using isolated subagents, 5 trials each, and an objective rubric.
+### `systems-and-architecture/thinking-in-systems-state-machine/SKILL.md`
 
-**Use it when:** You want empirical proof that a skill actually improves outcomes vs. general knowledge.
+**What it is:** Model stocks, flows, delays, leverage points, and blast radius before touching the system.
 
-**Best for:** Skill quality benchmarking, evidence-based skill curation, measuring ROI of structured prompts.
+**Triggers:** `feedback-loops`, `delayed-effects`, `multi-step-cascades`, `system-boundary-mapping`
 
----
+**Ships:** `references/systems-details.md`
 
-### `testing/e2e-crosscheck/SKILL.md` · [protocol]
+### `systems-and-architecture/vibe-coding-security-hardening/SKILL.md`
 
-**What it is:** A bidirectional cross-reference between E2E tests and source code. Six-pass matrix: identifiers (dead/ambiguous), text drift, route staleness, UI state coverage, error path coverage, and structural integrity (unjustified waits, orphaned tests, annotation drift).
+**What it is:** Hardening checklist for vulnerabilities LLMs reliably introduce: exposed secrets, missing RLS, broken auth, injection flaws, insecure defaults.
 
-**Use it when:** After refactoring, UI text changes, navigation restructuring, or any time E2E tests may have diverged from the code they test.
+**Triggers:** `pre-deploy-hardening`, `vibe-code-review`, `owasp-checklist`, `secret-scan`
 
-**Best for:** Catching silent test drift — dead accessibility IDs, stale deep links, untested error states, unjustified waits, orphaned test files.
+**Ships:** `references/hardening-details.md`
 
 ---
 
-### `testing/e2e-test-premortem/SKILL.md` · [protocol]
+## 🧪 Testing — Test strategy and reconciliation
 
-**What it is:** A premortem-based audit for E2E test changes. Assumes the tests are insufficient and works backward to find the blind spot. Two branches: Author (before writing) and Auditor (after writing).
+`skills/testing/`
 
-**Use it when:** You've just written or modified E2E tests and need to audit coverage gaps, data realism, failure-mode coverage, and assertion quality before declaring done.
+### `testing/e2e-crosscheck/SKILL.md`
 
-**Best for:** Pre-merge E2E test review, catching coverage gaps before they ship, ensuring every test guards a named blind spot.
+**What it is:** Bidirectional audit between E2E test selectors/assertions and source code. Reconciles every test identifier, text assertion, and navigation route.
 
----
-
-### `testing/e2e-testing-philosophy-and-architecture/SKILL.md` · [framework]
-
-**What it is:** A comprehensive reference for E2E testing mindset, architecture, and strategy — nothing framework-specific. Covers testing epistemology, 3-layer BDR architecture (Spec → Flow → POM), risk-based prioritization, data realism principles, anti-patterns, heuristics toolbox, and suite management.
-
-**Use it when:** You need a principled foundation before writing or reviewing any E2E tests, or when asked about E2E testing strategy and architecture decisions.
+**Triggers:** `post-refactor-e2e-audit`, `pre-release-test-reconciliation`, `test-selector-drift`, `untested-ui-states`
 
-**Best for:** Foundational reference, test strategy design, onboarding new team members to E2E philosophy, pre-load before using e2e-test-premortem or e2e-crosscheck.
+**Ships:** `references/crosscheck-details.md`
 
 ---
-
-### `testing/mobile-e2e-testing-enterprise-guide/SKILL.md` · [framework]
-
-**What it is:** The hunter's mindset for mobile E2E testing — professional tester heuristics (HICCUPPS, SFDPOT), adversarial thinking, cognitive bias traps, priority tiers (revenue → core → resilience → device), and enterprise patterns. Includes a companion reference file with full tables.
-
-**Use it when:** Planning mobile E2E tests, reviewing coverage, debugging flakiness, or needing adversarial/edge-case ideas.
-
-**Best for:** Mobile E2E test planning, test design review, flakiness investigation, adversarial test case generation.
-
-**Includes:** `reference/ref.md` — full HICCUPPS/SFDPOT tables, abuse-case checklist, edge cases, anti-patterns, CI pipeline tiers, enterprise patterns.

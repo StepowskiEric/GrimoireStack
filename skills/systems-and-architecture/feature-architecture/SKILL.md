@@ -35,6 +35,8 @@ Hide implementation: good `voteForPlayer()`, bad `validateVote() saveVote() refr
 Check every new file for ownership, structure (deep modules, UI purity, dependency direction, cohesion), knowledge (duplicate business rules → centralize), and growth. Review architecture only — formatting, naming, lint, and style are out of scope.
 
 ### 6. Audit evolution
+Ground the audit in the project's own language and decisions first: read `CONTEXT.md` and `docs/adr/`. Code that no longer matches the domain language, abstractions that hide nothing, and drift from a documented decision are the highest-value findings — they are deepening opportunities, not style issues. Propose the specific change that deepens the module (more behaviour behind a smaller interface), with its rationale; never a rename where a deepening is needed.
+
 Walk the folder tree: what responsibility does each top-level directory own, and is it growing around one concept or becoming a dumping ground? One oversized component is acceptable; five is a pattern — prefer patterns over isolated issues. Score findings by leverage × effort × blast radius; pick the top 5; recommend small, high-leverage improvements, never rewrites.
 
 ### 7. Write the verdict
@@ -46,3 +48,4 @@ For the full rule set, per-audit checklist, and output templates, see [`referenc
 ## Rules
 - **Do** check dependency direction for every new import — the direction rules are the load-bearing constraint.
 - **Do** record every non-trivial recommendation as a decision — the record is the audit trail for the next feature.
+- **Do** read `CONTEXT.md` and `docs/adr/` before any audit — refactoring without the documented direction is drift with extra steps.

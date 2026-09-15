@@ -33,7 +33,7 @@ Reproducible A/B evaluation results for GrimoireStack skills. All benchmarks use
 
 ## Results
 
-### `cot-pruning-reasoning`
+### `cot-pruning-reasoning` (retired 2026-09)
 
 **Date:** 2026-04-22  
 **Task:** Fix FastAPI APIRouter startup handler registration bug  
@@ -79,7 +79,7 @@ Reproducible A/B evaluation results for GrimoireStack skills. All benchmarks use
 
 ---
 
-### `purify-test-output`
+### `purify_test_output.py` (script, now `debugging/debug-to-fix-pipeline/scripts/`)
 
 **Date:** 2026-04-22  
 **Task:** Same FastAPI bug with purified vs raw test output  
@@ -95,7 +95,7 @@ Reproducible A/B evaluation results for GrimoireStack skills. All benchmarks use
 
 **Why it failed:** The test output was already minimal (66 lines, no framework stack trace). Purification stripped useful signal (test body showing `FastAPI(on_startup=[...])`). The skill agent burned 20+ extra calls reconstructing context the baseline already had.
 
-**Verdict:** `purify-test-output` is conditionally correct. Trigger heuristic ("output >20 lines") is too crude. Should detect *framework frame density*, not raw line count. Useful for verbose failures with deep `site-packages` traces; harmful for simple assertion failures.
+**Verdict:** the purify step is conditionally correct. Trigger heuristic ("output >20 lines") is too crude. Should detect *framework frame density*, not raw line count. Useful for verbose failures with deep `site-packages` traces; harmful for simple assertion failures.
 
 ---
 
@@ -108,8 +108,8 @@ A single subagent run can vary 3-5x in duration and token usage for the same tas
 Reading a skill file costs 1-2 tool calls and ~1,000 input tokens. For a 10-call baseline task, that's 10-20% overhead before any benefit. Pre-inject skills for fair comparison.
 
 ### 3. Task Must Match Skill's Unique Value
-- `cot-pruning` → needs verbose reasoning chains to prune
-- `purify-test-output` → needs verbose test output with framework noise
+- `cot-pruning-reasoning` (retired) → needs verbose reasoning chains to prune
+- `purify_test_output.py` → needs verbose test output with framework noise
 - `debug-subagent` → needs bugs requiring deep investigation (not trivial fixes)
 - `context-density-operator` → needs long-horizon tasks with context pressure
 
@@ -147,7 +147,7 @@ cp -r /tmp/bench-repo /tmp/eval-skill
 cp -r /tmp/bench-repo /tmp/eval-base
 
 # 4. Delegate to subagents with/without skill
-# See skill-ab-evaluation protocol for full procedure
+# See tooling/skill-ab-evaluation protocol for full procedure
 ```
 
 ---
@@ -157,7 +157,5 @@ cp -r /tmp/bench-repo /tmp/eval-base
 Skills needing evaluation:
 - [ ] `context-density-operator` — needs long-horizon task with context pressure
 - [ ] `selective-halt-reasoning` — needs iterative task with clear convergence
-- [ ] `sop-evolution-memory` — needs 2+ similar tasks to measure compounding
 - [ ] `context-lifecycle-manager` (absorbs token-budget-operator) — needs task benefiting from all 4 phases
 - [ ] `bisect-debugging` — needs regression introduced across multiple commits
-- [ ] `simulate-instrumentation` — needs runtime state-dependent bug

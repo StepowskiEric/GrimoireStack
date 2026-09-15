@@ -9,7 +9,7 @@ import SchoolSigil from './SchoolSigil.tsx';
 
 const DEFAULT_FEATURED = [
   'debugging',
-  'reasoning',
+  'judgment-and-routing',
   'execution',
   'systems-and-architecture',
   'testing',

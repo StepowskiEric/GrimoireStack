@@ -16,7 +16,7 @@ disable-model-invocation: true
 
 # Time-Traveling Debugger
 
-**Most bugs are introduced at the divergence, not the crash.** A variable gets a wrong value, propagates through several functions, and only surfaces as an error far downstream. Traditional debugging follows the trail forward from guess to crash; this skill goes backward — record a deterministic trace forward, then replay it in reverse from the crash point to find the exact line where state first diverged. The **Past Self** (forward, looking for anomalies) and **Future Self** (backward from the crash) meet at the divergence: that line is the root cause.
+**Most bugs are introduced at the divergence, not the crash.** A variable gets a wrong value, propagates through several functions, and only surfaces as an error far downstream. Traditional debugging follows the trail forward from guess to crash; this skill goes backward — record a deterministic trace forward, then walk it back from the crash point to find the line where state first diverged. That line is the root cause, and the two directions meet there.
 
 ## When to Use
 - Runtime error/crash whose message doesn't suggest the root cause
@@ -35,11 +35,11 @@ python scripts/time_travel.py trace buggy_script.py --args "test_input" --output
 
 Done when a trace file exists and the crash site (line, error type, message) is known from captured stderr.
 
-### 2. Spawn Past Self and Future Self
-- **Past Self** inspects the trace forward for anomalies: `python scripts/time_travel.py inspect trace.jsonl --anomalies` — variables that changed to unexpected types (`user_id` went `int` → `None`)
-- **Future Self** starts at the crash line and walks backward: `python scripts/time_travel.py rewind trace.jsonl --crash-line 42 --expected "user should not be None" --output divergence.json`
+### 2. Read the trace in both directions
+- **Forward** — inspect for anomalies: `python scripts/time_travel.py inspect trace.jsonl --anomalies` — variables that changed to unexpected types (`user_id` went `int` → `None`)
+- **Backward** — start at the crash line and walk back: `python scripts/time_travel.py rewind trace.jsonl --crash-line 42 --expected "user should not be None" --output divergence.json`
 
-### 3. They meet at divergence
+### 3. The two readings meet at the divergence
 Read the output: **crash_site** (where the error surfaced), **divergence_point** (where state first went wrong — e.g., `line 18: user = fetch_user(id)` returned None), **chain** (the propagation path), and **suspected_cause**. Done when a specific variable at a specific line is identified as first taking an unexpected value.
 
 ### 4. Fix and verify

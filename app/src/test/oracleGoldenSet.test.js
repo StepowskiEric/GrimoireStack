@@ -37,8 +37,8 @@ const GOLDEN_SET = [
     expected: ['intent-specification-protocol', 'intent-specification-protocol'],
   },
   {
-    query: 'separate fact, intuition, caution, optimism, creativity, and process into six discrete rounds',
-    expected: ['six-thinking-hats', 'steelmanning'],
+    query: 'want an adversarial critic to attack my proposal and steelman the other side',
+    expected: ['advocatus-diaboli', 'steelmanning'],
   },
   {
     query: 'reproduce the bug with a minimal failing test, then fix the debug pipeline',
@@ -53,8 +53,8 @@ const GOLDEN_SET = [
     expected: ['pre-mortem-state-machine'],
   },
   {
-    query: 'need to brainstorm multiple solutions to a problem',
-    expected: ['tree-of-thoughts', 'cross-domain-analogy-generator'],
+    query: 'need to explore multiple candidate solutions and prune the weak branches',
+    expected: ['monte-carlo-tree-search', 'cross-domain-analogy-generator'],
   },
   {
     query: 'improving CI/CD pipeline reliability',
@@ -91,7 +91,7 @@ const GOLDEN_SET = [
   },
   {
     query: 'agent output is too verbose, need to compress it',
-    expected: ['cognitive-load-operator-state-machine'],
+    expected: ['documentation-craft'],
     aiOnly: true,
   },
   {
@@ -106,12 +106,12 @@ const GOLDEN_SET = [
   },
   {
     query: 'my code review is taking forever, want to focus on real issues',
-    expected: ['review-ladder-plus', 'super-review-typescript'],
+    expected: ['review-ladder-plus', 'llm-pre-push-review'],
     aiOnly: true,
   },
   {
     query: 'agent keeps hallucinating APIs that do not exist',
-    expected: ['reasoning-integrity-chain'],
+    expected: ['api-surface-anchoring'],
     aiOnly: true,
   },
   {
@@ -252,8 +252,8 @@ describe('oracle golden set', () => {
   });
 
   // Layer 4: catalog is not empty and has reasonable size.
-  it('catalog has between 100 and 300 entries', () => {
-    expect(SKILL_CATALOG.length).toBeGreaterThanOrEqual(75);
+  it('catalog has between 50 and 300 entries', () => {
+    expect(SKILL_CATALOG.length).toBeGreaterThanOrEqual(50);
     expect(SKILL_CATALOG.length).toBeLessThanOrEqual(300);
   });
 });

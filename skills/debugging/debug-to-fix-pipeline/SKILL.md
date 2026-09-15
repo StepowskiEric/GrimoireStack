@@ -36,7 +36,13 @@ Ask what variables or expressions would prove or disprove the hypothesis. Inject
 Run the test with instrumentation, filter output to `DEBUG:` lines, and compare captured state against hypothesis predictions. Evidence confirms → proceed. Contradicts → return to Phase 1 with updated symptoms. Never hide a contradiction.
 
 ### 4. Purify
-Re-run without instrumentation. Extract the failure signature: assertion message, exception type, expected/got diffs. Keep user-code stack frames only — discard `site-packages`, `node_modules`, framework internals. Keep variable-diff lines and the last 3 lines of stderr; discard setup/teardown logs and coverage reports. Feed 5–10 clean lines — not 50+ raw — to the diagnosis.
+Re-run without instrumentation. Use `scripts/purify_test_output.py` when the raw output is mostly framework noise:
+
+```bash
+python scripts/purify_test_output.py --file /tmp/raw_output.txt
+```
+
+Extract the failure signature: assertion message, exception type, expected/got diffs. Keep user-code stack frames only — discard `site-packages`, `node_modules`, framework internals. Keep variable-diff lines and the last 3 lines of stderr; discard setup/teardown logs and coverage reports. Feed 5–10 clean lines — not 50+ raw — to the diagnosis.
 
 ### 5. Patch
 Generate a candidate patch, apply it, run the failing test. On failure, capture the new failure state and pick a variant category before regenerating: **same root cause, different location** (the edit is in the wrong place), **same location, different approach** (guard clause → assertion, upstream normalization, different default), or **null-check / default / data-flow refactor** (signals the root-cause model is wrong). Iterate within budget: simple 2, medium 3–4, complex 5. If iteration N produces the same diff as N−1, STOP — return to Phase 1 with updated evidence. Patching test expectations to match wrong behavior is a red flag: the bug is in the code, not the test.

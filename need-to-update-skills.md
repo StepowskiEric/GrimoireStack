@@ -31,9 +31,7 @@ Track which skills have been updated per the writing-great-skills principles:
 - [x] `debugging/iterative-patch-repair/SKILL.md`
 - [x] `debugging/minimal-reproduction/SKILL.md`
 - [x] `debugging/network-api-debugging/SKILL.md`
-- [x] `debugging/purify-test-output/SKILL.md`
 - [x] `debugging/root-cause-analysis/SKILL.md`
-- [x] `debugging/simulate-instrumentation/SKILL.md`
 - [x] `debugging/specter/SKILL.md`
 - [x] `debugging/time-traveling-debugger/SKILL.md`
 
@@ -41,7 +39,6 @@ Track which skills have been updated per the writing-great-skills principles:
 
 - [x] `development/add-new-skill-to-repository/SKILL.md`
 - [x] `development/bulk-rename-and-update-references/SKILL.md`
-- [x] `development/project-folder-architecture/SKILL.md`
 - [x] `development/skill-development-with-supporting-files/SKILL.md`
 - [x] `development/unit-test-debugging/SKILL.md`
 
@@ -50,7 +47,6 @@ Track which skills have been updated per the writing-great-skills principles:
 - [x] `execution/blueprint/SKILL.md`
 - [x] `execution/how-to-solve-it-analogy/SKILL.md`
 - [x] `execution/assumption-grounding/SKILL.md`
-- [x] `execution/checklist-manifesto/SKILL.md`
 - [x] `execution/cognitive-friction-governor/SKILL.md`
 - [x] `execution/context-budget-operator/SKILL.md`
 - [x] `execution/how-to-solve-it-state-machine/SKILL.md`
@@ -59,7 +55,6 @@ Track which skills have been updated per the writing-great-skills principles:
 - [x] `execution/keyword-agnostic-logic-locator/SKILL.md`
 - [x] `execution/legacy-rescue-protocol/SKILL.md`
 - [x] `execution/long-task-survival-kit/SKILL.md`
-- [x] `execution/ooda-loop-state-machine/SKILL.md`
 - [x] `execution/pdca-deming/SKILL.md`
 - [x] `execution/philosophy-of-software-design-state-machine/SKILL.md`
 - [x] `execution/plan-with-judge/SKILL.md`
@@ -68,16 +63,12 @@ Track which skills have been updated per the writing-great-skills principles:
 - [x] `execution/refactoring-state-machine/SKILL.md`
 - [x] `execution/requirement-crystallization-protocol/SKILL.md`
 - [x] `execution/retrospective/SKILL.md`
-- [x] `execution/speculative-drafting-verification/SKILL.md`
 - [x] `execution/speculative-exploration-protocol/SKILL.md`
 - [x] `execution/split-large-files/SKILL.md`
-- [x] `execution/step-level-verification-protocol/SKILL.md`
 - [x] `execution/structured-feature-planning/SKILL.md`
 - [x] `execution/summarize/SKILL.md`
-- [x] `execution/toyota-kata-state-machine/SKILL.md`
 - [x] `execution/trajectory-guard/SKILL.md`
 - [x] `execution/working-effectively-with-legacy-code-state-machine/SKILL.md`
-- [x] `execution/zero-defect-protocol/SKILL.md`
 
 ## Judgment & Routing (29 files)
 
@@ -95,17 +86,13 @@ Track which skills have been updated per the writing-great-skills principles:
 - [x] `judgment-and-routing/intent-specification-protocol/SKILL.md`
 - [x] `judgment-and-routing/inversion-mental-model/SKILL.md`
 - [x] `judgment-and-routing/inversion-mental-model-state-machine/SKILL.md`
-- [x] `judgment-and-routing/kahneman-thinking-fast-slow-software-agent/SKILL.md`
-- [x] `judgment-and-routing/metacognitive-monitoring/SKILL.md`
 - [x] `judgment-and-routing/occams-razor/SKILL.md`
 - [x] `judgment-and-routing/pre-mortem-state-machine/SKILL.md`
 - [x] `judgment-and-routing/problem-mode-router-cynefin/SKILL.md`
-- [x] `judgment-and-routing/problem-mode-router-cynefin-state-machine/SKILL.md`
 - [x] `judgment-and-routing/recognition-primed-triage/SKILL.md`
 - [x] `judgment-and-routing/recognition-primed-triage-state-machine/SKILL.md`
 - [x] `judgment-and-routing/reference-class-forecasting/SKILL.md`
 - [x] `judgment-and-routing/second-order-thinking/SKILL.md`
-- [x] `judgment-and-routing/six-thinking-hats/SKILL.md`
 - [x] `judgment-and-routing/steelmanning/SKILL.md`
 - [x] `judgment-and-routing/task-intake-protocol/SKILL.md`
 - [x] `judgment-and-routing/thoroughness-check-etto/SKILL.md`
@@ -119,7 +106,6 @@ Track which skills have been updated per the writing-great-skills principles:
 
 ## ML Ops (1 file)
 
-- [x] `mlops/local-llm-tooling/SKILL.md`
 
 ## Orchestration (15 files)
 
@@ -135,26 +121,20 @@ Track which skills have been updated per the writing-great-skills principles:
 - [x] `orchestration/rashomon-triad-hybrid/SKILL.md`
 - [x] `orchestration/separation-of-concerns/SKILL.md`
 - [x] `orchestration/socratic-clarification/SKILL.md`
-- [x] `orchestration/sop-evolution-memory/SKILL.md`
 - [x] `orchestration/subagent-composer/SKILL.md`
 - [x] `orchestration/subagent-laws/SKILL.md`
 - [x] `orchestration/thought-retriever-coppermind/SKILL.md`
-- [x] `orchestration/weak-link-detection-multi-agent/SKILL.md`
 
 ## Output Quality (12 files)
 
 - [x] `output-quality/bounded-self-revision/SKILL.md`
-- [x] `output-quality/cognitive-load-operator-state-machine/SKILL.md`
 - [x] `output-quality/compression-as-understanding/SKILL.md`
 - [x] `output-quality/documentation-craft/SKILL.md`
-- [x] `output-quality/feynman-technique/SKILL.md`
 - [x] `output-quality/large-documentation-navigation/SKILL.md`
 - [x] `output-quality/mece-pyramid-principle/SKILL.md`
 - [x] `output-quality/self-consistency/SKILL.md`
 - [x] `output-quality/self-verify-pipeline/SKILL.md`
 - [x] `output-quality/stakeholder-communication/SKILL.md`
-- [x] `output-quality/tool-interactive-critic/SKILL.md`
-- [x] `output-quality/tree-of-thoughts/SKILL.md`
 
 ## Reasoning (13 files)
 
@@ -163,10 +143,8 @@ Track which skills have been updated per the writing-great-skills principles:
 - [x] `reasoning/claim-verification-reasoning/SKILL.md`
 - [x] `reasoning/context-density-operator/SKILL.md`
 - [x] `reasoning/context-rot-pruner/SKILL.md`
-- [x] `reasoning/cot-pruning-reasoning/SKILL.md`
 - [x] `reasoning/faithfulness-aware-reasoning/SKILL.md`
 - [x] `reasoning/prism/SKILL.md`
-- [x] `reasoning/reasoning-integrity-chain/SKILL.md`
 - [x] `reasoning/reasoning-verification-hybrid/SKILL.md`
 - [x] `reasoning/selective-halt-reasoning/SKILL.md`
 - [x] `reasoning/self-contradiction-trap/SKILL.md`
@@ -182,7 +160,6 @@ Track which skills have been updated per the writing-great-skills principles:
 - [x] `software-development/api-design-backward-compatibility/SKILL.md`
 - [x] `software-development/api-surface-anchoring/SKILL.md`
 - [x] `software-development/code-knowledge-graph-mcp/SKILL.md`
-- [x] `software-development/code-review-excellence/SKILL.md`
 - [x] `software-development/codebase-divide-conquer-search/SKILL.md`
 - [x] `software-development/coordinated-change/SKILL.md`
 - [x] `software-development/critical-system-interrogation/SKILL.md`
@@ -190,13 +167,9 @@ Track which skills have been updated per the writing-great-skills principles:
 - [x] `software-development/git-surgery/SKILL.md`
 - [x] `software-development/lint-battalion/SKILL.md`
 - [x] `software-development/llm-pre-push-review/SKILL.md`
-- [x] `software-development/native-data-fetching/SKILL.md`
-- [x] `software-development/pre-deployment-gate/SKILL.md`
 - [x] `software-development/refactor-safely/SKILL.md`
 - [x] `software-development/review-changes/SKILL.md`
 - [x] `software-development/review-ladder-plus/SKILL.md`
-- [x] `software-development/super-review-typescript/SKILL.md`
-- [x] `software-development/verified-api-workflow/SKILL.md`
 - [x] `software-development/verify-before-integrate/SKILL.md`
 
 ## Systems & Architecture (18 files)
@@ -207,7 +180,6 @@ Track which skills have been updated per the writing-great-skills principles:
 - [x] `systems-and-architecture/designing-data-intensive-applications-ai/SKILL.md`
 - [x] `systems-and-architecture/domain-driven-design/SKILL.md`
 - [x] `systems-and-architecture/everything-as-code-conceptualizer/SKILL.md`
-- [x] `systems-and-architecture/improve-codebase-architecture/SKILL.md`
 - [x] `systems-and-architecture/maintain-architecture/SKILL.md`
 - [x] `systems-and-architecture/plan-feature-architecture/SKILL.md`
 - [x] `systems-and-architecture/release-it-stability/SKILL.md`
@@ -215,7 +187,6 @@ Track which skills have been updated per the writing-great-skills principles:
 - [x] `systems-and-architecture/security-threat-modeling/SKILL.md`
 - [x] `systems-and-architecture/sre-error-budget/SKILL.md`
 - [x] `systems-and-architecture/system-architecture-audit/SKILL.md`
-- [x] `systems-and-architecture/team-topologies-ai/SKILL.md`
 - [x] `systems-and-architecture/the-goal-theory-of-constraints-ai/SKILL.md`
 - [x] `systems-and-architecture/thinking-in-systems-state-machine/SKILL.md`
 - [x] `systems-and-architecture/vibe-coding-security-hardening/SKILL.md`
@@ -223,11 +194,7 @@ Track which skills have been updated per the writing-great-skills principles:
 ## Testing (7 files)
 
 - [x] `testing/e2e-crosscheck/SKILL.md`
-- [x] `testing/e2e-test-premortem/SKILL.md`
-- [x] `testing/e2e-testing-philosophy-and-architecture/SKILL.md`
 - [x] `testing/empirical-justification/SKILL.md`
-- [x] `testing/mobile-e2e-testing-enterprise-guide/SKILL.md`
-- [x] `testing/skill-ab-evaluation/SKILL.md`
 - [x] `testing/test-driven-development/SKILL.md`
 
 ---

@@ -242,7 +242,7 @@ function AppInner() {
     } catch {}
     return [
       'debugging',
-      'reasoning',
+      'judgment-and-routing',
       'execution',
       'systems-and-architecture',
       'testing',

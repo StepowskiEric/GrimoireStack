@@ -20,7 +20,7 @@ const SAMPLE_MARG = {
 
 const SAMPLE_RECENT = [
   { name: 'Trace Sight', skill: 'debug-issue', viewedAt: 1_718_000_000_000 },
-  { name: 'Tree of Thoughts', skill: 'tree-of-thoughts', viewedAt: 1_717_999_999_000 },
+  { name: 'Monte Carlo Tree Search', skill: 'monte-carlo-tree-search', viewedAt: 1_717_999_999_000 },
 ];
 
 // ── serializeConfig (JSON) ─────────────────────────────
@@ -148,7 +148,7 @@ describe('serializeMarkdown', () => {
   it('lists recently viewed spells', () => {
     const md = serializeMarkdown({ favorites: [], marginalia: {}, recent: SAMPLE_RECENT });
     expect(md).toContain('Trace Sight');
-    expect(md).toContain('Tree of Thoughts');
+    expect(md).toContain('Monte Carlo Tree Search');
   });
 
   it('includes marginalia for recent entries', () => {

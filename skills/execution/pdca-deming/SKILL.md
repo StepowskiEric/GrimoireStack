@@ -18,7 +18,19 @@ disable-model-invocation: true
 - The correct change is not yet certain
 - Previous changes were never validated before being standardized
 
-Skip it: one-time incidents needing immediate containment, obvious verified fixes, or exploration-first problems (use Toyota Kata / Explore-vs-Exploit).
+Skip it: one-time incidents needing immediate containment, obvious verified fixes, or exploration-first problems (use `explore-vs-exploit-state-machine`).
+
+## When the path is unknown: the kata frame
+
+PDCA assumes a hypothesis you can name. When the direction is clear but the next step is not, run the kata frame around it:
+
+1. **Direction and current condition** — state the improvement direction and the measured current reality, and create `kata-improvement-board.md`.
+2. **Target condition** — the next near-term, observable condition. Not the end state.
+3. **Obstacle selection** — rank the obstacles and take the single one that most blocks the target.
+4. **One experiment** — the smallest useful move against that obstacle, with the expected result written down before it runs.
+5. **Learning review** — compare expectation to reality, then repeat, change obstacle, accept, or stop.
+
+One obstacle per experiment; a scope expansion mid-run means a fresh obstacle choice. The full state machine, artifact fields, and circuit breakers are in [`references/kata-improvement-board.md`](references/kata-improvement-board.md).
 
 ## The Move
 
@@ -54,3 +66,4 @@ For the `pdca-cycle.md` template, tool gating per phase, failure modes, and pair
 - **Do** check against the prediction, not just the baseline.
 - **Do** update the hypothesis before repeating a cycle.
 - **Do** standardize only what the Check confirmed.
+- **Do** pick one obstacle per experiment when the path is unknown — parallel bets destroy the attribution the Check depends on.

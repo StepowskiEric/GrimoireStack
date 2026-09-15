@@ -84,15 +84,15 @@ describe('consultationScoring — scoreSelections', () => {
       ],
       { resolveOption },
     );
-    // dbg-n1-a: primary=debug-issue, alt=purify-test-output
-    // dbg-n3-a: primary=debug-issue, alt=simulate-instrumentation
-    // (both primaries are debug-issue after the log-trace-corellation retirement)
+    // dbg-n1-a: primary=debug-issue, alt=minimal-reproduction
+    // dbg-n3-a: primary=debug-issue, alt=debug-to-fix-pipeline
+    // (both primaries are debug-issue after the log-trace-correlation retirement)
     expect(out.topSkill).toBeTruthy();
     expect(['debug-issue', 'debug-issue']).toContain(out.topSkill);
     // alt weights are 0.5 each
     expect(out.bySkill.get('debug-issue')).toBe(2);
-    expect(out.bySkill.get('purify-test-output')).toBe(0.5);
-    expect(out.bySkill.get('simulate-instrumentation')).toBe(0.5);
+    expect(out.bySkill.get('minimal-reproduction')).toBe(0.5);
+    expect(out.bySkill.get('debug-to-fix-pipeline')).toBe(0.5);
   });
 
   it('repeated picks of the same option accumulate', () => {
@@ -107,19 +107,17 @@ describe('consultationScoring — scoreSelections', () => {
         },
         {
           schoolId: 'debugging',
-          questionId: 'dbg-n2',
-          optionId: 'dbg-n2-c',
+          questionId: 'dbg-n1',
+          optionId: 'dbg-n1-a',
           pool: 'narrowing',
           sanityAfter: 3,
-        }, // alt = purify-test-output
+        }, // same option, picked twice
       ],
       { resolveOption },
     );
-    // dbg-n2-c: primary=minimal-reproduction, alt=purify-test-output
-    // Both options have alt = purify-test-output
-    expect(out.bySkill.get('purify-test-output')).toBe(1); // 0.5 + 0.5
-    expect(out.bySkill.get('debug-issue')).toBe(1);
-    expect(out.bySkill.get('minimal-reproduction')).toBe(1);
+    // dbg-n1-a twice: primary debug-issue, alt minimal-reproduction
+    expect(out.bySkill.get('minimal-reproduction')).toBe(1); // 0.5 + 0.5
+    expect(out.bySkill.get('debug-issue')).toBe(2);
   });
 });
 
@@ -154,7 +152,7 @@ describe('consultationScoring — decideResult', () => {
       {
         bySkill: new Map([
           ['debug-issue', 2],
-          ['purify-test-output', 1],
+          ['debug-to-fix-pipeline', 1],
         ]),
         topSkill: 'debug-issue',
       },
@@ -178,7 +176,7 @@ describe('consultationScoring — decideResult', () => {
       3,
     );
     expect(out.primary).toBe('debug-issue');
-    expect(out.alt).toBe('purify-test-output');
+    expect(out.alt).toBe('minimal-reproduction');
     expect(out.beasthood).toBe(false);
     expect(out.reason).toContain('trace');
   });
@@ -188,7 +186,7 @@ describe('consultationScoring — decideResult', () => {
       {
         bySkill: new Map([
           ['debug-issue', 2],
-          ['purify-test-output', 1],
+          ['debug-to-fix-pipeline', 1],
         ]),
         topSkill: 'debug-issue',
       },
@@ -212,8 +210,8 @@ describe('consultationScoring — decideResult', () => {
       0,
     );
     expect(out.beasthood).toBe(true);
-    // The alt of dbg-n1-a is purify-test-output. That becomes the primary.
-    expect(out.primary).toBe('purify-test-output');
+    // The alt of dbg-n1-a (minimal-reproduction) becomes the primary.
+    expect(out.primary).toBe('minimal-reproduction');
     // The original top becomes the alt.
     expect(out.alt).toBe('debug-issue');
   });

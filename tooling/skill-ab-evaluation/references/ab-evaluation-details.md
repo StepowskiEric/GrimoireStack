@@ -67,7 +67,7 @@ git checkout ed2512a -- tests/test_router_events.py
 ## Fast alternatives (when 5 trials is too expensive)
 
 ### Option A: token-count micro-benchmark (5 minutes)
-Identical reasoning tasks with/without the skill; count output tokens and reasoning steps. No subagents, no isolation overhead. Good for `cot-pruning-reasoning`, `context-density-operator`.
+Identical reasoning tasks with/without the skill; count output tokens and reasoning steps. No subagents, no isolation overhead. Good for verbose-output skills where the token delta is the metric.
 
 ### Option B: smoke test (15 minutes)
 1 skill + 1 baseline. Both score 100 trivially → task too shallow, redesign. One fails dramatically → strong signal even at N=1. Catches obviously broken or obviously amazing skills.
@@ -93,7 +93,7 @@ A subagent burned 41,728 output tokens on verbose reasoning and had none left fo
 Reading the skill file costs 1–2 tool calls and ~1,000 input tokens before any work. For a 10-call baseline task that's 10–20% overhead. Mitigation: pre-inject the skill into the prompt, or measure only the post-read phase.
 
 ### Testing the wrong skill on the wrong task
-`cot-pruning-reasoning` showed -55% token reduction on a single-shot debugging task — but its value is on multi-step chains where pruning compounds. Match task complexity to the skill's value proposition; if the protocol is never invoked, the benchmark is invalid.
+A retired token-pruning skill showed -55% token reduction on a single-shot debugging task, but its value was on multi-step chains where pruning compounds. Match task complexity to the skill's value proposition; if the protocol is never invoked, the benchmark is invalid.
 
 ### Subagent timeout on batch runs
 Three baseline trials took 42 minutes (startup + model latency, not task time). Mitigation: parallel `delegate_task` (up to 3 concurrent); pre-install all dependencies in snapshots.

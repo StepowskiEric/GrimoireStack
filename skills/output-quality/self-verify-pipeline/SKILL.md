@@ -10,11 +10,7 @@ disable-model-invocation: true
 
 ## Self-Verify Pipeline
 
-**Part of the `reasoning-integrity-chain` — Phase 3 (backward verification).**
-
-An escalating 5-phase verification pipeline for any agent output. Each phase increases cost but catches different failure modes.
-
-Fuses Bounded Self-Revision (internal critique), Claim Verification Reasoning (atomic claim decomposition), and Tool Interactive Critic (external tool-grounded verification).
+An escalating 5-phase verification pipeline for any agent output. Each phase increases cost but catches different failure modes: bounded self-revision (internal critique), claim decomposition (atomic claims), and tool-grounded critique (external evidence).
 
 ### Phase 1: DRAFT
 
@@ -68,7 +64,9 @@ Break the output into atomic verifiable claims.
 
 ### Phase 4: TOOL-VERIFY
 
-Externally verify flagged claims using the cheapest available tool.
+Externally verify flagged claims using the cheapest available tool. The tool must test the likely failure mode — performative tool use verifies nothing.
+
+Verification targets, highest risk first: factual claims, current data, code correctness, API behavior, configuration assumptions, dependency usage, edge cases, internal consistency.
 
 | Claim type | Verification tool |
 |-----------|-------------------|

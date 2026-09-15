@@ -74,5 +74,5 @@ Output: ranked zones, each with files, rationale, and confidence.
 | `keyword-agnostic-logic-locator` | Phase 1, for structural queries when semantic similarity is ambiguous |
 | `explore-codebase` | Phase 0, to bootstrap the summary tree via code-review-graph MCP |
 | `how-to-solve-it-state-machine` | Before this skill, to frame the search query precisely |
-| `tree-of-thoughts` | Phase 1, for branching hypotheses about where the target lives |
+| `monte-carlo-tree-search` | Phase 1, for branching hypotheses about where the target lives |
 | `debug-subagent` | Phase 2, as the conquer-agent template for bug-specific queries |

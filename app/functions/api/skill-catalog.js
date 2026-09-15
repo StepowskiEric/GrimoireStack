@@ -27,14 +27,6 @@ export const SKILL_CATALOG = [
     "effect": "One rule set for three moments: plan where files live before writing, review completed work, and audit the repo as a living system."
   },
   {
-    "skill": "improve-codebase-architecture",
-    "name": "Improve Codebase Architecture",
-    "school": "Systems & Architecture",
-    "schoolName": "School of Architecture",
-    "status": "—",
-    "effect": "Find deepening opportunities informed by the domain language in CONTEXT.md and decisions in docs/adr/."
-  },
-  {
     "skill": "release-it-stability",
     "name": "Release It! Stability Patterns",
     "school": "Systems & Architecture",
@@ -59,14 +51,6 @@ export const SKILL_CATALOG = [
     "effect": "4-phase audit fusing Thinking in Systems, DDD, DDIA, and Release It. Reveals structural problems before they cascade."
   },
   {
-    "skill": "team-topologies-ai",
-    "name": "Team Topologies for Multi-Agent Systems",
-    "school": "Systems & Architecture",
-    "schoolName": "School of Architecture",
-    "status": "—",
-    "effect": "Stream-aligned, platform, enabling, and complicated-subsystem boundaries with explicit interaction modes."
-  },
-  {
     "skill": "thinking-in-systems-state-machine",
     "name": "Thinking in Systems",
     "school": "Systems & Architecture",
@@ -81,22 +65,6 @@ export const SKILL_CATALOG = [
     "schoolName": "School of Architecture",
     "status": "—",
     "effect": "Hardening checklist for vulnerabilities LLMs reliably introduce: exposed secrets, missing RLS, broken auth, injection flaws, insecure defaults."
-  },
-  {
-    "skill": "cot-pruning-reasoning",
-    "name": "CoT Pruning Reasoning",
-    "school": "Reasoning & Faithfulness",
-    "schoolName": "School of Cognition",
-    "status": "—",
-    "effect": "Two-pass prune retains only the steps that move the answer (coarse step-level, then fine token-level)."
-  },
-  {
-    "skill": "reasoning-integrity-chain",
-    "name": "Reasoning Integrity Chain",
-    "school": "Reasoning & Faithfulness",
-    "schoolName": "School of Cognition",
-    "status": "—",
-    "effect": "Escalating 4-phase verification chain: faithfulness, claims, backward verification, selective halt."
   },
   {
     "skill": "monte-carlo-tree-search",
@@ -131,14 +99,6 @@ export const SKILL_CATALOG = [
     "effect": "Scout context — a fast sub-agent reads files and returns only distilled relevant context, saving tokens and reducing distraction for the main model. Use when the codebase is large, you need scoped findings rather than raw file dumps, or the main task needs file context you don't already have."
   },
   {
-    "skill": "sop-evolution-memory",
-    "name": "SOP Evolution Memory",
-    "school": "Agent Orchestration",
-    "schoolName": "School of Confluence",
-    "status": "—",
-    "effect": "Distill trajectories into reusable Standard Operating Procedures (SOPs) after repeated successes on a class of tasks."
-  },
-  {
     "skill": "subagent-composer",
     "name": "Sub-Agent Composer",
     "school": "Agent Orchestration",
@@ -155,14 +115,6 @@ export const SKILL_CATALOG = [
     "effect": "Standing behavioral constraints every sub-agent must follow. Enforce scope discipline, test integrity, and communication standards."
   },
   {
-    "skill": "weak-link-detection-multi-agent",
-    "name": "Weak-Link Detection for Multi-Agent Systems",
-    "school": "Agent Orchestration",
-    "schoolName": "School of Confluence",
-    "status": "—",
-    "effect": "Identify and isolate the weakest reasoning chain in multi-agent outputs before aggregation."
-  },
-  {
     "skill": "llm-pre-push-review",
     "name": "1. Run existing tests",
     "school": "Software Development",
@@ -171,28 +123,12 @@ export const SKILL_CATALOG = [
     "effect": "Checklist and protocol for catching systematic LLM coding failures: overcorrection, hallucinated logic, silent vulnerabilities, missing edge cases."
   },
   {
-    "skill": "pre-deployment-gate",
-    "name": "1. Tests",
-    "school": "Software Development",
-    "schoolName": "School of Crafting",
-    "status": "—",
-    "effect": "Complete pre-deployment checklist merging LLM Pre-Push Review with Vibe Coding Security Hardening."
-  },
-  {
     "skill": "api-surface-anchoring",
     "name": "API Surface Anchoring",
     "school": "Software Development",
     "schoolName": "School of Crafting",
     "status": "—",
     "effect": "Verify every external API call against current docs to prevent hallucinated APIs."
-  },
-  {
-    "skill": "code-review-excellence",
-    "name": "Code Review Excellence",
-    "school": "Software Development",
-    "schoolName": "School of Crafting",
-    "status": "—",
-    "effect": "Structured code review that catches bugs early, provides constructive feedback, and shares knowledge while keeping team morale intact."
   },
   {
     "skill": "codebase-divide-conquer-search",
@@ -227,36 +163,12 @@ export const SKILL_CATALOG = [
     "effect": "Batch-process 50+ linter errors as a bulk remediation problem, not 50 separate decisions."
   },
   {
-    "skill": "native-data-fetching",
-    "name": "Native Data Fetching",
-    "school": "Software Development",
-    "schoolName": "School of Crafting",
-    "status": "—",
-    "effect": "Covers fetch API, React Query, SWR, error handling, caching, offline support, and Expo Router data loaders."
-  },
-  {
     "skill": "review-ladder-plus",
     "name": "Review Ladder Plus",
     "school": "Software Development",
     "schoolName": "School of Crafting",
     "status": "—",
     "effect": "Multi-agent code review ladder for production-grade QA: security, auth, data, concurrency."
-  },
-  {
-    "skill": "super-review-typescript",
-    "name": "Super Review TypeScript",
-    "school": "Software Development",
-    "schoolName": "School of Crafting",
-    "status": "—",
-    "effect": "Targets the five LLM-specific failure modes: security vulnerabilities, hallucinated APIs, logic errors, type-safety violations, architectural decay."
-  },
-  {
-    "skill": "verified-api-workflow",
-    "name": "Verified API Workflow",
-    "school": "Software Development",
-    "schoolName": "School of Crafting",
-    "status": "—",
-    "effect": "Prove every version-pinned API claim with web search before writing code on top of it."
   },
   {
     "skill": "verified-synthesize",
@@ -273,14 +185,6 @@ export const SKILL_CATALOG = [
     "schoolName": "School of Crafting",
     "status": "—",
     "effect": "Verify the actual system behavior rather than matching abstract terminology when integrating research or external docs."
-  },
-  {
-    "skill": "checklist-manifesto",
-    "name": "Checklist Manifesto",
-    "school": "Execution & Improvement",
-    "schoolName": "School of Execution",
-    "status": "—",
-    "effect": "Build the smallest useful checklist for high-stakes procedures, gate execution on checklist completion, stop cleanly and escalate if it cannot be cleared."
   },
   {
     "skill": "intent-specification-protocol",
@@ -307,28 +211,12 @@ export const SKILL_CATALOG = [
     "effect": "Characterize legacy behavior, create seams, then transform in bounded slices with anti-loop protection."
   },
   {
-    "skill": "ooda-loop-state-machine",
-    "name": "OODA Loop — Rapid Response Protocol",
-    "school": "Execution & Improvement",
-    "schoolName": "School of Execution",
-    "status": "—",
-    "effect": "Observe, Orient, Decide, Act, Loop. Maintains decision tempo against an environment that shifts between every move."
-  },
-  {
     "skill": "pdca-deming",
     "name": "PDCA / Shewhart Cycle",
     "school": "Execution & Improvement",
     "schoolName": "School of Execution",
     "status": "—",
     "effect": "Improve a process through a measurement-anchored cycle: plan with a measurable prediction, do, check actual vs predicted, then standardize or escalate. Standardize only what the check confirmed."
-  },
-  {
-    "skill": "speculative-drafting-verification",
-    "name": "Speculative Drafting with Verification",
-    "school": "Execution & Improvement",
-    "schoolName": "School of Execution",
-    "status": "—",
-    "effect": "Generate multiple solution branches in parallel, verify each against hard constraints, select the best."
   },
   {
     "skill": "split-large-files",
@@ -339,14 +227,6 @@ export const SKILL_CATALOG = [
     "effect": "Split large files along change boundaries, not line counts. Investigate before extracting, require strong architectural signals."
   },
   {
-    "skill": "step-level-verification-protocol",
-    "name": "Step-Level Verification Protocol",
-    "school": "Execution & Improvement",
-    "schoolName": "School of Execution",
-    "status": "—",
-    "effect": "Verify each step before proceeding so a wrong step doesn't cascade into a chain of unjustified conclusions."
-  },
-  {
     "skill": "summarize",
     "name": "Summarize — Emergency Stop + Handoff Report",
     "school": "Execution & Improvement",
@@ -355,28 +235,12 @@ export const SKILL_CATALOG = [
     "effect": "Emergency stop + perfect handoff report so the next agent loses nothing."
   },
   {
-    "skill": "toyota-kata-state-machine",
-    "name": "Toyota Kata",
-    "school": "Execution & Improvement",
-    "schoolName": "School of Execution",
-    "status": "—",
-    "effect": "Frame target, analyze current, attack one obstacle at a time, run a PDCA experiment, learn, repeat."
-  },
-  {
     "skill": "trajectory-guard",
     "name": "Trajectory Guard — Detect and Recover from Failure Spirals",
     "school": "Execution & Improvement",
     "schoolName": "School of Execution",
     "status": "—",
     "effect": "Detect agent failure spirals — repetitive loops, specification drift, and stuck trajectories — and forcibly redirect strategy."
-  },
-  {
-    "skill": "zero-defect-protocol",
-    "name": "Zero-Defect Protocol",
-    "school": "Execution & Improvement",
-    "schoolName": "School of Execution",
-    "status": "—",
-    "effect": "Mission-critical feature protocol: data contracting, red-team critique, pre-mortem, 3x critique loop, and speculative prototyping before any code is written."
   },
   {
     "skill": "advocatus-diaboli",
@@ -443,14 +307,6 @@ export const SKILL_CATALOG = [
     "effect": "After code is written, assume it will cause future pain and work backward to find what will bite: debt with interest, extension traps, hidden assumptions, maintenance memory, time bombs, and upgrade cliffs. Use when implementation is done and the agent must surface what the code will cost the project later."
   },
   {
-    "skill": "metacognitive-monitoring",
-    "name": "Metacognitive Monitoring",
-    "school": "Judgment & Decision-Making",
-    "schoolName": "School of Judgment",
-    "status": "—",
-    "effect": "Explicit KEEP/WITHDRAW decisions tied to measured withdrawal delta — know when you don't know."
-  },
-  {
     "skill": "occams-razor",
     "name": "Occam's Razor",
     "school": "Judgment & Decision-Making",
@@ -465,14 +321,6 @@ export const SKILL_CATALOG = [
     "schoolName": "School of Judgment",
     "status": "—",
     "effect": "Validate a plan before execution: assume failure has already happened, generate specific failure narratives, rank them, and adjust the plan."
-  },
-  {
-    "skill": "problem-mode-router-cynefin-state-machine",
-    "name": "Problem-Mode Router (Cynefin)",
-    "school": "Judgment & Decision-Making",
-    "schoolName": "School of Judgment",
-    "status": "—",
-    "effect": "Enforce Cynefin domain classification as a hard gate before any tool use or execution."
   },
   {
     "skill": "recognition-primed-triage-state-machine",
@@ -491,28 +339,12 @@ export const SKILL_CATALOG = [
     "effect": "Anchor to similar past projects before reasoning from the specifics."
   },
   {
-    "skill": "six-thinking-hats",
-    "name": "Six Thinking Hats",
-    "school": "Judgment & Decision-Making",
-    "schoolName": "School of Judgment",
-    "status": "—",
-    "effect": "Separate fact, intuition, caution, optimism, creativity, and process into six discrete rounds."
-  },
-  {
     "skill": "steelmanning",
     "name": "Steelmanning for AI Agents",
     "school": "Judgment & Decision-Making",
     "schoolName": "School of Judgment",
     "status": "—",
     "effect": "Construct the strongest opposing case before committing to a recommendation."
-  },
-  {
-    "skill": "kahneman-thinking-fast-slow-software-agent",
-    "name": "Thinking Fast and Slow for Software Agents",
-    "school": "Judgment & Decision-Making",
-    "schoolName": "School of Judgment",
-    "status": "—",
-    "effect": "Switch between fast pattern recognition and slow deliberation as stakes demand."
   },
   {
     "skill": "thoroughness-check-etto-state-machine",
@@ -539,68 +371,12 @@ export const SKILL_CATALOG = [
     "effect": "Bidirectional audit between E2E test selectors/assertions and source code. Reconciles every test identifier, text assertion, and navigation route."
   },
   {
-    "skill": "e2e-testing-philosophy-and-architecture",
-    "name": "E2E Testing Philosophy & Architecture — Reference",
-    "school": "Testing & Measurement",
-    "schoolName": "School of Measurement",
-    "status": "—",
-    "effect": "Reference for E2E testing mindset, architecture, and strategy: testing epistemology, 3-layer BDR architecture, risk-based prioritization, data realism principles."
-  },
-  {
-    "skill": "mobile-e2e-testing-enterprise-guide",
-    "name": "Mobile E2E Testing — The Hunter's Mindset",
-    "school": "Testing & Measurement",
-    "schoolName": "School of Measurement",
-    "status": "—",
-    "effect": "Mobile E2E specifics: five testing mindsets, what to test by tier, adversarial and bias-aware test design, and a starting sequence."
-  },
-  {
-    "skill": "e2e-test-premortem",
-    "name": "Premortem: E2E Test Audit Protocol",
-    "school": "Testing & Measurement",
-    "schoolName": "School of Measurement",
-    "status": "—",
-    "effect": "Premortem for E2E test changes. Audit coverage gaps, data realism, failure-mode coverage, and assertion quality."
-  },
-  {
-    "skill": "skill-ab-evaluation",
-    "name": "Skill A/B Evaluation",
-    "school": "Testing & Measurement",
-    "schoolName": "School of Measurement",
-    "status": "—",
-    "effect": "A/B evaluate any GrimoireStack skill against a baseline using isolated subagents, 5 trials each, and an objective rubric."
-  },
-  {
-    "skill": "local-llm-tooling",
-    "name": "Local LLM Tooling Skill",
-    "school": "Mlops",
-    "schoolName": "School of Mlops",
-    "status": "—",
-    "effect": "Run, prompt, and extract structured output from local LLMs (e.g., Ollama, llama.cpp)."
-  },
-  {
-    "skill": "cognitive-load-operator-state-machine",
-    "name": "Cognitive Load Operator — State Machine Protocol",
-    "school": "Output Quality",
-    "schoolName": "School of Refinement",
-    "status": "—",
-    "effect": "Inspect complexity and replace high-load structures with lower-load equivalents."
-  },
-  {
     "skill": "documentation-craft",
     "name": "Documentation Craft",
     "school": "Output Quality",
     "schoolName": "School of Refinement",
     "status": "—",
     "effect": "Multi-phase pipeline from outline to verified explanation, audience-driven and source-grounded."
-  },
-  {
-    "skill": "feynman-technique",
-    "name": "Feynman Technique",
-    "school": "Output Quality",
-    "schoolName": "School of Refinement",
-    "status": "—",
-    "effect": "Explain from scratch in plain language and identify where the explanation breaks."
   },
   {
     "skill": "rubric-gate",
@@ -617,30 +393,6 @@ export const SKILL_CATALOG = [
     "schoolName": "School of Refinement",
     "status": "—",
     "effect": "Escalating verification chain of bounded revision, claim decomposition, and tool-grounded critique."
-  },
-  {
-    "skill": "tool-interactive-critic",
-    "name": "Tool-Interactive Critic",
-    "school": "Output Quality",
-    "schoolName": "School of Refinement",
-    "status": "—",
-    "effect": "External tools critique the output before it is trusted."
-  },
-  {
-    "skill": "tree-of-thoughts",
-    "name": "Tree of Thoughts",
-    "school": "Output Quality",
-    "schoolName": "School of Refinement",
-    "status": "—",
-    "effect": "Branch, evaluate, and prune candidate solutions before committing."
-  },
-  {
-    "skill": "simulate-instrumentation",
-    "name": "Before (buggy)",
-    "school": "Debugging",
-    "schoolName": "School of Remediation",
-    "status": "—",
-    "effect": "Auto-insert temporary print/logging statements at key points in the code, run the failing test, and feed the captured runtime state to the LLM."
   },
   {
     "skill": "debug-issue",
@@ -699,14 +451,6 @@ export const SKILL_CATALOG = [
     "effect": "Diagnose and fix network and API failures — CORS, auth token issues, rate limiting, redirect chains, WebSocket drops, and HTTP request/response mismatches."
   },
   {
-    "skill": "purify-test-output",
-    "name": "Or from file: python purify_test_output.py --file /tmp/raw_output.txt",
-    "school": "Debugging",
-    "schoolName": "School of Remediation",
-    "status": "—",
-    "effect": "Use when failing test output contains >50% framework noise (site-packages, node_modules) that drowns out user code, or when multiple tests fail and you need to isolate the most relevant failure first."
-  },
-  {
     "skill": "specter",
     "name": "Specter",
     "school": "Debugging",
@@ -729,14 +473,6 @@ export const SKILL_CATALOG = [
     "schoolName": "School of Research",
     "status": "—",
     "effect": "Web search discipline for technical research. Official-docs-first, version-aware, full GitHub issue follow-through."
-  },
-  {
-    "skill": "project-folder-architecture",
-    "name": "Project Folder Architecture",
-    "school": "Development & Tooling",
-    "schoolName": "School of Tools",
-    "status": "—",
-    "effect": "Folder architecture for TypeScript + Expo Router + React Native + Supabase full-stack projects, updated to 2026 conventions. Use when scaffolding a new project, restructuring an existing one, auditing folder health, or answering 'where should this file live?'."
   },
   {
     "skill": "unit-test-debugging",

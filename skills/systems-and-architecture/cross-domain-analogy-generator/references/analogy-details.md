@@ -145,7 +145,7 @@ evaluation:
 
 ## Integration
 
-- Use **when** `metacognitive-monitoring` shows declining confidence
+- Use **when** `thoroughness-check-etto-state-machine` shows the search is not earning its keep
 - Use **before** `specter` to generate novel hypotheses
 - Use **with** `cognitive-friction-governor` — analogies have friction cost
 

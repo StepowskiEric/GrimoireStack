@@ -34,7 +34,7 @@ const sampleEntries = [
   {
     spell: {
       name: 'Thought-Weave',
-      skill: 'tree-of-thoughts',
+      skill: 'monte-carlo-tree-search',
       effect: 'Branches multiple reasoning paths in parallel.',
       status: '—',
     },
@@ -74,7 +74,7 @@ const sampleSchools = [
       },
       {
         name: 'Thought-Weave',
-        skill: 'tree-of-thoughts',
+        skill: 'monte-carlo-tree-search',
         effect: 'Branches multiple reasoning paths in parallel.',
         status: '—',
       },

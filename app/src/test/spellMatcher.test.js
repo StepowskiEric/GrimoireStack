@@ -47,11 +47,11 @@ const TWO_SCHOOLS = [
         skill: 'occams-razor',
         effect: 'Simplest explanation wins.',
         status: 'Proven',
-        combos: ['Tree of Thoughts', 'Rashomon Triad'],
+        combos: ['Monte Carlo Tree Search', 'Rashomon Triad'],
       },
       {
-        name: 'Tree of Thoughts',
-        skill: 'tree-of-thoughts',
+        name: 'Monte Carlo Tree Search',
+        skill: 'monte-carlo-tree-search',
         effect: 'Branch reasoning paths.',
         status: 'Proven',
       },
@@ -166,11 +166,11 @@ describe('matchProblem', () => {
   });
 
   it('bonuses Proven status', () => {
-    // 'weave' appears in 'Thought-Weave' (no status, score 0) and 'Tree of Thoughts' (Proven, score 0.5 bonus)
-    // With the bonus, Tree of Thoughts should outrank Thought-Weave
+    // 'weave' appears in 'Thought-Weave' (no status, score 0) and 'Monte Carlo Tree Search' (Proven, score 0.5 bonus)
+    // With the bonus, Monte Carlo Tree Search should outrank Thought-Weave
     const idx = makeIndex();
     const results = idx.matchProblem('weave', { limit: 4 });
-    const provenResult = results.find((r) => r.spell.skill === 'tree-of-thoughts');
+    const provenResult = results.find((r) => r.spell.skill === 'monte-carlo-tree-search');
     const plainResult = results.find((r) => r.spell.skill === 'thought-weave');
     if (provenResult && plainResult) {
       expect(provenResult.score).toBeGreaterThan(plainResult.score);

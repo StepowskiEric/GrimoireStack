@@ -138,7 +138,7 @@ This skill was correctly applied when:
 - **`thoroughness-check-etto`** — use before Phase 1 to calibrate how much rigor is warranted.
 - **`trajectory-guard`** or `legacy-rescue-protocol` — the spec produced by Phase 2 feeds directly into bounded execution.
 - **`pre-mortem`** — the assumption map from Phase 1 is direct input for pre-mortem failure story generation.
-- **`improve-codebase-architecture`** — Phase 2 (Constrain) aligns with its Deletion Test; the invariant list is compatible with its candidate format.
+- **`feature-architecture`** — Phase 2 (Constrain) aligns with its delete test; the invariant list is compatible with its candidate format.
 - **`verification-before-completion`** — Phase 3's verify-before-act discipline is a lighter-weight precursor; use both when the task is large enough to warrant pre-flight _and_ post-completion gates.
-- **`checklist-manifesto`** — for recurring high-stakes tasks, encode the most critical clarifying questions into the pre-procedure checklist.
+- **`rubric-gate`** — for recurring high-stakes tasks, encode the most critical clarifying questions as binary criteria with named check methods.
 - **`debug-to-fix-pipeline`** — if this skill was _not_ applied and execution went wrong, the causal chain will often trace back to a missed Phase 1 assumption or Phase 2 spec gap.

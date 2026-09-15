@@ -237,10 +237,10 @@ describe('grimoireIndex — matchProblem', () => {
   });
 
   it('matches on school name', () => {
-    const results = grimoireIndex.matchProblem('reasoning', { limit: 5 });
+    const results = grimoireIndex.matchProblem('systems', { limit: 5 });
     expect(results.length).toBeGreaterThan(0);
-    const hasReasoning = results.some((r) => r.school.id === 'reasoning');
-    expect(hasReasoning).toBe(true);
+    const hasSchool = results.some((r) => r.school.id === 'systems-and-architecture');
+    expect(hasSchool).toBe(true);
   });
 });
 
