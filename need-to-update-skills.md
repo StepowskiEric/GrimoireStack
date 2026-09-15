@@ -33,7 +33,6 @@ Track which skills have been updated per the writing-great-skills principles:
 - [x] `debugging/network-api-debugging/SKILL.md`
 - [x] `debugging/root-cause-analysis/SKILL.md`
 - [x] `debugging/specter/SKILL.md`
-- [x] `debugging/time-traveling-debugger/SKILL.md`
 
 ## Development (5 files)
 
@@ -82,7 +81,6 @@ Track which skills have been updated per the writing-great-skills principles:
 - [x] `judgment-and-routing/explore-vs-exploit/SKILL.md`
 - [x] `judgment-and-routing/explore-vs-exploit-state-machine/SKILL.md`
 - [x] `judgment-and-routing/failure-analysis-protocol/SKILL.md`
-- [x] `judgment-and-routing/first-principles/SKILL.md`
 - [x] `judgment-and-routing/intent-specification-protocol/SKILL.md`
 - [x] `judgment-and-routing/inversion-mental-model/SKILL.md`
 - [x] `judgment-and-routing/inversion-mental-model-state-machine/SKILL.md`

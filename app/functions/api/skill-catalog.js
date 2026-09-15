@@ -291,14 +291,6 @@ export const SKILL_CATALOG = [
     "effect": "Swarm 3-5 critic personas over a spec to surface failure modes pre-implementation. User-invoked; type `/failure-swarm`."
   },
   {
-    "skill": "first-principles",
-    "name": "First Principles Thinking",
-    "school": "Judgment & Decision-Making",
-    "schoolName": "School of Judgment",
-    "status": "—",
-    "effect": "Decompose to axiomatic foundations and reason upward from what must be true."
-  },
-  {
     "skill": "future-mortem",
     "name": "Future Mortem",
     "school": "Judgment & Decision-Making",
@@ -457,14 +449,6 @@ export const SKILL_CATALOG = [
     "schoolName": "School of Remediation",
     "status": "—",
     "effect": "Abduce the bug — generate competing hypotheses, locate code by structural relationship, then disconfirm until one survivor remains. Use when the crash site is not the cause, the bug is 'weird,' or your first instinct is suspect."
-  },
-  {
-    "skill": "time-traveling-debugger",
-    "name": "Time-Traveling Debugger",
-    "school": "Debugging",
-    "schoolName": "School of Remediation",
-    "status": "—",
-    "effect": "When a bug occurs, record a deterministic execution trace forward, then replay it in reverse from the crash point to find the exact line where state first diverged."
   },
   {
     "skill": "effective-web-search",

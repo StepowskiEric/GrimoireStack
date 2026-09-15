@@ -270,12 +270,6 @@ const schools: Array<{
         "status": "—"
       },
       {
-        "name": "First Principles Thinking",
-        "skill": "first-principles",
-        "effect": "Decompose to axiomatic foundations and reason upward from what must be true.",
-        "status": "—"
-      },
-      {
         "name": "Future Mortem",
         "skill": "future-mortem",
         "effect": "After code is written, assume it will cause future pain and work backward to find what will bite: debt with interest, extension traps, hidden assumptions, maintenance memory, time bombs, and upgrade cliffs. Use when implementation is done and the agent must surface what the code will cost the project later.",
@@ -417,12 +411,6 @@ const schools: Array<{
         "name": "Specter",
         "skill": "specter",
         "effect": "Abduce the bug — generate competing hypotheses, locate code by structural relationship, then disconfirm until one survivor remains. Use when the crash site is not the cause, the bug is 'weird,' or your first instinct is suspect.",
-        "status": "—"
-      },
-      {
-        "name": "Time-Traveling Debugger",
-        "skill": "time-traveling-debugger",
-        "effect": "When a bug occurs, record a deterministic execution trace forward, then replay it in reverse from the crash point to find the exact line where state first diverged.",
         "status": "—"
       }
     ]

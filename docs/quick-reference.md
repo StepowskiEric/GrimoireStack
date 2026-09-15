@@ -1,6 +1,6 @@
 # Quick Reference
 
-Generated from `skills/` — the live set of 60 skills.
+Generated from `skills/` — the live set of 58 skills.
 
 ## Skills that ship runnable tooling
 
@@ -11,7 +11,6 @@ Generated from `skills/` — the live set of 60 skills.
 | `git-surgery` | `software-development/git-surgery/SKILL.md` | `scripts/git_surgery.py` |
 | `iterative-spec-authoring` | `execution/iterative-spec-authoring/SKILL.md` | `references/conduct-research.sh`, `references/openrouter-judge.sh` |
 | `lint-battalion` | `software-development/lint-battalion/SKILL.md` | `scripts/lint_battalion.py` |
-| `time-traveling-debugger` | `debugging/time-traveling-debugger/SKILL.md` | `scripts/time_travel.py`, `scripts/time_travel_server.py` |
 | `verified-synthesize` | `software-development/verified-synthesize/SKILL.md` | `scripts/dafny_verify.py` |
 
 ## All skills by topic
@@ -26,7 +25,6 @@ Generated from `skills/` — the live set of 60 skills.
 | `minimal-reproduction` | `debugging/minimal-reproduction/SKILL.md` | Bug manifests at runtime but no test covers the buggy path; Agent is debugging by repeatedly running the full app instead of a targeted test; I can see the bug in the UI but I can't isolate it in a test |
 | `network-api-debugging` | `debugging/network-api-debugging/SKILL.md` | cors-error; auth-token-issue; rate-limit-429 |
 | `specter` | `debugging/specter/SKILL.md` | Multiple plausible causes and your first guess is suspect; Crash site is not the root cause (deferred execution, async, state machine); Debugging by reasoning from symptom back to cause |
-| `time-traveling-debugger` | `debugging/time-traveling-debugger/SKILL.md` | runtime-error-no-obvious-cause; wrong-value-mystery; heisenbug |
 | `unit-test-debugging` | `development/unit-test-debugging/SKILL.md` | test-failure-debugging; source-of-truth-diagnosis; test-overfitting-prevention |
 | `intent-specification-protocol` | `execution/intent-specification-protocol/SKILL.md` | ambiguous-request; over-engineering-risk; behavior-preservation |
 | `iterative-spec-authoring` | `execution/iterative-spec-authoring/SKILL.md` | detailed-spec-needed; multi-concern-feature; judge-review-cycle |
@@ -41,7 +39,6 @@ Generated from `skills/` — the live set of 60 skills.
 | `evidence-grounding` | `judgment-and-routing/evidence-grounding/SKILL.md` | Acting on something read earlier (file, log, test output, doc); First edits in an unfamiliar or fast-changing codebase; Reporting task status or claiming work is verified |
 | `explore-vs-exploit-state-machine` | `judgment-and-routing/explore-vs-exploit-state-machine/SKILL.md` | explore-vs-commit; search-stopping-rule; research-budget |
 | `failure-swarm` | `judgment-and-routing/failure-swarm/SKILL.md` | Swarm 3-5 critic personas over a spec to surface failure modes pre-implementation. User-in… |
-| `first-principles` | `judgment-and-routing/first-principles/SKILL.md` | conventional-solutions-failing; inherited-framing; ground-up-reasoning |
 | `future-mortem` | `judgment-and-routing/future-mortem/SKILL.md` | Implementation is complete and needs a future-failure review before being called done; Need to know what the code will cost the project in six months; Code will be built upon by future features |
 | `occams-razor` | `judgment-and-routing/occams-razor/SKILL.md` | over-engineering-risk; premature-abstraction; scope-creep-risk |
 | `pre-mortem-state-machine` | `judgment-and-routing/pre-mortem-state-machine/SKILL.md` | plan-validation; failure-assumption; risk-ranking |

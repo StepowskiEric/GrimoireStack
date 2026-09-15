@@ -151,4 +151,4 @@ evaluation:
 
 ## Source
 
-Paper: "Serendipity by Design: Evaluating the Impact of Cross-domain Mappings on Human and LLM Creativity" (arXiv:2603.19087). See also `how-to-solve-it-analogy` for structured analogy, `first-principles` for deconstruction before analogy.
+Paper: "Serendipity by Design: Evaluating the Impact of Cross-domain Mappings on Human and LLM Creativity" (arXiv:2603.19087). See also `counterfactual-policy-testing` for challenging assumptions before analogy.

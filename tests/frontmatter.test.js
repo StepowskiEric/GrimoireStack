@@ -40,9 +40,9 @@ describe("skill frontmatter contract", () => {
   const files = walkSkills();
 
   it("discovers every skill in skills/", () => {
-    // Floor set after the 2026-09 skill removal (93 -> 60 kept; 33 deleted).
+    // Floor set after the 2026-09 removals (93 -> 60 -> 59 -> 58 kept).
     // Guards against silent skill loss; raise it when adding skills.
-    expect(files.length).toBeGreaterThanOrEqual(60);
+    expect(files.length).toBeGreaterThanOrEqual(58);
   });
 
   for (const file of files) {

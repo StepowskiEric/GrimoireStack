@@ -20,7 +20,6 @@ Start with the framework skills, especially:
 - `judgment-and-routing/problem-mode-router-cynefin.md`
 - `judgment-and-routing/recognition-primed-triage.md`
 - `judgment-and-routing/unsafe-control-actions-hazard-analysis/SKILL.md`
-- `judgment-and-routing/first-principles/SKILL.md`
 - `judgment-and-routing/second-order-thinking.md`
 - `systems-and-architecture/thinking-in-systems-state-machine/SKILL.md`
 - `systems-and-architecture/the-goal-theory-of-constraints-ai.md`
@@ -84,12 +83,11 @@ Why this stack works: classify the problem first, set the rigor bar, force disci
 
 1. `judgment-and-routing/problem-mode-router-cynefin.md`
 2. `judgment-and-routing/thoroughness-check-etto-state-machine/SKILL.md`
-3. `judgment-and-routing/first-principles/SKILL.md`
-4. `systems-and-architecture/thinking-in-systems-state-machine/SKILL.md`
-5. `systems-and-architecture/domain-driven-design.md`
-6. `orchestration/octopus/SKILL.md`
-7. `api-design-backward-compatibility` to enumerate consumers before changing contracts
-8. `judgment-and-routing/pre-mortem.md`
+3. `systems-and-architecture/thinking-in-systems-state-machine/SKILL.md`
+4. `systems-and-architecture/domain-driven-design.md`
+5. `orchestration/octopus/SKILL.md`
+6. `api-design-backward-compatibility` to enumerate consumers before changing contracts
+7. `judgment-and-routing/pre-mortem.md`
 9. `judgment-and-routing/inversion-mental-model.md`
 
 Why this stack works: it separates problem classification from design, forces boundary, coupling, and failure-mode analysis, protects existing consumers, then validates the plan against failure before committing.
@@ -128,12 +126,11 @@ Why this stack works: the divide-and-conquer protocol compresses the codebase by
 
 ### Following strong principles while deciding
 
-1. `judgment-and-routing/first-principles/SKILL.md`
-2. `judgment-and-routing/second-order-thinking.md`
-3. `judgment-and-routing/thoroughness-check-etto-state-machine/SKILL.md`
-4. `judgment-and-routing/cognitive-bias-checklist/SKILL.md`
-5. `output-quality/mece-pyramid-principle.md`
-6. `output-quality/documentation-craft/SKILL.md`
+1. `judgment-and-routing/second-order-thinking.md`
+2. `judgment-and-routing/thoroughness-check-etto-state-machine/SKILL.md`
+3. `judgment-and-routing/cognitive-bias-checklist/SKILL.md`
+4. `output-quality/mece-pyramid-principle.md`
+5. `output-quality/documentation-craft/SKILL.md`
 
 Why this stack works: it pushes the agent to reason from basics, check downstream effects, slow down when needed, and present the result clearly.
 

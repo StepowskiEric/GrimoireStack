@@ -214,8 +214,8 @@ export const SEANCE_QUESTIONS: Record<string, SeanceQuestionPool> = {
             label: 'By binary search through the histories',
             sigilGlyph: '\u2693',
             primary: 'debug-to-fix-pipeline',
-            alt: 'time-traveling-debugger',
-            reason: 'O(log n) finds the change that broke it.',
+            alt: 'debug-issue',
+            reason: 'O(log n) finds the change that broke it.'
           },
           {
             id: 'dbg-n3-c',
@@ -229,9 +229,9 @@ export const SEANCE_QUESTIONS: Record<string, SeanceQuestionPool> = {
             id: 'dbg-n3-d',
             label: 'By watching values as they pass',
             sigilGlyph: '\u25ce',
-            primary: 'time-traveling-debugger',
+            primary: 'debug-issue',
             alt: 'debug-to-fix-pipeline',
-            reason: 'You cannot fix what you cannot see.',
+            reason: 'You cannot fix what you cannot see.'
           },
         ],
       },
@@ -269,8 +269,8 @@ export const SEANCE_QUESTIONS: Record<string, SeanceQuestionPool> = {
             label: 'A regression, in the most recent commit',
             sigilGlyph: '\u21bb',
             primary: 'debug-to-fix-pipeline',
-            alt: 'time-traveling-debugger',
-            reason: 'It worked once. Find when it stopped.',
+            alt: 'debug-issue',
+            reason: 'It worked once. Find when it stopped.'
           },
         ],
       },
@@ -286,8 +286,8 @@ export const SEANCE_QUESTIONS: Record<string, SeanceQuestionPool> = {
             label: 'The first commit, still bleeding',
             sigilGlyph: '\u2620',
             primary: 'debug-to-fix-pipeline',
-            alt: 'time-traveling-debugger',
-            reason: 'The wound has a birthday.',
+            alt: 'debug-issue',
+            reason: 'The wound has a birthday.'
           },
           {
             id: 'dbg-d1-b',
@@ -346,11 +346,11 @@ export const SEANCE_QUESTIONS: Record<string, SeanceQuestionPool> = {
           },
           {
             id: 'dbg-d2-d',
-            label: 'A ritual of trial, error, and time reversal',
+            label: 'A ritual of trial, error, and tracing to the source',
             sigilGlyph: '\u21bb',
-            primary: 'time-traveling-debugger',
+            primary: 'debug-issue',
             alt: 'debug-to-fix-pipeline',
-            reason: 'Record forward, rewind to the divergence.',
+            reason: 'Trace the dataflow back to the divergence.'
           },
         ],
       },
@@ -369,16 +369,16 @@ export const SEANCE_QUESTIONS: Record<string, SeanceQuestionPool> = {
             label: 'A mask of complexity',
             sigilGlyph: '\u2042',
             primary: 'occams-razor',
-            alt: 'first-principles',
-            reason: 'Simple explanations are more often right.',
+            alt: 'evidence-grounding',
+            reason: 'Simple explanations are more often right.'
           },
           {
             id: 'rsn-n1-b',
             label: 'A mask of received wisdom',
             sigilGlyph: '\u269c',
-            primary: 'first-principles',
+            primary: 'advocatus-diaboli',
             alt: 'pre-flight-intent-verification',
-            reason: 'Strip convention to the bare thing.',
+            reason: 'Strip convention to the bare thing.'
           },
           {
             id: 'rsn-n1-c',
@@ -446,25 +446,25 @@ export const SEANCE_QUESTIONS: Record<string, SeanceQuestionPool> = {
             id: 'rsn-n3-a',
             label: 'By compressing it to its essence',
             sigilGlyph: '\u25ce',
-            primary: 'first-principles',
+            primary: 'occams-razor',
             alt: 'documentation-craft',
-            reason: 'If you cannot compress it, you do not know it.',
+            reason: 'If you cannot compress it, you do not know it.'
           },
           {
             id: 'rsn-n3-b',
             label: 'By explaining it to a child',
             sigilGlyph: '\u2042',
             primary: 'documentation-craft',
-            alt: 'first-principles',
-            reason: 'Simple language is the acid test.',
+            alt: 'occams-razor',
+            reason: 'Simple language is the acid test.'
           },
           {
             id: 'rsn-n3-c',
             label: 'By speaking it aloud, for others to weigh',
             sigilGlyph: '\u2756',
             primary: 'failure-swarm',
-            alt: 'first-principles',
-            reason: 'A claim you can defend has weight.',
+            alt: 'steelmanning',
+            reason: 'A claim you can defend has weight.'
           },
           {
             id: 'rsn-n3-d',
@@ -486,16 +486,16 @@ export const SEANCE_QUESTIONS: Record<string, SeanceQuestionPool> = {
             label: 'The simplest sufficient one',
             sigilGlyph: '\u25c7',
             primary: 'occams-razor',
-            alt: 'first-principles',
-            reason: 'Simplicity is a reliability bet.',
+            alt: 'evidence-grounding',
+            reason: 'Simplicity is a reliability bet.'
           },
           {
             id: 'rsn-n4-b',
             label: 'The one stripped of assumption',
             sigilGlyph: '\u269c',
-            primary: 'first-principles',
+            primary: 'evidence-grounding',
             alt: 'occams-razor',
-            reason: 'From the ground up, not from received wisdom.',
+            reason: 'From evidence up, not from received wisdom.'
           },
           {
             id: 'rsn-n4-c',
@@ -526,17 +526,17 @@ export const SEANCE_QUESTIONS: Record<string, SeanceQuestionPool> = {
             id: 'rsn-d1-a',
             label: 'A whisper, calling your name',
             sigilGlyph: '\u2042',
-            primary: 'first-principles',
+            primary: 'self-verify-pipeline',
             alt: 'documentation-craft',
-            reason: 'Confidence calibrated to the audience.',
+            reason: 'Confidence calibrated to the audience.'
           },
           {
             id: 'rsn-d1-b',
             label: 'A silence, deeper than thought',
             sigilGlyph: '\u25c7',
             primary: 'documentation-craft',
-            alt: 'first-principles',
-            reason: 'The child did not understand.',
+            alt: 'occams-razor',
+            reason: 'The child did not understand.'
           },
           {
             id: 'rsn-d1-c',
@@ -551,8 +551,8 @@ export const SEANCE_QUESTIONS: Record<string, SeanceQuestionPool> = {
             label: 'A question, sharper than before',
             sigilGlyph: '\u269c',
             primary: 'pre-flight-intent-verification',
-            alt: 'first-principles',
-            reason: 'The answer you needed was the next question.',
+            alt: 'intent-specification-protocol',
+            reason: 'The answer you needed was the next question.'
           },
         ],
       },
@@ -565,9 +565,9 @@ export const SEANCE_QUESTIONS: Record<string, SeanceQuestionPool> = {
             id: 'rsn-d2-a',
             label: 'All that came before',
             sigilGlyph: '\u2620',
-            primary: 'first-principles',
+            primary: 'advocatus-diaboli',
             alt: 'occams-razor',
-            reason: 'Convention is the fuel.',
+            reason: 'Convention is the fuel.'
           },
           {
             id: 'rsn-d2-b',
@@ -791,9 +791,9 @@ export const SEANCE_QUESTIONS: Record<string, SeanceQuestionPool> = {
             id: 'sde-d1-d',
             label: 'The user, who trusted',
             sigilGlyph: '\u2620',
-            primary: 'first-principles',
+            primary: 'pre-flight-intent-verification',
             alt: 'security-review-protocol',
-            reason: 'Communication is a safety feature.',
+            reason: 'Communication is a safety feature.'
           },
         ],
       },
@@ -1333,8 +1333,8 @@ export const SEANCE_QUESTIONS: Record<string, SeanceQuestionPool> = {
             label: 'Polished prose, fit for the user',
             sigilGlyph: '\u269c',
             primary: 'documentation-craft',
-            alt: 'first-principles',
-            reason: 'Documentation is a deliverable.',
+            alt: 'occams-razor',
+            reason: 'Documentation is a deliverable.'
           },
           {
             id: 'out-n1-b',
@@ -1356,9 +1356,9 @@ export const SEANCE_QUESTIONS: Record<string, SeanceQuestionPool> = {
             id: 'out-n1-d',
             label: 'A calibration of confidence',
             sigilGlyph: '\u25ce',
-            primary: 'first-principles',
+            primary: 'cognitive-bias-checklist',
             alt: 'self-verify-pipeline',
-            reason: 'Confidence stated is a deliverable.',
+            reason: 'Confidence stated is a deliverable.'
           },
         ],
       },
@@ -1371,17 +1371,17 @@ export const SEANCE_QUESTIONS: Record<string, SeanceQuestionPool> = {
             id: 'out-n2-a',
             label: 'By explaining it simply',
             sigilGlyph: '\u2042',
-            primary: 'first-principles',
+            primary: 'occams-razor',
             alt: 'documentation-craft',
-            reason: 'The simplest explanation survives.',
+            reason: 'The simplest explanation survives.'
           },
           {
             id: 'out-n2-b',
             label: 'By compression to the core',
             sigilGlyph: '\u25ce',
             primary: 'documentation-craft',
-            alt: 'first-principles',
-            reason: 'If it can be compressed, it is understood.',
+            alt: 'occams-razor',
+            reason: 'If it can be compressed, it is understood.'
           },
           {
             id: 'out-n2-c',
@@ -1491,8 +1491,8 @@ export const SEANCE_QUESTIONS: Record<string, SeanceQuestionPool> = {
             label: 'The one who wrote it',
             sigilGlyph: '\u269c',
             primary: 'documentation-craft',
-            alt: 'first-principles',
-            reason: 'The curse of knowledge.',
+            alt: 'steelmanning',
+            reason: 'The curse of knowledge.'
           },
           {
             id: 'out-d1-b',
@@ -1506,9 +1506,9 @@ export const SEANCE_QUESTIONS: Record<string, SeanceQuestionPool> = {
             id: 'out-d1-c',
             label: 'Those who already knew',
             sigilGlyph: '\u2756',
-            primary: 'first-principles',
+            primary: 'failure-swarm',
             alt: 'documentation-craft',
-            reason: 'Calibrate to the audience.',
+            reason: 'Calibrate to the audience.'
           },
           {
             id: 'out-d1-d',
@@ -1529,9 +1529,9 @@ export const SEANCE_QUESTIONS: Record<string, SeanceQuestionPool> = {
             id: 'out-d2-a',
             label: 'The author\u2019s doubts, unstated',
             sigilGlyph: '\u2756',
-            primary: 'first-principles',
+            primary: 'cognitive-bias-checklist',
             alt: 'self-verify-pipeline',
-            reason: 'Calibrated confidence is honest.',
+            reason: 'Calibrated confidence is honest.'
           },
           {
             id: 'out-d2-b',

@@ -1,6 +1,6 @@
 # Skill Catalog
 
-The 60 skills in this repository, generated from `skills/*/*/SKILL.md`.
+The 58 skills in this repository, generated from `skills/*/*/SKILL.md`.
 Each entry lists the file path, what the skill is, its triggers, and the supporting files it ships.
 
 ---
@@ -68,14 +68,6 @@ Each entry lists the file path, what the skill is, its triggers, and the support
 **Triggers:** `Multiple plausible causes and your first guess is suspect`, `Crash site is not the root cause (deferred execution, async, state machine)`, `Debugging by reasoning from symptom back to cause`
 
 **Ships:** `references/abductive-reasoning-extended.md`
-
-### `debugging/time-traveling-debugger/SKILL.md`
-
-**What it is:** When a bug occurs, record a deterministic execution trace forward, then replay it in reverse from the crash point to find the exact line where state first diverged.
-
-**Triggers:** `runtime-error-no-obvious-cause`, `wrong-value-mystery`, `heisenbug`, `reproducible-crash`
-
-**Ships:** `references/time-travel-details.md`, `scripts/time_travel.py`, `scripts/time_travel_server.py`
 
 ---
 
@@ -198,14 +190,6 @@ Each entry lists the file path, what the skill is, its triggers, and the support
 ### `judgment-and-routing/failure-swarm/SKILL.md`
 
 **What it is:** Swarm 3-5 critic personas over a spec to surface failure modes pre-implementation. User-invoked; type `/failure-swarm`.
-
-### `judgment-and-routing/first-principles/SKILL.md`
-
-**What it is:** Decompose to axiomatic foundations and reason upward from what must be true.
-
-**Triggers:** `conventional-solutions-failing`, `inherited-framing`, `ground-up-reasoning`, `received-wisdom-risk`
-
-**Ships:** `references/first-principles-details.md`
 
 ### `judgment-and-routing/future-mortem/SKILL.md`
 
